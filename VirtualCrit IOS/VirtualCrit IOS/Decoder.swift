@@ -140,6 +140,9 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
     crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
     crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
     
+    print(crankRevolution)
+    print(crankEventTime)
+    
     // 1st
     if Device.oldCrankEventTime != 0 {
         crankEventTimeDiff = crankEventTime - Device.oldCrankEventTime
@@ -209,6 +212,12 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
     // 4th
     if crankRevolutionDiff == 0 && crankEventTimeDiff == 0 {
         travelCadence = 0
+    }
+    
+    
+    if Device.oldCrankRevolution == crankRevolution && Device.oldCrankEventTime == crankEventTime {
+    
+        print("Current Cadence is 0")
     }
     
     
