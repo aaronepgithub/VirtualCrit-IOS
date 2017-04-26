@@ -26,6 +26,8 @@ struct Device {
 
     static var oldWheelEventTime                   : Double = 0
     static var oldCrankEventTime                   : Double = 0
+    
+    static var oldTravelCadence                    : Double = 0
 
     static var totalTravelDistance                 : Double?
     static var travelDistance                      : Double?

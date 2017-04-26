@@ -89,10 +89,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Totals.currentTime = NSDate()
         
         Totals.durationTotal = (Totals.currentTime?.timeIntervalSince(Totals.startTime! as Date!))
-        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
+        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!) + " Total"
         
         lbl_Speed.text = "SPD: \(String(format:"%.2f", Totals.avg_speed)) MPH"
-        lbl_Cadence.text = "CAD: \(String(format:"%.1f", Totals.avg_cad)) RPM"
+//        lbl_Cadence.text = "CAD: \(String(format:"%.1f", Totals.avg_cad)) RPM"
         
         
 
@@ -113,7 +113,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let x = NSDate()
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
         //print("Round Timer: \(Rounds.roundCurrentTimeElapsed as Any)")
-        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!)
+        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!) + " Round"
     }
     
     
@@ -362,7 +362,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
                 return
             }
-            decodeCSC(withData: characteristic.value!)
+            let x = decodeCSC(withData: characteristic.value!)
+            
+            if x != 999 {
+                lbl_Cadence.text = "CAD: \(String(format:"%.1f", x)) RPM"
+            }
+            
+            
         }
     }
     
