@@ -28,6 +28,8 @@ struct Device {
     static var oldCrankEventTime                   : Double = 0
     
     static var oldTravelCadence                    : Double = 0
+    static var currentCadence                       : Double = 0
+    static var currentSpeed                         : Double = 0
 
     static var totalTravelDistance                 : Double?
     static var travelDistance                      : Double?
@@ -44,6 +46,7 @@ struct Settings {
 
 struct Totals {
     static var distanceTotal: Double = 0
+    static var distanceRound: Double = 0
     static var wheelEventTimeDiffTotal: Double = 0
     static var wheelRevolutionDiffTotal: Double = 0
     static var crankRevolutionDiffTotal: Double = 0
@@ -60,6 +63,7 @@ struct Totals {
     
     static var currentTime : NSDate?
     static var durationTotal : TimeInterval?
+    
 }
 
 struct Rounds {

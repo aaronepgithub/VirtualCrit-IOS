@@ -18,6 +18,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var lbl_Cadence: UILabel!
     @IBOutlet weak var lbl_Heartrate: UILabel!
     
+    @IBOutlet weak var lbl_Distance: UILabel!
     
     
     
@@ -91,7 +92,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Totals.durationTotal = (Totals.currentTime?.timeIntervalSince(Totals.startTime! as Date!))
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!) + " Total"
         
-        lbl_Speed.text = "SPD: \(String(format:"%.2f", Totals.avg_speed)) MPH"
+//        lbl_Speed.text = "SPD: \(String(format:"%.2f", Totals.avg_speed)) MPH"
 //        lbl_Cadence.text = "CAD: \(String(format:"%.1f", Totals.avg_cad)) RPM"
         
         
@@ -104,6 +105,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         //print("updateTimerRound")
         Rounds.roundsComplete += 1
         Rounds.roundStartTime = NSDate()
+        Totals.distanceRound = 0
     }
     
     
@@ -317,7 +319,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
 
     
-    
+    var zeroTesterSpeed          : Double = 0
+    var zeroTester          : Double = 0
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         // if there was an error then print it and bail out
@@ -362,12 +365,193 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
                 return
             }
-            let x = decodeCSC(withData: characteristic.value!)
             
-            if x != 999 {
-                lbl_Cadence.text = "CAD: \(String(format:"%.1f", x)) RPM"
+            
+            
+            func processWheelData(withData data :Data) -> Double {
+                //func processWheelData(withData data :Data) {
+                var wheelRevolution8     :UInt8  = 0
+                var wheelRevolution      :Double  = 0
+                var wheelEventTime      :Double = 0
+                var wheelRevolutionDiff :Double = 0
+                var wheelEventTimeDiff  :Double = 0
+                var travelDistance      :Double = 0
+                var travelSpeed         :Double = 0
+                
+                let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
+                
+                wheelRevolution8 = UInt8(Double(CFSwapInt32LittleToHost(UInt32(value[1]))))
+                wheelEventTime  = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
+                wheelRevolution = Double(wheelRevolution8)
+                
+                //    print(" \nCurrent wheel Rev:  \(wheelRevolution)")
+                //    print("Current wheel Time:  \(wheelEventTime)")
+                //
+                //    print("Old wheel Rev:  \(Device.oldWheelRevolution)")
+                //    print("Old wheel Time:  \(Device.oldWheelEventTime) \n")
+                
+                if Device.oldWheelRevolution > 0 {  //test for first time reading
+                    if Device.oldWheelRevolution == wheelRevolution && Device.oldWheelEventTime == wheelEventTime { //test for 0 speed
+                        print("Current Speed is 0")
+                        travelSpeed = 0
+                    } else {
+                        
+                        if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
+                            print("reset counter, ignore")
+                        } else {
+                            wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
+                            wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
+                            
+                            
+                            travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
+                            Totals.distanceTotal = Totals.distanceTotal + travelDistance
+                            Totals.distanceRound = Totals.distanceRound + travelDistance
+                            
+                            lbl_Distance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Mi & \(String(format:"%.2f", Totals.distanceRound)) Mi"
+                            
+                            travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
+                            
+                            print("travelSpeed:  \(travelSpeed)")
+                            //print("Totals.distanceTotal:  \(Totals.distanceTotal)")
+                            
+                        }
+                        
+                    }
+                 
+                    if travelSpeed == 0 && zeroTesterSpeed == 0 {
+                        
+                        zeroTesterSpeed += 1
+                        //return 999
+                    } else {
+                        lbl_Speed.text = "SPD: \(String(format:"%.1f", travelSpeed)) MPH"
+                        zeroTesterSpeed = 0
+                        Device.currentSpeed = travelSpeed
+                        //return travelSpeed
+                    }
+                    
+                }
+                
+                Device.oldWheelRevolution = Double(wheelRevolution)
+                Device.oldWheelEventTime = Double(wheelEventTime)
+                
+
+                return 999
+                
+                
+                
             }
             
+            
+
+            
+            func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int) -> Double {
+                
+                var crankEventTime      : Double = 0
+                var crankRevolutionDiff : Double = 0
+                var crankEventTimeDiff  : Double = 0
+                var crankRevolution     : Double = 0
+                var travelCadence       : Double = 0
+                
+                
+                let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
+                
+                crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
+                crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
+                
+                //    print(" \n Current Crank Rev:  \(crankRevolution)")
+                //    print("Current Crank Time:  \(crankEventTime)")
+                //
+                //    print("Old Crank Rev:  \(Device.oldCrankRevolution)")
+                //    print("Old Crank Time:  \(Device.oldCrankEventTime) \n")
+                
+                
+                if Device.oldCrankRevolution > 0 {  //test for first time reading
+                    if Device.oldCrankRevolution == crankRevolution && Device.oldCrankEventTime == crankEventTime { //test for 0 cadence
+                        //print("Current Cadence is 0")
+                        travelCadence = 0
+                    } else {
+                        
+                        if Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
+                            //print("reset counter, ignore")
+                        } else {
+                            crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
+                            crankEventTimeDiff = (((crankEventTime - Device.oldCrankEventTime) / 1024))
+                            travelCadence = crankRevolutionDiff/crankEventTimeDiff*60
+                            //print("travelCadence:  \(travelCadence)")
+                            
+                        }
+                        
+                    }
+                    
+                    
+                    if travelCadence == 0 && zeroTester == 0 {
+                        zeroTester += 1
+                        
+                    } else {
+                        lbl_Cadence.text = "CAD: \(String(format:"%.f", travelCadence)) RPM"
+                        zeroTester = 0
+                        Device.currentCadence = travelCadence
+                        //return travelCadence
+                    }
+                    
+                 
+                }
+                
+                
+                Device.oldCrankRevolution = crankRevolution
+                Device.oldCrankEventTime = crankEventTime
+                
+ 
+                return 999
+                
+            }
+            
+
+            
+            
+            
+            
+            
+            func decodeCSC(withData data : Data) -> Double {
+                let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
+                //    var wheelRevDiff :Double = 0
+                //    var crankRevDiff :Double = 0
+                var returnedCadence : Double = 0
+                var returnedSpeed   : Double = 0
+                let flag = value[0]
+                
+                
+                if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
+                    returnedSpeed = processWheelData(withData: data)
+                    
+//                    if returnedSpeed != 999 {lbl_Speed.text = "SPD: \(String(format:"%.1f", returnedSpeed)) MPH"}
+                    
+                    
+                    if flag & 0x02 == 2 {
+                        returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 7)
+                        
+//                        if returnedCadence != 999 {lbl_Cadence.text = "CAD: \(String(format:"%.f", returnedCadence)) RPM"}
+
+                    }
+                } else {
+                    if flag & Device.CRANK_REVOLUTION_FLAG == 2 {
+                        returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 1)
+                        
+//                        if returnedCadence != 999 {lbl_Cadence.text = "CAD: \(String(format:"%.f", returnedCadence)) RPM"}
+                    }
+                }
+                
+                
+                
+                return 0 //use later for testing to display or remove
+            }
+            
+
+            
+            let x = decodeCSC(withData: characteristic.value!)
+            if x != 999999 {
+            }
+               
             
         }
     }
