@@ -8,22 +8,22 @@
 
 import Foundation
 
-func decodeHRValue(withData data: Data) -> Int {
-    let count = data.count / MemoryLayout<UInt8>.size
-    var array = [UInt8](repeating: 0, count: count)
-    (data as NSData).getBytes(&array, length:count * MemoryLayout<UInt8>.size)
-    var bpmValue : Int = 0;
-    if ((array[0] & 0x01) == 0) {
-        bpmValue = Int(array[1])
-    } else {
-        //Convert Endianess from Little to Big
-        bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
-    }
-    
-    
-    Totals.globalArrHRTotalAvg.append(Int(bpmValue))
-    return bpmValue
-}
+//func decodeHRValue(withData data: Data) -> Int {
+//    let count = data.count / MemoryLayout<UInt8>.size
+//    var array = [UInt8](repeating: 0, count: count)
+//    (data as NSData).getBytes(&array, length:count * MemoryLayout<UInt8>.size)
+//    var bpmValue : Int = 0;
+//    if ((array[0] & 0x01) == 0) {
+//        bpmValue = Int(array[1])
+//    } else {
+//        //Convert Endianess from Little to Big
+//        bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
+//    }
+//    
+//    
+//    Totals.globalArrHRTotalAvg.append(Int(bpmValue))
+//    return bpmValue
+//}
 
 
 

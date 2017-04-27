@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 struct Device {
     //HR
     static let TransferService = "0x180D"
@@ -28,12 +26,16 @@ struct Device {
     static var oldCrankEventTime                   : Double = 0
     
     static var oldTravelCadence                    : Double = 0
+    
     static var currentCadence                       : Double = 0
     static var currentSpeed                         : Double = 0
+    static var currentHeartrate                     : Double = 0
 
     static var totalTravelDistance                 : Double?
     static var travelDistance                      : Double?
     static var wheelCircumference                  : Double?
+    
+
 }
 
 
@@ -46,13 +48,13 @@ struct Settings {
 
 struct Totals {
     static var distanceTotal: Double = 0
-    static var distanceRound: Double = 0
+
     static var wheelEventTimeDiffTotal: Double = 0
     static var wheelRevolutionDiffTotal: Double = 0
     static var crankRevolutionDiffTotal: Double = 0
     static var crankEventTimeDiffTotal: Double = 0
     
-    static var globalArrHRTotalAvg = [Int]()
+    static var arrHRTotal = [Double]()
     
     static var distance: Double = 0
     static var avg_speed: Double = 0
@@ -64,12 +66,24 @@ struct Totals {
     static var currentTime : NSDate?
     static var durationTotal : TimeInterval?
     
+    static var totalWheelEventTime                  : Double = 0
+    
 }
 
 struct Rounds {
     static var roundStartTime : NSDate?
     static var roundCurrentTimeElapsed : TimeInterval?
     static var roundsComplete : Int = 0
+    
+    static var arrHRRound = [Double]()  //during the round
+    static var arrDistances = [Double]()
+    
+    
+    static var totalWheelEventTime                  : Double = 0
+    static var distanceRound: Double = 0
+    
+    static var avg_speed: Double = 0
+    static var avg_hr: Double = 0
 
 }
 
