@@ -74,38 +74,6 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="I8I-7O-VTY">
-                                <rect key="frame" x="18" y="246" width="284" height="107"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Total Time" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="iam-eB-4h1">
-                                        <rect key="frame" x="0.0" y="0.0" width="284" height="42"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Round/Total Distance" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="bsC-9p-TwN">
-                                        <rect key="frame" x="0.0" y="42" width="284" height="23"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="23" id="GLU-YS-3Tv"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Round Time" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2Wo-pO-CDv">
-                                        <rect key="frame" x="0.0" y="65" width="284" height="42"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="bsC-9p-TwN" firstAttribute="centerY" secondItem="I8I-7O-VTY" secondAttribute="centerY" id="wL9-Ld-krX"/>
-                                </constraints>
-                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Vx-6N-nOT">
                                 <rect key="frame" x="18" y="373" width="284" height="42"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -120,22 +88,47 @@
                                     <action selector="btn_Scan:" destination="9pv-A4-QxB" eventType="touchUpInside" id="aW6-zP-BSO"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="I8I-7O-VTY">
+                                <rect key="frame" x="20" y="125" width="280" height="69"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Total Time" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="iam-eB-4h1">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="23"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Round/Total Distance" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="bsC-9p-TwN">
+                                        <rect key="frame" x="0.0" y="23" width="280" height="23"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Round Time" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2Wo-pO-CDv">
+                                        <rect key="frame" x="0.0" y="46" width="280" height="23"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="kBK-8r-m6X" firstAttribute="leading" secondItem="I8I-7O-VTY" secondAttribute="leading" id="2ZD-rc-TCL"/>
                             <constraint firstItem="AwJ-nu-Di1" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="8" symbolic="YES" id="4d7-ig-OEa"/>
                             <constraint firstItem="AwJ-nu-Di1" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="CWR-QV-YOZ"/>
                             <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="6Vx-6N-nOT" secondAttribute="bottom" constant="16" id="CeQ-Sa-UIc"/>
-                            <constraint firstItem="I8I-7O-VTY" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="top" constant="246" id="Pc5-2b-WEB"/>
+                            <constraint firstItem="6Vx-6N-nOT" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="2" id="KyO-ee-0X0"/>
                             <constraint firstItem="kBK-8r-m6X" firstAttribute="top" secondItem="AwJ-nu-Di1" secondAttribute="bottom" constant="2" id="TJ0-bs-Qmn"/>
+                            <constraint firstItem="I8I-7O-VTY" firstAttribute="top" secondItem="kBK-8r-m6X" secondAttribute="bottom" constant="20" id="UOo-He-ckf"/>
                             <constraint firstItem="AwJ-nu-Di1" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="2" id="XQ4-9m-y6a"/>
                             <constraint firstItem="AwJ-nu-Di1" firstAttribute="trailing" secondItem="kBK-8r-m6X" secondAttribute="trailing" id="XSO-AH-uu6"/>
-                            <constraint firstItem="6Vx-6N-nOT" firstAttribute="top" secondItem="I8I-7O-VTY" secondAttribute="bottom" constant="20" id="jou-DF-7wO"/>
-                            <constraint firstItem="I8I-7O-VTY" firstAttribute="leading" secondItem="6Vx-6N-nOT" secondAttribute="leading" id="lv5-Tp-p9E"/>
-                            <constraint firstItem="kBK-8r-m6X" firstAttribute="trailing" secondItem="I8I-7O-VTY" secondAttribute="trailing" id="mCl-Or-PBK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6Vx-6N-nOT" secondAttribute="trailing" constant="2" id="iOe-4D-k5D"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="I8I-7O-VTY" secondAttribute="trailing" constant="4" id="its-o2-ggw"/>
+                            <constraint firstItem="I8I-7O-VTY" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" constant="4" id="jDa-l5-GTx"/>
                             <constraint firstItem="AwJ-nu-Di1" firstAttribute="leading" secondItem="kBK-8r-m6X" secondAttribute="leading" id="rSX-mD-gsM"/>
-                            <constraint firstItem="I8I-7O-VTY" firstAttribute="trailing" secondItem="6Vx-6N-nOT" secondAttribute="trailing" id="wLD-QK-mdc"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
