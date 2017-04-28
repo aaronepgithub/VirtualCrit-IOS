@@ -87,4 +87,13 @@ struct Rounds {
 
 }
 
+struct AllRounds {
+
+    static var arrHR = [Double]()
+    static var arrSPD = [Double]()
+    static var arrCAD = [Double]()
+    
+
+}
+
 

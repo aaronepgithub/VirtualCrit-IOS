@@ -45,6 +45,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBAction func btn_Scan(_ sender: UIButton) {
         
         Device.wheelCircumference = 2105
+        let secondsPerRound = 300.0
         startScanning()
         
         if timerTotal == nil {
@@ -55,12 +56,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             timerTotal = Timer.scheduledTimer(timeInterval: 1.00, target: self, selector: #selector(updateTimerTotal), userInfo: nil, repeats: true)
             
-            timerRound = Timer.scheduledTimer(timeInterval: 300.00, target: self, selector: #selector(updateTimerRound), userInfo: nil, repeats: true)
+            timerRound = Timer.scheduledTimer(timeInterval: secondsPerRound, target: self, selector: #selector(updateTimerRound), userInfo: nil, repeats: true)
             
             timerEachSecond = Timer.scheduledTimer(timeInterval: 0.10, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
             
             Totals.startTime = NSDate()
             Rounds.roundStartTime = NSDate()
+            
+            AllRounds.arrHR.append(0)
+            AllRounds.arrSPD.append(0)
             
             
         }
@@ -105,15 +109,23 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         //print("updateTimerRound")
         Rounds.roundsComplete += 1
+        Totals.arrHRTotal.append(Rounds.avg_hr)
+        
+        if AllRounds.arrHR[0] == 0 && AllRounds.arrSPD[0] == 0 {
+        AllRounds.arrHR = []
+        AllRounds.arrSPD = []
+        AllRounds.arrCAD = []
+        }
+        
+        AllRounds.arrHR.append(Rounds.avg_hr)
+        AllRounds.arrSPD.append(Rounds.avg_speed)
+        
+        print(AllRounds.arrHR)
+        print(AllRounds.arrSPD)
+
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
-
-
-        
-        Totals.arrHRTotal.append(Rounds.avg_hr)
-        //MARK:  TOTAL HR
-        
         Rounds.arrHRRound = []
         
     }

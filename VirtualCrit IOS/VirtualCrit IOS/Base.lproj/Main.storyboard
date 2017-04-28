@@ -212,42 +212,74 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IYr-iQ-F4G">
-                                <rect key="frame" x="82" y="368" width="157.5" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Egw-w9-Tve">
+                                <rect key="frame" x="26" y="167" width="268" height="100"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUW-wC-lmf">
+                                        <rect key="frame" x="0.0" y="0.0" width="268" height="49"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49" id="oAI-Lb-qnf"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yzF-Vc-3Je">
+                                        <rect key="frame" x="0.0" y="51" width="268" height="49"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49" id="ja1-uA-fe6"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DISTANCE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8U-Oi-tzu">
+                                <rect key="frame" x="16" y="381" width="288" height="36"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="bHy-Gm-VUg"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="UPDATE"/>
-                                <connections>
-                                    <action selector="action_update:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="El5-lz-lna"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Total Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUW-wC-lmf">
-                                <rect key="frame" x="16" y="177" width="288" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Round Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yzF-Vc-3Je">
-                                <rect key="frame" x="16" y="215" width="288" height="49"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Previous Rounds: HR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="nl1-hB-G20">
+                                <rect key="frame" x="26" y="289" width="268" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Previous Rounds: SPD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="Ekx-Jn-r7R">
+                                <rect key="frame" x="26" y="330" width="268" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="B8U-Oi-tzu" secondAttribute="bottom" constant="14" id="3My-pT-2r9"/>
+                            <constraint firstItem="Egw-w9-Tve" firstAttribute="top" secondItem="3VO-yS-Es4" secondAttribute="bottom" constant="20" id="KGQ-cT-eVW"/>
                             <constraint firstItem="3VO-yS-Es4" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" constant="2" id="Pqi-TF-G5Y"/>
                             <constraint firstAttribute="trailing" secondItem="3VO-yS-Es4" secondAttribute="trailing" constant="2" id="TIF-5O-RMf"/>
+                            <constraint firstItem="B8U-Oi-tzu" firstAttribute="centerX" secondItem="3VO-yS-Es4" secondAttribute="centerX" id="WHw-7M-g0w"/>
+                            <constraint firstItem="Egw-w9-Tve" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="10" id="eeu-S9-x1x"/>
                             <constraint firstItem="3VO-yS-Es4" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="20" id="mv6-bN-enz"/>
+                            <constraint firstItem="B8U-Oi-tzu" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" id="uRj-ex-yGl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Egw-w9-Tve" secondAttribute="trailing" constant="10" id="zP6-Qc-mvx"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
                     <connections>
-                        <outlet property="btn_update" destination="IYr-iQ-F4G" id="F3X-qg-k8j"/>
+                        <outlet property="lbl_distance" destination="B8U-Oi-tzu" id="uIa-EE-I81"/>
                         <outlet property="lbl_hr" destination="8iN-yH-vGd" id="SSe-Yc-jRy"/>
                         <outlet property="lbl_hr_avg" destination="9FD-Ne-RJe" id="TB4-E7-8gc"/>
+                        <outlet property="lbl_previous_rounds_hr" destination="nl1-hB-G20" id="RJH-rc-w1y"/>
+                        <outlet property="lbl_previous_rounds_spd" destination="Ekx-Jn-r7R" id="Nqw-Mc-shK"/>
                         <outlet property="lbl_round_time" destination="yzF-Vc-3Je" id="f1Q-RC-B8w"/>
                         <outlet property="lbl_spd_avg" destination="zEq-FU-wV5" id="Vz0-as-6Jt"/>
                         <outlet property="lbl_speed" destination="IWl-Oo-2hV" id="Ux4-SU-cDq"/>

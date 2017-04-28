@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VirtualCrit IOS/FirstViewController.swift"
-            timestampString = "514988131.192782"
+            timestampString = "515077720.571385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "390"
+            endingLineNumber = "390"
             landmarkName = "decodeHRValue(withData:)"
             landmarkType = "9">
          </BreakpointContent>
