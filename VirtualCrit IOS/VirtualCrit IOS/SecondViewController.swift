@@ -41,7 +41,6 @@ class SecondViewController: UIViewController {
 
         
         lbl_total_time.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!) + " Total"
-        
         lbl_round_time.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!) + " Round"
     }
 

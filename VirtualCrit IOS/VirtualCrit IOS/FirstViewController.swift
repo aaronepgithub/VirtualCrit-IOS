@@ -44,7 +44,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     @IBAction func btn_Scan(_ sender: UIButton) {
         
-        Device.wheelCircumference = 2110
+        Device.wheelCircumference = 2105
         startScanning()
         
         if timerTotal == nil {
@@ -107,13 +107,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.roundsComplete += 1
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
 
 
         
         Totals.arrHRTotal.append(Rounds.avg_hr)
-        
-
         //MARK:  TOTAL HR
+        
         Rounds.arrHRRound = []
         
     }
@@ -139,7 +139,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func startScanning() {
         
-        // TODO:  REMEMBER TO START TIMER - SOMEWHERE
         print("Start Scanning")
         
         if centralManager.isScanning {
@@ -335,7 +334,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
 
     
-    var zeroTesterSpeed          : Double = 0
+    var zeroTesterSpeed     : Double = 0
     var zeroTester          : Double = 0
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
@@ -437,10 +436,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             
                             lbl_Distance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Mi & \(String(format:"%.2f", Rounds.distanceRound)) Mi"
                             travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
-                            //print("travelSpeed:  \(travelSpeed)")
+                            
                             
                             Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
-                            
                             Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
                             
                             
