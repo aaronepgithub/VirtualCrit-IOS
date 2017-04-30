@@ -32,18 +32,18 @@ class SecondViewController: UIViewController {
     
     func updateUI() {
         
-        lbl_speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
-        lbl_hr.text = "\(String(format:"%.1f", Rounds.avg_hr))"
-        
-        lbl_spd_avg.text = "\(String(format:"%.1f", Totals.avg_speed))"
-        lbl_hr_avg.text = "\(String(format:"%.1f", Totals.avg_hr))"
+//        lbl_speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
+//        lbl_hr.text = "\(String(format:"%.1f", Rounds.avg_hr))"
+//        
+//        lbl_spd_avg.text = "\(String(format:"%.1f", Totals.avg_speed))"
+//        lbl_hr_avg.text = "\(String(format:"%.1f", Totals.avg_hr))"
         
 
         
-        lbl_total_time.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!) + " Total"
-        lbl_round_time.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!) + " Round"
+//        lbl_total_time.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!) + " Total"
+//        lbl_round_time.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!) + " Round"
         
-        lbl_distance.text =  "\(String(format:"%.2f", Totals.distanceTotal)) Miles"
+//        lbl_distance.text =  "\(String(format:"%.2f", Totals.distanceTotal)) Miles"
         
         let tempHR = AllRounds.arrHR.reversed()
         let tempSPD = AllRounds.arrSPD.reversed()
@@ -65,18 +65,18 @@ class SecondViewController: UIViewController {
         
     }
 
-//    @IBOutlet weak var btn_update: UIButton!
+
     
-    @IBOutlet weak var lbl_speed: UILabel!
-    @IBOutlet weak var lbl_hr: UILabel!
-    
-    @IBOutlet weak var lbl_spd_avg: UILabel!
-    @IBOutlet weak var lbl_hr_avg: UILabel!
-    
-    @IBOutlet weak var lbl_total_time: UILabel!
-    @IBOutlet weak var lbl_round_time: UILabel!
-    
-    @IBOutlet weak var lbl_distance: UILabel!
+//    @IBOutlet weak var lbl_speed: UILabel!
+//    @IBOutlet weak var lbl_hr: UILabel!
+//    
+//    @IBOutlet weak var lbl_spd_avg: UILabel!
+//    @IBOutlet weak var lbl_hr_avg: UILabel!
+//    
+//    @IBOutlet weak var lbl_total_time: UILabel!
+//    @IBOutlet weak var lbl_round_time: UILabel!
+//    
+//    @IBOutlet weak var lbl_distance: UILabel!
 
     @IBOutlet weak var lbl_previous_rounds_hr: UILabel!
     @IBOutlet weak var lbl_previous_rounds_spd: UILabel!
@@ -88,7 +88,7 @@ class SecondViewController: UIViewController {
         updateUI()
         
         updateUITimer = Timer()
-        updateUITimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+        updateUITimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
         
         

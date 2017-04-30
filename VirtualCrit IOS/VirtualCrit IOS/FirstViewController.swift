@@ -12,6 +12,7 @@ import CoreBluetooth
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     @IBOutlet weak var lbl_TotalTime: UILabel!
+    //@IBOutlet weak var lbl_RoundTime: UILabel!
     @IBOutlet weak var lbl_RoundTime: UILabel!
     
     @IBOutlet weak var lbl_Speed: UILabel!
@@ -20,6 +21,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBOutlet weak var lbl_Distance: UILabel!
     
+
+    @IBOutlet weak var lbl_round_speed: UILabel!
+    @IBOutlet weak var lbl_round_hr: UILabel!
+    @IBOutlet weak var lbl_total_speed: UILabel!
+    @IBOutlet weak var lbl_total_hr: UILabel!
+    
+    @IBOutlet weak var lbl_button_start: UIButton!
     
     
     
@@ -45,11 +53,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBAction func btn_Scan(_ sender: UIButton) {
         
         Device.wheelCircumference = 2105
-        let secondsPerRound = 300.0
         startScanning()
         
-        if timerTotal == nil {
+
+    }
+    
+    @IBAction func btn_action_start(_ sender: UIButton) {
         
+        let secondsPerRound = 300.0
+        lbl_button_start.titleLabel?.text = "Stop"
+        
+        if timerTotal == nil {
+            
             timerTotal = Timer()
             timerRound = Timer()
             timerEachSecond = Timer()
@@ -68,6 +83,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             
         }
+        
+        
     }
     
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
@@ -132,17 +149,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     public func updateTimerEachSecond() {
-        
+        //every .1 second
         //print("updateTimerEachSecond")
         let x = NSDate()
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
-        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!) + " Round"
+        
+        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!)
         
         
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
-        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!) + " Total"
+        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
         Totals.currentTime = x
+        
+        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr))"
+        lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
+        
+        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr))"
+        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed))"
 
     }
     
