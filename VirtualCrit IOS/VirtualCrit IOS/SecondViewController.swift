@@ -10,7 +10,48 @@ import UIKit
 
 class SecondViewController: UIViewController {
     
-
+    func requestTiresize() {
+    
+        //  Start Alert
+        var alertController:UIAlertController?
+        alertController = UIAlertController(title: "Enter Tiresize",
+                                            message: "Example, X25 = 2015, X32 = 2155",
+                                            preferredStyle: .alert)
+        
+        alertController!.addTextField(
+            configurationHandler: {(textField: UITextField!) in
+                textField.placeholder = "2105"
+                textField.keyboardType = .decimalPad
+        })
+        
+        let action = UIAlertAction(title: "Submit",
+                                   style: UIAlertActionStyle.default,
+                                   handler: {[weak self]
+                                    (paramAction:UIAlertAction!) in
+                                    if let textFields = alertController?.textFields{
+                                        let theTextFields = textFields as [UITextField]
+                                        let enteredText = theTextFields[0].text
+                                        
+                                        if (Double(enteredText!) != nil) { Device.wheelCircumference = Double(enteredText!) } else { Device.wheelCircumference = 2105 }
+                                        
+                                    }
+                                    print(Device.wheelCircumference as Any)
+        })
+        
+        alertController?.addAction(action)
+        
+        self.present(alertController!,
+                     animated: true,
+                     completion: nil)
+        
+        // End Alert
+        
+    }
+    
+    
+    @IBAction func btn_setTiresize(_ sender: UIButton) {
+        requestTiresize()
+    }
     
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
         let formater = DateFormatter()

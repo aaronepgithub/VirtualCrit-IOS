@@ -39,6 +39,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Device.wheelCircumference = 2105
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
@@ -51,17 +55,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-        
-        Device.wheelCircumference = 2105
         startScanning()
-        
-
     }
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
         let secondsPerRound = 300.0
-        lbl_button_start.titleLabel?.text = "Stop"
+        lbl_button_start.setTitle("Stop", for: .normal)
+        
         
         if timerTotal == nil {
             
@@ -220,6 +221,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristicCSC) {
                         peripheral.setNotifyValue(false, for: characteristic)
+                        
+                        
+
+
+
+                        
                         return
                     }
                 }
@@ -551,15 +558,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
                     returnedSpeed = processWheelData(withData: data)
-                    print(returnedSpeed)
+                    //print(returnedSpeed)
                     if flag & 0x02 == 2 {
                         returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 7)
-                        print(returnedCadence)
+                        //print(returnedCadence)
                     }
                 } else {
                     if flag & Device.CRANK_REVOLUTION_FLAG == 2 {
                         returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 1)
-                        print(returnedCadence)
+                        //print(returnedCadence)
                     }
                 }
                 return 0 //use later for testing to display or remove
