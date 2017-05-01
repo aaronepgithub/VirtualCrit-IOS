@@ -39,7 +39,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("view did load on First VC")
+        
         Device.wheelCircumference = 2105
+        print(Device.wheelCircumference as Any)
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -54,10 +57,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-<<<<<<< HEAD
-=======
         Device.wheelCircumference = 2105
->>>>>>> origin/master
         startScanning()
     }
     

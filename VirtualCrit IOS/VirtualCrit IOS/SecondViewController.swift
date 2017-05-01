@@ -26,7 +26,7 @@ class SecondViewController: UIViewController {
         
         let action = UIAlertAction(title: "Submit",
                                    style: UIAlertActionStyle.default,
-                                   handler: {[weak self]
+                                   handler: {
                                     (paramAction:UIAlertAction!) in
                                     if let textFields = alertController?.textFields{
                                         let theTextFields = textFields as [UITextField]
