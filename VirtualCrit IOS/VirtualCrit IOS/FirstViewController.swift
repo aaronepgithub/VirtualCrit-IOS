@@ -12,7 +12,6 @@ import CoreBluetooth
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     @IBOutlet weak var lbl_TotalTime: UILabel!
-    //@IBOutlet weak var lbl_RoundTime: UILabel!
     @IBOutlet weak var lbl_RoundTime: UILabel!
     
     @IBOutlet weak var lbl_Speed: UILabel!
@@ -55,6 +54,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
 
     @IBAction func btn_Scan(_ sender: UIButton) {
+<<<<<<< HEAD
+=======
+        Device.wheelCircumference = 2105
+>>>>>>> origin/master
         startScanning()
     }
     
@@ -441,7 +444,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             func processWheelData(withData data :Data) -> Double {
                 var wheelRevolution8     :UInt8  = 0
-                var wheelRevolution      :Double  = 0
+                var wheelRevolution      :Double = 0
                 var wheelEventTime      :Double = 0
                 var wheelRevolutionDiff :Double = 0
                 var wheelEventTimeDiff  :Double = 0

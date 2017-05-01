@@ -11,7 +11,6 @@ import Foundation
 var timerTotal: Timer!
 var timerRound: Timer!
 var timerEachSecond: Timer!
-
 var updateUITimer: Timer!
 
 
