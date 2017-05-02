@@ -29,6 +29,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBOutlet weak var lbl_button_start: UIButton!
     
+    var hasPressedStart = false
     
     
     // Core Bluetooth properties
@@ -64,20 +65,28 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
+        if hasPressedStart == true {
+            print("already started")
+            return
+        }
+        
         let secondsPerRound = 300.0
+        
+        Rounds.roundStartTime = NSDate()
+        Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
+        Rounds.arrHRRound = []
+        
+        
         lbl_button_start.setTitle("Stop", for: .normal)
         
-        
         if timerTotal == nil {
-            
             timerTotal = Timer()
             timerRound = Timer()
             timerEachSecond = Timer()
             
             timerTotal = Timer.scheduledTimer(timeInterval: 1.00, target: self, selector: #selector(updateTimerTotal), userInfo: nil, repeats: true)
-            
             timerRound = Timer.scheduledTimer(timeInterval: secondsPerRound, target: self, selector: #selector(updateTimerRound), userInfo: nil, repeats: true)
-            
             timerEachSecond = Timer.scheduledTimer(timeInterval: 0.10, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
             
             Totals.startTime = NSDate()
@@ -85,11 +94,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             AllRounds.arrHR.append(0)
             AllRounds.arrSPD.append(0)
-            
-            
         }
         
-        
+            hasPressedStart = true
     }
     
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
@@ -428,8 +435,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             let newValue = decodeHRValue(withData: characteristic.value!)
             //print(newValue)
-            lbl_Heartrate.text = "\(String(newValue))"
-            lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+            if newValue < 100 {
+                lbl_Heartrate.text = "0\(String(newValue))"
+                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+            } else {
+                lbl_Heartrate.text = "\(String(newValue))"
+                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+
+            }
             
         }
         
