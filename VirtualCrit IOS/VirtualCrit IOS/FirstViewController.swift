@@ -17,6 +17,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var lbl_Speed: UILabel!
     @IBOutlet weak var lbl_Cadence: UILabel!
     @IBOutlet weak var lbl_Heartrate: UILabel!
+    @IBOutlet weak var lbl_Score: UILabel!
     
     @IBOutlet weak var lbl_Distance: UILabel!
     
@@ -428,6 +429,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             let newValue = decodeHRValue(withData: characteristic.value!)
             //print(newValue)
             lbl_Heartrate.text = "\(String(newValue))"
+            lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
             
         }
         
