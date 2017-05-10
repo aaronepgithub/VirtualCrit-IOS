@@ -573,6 +573,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 var returnedSpeed   : Double = 0
                 let flag = value[0]
                 
+                print((returnedSpeed) + (returnedCadence))
+                
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
                     returnedSpeed = processWheelData(withData: data)
