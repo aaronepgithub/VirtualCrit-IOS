@@ -65,6 +65,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
+//        print("calling hpost")
+//        httpPost()
+//        httpPut()
+        
+        
+        
         if hasPressedStart == true {
             print("already started")
             return
@@ -148,6 +154,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
+        
+//        httpPost()
+//        httpPut()
+        
         
         print(AllRounds.arrHR)
         print(AllRounds.arrSPD)
@@ -644,6 +654,105 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         
         
+    }
+    
+    func httpPost() {
+    
+        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170511.json"
+        guard let todosURL = URL(string: todosEndpoint) else {
+            print("Error: cannot create URL")
+            return
+        }
+        var todosUrlRequest = URLRequest(url: todosURL)
+        todosUrlRequest.httpMethod = "POST"
+        
+        let a = Rounds.avg_hr / 185 * 100
+        let x = "\(String(format:"%.1f", Rounds.avg_hr))"
+        let y = "\(String(format:"%.1f", Rounds.avg_speed))"
+        let z = "\(String(format:"%.1f", a))"
+        
+        let newTodo: [String: Any] = [
+            "a_scoreRoundLast": z,
+            "a_speedRoundLast": x,
+            "a_cadenceRoundLast": 1,
+            "a_heartrateRoundLast": y,
+            "a_calcDurationPost": 1,
+            "a_timName": "TName",
+            "a_timGroup": "TGroup",
+            "a_timTeam": "TTeam",
+            "a_Date": "20171105",
+            "a_DateNow": "20171105",
+            "a_lastCAD": 1,
+            "a_lastHR": x,
+            "a_timDistanceTraveled": 1,
+            "a_maxHRTotal": x
+        ]
+        
+//        {"a_calcDurationPost":"00:00:05","a_scoreRoundLast":0,"a_speedRoundLast":0,"fb_CAD":0,"fb_Date":"20170511","fb_DateNow":1494517025335,"fb_HR":0,"fb_RND":0,"fb_SPD":0,"fb_maxHRTotal":200,"fb_scoreHRRound":0,"fb_scoreHRRoundLast":0,"fb_scoreHRTotal":0,"fb_timAvgCADtotal":0,"fb_timAvgHRtotal":0,"fb_timAvgSPDtotal":0,"fb_timDistanceTraveled":0,"fb_timGroup":"M","fb_timName":"Henry","fb_timTeam":"Square Pizza"}}
+        
+        let jsonTodo: Data
+        do {
+            jsonTodo = try JSONSerialization.data(withJSONObject: newTodo, options: [])
+            todosUrlRequest.httpBody = jsonTodo
+        } catch {
+            print("Error: cannot create JSON from todo")
+            return
+        }
+        
+        //execute
+        let session = URLSession.shared
+        let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
+        task.resume()
+        
+        
+    }
+    
+        func httpPut() {
+            
+            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170511/TName.json"
+            guard let todosURL = URL(string: todosEndpoint) else {
+                print("Error: cannot create URL")
+                return
+            }
+            var todosUrlRequest = URLRequest(url: todosURL)
+            todosUrlRequest.httpMethod = "PUT"
+            
+            let a = Totals.avg_hr / 185 * 100
+            let x = "\(String(format:"%.1f", Totals.avg_hr))"
+            let y = "\(String(format:"%.1f", Totals.avg_speed))"
+            let z = "\(String(format:"%.1f", a))"
+            
+            let newTodo: [String: Any] = [
+                "a_scoreHRTotal": z,
+                "a_scoreHRRoundLast": x,
+                "a_speedTotal": y,
+                "a_speedLast": y,
+                "a_calcDurationPost": 1,
+                "a_timName": "TName",
+                "a_timGroup": "TGroup",
+                "a_timTeam": "TTeam",
+                "a_Date": "20171105",
+                "a_DateNow": "20171105",
+                "a_timDistanceTraveled": 1,
+            ]
+
+//{"Henry":{"a_calcDurationPost":"00:00:05","a_scoreHRRoundLast":0,"a_scoreHRTotal":0,"a_speedLast":0,"a_speedTotal":0,"fb_Date":"20170511","fb_DateNow":1494517025353,"fb_maxHRTotal":200,"fb_scoreHRRoundLast":0,"fb_scoreHRTotal":0,"fb_timAvgCADtotal":0,"fb_timAvgSPDtotal":0,"fb_timDistanceTraveled":0,"fb_timGroup":"M","fb_timLastSPD":0,"fb_timName":"Henry","fb_timTeam":"Square Pizza"}
+        
+        let jsonTodo: Data
+        do {
+            jsonTodo = try JSONSerialization.data(withJSONObject: newTodo, options: [])
+            todosUrlRequest.httpBody = jsonTodo
+        } catch {
+            print("Error: cannot create JSON from todo")
+            return
+        }
+        
+        //execute
+        let session = URLSession.shared
+        let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
+        task.resume()
+        
+    
     }
     
     
