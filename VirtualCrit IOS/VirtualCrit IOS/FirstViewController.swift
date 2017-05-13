@@ -658,7 +658,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func httpPost() {
     
-        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170511.json"
+        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
         guard let todosURL = URL(string: todosEndpoint) else {
             print("Error: cannot create URL")
             return
@@ -676,19 +676,35 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             "a_speedRoundLast": x,
             "a_cadenceRoundLast": 1,
             "a_heartrateRoundLast": y,
-            "a_calcDurationPost": 1,
-            "a_timName": "TName",
-            "a_timGroup": "TGroup",
-            "a_timTeam": "TTeam",
-            "a_Date": "20171105",
-            "a_DateNow": "20171105",
+            "a_calcDurationPost": "00:00:05",
+            "a_timName": "IOS",
+            "a_timGroup": "IOS",
+            "a_timTeam": "Square Pizza",
+            "a_Date": "20170513",
+            "a_DateNow": "20170513",
             "a_lastCAD": 1,
             "a_lastHR": x,
             "a_timDistanceTraveled": 1,
-            "a_maxHRTotal": x
+            "a_maxHRTotal": x,
+            "fb_CAD":0,
+            "fb_Date":"20170513",
+            "fb_DateNow":1494517025335,
+            "fb_HR":x,
+            "fb_RND":z,
+            "fb_SPD":y,
+            "fb_maxHRTotal":185,
+            "fb_scoreHRRound":z,
+            "fb_scoreHRRoundLast":z,
+            "fb_scoreHRTotal":z,
+            "fb_timAvgCADtotal":0,
+            "fb_timAvgHRtotal":0,
+            "fb_timAvgSPDtotal":0,
+            "fb_timDistanceTraveled":0,
+            "fb_timGroup":"IOS",
+            "fb_timName":"IOS",
+            "fb_timTeam":"Square Pizza"
         ]
         
-//        {"a_calcDurationPost":"00:00:05","a_scoreRoundLast":0,"a_speedRoundLast":0,"fb_CAD":0,"fb_Date":"20170511","fb_DateNow":1494517025335,"fb_HR":0,"fb_RND":0,"fb_SPD":0,"fb_maxHRTotal":200,"fb_scoreHRRound":0,"fb_scoreHRRoundLast":0,"fb_scoreHRTotal":0,"fb_timAvgCADtotal":0,"fb_timAvgHRtotal":0,"fb_timAvgSPDtotal":0,"fb_timDistanceTraveled":0,"fb_timGroup":"M","fb_timName":"Henry","fb_timTeam":"Square Pizza"}}
         
         let jsonTodo: Data
         do {
@@ -709,7 +725,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
         func httpPut() {
             
-            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170511/TName.json"
+            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
             guard let todosURL = URL(string: todosEndpoint) else {
                 print("Error: cannot create URL")
                 return
@@ -734,6 +750,23 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 "a_Date": "20171105",
                 "a_DateNow": "20171105",
                 "a_timDistanceTraveled": 1,
+                "a_calcDurationPost":"00:00:05",
+                "a_scoreHRRoundLast":0,
+                "a_scoreHRTotal":z,
+                "a_speedLast":0,
+                "a_speedTotal":0,
+                "fb_Date":"20170513",
+                "fb_DateNow":1494517025353,
+                "fb_maxHRTotal":185,
+                "fb_scoreHRRoundLast":0,
+                "fb_scoreHRTotal":z,
+                "fb_timAvgCADtotal":0,
+                "fb_timAvgSPDtotal":y,
+                "fb_timDistanceTraveled":0,
+                "fb_timGroup":"IOS",
+                "fb_timLastSPD":0,
+                "fb_timName":"IOS",
+                "fb_timTeam":"Square Pizza"
             ]
 
 //{"Henry":{"a_calcDurationPost":"00:00:05","a_scoreHRRoundLast":0,"a_scoreHRTotal":0,"a_speedLast":0,"a_speedTotal":0,"fb_Date":"20170511","fb_DateNow":1494517025353,"fb_maxHRTotal":200,"fb_scoreHRRoundLast":0,"fb_scoreHRTotal":0,"fb_timAvgCADtotal":0,"fb_timAvgSPDtotal":0,"fb_timDistanceTraveled":0,"fb_timGroup":"M","fb_timLastSPD":0,"fb_timName":"Henry","fb_timTeam":"Square Pizza"}
