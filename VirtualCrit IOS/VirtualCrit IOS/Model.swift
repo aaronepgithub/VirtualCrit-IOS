@@ -43,6 +43,7 @@ struct Settings {
     static var riderName = "Tim"
     static var wheelSize_mm = "25"
     static var maxHeartrate = "185"
+    static var dateToday = "20170108"
 }
 
 

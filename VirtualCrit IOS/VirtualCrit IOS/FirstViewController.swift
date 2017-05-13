@@ -46,6 +46,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Device.wheelCircumference = 2105
         print(Device.wheelCircumference as Any)
         
+        //set date
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        Settings.dateToday = formatter.string(from: date)
+        
         
         // Do any additional setup after loading the view, typically from a nib.
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -65,9 +71,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
-//        print("calling hpost")
-//        httpPost()
-//        httpPut()
+//        print("calling hpost/put")
+        httpPost()
+        httpPut()
         
         
         
@@ -505,7 +511,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             Rounds.distanceRound = Rounds.distanceRound + travelDistance
                             
                             
-                            lbl_Distance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Mi & \(String(format:"%.2f", Rounds.distanceRound)) Mi"
+                            lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
+                            
                             travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
                             
                             
@@ -680,15 +687,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             "a_timName": "IOS",
             "a_timGroup": "IOS",
             "a_timTeam": "Square Pizza",
-            "a_Date": "20170513",
-            "a_DateNow": "20170513",
+            "a_Date": Settings.dateToday,
+            "a_DateNow": Settings.dateToday,
             "a_lastCAD": 1,
             "a_lastHR": x,
             "a_timDistanceTraveled": 1,
             "a_maxHRTotal": x,
             "fb_CAD":0,
-            "fb_Date":"20170513",
-            "fb_DateNow":1494517025335,
+            "fb_Date":Settings.dateToday,
+            "fb_DateNow":"1494517025335",
             "fb_HR":x,
             "fb_RND":z,
             "fb_SPD":y,
@@ -734,29 +741,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             todosUrlRequest.httpMethod = "PUT"
             
             let a = Totals.avg_hr / 185 * 100
-            let x = "\(String(format:"%.1f", Totals.avg_hr))"
+            //let x = "\(String(format:"%.1f", Totals.avg_hr))"
             let y = "\(String(format:"%.1f", Totals.avg_speed))"
             let z = "\(String(format:"%.1f", a))"
             
             let newTodo: [String: Any] = [
-                "a_scoreHRTotal": z,
-                "a_scoreHRRoundLast": x,
                 "a_speedTotal": y,
                 "a_speedLast": y,
-                "a_calcDurationPost": 1,
-                "a_timName": "TName",
-                "a_timGroup": "TGroup",
-                "a_timTeam": "TTeam",
-                "a_Date": "20171105",
-                "a_DateNow": "20171105",
+                "a_timName": Settings.riderName,
+                "a_timGroup": "IOS",
+                "a_timTeam": "IOS",
+                "a_Date": Settings.dateToday,
+                "a_DateNow": Settings.dateToday,
                 "a_timDistanceTraveled": 1,
                 "a_calcDurationPost":"00:00:05",
-                "a_scoreHRRoundLast":0,
+                "a_scoreHRRoundLast":z,
                 "a_scoreHRTotal":z,
-                "a_speedLast":0,
-                "a_speedTotal":0,
-                "fb_Date":"20170513",
-                "fb_DateNow":1494517025353,
+                "fb_Date":Settings.dateToday,
+                "fb_DateNow":"1494517025353",
                 "fb_maxHRTotal":185,
                 "fb_scoreHRRoundLast":0,
                 "fb_scoreHRTotal":z,
