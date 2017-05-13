@@ -71,7 +71,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
-//        print("calling hpost/put")
+        print("calling hpost/put")
         httpPost()
         httpPut()
         
@@ -161,8 +161,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         
-//        httpPost()
-//        httpPut()
+        print("calling hpost/put")
+        httpPost()
+        httpPut()
         
         
         print(AllRounds.arrHR)
@@ -190,11 +191,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         Totals.currentTime = x
         
-        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr))"
-        lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
+        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
+        lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed)) Mph"
         
-        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr))"
-        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed))"
+        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
+        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
 
     }
     
@@ -590,8 +591,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 var returnedSpeed   : Double = 0
                 let flag = value[0]
                 
-                print((returnedSpeed) + (returnedCadence))
-                
+                //print((returnedSpeed) + (returnedCadence))
+                if returnedSpeed == 10000 {print((returnedSpeed) + (returnedCadence))}
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
                     returnedSpeed = processWheelData(withData: data)
@@ -665,7 +666,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func httpPost() {
     
-        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
+//        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
+        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
         guard let todosURL = URL(string: todosEndpoint) else {
             print("Error: cannot create URL")
             return
@@ -684,7 +686,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             "a_cadenceRoundLast": 1,
             "a_heartrateRoundLast": y,
             "a_calcDurationPost": "00:00:05",
-            "a_timName": "IOS",
+            "a_timName": Settings.riderName,
             "a_timGroup": "IOS",
             "a_timTeam": "Square Pizza",
             "a_Date": Settings.dateToday,
@@ -708,7 +710,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             "fb_timAvgSPDtotal":0,
             "fb_timDistanceTraveled":0,
             "fb_timGroup":"IOS",
-            "fb_timName":"IOS",
+            "fb_timName":Settings.riderName,
             "fb_timTeam":"Square Pizza"
         ]
         
@@ -732,7 +734,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
         func httpPut() {
             
-            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
+//            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
+            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + "/" + Settings.riderName + ".json"
             guard let todosURL = URL(string: todosEndpoint) else {
                 print("Error: cannot create URL")
                 return
@@ -767,7 +770,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 "fb_timDistanceTraveled":0,
                 "fb_timGroup":"IOS",
                 "fb_timLastSPD":0,
-                "fb_timName":"IOS",
+                "fb_timName":Settings.riderName,
                 "fb_timTeam":"Square Pizza"
             ]
 
