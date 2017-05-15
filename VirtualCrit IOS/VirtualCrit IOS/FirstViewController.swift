@@ -682,9 +682,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         let newTodo: [String: Any] = [
             "a_scoreRoundLast": z,
-            "a_speedRoundLast": x,
+            "a_speedRoundLast": y,
             "a_cadenceRoundLast": 1,
-            "a_heartrateRoundLast": y,
+            "a_heartrateRoundLast": x,
             "a_calcDurationPost": "00:00:05",
             "a_timName": Settings.riderName,
             "a_timGroup": "IOS",
