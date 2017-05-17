@@ -9,6 +9,25 @@
 import UIKit
 import CoreBluetooth
 
+
+extension UIViewController {
+    
+    func alert(message: String, title: String = "") {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(OKAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+        let when = DispatchTime.now() + 3
+        DispatchQueue.main.asyncAfter(deadline: when){
+            // your code with delay
+            alertController.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+}
+
+
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     @IBOutlet weak var lbl_TotalTime: UILabel!
@@ -65,12 +84,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
 
     @IBAction func btn_Scan(_ sender: UIButton) {
+        
         Device.wheelCircumference = 2105
         startScanning()
+        
+        
     }
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
+        alert(message: "", title: "Starting")
         print("calling hpost/put")
         httpPost()
         httpPut()
@@ -161,6 +184,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         
+        alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
+        
         print("calling hpost/put")
         httpPost()
         httpPut()
@@ -188,6 +213,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
+        Totals.displayedTime = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
         Totals.currentTime = x
         
@@ -681,30 +707,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let z = "\(String(format:"%.1f", a))"
         
         let newTodo: [String: Any] = [
-            "a_scoreRoundLast": z,
-            "a_speedRoundLast": y,
+            "a_scoreRoundLast": Double(z) ?? 0,
+            "a_speedRoundLast": Double(y) ?? 0,
             "a_cadenceRoundLast": 1,
-            "a_heartrateRoundLast": x,
-            "a_calcDurationPost": "00:00:05",
+            "a_heartrateRoundLast": Double(x) ?? 0,
+            "a_calcDurationPost": Totals.displayedTime,
             "a_timName": Settings.riderName,
             "a_timGroup": "IOS",
             "a_timTeam": "Square Pizza",
             "a_Date": Settings.dateToday,
             "a_DateNow": Settings.dateToday,
             "a_lastCAD": 1,
-            "a_lastHR": x,
+            "a_lastHR": Double(x) ?? 0,
             "a_timDistanceTraveled": 1,
-            "a_maxHRTotal": x,
+            "a_maxHRTotal": Double(x) ?? 0,
             "fb_CAD":0,
             "fb_Date":Settings.dateToday,
             "fb_DateNow":"1494517025335",
-            "fb_HR":x,
-            "fb_RND":z,
-            "fb_SPD":y,
+            "fb_HR":Double(x) ?? 0,
+            "fb_RND":Double(z) ?? 0,
+            "fb_SPD":Double(y) ?? 0,
             "fb_maxHRTotal":185,
-            "fb_scoreHRRound":z,
-            "fb_scoreHRRoundLast":z,
-            "fb_scoreHRTotal":z,
+            "fb_scoreHRRound":Double(z) ?? 0,
+            "fb_scoreHRRoundLast":Double(z) ?? 0,
+            "fb_scoreHRTotal":Double(z) ?? 0,
             "fb_timAvgCADtotal":0,
             "fb_timAvgHRtotal":0,
             "fb_timAvgSPDtotal":0,
@@ -749,8 +775,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             let z = "\(String(format:"%.1f", a))"
             
             let newTodo: [String: Any] = [
-                "a_speedTotal": y,
-                "a_speedLast": y,
+                "a_speedTotal": Double(y) ?? 0,
+                "a_speedLast": Double(y) ?? 0,
                 "a_timName": Settings.riderName,
                 "a_timGroup": "IOS",
                 "a_timTeam": "IOS",
@@ -758,15 +784,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 "a_DateNow": Settings.dateToday,
                 "a_timDistanceTraveled": 1,
                 "a_calcDurationPost":"00:00:05",
-                "a_scoreHRRoundLast":z,
-                "a_scoreHRTotal":z,
+                "a_scoreHRRoundLast":Double(z) ?? 0,
+                "a_scoreHRTotal":Double(z) ?? 0,
                 "fb_Date":Settings.dateToday,
                 "fb_DateNow":"1494517025353",
                 "fb_maxHRTotal":185,
                 "fb_scoreHRRoundLast":0,
-                "fb_scoreHRTotal":z,
+                "fb_scoreHRTotal":Double(z) ?? 0,
                 "fb_timAvgCADtotal":0,
-                "fb_timAvgSPDtotal":y,
+                "fb_timAvgSPDtotal":Double(y) ?? 0,
                 "fb_timDistanceTraveled":0,
                 "fb_timGroup":"IOS",
                 "fb_timLastSPD":0,

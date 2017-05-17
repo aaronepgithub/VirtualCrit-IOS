@@ -68,6 +68,7 @@ struct Totals {
     static var durationTotal            : TimeInterval?
     
     static var totalWheelEventTime      : Double = 0
+    static var displayedTime = "00:00:00"
     
 }
 
@@ -85,6 +86,9 @@ struct Rounds {
     
     static var avg_speed                : Double = 0
     static var avg_hr                   : Double = 0
+    
+    static var fastestSpeed = "0"
+    static var highestHR = "0"
 
 }
 

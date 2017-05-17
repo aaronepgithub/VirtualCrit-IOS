@@ -115,6 +115,8 @@ class SecondViewController: UIViewController {
         var stringHR = ""
         var stringSPD = ""
         
+
+        
         for eachHR in tempHR {
             stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
         }
