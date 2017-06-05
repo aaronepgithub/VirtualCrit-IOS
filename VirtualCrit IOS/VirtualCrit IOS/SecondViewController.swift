@@ -8,6 +8,9 @@
 
 import UIKit
 
+public var tempArrHR = [String]()
+public var tempArrSPD = [String]()
+
 class SecondViewController: UIViewController {
     
     //  Start Alert - Name
@@ -115,14 +118,19 @@ class SecondViewController: UIViewController {
         var stringHR = ""
         var stringSPD = ""
         
+        tempArrHR = []
+        tempArrSPD = []
+        
 
         
         for eachHR in tempHR {
             stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
+            tempArrHR.append(String(format:"%.1f", eachHR) + "  BPM")
         }
         
         for eachSPD in tempSPD {
             stringSPD = stringSPD + String(format:"%.2f", eachSPD) + ", "
+            tempArrSPD.append(String(format:"%.2f", eachSPD) + "  MPH")
         }
         
         lbl_previous_rounds_spd.text = stringSPD
