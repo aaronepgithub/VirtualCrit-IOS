@@ -45,7 +45,7 @@ class PopupViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//    return titleArray.count
+//            return titleArray.count
         return tempArrHR.count
     }
     

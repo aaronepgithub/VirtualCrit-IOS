@@ -85,6 +85,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     @IBAction func btn_Scan(_ sender: UIButton) {
         
+
         Device.wheelCircumference = 2105
         startScanning()
         
@@ -95,6 +96,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         alert(message: "", title: "Starting")
         print("calling hpost/put")
+        httpGet()
         httpPost()
         httpPut()
         
@@ -105,7 +107,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         
-        let secondsPerRound = 30.0
+        let secondsPerRound = 300.0
         
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
@@ -191,8 +193,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         httpPut()
         
         
-        print(AllRounds.arrHR)
-        print(AllRounds.arrSPD)
+        //print(AllRounds.arrHR)
+        //print(AllRounds.arrSPD)
 
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
@@ -222,7 +224,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         // change to score during round
         //Int((round(Double(newValue) / 185 * 100))))
         Rounds.avg_score = Rounds.avg_hr / 185 * 100
-        print(Rounds.avg_score)
+        //print(Rounds.avg_score)
         
         lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
         lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed)) Mph"
@@ -723,6 +725,35 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
     }
     
+    func httpGet() {
+        print("httpGet")
+        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
+
+        let url = NSURL(string: todosEndpoint)
+        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+            
+            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+                //print(jsonObj!)
+                
+                for (key, _) in jsonObj! {
+                    //print(key)
+                    
+                    if let nestedDictionary = jsonObj?[key] as? [String: Any] {
+                            //print(nestedDictionary)
+                        for(key, value) in nestedDictionary {
+                            print(key, value)
+                        }
+                    }
+                    
+                }
+                
+            }
+        }).resume()
+    
+        
+        
+    }
+    
     func httpPost() {
     
 //        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
@@ -790,6 +821,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
     }
+
+
     
         func httpPut() {
             
