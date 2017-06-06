@@ -10,6 +10,7 @@ import UIKit
 
 public var tempArrHR = [String]()
 public var tempArrSPD = [String]()
+public var tempArrScore = [String]()
 
 class SecondViewController: UIViewController {
     
@@ -120,12 +121,14 @@ class SecondViewController: UIViewController {
         
         tempArrHR = []
         tempArrSPD = []
+        tempArrScore = []
         
 
         
         for eachHR in tempHR {
             stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
             tempArrHR.append(String(format:"%.1f", eachHR) + "  BPM")
+            tempArrScore.append(String(format:"%.1f", (eachHR / 185.0 * 100.0)) + " %MAX")
         }
         
         for eachSPD in tempSPD {

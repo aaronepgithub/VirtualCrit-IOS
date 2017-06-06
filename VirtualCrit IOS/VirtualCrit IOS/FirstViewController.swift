@@ -96,9 +96,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         alert(message: "", title: "Starting")
         print("calling hpost/put")
-        httpGet()
+        
         httpPost()
         httpPut()
+        
         
         
         
@@ -188,9 +189,22 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
         
-        print("calling hpost/put")
+        print("calling httpPost")
         httpPost()
-        httpPut()
+
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+            self.httpPut()
+            print("httpPut")
+        })
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
+            self.httpGet()
+            print("httpGet")
+        })
+        
+        
+        
         
         
         //print(AllRounds.arrHR)
@@ -725,6 +739,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
     }
     
+    var roundLeaderScore: Double = 0
+    var roundLeaderName: String = "None"
+    
     func httpGet() {
         print("httpGet")
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
@@ -741,7 +758,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
                             //print(nestedDictionary)
                         for(key, value) in nestedDictionary {
-                            print(key, value)
+                            //print(key, value)
+                            if key == "fb_RND" {
+                                //print(nestedDictionary["fb_RND"])
+                                let x = nestedDictionary["fb_RND"] as! Double!
+                                //print(x!)
+                                if x! > self.roundLeaderScore {
+                                    self.roundLeaderScore = x!
+                                    let y = nestedDictionary["fb_timName"] as! String!
+                                    self.roundLeaderName = y!
+                                    //print("x and y")
+                                    //print(x, y)
+                                }
+                            }
+                            
+                            
                         }
                     }
                     
@@ -750,6 +781,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
         }).resume()
     
+        //update UI
+        print(roundLeaderName, roundLeaderScore)
         
         
     }
