@@ -521,11 +521,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         travelSpeed = 0
                     } else {
                         
-                        if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
+                        let veloTester = (((wheelEventTime - Device.oldWheelEventTime) / 1024))
+                        if veloTester < 0.7 || Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
                             print("reset counter, ignore")
                         } else {
                             wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
                             wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
+                            
+                            print(wheelEventTimeDiff)
+                            
+
                             
                             travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
                             
@@ -585,7 +590,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         travelCadence = 0
                     } else {
                         
-                        if Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
+                        let veloTester = (((crankEventTime - Device.oldCrankEventTime) / 1024))
+                        if veloTester < 0.7 || Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
                             //print("reset counter, ignore")
                         } else {
                             crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
