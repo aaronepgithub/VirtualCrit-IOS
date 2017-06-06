@@ -176,7 +176,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Czw-fi-rX0" userLabel="Stack View 13">
                                         <rect key="frame" x="0.0" y="547.5" width="375" height="50.5"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="center" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6dU-Zc-1fc" userLabel="Stack View 131">
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6dU-Zc-1fc" userLabel="Stack View 131">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="50.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Vx-6N-nOT">

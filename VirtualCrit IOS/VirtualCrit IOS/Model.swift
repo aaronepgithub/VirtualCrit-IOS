@@ -86,6 +86,10 @@ struct Rounds {
     
     static var avg_speed                : Double = 0
     static var avg_hr                   : Double = 0
+    static var avg_score                : Double = 0
+    
+    static var crankRevolutions         : Double = 0
+    static var crankRevolutionTime      : Double = 0
     
     static var fastestSpeed = "0"
     static var highestHR = "0"

@@ -60,7 +60,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("view did load on First VC")
+        //print("view did load on First VC")
         
         Device.wheelCircumference = 2105
         print(Device.wheelCircumference as Any)
@@ -105,7 +105,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         
-        let secondsPerRound = 300.0
+        let secondsPerRound = 30.0
         
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
@@ -198,6 +198,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
         Rounds.arrHRRound = []
+        Rounds.crankRevolutionTime = 0
+        Rounds.crankRevolutions = 0
         
     }
     
@@ -216,6 +218,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Totals.displayedTime = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
         Totals.currentTime = x
+        
+        // change to score during round
+        //Int((round(Double(newValue) / 185 * 100))))
+        Rounds.avg_score = Rounds.avg_hr / 185 * 100
+        print(Rounds.avg_score)
         
         lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
         lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed)) Mph"
@@ -478,12 +485,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             let newValue = decodeHRValue(withData: characteristic.value!)
             //print(newValue)
+
+            
             if newValue < 100 {
                 lbl_Heartrate.text = "0\(String(newValue))"
-                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+//                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+//                lbl_Score.text = "\(String(Int(Rounds.avg_score)))"
+                lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
             } else {
                 lbl_Heartrate.text = "\(String(newValue))"
-                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+//                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
+//                lbl_Score.text = "\(String(Int(Rounds.avg_score)))"
+                lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
 
             }
             
@@ -517,18 +530,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 if Device.oldWheelRevolution > 0 {  //test for first time reading
                     if Device.oldWheelRevolution == wheelRevolution && Device.oldWheelEventTime == wheelEventTime { //test for 0 speed
-                        print("Current Speed is 0")
+                        //print("Current Speed is 0")
                         travelSpeed = 0
                     } else {
                         
-                        let veloTester = (((wheelEventTime - Device.oldWheelEventTime) / 1024))
-                        if veloTester < 0.7 || Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
+
+                        if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
                             print("reset counter, ignore")
                         } else {
                             wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
                             wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
                             
-                            print(wheelEventTimeDiff)
+                            
                             
 
                             
@@ -553,13 +566,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             
                             
                             
+                            
                         }
                     }
                  
                     if travelSpeed == 0 && zeroTesterSpeed == 0 {
                         zeroTesterSpeed += 1
                     } else {
-                        lbl_Speed.text = "\(String(format:"%.1f", travelSpeed))"
+//                        lbl_Speed.text = "\(String(format:"%.1f", travelSpeed))"
+                        lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
                         zeroTesterSpeed = 0
                         Device.currentSpeed = travelSpeed
                         //MARK:  CURRENT SPEED
@@ -584,26 +599,34 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
                 crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
                 
+                
                 if Device.oldCrankRevolution > 0 {  //test for first time reading
                     if Device.oldCrankRevolution == crankRevolution && Device.oldCrankEventTime == crankEventTime { //test for 0 cadence
                         //print("Current Cadence is 0")
                         travelCadence = 0
                     } else {
                         
-                        let veloTester = (((crankEventTime - Device.oldCrankEventTime) / 1024))
-                        if veloTester < 0.7 || Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
+                        if Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
                             //print("reset counter, ignore")
                         } else {
                             crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
                             crankEventTimeDiff = (((crankEventTime - Device.oldCrankEventTime) / 1024))
                             travelCadence = crankRevolutionDiff/crankEventTimeDiff*60
+                            
+                            Rounds.crankRevolutions = Rounds.crankRevolutions + crankRevolutionDiff
+                            Rounds.crankRevolutionTime = Rounds.crankRevolutionTime + crankEventTimeDiff
+                            
                         }
                     }
                     if travelCadence == 0 && zeroTester == 0 {
                         zeroTester += 1
                         
                     } else {
-                        lbl_Cadence.text = "\(String(format:"%.f", travelCadence))"
+//                        lbl_Cadence.text = "\(String(format:"%.f", travelCadence))"
+                        let x = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
+                        //print(x)
+                        lbl_Cadence.text = "\(String(format:"%.f", x))" //round cadence
+                        
                         zeroTester = 0
                         Device.currentCadence = travelCadence
                         //MARK:  CURRENT CADENCE
@@ -624,7 +647,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 let flag = value[0]
                 
                 //print((returnedSpeed) + (returnedCadence))
-                if returnedSpeed == 10000 {print((returnedSpeed) + (returnedCadence))}
+                if returnedSpeed == 10000 {
+                    //print((returnedSpeed) + (returnedCadence))
+                }
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
                     returnedSpeed = processWheelData(withData: data)
@@ -646,7 +671,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
             
             let x = decodeCSC(withData: characteristic.value!)
-            if x == 100 {print(x)}
+            if x == 100 {
+                //print(x)
+            }
                
             
         }
