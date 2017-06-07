@@ -783,7 +783,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
         //update UI
         print(roundLeaderName, roundLeaderScore)
-        
+        alert(message: "\(roundLeaderName)\n\(roundLeaderScore)", title: "Leader")
         
     }
     
