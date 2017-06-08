@@ -175,6 +175,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return $0 + $1/Double(Totals.arrHRTotal.count)
         }
         
+        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
         
         
     }
@@ -755,38 +757,39 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     var roundLeaderScore: Double = 0
-    var roundLeaderName: String = "None"
+    var roundLeaderName: String = "..."
     
     func httpGet() {
-        print("httpGet")
+        print("httpGet Started")
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
         let url = NSURL(string: todosEndpoint)
         
+        print(1)
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-    
+            
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                //print(jsonObj!)
+                print(2)
                 
                 for (key, _) in jsonObj! {
-                    //print(key)
+                    print(3)
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
-                            //print(nestedDictionary)
+                            print(4)
                         for(key, _) in nestedDictionary {
-                            //print(key, value)
+                            print(5)
                             if key == "fb_RND" {
-                                //print(nestedDictionary["fb_RND"])
+                                print(6)
                                 let x = nestedDictionary["fb_RND"] as! Double!
                                 //print(x!)
                                 if x! > self.roundLeaderScore {
+                                    print(7)
                                     self.roundLeaderScore = x!
                                     let y = nestedDictionary["fb_timName"] as! String!
                                     self.roundLeaderName = y!
                                     //print("x and y")
                                     //print(x, y)
                                     
-                                    self.lbl_round_speed.text = "\(y!)"  //leader name
-                                    self.lbl_round_hr.text = "\(String(format:"%.1f", x!)) %MAX"  //leader score
+
                                     //alert(message: "\(roundLeaderName)\n\(roundLeaderScore)", title: "Leader")
                                     
                                 }
@@ -794,13 +797,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             
                             
                         }
+                     
+//                        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+//                        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
+                        
+                        
                     }
                     
                 }
                 
             }
         }).resume()
-    
+        print(8)
 
         
         
@@ -918,7 +926,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 "fb_timTeam":"Square Pizza"
             ]
 
-//{"Henry":{"a_calcDurationPost":"00:00:05","a_scoreHRRoundLast":0,"a_scoreHRTotal":0,"a_speedLast":0,"a_speedTotal":0,"fb_Date":"20170511","fb_DateNow":1494517025353,"fb_maxHRTotal":200,"fb_scoreHRRoundLast":0,"fb_scoreHRTotal":0,"fb_timAvgCADtotal":0,"fb_timAvgSPDtotal":0,"fb_timDistanceTraveled":0,"fb_timGroup":"M","fb_timLastSPD":0,"fb_timName":"Henry","fb_timTeam":"Square Pizza"}
+
         
         let jsonTodo: Data
         do {
