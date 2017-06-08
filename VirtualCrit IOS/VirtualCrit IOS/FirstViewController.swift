@@ -60,6 +60,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if ConnectionCheck.isConnectedToNetwork() {
+            print("Connected")
+        }
+        else{
+            print("disConnected")
+        }
+        
         //print("view did load on First VC")
         
         Device.wheelCircumference = 2105
@@ -189,19 +196,27 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
         
-        print("calling httpPost")
-        httpPost()
 
+        if ConnectionCheck.isConnectedToNetwork() {
+            print("Connected")
+            print("calling httpPost")
+            httpPost()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                self.httpPut()
+                print("httpPut")
+            })
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
+                self.httpGet()
+                print("httpGet")
+            })
+        }
+        else{
+            print("disConnected")
+        }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-            self.httpPut()
-            print("httpPut")
-        })
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
-            self.httpGet()
-            print("httpGet")
-        })
+
         
         
         
@@ -240,8 +255,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.avg_score = Rounds.avg_hr / 185 * 100
         //print(Rounds.avg_score)
         
-        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
-        lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed)) Mph"
+//        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
+//        lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed)) Mph"
         
         lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
         lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
@@ -672,7 +687,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     //print(returnedSpeed)
                     if flag & 0x02 == 2 {
                         returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 7)
-                        //print(returnedCadence)
+                        if returnedCadence == 2000 {print(returnedCadence)}
                     }
                 } else {
                     if flag & Device.CRANK_REVOLUTION_FLAG == 2 {
@@ -745,10 +760,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func httpGet() {
         print("httpGet")
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
-
         let url = NSURL(string: todosEndpoint)
+        
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            
+    
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
                 //print(jsonObj!)
                 
@@ -757,7 +772,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
                             //print(nestedDictionary)
-                        for(key, value) in nestedDictionary {
+                        for(key, _) in nestedDictionary {
                             //print(key, value)
                             if key == "fb_RND" {
                                 //print(nestedDictionary["fb_RND"])
@@ -769,6 +784,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                                     self.roundLeaderName = y!
                                     //print("x and y")
                                     //print(x, y)
+                                    
+                                    self.lbl_round_speed.text = "\(y!)"  //leader name
+                                    self.lbl_round_hr.text = "\(String(format:"%.1f", x!)) %MAX"  //leader score
+                                    //alert(message: "\(roundLeaderName)\n\(roundLeaderScore)", title: "Leader")
+                                    
                                 }
                             }
                             
@@ -781,9 +801,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
         }).resume()
     
-        //update UI
-        print(roundLeaderName, roundLeaderScore)
-        alert(message: "\(roundLeaderName)\n\(roundLeaderScore)", title: "Leader")
+
+        
         
     }
     
@@ -918,9 +937,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     }
     
-    
-    
-    
-    
 }
+
+
+
+
 

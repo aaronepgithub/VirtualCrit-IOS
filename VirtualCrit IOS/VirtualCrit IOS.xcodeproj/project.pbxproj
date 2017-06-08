@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5820B8B71EE58D3300654A4E /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820B8B61EE58D3300654A4E /* TableViewCell.swift */; };
 		584943341ED58F960017BBFA /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584943331ED58F960017BBFA /* PopupViewController.swift */; };
+		5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */; };
 		588879A41EABD91900E5C75E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A31EABD91900E5C75E /* AppDelegate.swift */; };
 		588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A51EABD91900E5C75E /* FirstViewController.swift */; };
 		588879A81EABD91900E5C75E /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A71EABD91900E5C75E /* SecondViewController.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		5820B8B61EE58D3300654A4E /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		584943331ED58F960017BBFA /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
+		5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
 		588879A01EABD91900E5C75E /* VirtualCrit IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VirtualCrit IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		588879A31EABD91900E5C75E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		588879A51EABD91900E5C75E /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 			children = (
 				588879A31EABD91900E5C75E /* AppDelegate.swift */,
 				588879A51EABD91900E5C75E /* FirstViewController.swift */,
+				5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */,
 				588879B71EABDB0100E5C75E /* Model.swift */,
 				588B4CE91EAC2A0400364AEE /* Decoder.swift */,
 				588879A71EABD91900E5C75E /* SecondViewController.swift */,
@@ -166,6 +169,7 @@
 				588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */,
 				58B88D481EACDA1300144C0F /* Timer.swift in Sources */,
 				588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */,
+				5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */,
 				588879B81EABDB0100E5C75E /* Model.swift in Sources */,
 				584943341ED58F960017BBFA /* PopupViewController.swift in Sources */,
 			);
