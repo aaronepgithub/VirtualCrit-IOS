@@ -233,6 +233,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.arrHRRound = []
         Rounds.crankRevolutionTime = 0
         Rounds.crankRevolutions = 0
+        lbl_Speed.text = "..."
+        lbl_Cadence.text = "..."
+        lbl_Heartrate.text = "..."
+        lbl_Score.text = "..."
         
     }
     
