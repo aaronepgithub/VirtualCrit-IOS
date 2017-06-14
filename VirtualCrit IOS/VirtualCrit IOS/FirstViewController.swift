@@ -102,8 +102,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBAction func btn_action_start(_ sender: UIButton) {
         
         alert(message: "", title: "Starting")
-        print("calling hpost/put")
         
+        
+//        httpGet()
         httpPost()
         httpPut()
         
@@ -116,6 +117,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         
         let secondsPerRound = 300.0
+
         
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
@@ -201,7 +203,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
-            print("calling httpPost")
+            print("httpPost")
             httpPost()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
@@ -763,56 +765,83 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var roundLeaderScore: Double = 0
     var roundLeaderName: String = "..."
     
+    var namesArray = [String]()
+    var scoresArray = [Double]()
+    var speedsArray = [Double]()
+    
+    var leaderString = ""
+    
+    
     func httpGet() {
-        print("httpGet Started")
+        //print("httpGet Started")
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
         let url = NSURL(string: todosEndpoint)
         
-        print(1)
+        //print(1)
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                print(2)
+                //print(2)
+                print(jsonObj as Any)
                 
                 for (key, _) in jsonObj! {
-                    print(3)
+                    //print(3)
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
-                            print(4)
+                            //print(4)
                         for(key, _) in nestedDictionary {
-                            print(5)
+                            //print(5)
+
                             if key == "fb_RND" {
-                                print(6)
+                                //print(6)
+                                self.namesArray.append(nestedDictionary["fb_timName"] as! String!)
+                                self.speedsArray.append(nestedDictionary["fb_SPD"] as! Double!)
+                                self.scoresArray.append(nestedDictionary["fb_RND"] as! Double!)
                                 let x = nestedDictionary["fb_RND"] as! Double!
                                 //print(x!)
                                 if x! > self.roundLeaderScore {
-                                    print(7)
+                                    print(x!)
                                     self.roundLeaderScore = x!
                                     let y = nestedDictionary["fb_timName"] as! String!
                                     self.roundLeaderName = y!
-                                    //print("x and y")
-                                    //print(x, y)
-                                    
-
-                                    //alert(message: "\(roundLeaderName)\n\(roundLeaderScore)", title: "Leader")
-                                    
                                 }
                             }
-                            
-                            
                         }
-                     
-//                        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-//                        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
-                        
-                        
                     }
-                    
                 }
+                //at the end
+                
+                
+                
+                print(self.scoresArray)
+                let _max = self.scoresArray.max()
+                print(_max as Any)
+                self.leaderString += "\(_max!) "
+                let indexOfMax = self.scoresArray.index(of: _max!)
+                print(indexOfMax as Any)
+                let _nameOfLeader = self.namesArray[indexOfMax!]
+                print(_nameOfLeader as Any)
+                self.leaderString += String(_nameOfLeader) + " \n "
+                
+                
+                print(self.speedsArray)
+                let _maxSpeed = self.speedsArray.max()
+                print(_maxSpeed as Any)
+                self.leaderString += "\(_maxSpeed!) "
+                let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
+                print(indexOfMaxSpeed as Any)
+                let _nameOfLeaderSpeed = self.speedsArray[indexOfMaxSpeed!]
+                print(_nameOfLeaderSpeed as Any)
+                self.leaderString += String(_nameOfLeaderSpeed)
+                
+
+                print(self.leaderString)
+                self.alert(message: self.leaderString, title: "Leaders")
+                
                 
             }
         }).resume()
-        print(8)
+        //print(8)
 
         
         
