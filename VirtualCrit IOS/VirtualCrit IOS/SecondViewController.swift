@@ -107,7 +107,7 @@ class SecondViewController: UIViewController {
                                         let theTextFields = textFields as [UITextField]
                                         let enteredText = theTextFields[0].text
                                         
-                                        if (Int(enteredText!) != nil) { Device.maxHR = Int(enteredText!)! } else { Device.maxHR = 185 }
+                                        if (Double(enteredText!) != nil) { Device.maxHR = Double(enteredText!)! } else { Device.maxHR = 185 }
                                         
                                     }
                                     print(Device.maxHR as Any)
@@ -168,7 +168,7 @@ class SecondViewController: UIViewController {
         for eachHR in tempHR {
             stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
             tempArrHR.append(String(format:"%.1f", eachHR) + "  BPM")
-            tempArrScore.append(String(format:"%.1f", (eachHR / 185.0 * 100.0)) + " %MAX")
+            tempArrScore.append(String(format:"%.1f", (eachHR / Device.maxHR * 100.0)) + " %MAX")
         }
         
         for eachSPD in tempSPD {

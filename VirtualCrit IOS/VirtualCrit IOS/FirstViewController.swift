@@ -260,7 +260,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         // change to score during round
         //Int((round(Double(newValue) / 185 * 100))))
-        Rounds.avg_score = Rounds.avg_hr / 185 * 100
+        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
         //print(Rounds.avg_score)
         
 //        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
@@ -858,7 +858,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         var todosUrlRequest = URLRequest(url: todosURL)
         todosUrlRequest.httpMethod = "POST"
         
-        let a = Rounds.avg_hr / 185 * 100
+        let a = Rounds.avg_hr / Device.maxHR * 100
         let x = "\(String(format:"%.1f", Rounds.avg_hr))"
         let y = "\(String(format:"%.1f", Rounds.avg_speed))"
         let z = "\(String(format:"%.1f", a))"
@@ -884,7 +884,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             "fb_HR":Double(x) ?? 0,
             "fb_RND":Double(z) ?? 0,
             "fb_SPD":Double(y) ?? 0,
-            "fb_maxHRTotal":185,
+            "fb_maxHRTotal":Device.maxHR,
             "fb_scoreHRRound":Double(z) ?? 0,
             "fb_scoreHRRoundLast":Double(z) ?? 0,
             "fb_scoreHRTotal":Double(z) ?? 0,
@@ -928,7 +928,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             var todosUrlRequest = URLRequest(url: todosURL)
             todosUrlRequest.httpMethod = "PUT"
             
-            let a = Totals.avg_hr / 185 * 100
+            let a = Totals.avg_hr / Device.maxHR * 100
             //let x = "\(String(format:"%.1f", Totals.avg_hr))"
             let y = "\(String(format:"%.1f", Totals.avg_speed))"
             let z = "\(String(format:"%.1f", a))"
@@ -947,7 +947,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 "a_scoreHRTotal":Double(z) ?? 0,
                 "fb_Date":Settings.dateToday,
                 "fb_DateNow":"1494517025353",
-                "fb_maxHRTotal":185,
+                "fb_maxHRTotal":Device.maxHR,
                 "fb_scoreHRRoundLast":0,
                 "fb_scoreHRTotal":Double(z) ?? 0,
                 "fb_timAvgCADtotal":0,
