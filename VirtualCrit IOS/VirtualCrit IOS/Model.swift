@@ -35,6 +35,8 @@ struct Device {
     static var travelDistance                      : Double?
     static var wheelCircumference                  : Double?
     
+    static var maxHR                                : Int = 185
+    
 
 }
 

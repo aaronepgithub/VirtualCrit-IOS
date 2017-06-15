@@ -83,7 +83,45 @@ class SecondViewController: UIViewController {
             animated: true,
             completion: nil)
     }
-    // End Alert
+    // End Alert - Tire Size
+    
+    //  Start Alert - MAX HR
+    
+    func requestMAXHR() {
+        var alertController:UIAlertController?
+        alertController = UIAlertController(title: "Enter MAX HR",
+                                            message: "185-210",
+                                            preferredStyle: .alert)
+        
+        alertController!.addTextField(
+            configurationHandler: {(textField: UITextField!) in
+                textField.placeholder = "185"
+                textField.keyboardType = .decimalPad
+        })
+        
+        let action = UIAlertAction(title: "Submit",
+                                   style: UIAlertActionStyle.default,
+                                   handler: {
+                                    (paramAction:UIAlertAction!) in
+                                    if let textFields = alertController?.textFields{
+                                        let theTextFields = textFields as [UITextField]
+                                        let enteredText = theTextFields[0].text
+                                        
+                                        if (Int(enteredText!) != nil) { Device.maxHR = Int(enteredText!)! } else { Device.maxHR = 185 }
+                                        
+                                    }
+                                    print(Device.maxHR as Any)
+        })
+        
+        alertController?.addAction(action)
+        
+        self.present(alertController!,
+                     animated: true,
+                     completion: nil)
+    }
+    
+    
+    //  End Alert - MAX HR
     
     @IBAction func btn_setTiresize(_ sender: UIButton) {
         requestTiresize()
@@ -93,6 +131,8 @@ class SecondViewController: UIViewController {
         requestName()
     }
     
+    @IBAction func btn_setMAXHR(_ sender: UIButton) {
+    }
     
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
         let formater = DateFormatter()

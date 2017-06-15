@@ -830,7 +830,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 self.leaderString += "\(_maxSpeed!) "
                 let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
                 print(indexOfMaxSpeed as Any)
-                let _nameOfLeaderSpeed = self.speedsArray[indexOfMaxSpeed!]
+                let _nameOfLeaderSpeed = self.namesArray[indexOfMaxSpeed!]
                 print(_nameOfLeaderSpeed as Any)
                 self.leaderString += String(_nameOfLeaderSpeed)
                 
