@@ -50,7 +50,7 @@ class SecondViewController: UIViewController {
     // End Alert- Name
     
     
-    //  Start Alert
+    //  Start Alert - Tire Size
     func requestTiresize() {
         var alertController:UIAlertController?
         alertController = UIAlertController(title: "Enter Tiresize",
@@ -132,6 +132,7 @@ class SecondViewController: UIViewController {
     }
     
     @IBAction func btn_setMAXHR(_ sender: UIButton) {
+        requestMAXHR()
     }
     
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
@@ -176,8 +177,8 @@ class SecondViewController: UIViewController {
             tempArrSPD.append(String(format:"%.2f", eachSPD) + "  MPH")
         }
         
-        lbl_previous_rounds_spd.text = stringSPD
-        lbl_previous_rounds_hr.text = stringHR
+//        lbl_previous_rounds_spd.text = stringSPD
+//        lbl_previous_rounds_hr.text = stringHR
         
         
         
@@ -185,8 +186,8 @@ class SecondViewController: UIViewController {
 
 
 
-    @IBOutlet weak var lbl_previous_rounds_hr: UILabel!
-    @IBOutlet weak var lbl_previous_rounds_spd: UILabel!
+//    @IBOutlet weak var lbl_previous_rounds_hr: UILabel!
+//    @IBOutlet weak var lbl_previous_rounds_spd: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

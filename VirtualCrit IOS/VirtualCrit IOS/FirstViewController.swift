@@ -664,7 +664,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //                        lbl_Cadence.text = "\(String(format:"%.f", travelCadence))"
                         let x = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
                         //print(x)
-                        lbl_Cadence.text = "\(String(format:"%.f", x))" //round cadence
+                        
+                        if travelCadence > 0 {
+                            lbl_Cadence.text = "\(String(format:"%.f", x))" //round cadence
+                        }
+
                         
                         zeroTester = 0
                         Device.currentCadence = travelCadence
