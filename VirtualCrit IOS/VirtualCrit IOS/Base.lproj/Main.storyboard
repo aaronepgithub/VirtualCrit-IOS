@@ -315,36 +315,49 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="N9L-HD-jFY">
-                                <rect key="frame" x="20" y="114" width="280" height="41.5"/>
+                                <rect key="frame" x="20" y="114" width="280" height="53.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="COUNTDOWN TIME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="RNO-g4-LKx">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="41.5"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TIME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="RNO-g4-LKx">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="53.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="45"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mE4-5h-LDe">
-                                <rect key="frame" x="20" y="163.5" width="280" height="41.5"/>
+                                <rect key="frame" x="20" y="175.5" width="280" height="53.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CT DISTANCE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="Wpr-RD-edg">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="41.5"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DISTANCE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="Wpr-RD-edg">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="53.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="45"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="u8Z-PM-CXk">
-                                <rect key="frame" x="20" y="213" width="280" height="41.5"/>
+                                <rect key="frame" x="20" y="237" width="280" height="53.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PACE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="LOM-Wn-5Mt">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="41.5"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="35"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="53.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="45"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="I74-32-Mxb">
+                                <rect key="frame" x="20" y="322.5" width="280" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gL-Xy-EIS">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="48"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="30"/>
+                                        <state key="normal" title="START"/>
+                                        <connections>
+                                            <action selector="btn_ctStart:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="rqQ-N8-Z8c"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -359,11 +372,14 @@
                             <constraint firstAttribute="trailingMargin" secondItem="mE4-5h-LDe" secondAttribute="trailing" constant="4" id="MWw-fY-0Zc"/>
                             <constraint firstItem="u8Z-PM-CXk" firstAttribute="top" secondItem="mE4-5h-LDe" secondAttribute="bottom" constant="8" id="Nhr-L9-4aN"/>
                             <constraint firstItem="aPl-IN-hJO" firstAttribute="top" secondItem="Uw5-kv-GAn" secondAttribute="bottom" constant="4" id="RwQ-Tr-dTg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="I74-32-Mxb" secondAttribute="trailing" constant="4" id="TCA-Pf-4DQ"/>
+                            <constraint firstItem="I74-32-Mxb" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="Txa-tg-lae"/>
                             <constraint firstItem="N9L-HD-jFY" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="bY6-PC-lNz"/>
                             <constraint firstItem="mE4-5h-LDe" firstAttribute="top" secondItem="N9L-HD-jFY" secondAttribute="bottom" constant="8" id="dgg-QI-ozD"/>
                             <constraint firstItem="aPl-IN-hJO" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="jub-sx-hhj"/>
                             <constraint firstItem="Uw5-kv-GAn" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="mZR-VC-CxT"/>
                             <constraint firstItem="u8Z-PM-CXk" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="mko-6h-rjK"/>
+                            <constraint firstItem="I74-32-Mxb" firstAttribute="top" secondItem="u8Z-PM-CXk" secondAttribute="bottom" constant="32" id="nTX-ES-Axp"/>
                             <constraint firstItem="Uw5-kv-GAn" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="8" id="qyw-ET-b5g"/>
                         </constraints>
                     </view>

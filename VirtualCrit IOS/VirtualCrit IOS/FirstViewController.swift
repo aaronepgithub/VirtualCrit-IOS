@@ -69,7 +69,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         //print("view did load on First VC")
         
-        Device.wheelCircumference = 2105
+        Device.wheelCircumference = 2110
         print(Device.wheelCircumference as Any)
         
         //set date
@@ -93,7 +93,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBAction func btn_Scan(_ sender: UIButton) {
         
 
-        Device.wheelCircumference = 2105
+        Device.wheelCircumference = 2110
         startScanning()
         
         
@@ -593,6 +593,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             
                             Totals.distanceTotal = Totals.distanceTotal + travelDistance
                             Rounds.distanceRound = Rounds.distanceRound + travelDistance
+                            ctDistance = ctDistance + travelDistance
                             
                             
                             lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
@@ -840,7 +841,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
 
                 print(self.leaderString)
-                self.alert(message: self.leaderString, title: "Leaders")
+                //self.alert(message: self.leaderString, title: "Leaders")
                 
                 
             }

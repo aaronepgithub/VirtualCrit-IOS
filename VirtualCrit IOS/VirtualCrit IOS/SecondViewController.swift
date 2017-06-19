@@ -11,6 +11,7 @@ import UIKit
 public var tempArrHR = [String]()
 public var tempArrSPD = [String]()
 public var tempArrScore = [String]()
+public var ctDistance = 0.0
 
 class SecondViewController: UIViewController {
     
@@ -18,6 +19,14 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_ctTimer: UILabel!
     @IBOutlet weak var lbl_ctDistance: UILabel!
     @IBOutlet weak var ctPace: UILabel!
+    
+    @IBAction func btn_ctStart(_ sender: UIButton) {
+        
+        ctMiles = 5.0
+        ctPaceTimeInSeconds = 1200
+        ctDistance = 0.0
+        
+    }
     
     
     //  Start Alert - Name
@@ -159,7 +168,70 @@ class SecondViewController: UIViewController {
         return formater.string(from: date as Date)
     }
     
+    
+    
+    var ctMiles = 5.0
+    var ctPaceTimeInSeconds = 1200
+    //var ctActualMilesTraveled = 0.0
+    var targetMilesPerSecond = 0.004166667  // based on 15 Mph
+    var actualMilesPerSecond = 0.0
+    
+    
+
+    
     func updateUI() {
+        
+        // start ct
+        
+        if ctPaceTimeInSeconds > 1 {
+            ctPaceTimeInSeconds -= 5
+            
+            let z = ctPaceTimeInSeconds
+            let hr = Int(z) / 3600
+            let mn = Int(z) / 60 % 60
+            let sc = Int(z) % 60
+            let timeString = String(hr) + " : " + String(mn) + " : " + String(sc)
+            print ("time in sec \(z)")
+            
+            lbl_ctTimer.text = timeString
+
+            let x = ctDistance
+            print("miles traveled \(x)") //
+            lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
+            
+
+            let y = Double(targetMilesPerSecond) * Double(1200 - z) // miles that should have been traveled
+            print("targetMiles \(y)")
+            
+            
+            let w = (x - y)
+            print("actual miles - target miles \(w)")
+            
+            if w > 0 {
+                print("ahead")
+                ctPace.text = "Ahead  \(String(format:"%.2f", w))"
+            } else {
+                let absW = abs(w)
+                print("behind")
+                ctPace.text = "Behind \(String(format:"%.2f", absW))"
+                
+            }
+            
+            
+        
+        
+        } else {
+        
+            ctPace.text = "Done"
+            lbl_ctDistance.text = "..."
+            lbl_ctTimer.text = "..."
+            
+        }
+        
+
+        
+        // end ct
+        
         
         let tempHR = AllRounds.arrHR.reversed()
         let tempSPD = AllRounds.arrSPD.reversed()
@@ -202,7 +274,7 @@ class SecondViewController: UIViewController {
         updateUI()
         
         updateUITimer = Timer()
-        updateUITimer = Timer.scheduledTimer(timeInterval: 15.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+        updateUITimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
         
         
