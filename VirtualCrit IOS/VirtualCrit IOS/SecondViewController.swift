@@ -14,6 +14,12 @@ public var tempArrScore = [String]()
 
 class SecondViewController: UIViewController {
     
+    
+    @IBOutlet weak var lbl_ctTimer: UILabel!
+    @IBOutlet weak var lbl_ctDistance: UILabel!
+    @IBOutlet weak var ctPace: UILabel!
+    
+    
     //  Start Alert - Name
     func requestName() {
         var alertController:UIAlertController?
