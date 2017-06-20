@@ -184,7 +184,7 @@ class SecondViewController: UIViewController {
         // start ct
         
         if ctPaceTimeInSeconds > 1 {
-            ctPaceTimeInSeconds -= 5
+            ctPaceTimeInSeconds -= 1 //based on timer increments
             
             let z = ctPaceTimeInSeconds
             let hr = Int(z) / 3600
@@ -274,7 +274,7 @@ class SecondViewController: UIViewController {
         updateUI()
         
         updateUITimer = Timer()
-        updateUITimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+        updateUITimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
         
         

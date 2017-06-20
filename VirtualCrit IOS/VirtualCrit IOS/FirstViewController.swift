@@ -775,6 +775,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var speedsArray = [Double]()
     
     var leaderString = ""
+    var leaderStringSpeed = ""
     
     
     func httpGet() {
@@ -832,15 +833,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 print(self.speedsArray)
                 let _maxSpeed = self.speedsArray.max()
                 print(_maxSpeed as Any)
-                self.leaderString += "\(_maxSpeed!) "
+                self.leaderStringSpeed += "\(_maxSpeed!) "
                 let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
                 print(indexOfMaxSpeed as Any)
                 let _nameOfLeaderSpeed = self.namesArray[indexOfMaxSpeed!]
                 print(_nameOfLeaderSpeed as Any)
-                self.leaderString += String(_nameOfLeaderSpeed)
+                self.leaderStringSpeed += String(_nameOfLeaderSpeed)
                 
 
                 print(self.leaderString)
+                print(self.leaderStringSpeed)
                 //self.alert(message: self.leaderString, title: "Leaders")
                 
                 
