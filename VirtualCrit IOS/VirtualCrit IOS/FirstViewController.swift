@@ -589,12 +589,25 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         travelSpeed = 0
                     } else {
                         
+                        
+                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(wheelRevolution8), old: UInt32(Device.oldWheelRevolution), max: UInt32.max)
+                        let wheelTimeDelta: UInt16 = deltaWithRollover(UInt16(wheelEventTime), old: UInt16(Device.oldWheelEventTime), max: UInt16.max)
+                        
+                        
 
                         if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
                             print("reset counter, ignore")
                         } else {
-                            wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
-                            wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
+                            
+                            
+                            //wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
+                            //use new calc
+                            wheelRevolutionDiff = Double(wheelRevsDelta)
+                            
+                            
+                            //wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
+                            //use new calc
+                            wheelEventTimeDiff = Double(wheelTimeDelta / 1024)
                             
                             
                             
@@ -726,6 +739,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 }
                 return 0 //use later for testing to display or remove
             }
+            
+            
+            
+            func deltaWithRollover<T: Integer>(_ new: T, old: T, max: T) -> T {
+                return old > new ? max - old + new : new - old
+            }
+            
+            
             
             
 
