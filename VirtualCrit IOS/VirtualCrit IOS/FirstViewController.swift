@@ -48,6 +48,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBOutlet weak var lbl_button_start: UIButton!
     
+    @IBOutlet var docViewOutlet: UIView!
+    
     var hasPressedStart = false
     
     
@@ -90,14 +92,26 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
 
+    @IBOutlet weak var lbl_docView1Speed: UILabel!
+    @IBOutlet weak var lbl_docView1Score: UILabel!
+    
+    
+    @IBAction func btnCloseDockView1(_ sender: UIButton) {
+        docViewOutlet.removeFromSuperview()
+    }
+    
+
+    
+    
+
     @IBAction func btn_Scan(_ sender: UIButton) {
         
-
         Device.wheelCircumference = 2110
         startScanning()
-        
-        
     }
+    
+    
+    
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
@@ -198,7 +212,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         
-        alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
+        //alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
+        
+        docView1open()
         
 
         if ConnectionCheck.isConnectedToNetwork() {
@@ -984,6 +1000,25 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
     
     }
+    
+    
+    func docView1open () {
+        view.addSubview(docViewOutlet)
+        docViewOutlet.center = view.center
+        
+        lbl_docView1Speed.text = "\(String(format:"%.2f", Rounds.avg_speed)) Mph"
+        lbl_docView1Score.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
+        
+        let when = DispatchTime.now() + 15
+        DispatchQueue.main.asyncAfter(deadline: when){
+            // your code with delay
+            self.docViewOutlet.removeFromSuperview()
+        }
+        
+        
+    }
+    
+
     
 }
 

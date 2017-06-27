@@ -22,8 +22,8 @@ class SecondViewController: UIViewController {
     
     @IBAction func btn_ctStart(_ sender: UIButton) {
         
-        ctMiles = 5.0
-        ctPaceTimeInSeconds = 1200
+        ctMiles = 60.0
+        ctPaceTimeInSeconds = 14400 //4 hours, based on 15 mph
         ctDistance = 0.0
         
     }
@@ -170,8 +170,8 @@ class SecondViewController: UIViewController {
     
     
     
-    var ctMiles = 5.0
-    var ctPaceTimeInSeconds = 1200
+    var ctMiles = 60.0
+    var ctPaceTimeInSeconds = 14400
     //var ctActualMilesTraveled = 0.0
     var targetMilesPerSecond = 0.004166667  // based on 15 Mph
     var actualMilesPerSecond = 0.0
@@ -200,7 +200,7 @@ class SecondViewController: UIViewController {
             lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
             
 
-            let y = Double(targetMilesPerSecond) * Double(1200 - z) // miles that should have been traveled
+            let y = Double(targetMilesPerSecond) * Double(14400 - z) // miles that should have been traveled
             print("targetMiles \(y)")
             
             
