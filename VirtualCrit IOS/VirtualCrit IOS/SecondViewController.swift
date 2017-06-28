@@ -191,28 +191,28 @@ class SecondViewController: UIViewController {
             let mn = Int(z) / 60 % 60
             let sc = Int(z) % 60
             let timeString = String(hr) + " : " + String(mn) + " : " + String(sc)
-            print ("time in sec \(z)")
+            //print ("time in sec \(z)")
             
             lbl_ctTimer.text = timeString
 
             let x = ctDistance
-            print("miles traveled \(x)") //
+            //print("miles traveled \(x)") //
             lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
             
 
             let y = Double(targetMilesPerSecond) * Double(14400 - z) // miles that should have been traveled
-            print("targetMiles \(y)")
+            //print("targetMiles \(y)")
             
             
             let w = (x - y)
-            print("actual miles - target miles \(w)")
+            //print("actual miles - target miles \(w)")
             
             if w > 0 {
-                print("ahead")
+                //print("ahead")
                 ctPace.text = "Ahead  \(String(format:"%.2f", w))"
             } else {
                 let absW = abs(w)
-                print("behind")
+                //print("behind")
                 ctPace.text = "Behind \(String(format:"%.2f", absW))"
                 
             }

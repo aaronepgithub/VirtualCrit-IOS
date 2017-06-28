@@ -579,7 +579,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
                 
-                wheelRevolution8 = UInt8(Double(CFSwapInt32LittleToHost(UInt32(value[1]))))
+                wheelRevolution8 = UInt8(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
                 wheelEventTime  = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
                 wheelRevolution = Double(wheelRevolution8)
                 
@@ -590,7 +590,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     } else {
                         
                         
-                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(wheelRevolution8), old: UInt32(Device.oldWheelRevolution), max: UInt32.max)
+                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(wheelRevolution), old: UInt32(Device.oldWheelRevolution), max: UInt32.max)
                         let wheelTimeDelta: UInt16 = deltaWithRollover(UInt16(wheelEventTime), old: UInt16(Device.oldWheelEventTime), max: UInt16.max)
                         
                         
@@ -624,6 +624,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                             
                             travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
+                        print("Travel Speed \(travelSpeed)")
                             Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
                             Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
                             
