@@ -595,10 +595,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         
                         
 
-                        if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
-                            print("reset counter, ignore")
-                        } else {
-                            
+//                        if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
+//                            print("reset counter, ignore")
+//                        } else {
+                        
                             
                             //wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
                             //use new calc
@@ -608,11 +608,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             //wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
                             //use new calc
                             wheelEventTimeDiff = Double(wheelTimeDelta / 1024)
-                            
-                            
-                            
 
-                            
                             travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
                             
                             Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff
@@ -628,15 +624,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                             
                             travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
-                            
-                            
                             Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
                             Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
                             
-                            
-                            
-                            
-                        }
+                        //}
                     }
                  
                     if travelSpeed == 0 && zeroTesterSpeed == 0 {
