@@ -181,6 +181,13 @@ class SecondViewController: UIViewController {
     
     func updateUI() {
         
+        
+        lbl_ctTimer.text = "\(String(format:"%.2f", Device.currentSpeed)) MPH"
+        lbl_ctDistance.text = "\(String(format:"%.1f", Device.currentCadence)) RPM"
+        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
+        
+        
+        
         // start ct
         
         if ctPaceTimeInSeconds > 1 {
@@ -193,11 +200,11 @@ class SecondViewController: UIViewController {
             let timeString = String(hr) + " : " + String(mn) + " : " + String(sc)
             //print ("time in sec \(z)")
             
-            lbl_ctTimer.text = timeString
+            //lbl_ctTimer.text = timeString
 
             let x = ctDistance
             //print("miles traveled \(x)") //
-            lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
+            //lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
             
 
             let y = Double(targetMilesPerSecond) * Double(14400 - z) // miles that should have been traveled
@@ -209,11 +216,11 @@ class SecondViewController: UIViewController {
             
             if w > 0 {
                 //print("ahead")
-                ctPace.text = "Ahead  \(String(format:"%.2f", w))"
+                //ctPace.text = "Ahead  \(String(format:"%.2f", w))"
             } else {
                 let absW = abs(w)
                 //print("behind")
-                ctPace.text = "Behind \(String(format:"%.2f", absW))"
+                //ctPace.text = "Behind \(String(format:"%.2f", absW))"
                 
             }
             
@@ -274,7 +281,7 @@ class SecondViewController: UIViewController {
         updateUI()
         
         updateUITimer = Timer()
-        updateUITimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+        updateUITimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
         
         

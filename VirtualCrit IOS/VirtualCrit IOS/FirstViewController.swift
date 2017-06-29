@@ -569,7 +569,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
             
             func processWheelData(withData data :Data) -> Double {
-                var wheelRevolution8     :UInt8  = 0
+                //var wheelRevolution8     :UInt8  = 0
                 var wheelRevolution      :Double = 0
                 var wheelEventTime      :Double = 0
                 var wheelRevolutionDiff :Double = 0
@@ -577,72 +577,74 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 var travelDistance      :Double = 0
                 var travelSpeed         :Double = 0
                 
+                var newWheelRevs        :UInt32 = 0
+                var newWheelRevsTime    :UInt16 = 0
+                
+                
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
                 
-                wheelRevolution8 = UInt8(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
-                wheelEventTime  = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
-                wheelRevolution = Double(wheelRevolution8)
+                
+//                wheelRevolution8 = UInt8(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
+//                wheelEventTime  = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
+//                wheelRevolution = Double(wheelRevolution8)
+                
+                //using newWheelRevs and newWheelTime
+                //newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
+                newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
+
+                newWheelRevs = ((UInt32)(value[1])) | ((UInt32)(value[2])) << 8 | ((UInt32)(value[3])) << 16 | ((UInt32)(value[4])) << 24
+                //print(xx, newWheelRevsTime)
+                
+                wheelRevolution = Double(newWheelRevs)
+                wheelEventTime = Double(newWheelRevsTime)
+                //print(newWheelRevs, newWheelRevsTime)
+                
                 
                 if Device.oldWheelRevolution > 0 {  //test for first time reading
-                    if Device.oldWheelRevolution == wheelRevolution && Device.oldWheelEventTime == wheelEventTime { //test for 0 speed
-                        //print("Current Speed is 0")
-                        travelSpeed = 0
-                    } else {
-                        
-                        
-                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(wheelRevolution), old: UInt32(Device.oldWheelRevolution), max: UInt32.max)
-                        let wheelTimeDelta: UInt16 = deltaWithRollover(UInt16(wheelEventTime), old: UInt16(Device.oldWheelEventTime), max: UInt16.max)
-                        
-                        
+                    if Device.oldWheelRevolution == wheelRevolution && Device.oldWheelEventTime == wheelEventTime {travelSpeed = 0
+                        } else {
 
-//                        if Device.oldWheelRevolution > wheelRevolution || Device.oldWheelEventTime > wheelEventTime { //ignore readings when counter resets
-//                            print("reset counter, ignore")
-//                        } else {
+//                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(wheelRevolution), old: UInt32(Device.oldWheelRevolution), max: 255)
+//                        let wheelTimeDelta: UInt16 = deltaWithRollover(UInt16(wheelEventTime), old: UInt16(Device.oldWheelEventTime), max: UInt16.max)
                         
+                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(newWheelRevs), old: UInt32(Device.oldWheelRevolution), max: UInt32.max)
+                        //let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(newWheelRevs), old: UInt32(Device.oldWheelRevolution), max: 255)
+                        let wheelTimeDelta: UInt16 = deltaWithRollover(UInt16(newWheelRevsTime), old: UInt16(Device.oldWheelEventTime), max: UInt16.max)
+                        
+                        
+                        
+                        wheelRevolutionDiff = Double(wheelRevsDelta)
+                        wheelEventTimeDiff = Double(wheelTimeDelta / 1024)
+                        
+                        travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
+                        Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff
+                        Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff
+                        
+                        Totals.distanceTotal = Totals.distanceTotal + travelDistance
+                        Rounds.distanceRound = Rounds.distanceRound + travelDistance
+                        
+                        ctDistance = ctDistance + travelDistance
+                        lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                             
-                            //wheelRevolutionDiff = wheelRevolution - Device.oldWheelRevolution
-                            //use new calc
-                            wheelRevolutionDiff = Double(wheelRevsDelta)
-                            
-                            
-                            //wheelEventTimeDiff = (((wheelEventTime - Device.oldWheelEventTime) / 1024)) //seconds
-                            //use new calc
-                            wheelEventTimeDiff = Double(wheelTimeDelta / 1024)
-
-                            travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
-                            
-                            Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff
-                            
-                            Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff
-                            
-                            
-                            Totals.distanceTotal = Totals.distanceTotal + travelDistance
-                            Rounds.distanceRound = Rounds.distanceRound + travelDistance
-                            ctDistance = ctDistance + travelDistance
-                            
-                            
-                            lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
-                            
-                            travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
+                        travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
                         print("Travel Speed \(travelSpeed)")
-                            Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
-                            Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
-                            
-                        //}
+                        
+                        Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
+                        Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
+
                     }
                  
                     if travelSpeed == 0 && zeroTesterSpeed == 0 {
                         zeroTesterSpeed += 1
                     } else {
-//                        lbl_Speed.text = "\(String(format:"%.1f", travelSpeed))"
+//                        lbl_Speed.text = "\(String(format:"%.1f", travelSpeed))" // dealing with Mio, no longer showing current speed, showing round avg speed
                         lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
                         zeroTesterSpeed = 0
                         Device.currentSpeed = travelSpeed
-                        //MARK:  CURRENT SPEED
                     }
                 }
-                Device.oldWheelRevolution = Double(wheelRevolution)
-                Device.oldWheelEventTime = Double(wheelEventTime)
+                Device.oldWheelRevolution = Double(newWheelRevs)
+                Device.oldWheelEventTime = Double(newWheelRevsTime)
                 return 999
             }
 
