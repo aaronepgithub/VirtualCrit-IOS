@@ -592,7 +592,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
                 newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
 
-                newWheelRevs = ((UInt32)(value[1])) | ((UInt32)(value[2])) << 8 | ((UInt32)(value[3])) << 16 | ((UInt32)(value[4])) << 24
+                newWheelRevs = ((UInt32)(value[2])) | ((UInt32)(value[3])) << 8 | ((UInt32)(value[4])) << 16 | ((UInt32)(value[5])) << 24
                 //print(xx, newWheelRevsTime)
                 
                 wheelRevolution = Double(newWheelRevs)
@@ -627,7 +627,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                             
                         travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
-                        print("Travel Speed \(travelSpeed)")
+                        
+                        if travelSpeed > 0 && travelSpeed < 55 {
+                        
+                            Device.currentSpeed = travelSpeed
+                            print("Travel Speed \(travelSpeed)")
+                        
+                        }
+
                         
                         Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
                         Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
@@ -640,7 +647,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //                        lbl_Speed.text = "\(String(format:"%.1f", travelSpeed))" // dealing with Mio, no longer showing current speed, showing round avg speed
                         lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
                         zeroTesterSpeed = 0
-                        Device.currentSpeed = travelSpeed
+                        //Device.currentSpeed = travelSpeed
                     }
                 }
                 Device.oldWheelRevolution = Double(newWheelRevs)
