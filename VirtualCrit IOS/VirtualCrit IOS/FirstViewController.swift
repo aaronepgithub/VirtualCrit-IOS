@@ -612,33 +612,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         //wheelRevolutionDiffII = Double(wheelRevolutionII) - Double(oldWheelRevolutionII)
                         wheelRevolutionDiffII = test1
                         travelDistanceII = travelDistanceII + ((wheelRevolutionDiffII * 2.105)/1000.0)  //check wheel circum, still in km 0.621371 to convert to miles
-                        totalTravelDistanceII = (Double(wheelRevolutionII) * Double(2.105)) / 1000.0  //check wheel circum, still in km 0.621371 to convert to miles
+                        totalTravelDistanceII = totalTravelDistanceII + travelDistanceII  //check wheel circum, still in km 0.621371 to convert to miles
                         
                         
                     } else {
                         
                         wheelRevolutionDiffII = Double(wheelRevolutionII) + 255.0 - Double(oldWheelRevolutionII)
                         travelDistanceII = travelDistanceII + ((wheelRevolutionDiffII * 2.105)/1000.0)  //check wheel circum, still in km 0.621371 to convert to miles
-                        totalTravelDistanceII = (Double(wheelRevolutionII) * Double(2.105)) / 1000.0  //check wheel circum, still in km 0.621371 to convert to miles
+                        totalTravelDistanceII = totalTravelDistanceII + travelDistanceII  //check wheel circum, still in km 0.621371 to convert to miles
                         
                     }
                     
 
                 }
                 if oldWheelEventTimeII != 0 {
-                    //wheelEventTimeDiffII = wheelEventTimeII - oldWheelEventTimeII
-                    let test2 = wheelEventTimeII - oldWheelEventTimeII
-                    
-                    if test2 > 0 {
-                    
-                        wheelEventTimeDiffII = test2
-                    
-                    } else {
-                    
-                        wheelEventTimeDiffII = (wheelEventTimeII + 65025) - oldWheelEventTimeII
-                        
-                    }
-
+                    wheelEventTimeDiffII = wheelEventTimeII - oldWheelEventTimeII
                 }
                 
                 
@@ -658,8 +646,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     //speed.text = String(format: "%.2f", travelSpeed)
                     //distance.text = String(format: "%.2f", travelDistance!)
                     //totalDistance.text = String(format: "%.2f", totalTravelDistance!)
-                    Device.totalDistanceII = travelDistanceII * 0.621371
+                    
                 }
+                
+                Device.totalDistanceII = totalTravelDistanceII * 0.621371
                 
                 oldWheelRevolutionII = Double(Int(wheelRevolutionII))
                 oldWheelEventTimeII = wheelEventTimeII
