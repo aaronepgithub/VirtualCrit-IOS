@@ -33,7 +33,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var oldWheelRevolutionII = 0.0
     var oldWheelEventTimeII = 0.0
     var travelDistanceII = 0.0
-    var totalTravelDistanceII = 0.0
+    var travelDistanceIImph = 0.0
     
 
     @IBOutlet weak var lbl_TotalTime: UILabel!
@@ -578,7 +578,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
             
             
-            //new process WheelData
+            //new process WheelData vII
             func processWheelDataII (withData data :Data) -> Double {
                 
                 print("Start II")
@@ -606,25 +606,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 if oldWheelRevolutionII != 0 {
                     
                     let test1 = Double(wheelRevolutionII) - Double(oldWheelRevolutionII)
-                    
                     if test1 > 0 {
-                        
-                        //wheelRevolutionDiffII = Double(wheelRevolutionII) - Double(oldWheelRevolutionII)
                         wheelRevolutionDiffII = test1
                         travelDistanceII = travelDistanceII + ((wheelRevolutionDiffII * 2.105)/1000.0)  //check wheel circum, still in km 0.621371 to convert to miles
-                        totalTravelDistanceII = totalTravelDistanceII + travelDistanceII  //check wheel circum, still in km 0.621371 to convert to miles
-                        
+                        travelDistanceIImph = travelDistanceII * 0.621371
                         
                     } else {
                         
                         wheelRevolutionDiffII = Double(wheelRevolutionII) + 255.0 - Double(oldWheelRevolutionII)
                         travelDistanceII = travelDistanceII + ((wheelRevolutionDiffII * 2.105)/1000.0)  //check wheel circum, still in km 0.621371 to convert to miles
-                        totalTravelDistanceII = totalTravelDistanceII + travelDistanceII  //check wheel circum, still in km 0.621371 to convert to miles
+                        travelDistanceIImph = travelDistanceII * 0.621371
                         
                     }
-                    
-
                 }
+                
+                
                 if oldWheelEventTimeII != 0 {
                     wheelEventTimeDiffII = wheelEventTimeII - oldWheelEventTimeII
                 }
@@ -633,9 +629,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 if wheelEventTimeDiffII > 0 {
                     wheelEventTimeDiffII = wheelEventTimeDiffII / 1024.0
                     //convert speed from m/s to km/h by multiplying 3.6
-                    travelSpeedII = (((wheelRevolutionDiffII * 2.105) / wheelEventTimeDiffII) * 3.6)
+                    travelSpeedII = (((wheelRevolutionDiffII * 2.105) / wheelEventTimeDiffII) * 3.6) //distance is in km, time is in sec?
                     
-                    if travelSpeedII > 0 {
+                    if travelSpeedII > 0.1 {
                         travelSpeedIImph = travelSpeedII * 0.621371
                         print("Travel Speed \(travelSpeedIImph)")
                         Device.currentSpeed = travelSpeedIImph
@@ -649,7 +645,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                 }
                 
-                Device.totalDistanceII = totalTravelDistanceII * 0.621371
+                Device.totalDistanceII = travelDistanceIImph
                 
                 oldWheelRevolutionII = Double(Int(wheelRevolutionII))
                 oldWheelEventTimeII = wheelEventTimeII
