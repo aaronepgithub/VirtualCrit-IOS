@@ -37,6 +37,8 @@ struct Device {
     
     static var maxHR                                : Double = 185
     
+    static var totalDistanceII                      : Double = 0.0
+    
 
 }
 

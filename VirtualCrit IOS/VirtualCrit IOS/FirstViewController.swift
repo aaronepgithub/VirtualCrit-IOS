@@ -29,6 +29,12 @@ extension UIViewController {
 
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
+    
+    var oldWheelRevolutionII = 0.0
+    var oldWheelEventTimeII = 0.0
+    var travelDistanceII = 0.0
+    var totalTravelDistanceII = 0.0
+    
 
     @IBOutlet weak var lbl_TotalTime: UILabel!
     @IBOutlet weak var lbl_RoundTime: UILabel!
@@ -568,6 +574,99 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 return
             }
             
+            
+
+            
+            
+            //new process WheelData
+            func processWheelDataII (withData data :Data) -> Double {
+                
+                print("Start II")
+                
+                /* wheel Revolution Data Present
+                 * 4 bytes (1 to 4) uint32 are Cummulative Wheel Revolutions
+                 * next 2 bytes (5 to 6) uint16 are Last Wheel Event Time in seconds and
+                 * Last Wheel Event Time unit has resolution of 1/1024 seconds
+                 */
+                
+                var wheelRevolutionII     :UInt8  = 0
+                var wheelEventTimeII      :Double = 0
+                var wheelRevolutionDiffII :Double = 0
+                var wheelEventTimeDiffII  :Double = 0
+                var travelSpeedII         :Double = 0
+                var travelSpeedIImph      :Double = 0
+                
+                let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
+                
+                wheelRevolutionII = UInt8(CFSwapInt32LittleToHost(UInt32(value[1])))
+                wheelEventTimeII  = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
+                
+                print(wheelRevolutionII, wheelEventTimeII)
+                
+                if oldWheelRevolutionII != 0 {
+                    
+                    let test1 = Double(wheelRevolutionII) - Double(oldWheelRevolutionII)
+                    
+                    if test1 > 0 {
+                        
+                        //wheelRevolutionDiffII = Double(wheelRevolutionII) - Double(oldWheelRevolutionII)
+                        wheelRevolutionDiffII = test1
+                        travelDistanceII = travelDistanceII + ((wheelRevolutionDiffII * 2.105)/1000.0)  //check wheel circum, still in km 0.621371 to convert to miles
+                        totalTravelDistanceII = (Double(wheelRevolutionII) * Double(2.105)) / 1000.0  //check wheel circum, still in km 0.621371 to convert to miles
+                        
+                        
+                    } else {
+                        
+                        wheelRevolutionDiffII = Double(wheelRevolutionII) + 255.0 - Double(oldWheelRevolutionII)
+                        travelDistanceII = travelDistanceII + ((wheelRevolutionDiffII * 2.105)/1000.0)  //check wheel circum, still in km 0.621371 to convert to miles
+                        totalTravelDistanceII = (Double(wheelRevolutionII) * Double(2.105)) / 1000.0  //check wheel circum, still in km 0.621371 to convert to miles
+                        
+                    }
+                    
+
+                }
+                if oldWheelEventTimeII != 0 {
+                    //wheelEventTimeDiffII = wheelEventTimeII - oldWheelEventTimeII
+                    let test2 = wheelEventTimeII - oldWheelEventTimeII
+                    
+                    if test2 > 0 {
+                    
+                        wheelEventTimeDiffII = test2
+                    
+                    } else {
+                    
+                        wheelEventTimeDiffII = (wheelEventTimeII + 65025) - oldWheelEventTimeII
+                        
+                    }
+
+                }
+                
+                
+                if wheelEventTimeDiffII > 0 {
+                    wheelEventTimeDiffII = wheelEventTimeDiffII / 1024.0
+                    //convert speed from m/s to km/h by multiplying 3.6
+                    travelSpeedII = (((wheelRevolutionDiffII * 2.105) / wheelEventTimeDiffII) * 3.6)
+                    
+                    if travelSpeedII > 0 {
+                        travelSpeedIImph = travelSpeedII * 0.621371
+                        print("Travel Speed \(travelSpeedIImph)")
+                        Device.currentSpeed = travelSpeedIImph
+                        
+                    }
+
+                    
+                    //speed.text = String(format: "%.2f", travelSpeed)
+                    //distance.text = String(format: "%.2f", travelDistance!)
+                    //totalDistance.text = String(format: "%.2f", totalTravelDistance!)
+                    Device.totalDistanceII = travelDistanceII * 0.621371
+                }
+                
+                oldWheelRevolutionII = Double(Int(wheelRevolutionII))
+                oldWheelEventTimeII = wheelEventTimeII
+                
+                return wheelRevolutionDiffII
+            }
+            
             func processWheelData(withData data :Data) -> Double {
 
 //                var wheelRevolution     :Double = 0
@@ -586,12 +685,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //using newWheelRevs and newWheelTime
                 newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
                 newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
-                
 //                wheelRevolution = Double(newWheelRevs)
 //                wheelEventTime = Double(newWheelRevsTime)
                 
-                print("newWheelRevs and newWheelRevsTime")
-                print(newWheelRevs, newWheelRevsTime)
+//                print("newWheelRevs and newWheelRevsTime")
+//                print(newWheelRevs, newWheelRevsTime)
                 
                 
                 if Device.oldWheelRevolution > 0 {  //test for first time reading
@@ -602,9 +700,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         wheelRevolutionDiff = Double(wheelRevsDelta)
                         wheelEventTimeDiff = Double(wheelTimeDelta / 1024)
                     
-                        print("wheelRevDiff and wheelTimeDiff")
-                        print(wheelRevolutionDiff, wheelEventTimeDiff)
-                        
+//                        print("wheelRevDiff and wheelTimeDiff")
+//                        print(wheelRevolutionDiff, wheelEventTimeDiff)
+                    
                         travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
                         Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff
                         Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff
@@ -616,8 +714,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                             
                         travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
-                        Device.currentSpeed = travelSpeed
-                        print("Travel Speed \(travelSpeed)")
+                        //Device.currentSpeed = travelSpeed
+                        //print("Travel Speed \(travelSpeed)")
 
                         Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
                         Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
@@ -694,6 +792,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //    var crankRevDiff :Double = 0
                 var returnedCadence : Double = 0
                 var returnedSpeed   : Double = 0
+                var returnedSpeedII   : Double = 0
                 let flag = value[0]
                 
                 //print((returnedSpeed) + (returnedCadence))
@@ -703,6 +802,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
                     returnedSpeed = processWheelData(withData: data)
+                    returnedSpeedII = processWheelDataII(withData: data)
                     //print(returnedSpeed)
                     if flag & 0x02 == 2 {
                         returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 7)
