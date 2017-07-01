@@ -183,7 +183,7 @@ class SecondViewController: UIViewController {
         
         
         lbl_ctTimer.text = "\(String(format:"%.2f", Device.currentSpeed)) MPH"
-        lbl_ctDistance.text = "\(String(format:"%.2f", Device.totalDistanceII)) Miles"
+        lbl_ctDistance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Miles"
         ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
         
         
