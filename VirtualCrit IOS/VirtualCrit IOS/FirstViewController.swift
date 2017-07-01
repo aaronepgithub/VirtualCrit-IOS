@@ -623,13 +623,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             
                         travelSpeed = travelDistance / (wheelEventTimeDiff / 60 / 60) //miles/hour
                     if travelSpeed >= 0 {
-                        Device.currentSpeed = travelSpeed
-                        print("Travel Speed \(travelSpeed)")
+                        Device.currentSpeed = (lastSpeed + travelSpeed) / 2
+                        //print("Travel Speed \(travelSpeed)")
                     } else {
                         Device.currentSpeed = 0
                     }
                     
-                    print("RealTimeSpd - based on avg of last 2 \((lastSpeed + travelSpeed) / 2)")
+                    //print("RealTimeSpd - based on avg of last 2 \((lastSpeed + travelSpeed) / 2)")
 
 
                         Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
