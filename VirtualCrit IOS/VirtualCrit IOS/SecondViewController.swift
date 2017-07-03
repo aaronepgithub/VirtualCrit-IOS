@@ -181,60 +181,64 @@ class SecondViewController: UIViewController {
     
     func updateUI() {
         
+        if theTravelSpeed > 0 && theTravelSpeed < 50 {
+            lbl_ctTimer.text = "\(String(format:"%.2f", theTravelSpeed)) MPH"
+        } else {
+            lbl_ctTimer.text = "0 MPH"
+        }
         
-        lbl_ctTimer.text = "\(String(format:"%.2f", Device.currentSpeed)) MPH"
-        lbl_ctDistance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Miles"
-        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
+        lbl_ctDistance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Total Miles"
+        ctPace.text = "\(String(format:"%.2f", Device.currentHeartrate)) BPM"
         
         
         
         // start ct
         
-        if ctPaceTimeInSeconds > 1 {
-            ctPaceTimeInSeconds -= 1 //based on timer increments
-            
-            let z = ctPaceTimeInSeconds
-            let hr = Int(z) / 3600
-            let mn = Int(z) / 60 % 60
-            let sc = Int(z) % 60
-            let timeString = String(hr) + " : " + String(mn) + " : " + String(sc)
+//        if ctPaceTimeInSeconds > 1 {
+//            ctPaceTimeInSeconds -= 1 //based on timer increments
+//            
+//            let z = ctPaceTimeInSeconds
+//            let hr = Int(z) / 3600
+//            let mn = Int(z) / 60 % 60
+//            let sc = Int(z) % 60
+            //let timeString = String(hr) + " : " + String(mn) + " : " + String(sc)
             //print ("time in sec \(z)")
             
             //lbl_ctTimer.text = timeString
 
-            let x = ctDistance
+            //let x = ctDistance
             //print("miles traveled \(x)") //
             //lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
             
 
-            let y = Double(targetMilesPerSecond) * Double(1200 - z) // miles that should have been traveled
+            //let y = Double(targetMilesPerSecond) * Double(1200 - z) // miles that should have been traveled
             //print("targetMiles \(y)")
 
             
             
-            let w = (x - y)
+            //let w = (x - y)
             //print("actual miles - target miles \(w)")
             
-            if w > 0 {
+            //if w > 0 {
                 //print("ahead")
                 //ctPace.text = "Ahead  \(String(format:"%.2f", w))"
-            } else {
-                let absW = abs(w)
+            //} else {
+                //let absW = abs(w)
                 //print("behind")
                 //ctPace.text = "Behind \(String(format:"%.2f", absW))"
                 
-            }
+            //}
             
             
         
         
-        } else {
+        //} else {
         
-            ctPace.text = "Done"
-            lbl_ctDistance.text = "..."
-            lbl_ctTimer.text = "..."
+//            ctPace.text = "Done"
+//            lbl_ctDistance.text = "..."
+//            lbl_ctTimer.text = "..."
             
-        }
+        //}
         
 
         
@@ -282,7 +286,7 @@ class SecondViewController: UIViewController {
         updateUI()
         
         updateUITimer = Timer()
-        updateUITimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+        updateUITimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
         
         
