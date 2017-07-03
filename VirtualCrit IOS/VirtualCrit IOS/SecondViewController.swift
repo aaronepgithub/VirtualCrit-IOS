@@ -207,13 +207,9 @@ class SecondViewController: UIViewController {
             //lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
             
 
-<<<<<<< HEAD
-            let y = Double(targetMilesPerSecond) * Double(14400 - z) // miles that should have been traveled
-            //print("targetMiles \(y)")
-=======
             let y = Double(targetMilesPerSecond) * Double(1200 - z) // miles that should have been traveled
-            print("targetMiles \(y)")
->>>>>>> parent of 36e141a... Mo1
+            //print("targetMiles \(y)")
+
             
             
             let w = (x - y)

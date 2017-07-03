@@ -691,7 +691,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //    var crankRevDiff :Double = 0
                 var returnedCadence : Double = 0
                 var returnedSpeed   : Double = 0
-                var returnedSpeedII   : Double = 0
+                //var returnedSpeedII   : Double = 0
                 let flag = value[0]
                 
                 //print((returnedSpeed) + (returnedCadence))
