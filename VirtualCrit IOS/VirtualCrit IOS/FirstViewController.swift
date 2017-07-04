@@ -584,13 +584,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //using newWheelRevs and newWheelTime
                 newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
                 newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
-                let test2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
+                let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
                 
                 
                 
                 //wheelRevolution = Double(newWheelRevs)
                 wheelEventTime = Double(newWheelRevsTime)
-                wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(test2)))
+                wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
                 
                 
                 print("wheelRevolution and wheelEventTime")
