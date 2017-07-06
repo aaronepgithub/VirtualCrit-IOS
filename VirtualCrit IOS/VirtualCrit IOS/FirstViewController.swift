@@ -31,6 +31,8 @@ extension UIViewController {
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
     
+    @IBOutlet var dockView1: UIView!
+    
     var timeNewMS = 0.0
     var timeOldMS = 0.0
     var timeDeltaMS = 0.0
@@ -74,7 +76,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         //print("view did load on First VC")
         
-        Device.wheelCircumference = 2110
+        Device.wheelCircumference = 2105
         print(Device.wheelCircumference as Any)
         
         //set date
@@ -94,28 +96,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         // Dispose of any resources that can be recreated.
     }
 
+    
+    @IBAction func dockView1_close(_ sender: UIButton) {
+       dockView1.removeFromSuperview()
+    }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-        
-
-        Device.wheelCircumference = 2110
         startScanning()
-        
-        
     }
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         
         alert(message: "", title: "Starting")
-        
-        
-//        httpGet()
         httpPost()
         httpPut()
-        
-        
-        
-        
+
         if hasPressedStart == true {
             print("already started")
             return
@@ -203,7 +198,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         
-        alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
+//        alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
         
 
         if ConnectionCheck.isConnectedToNetwork() {
@@ -222,17 +217,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             })
         }
         else{
-            print("disConnected")
+            print("Disconnected")
         }
         
 
-        
-        
-        
-        
-        
-        //print(AllRounds.arrHR)
-        //print(AllRounds.arrSPD)
 
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
@@ -278,7 +266,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     }
     
-    
+    func dockView1_open() {
+        
+        //alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
+        
+        
+        dockView1.center = view.center
+        view.addSubview(dockView1)
+    }
     
     
     func startScanning() {
