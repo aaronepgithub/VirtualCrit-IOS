@@ -191,7 +191,7 @@ class SecondViewController: UIViewController {
         
         lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
         ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
-        lbl_currentCadence.text = "\(String(format:"%.0f", Device.currentCadence)) BPM"
+        lbl_currentCadence.text = "\(String(format:"%.0f", Device.currentCadence)) RPM"
         
         
         
