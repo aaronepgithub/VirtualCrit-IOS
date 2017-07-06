@@ -19,6 +19,8 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_ctTimer: UILabel!
     @IBOutlet weak var lbl_ctDistance: UILabel!
     @IBOutlet weak var ctPace: UILabel!
+    @IBOutlet weak var lbl_currentCadence: UILabel!
+    
     
     @IBAction func btn_ctStart(_ sender: UIButton) {
         
@@ -181,14 +183,15 @@ class SecondViewController: UIViewController {
     
     func updateUI() {
         
-        if theTravelSpeed > 0 && theTravelSpeed < 50 {
-            lbl_ctTimer.text = "\(String(format:"%.2f", theTravelSpeed)) MPH"
+        if Device.currentSpeed > 0 && Device.currentSpeed < 50 {
+            lbl_ctTimer.text = "\(String(format:"%.1f", Device.currentSpeed)) MPH"
         } else {
             lbl_ctTimer.text = "0 MPH"
         }
         
-        lbl_ctDistance.text = "\(String(format:"%.2f", Totals.distanceTotal)) Miles"
-        ctPace.text = "\(String(format:"%.2f", Device.currentHeartrate)) BPM"
+        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
+        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
+        lbl_currentCadence.text = "\(String(format:"%.0f", Device.currentCadence)) BPM"
         
         
         

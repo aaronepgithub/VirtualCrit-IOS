@@ -9,7 +9,7 @@
 import UIKit
 import CoreBluetooth
 
-public var theTravelSpeed:Double = 0
+
 
 extension UIViewController {
     
@@ -206,11 +206,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrSPD.append(Rounds.avg_speed)
         AllRounds.arrCAD.append(Rounds.avg_cadence)
         
-//        alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
-        
-        dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
-        dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
-        dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
         dockView1_open()
         
 
@@ -289,6 +284,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     func dockView1_open() {
+        dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
+        dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
+        dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
         dockView1.center = view.center
         view.addSubview(dockView1)
     }
@@ -606,8 +604,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
                 
                 
-                print("wheelRevolution and wheelEventTime")
-                print(wheelRevolution, wheelEventTime)
+//                print("wheelRevolution and wheelEventTime")
+//                print(wheelRevolution, wheelEventTime)
                 
                 
                 if Device.oldWheelRevolution > 0 {  //test for first time reading
@@ -622,8 +620,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     let b = wheelEventTime - Device.oldWheelEventTime
                     
                     
-                    print("wheelRevDiff and wheelTimeDiff")
-                    print(a, b)
+//                    print("wheelRevDiff and wheelTimeDiff")
+//                    print(a, b)
                     
                     if a >= 0 && b >= 0 {
                         wheelRevolutionDiff = a
@@ -639,8 +637,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         ctDistance = ctDistance + travelDistance
                         lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                         
-                        //travelSpeed = travelDistance / wheelEventTimeDiff / 60 / 60 //miles/hour
-                        theTravelSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
+                        
+                        //theTravelSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
                         Device.currentSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
 
 
@@ -787,7 +785,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             // notification stopped
             print("Notification STOPPED on characteristic: \(characteristic)")
             self.centralManager.cancelPeripheralConnection(peripheral)
-            alert(message: "BLE Sensor STOPPED", title: "\(peripheral)")
+            alert(message: "\(peripheral)", title: "BLE Sensor STOPPED")
         }
         
     }
