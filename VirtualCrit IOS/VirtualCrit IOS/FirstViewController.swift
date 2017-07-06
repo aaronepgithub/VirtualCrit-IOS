@@ -787,6 +787,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             // notification stopped
             print("Notification STOPPED on characteristic: \(characteristic)")
             self.centralManager.cancelPeripheralConnection(peripheral)
+            alert(message: "BLE Sensor STOPPED", title: "\(peripheral)")
         }
         
     }

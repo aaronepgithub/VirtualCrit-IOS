@@ -271,7 +271,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="ADQ-Az-9vs">
-                            <rect key="frame" x="0.0" y="48" width="300" height="112.5"/>
+                            <rect key="frame" x="10" y="48" width="280" height="112.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="RX9-r3-JS8" userLabel="Stack View - Values">
                                     <rect key="frame" x="0.0" y="0.0" width="75" height="112.5"/>
@@ -283,7 +283,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="VKV-Tr-ZmN">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="VKV-Tr-ZmN">
                                             <rect key="frame" x="0.0" y="38.5" width="75" height="35.5"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
@@ -303,22 +303,22 @@
                                     </constraints>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="65t-sH-YDE" userLabel="Stack View - Labels">
-                                    <rect key="frame" x="78" y="0.0" width="222" height="112.5"/>
+                                    <rect key="frame" x="78" y="0.0" width="202" height="112.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LAST SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="zTP-t5-cks">
-                                            <rect key="frame" x="0.0" y="0.0" width="222" height="35.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="202" height="35.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LAST %MAX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="mD1-Yy-gUT">
-                                            <rect key="frame" x="0.0" y="38.5" width="222" height="35.5"/>
+                                            <rect key="frame" x="0.0" y="38.5" width="202" height="35.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LAST CADENCE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="SnI-6b-zkg">
-                                            <rect key="frame" x="0.0" y="77" width="222" height="35.5"/>
+                                            <rect key="frame" x="0.0" y="77" width="202" height="35.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -331,10 +331,10 @@
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="ADQ-Az-9vs" firstAttribute="top" secondItem="RqS-TU-YvI" secondAttribute="bottom" constant="16" id="0Sm-i4-D8M"/>
-                        <constraint firstAttribute="trailing" secondItem="ADQ-Az-9vs" secondAttribute="trailing" id="AnO-Qm-Alf"/>
+                        <constraint firstAttribute="trailing" secondItem="ADQ-Az-9vs" secondAttribute="trailing" constant="10" id="AnO-Qm-Alf"/>
                         <constraint firstAttribute="trailing" secondItem="RqS-TU-YvI" secondAttribute="trailing" constant="8" id="HXh-BN-C1w"/>
                         <constraint firstItem="RqS-TU-YvI" firstAttribute="leading" secondItem="6I1-sq-ms9" secondAttribute="leading" constant="8" id="q7o-if-rsp"/>
-                        <constraint firstItem="ADQ-Az-9vs" firstAttribute="leading" secondItem="6I1-sq-ms9" secondAttribute="leading" id="sOy-GS-dRr"/>
+                        <constraint firstItem="ADQ-Az-9vs" firstAttribute="leading" secondItem="6I1-sq-ms9" secondAttribute="leading" constant="10" id="sOy-GS-dRr"/>
                         <constraint firstItem="RqS-TU-YvI" firstAttribute="top" secondItem="6I1-sq-ms9" secondAttribute="top" constant="8" id="une-in-o2H"/>
                     </constraints>
                 </view>
