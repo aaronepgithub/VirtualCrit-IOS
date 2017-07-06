@@ -230,6 +230,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Main" image="first" id="acW-dT-cKf"/>
                     <connections>
+                        <outlet property="dock1_lastCadence" destination="JF9-Mq-Wq0" id="H0B-5Y-ewW"/>
+                        <outlet property="dock1_lastScore" destination="VKV-Tr-ZmN" id="PEJ-WX-H04"/>
+                        <outlet property="dock1_lastSpeed" destination="Unv-lY-tJB" id="acA-QR-zOe"/>
                         <outlet property="dockView1" destination="6I1-sq-ms9" id="S9U-nZ-zs3"/>
                         <outlet property="lbl_Cadence" destination="B48-Ly-J4t" id="Ezj-DG-Hx8"/>
                         <outlet property="lbl_Distance" destination="bsC-9p-TwN" id="LM1-gF-4fd"/>

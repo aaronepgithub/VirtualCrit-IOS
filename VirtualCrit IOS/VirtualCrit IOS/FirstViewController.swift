@@ -21,7 +21,6 @@ extension UIViewController {
         
         let when = DispatchTime.now() + 3
         DispatchQueue.main.asyncAfter(deadline: when){
-            // your code with delay
             alertController.dismiss(animated: true, completion: nil)
         }
     }
@@ -32,6 +31,9 @@ extension UIViewController {
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     @IBOutlet var dockView1: UIView!
+    @IBOutlet weak var dock1_lastSpeed: UILabel!
+    @IBOutlet weak var dock1_lastScore: UILabel!
+    @IBOutlet weak var dock1_lastCadence: UILabel!
     
     var timeNewMS = 0.0
     var timeOldMS = 0.0
@@ -166,6 +168,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     public func updateTimerTotal() {
         //Each second, update
+        
+        Totals.totalTimeInSeconds += 1
+        //if Totals.totalTimeInSeconds == 10 {dockView1_open()}
+        
+        
         Totals.arrHRTotal.append(Device.currentHeartrate)
         Rounds.arrHRRound.append(Device.currentHeartrate)
         
@@ -184,7 +191,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     public func updateTimerRound() {
-        
+        //every seconds per round (300)
         //print("updateTimerRound")
         Rounds.roundsComplete += 1
         Totals.arrHRTotal.append(Rounds.avg_hr)
@@ -197,8 +204,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
+        AllRounds.arrCAD.append(Rounds.avg_cadence)
         
 //        alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
+        
+        dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
+        dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
+        dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
+        dockView1_open()
         
 
         if ConnectionCheck.isConnectedToNetwork() {
@@ -212,6 +225,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
+                self.dockView1.removeFromSuperview()
                 self.httpGet()
                 print("httpGet")
             })
@@ -233,6 +247,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_Heartrate.text = "..."
         lbl_Score.text = "..."
         
+        timeNewMS = 0.0
+        timeOldMS = 0.0
+        timeDeltaMS = 0.0
+        
     }
     
     
@@ -246,6 +264,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 //        timeNewMS = (x.timeIntervalSince(Totals.startTime! as Date!))
 //        print("timeNewMS \(timeNewMS)")
+        
+        
+        timeNewMS += 100
+        //print(timeNewMS)
         
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
@@ -267,10 +289,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     func dockView1_open() {
-        
-        //alert(message: "\(String(format:"%.2f", Rounds.avg_speed)) Mph\n\(String(format:"%.1f", Rounds.avg_hr)) Bpm", title: "Last Round")
-        
-        
         dockView1.center = view.center
         view.addSubview(dockView1)
     }
@@ -686,6 +704,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         
                         if travelCadence > 0 {
                             lbl_Cadence.text = "\(String(format:"%.f", x))" //round cadence
+                            Rounds.avg_cadence = x
                         }
 
                         
