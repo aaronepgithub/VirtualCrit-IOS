@@ -18,6 +18,7 @@
 		588879B01EABD91A00E5C75E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 588879AE1EABD91A00E5C75E /* LaunchScreen.storyboard */; };
 		588879B81EABDB0100E5C75E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879B71EABDB0100E5C75E /* Model.swift */; };
 		588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B4CE91EAC2A0400364AEE /* Decoder.swift */; };
+		5895A5781F0EBA1800544741 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5895A5771F0EBA1700544741 /* ThirdViewController.swift */; };
 		58B88D481EACDA1300144C0F /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B88D471EACDA1300144C0F /* Timer.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		588879B11EABD91A00E5C75E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		588879B71EABDB0100E5C75E /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		588B4CE91EAC2A0400364AEE /* Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
+		5895A5771F0EBA1700544741 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		58B88D471EACDA1300144C0F /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +77,7 @@
 				588B4CE91EAC2A0400364AEE /* Decoder.swift */,
 				588879A71EABD91900E5C75E /* SecondViewController.swift */,
 				588879A91EABD91A00E5C75E /* Main.storyboard */,
+				5895A5771F0EBA1700544741 /* ThirdViewController.swift */,
 				584943331ED58F960017BBFA /* PopupViewController.swift */,
 				5820B8B61EE58D3300654A4E /* TableViewCell.swift */,
 				58B88D471EACDA1300144C0F /* Timer.swift */,
@@ -165,6 +168,7 @@
 			files = (
 				588879A81EABD91900E5C75E /* SecondViewController.swift in Sources */,
 				5820B8B71EE58D3300654A4E /* TableViewCell.swift in Sources */,
+				5895A5781F0EBA1800544741 /* ThirdViewController.swift in Sources */,
 				588879A41EABD91900E5C75E /* AppDelegate.swift in Sources */,
 				588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */,
 				58B88D481EACDA1300144C0F /* Timer.swift in Sources */,

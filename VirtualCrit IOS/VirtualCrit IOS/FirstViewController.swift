@@ -110,9 +110,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBAction func btn_action_start(_ sender: UIButton) {
         
         alert(message: "", title: "Starting")
-        httpPost()
-        httpPut()
-
+        
+        if ConnectionCheck.isConnectedToNetwork() {
+            httpPost()
+            httpPut()
+        }
+        
         if hasPressedStart == true {
             print("already started")
             return

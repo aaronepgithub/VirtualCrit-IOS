@@ -39,11 +39,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VirtualCrit IOS/SecondViewController.swift"
-            timestampString = "519578335.403919"
+            timestampString = "521049860.221931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "requestMAXHR()"
             landmarkType = "7">
          </BreakpointContent>

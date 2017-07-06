@@ -224,7 +224,7 @@
                         <constraints>
                             <constraint firstItem="yVe-fd-YtH" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="0P2-8B-TTe"/>
                             <constraint firstAttribute="trailing" secondItem="yVe-fd-YtH" secondAttribute="trailing" id="6EM-PC-tef"/>
-                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="yVe-fd-YtH" secondAttribute="bottom" id="EVZ-g7-K7l"/>
+                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="yVe-fd-YtH" secondAttribute="bottom" id="97W-YH-6hO"/>
                             <constraint firstItem="yVe-fd-YtH" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="top" constant="20" id="Ts4-qG-teD"/>
                         </constraints>
                     </view>
@@ -503,7 +503,35 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1073" y="256"/>
+            <point key="canvasLocation" x="806" y="514"/>
+        </scene>
+        <!--Results-->
+        <scene sceneID="cXC-mN-S50">
+            <objects>
+                <viewController id="whk-fW-Ufa" userLabel="Results" customClass="ThirdViewController" customModule="VirtualCrit_IOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="knX-6X-JfN"/>
+                        <viewControllerLayoutGuide type="bottom" id="Tmu-HS-HeL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3v1-Ii-ITY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3VC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4B-5c-s7v">
+                                <rect key="frame" x="0.0" y="28" width="320" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="history" id="Sp4-05-Y3s" userLabel="Results"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hgx-1B-lTe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1541" y="-64"/>
         </scene>
         <!--Popup View Controller-->
         <scene sceneID="yLO-WB-awd">
@@ -583,12 +611,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iI2-Xu-mRd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2304.8000000000002" y="277.51124437781112"/>
+            <point key="canvasLocation" x="1881" y="602"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController autoresizesArchivedViewToFullSize="NO" id="49e-Tb-3d3" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
@@ -598,11 +626,12 @@
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="whk-fW-Ufa" kind="relationship" relationship="viewControllers" id="W9l-0k-eWl"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="0.0" y="0.0"/>
+            <point key="canvasLocation" x="-212" y="3"/>
         </scene>
     </scenes>
     <resources>
