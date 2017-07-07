@@ -844,7 +844,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
                 //print(2)
-                print(jsonObj as Any)
+                //print(jsonObj as Any)
                 
                 for (key, _) in jsonObj! {
                     //print(3)
@@ -875,30 +875,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 
                 
-                print(self.scoresArray)
+                //print(self.scoresArray)
                 let _max = self.scoresArray.max()
-                print(_max as Any)
+                //print(_max as Any)
                 self.leaderString += "\(_max!) "
                 let indexOfMax = self.scoresArray.index(of: _max!)
-                print(indexOfMax as Any)
+                //print(indexOfMax as Any)
                 let _nameOfLeader = self.namesArray[indexOfMax!]
-                print(_nameOfLeader as Any)
+                //print(_nameOfLeader as Any)
                 self.leaderString += String(_nameOfLeader) + " \n "
                 
                 
-                print(self.speedsArray)
+                //print(self.speedsArray)
                 let _maxSpeed = self.speedsArray.max()
-                print(_maxSpeed as Any)
+                //print(_maxSpeed as Any)
                 self.leaderStringSpeed += "\(_maxSpeed!) "
                 let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
-                print(indexOfMaxSpeed as Any)
+                //print(indexOfMaxSpeed as Any)
                 let _nameOfLeaderSpeed = self.namesArray[indexOfMaxSpeed!]
-                print(_nameOfLeaderSpeed as Any)
+                //print(_nameOfLeaderSpeed as Any)
                 self.leaderStringSpeed += String(_nameOfLeaderSpeed)
                 
 
-                print(self.leaderString)
-                print(self.leaderStringSpeed)
+                //print(self.leaderString)
+                //print(self.leaderStringSpeed)
                 //self.alert(message: self.leaderString, title: "Leaders")
                 
                 

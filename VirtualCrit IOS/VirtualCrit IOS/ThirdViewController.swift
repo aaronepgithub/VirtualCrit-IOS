@@ -33,8 +33,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                    return titleArray1.count
-//        return tempArrHR.count
+//                    return titleArray1.count
+        return tempArrHR.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -45,8 +45,12 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
 //        cell.cellTitle.text = tempArrScore[indexPath.row]
 //        cell.cellSubTitle.text = tempArrSPD[indexPath.row]
 
-        cell.cellTitle1.text = titleArray1[indexPath.row]
-        cell.cellSubTitle1.text = subtitleArray1[indexPath.row]
+//        cell.cellTitle1.text = titleArray1[indexPath.row]
+//        cell.cellSubTitle1.text = subtitleArray1[indexPath.row]
+        
+                cell.cellTitle1.text = tempArrScore[indexPath.row]
+                cell.cellSubTitle1.text = tempArrSPD[indexPath.row]
+
         
         
         return cell
