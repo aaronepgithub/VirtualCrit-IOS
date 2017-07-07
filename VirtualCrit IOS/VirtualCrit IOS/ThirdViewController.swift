@@ -8,8 +8,14 @@
 
 import UIKit
 
-class ThirdViewController: UIViewController {
+class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
+    
+
+    
+    var titleArray1 = ["1", "2", "3", "4", "5", "2", "3", "4", "5"]
+    var subtitleArray1 = ["1", "2", "3", "4", "5", "2", "3", "4", "5"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,14 +28,28 @@ class ThirdViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
-    */
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                    return titleArray1.count
+//        return tempArrHR.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "id_historyTable") as! TableViewCell1
+        
+        
+        //        cell.cellTitle.text = tempArrHR[indexPath.row]
+//        cell.cellTitle.text = tempArrScore[indexPath.row]
+//        cell.cellSubTitle.text = tempArrSPD[indexPath.row]
+
+        cell.cellTitle1.text = titleArray1[indexPath.row]
+        cell.cellSubTitle1.text = subtitleArray1[indexPath.row]
+        
+        
+        return cell
+    }
 
 }

@@ -20,6 +20,7 @@
 		588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B4CE91EAC2A0400364AEE /* Decoder.swift */; };
 		5895A5781F0EBA1800544741 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5895A5771F0EBA1700544741 /* ThirdViewController.swift */; };
 		58B88D481EACDA1300144C0F /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B88D471EACDA1300144C0F /* Timer.swift */; };
+		58FDD2A91F0FF0A700BAB193 /* TableViewCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		588B4CE91EAC2A0400364AEE /* Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
 		5895A5771F0EBA1700544741 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		58B88D471EACDA1300144C0F /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell1.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				5895A5771F0EBA1700544741 /* ThirdViewController.swift */,
 				584943331ED58F960017BBFA /* PopupViewController.swift */,
 				5820B8B61EE58D3300654A4E /* TableViewCell.swift */,
+				58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */,
 				58B88D471EACDA1300144C0F /* Timer.swift */,
 				588879AC1EABD91A00E5C75E /* Assets.xcassets */,
 				588879AE1EABD91A00E5C75E /* LaunchScreen.storyboard */,
@@ -174,6 +177,7 @@
 				58B88D481EACDA1300144C0F /* Timer.swift in Sources */,
 				588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */,
 				5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */,
+				58FDD2A91F0FF0A700BAB193 /* TableViewCell1.swift in Sources */,
 				588879B81EABDB0100E5C75E /* Model.swift in Sources */,
 				584943341ED58F960017BBFA /* PopupViewController.swift in Sources */,
 			);

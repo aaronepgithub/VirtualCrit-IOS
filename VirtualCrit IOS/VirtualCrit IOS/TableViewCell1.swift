@@ -1,19 +1,19 @@
 //
-//  TableViewCell.swift
+//  TableViewCell1.swift
 //  VirtualCrit IOS
 //
-//  Created by aaronep on 6/5/17.
+//  Created by aaronep on 7/7/17.
 //  Copyright © 2017 aaronep. All rights reserved.
 //
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class TableViewCell1: UITableViewCell {
     
-    @IBOutlet weak var cellSubTitle: UILabel!
-    @IBOutlet weak var cellTitle: UILabel!
-    
-    
+    @IBOutlet weak var cellTitle1: UILabel!
+
+    @IBOutlet weak var cellSubTitle1: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

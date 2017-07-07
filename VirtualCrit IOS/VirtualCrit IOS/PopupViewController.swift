@@ -53,7 +53,7 @@ class PopupViewController: UIViewController,UITableViewDataSource,UITableViewDel
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuse_identifier") as! TableViewCell
         
         
-//        cell.cellTitle.text = tempArrHR[indexPath.row]
+
         cell.cellTitle.text = tempArrScore[indexPath.row]
         cell.cellSubTitle.text = tempArrSPD[indexPath.row]
         
