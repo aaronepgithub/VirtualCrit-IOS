@@ -30,6 +30,13 @@ extension UIViewController {
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
     
+    @IBAction func btn_Round(_ sender: UIButton) {
+        
+        dockView1_open()
+        
+    }
+    
+    
     @IBOutlet var dockView1: UIView!
     @IBOutlet weak var dock1_lastSpeed: UILabel!
     @IBOutlet weak var dock1_lastScore: UILabel!
