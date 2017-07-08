@@ -194,8 +194,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return $0 + $1/Double(Totals.arrHRTotal.count)
         }
         
-//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-        self.lbl_round_speed.text = "\(String(format:"%.1f",  self.leaderStringSpeed)) %MAX"  //leader speed
+        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
         self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
         
         
@@ -834,6 +833,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var leaderString = ""
     var leaderStringSpeed = ""
     
+
+    
     
     func httpGet() {
         //print("httpGet Started")
@@ -857,6 +858,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
                             if key == "fb_RND" {
                                 //print(6)
+
                                 self.namesArray.append(nestedDictionary["fb_timName"] as! String!)
                                 self.speedsArray.append(nestedDictionary["fb_SPD"] as! Double!)
                                 self.scoresArray.append(nestedDictionary["fb_RND"] as! Double!)
@@ -873,6 +875,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                 }
                 //at the end
+
                 
                 
                 
