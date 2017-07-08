@@ -48,19 +48,12 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "id_historyTable") as! TableViewCell1
-        
-        
-        //        cell.cellTitle.text = tempArrHR[indexPath.row]
-//        cell.cellTitle.text = tempArrScore[indexPath.row]
-//        cell.cellSubTitle.text = tempArrSPD[indexPath.row]
 
 //        cell.cellTitle1.text = titleArray1[indexPath.row]
 //        cell.cellSubTitle1.text = subtitleArray1[indexPath.row]
         
                 cell.cellTitle1.text = tempArrScore[indexPath.row]
                 cell.cellSubTitle1.text = tempArrSPD[indexPath.row]
-
-        
         
         return cell
     }

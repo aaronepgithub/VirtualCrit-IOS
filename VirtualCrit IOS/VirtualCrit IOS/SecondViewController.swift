@@ -269,18 +269,12 @@ class SecondViewController: UIViewController {
             stringSPD = stringSPD + String(format:"%.2f", eachSPD) + ", "
             tempArrSPD.append(String(format:"%.2f", eachSPD) + "  MPH")
         }
-        
-//        lbl_previous_rounds_spd.text = stringSPD
-//        lbl_previous_rounds_hr.text = stringHR
-        
+               
         
         
     }
 
 
-
-//    @IBOutlet weak var lbl_previous_rounds_hr: UILabel!
-//    @IBOutlet weak var lbl_previous_rounds_spd: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

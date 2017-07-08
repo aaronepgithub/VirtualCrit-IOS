@@ -194,7 +194,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return $0 + $1/Double(Totals.arrHRTotal.count)
         }
         
-        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+        self.lbl_round_speed.text = "\(String(format:"%.1f",  self.leaderStringSpeed)) %MAX"  //leader speed
         self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
         
         
