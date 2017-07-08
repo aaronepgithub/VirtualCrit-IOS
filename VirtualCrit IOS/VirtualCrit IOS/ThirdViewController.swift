@@ -10,6 +10,8 @@ import UIKit
 
 class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
+
+    @IBOutlet weak var myTableView: UITableView!
     
 
     
@@ -18,6 +20,11 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+        
+        
+        
 
         // Do any additional setup after loading the view.
     }
@@ -38,6 +45,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "id_historyTable") as! TableViewCell1
         
         
@@ -54,6 +63,14 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         
         return cell
+    }
+    
+    @IBAction func btn_RoundMeReload(_ sender: UIButton) {
+        
+        print(tempArrHR)
+        
+        myTableView.reloadData()
+        
     }
 
 }
