@@ -242,6 +242,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
 
+        
+
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
@@ -289,8 +291,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if timeNewMS == (240 * 1000) {
             lbl_button_start.setTitle("   🔴", for: .normal)
         }
-        if timeNewMS == (295 * 1000) {
-            lbl_button_start.setTitle("🕙🕙🕙🕙🕙", for: .normal)
+        if timeNewMS == (270 * 1000) {
+            lbl_button_start.setTitle(" 🕙🕙🕙", for: .normal)
+        }
+        if timeNewMS == (280 * 1000) {
+            lbl_button_start.setTitle("  🕙🕙", for: .normal)
+        }
+        if timeNewMS == (290 * 1000) {
+            lbl_button_start.setTitle("   🕙", for: .normal)
         }
         
         
@@ -382,6 +390,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         // disconnect from the peripheral
         centralManager.cancelPeripheralConnection(peripheral)
+        Rounds.avg_speed = 0
+        Rounds.avg_cadence = 0
+        Rounds.avg_score = 0
+        Rounds.avg_hr = 0
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -463,6 +475,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         // We have a connection to the device but we are not subscribed to the Transfer Characteristic for some reason.
         // Therefore, we will just disconnect from the peripheral
         centralManager.cancelPeripheralConnection(peripheral)
+        Rounds.avg_speed = 0
+        Rounds.avg_cadence = 0
+        Rounds.avg_score = 0
+        Rounds.avg_hr = 0
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
