@@ -137,7 +137,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.arrHRRound = []
         
         
-        lbl_button_start.setTitle("Stop", for: .normal)
+//        lbl_button_start.setTitle("Stop", for: .normal)
+        lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
         
         if timerTotal == nil {
             timerTotal = Timer()
@@ -256,6 +257,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         timeOldMS = 0.0
         timeDeltaMS = 0.0
         
+        lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
+        
     }
     
     
@@ -273,6 +276,23 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         timeNewMS += 100
         //print(timeNewMS)
+        
+        if timeNewMS == (60 * 1000) {
+            lbl_button_start.setTitle(" 🔴🔴🔴🔴", for: .normal)
+        }
+        if timeNewMS == (120 * 1000) {
+            lbl_button_start.setTitle("  🔴🔴🔴", for: .normal)
+        }
+        if timeNewMS == (180 * 1000) {
+            lbl_button_start.setTitle("   🔴🔴", for: .normal)
+        }
+        if timeNewMS == (240 * 1000) {
+            lbl_button_start.setTitle("   🔴", for: .normal)
+        }
+        if timeNewMS == (295 * 1000) {
+            lbl_button_start.setTitle("🕙🕙🕙🕙🕙", for: .normal)
+        }
+        
         
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
