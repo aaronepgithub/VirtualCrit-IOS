@@ -48,7 +48,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                                 let b = nestedDictionary["fb_timName"] as! String!
                                 let c = nestedDictionary["fb_SPD"] as! Double!
                                 
-                                score_string_array.append(String(describing: a) + " %MAX  " + String(describing: b!) + " | " + String(describing: c!) + " MPH")
+                                score_string_array.append(String(describing: a) + " %MAX  " + "\n" + String(describing: b!) + " | " + String(describing: c!) + " MPH")
                             }
                             
                             if key == "fb_SPD" {
@@ -56,7 +56,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                                 let e = nestedDictionary["fb_timName"] as! String!
                                 let f = nestedDictionary["fb_RND"] as! Double!
                                 
-                                speed_string_array.append(String(describing: d) + " MPH  " + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
+                                speed_string_array.append(String(describing: d) + " MPH  " + "\n" + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
                             }
                             
                         }
@@ -84,73 +84,111 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     @IBAction func btn_totalScore(_ sender: UIButton) {
         
-        getRoundData()
+        //get & parse total score data
         
     }
     
+    @IBAction func btn_totalSpeed(_ sender: UIButton) {
+        
+        //get & parse total score data
+    }
     
     //use sorted speed array
     @IBAction func btn_roundAllSpeed(_ sender: UIButton) {
         
-        getRoundData()
-        let when = DispatchTime.now() + 3
-        DispatchQueue.main.asyncAfter(deadline: when){
-            tempArrHR1 = []
-            tempArrSPD1 = []
-            tempArrScore1 = []
-            
-            tempArrHR1 = speed_string_array
-            tempArrSPD1 = speed_string_array
-            tempArrScore1 = speed_string_array
-            
-            ctrArray = Array(1...tempArrHR1.count)
-            
-            
-            self.myTableView.reloadData()
+        if ConnectionCheck.isConnectedToNetwork() {
+            getRoundData()
+            let when = DispatchTime.now() + 3
+            DispatchQueue.main.asyncAfter(deadline: when){
+                
+                tempArrHR1 = []
+                tempArrSPD1 = []
+                tempArrScore1 = []
+                ctrArray = []
+                
+                tempArrHR1 = speed_string_array
+                tempArrSPD1 = speed_string_array
+                tempArrScore1 = speed_string_array
+                
+                ctrArray = Array(1...tempArrHR1.count)
+                self.myTableView.reloadData()
+                score_string_array = []
+                speed_string_array = []
+            }
         }
-        
-        
-
-        
     }
     
 
     //use sorted score array
     @IBAction func btn_roundAll(_ sender: UIButton) {
         
-        getRoundData()
+        if ConnectionCheck.isConnectedToNetwork() {
+            getRoundData()
+            let when = DispatchTime.now() + 3
+            DispatchQueue.main.asyncAfter(deadline: when){
+
+                tempArrHR1 = []
+                tempArrSPD1 = []
+                tempArrScore1 = []
+                ctrArray = []
+                tempArrHR1 = score_string_array
+                tempArrSPD1 = score_string_array
+                tempArrScore1 = score_string_array
+                
+                ctrArray = Array(1...tempArrHR1.count)
+                self.myTableView.reloadData()
+                score_string_array = []
+                speed_string_array = []
+            }
         
-        let when = DispatchTime.now() + 3
-        DispatchQueue.main.asyncAfter(deadline: when){
+        }
+        
+    }
+    
+    @IBAction func btn_SpeedMeReload(_ sender: UIButton) {
+        
+        print(tempArrSPD)
+        
+        if tempArrSPD.count > 0 {
+            
             tempArrHR1 = []
             tempArrSPD1 = []
             tempArrScore1 = []
-            tempArrHR1 = score_string_array
-            tempArrSPD1 = score_string_array
-            tempArrScore1 = score_string_array
+            ctrArray = []
             
-            ctrArray = Array(1...tempArrHR1.count)
+            tempArrHR1 = tempArrHR
+            tempArrSPD1 = tempArrSPD
+            tempArrScore1 = tempArrSPD
+            ctrArray = Array(1...tempArrSPD.count)
+            myTableView.reloadData()
             
-            self.myTableView.reloadData()
         }
-  
         
+    }
+    @IBAction func btn_RoundMeReload(_ sender: UIButton) {
+        
+        print(tempArrHR)
+        
+        if tempArrHR.count > 0 {
+            
+            tempArrHR1 = []
+            tempArrSPD1 = []
+            tempArrScore1 = []
+            ctrArray = []
+            
+            tempArrHR1 = tempArrHR
+            tempArrSPD1 = tempArrSPD
+            tempArrScore1 = tempArrScore
+            ctrArray = Array(1...tempArrHR.count)
+            myTableView.reloadData()
+            
+        } 
     }
 
     @IBOutlet weak var myTableView: UITableView!
     
-
-    
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
-        
-        
-        
-
         // Do any additional setup after loading the view.
     }
 
@@ -178,29 +216,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
 //        cell.cellSubTitle1.text = subtitleArray1[indexPath.row]
         
                 cell.cellTitle1.text = tempArrScore1[indexPath.row]
-//                cell.cellSubTitle1.text = tempArrSPD1[indexPath.row]
                 cell.cellSubTitle1.text = String(ctrArray[indexPath.row])
         
         return cell
     }
     
-    @IBAction func btn_RoundMeReload(_ sender: UIButton) {
-        
-        print(tempArrHR)
-        
-        if tempArrHR.count > 0 {
-            tempArrHR1 = []
-            tempArrSPD1 = []
-            tempArrScore1 = []
-            tempArrHR1 = tempArrHR
-            tempArrSPD1 = tempArrSPD
-            tempArrScore1 = tempArrScore
-            ctrArray = Array(1...tempArrHR.count)
-            myTableView.reloadData()
-        }
-        
-
-        
-    }
-
 }

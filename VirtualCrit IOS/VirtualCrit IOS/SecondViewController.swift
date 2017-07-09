@@ -22,13 +22,13 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_currentCadence: UILabel!
     
     
-    @IBAction func btn_ctStart(_ sender: UIButton) {
-        
-        ctMiles = 5.0
-        ctPaceTimeInSeconds = 1200
-        ctDistance = 0.0
-        
-    }
+//    @IBAction func btn_ctStart(_ sender: UIButton) {
+//        
+//        ctMiles = 5.0
+//        ctPaceTimeInSeconds = 1200
+//        ctDistance = 0.0
+//        
+//    }
     
     
     //  Start Alert - Name
