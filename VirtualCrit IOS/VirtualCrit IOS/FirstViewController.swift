@@ -111,6 +111,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
+        
+        //httpGetTotals()
+        
         startScanning()
     }
     
@@ -862,12 +865,22 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var roundLeaderScore: Double = 0
     var roundLeaderName: String = "..."
     
+    var totalLeaderScore: Double = 0
+    var totalLeaderName: String = "..."
+    
     var namesArray = [String]()
     var scoresArray = [Double]()
     var speedsArray = [Double]()
     
+    var namesArrayTotal = [String]()
+    var scoresArrayTotal = [Double]()
+    var speedsArrayTotal = [Double]()
+    
     var leaderString = ""
     var leaderStringSpeed = ""
+    
+    var leaderStringTotal = ""
+    var leaderStringSpeedTotal = ""
     
 
     
@@ -911,44 +924,102 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                 }
                 //at the end
-
-                
-                
-                
-                //print(self.scoresArray)
-                let _max = self.scoresArray.max()
-                //print(_max as Any)
-                self.leaderString += "\(_max!) "
-                let indexOfMax = self.scoresArray.index(of: _max!)
-                //print(indexOfMax as Any)
-                let _nameOfLeader = self.namesArray[indexOfMax!]
-                //print(_nameOfLeader as Any)
-                self.leaderString += String(_nameOfLeader) + " \n "
-                
-                
-                //print(self.speedsArray)
-                let _maxSpeed = self.speedsArray.max()
-                //print(_maxSpeed as Any)
-                self.leaderStringSpeed += "\(_maxSpeed!) "
-                let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
-                //print(indexOfMaxSpeed as Any)
-                let _nameOfLeaderSpeed = self.namesArray[indexOfMaxSpeed!]
-                //print(_nameOfLeaderSpeed as Any)
-                self.leaderStringSpeed += String(_nameOfLeaderSpeed)
-                
-
-                //print(self.leaderString)
-                //print(self.leaderStringSpeed)
-                //self.alert(message: self.leaderString, title: "Leaders")
                 
                 
             }
         }).resume()
         //print(8)
+            }
+    
+    
+    func httpGetTotals() {
+    
+        //print("httpGetTotals Started")
+        
+        //let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
+        //let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + "/" + Settings.riderName + ".json"
+        
+        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + ".json"
+        let url = NSURL(string: todosEndpoint)
+        
+        //print(1)
+        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+            
+            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+                //print(2)
+                print(jsonObj as Any)
+                
+                for (key, _) in jsonObj! {
+                    //print(3)
+                    
+                    if let nestedDictionary = jsonObj?[key] as? [String: Any] {
+                        //print(4)
+                        for(key, _) in nestedDictionary {
+                            //print(5)
+                            
+                            if key == "fb_scoreHRTotal" {
+                                //print(6)
+                                
+                                self.namesArrayTotal.append(nestedDictionary["fb_timName"] as! String!)
+                                self.speedsArrayTotal.append(nestedDictionary["fb_timAvgSPDtotal"] as! Double!)
+                                self.scoresArrayTotal.append(nestedDictionary["fb_scoreHRTotal"] as! Double!)
+                                let x = nestedDictionary["fb_scoreHRTotal"] as! Double!
+                                //print(x!)
+                                if x! > self.totalLeaderScore {
+                                    print(x!)
+                                    self.totalLeaderScore = x!
+                                    let y = nestedDictionary["fb_timName"] as! String!
+                                    self.totalLeaderName = y!
+                                }
+                            }
+                        }
+                    }
+                }
+                //at the end
+                print(self.totalLeaderName, self.totalLeaderScore)
+                
+                
+            }
+        }).resume()
+        //print(8)
+    
+    }
+    
+
+        
+                
+                
+//                //print(self.scoresArray)
+//                let _max = self.scoresArray.max()
+//                //print(_max as Any)
+//                self.leaderString += "\(_max!) "
+//                let indexOfMax = self.scoresArray.index(of: _max!)
+//                //print(indexOfMax as Any)
+//                let _nameOfLeader = self.namesArray[indexOfMax!]
+//                //print(_nameOfLeader as Any)
+//                self.leaderString += String(_nameOfLeader) + " \n "
+//                
+//                
+//                //print(self.speedsArray)
+//                let _maxSpeed = self.speedsArray.max()
+//                //print(_maxSpeed as Any)
+//                self.leaderStringSpeed += "\(_maxSpeed!) "
+//                let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
+//                //print(indexOfMaxSpeed as Any)
+//                let _nameOfLeaderSpeed = self.namesArray[indexOfMaxSpeed!]
+//                //print(_nameOfLeaderSpeed as Any)
+//                self.leaderStringSpeed += String(_nameOfLeaderSpeed)
+//                
+//
+//                //print(self.leaderString)
+//                //print(self.leaderStringSpeed)
+//                //self.alert(message: self.leaderString, title: "Leaders")
+                
+
 
         
         
-    }
+
     
     func httpPost() {
     
