@@ -111,9 +111,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-        
-        //httpGetTotals()
-        
         startScanning()
     }
     
@@ -124,6 +121,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if ConnectionCheck.isConnectedToNetwork() {
             httpPost()
             httpPut()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
+                self.httpGetTotals()
+                print("httpGetTotals")
+            })
+            
+            
         }
         
         if hasPressedStart == true {
@@ -237,6 +241,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 self.dockView1.removeFromSuperview()
                 self.httpGet()
                 print("httpGet")
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(25), execute: {
+                self.httpGetTotals()
+                print("httpGetTotals")
             })
         }
         else{
@@ -866,7 +874,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var roundLeaderName: String = "..."
     
     var totalLeaderScore: Double = 0
+    var totalLeaderSpeed: Double = 0
     var totalLeaderName: String = "..."
+    var totalLeaderNameSpeed: String = "..."
     
     var namesArray = [String]()
     var scoresArray = [Double]()
@@ -933,32 +943,35 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     func httpGetTotals() {
+        
+        totalLeaderScore = 0
+        totalLeaderName = "..."
+        namesArrayTotal = []
+        speedsArrayTotal = []
+        scoresArrayTotal = []
+        
     
-        //print("httpGetTotals Started")
+        print("httpGetTotals Started")
         
         //let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
-        //let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + "/" + Settings.riderName + ".json"
-        
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + ".json"
         let url = NSURL(string: todosEndpoint)
-        
-        //print(1)
+
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                //print(2)
                 print(jsonObj as Any)
                 
                 for (key, _) in jsonObj! {
-                    //print(3)
+                    //print("key \(key)")
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
-                        //print(4)
+                        
                         for(key, _) in nestedDictionary {
-                            //print(5)
+                            //print("key \(key)")
                             
                             if key == "fb_scoreHRTotal" {
-                                //print(6)
+                                //print("key == fb_scoreHRTotal")
                                 
                                 self.namesArrayTotal.append(nestedDictionary["fb_timName"] as! String!)
                                 self.speedsArrayTotal.append(nestedDictionary["fb_timAvgSPDtotal"] as! Double!)
@@ -966,17 +979,36 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                                 let x = nestedDictionary["fb_scoreHRTotal"] as! Double!
                                 //print(x!)
                                 if x! > self.totalLeaderScore {
-                                    print(x!)
+                                    //print(x!)
                                     self.totalLeaderScore = x!
                                     let y = nestedDictionary["fb_timName"] as! String!
                                     self.totalLeaderName = y!
+                                    //print(x!, y!)
                                 }
+                                
+                                let xx = nestedDictionary["fb_timAvgSPDtotal"] as! Double!
+                                //print(x!)
+                                if xx! > self.totalLeaderSpeed {
+                                    //print(x!)
+                                    self.totalLeaderSpeed = xx!
+                                    let yy = nestedDictionary["fb_timName"] as! String!
+                                    self.totalLeaderNameSpeed = yy!
+                                    //print(xx!, yy!)
+                                }
+                                
+                                
+                                
                             }
+                            
+                            
                         }
                     }
                 }
                 //at the end
                 print(self.totalLeaderName, self.totalLeaderScore)
+                print(self.namesArrayTotal)
+                print(self.scoresArrayTotal)
+                print(self.speedsArrayTotal)
                 
                 
             }

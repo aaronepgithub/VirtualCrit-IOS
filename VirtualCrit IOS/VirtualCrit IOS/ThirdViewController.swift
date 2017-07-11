@@ -10,6 +10,10 @@ import UIKit
 
 var score_string_array = [String]()
 var speed_string_array = [String]()
+
+var score_string_array_total = [String]()
+var speed_string_array_total = [String]()
+
 var tempArrHR1 = [String]()
 var tempArrSPD1 = [String]()
 var tempArrScore1 = [String]()
@@ -22,6 +26,57 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     var titleArray1 = ["1", "2", "3", "4", "5", "2", "3", "4", "5"]
     var subtitleArray1 = ["1", "2", "3", "4", "5", "2", "3", "4", "5"]
     
+    func getTotalData() {
+        print("httpGetTotalData Started")
+        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + ".json"
+        let url = NSURL(string: todosEndpoint)
+        
+        //print(1)
+        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+            
+            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+                
+                for (key, _) in jsonObj! {
+                    
+                    if let nestedDictionary = jsonObj?[key] as? [String: Any] {
+                        for(key, _) in nestedDictionary {
+                            
+                            if key == "fb_scoreHRTotal" {
+                                let a = nestedDictionary["fb_scoreHRTotal"] as! Double
+                                let b = nestedDictionary["fb_timName"] as! String!
+                                let c = nestedDictionary["fb_timAvgSPDtotal"] as! Double!
+                                
+                                score_string_array_total.append(String(describing: a) + " %MAX  " + "\n" + String(describing: b!) + " | " + String(describing: c!) + " MPH")
+                            }
+                            
+                            if key == "fb_timAvgSPDtotal" {
+                                let d = nestedDictionary["fb_timAvgSPDtotal"] as! Double
+                                let e = nestedDictionary["fb_timName"] as! String!
+                                let f = nestedDictionary["fb_scoreHRTotal"] as! Double!
+                                
+                                speed_string_array_total.append(String(describing: d) + " MPH  " + "\n" + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
+                            }
+                            
+                        }
+                    }
+                }
+                //at the end
+                
+                
+                //now sort the string array
+                score_string_array_total.sort { $0 > $1 }
+                //                print("Sorted score array_total")
+                //                print(score_string_array_total)
+                
+                speed_string_array_total.sort { $0.compare($1, options: .numeric) == .orderedDescending }
+                //                print("Sorted speed array_total")
+                //                print(speed_string_array_total)
+            }
+        }).resume()
+    
+    }
+    // end of get total data
+    
     func getRoundData() {
     
         //print("httpGet Started")
@@ -32,17 +87,12 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                //print(2)
-                //print(jsonObj as Any)
                 
                 for (key, _) in jsonObj! {
-                    //print(3)
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
-                        //print(4)
                         for(key, _) in nestedDictionary {
-                            //print(5)
-                            
+  
                             if key == "fb_RND" {
                                 let a = nestedDictionary["fb_RND"] as! Double
                                 let b = nestedDictionary["fb_timName"] as! String!
@@ -67,30 +117,65 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 //now sort the string array
                 score_string_array.sort { $0 > $1 }
-                print("Sorted score array")
-                print(score_string_array)
+//                print("Sorted score array")
+//                print(score_string_array)
                 
                 speed_string_array.sort { $0.compare($1, options: .numeric) == .orderedDescending }
-                print("Sorted speed array")
-                print(speed_string_array)
-                
-                
-                
+//                print("Sorted speed array")
+//                print(speed_string_array)
             }
         }).resume()
-        //print(8)
-        
     }
     
     @IBAction func btn_totalScore(_ sender: UIButton) {
         
         //get & parse total score data
+        if ConnectionCheck.isConnectedToNetwork() {
+            getTotalData()
+            let when = DispatchTime.now() + 3
+            DispatchQueue.main.asyncAfter(deadline: when){
+                
+                tempArrHR1 = []
+                tempArrSPD1 = []
+                tempArrScore1 = []
+                ctrArray = []
+                tempArrHR1 = score_string_array_total
+                tempArrSPD1 = score_string_array_total
+                tempArrScore1 = score_string_array_total
+                
+                ctrArray = Array(1...tempArrHR1.count)
+                self.myTableView.reloadData()
+                score_string_array_total = []
+                speed_string_array_total = []
+            }
+            
+        }
         
     }
     
     @IBAction func btn_totalSpeed(_ sender: UIButton) {
         
-        //get & parse total score data
+        //get & parse total speed data
+        if ConnectionCheck.isConnectedToNetwork() {
+            getTotalData()
+            let when = DispatchTime.now() + 3
+            DispatchQueue.main.asyncAfter(deadline: when){
+                
+                tempArrHR1 = []
+                tempArrSPD1 = []
+                tempArrScore1 = []
+                ctrArray = []
+                tempArrHR1 = speed_string_array_total
+                tempArrSPD1 = speed_string_array_total
+                tempArrScore1 = speed_string_array_total
+                
+                ctrArray = Array(1...tempArrHR1.count)
+                self.myTableView.reloadData()
+                score_string_array_total = []
+                speed_string_array_total = []
+            }
+            
+        }
     }
     
     //use sorted speed array
