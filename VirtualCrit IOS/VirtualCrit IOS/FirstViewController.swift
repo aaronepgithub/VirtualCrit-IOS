@@ -38,6 +38,18 @@ extension UIViewController {
         synth.speak(utterance)
     }
     
+    func EndofRoundSpeaker() {
+        
+        let str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
+        let synth = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: str)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        let lang = "en-US"
+        
+        utterance.voice = AVSpeechSynthesisVoice(language: lang)
+        synth.speak(utterance)
+    }
+    
 }
 
 
@@ -45,7 +57,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_Round(_ sender: UIButton) {
         
-        mySpeaker()
+        EndofRoundSpeaker()
         dockView1_open()
         
     }
@@ -95,32 +107,27 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
-            
-            
-            if ConnectionCheck.isConnectedToNetwork() {
-                print("Connected")
-                print("httpPost")
-                httpPost()
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                    self.dockView1.removeFromSuperview()
+                    self.httpPost()
+                    print("httpPost")
+                })
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
                     self.httpPut()
                     print("httpPut")
                 })
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
-                    self.dockView1.removeFromSuperview()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
+                    
                     self.httpGet()
                     print("httpGet")
                 })
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
                     self.httpGetTotals()
                     print("httpGetTotals")
                 })
-            }
-            else{
-                print("Disconnected")
-            }
-            
             
         }
         else{
@@ -163,14 +170,20 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         alert(message: "", title: "Starting")
         
         if ConnectionCheck.isConnectedToNetwork() {
-            httpPost()
-            httpPut()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+            self.httpPost()
+            })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
-                self.httpGetTotals()
-                self.httpGet()
-                print("httpGetTotals")
+            self.httpPut()
             })
+            
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+//                self.httpGetTotals()
+//                self.httpGet()
+//                print("httpGetTotals")
+//            })
             
             
         }
@@ -270,25 +283,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrSPD.append(Rounds.avg_speed)
         AllRounds.arrCAD.append(Rounds.avg_cadence)
         
+        
         dockView1_open()
         
 
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
-            print("httpPost")
-            httpPost()
+
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                print("httpPost")
+                self.httpPost()
+            })
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
                 self.httpPut()
                 print("httpPut")
             })
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
                 self.dockView1.removeFromSuperview()
                 self.httpGet()
                 print("httpGet")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(25), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
                 self.httpGetTotals()
                 print("httpGetTotals")
             })
@@ -379,6 +397,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     func dockView1_open() {
+        
+        // CHANGE TO PULLING LR FROM ARRAY
+        
+        //EndofRoundSpeaker()
+        
+        
         dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
         dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
         dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
@@ -946,7 +970,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
         let url = NSURL(string: todosEndpoint)
         
-        //print(1)
+        if ConnectionCheck.isConnectedToNetwork() {
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
@@ -988,7 +1012,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
             }
         }).resume()
-        //print(8)
+        }
+        
             }
     
     
@@ -1007,6 +1032,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + ".json"
         let url = NSURL(string: todosEndpoint)
 
+        if ConnectionCheck.isConnectedToNetwork() {
+        
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
@@ -1064,9 +1091,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 print(self.scoresArrayTotal)
                 print(self.speedsArrayTotal)
                 
-                
             }
         }).resume()
+            
+        }
+        
+        
+        
         //print(8)
     
     }
@@ -1167,10 +1198,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         
+        if ConnectionCheck.isConnectedToNetwork() {
         //execute
         let session = URLSession.shared
         let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
         task.resume()
+        }
+        
         
         
     }
@@ -1230,10 +1264,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         
+            if ConnectionCheck.isConnectedToNetwork() {
         //execute
         let session = URLSession.shared
         let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
         task.resume()
+            }
         
     
     }

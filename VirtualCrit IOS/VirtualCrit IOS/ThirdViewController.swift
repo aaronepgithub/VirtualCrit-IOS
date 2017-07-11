@@ -32,15 +32,13 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         let url = NSURL(string: todosEndpoint)
         
         //print(1)
+        if ConnectionCheck.isConnectedToNetwork() {
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
                 
                 if jsonObj == nil {
                     return
                 }
-                
-                
                 for (key, _) in jsonObj! {
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
@@ -61,23 +59,17 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                                 
                                 speed_string_array_total.append(String(describing: d) + " MPH  " + "\n" + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
                             }
-                            
                         }
                     }
                 }
                 //at the end
-                
-                
                 //now sort the string array
                 score_string_array_total.sort { $0 > $1 }
-                //                print("Sorted score array_total")
-                //                print(score_string_array_total)
-                
                 speed_string_array_total.sort { $0.compare($1, options: .numeric) == .orderedDescending }
-                //                print("Sorted speed array_total")
-                //                print(speed_string_array_total)
+
             }
         }).resume()
+        }
     
     }
     // end of get total data
@@ -117,21 +109,12 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                                 
                                 speed_string_array.append(String(describing: d) + " MPH  " + "\n" + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
                             }
-                            
                         }
                     }
                 }
                 //at the end
-                
-                
-                //now sort the string array
                 score_string_array.sort { $0 > $1 }
-//                print("Sorted score array")
-//                print(score_string_array)
-                
                 speed_string_array.sort { $0.compare($1, options: .numeric) == .orderedDescending }
-//                print("Sorted speed array")
-//                print(speed_string_array)
             }
         }).resume()
     }
@@ -141,7 +124,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         //get & parse total score data
         if ConnectionCheck.isConnectedToNetwork() {
             getTotalData()
-            let when = DispatchTime.now() + 3
+            let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -167,7 +150,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         //get & parse total speed data
         if ConnectionCheck.isConnectedToNetwork() {
             getTotalData()
-            let when = DispatchTime.now() + 3
+            let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -194,7 +177,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         if ConnectionCheck.isConnectedToNetwork() {
             getRoundData()
-            let when = DispatchTime.now() + 3
+            let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -222,7 +205,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         if ConnectionCheck.isConnectedToNetwork() {
             getRoundData()
-            let when = DispatchTime.now() + 3
+            let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
 
                 tempArrHR1 = []
