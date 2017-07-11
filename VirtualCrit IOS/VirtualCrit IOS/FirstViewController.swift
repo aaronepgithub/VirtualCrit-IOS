@@ -28,14 +28,14 @@ extension UIViewController {
     
     func mySpeaker() {
     
-        let speechSynthesizer = AVSpeechSynthesizer()
+        let str = "Hello Kazumi" 
+        let synth = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: str)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        let lang = "en-US"
         
-        
-        let speechUtterance = AVSpeechUtterance(string: "Hello Kazumi.  How are you feeling this morning?")
-        speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
-        speechUtterance.rate = 0.5
-        
-        speechSynthesizer.speak(speechUtterance)
+        utterance.voice = AVSpeechSynthesisVoice(language: lang)
+        synth.speak(utterance)
     }
     
 }
