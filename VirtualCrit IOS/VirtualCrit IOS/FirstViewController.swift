@@ -40,6 +40,8 @@ extension UIViewController {
     
     func EndofRoundSpeaker() {
         
+        //TODO, GET FROM LAST ROUND ARR
+        
         let str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
         let synth = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: str)
@@ -48,6 +50,8 @@ extension UIViewController {
         
         utterance.voice = AVSpeechSynthesisVoice(language: lang)
         synth.speak(utterance)
+        print("Running in BG")
+        print("Rounds.avg_score  \(Rounds.avg_score)")
     }
     
 }
@@ -56,10 +60,7 @@ extension UIViewController {
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     @IBAction func btn_Round(_ sender: UIButton) {
-        
-        EndofRoundSpeaker()
         dockView1_open()
-        
     }
     
 
@@ -182,13 +183,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             self.httpPut()
             })
             
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-//                self.httpGetTotals()
-//                self.httpGet()
-//                print("httpGetTotals")
-//            })
-            
-            
         }
         
         
@@ -286,7 +280,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrSPD.append(Rounds.avg_speed)
         AllRounds.arrCAD.append(Rounds.avg_cadence)
         
-        
+        EndofRoundSpeaker()
         dockView1_open()
         
 
@@ -401,12 +395,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     func dockView1_open() {
-        
-        // CHANGE TO PULLING LR FROM ARRAY
-        
-        //EndofRoundSpeaker()
-        
-        
+
         dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
         dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
         dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
