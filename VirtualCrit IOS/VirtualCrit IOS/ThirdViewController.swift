@@ -36,6 +36,11 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
                 
+                if jsonObj == nil {
+                    return
+                }
+                
+                
                 for (key, _) in jsonObj! {
                     
                     if let nestedDictionary = jsonObj?[key] as? [String: Any] {
@@ -87,6 +92,10 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+                
+                if jsonObj == nil {
+                    return
+                }
                 
                 for (key, _) in jsonObj! {
                     
@@ -169,6 +178,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = speed_string_array_total
                 tempArrScore1 = speed_string_array_total
                 
+                if tempArrHR1.count == 0 {return}
+                
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
                 score_string_array_total = []
@@ -195,6 +206,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = speed_string_array
                 tempArrScore1 = speed_string_array
                 
+                if tempArrHR1.count == 0 {return}
+                
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
                 score_string_array = []
@@ -220,6 +233,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = score_string_array
                 tempArrScore1 = score_string_array
                 
+                if tempArrHR1.count == 0 {return}
+                
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
                 score_string_array = []
@@ -244,6 +259,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             tempArrHR1 = tempArrHR
             tempArrSPD1 = tempArrSPD
             tempArrScore1 = tempArrSPD
+            
+            if tempArrHR1.count == 0 {return}
+            
             ctrArray = Array(1...tempArrSPD.count)
             myTableView.reloadData()
             
@@ -264,6 +282,10 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             tempArrHR1 = tempArrHR
             tempArrSPD1 = tempArrSPD
             tempArrScore1 = tempArrScore
+            
+            if tempArrHR1.count == 0 {return}
+            
+            
             ctrArray = Array(1...tempArrHR.count)
             myTableView.reloadData()
             

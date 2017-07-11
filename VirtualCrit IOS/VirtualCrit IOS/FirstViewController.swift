@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import AVFoundation
 
 
 
@@ -25,6 +26,18 @@ extension UIViewController {
         }
     }
     
+    func mySpeaker() {
+    
+        let speechSynthesizer = AVSpeechSynthesizer()
+        
+        
+        let speechUtterance = AVSpeechUtterance(string: "Hello Kazumi.  How are you feeling this morning?")
+        speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        speechUtterance.rate = 0.5
+        
+        speechSynthesizer.speak(speechUtterance)
+    }
+    
 }
 
 
@@ -32,9 +45,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_Round(_ sender: UIButton) {
         
+        mySpeaker()
         dockView1_open()
         
     }
+    
+
+    
     
     
     @IBOutlet var dockView1: UIView!
@@ -78,6 +95,33 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
+            
+            
+            if ConnectionCheck.isConnectedToNetwork() {
+                print("Connected")
+                print("httpPost")
+                httpPost()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    self.httpPut()
+                    print("httpPut")
+                })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+                    self.dockView1.removeFromSuperview()
+                    self.httpGet()
+                    print("httpGet")
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
+                    self.httpGetTotals()
+                    print("httpGetTotals")
+                })
+            }
+            else{
+                print("Disconnected")
+            }
+            
+            
         }
         else{
             print("disConnected")
@@ -124,11 +168,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
                 self.httpGetTotals()
+                self.httpGet()
                 print("httpGetTotals")
             })
             
             
         }
+        
         
         if hasPressedStart == true {
             print("already started")
@@ -907,6 +953,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //print(2)
                 //print(jsonObj as Any)
                 
+                if jsonObj == nil {
+                    return
+                }
+                
                 for (key, _) in jsonObj! {
                     //print(3)
                     
@@ -961,6 +1011,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
                 print(jsonObj as Any)
+                
+                if jsonObj == nil {
+                    return
+                }
                 
                 for (key, _) in jsonObj! {
                     //print("key \(key)")
