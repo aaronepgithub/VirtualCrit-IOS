@@ -105,29 +105,32 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        AllRounds.arrHR.append(0)
+        AllRounds.arrSPD.append(0)
+        
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     self.dockView1.removeFromSuperview()
                     self.httpPost()
                     print("httpPost")
                 })
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
                     self.httpPut()
                     print("httpPut")
                 })
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
                     
                     self.httpGet()
                     print("httpGet")
                 })
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
-                    self.httpGetTotals()
-                    print("httpGetTotals")
-                })
+//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
+//                    self.httpGetTotals()
+//                    print("httpGetTotals")
+//                })
             
         }
         else{
@@ -218,8 +221,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             Totals.startTime = NSDate()
             Rounds.roundStartTime = NSDate()
             
-            AllRounds.arrHR.append(0)
-            AllRounds.arrSPD.append(0)
+//            AllRounds.arrHR.append(0)
+//            AllRounds.arrSPD.append(0)
         }
         
             hasPressedStart = true
@@ -273,11 +276,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.roundsComplete += 1
         Totals.arrHRTotal.append(Rounds.avg_hr)
         
-        if AllRounds.arrHR[0] == 0 && AllRounds.arrSPD[0] == 0 {
-        AllRounds.arrHR = []
-        AllRounds.arrSPD = []
-        AllRounds.arrCAD = []
-        }
+//        if AllRounds.arrHR[0] == 0 && AllRounds.arrSPD[0] == 0 {
+//        AllRounds.arrHR = []
+//        AllRounds.arrSPD = []
+//        AllRounds.arrCAD = []
+//        }
         
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
@@ -292,6 +295,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                self.dockView1.removeFromSuperview()
                 print("httpPost")
                 self.httpPost()
             })
@@ -302,14 +306,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
-                self.dockView1.removeFromSuperview()
+                
                 self.httpGet()
                 print("httpGet")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
-                self.httpGetTotals()
-                print("httpGetTotals")
-            })
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
+//                self.httpGetTotals()
+//                print("httpGetTotals")
+//            })
         }
         else{
             print("Disconnected")
@@ -998,7 +1002,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                                 let x = nestedDictionary["fb_RND"] as! Double!
                                 //print(x!)
                                 if x! > self.roundLeaderScore {
-                                    print(x!)
+                                    //print(x!)
                                     self.roundLeaderScore = x!
                                     let y = nestedDictionary["fb_timName"] as! String!
                                     self.roundLeaderName = y!
@@ -1017,90 +1021,79 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
     
     
-    func httpGetTotals() {
-        
-        totalLeaderScore = 0
-        totalLeaderName = "..."
-        namesArrayTotal = []
-        speedsArrayTotal = []
-        scoresArrayTotal = []
-        
-    
-        print("httpGetTotals Started")
-        
-        //let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
-        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + ".json"
-        let url = NSURL(string: todosEndpoint)
-
-        if ConnectionCheck.isConnectedToNetwork() {
-        
-        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            
-            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                print(jsonObj as Any)
-                
-                if jsonObj == nil {
-                    return
-                }
-                
-                for (key, _) in jsonObj! {
-                    //print("key \(key)")
-                    
-                    if let nestedDictionary = jsonObj?[key] as? [String: Any] {
-                        
-                        for(key, _) in nestedDictionary {
-                            //print("key \(key)")
-                            
-                            if key == "fb_scoreHRTotal" {
-                                //print("key == fb_scoreHRTotal")
-                                
-                                self.namesArrayTotal.append(nestedDictionary["fb_timName"] as! String!)
-                                self.speedsArrayTotal.append(nestedDictionary["fb_timAvgSPDtotal"] as! Double!)
-                                self.scoresArrayTotal.append(nestedDictionary["fb_scoreHRTotal"] as! Double!)
-                                let x = nestedDictionary["fb_scoreHRTotal"] as! Double!
-                                //print(x!)
-                                if x! > self.totalLeaderScore {
-                                    //print(x!)
-                                    self.totalLeaderScore = x!
-                                    let y = nestedDictionary["fb_timName"] as! String!
-                                    self.totalLeaderName = y!
-                                    //print(x!, y!)
-                                }
-                                
-                                let xx = nestedDictionary["fb_timAvgSPDtotal"] as! Double!
-                                //print(x!)
-                                if xx! > self.totalLeaderSpeed {
-                                    //print(x!)
-                                    self.totalLeaderSpeed = xx!
-                                    let yy = nestedDictionary["fb_timName"] as! String!
-                                    self.totalLeaderNameSpeed = yy!
-                                    //print(xx!, yy!)
-                                }
-                                
-                                
-                                
-                            }
-                            
-                            
-                        }
-                    }
-                }
-                //at the end
-                print(self.totalLeaderName, self.totalLeaderScore)
-                print(self.namesArrayTotal)
-                print(self.scoresArrayTotal)
-                print(self.speedsArrayTotal)
-                
-            }
-        }).resume()
-            
-        }
-        
-        
-        
-        //print(8)
-    
-    }
+//    func httpGetTotals() {
+//        
+//        totalLeaderScore = 0
+//        totalLeaderName = "..."
+//        namesArrayTotal = []
+//        speedsArrayTotal = []
+//        scoresArrayTotal = []
+//
+//        print("httpGetTotals Started")
+//        
+//        //let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
+//        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + ".json"
+//        let url = NSURL(string: todosEndpoint)
+//
+//        if ConnectionCheck.isConnectedToNetwork() {
+//        
+//        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+//            
+//            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+//                print(jsonObj as Any)
+//                
+//                if jsonObj == nil {
+//                    return
+//                }
+//                
+//                for (key, _) in jsonObj! {
+//                    //print("key \(key)")
+//                    
+//                    if let nestedDictionary = jsonObj?[key] as? [String: Any] {
+//                        
+//                        for(key, _) in nestedDictionary {
+//                            //print("key \(key)")
+//                            
+//                            if key == "fb_scoreHRTotal" {
+//                                //print("key == fb_scoreHRTotal")
+//                                
+//                                self.namesArrayTotal.append(nestedDictionary["fb_timName"] as! String!)
+//                                self.speedsArrayTotal.append(nestedDictionary["fb_timAvgSPDtotal"] as! Double!)
+//                                self.scoresArrayTotal.append(nestedDictionary["fb_scoreHRTotal"] as! Double!)
+//                                let x = nestedDictionary["fb_scoreHRTotal"] as! Double!
+//                                //print(x!)
+//                                if x! > self.totalLeaderScore {
+//                                    //print(x!)
+//                                    self.totalLeaderScore = x!
+//                                    let y = nestedDictionary["fb_timName"] as! String!
+//                                    self.totalLeaderName = y!
+//                                    //print(x!, y!)
+//                                }
+//                                
+//                                let xx = nestedDictionary["fb_timAvgSPDtotal"] as! Double!
+//                                //print(x!)
+//                                if xx! > self.totalLeaderSpeed {
+//                                    //print(x!)
+//                                    self.totalLeaderSpeed = xx!
+//                                    let yy = nestedDictionary["fb_timName"] as! String!
+//                                    self.totalLeaderNameSpeed = yy!
+//                                    //print(xx!, yy!)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                //at the end
+//                print(self.totalLeaderName, self.totalLeaderScore)
+//                print(self.namesArrayTotal)
+//                print(self.scoresArrayTotal)
+//                print(self.speedsArrayTotal)
+//                
+//            }
+//        }).resume()
+//            
+//        }
+//    }
     
 
         
@@ -1149,16 +1142,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         var todosUrlRequest = URLRequest(url: todosURL)
         todosUrlRequest.httpMethod = "POST"
         
-        let a = Rounds.avg_hr / Device.maxHR * 100
-        let x = "\(String(format:"%.1f", Rounds.avg_hr))"
-        let y = "\(String(format:"%.1f", Rounds.avg_speed))"
-        let z = "\(String(format:"%.1f", a))"
+        let aa = AllRounds.arrHR.last
+        let ab = aa! / Device.maxHR * 100
+        let xx = "\(String(format:"%.1f", aa!))"
+        let yy = "\(String(format:"%.1f", AllRounds.arrSPD.last!))"
+        let zz = "\(String(format:"%.1f", ab))"
+        
+        
+        
+//        let a = Rounds.avg_hr / Device.maxHR * 100
+//        let x = "\(String(format:"%.1f", Rounds.avg_hr))"
+//        let y = "\(String(format:"%.1f", Rounds.avg_speed))"
+//        let z = "\(String(format:"%.1f", a))"
         
         let newTodo: [String: Any] = [
-            "a_scoreRoundLast": Double(z) ?? 0,
-            "a_speedRoundLast": Double(y) ?? 0,
+            "a_scoreRoundLast": Double(zz) ?? 0,
+            "a_speedRoundLast": Double(yy) ?? 0,
             "a_cadenceRoundLast": 1,
-            "a_heartrateRoundLast": Double(x) ?? 0,
+            "a_heartrateRoundLast": Double(xx) ?? 0,
             "a_calcDurationPost": Totals.displayedTime,
             "a_timName": Settings.riderName,
             "a_timGroup": "IOS",
@@ -1166,19 +1167,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             "a_Date": Settings.dateToday,
             "a_DateNow": Settings.dateToday,
             "a_lastCAD": 1,
-            "a_lastHR": Double(x) ?? 0,
+            "a_lastHR": Double(xx) ?? 0,
             "a_timDistanceTraveled": 1,
-            "a_maxHRTotal": Double(x) ?? 0,
+            "a_maxHRTotal": Double(Device.maxHR) ,
             "fb_CAD":0,
             "fb_Date":Settings.dateToday,
             "fb_DateNow":"1494517025335",
-            "fb_HR":Double(x) ?? 0,
-            "fb_RND":Double(z) ?? 0,
-            "fb_SPD":Double(y) ?? 0,
+            "fb_HR":Double(xx) ?? 0,
+            "fb_RND":Double(zz) ?? 0,
+            "fb_SPD":Double(yy) ?? 0,
             "fb_maxHRTotal":Device.maxHR,
-            "fb_scoreHRRound":Double(z) ?? 0,
-            "fb_scoreHRRoundLast":Double(z) ?? 0,
-            "fb_scoreHRTotal":Double(z) ?? 0,
+            "fb_scoreHRRound":Double(zz) ?? 0,
+            "fb_scoreHRRoundLast":Double(zz) ?? 0,
+            "fb_scoreHRTotal":Double(zz) ?? 0,
             "fb_timAvgCADtotal":0,
             "fb_timAvgHRtotal":0,
             "fb_timAvgSPDtotal":0,

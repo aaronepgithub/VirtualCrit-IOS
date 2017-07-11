@@ -124,7 +124,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         //get & parse total score data
         if ConnectionCheck.isConnectedToNetwork() {
             getTotalData()
-            let when = DispatchTime.now() + 5
+            let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -150,7 +150,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         //get & parse total speed data
         if ConnectionCheck.isConnectedToNetwork() {
             getTotalData()
-            let when = DispatchTime.now() + 5
+            let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -177,7 +177,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         if ConnectionCheck.isConnectedToNetwork() {
             getRoundData()
-            let when = DispatchTime.now() + 5
+            let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -205,7 +205,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         if ConnectionCheck.isConnectedToNetwork() {
             getRoundData()
-            let when = DispatchTime.now() + 5
+            let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
 
                 tempArrHR1 = []
