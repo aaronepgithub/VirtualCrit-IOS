@@ -135,13 +135,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
         }
         else{
-            print("disConnected")
+            print("Disconnected")
         }
         
-        //print("view did load on First VC")
         
         Device.wheelCircumference = 2105
-        print(Device.wheelCircumference as Any)
+        //print(Device.wheelCircumference as Any)
         
         //set date
         let date = Date()
@@ -149,8 +148,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         formatter.dateFormat = "yyyyMMdd"
         Settings.dateToday = formatter.string(from: date)
         
-        
-        // Do any additional setup after loading the view, typically from a nib.
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
     }
@@ -170,28 +167,23 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     @IBAction func btn_action_start(_ sender: UIButton) {
-        
         alert(message: "", title: "Starting")
         
         if ConnectionCheck.isConnectedToNetwork() {
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
             self.httpPost()
             })
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
             self.httpPut()
             })
-            
         }
-        
         
         if hasPressedStart == true {
             print("already started")
             return
         }
         
-        let secondsPerRound = 300.0
+        //let secondsPerRound = 300.0
 
         
         Rounds.roundStartTime = NSDate()
@@ -199,17 +191,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.totalWheelEventTime = 0
         Rounds.arrHRRound = []
         
-        
-//        lbl_button_start.setTitle("Stop", for: .normal)
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
         
-        if timerTotal == nil {
-            timerTotal = Timer()
-            timerRound = Timer()
+        if timerEachSecond == nil {
+//            timerTotal = Timer()
+//            timerRound = Timer()
             timerEachSecond = Timer()
             
-            timerTotal = Timer.scheduledTimer(timeInterval: 1.00, target: self, selector: #selector(updateTimerTotal), userInfo: nil, repeats: true)
-            timerRound = Timer.scheduledTimer(timeInterval: secondsPerRound, target: self, selector: #selector(updateTimerRound), userInfo: nil, repeats: true)
+//            timerTotal = Timer.scheduledTimer(timeInterval: 1.00, target: self, selector: #selector(updateTimerTotal), userInfo: nil, repeats: true)
+//            timerRound = Timer.scheduledTimer(timeInterval: secondsPerRound, target: self, selector: #selector(updateTimerRound), userInfo: nil, repeats: true)
             timerEachSecond = Timer.scheduledTimer(timeInterval: 0.10, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
             
             Totals.startTime = NSDate()
@@ -241,32 +231,25 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     public func updateTimerTotal() {
-        //Each second, update
-        
-        Totals.totalTimeInSeconds += 1
-        //if Totals.totalTimeInSeconds == 10 {dockView1_open()}
-        
-        
-        Totals.arrHRTotal.append(Device.currentHeartrate)
-        Rounds.arrHRRound.append(Device.currentHeartrate)
-        
-        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-            return $0 + $1/Double(Rounds.arrHRRound.count)
-        }
-        
-        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-            return $0 + $1/Double(Totals.arrHRTotal.count)
-        }
-        
-        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
-        
-        
+//        //Each second, update
+//        
+//        Totals.totalTimeInSeconds += 1
+//
+//        Totals.arrHRTotal.append(Device.currentHeartrate)
+//        Rounds.arrHRRound.append(Device.currentHeartrate)
+//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
+//            return $0 + $1/Double(Rounds.arrHRRound.count)
+//        }
+//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
+//            return $0 + $1/Double(Totals.arrHRTotal.count)
+//        }
+//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+//        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
     }
     
-    public func updateTimerRound() {
+    func updateTimerRound() {
         //every seconds per round (300)
-        //print("updateTimerRound")
+        print("updateTimerRound")
         Rounds.roundsComplete += 1
         Totals.arrHRTotal.append(Rounds.avg_hr)
         
@@ -279,10 +262,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         AllRounds.arrCAD.append(Rounds.avg_cadence)
-        
-        EndofRoundSpeaker()
-        dockView1_open()
-        
+
 
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
@@ -315,8 +295,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
 
-        
-
         Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
@@ -333,11 +311,32 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         timeDeltaMS = 0.0
         
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
+        dockView1_open()
+        EndofRoundSpeaker()
         
     }
     
+    func eachSecondUpdateFctn() {
+        //Each second, update
+        
+        Totals.totalTimeInSeconds += 1
+        
+        Totals.arrHRTotal.append(Device.currentHeartrate)
+        Rounds.arrHRRound.append(Device.currentHeartrate)
+        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
+            return $0 + $1/Double(Rounds.arrHRRound.count)
+        }
+        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
+            return $0 + $1/Double(Totals.arrHRTotal.count)
+        }
+        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
     
-    public func updateTimerEachSecond() {
+    
+    }
+    
+    
+    func updateTimerEachSecond() {
         //every .1 second
         //print("updateTimerEachSecond")
         let x = NSDate()
@@ -351,6 +350,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         timeNewMS += 100
         //print(timeNewMS)
+        if timeNewMS == (1 * 1000) {
+            eachSecondUpdateFctn()
+        }
         
         if timeNewMS == (60 * 1000) {
             lbl_button_start.setTitle(" 🔴🔴🔴🔴", for: .normal)
@@ -373,21 +375,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if timeNewMS == (290 * 1000) {
             lbl_button_start.setTitle("   🕙", for: .normal)
         }
+        if timeNewMS == (300 * 1000) {
+            print("300 Seconds Elapsed")
+            timeNewMS = 0
+            updateTimerRound()
+        }
         
         
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         Totals.displayedTime = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
-        
         Totals.currentTime = x
-        
-        // change to score during round
-        //Int((round(Double(newValue) / 185 * 100))))
+
         Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-        //print(Rounds.avg_score)
-        
-//        lbl_round_hr.text = "\(String(format:"%.1f", Rounds.avg_hr)) Bpm"
-//        lbl_round_speed.text = "\(String(format:"%.1f", Rounds.avg_speed)) Mph"
         
         lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
         lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"

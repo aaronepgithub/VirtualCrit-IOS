@@ -152,6 +152,9 @@ class SecondViewController: UIViewController {
         requestMAXHR()
     }
     
+    
+    
+    
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
         let formater = DateFormatter()
         //        formater.dateFormat = "HH:mm:ss.SS"
@@ -194,60 +197,6 @@ class SecondViewController: UIViewController {
         lbl_currentCadence.text = "\(String(format:"%.0f", Device.currentCadence)) RPM"
         
         
-        
-        // start ct
-        
-//        if ctPaceTimeInSeconds > 1 {
-//            ctPaceTimeInSeconds -= 1 //based on timer increments
-//            
-//            let z = ctPaceTimeInSeconds
-//            let hr = Int(z) / 3600
-//            let mn = Int(z) / 60 % 60
-//            let sc = Int(z) % 60
-            //let timeString = String(hr) + " : " + String(mn) + " : " + String(sc)
-            //print ("time in sec \(z)")
-            
-            //lbl_ctTimer.text = timeString
-
-            //let x = ctDistance
-            //print("miles traveled \(x)") //
-            //lbl_ctDistance.text = "\(String(format:"%.2f", x)) Mi"
-            
-
-            //let y = Double(targetMilesPerSecond) * Double(1200 - z) // miles that should have been traveled
-            //print("targetMiles \(y)")
-
-            
-            
-            //let w = (x - y)
-            //print("actual miles - target miles \(w)")
-            
-            //if w > 0 {
-                //print("ahead")
-                //ctPace.text = "Ahead  \(String(format:"%.2f", w))"
-            //} else {
-                //let absW = abs(w)
-                //print("behind")
-                //ctPace.text = "Behind \(String(format:"%.2f", absW))"
-                
-            //}
-            
-            
-        
-        
-        //} else {
-        
-//            ctPace.text = "Done"
-//            lbl_ctDistance.text = "..."
-//            lbl_ctTimer.text = "..."
-            
-        //}
-        
-
-        
-        // end ct
-        
-        
         let tempHR = AllRounds.arrHR.reversed()
         let tempSPD = AllRounds.arrSPD.reversed()
         var stringHR = ""
@@ -281,7 +230,6 @@ class SecondViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         updateUI()
-        
         updateUITimer = Timer()
         updateUITimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
