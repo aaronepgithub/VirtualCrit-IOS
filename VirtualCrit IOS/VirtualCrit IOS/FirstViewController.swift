@@ -26,9 +26,33 @@ extension UIViewController {
         }
     }
     
-    func mySpeaker() {
+
     
-        let str = "Hello Kazumi" 
+}
+
+
+class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
+    
+    
+//    var timerTotal: Timer!
+//    var timerRound: Timer!
+    var timerEachSecond: Timer!
+    
+    var msCounter = 1
+    var roundCounter = 1
+    var timeNewMS = 0.0
+    
+
+    
+    @IBAction func btn_Round(_ sender: UIButton) {
+        dockView1_open()
+    }
+    
+
+    
+    func mySpeaker() {
+        
+        let str = "Hello Kazumi"
         let synth = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: str)
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
@@ -54,28 +78,11 @@ extension UIViewController {
         print("Rounds.avg_score  \(Rounds.avg_score)")
     }
     
-}
-
-
-class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
-    
-    @IBAction func btn_Round(_ sender: UIButton) {
-        dockView1_open()
-    }
-    
-
-    
-    
-    
     @IBOutlet var dockView1: UIView!
     @IBOutlet weak var dock1_lastSpeed: UILabel!
     @IBOutlet weak var dock1_lastScore: UILabel!
     @IBOutlet weak var dock1_lastCadence: UILabel!
     
-    var timeNewMS = 0.0
-    var timeOldMS = 0.0
-    var timeDeltaMS = 0.0
-
     @IBOutlet weak var lbl_TotalTime: UILabel!
     @IBOutlet weak var lbl_RoundTime: UILabel!
     
@@ -85,7 +92,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var lbl_Score: UILabel!
     
     @IBOutlet weak var lbl_Distance: UILabel!
-    
 
     @IBOutlet weak var lbl_round_speed: UILabel!
     @IBOutlet weak var lbl_round_hr: UILabel!
@@ -186,7 +192,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         //let secondsPerRound = 300.0
 
         
-        Rounds.roundStartTime = NSDate()
+        //Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
         Rounds.arrHRRound = []
@@ -194,16 +200,28 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
         
         if timerEachSecond == nil {
-//            timerTotal = Timer()
-//            timerRound = Timer()
+
             timerEachSecond = Timer()
-            
-//            timerTotal = Timer.scheduledTimer(timeInterval: 1.00, target: self, selector: #selector(updateTimerTotal), userInfo: nil, repeats: true)
-//            timerRound = Timer.scheduledTimer(timeInterval: secondsPerRound, target: self, selector: #selector(updateTimerRound), userInfo: nil, repeats: true)
-            timerEachSecond = Timer.scheduledTimer(timeInterval: 0.10, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
+            timerEachSecond = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
             
             Totals.startTime = NSDate()
             Rounds.roundStartTime = NSDate()
+            
+            
+            
+//            // get the current date and time
+//            let currentDateTime = Date()
+//            // initialize the date formatter and set the style
+//            let formatter = DateFormatter()
+//            formatter.timeStyle = .medium
+//            formatter.dateStyle = .long
+//            // get the date time String from the date object
+//            print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
+            
+            
+            
+            
+            
             
 //            AllRounds.arrHR.append(0)
 //            AllRounds.arrSPD.append(0)
@@ -223,14 +241,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func dateStringFromTimeIntervalRound(timeInterval : TimeInterval) -> String{
         let formater = DateFormatter()
-                formater.dateFormat = "mm:ss.S"
+                formater.dateFormat = "mm:ss"
         //formater.dateFormat = "HH:mm:ss"
         formater.timeZone = NSTimeZone(name: "GMT") as TimeZone!
         let date = Date(timeIntervalSince1970: timeInterval)
         return formater.string(from: date as Date)
     }
     
-    public func updateTimerTotal() {
+//    public func updateTimerTotal() {
 //        //Each second, update
 //        
 //        Totals.totalTimeInSeconds += 1
@@ -245,12 +263,26 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        }
 //        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
 //        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
-    }
+//    }
     
     func updateTimerRound() {
         //every seconds per round (300)
-        print("updateTimerRound")
-        Rounds.roundsComplete += 1
+        Rounds.roundsComplete = 1 + Rounds.roundsComplete
+
+
+        
+        // get the current date and time
+        let currentDateTime = Date()
+        // initialize the date formatter and set the style
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .long
+        // get the date time String from the date object
+        print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
+        
+        
+        
+        
         Totals.arrHRTotal.append(Rounds.avg_hr)
         
 //        if AllRounds.arrHR[0] == 0 && AllRounds.arrSPD[0] == 0 {
@@ -262,11 +294,26 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         AllRounds.arrCAD.append(Rounds.avg_cadence)
+        
 
 
+        Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
+        Rounds.arrHRRound = []
+        Rounds.crankRevolutionTime = 0
+        Rounds.crankRevolutions = 0
+        lbl_Speed.text = "..."
+        lbl_Cadence.text = "..."
+        lbl_Heartrate.text = "..."
+        lbl_Score.text = "..."
+
+        lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
+        EndofRoundSpeaker()
+        dockView1_open()
+        
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
-
+            
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
                 self.dockView1.removeFromSuperview()
@@ -284,42 +331,25 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 self.httpGet()
                 print("httpGet")
             })
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
-//                self.httpGetTotals()
-//                print("httpGetTotals")
-//            })
+            //            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
+            //                self.httpGetTotals()
+            //                print("httpGetTotals")
+            //            })
         }
         else{
             print("Disconnected")
         }
         
-
-
-        Rounds.roundStartTime = NSDate()
-        Rounds.distanceRound = 0
-        Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = []
-        Rounds.crankRevolutionTime = 0
-        Rounds.crankRevolutions = 0
-        lbl_Speed.text = "..."
-        lbl_Cadence.text = "..."
-        lbl_Heartrate.text = "..."
-        lbl_Score.text = "..."
         
-        timeNewMS = 0.0
-        timeOldMS = 0.0
-        timeDeltaMS = 0.0
-        
-        lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
-        dockView1_open()
-        EndofRoundSpeaker()
         
     }
     
     func eachSecondUpdateFctn() {
         //Each second, update
         
-        Totals.totalTimeInSeconds += 1
+        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
+        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
+        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
         
         Totals.arrHRTotal.append(Device.currentHeartrate)
         Rounds.arrHRRound.append(Device.currentHeartrate)
@@ -335,64 +365,98 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     }
     
+    //var newtimeTimes10: Int = 10
     
     func updateTimerEachSecond() {
-        //every .1 second
-        //print("updateTimerEachSecond")
+        //every 1 second
+
+        
         let x = NSDate()
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
+        Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
         
-        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!)
+//        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!)
+        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
-//        timeNewMS = (x.timeIntervalSince(Totals.startTime! as Date!))
-//        print("timeNewMS \(timeNewMS)")
+        let intDurationTotal = Int(Totals.durationTotal!)
+        print("intDurationTotal \(intDurationTotal)")
         
+        let intRoundCurrentTimeElapsed = Int(Rounds.roundCurrentTimeElapsed!)
+        print("intRoundCurrentTimeElapsed \(intRoundCurrentTimeElapsed)")
         
-        timeNewMS += 100
-        //print(timeNewMS)
-        if timeNewMS == (1 * 1000) {
-            eachSecondUpdateFctn()
-        }
+        let tester1 = intDurationTotal - (Rounds.roundsComplete * 300)
+        print(tester1)
+        let tester2 = 300 - tester1
+        print(tester2)
         
-        if timeNewMS == (60 * 1000) {
-            lbl_button_start.setTitle(" 🔴🔴🔴🔴", for: .normal)
-        }
-        if timeNewMS == (120 * 1000) {
-            lbl_button_start.setTitle("  🔴🔴🔴", for: .normal)
-        }
-        if timeNewMS == (180 * 1000) {
-            lbl_button_start.setTitle("   🔴🔴", for: .normal)
-        }
-        if timeNewMS == (240 * 1000) {
-            lbl_button_start.setTitle("   🔴", for: .normal)
-        }
-        if timeNewMS == (270 * 1000) {
-            lbl_button_start.setTitle(" 🕙🕙🕙", for: .normal)
-        }
-        if timeNewMS == (280 * 1000) {
-            lbl_button_start.setTitle("  🕙🕙", for: .normal)
-        }
-        if timeNewMS == (290 * 1000) {
-            lbl_button_start.setTitle("   🕙", for: .normal)
-        }
-        if timeNewMS == (300 * 1000) {
-            print("300 Seconds Elapsed")
-            timeNewMS = 0
+        lbl_RoundTime.text = String(tester2)
+        
+//        Totals.displayedTime = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
+//        Totals.currentTime = x
+        
+
+        if tester2 == 0 {
+            print("updateTimerRound")
+            Rounds.roundStartTime = x
             updateTimerRound()
         }
-        
-        
-        Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
-        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
-        Totals.displayedTime = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
-        Totals.currentTime = x
 
-        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
         
-        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
-        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
+        if intRoundCurrentTimeElapsed == 30 {print("30 seconds")}
 
+//        if intRoundCurrentTimeElapsed == 300 {
+//            print("updateTimerRound")
+//            Rounds.roundStartTime = x
+//            updateTimerRound()
+//        }
+        
+
+        
+        
+        eachSecondUpdateFctn()
+        
     }
+        
+        
+
+//        if newtimeTimes10 % 100 == 0  {
+//            
+//            eachSecondUpdateFctn()
+//        }
+
+//        if newtimeTimes10 % 6000 == 0 {
+//            print("Each Minute")
+//            //lbl_button_start.setTitle(" 🔴🔴🔴🔴", for: .normal)
+//        }
+        
+//        if timeNewMS == (121 * 1000) {
+//            lbl_button_start.setTitle("  🔴🔴🔴", for: .normal)
+//        }
+//        if timeNewMS == (181 * 1000) {
+//            lbl_button_start.setTitle("   🔴🔴", for: .normal)
+//        }
+//        if timeNewMS == (241 * 1000) {
+//            lbl_button_start.setTitle("   🔴", for: .normal)
+//        }
+//        if timeNewMS == (271 * 1000) {
+//            lbl_button_start.setTitle(" 🕙🕙🕙", for: .normal)
+//        }
+//        if timeNewMS == (281 * 1000) {
+//            lbl_button_start.setTitle("  🕙🕙", for: .normal)
+//        }
+        
+        
+//        if newtimeTimes10 % 29000 == 0 {
+//            lbl_button_start.setTitle("   🕙", for: .normal)
+//        }
+        
+//        if newtimeTimes10 % 30000 == 0 {
+//            print("300 Seconds Elapsed")
+//            updateTimerRound()
+//        }
+        
+
+    
     
     func dockView1_open() {
 

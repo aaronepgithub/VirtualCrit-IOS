@@ -8,6 +8,8 @@
 
 import UIKit
 
+var updateUITimer: Timer!
+
 public var tempArrHR = [String]()
 public var tempArrSPD = [String]()
 public var tempArrScore = [String]()
