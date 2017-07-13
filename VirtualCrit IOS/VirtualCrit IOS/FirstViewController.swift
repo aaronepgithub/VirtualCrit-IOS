@@ -62,6 +62,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         synth.speak(utterance)
     }
     
+    func BleDisconnectSpeaker() {
+        
+        let str = "Bluetooth has been disconnected"
+        let synth = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: str)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        let lang = "en-US"
+        
+        utterance.voice = AVSpeechSynthesisVoice(language: lang)
+        synth.speak(utterance)
+    }
+    
     func EndofRoundSpeaker() {
         
         //TODO, GET FROM LAST ROUND ARR
@@ -578,6 +590,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
         print("didDisconnectPeripheral")
         // verify we have a peripheral
+        
+        alert(message: "Please rescan and connect to your Bluetooth Sensor", title: "BLE Sensor STOPPED")
+        BleDisconnectSpeaker()
+        
+        
         guard let peripheral = self.peripheral else {
             print("Peripheral object has not been created yet.")
             return
