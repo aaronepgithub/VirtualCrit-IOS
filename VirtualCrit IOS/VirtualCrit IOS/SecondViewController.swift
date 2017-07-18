@@ -199,10 +199,10 @@ class SecondViewController: UIViewController {
         tempArrScore = []
         
         let threeSecSpeedTest = Device.ThreeSecondDistance / (Device.ThreeSecondDistanceTime)
-        print(threeSecSpeedTest)
+        //print(threeSecSpeedTest)
         
         let threeSecCadTest = Device.ThreeSecondCrankRevs / (Device.ThreeSecondCrankRevsTime) * 60
-        print(threeSecCadTest)
+        //print(threeSecCadTest)
         
         Device.ThreeSecondDistance = 0
         Device.ThreeSecondCrankRevs = 0
