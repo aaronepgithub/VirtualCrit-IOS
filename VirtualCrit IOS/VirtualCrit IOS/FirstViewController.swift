@@ -328,21 +328,43 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             print("Connected")
             
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
+                self.lbl_button_start.setTitle("🔴🔴🔴🔴", for: .normal)
                 print("httpPost")
                 self.httpPost()
-            })
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
-                self.httpPut()
-                print("httpPut")
-            })
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
                 
-                self.httpGet()
-                print("httpGet")
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+                    self.lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
+                    self.httpPut()
+                    print("httpPut")
+                    
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+                        self.lbl_button_start.setTitle("🔴🔴", for: .normal)
+                        self.httpGet()
+                        print("httpGet")
+                        
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+                            self.lbl_button_start.setTitle("🔴", for: .normal)
+
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+                                self.lbl_button_start.setTitle("", for: .normal)
+                                self.httpGet()
+                                print("httpGet")
+                                
+                            })
+                            
+                        })
+                    })
+                })
             })
+            
+
+            
+
         }
         else{
             print("Disconnected")
@@ -355,27 +377,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     func eachSecondUpdateFctn() {
-        //Each second, update
-        
-//        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-//        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
-//        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
-//        
-//        Totals.arrHRTotal.append(Device.currentHeartrate)
-//        Rounds.arrHRRound.append(Device.currentHeartrate)
-//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-//            return $0 + $1/Double(Rounds.arrHRRound.count)
-//        }
-//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-//            return $0 + $1/Double(Totals.arrHRTotal.count)
-//        }
-//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-//        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
-    
+        // No longer used
     
     }
     
-    //var newtimeTimes10: Int = 10
     
     func updateTimerEachSecond() {
         //every 1 second
@@ -389,7 +394,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
         let intDurationTotal = Int(Totals.durationTotal!)
-        print("intDurationTotal \(intDurationTotal)")
+        //print("intDurationTotal \(intDurationTotal)")
         
 //        let intRoundCurrentTimeElapsed = Int(Rounds.roundCurrentTimeElapsed!)
 //        print("intRoundCurrentTimeElapsed \(intRoundCurrentTimeElapsed)")
@@ -397,7 +402,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let tester1 = intDurationTotal - (roundsCompleted * 300)
         //print(tester1)
         let tester2 = 300 - tester1
-        print(tester2)
+        //print(tester2)
         
         lbl_RoundTime.text = String(tester2)
         

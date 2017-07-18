@@ -131,9 +131,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = []
                 tempArrScore1 = []
                 ctrArray = []
-                tempArrHR1 = score_string_array_total
-                tempArrSPD1 = score_string_array_total
-                tempArrScore1 = score_string_array_total
+                tempArrHR1 = Array(score_string_array_total.prefix(50))
+                tempArrSPD1 = Array(score_string_array_total.prefix(50))
+                tempArrScore1 = Array(score_string_array_total.prefix(50))
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
@@ -157,9 +157,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = []
                 tempArrScore1 = []
                 ctrArray = []
-                tempArrHR1 = speed_string_array_total
-                tempArrSPD1 = speed_string_array_total
-                tempArrScore1 = speed_string_array_total
+                tempArrHR1 = Array(speed_string_array_total.prefix(50))
+                tempArrSPD1 = Array(speed_string_array_total.prefix(50))
+                tempArrScore1 = Array(speed_string_array_total.prefix(50))
                 
                 if tempArrHR1.count == 0 {return}
                 
@@ -185,9 +185,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrScore1 = []
                 ctrArray = []
                 
-                tempArrHR1 = speed_string_array
-                tempArrSPD1 = speed_string_array
-                tempArrScore1 = speed_string_array
+                tempArrHR1 = Array(speed_string_array.prefix(50))
+                tempArrSPD1 = Array(speed_string_array.prefix(50))
+                tempArrScore1 = Array(speed_string_array.prefix(50))
                 
                 if tempArrHR1.count == 0 {return}
                 
@@ -212,9 +212,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = []
                 tempArrScore1 = []
                 ctrArray = []
-                tempArrHR1 = score_string_array
-                tempArrSPD1 = score_string_array
-                tempArrScore1 = score_string_array
+                tempArrHR1 = Array(score_string_array.prefix(50))
+                tempArrSPD1 = Array(score_string_array.prefix(50))
+                tempArrScore1 = Array(score_string_array.prefix(50))
                 
                 if tempArrHR1.count == 0 {return}
                 
@@ -239,13 +239,13 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             tempArrScore1 = []
             ctrArray = []
             
-            tempArrHR1 = tempArrHR
-            tempArrSPD1 = tempArrSPD
-            tempArrScore1 = tempArrSPD
+            tempArrHR1 = Array(tempArrHR.prefix(50))
+            tempArrSPD1 = Array(tempArrSPD.prefix(50))
+            tempArrScore1 = Array(tempArrSPD.prefix(50))
             
             if tempArrHR1.count == 0 {return}
             
-            ctrArray = Array(1...tempArrSPD.count)
+            ctrArray = Array(1...tempArrSPD1.count)
             myTableView.reloadData()
             
         }
@@ -269,7 +269,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             tempArrHR1 = Array(tempArrHR.prefix(50))
             tempArrSPD1 = Array(tempArrSPD.prefix(50))
             tempArrScore1 = Array(tempArrScore.prefix(50))
-            //Array(video.prefix(50))
+            
             
             if tempArrHR1.count == 0 {return}
             
