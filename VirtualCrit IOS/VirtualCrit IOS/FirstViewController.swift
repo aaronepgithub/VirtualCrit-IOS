@@ -385,19 +385,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        lbl_RoundTime.text = dateStringFromTimeIntervalRound(timeInterval: Rounds.roundCurrentTimeElapsed!)
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
-        let intDurationTotal = Int(Totals.durationTotal!)
+        //let intDurationTotal = Int(Totals.durationTotal!)
         let doubleDurationTotal = Double(Totals.durationTotal!)
         //print("intDurationTotal \(intDurationTotal)")
         
 //        let intRoundCurrentTimeElapsed = Int(Rounds.roundCurrentTimeElapsed!)
 //        print("intRoundCurrentTimeElapsed \(intRoundCurrentTimeElapsed)")
         
-        let tester1 = intDurationTotal - (roundsCompleted * 300)
+        //let tester1 = intDurationTotal - (roundsCompleted * 300)
         let dblElapsedTime = Double(doubleDurationTotal - ((Double(roundsCompleted) * 300)))
         //print(tester1)
-        let tester2 = 300 - tester1
+        //let tester2 = 300 - tester1
         let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
-        print(dblElapsedRoundTime)
+        //print(dblElapsedRoundTime)
         
         lbl_RoundTime.text = String(dblElapsedRoundTime)
         
