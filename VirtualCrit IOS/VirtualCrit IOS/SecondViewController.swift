@@ -188,6 +188,8 @@ class SecondViewController: UIViewController {
     
     func updateUI() {
         
+        //TODO MOVE TO FIRST VC
+        
         if Device.currentSpeed > 0 && Device.currentSpeed < 50 {
             lbl_ctTimer.text = "\(String(format:"%.1f", Device.currentSpeed)) MPH"
         } else {

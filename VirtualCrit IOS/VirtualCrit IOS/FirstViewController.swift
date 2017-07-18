@@ -9,6 +9,7 @@
 import UIKit
 import CoreBluetooth
 import AVFoundation
+import AVKit
 
 
 
@@ -48,11 +49,26 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         dockView1_open()
     }
     
-
+    func prepareForPlaybackWithData(audioData: NSData) {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+            } catch let error as NSError {
+                print(error)
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+    }
+    
+    
+    var str = "Hello Kazumi, let's get started"
     
     func mySpeaker() {
         
-        let str = "Hello Kazumi"
+        let str = self.str
         let synth = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: str)
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
@@ -61,6 +77,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         utterance.voice = AVSpeechSynthesisVoice(language: lang)
         synth.speak(utterance)
     }
+    
+    
     
     func BleDisconnectSpeaker() {
         
@@ -74,21 +92,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         synth.speak(utterance)
     }
     
-    func EndofRoundSpeaker() {
-        
-        //TODO, GET FROM LAST ROUND ARR
-        
-        let str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
-        let synth = AVSpeechSynthesizer()
-        let utterance = AVSpeechUtterance(string: str)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-        let lang = "en-US"
-        
-        utterance.voice = AVSpeechSynthesisVoice(language: lang)
-        synth.speak(utterance)
-        print("Running in BG")
-        print("Rounds.avg_score  \(Rounds.avg_score)")
-    }
+//    func EndofRoundSpeaker() {
+//        
+//        //TODO, GET FROM LAST ROUND ARR
+//        
+//        let str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
+//        let synth = AVSpeechSynthesizer()
+//        let utterance = AVSpeechUtterance(string: str)
+//        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+//        let lang = "en-US"
+//        
+//        utterance.voice = AVSpeechSynthesisVoice(language: lang)
+//        synth.speak(utterance)
+//        print("Running in BG")
+//        print("Rounds.avg_score  \(Rounds.avg_score)")
+//    }
     
     @IBOutlet var dockView1: UIView!
     @IBOutlet weak var dock1_lastSpeed: UILabel!
@@ -121,8 +139,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var peripheralCSC:CBPeripheral?
     var arrPeripheral = [CBPeripheral?]()
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         
         AllRounds.arrHR.append(0)
         AllRounds.arrSPD.append(0)
@@ -186,6 +207,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         alert(message: "", title: "Starting")
+        mySpeaker()
         
         if ConnectionCheck.isConnectedToNetwork() {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
@@ -277,58 +299,36 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
 //    }
     
+    var roundsCompleted = 0
+    
     func updateTimerRound() {
         //every seconds per round (300)
         Rounds.roundsComplete = 1 + Rounds.roundsComplete
 
-
-        
-        // get the current date and time
-        let currentDateTime = Date()
-        // initialize the date formatter and set the style
-        let formatter = DateFormatter()
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .long
-        // get the date time String from the date object
-        print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
-        
-        
-        
-        
-        Totals.arrHRTotal.append(Rounds.avg_hr)
-        
-//        if AllRounds.arrHR[0] == 0 && AllRounds.arrSPD[0] == 0 {
-//        AllRounds.arrHR = []
-//        AllRounds.arrSPD = []
-//        AllRounds.arrCAD = []
-//        }
-        
-        AllRounds.arrHR.append(Rounds.avg_hr)
-        AllRounds.arrSPD.append(Rounds.avg_speed)
-        AllRounds.arrCAD.append(Rounds.avg_cadence)
-        
-
-
-        Rounds.distanceRound = 0
-        Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = []
-        Rounds.crankRevolutionTime = 0
-        Rounds.crankRevolutions = 0
-        lbl_Speed.text = "..."
-        lbl_Cadence.text = "..."
-        lbl_Heartrate.text = "..."
-        lbl_Score.text = "..."
+//        Totals.arrHRTotal.append(Rounds.avg_hr)
+//        AllRounds.arrHR.append(Rounds.avg_hr)
+//        AllRounds.arrSPD.append(Rounds.avg_speed)
+//        AllRounds.arrCAD.append(Rounds.avg_cadence)
+//
+//        Rounds.distanceRound = 0
+//        Rounds.totalWheelEventTime = 0
+//        Rounds.arrHRRound = []
+//        Rounds.crankRevolutionTime = 0
+//        Rounds.crankRevolutions = 0
+//        lbl_Speed.text = "..."
+//        lbl_Cadence.text = "..."
+//        lbl_Heartrate.text = "..."
+//        lbl_Score.text = "..."
 
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
-        EndofRoundSpeaker()
         dockView1_open()
+
         
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
             
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-                self.dockView1.removeFromSuperview()
                 print("httpPost")
                 self.httpPost()
             })
@@ -343,14 +343,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 self.httpGet()
                 print("httpGet")
             })
-            //            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
-            //                self.httpGetTotals()
-            //                print("httpGetTotals")
-            //            })
         }
         else{
             print("Disconnected")
         }
+        
+        
         
         
         
@@ -359,20 +357,20 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func eachSecondUpdateFctn() {
         //Each second, update
         
-        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
-        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
-        
-        Totals.arrHRTotal.append(Device.currentHeartrate)
-        Rounds.arrHRRound.append(Device.currentHeartrate)
-        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-            return $0 + $1/Double(Rounds.arrHRRound.count)
-        }
-        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-            return $0 + $1/Double(Totals.arrHRTotal.count)
-        }
-        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
+//        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
+//        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
+//        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
+//        
+//        Totals.arrHRTotal.append(Device.currentHeartrate)
+//        Rounds.arrHRRound.append(Device.currentHeartrate)
+//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
+//            return $0 + $1/Double(Rounds.arrHRRound.count)
+//        }
+//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
+//            return $0 + $1/Double(Totals.arrHRTotal.count)
+//        }
+//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+//        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
     
     
     }
@@ -393,28 +391,107 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let intDurationTotal = Int(Totals.durationTotal!)
         print("intDurationTotal \(intDurationTotal)")
         
-        let intRoundCurrentTimeElapsed = Int(Rounds.roundCurrentTimeElapsed!)
-        print("intRoundCurrentTimeElapsed \(intRoundCurrentTimeElapsed)")
+//        let intRoundCurrentTimeElapsed = Int(Rounds.roundCurrentTimeElapsed!)
+//        print("intRoundCurrentTimeElapsed \(intRoundCurrentTimeElapsed)")
         
-        let tester1 = intDurationTotal - (Rounds.roundsComplete * 300)
-        print(tester1)
+        let tester1 = intDurationTotal - (roundsCompleted * 300)
+        //print(tester1)
         let tester2 = 300 - tester1
         print(tester2)
         
         lbl_RoundTime.text = String(tester2)
         
-//        Totals.displayedTime = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
-//        Totals.currentTime = x
+        if tester2 == 0 {
+        print("updateTimerRound")
+        roundsCompleted = roundsCompleted + 1
+            
+            Totals.arrHRTotal.append(Rounds.avg_hr)
+            AllRounds.arrHR.append(Rounds.avg_hr)
+            AllRounds.arrSPD.append(Rounds.avg_speed)
+            AllRounds.arrCAD.append(Rounds.avg_cadence)
+            
+            Rounds.distanceRound = 0
+            Rounds.totalWheelEventTime = 0
+            Rounds.arrHRRound = []
+            Rounds.crankRevolutionTime = 0
+            Rounds.crankRevolutions = 0
+            lbl_Speed.text = "..."
+            lbl_Cadence.text = "..."
+            lbl_Heartrate.text = "..."
+            lbl_Score.text = "..."
+            
+            
+            updateTimerRound()
+        }
+        
+        if tester2 < 0 {
+        print("negative tester2, hmmm")
+            Rounds.roundStartTime = x
+            roundsCompleted = roundsCompleted + 1
+            print("roundsCompleted:  \(roundsCompleted)")
+            
+            Totals.arrHRTotal.append(Rounds.avg_hr)
+            AllRounds.arrHR.append(Rounds.avg_hr)
+            AllRounds.arrSPD.append(Rounds.avg_speed)
+            AllRounds.arrCAD.append(Rounds.avg_cadence)
+            
+            Rounds.distanceRound = 0
+            Rounds.totalWheelEventTime = 0
+            Rounds.arrHRRound = []
+            Rounds.crankRevolutionTime = 0
+            Rounds.crankRevolutions = 0
+            lbl_Speed.text = "..."
+            lbl_Cadence.text = "..."
+            lbl_Heartrate.text = "..."
+            lbl_Score.text = "..."
+            updateTimerRound()
+        }
         
 
-        if tester2 == 0 {
-            print("updateTimerRound")
-            Rounds.roundStartTime = x
-            updateTimerRound()
+        if tester2 == 290 && roundsCompleted > 0 {
+            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
+            mySpeaker()
         }
 
         
-        if intRoundCurrentTimeElapsed == 30 {print("30 seconds")}
+        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
+        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
+        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
+        
+        Totals.arrHRTotal.append(Device.currentHeartrate)
+        Rounds.arrHRRound.append(Device.currentHeartrate)
+        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
+            return $0 + $1/Double(Rounds.arrHRRound.count)
+        }
+        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
+            return $0 + $1/Double(Totals.arrHRTotal.count)
+        }
+        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
+        
+        
+        if tester2 == 150 {
+            self.str = "Midway"
+            mySpeaker()
+        }
+        
+//        if tester1 == 240 {
+//            self.str = "Beep"
+//            mySpeaker()
+//        }
+//        if tester1 == 180 {
+//            self.str = "Beep"
+//            mySpeaker()
+//        }
+//        if tester1 == 120 {
+//            self.str = "Beep"
+//            mySpeaker()
+//        }
+//        if tester1 == 60 {
+//            self.str = "Beep"
+//            mySpeaker()
+//        }
+        
 
 //        if intRoundCurrentTimeElapsed == 300 {
 //            print("updateTimerRound")
@@ -425,7 +502,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
         
         
-        eachSecondUpdateFctn()
+//        eachSecondUpdateFctn()
         
     }
         
@@ -472,11 +549,22 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func dockView1_open() {
 
-        dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
-        dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
-        dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
+        //AllRounds.arrSPD.last!
+//        dock1_lastSpeed.text = "\(String(format:"%.2f", Rounds.avg_speed))"
+//        dock1_lastScore.text = "\(String(format:"%.1f", Rounds.avg_score))"
+//        dock1_lastCadence.text = "\(String(format:"%.1f", Rounds.avg_cadence))"
+        
+        dock1_lastSpeed.text = "\(String(format:"%.2f", AllRounds.arrSPD.last!))"
+        dock1_lastScore.text = "\(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
+        dock1_lastCadence.text = "\(String(format:"%.1f", AllRounds.arrCAD.last!))"
+        
+        
         dockView1.center = view.center
         view.addSubview(dockView1)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+            self.dockView1.removeFromSuperview()
+        })
     }
     
     

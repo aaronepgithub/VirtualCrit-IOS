@@ -262,14 +262,19 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             tempArrScore1 = []
             ctrArray = []
             
-            tempArrHR1 = tempArrHR
-            tempArrSPD1 = tempArrSPD
-            tempArrScore1 = tempArrScore
+//            tempArrHR1 = tempArrHR
+//            tempArrSPD1 = tempArrSPD
+//            tempArrScore1 = tempArrScore
+            
+            tempArrHR1 = Array(tempArrHR.prefix(50))
+            tempArrSPD1 = Array(tempArrSPD.prefix(50))
+            tempArrScore1 = Array(tempArrScore.prefix(50))
+            //Array(video.prefix(50))
             
             if tempArrHR1.count == 0 {return}
             
-            
-            ctrArray = Array(1...tempArrHR.count)
+            ctrArray = Array(1...tempArrHR1.count)
+//            ctrArray = Array(1...tempArrHR1.count)
             myTableView.reloadData()
             
         } 
