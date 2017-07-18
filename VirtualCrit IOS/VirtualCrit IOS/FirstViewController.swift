@@ -321,7 +321,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        lbl_Score.text = "..."
 
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
-        dockView1_open()
+        //dockView1_open()
 
         
         if ConnectionCheck.isConnectedToNetwork() {
@@ -348,14 +348,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                             self.lbl_button_start.setTitle("🔴", for: .normal)
-
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
-                                self.lbl_button_start.setTitle("", for: .normal)
-                                self.httpGet()
-                                print("httpGet")
-                                
-                            })
                             
                         })
                     })
@@ -394,19 +386,22 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
         
         let intDurationTotal = Int(Totals.durationTotal!)
+        let doubleDurationTotal = Double(Totals.durationTotal!)
         //print("intDurationTotal \(intDurationTotal)")
         
 //        let intRoundCurrentTimeElapsed = Int(Rounds.roundCurrentTimeElapsed!)
 //        print("intRoundCurrentTimeElapsed \(intRoundCurrentTimeElapsed)")
         
         let tester1 = intDurationTotal - (roundsCompleted * 300)
+        let dblElapsedTime = Double(doubleDurationTotal - ((Double(roundsCompleted) * 300)))
         //print(tester1)
         let tester2 = 300 - tester1
-        //print(tester2)
+        let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
+        print(dblElapsedRoundTime)
         
-        lbl_RoundTime.text = String(tester2)
+        lbl_RoundTime.text = String(dblElapsedRoundTime)
         
-        if tester2 == 0 {
+        if dblElapsedRoundTime == 0 {
         print("updateTimerRound")
         roundsCompleted = roundsCompleted + 1
             
@@ -424,13 +419,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             lbl_Cadence.text = "..."
             lbl_Heartrate.text = "..."
             lbl_Score.text = "..."
-            
-            
             updateTimerRound()
         }
         
-        if tester2 < 0 {
-        print("negative tester2, hmmm")
+        if dblElapsedRoundTime < 0 {
+        print("negative dblElapsedRoundTime, hmmm")
             Rounds.roundStartTime = x
             roundsCompleted = roundsCompleted + 1
             print("roundsCompleted:  \(roundsCompleted)")
@@ -453,7 +446,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         
 
-        if tester2 == 290 && roundsCompleted > 0 {
+        if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
             self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
             mySpeaker()
         }
@@ -475,7 +468,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
         
         
-        if tester2 == 150 {
+        if dblElapsedRoundTime == 150 {
             self.str = "Midway"
             mySpeaker()
         }
@@ -637,6 +630,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.avg_cadence = 0
         Rounds.avg_score = 0
         Rounds.avg_hr = 0
+        Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
+        Rounds.arrHRRound = []
+        Rounds.crankRevolutionTime = 0
+        Rounds.crankRevolutions = 0
+        lbl_Speed.text = "..."
+        lbl_Cadence.text = "..."
+        lbl_Heartrate.text = "..."
+        lbl_Score.text = "..."
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -684,8 +686,22 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print("didDisconnectPeripheral")
         // verify we have a peripheral
         
-        alert(message: "Please rescan and connect to your Bluetooth Sensor", title: "BLE Sensor STOPPED")
-        BleDisconnectSpeaker()
+//        alert(message: "Please rescan and connect to your Bluetooth Sensor", title: "BLE Sensor STOPPED")
+//        BleDisconnectSpeaker()
+        
+        Rounds.avg_speed = 0
+        Rounds.avg_cadence = 0
+        Rounds.avg_score = 0
+        Rounds.avg_hr = 0
+        Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
+        Rounds.arrHRRound = []
+        Rounds.crankRevolutionTime = 0
+        Rounds.crankRevolutions = 0
+        lbl_Speed.text = "..."
+        lbl_Cadence.text = "..."
+        lbl_Heartrate.text = "..."
+        lbl_Score.text = "..."
         
         
         guard let peripheral = self.peripheral else {
@@ -927,6 +943,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         
                         Totals.distanceTotal = Totals.distanceTotal + travelDistance
                         Rounds.distanceRound = Rounds.distanceRound + travelDistance
+                        Device.ThreeSecondDistance = Device.ThreeSecondDistance + travelDistance
+                        Device.ThreeSecondDistanceTime = Device.ThreeSecondDistanceTime + Double(Double(wheelEventTimeDiff) / 60 / 60)
                         
                         ctDistance = ctDistance + travelDistance
                         lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
@@ -983,6 +1001,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             
                             Rounds.crankRevolutions = Rounds.crankRevolutions + crankRevolutionDiff
                             Rounds.crankRevolutionTime = Rounds.crankRevolutionTime + crankEventTimeDiff
+                            Device.ThreeSecondCrankRevs = Device.ThreeSecondCrankRevs + crankRevolutionDiff
+                            Device.ThreeSecondCrankRevsTime = Device.ThreeSecondCrankRevsTime + crankEventTimeDiff
                             
                         }
                     }

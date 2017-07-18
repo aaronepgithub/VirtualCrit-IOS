@@ -39,6 +39,16 @@ struct Device {
     
     static var totalDistanceII                      : Double = 0.0
     
+    //test for 3 sec real-time reading
+    static var ThreeSecondSpeed                     : Double = 0
+    static var ThreeSecondCadence                   : Double = 0
+    
+    static var ThreeSecondDistance                  : Double = 0
+    static var ThreeSecondCrankRevs                 : Double = 0
+    static var ThreeSecondCrankRevsTime                 : Double = 0
+    static var ThreeSecondDistanceTime                 : Double = 0
+    
+    
 
 }
 
