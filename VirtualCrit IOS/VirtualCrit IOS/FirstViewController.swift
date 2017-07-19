@@ -243,18 +243,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             
             
-//            // get the current date and time
-//            let currentDateTime = Date()
-//            // initialize the date formatter and set the style
-//            let formatter = DateFormatter()
-//            formatter.timeStyle = .medium
-//            formatter.dateStyle = .long
-//            // get the date time String from the date object
-//            print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
-            
-            
-            
-            
+            // get the current date and time
+            let currentDateTime = Date()
+            // initialize the date formatter and set the style
+            let formatter = DateFormatter()
+            formatter.timeStyle = .medium
+            formatter.dateStyle = .long
+            // get the date time String from the date object
+            print("Starting...")
+            print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
             
             
 //            AllRounds.arrHR.append(0)
@@ -282,22 +279,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         return formater.string(from: date as Date)
     }
     
-//    public func updateTimerTotal() {
-//        //Each second, update
-//        
-//        Totals.totalTimeInSeconds += 1
-//
-//        Totals.arrHRTotal.append(Device.currentHeartrate)
-//        Rounds.arrHRRound.append(Device.currentHeartrate)
-//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-//            return $0 + $1/Double(Rounds.arrHRRound.count)
-//        }
-//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-//            return $0 + $1/Double(Totals.arrHRTotal.count)
-//        }
-//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-//        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
-//    }
+
     
     var roundsCompleted = 0
     
@@ -377,7 +359,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func updateTimerEachSecond() {
         //every 1 second
 
-        
         let x = NSDate()
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
@@ -402,47 +383,70 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_RoundTime.text = String(dblElapsedRoundTime)
         
         if dblElapsedRoundTime == 0 {
-        print("updateTimerRound")
+        print("New Round...")
+
+        // get the current date and time
+        let currentDateTime = Date()
+        // initialize the date formatter and set the style
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .long
+        // get the date time String from the date object
+        print("Starting...")
+        print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
+            
         roundsCompleted = roundsCompleted + 1
             
-            Totals.arrHRTotal.append(Rounds.avg_hr)
-            AllRounds.arrHR.append(Rounds.avg_hr)
-            AllRounds.arrSPD.append(Rounds.avg_speed)
-            AllRounds.arrCAD.append(Rounds.avg_cadence)
+        Totals.arrHRTotal.append(Rounds.avg_hr)
+        AllRounds.arrHR.append(Rounds.avg_hr)
+        AllRounds.arrSPD.append(Rounds.avg_speed)
+        AllRounds.arrCAD.append(Rounds.avg_cadence)
             
-            Rounds.distanceRound = 0
-            Rounds.totalWheelEventTime = 0
-            Rounds.arrHRRound = []
-            Rounds.crankRevolutionTime = 0
-            Rounds.crankRevolutions = 0
-            lbl_Speed.text = "..."
-            lbl_Cadence.text = "..."
-            lbl_Heartrate.text = "..."
-            lbl_Score.text = "..."
-            updateTimerRound()
+        Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
+        Rounds.arrHRRound = []
+        Rounds.crankRevolutionTime = 0
+        Rounds.crankRevolutions = 0
+        lbl_Speed.text = "..."
+        lbl_Cadence.text = "..."
+        lbl_Heartrate.text = "..."
+        lbl_Score.text = "..."
+        updateTimerRound()
+            
         }
         
         if dblElapsedRoundTime < 0 {
+        
+        // get the current date and time
+        let currentDateTime = Date()
+        // initialize the date formatter and set the style
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .long
+        // get the date time String from the date object
         print("negative dblElapsedRoundTime, hmmm")
-            Rounds.roundStartTime = x
-            roundsCompleted = roundsCompleted + 1
-            print("roundsCompleted:  \(roundsCompleted)")
+        print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
             
-            Totals.arrHRTotal.append(Rounds.avg_hr)
-            AllRounds.arrHR.append(Rounds.avg_hr)
-            AllRounds.arrSPD.append(Rounds.avg_speed)
-            AllRounds.arrCAD.append(Rounds.avg_cadence)
+        Rounds.roundStartTime = x
+        roundsCompleted = roundsCompleted + 1
+        //print("roundsCompleted:  \(roundsCompleted)")
             
-            Rounds.distanceRound = 0
-            Rounds.totalWheelEventTime = 0
-            Rounds.arrHRRound = []
-            Rounds.crankRevolutionTime = 0
-            Rounds.crankRevolutions = 0
-            lbl_Speed.text = "..."
-            lbl_Cadence.text = "..."
-            lbl_Heartrate.text = "..."
-            lbl_Score.text = "..."
-            updateTimerRound()
+        Totals.arrHRTotal.append(Rounds.avg_hr)
+        AllRounds.arrHR.append(Rounds.avg_hr)
+        AllRounds.arrSPD.append(Rounds.avg_speed)
+        AllRounds.arrCAD.append(Rounds.avg_cadence)
+            
+        Rounds.distanceRound = 0
+        Rounds.totalWheelEventTime = 0
+        Rounds.arrHRRound = []
+        Rounds.crankRevolutionTime = 0
+        Rounds.crankRevolutions = 0
+        lbl_Speed.text = "..."
+        lbl_Cadence.text = "..."
+        lbl_Heartrate.text = "..."
+        lbl_Score.text = "..."
+        updateTimerRound()
+        
         }
         
 
@@ -598,7 +602,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         guard let services = peripheral.services else {
-            // disconnect directly
+            print("Cancel Peripheral Connection")
             centralManager.cancelPeripheralConnection(peripheral)
             return
         }
@@ -609,16 +613,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     // find the Transfer Characteristic we defined in our Device struct
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristic) {
                         peripheral.setNotifyValue(false, for: characteristic)
+                        print("set Notify Value to False")
                         return
                     }
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristicCSC) {
                         peripheral.setNotifyValue(false, for: characteristic)
-                        
-                        
-
-
-
-                        
+                        print("set Notify Value to False")
                         return
                     }
                 }
@@ -683,7 +683,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
-        print("didDisconnectPeripheral")
+        print("Did Disconnect Peripheral")
         // verify we have a peripheral
         
 //        alert(message: "Please rescan and connect to your Bluetooth Sensor", title: "BLE Sensor STOPPED")
@@ -719,6 +719,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         guard let services = peripheral.services else {
             // disconnect directly
             centralManager.cancelPeripheralConnection(peripheral)
+            print("Cancel Peripheral Connection II")
             return
         }
         
@@ -727,18 +728,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             if let characteristics = service.characteristics {
                 for characteristic in characteristics {
                     // find the Transfer Characteristic we defined in our Device struct
+//                    if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristic) {
+//                        // We can return after calling CBPeripheral.setNotifyValue because CBPeripheralDelegate's
+//                        // didUpdateNotificationStateForCharacteristic method will be called automatically
+//                        peripheral.setNotifyValue(false, for: characteristic)
+//                        return
+//                    }
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristic) {
-                        // We can return after calling CBPeripheral.setNotifyValue because CBPeripheralDelegate's
-                        // didUpdateNotificationStateForCharacteristic method will be called automatically
                         peripheral.setNotifyValue(false, for: characteristic)
+                        print("set Notify Value to False II")
                         return
                     }
+                    if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristicCSC) {
+                        peripheral.setNotifyValue(false, for: characteristic)
+                        print("set Notify Value to False II")
+                        return
+                    }
+                    
                 }
             }
         }
         // We have a connection to the device but we are not subscribed to the Transfer Characteristic for some reason.
         // Therefore, we will just disconnect from the peripheral
         centralManager.cancelPeripheralConnection(peripheral)
+        print("Cancel Connection")
         Rounds.avg_speed = 0
         Rounds.avg_cadence = 0
         Rounds.avg_score = 0
@@ -846,6 +859,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 }
                 
                 Device.currentHeartrate = Double(bpmValue)
+                //print(Device.currentHeartrate)
                 //MARK:  CURRENT HR
                 return bpmValue
             }
