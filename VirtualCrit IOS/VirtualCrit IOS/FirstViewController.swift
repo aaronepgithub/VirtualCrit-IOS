@@ -52,6 +52,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_Round(_ sender: UIButton) {
         dockView1_open()
+        httpGet()
     }
     
     func prepareForPlaybackWithData(audioData: NSData) {
@@ -156,22 +157,25 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
                     self.dockView1.removeFromSuperview()
                     self.httpPost()
                     print("httpPost")
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-                    self.httpPut()
-                    print("httpPut")
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
                     
-                    self.httpGet()
-                    print("httpGet")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                        self.httpPut()
+                        print("httpPut")
+                    })
+                    
+                    
                 })
+                
+
+                
+//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
+//                    self.httpGet()
+//                    print("httpGet")
+//                })
 //                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
 //                    self.httpGetTotals()
 //                    print("httpGetTotals")
@@ -314,8 +318,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                         self.lbl_button_start.setTitle("🔴🔴", for: .normal)
-                        self.httpGet()
-                        print("httpGet")
+                        //self.httpGet()
+                        //print("httpGet")
                         
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
@@ -517,7 +521,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.avg_hr = 0
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = []
+        Rounds.arrHRRound = [0]
         Rounds.crankRevolutionTime = 0
         Rounds.crankRevolutions = 0
         lbl_Speed.text = "..."
@@ -580,7 +584,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.avg_hr = 0
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = []
+        Rounds.arrHRRound = [0]
         Rounds.crankRevolutionTime = 0
         Rounds.crankRevolutions = 0
         lbl_Speed.text = "..."
