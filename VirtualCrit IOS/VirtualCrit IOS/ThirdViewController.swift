@@ -74,6 +74,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     // end of get total data
     
+
+    
     func getRoundData() {
     
         //print("httpGet Started")
@@ -115,6 +117,19 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 //at the end
                 score_string_array.sort { $0 > $1 }
                 speed_string_array.sort { $0.compare($1, options: .numeric) == .orderedDescending }
+                
+                let stringOfWords = score_string_array[0]
+                let stringOfWordsArray = stringOfWords.components(separatedBy: " ")
+                print(stringOfWordsArray[0])
+                //print(stringOfWordsArray[1])
+                //print(stringOfWordsArray[2])
+                //print(stringOfWordsArray[3])
+                print(stringOfWordsArray[4])
+                //print(stringOfWordsArray[5])
+                Rounds.roundLeaderName = stringOfWordsArray[0]
+                Rounds.roundLeaderScore = stringOfWordsArray[4]
+                
+                
             }
         }).resume()
     }

@@ -52,7 +52,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_Round(_ sender: UIButton) {
         dockView1_open()
-        httpGet()
+        //httpGet()
     }
     
     func prepareForPlaybackWithData(audioData: NSData) {
@@ -215,6 +215,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
+        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  //best spd
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) BPM"  //best hr
         startScanning()
     }
     
@@ -427,8 +429,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
             return $0 + $1/Double(Totals.arrHRTotal.count)
         }
-        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
+//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
+//        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
+        
+        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  //best spd
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) BPM"  //best hr
         
         
         if dblElapsedRoundTime == 150 {

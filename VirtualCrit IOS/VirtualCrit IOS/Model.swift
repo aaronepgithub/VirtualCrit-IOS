@@ -110,6 +110,10 @@ struct Rounds {
     
     static var fastestSpeed = "0"
     static var highestHR = "0"
+    
+    static var roundLeaderName = " "
+    static var roundLeaderScore = " "
+    
 
 }
 
