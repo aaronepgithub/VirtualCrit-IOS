@@ -8,12 +8,8 @@
 
 import UIKit
 
-var updateUITimer: Timer!
 
-public var tempArrHR = [String]()
-public var tempArrSPD = [String]()
-public var tempArrScore = [String]()
-public var ctDistance = 0.0
+
 
 class SecondViewController: UIViewController {
     
@@ -31,6 +27,9 @@ class SecondViewController: UIViewController {
 //        ctDistance = 0.0
 //        
 //    }
+    
+    
+    var updateUITimer: Timer!
     
     
     //  Start Alert - Name
@@ -209,15 +208,7 @@ class SecondViewController: UIViewController {
         Device.ThreeSecondCrankRevsTime = 0
         Device.ThreeSecondDistanceTime = 0
         
-//        if Device.currentSpeed > 0 && Device.currentSpeed < 50 {
-//            lbl_ctTimer.text = "\(String(format:"%.1f", Device.currentSpeed)) MPH"
-//        } else {
-//            lbl_ctTimer.text = "0 MPH"
-//        }
-//        
-//        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
-//        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
-//        lbl_currentCadence.text = "\(String(format:"%.0f", Device.currentCadence)) RPM"
+
 
         if threeSecSpeedTest > 0 && threeSecSpeedTest < 50 {
             lbl_ctTimer.text = "\(String(format:"%.1f", threeSecSpeedTest)) MPH"

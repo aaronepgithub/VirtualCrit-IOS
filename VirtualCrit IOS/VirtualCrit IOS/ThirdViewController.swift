@@ -298,7 +298,6 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//                    return titleArray1.count
         return tempArrHR1.count
     }
     
