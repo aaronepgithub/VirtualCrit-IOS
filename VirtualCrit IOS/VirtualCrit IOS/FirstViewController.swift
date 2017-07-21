@@ -72,31 +72,71 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     var str = "Hello Kazumi, let's get started"
     
-    func mySpeaker() {
+//    func mySpeaker() {
+    
+//        let str = self.str
+//        let synth = AVSpeechSynthesizer()
+//        let utterance = AVSpeechUtterance(string: str)
+//        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+//        let lang = "en-US"
+//        
+//        utterance.voice = AVSpeechSynthesisVoice(language: lang)
+//        synth.speak(utterance)
         
+        //Speaker.speak("test", in: Language.english.rawValue)
+        
+//    }
+    
+    func prepareAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, with: .mixWithOthers)
+        } catch {
+            print(error)
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print(error)
+        }
+    }
+    
+
+    
+    func newSpeaker() {
+    
+        let synth = AVSpeechSynthesizer()
         let str = self.str
-        let synth = AVSpeechSynthesizer()
-        let utterance = AVSpeechUtterance(string: str)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
         let lang = "en-US"
         
-        utterance.voice = AVSpeechSynthesisVoice(language: lang)
-        synth.speak(utterance)
+            prepareAudioSession()
+            let utterance = AVSpeechUtterance(string: str)
+            utterance.voice = AVSpeechSynthesisVoice(language: lang)
+            synth.speak(utterance)
+        
+        
+        if synth.isSpeaking {
+            synth.stopSpeaking(at: .immediate)
+        }
+    
     }
     
     
+
     
-    func BleDisconnectSpeaker() {
-        
-        let str = "Bluetooth has been disconnected"
-        let synth = AVSpeechSynthesizer()
-        let utterance = AVSpeechUtterance(string: str)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-        let lang = "en-US"
-        
-        utterance.voice = AVSpeechSynthesisVoice(language: lang)
-        synth.speak(utterance)
-    }
+    
+    
+//    func BleDisconnectSpeaker() {
+//        
+//        let str = "Bluetooth has been disconnected"
+//        let synth = AVSpeechSynthesizer()
+//        let utterance = AVSpeechUtterance(string: str)
+//        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+//        let lang = "en-US"
+//        
+//        utterance.voice = AVSpeechSynthesisVoice(language: lang)
+//        synth.speak(utterance)
+//    }
     
 //    func EndofRoundSpeaker() {
 //        
@@ -222,7 +262,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         alert(message: "", title: "Starting")
-        mySpeaker()
+        newSpeaker()
         
         if ConnectionCheck.isConnectedToNetwork() {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
@@ -413,7 +453,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
         if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
             self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
-            mySpeaker()
+            newSpeaker()
         }
 
         
@@ -438,7 +478,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if dblElapsedRoundTime == 150 {
             self.str = "Midway"
-            mySpeaker()
+            newSpeaker()
         }
         
         
