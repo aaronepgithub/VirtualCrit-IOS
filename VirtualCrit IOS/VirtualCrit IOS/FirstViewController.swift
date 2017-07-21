@@ -260,9 +260,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         startScanning()
     }
     
+    
+    
     @IBAction func btn_action_start(_ sender: UIButton) {
         alert(message: "", title: "Starting")
-        newSpeaker()
+        //newSpeaker()
+        
+        let x = TextToSpeechUtils.init()
+        x.synthesizeSpeech(forText: "Hi Kazumi, Let's Start")
         
         if ConnectionCheck.isConnectedToNetwork() {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {

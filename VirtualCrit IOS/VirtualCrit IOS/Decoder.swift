@@ -6,58 +6,61 @@
 //  Copyright © 2017 aaronep. All rights reserved.
 //
 
-//import AVFoundation
+import Foundation
+import AVFoundation
 
-// You can use an enum so you don't have to manually type out character strings. Look them up once and stick them in an enum. From there, you set the language with your enum rather than typing out the string.
-//enum Language: String {
-//    case english = "en-US"
-//    case arabic = "ar-SA"
-//}
-//
-//class Speaker: NSObject {
-//    
-//    let synth = AVSpeechSynthesizer()
-//    
-//    override init() {
-//        super.init()
-//        synth.delegate = self
-//    }
-//    
-//    func speak(_ announcement: String, in language: String) {
-//        print("speak announcement in language \(language) called")
-//        prepareAudioSession()
-//        let utterance = AVSpeechUtterance(string: announcement.lowercased())
-//        utterance.voice = AVSpeechSynthesisVoice(language: language)
-//        synth.speak(utterance)
-//    }
-//    
-//    private func prepareAudioSession() {
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, with: .mixWithOthers)
-//        } catch {
-//            print(error)
-//        }
-//        
-//        do {
-//            try AVAudioSession.sharedInstance().setActive(true)
-//        } catch {
-//            print(error)
-//        }
-//    }
-//    
-//    func stop() {
-//        if synth.isSpeaking {
-//            synth.stopSpeaking(at: .immediate)
-//        }
-//    }
-//}
-//
-//extension Speaker: AVSpeechSynthesizerDelegate {
-//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
-//        print("Speaker class started")
-//    }
-//    
-//    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-//        print("Speaker class finished")
-//    }
-//}
+class TextToSpeechUtils: NSObject, AVSpeechSynthesizerDelegate {
+    
+    let synthesizer = AVSpeechSynthesizer()
+    let audioSession = AVAudioSession.sharedInstance()
+    let defaultLanguage = "en-US"
+    var lastPlayingUtterance: AVSpeechUtterance?
+    
+    public func synthesizeSpeech(forText text: String) {
+        
+        if (text.isEmpty) { return }
+        
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.duckOthers])
+            try audioSession.setActive(true)
+        } catch {
+            return
+        }
+        
+        let utterance = AVSpeechUtterance(string:text)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        utterance.volume = 0.7
+        utterance.voice = AVSpeechSynthesisVoice(language: detectLanguageFromText(text))
+        self.synthesizer.speak(utterance)
+        
+        self.lastPlayingUtterance = utterance
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        if (synthesizer == self.synthesizer && self.lastPlayingUtterance == utterance) {
+            do {
+                // after last utterance has played - deactivate the audio session
+                try self.audioSession.setActive(false);
+            } catch {
+                return
+            }
+        }
+    }
+    
+    private func detectLanguageFromText(_ text: String) -> String {
+        let tagger = NSLinguisticTagger.init(tagSchemes: [NSLinguisticTagSchemeLanguage], options: 0)
+        tagger.string = text
+        let textLanguage = tagger.tag(at: 0, scheme: NSLinguisticTagSchemeLanguage, tokenRange: nil, sentenceRange: nil)
+        var detectedLanguage: String?
+        for installedLanguage in AVSpeechSynthesisVoice.speechVoices() {
+            let languageStringParts = installedLanguage.language.components(separatedBy: "-")
+            if (languageStringParts.count > 0 && languageStringParts[0] == textLanguage) {
+                detectedLanguage = installedLanguage.language
+                break
+            }
+        }
+        
+        // if language could not be detected return default language
+        return detectedLanguage ?? defaultLanguage
+    }
+}
