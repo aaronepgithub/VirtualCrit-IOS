@@ -126,4 +126,16 @@ struct AllRounds {
 
 }
 
+struct Leaderboard {
+
+    static var scoreLeaderName = "Undefined"
+    static var scoreLeaderScore = "0"
+    
+    static var speedLeaderName = "Undefined"
+    static var speedLeaderScore = "0"
+    
+    static var roundLeadersString = "Undefined"
+
+}
+
 

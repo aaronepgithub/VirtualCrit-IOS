@@ -165,6 +165,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var dock1_lastSpeed: UILabel!
     @IBOutlet weak var dock1_lastScore: UILabel!
     @IBOutlet weak var dock1_lastCadence: UILabel!
+    @IBOutlet weak var dock1_closeBtn: UIButton!
+    @IBOutlet weak var doc1_bttmLabel: UILabel!
+    
+    
     
     @IBOutlet weak var lbl_TotalTime: UILabel!
     @IBOutlet weak var lbl_RoundTime: UILabel!
@@ -507,9 +511,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func dockView1_open() {
 
-        dock1_lastSpeed.text = "\(String(format:"%.2f", AllRounds.arrSPD.last!))"
-        dock1_lastScore.text = "\(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
-        dock1_lastCadence.text = "\(String(format:"%.1f", AllRounds.arrCAD.last!))"
+        if AllRounds.arrHR.count > 0 && AllRounds.arrCAD.count > 0 {
+        
+            dock1_lastSpeed.text = "\(String(format:"%.2f", AllRounds.arrSPD.last!))"
+            dock1_lastScore.text = "\(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
+            dock1_lastCadence.text = "\(String(format:"%.1f", AllRounds.arrCAD.last!))"
+        
+        }
+ 
+        doc1_bttmLabel.text = Leaderboard.roundLeadersString
+        //alert(message: Leaderboard.roundLeadersString)
         
         dockView1.center = view.center
         view.addSubview(dockView1)

@@ -120,14 +120,24 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 let stringOfWords = score_string_array[0]
                 let stringOfWordsArray = stringOfWords.components(separatedBy: " ")
-                print(stringOfWordsArray[0])
-                //print(stringOfWordsArray[1])
-                //print(stringOfWordsArray[2])
-                //print(stringOfWordsArray[3])
-                print(stringOfWordsArray[4])
-                //print(stringOfWordsArray[5])
-                Rounds.roundLeaderName = stringOfWordsArray[0]
-                Rounds.roundLeaderScore = stringOfWordsArray[4]
+//                print(stringOfWordsArray[0])
+//                print(stringOfWordsArray[3])
+                //Rounds.roundLeaderName = stringOfWordsArray[0]
+                //Rounds.roundLeaderScore = stringOfWordsArray[3]
+                Leaderboard.scoreLeaderName = stringOfWordsArray[0]
+                Leaderboard.scoreLeaderScore = stringOfWordsArray[3]
+                
+                let stringOfWords2 = speed_string_array[0]
+                let stringOfWordsArray2 = stringOfWords2.components(separatedBy: " ")
+//                print(stringOfWordsArray2[0])
+//                print(stringOfWordsArray2[3])
+                Leaderboard.speedLeaderName = stringOfWordsArray2[0]
+                Leaderboard.speedLeaderScore = stringOfWordsArray2[3]
+                
+                //self.alert(message: "\(Leaderboard.scoreLeaderName) , \(Leaderboard.scoreLeaderScore) , \(Leaderboard.speedLeaderName) , \(Leaderboard.speedLeaderScore)  ", title: "Leaders")
+                
+                Leaderboard.roundLeadersString = "\(Leaderboard.scoreLeaderName),\(Leaderboard.scoreLeaderScore),\(Leaderboard.speedLeaderName),\(Leaderboard.speedLeaderScore)"
+                print(Leaderboard.roundLeadersString)
                 
                 
             }
