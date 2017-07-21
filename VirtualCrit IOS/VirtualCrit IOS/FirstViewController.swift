@@ -121,6 +121,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     }
     
+    func newSpeakerWithClass() {
+        let str = self.str
+        let x = TextToSpeechUtils.init()
+        x.synthesizeSpeech(forText: str)
+    
+    }
+    
     
 
     
@@ -266,8 +273,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         alert(message: "", title: "Starting")
         //newSpeaker()
         
-        let x = TextToSpeechUtils.init()
-        x.synthesizeSpeech(forText: "Hi Kazumi, Let's Start")
+//        let x = TextToSpeechUtils.init()
+//        x.synthesizeSpeech(forText: "Hi Kazumi, Let's Start")
+        
+        newSpeakerWithClass()
         
         if ConnectionCheck.isConnectedToNetwork() {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
@@ -458,7 +467,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
         if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
             self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
-            newSpeaker()
+            //newSpeaker()
+            newSpeakerWithClass()
         }
 
         
@@ -483,7 +493,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if dblElapsedRoundTime == 150 {
             self.str = "Midway"
-            newSpeaker()
+            //newSpeaker()
+            newSpeakerWithClass()
         }
         
         
