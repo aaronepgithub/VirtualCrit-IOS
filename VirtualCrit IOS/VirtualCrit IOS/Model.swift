@@ -8,6 +8,76 @@
 
 import Foundation
 
+
+func getRoundDataGlobal() {
+    
+    //print("httpGet Started")
+    let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
+    let url = NSURL(string: todosEndpoint)
+    
+    //print(1)
+    URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+        
+        if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+            
+            if jsonObj == nil {
+                return
+            }
+            
+            for (key, _) in jsonObj! {
+                
+                if let nestedDictionary = jsonObj?[key] as? [String: Any] {
+                    for(key, _) in nestedDictionary {
+                        
+                        if key == "fb_RND" {
+                            let a = nestedDictionary["fb_RND"] as! Double
+                            let b = nestedDictionary["fb_timName"] as! String!
+                            let c = nestedDictionary["fb_SPD"] as! Double!
+                            
+                            score_string_array.append(String(describing: a) + " %MAX  " + String(describing: b!) + " | " + String(describing: c!) + " MPH")
+                        }
+                        
+                        if key == "fb_SPD" {
+                            let d = nestedDictionary["fb_SPD"] as! Double
+                            let e = nestedDictionary["fb_timName"] as! String!
+                            let f = nestedDictionary["fb_RND"] as! Double!
+                            
+                            speed_string_array.append(String(describing: d) + " MPH  " + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
+                        }
+                    }
+                }
+            }
+            //at the end
+            score_string_array.sort { $0 > $1 }
+            speed_string_array.sort { $0.compare($1, options: .numeric) == .orderedDescending }
+            
+            let stringOfWords = score_string_array[0]
+            let stringOfWordsArray = stringOfWords.components(separatedBy: " ")
+            //                print(stringOfWordsArray[0])
+            //                print(stringOfWordsArray[3])
+            //Rounds.roundLeaderName = stringOfWordsArray[0]
+            //Rounds.roundLeaderScore = stringOfWordsArray[3]
+            Leaderboard.scoreLeaderScore = stringOfWordsArray[0]
+            Leaderboard.scoreLeaderName = stringOfWordsArray[3]
+            
+            let stringOfWords2 = speed_string_array[0]
+            let stringOfWordsArray2 = stringOfWords2.components(separatedBy: " ")
+            //                print(stringOfWordsArray2[0])
+            //                print(stringOfWordsArray2[3])
+            Leaderboard.speedLeaderScore = stringOfWordsArray2[0]
+            Leaderboard.speedLeaderName = stringOfWordsArray2[3]
+            
+            //self.alert(message: "\(Leaderboard.scoreLeaderName) , \(Leaderboard.scoreLeaderScore) , \(Leaderboard.speedLeaderName) , \(Leaderboard.speedLeaderScore)  ", title: "Leaders")
+            
+            Leaderboard.roundLeadersString = "\(Leaderboard.scoreLeaderName),\(Leaderboard.scoreLeaderScore),\(Leaderboard.speedLeaderName),\(Leaderboard.speedLeaderScore)"
+            print(Leaderboard.roundLeadersString)
+            
+            
+        }
+    }).resume()
+}
+
+
 struct Device {
     //HR
     static let TransferService = "0x180D"

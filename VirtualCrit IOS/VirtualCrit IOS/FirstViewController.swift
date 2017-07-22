@@ -501,6 +501,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             newSpeakerWithClass()
         }
         
+        if dblElapsedRoundTime == 120 {
+            getRoundDataGlobal()
+            //self.str = Leaderboard.roundLeadersString
+            //newSpeakerWithClass()
+        }
+        
+        if dblElapsedRoundTime == 100 {
+            
+            self.str = Leaderboard.roundLeadersString
+            newSpeakerWithClass()
+        }
+        
         
     }
         
