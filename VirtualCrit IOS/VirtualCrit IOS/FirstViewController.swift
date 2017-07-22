@@ -518,8 +518,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             dock1_lastCadence.text = "\(String(format:"%.1f", AllRounds.arrCAD.last!))"
         
         }
- 
-        doc1_bttmLabel.text = Leaderboard.roundLeadersString
+        let str = "\(Leaderboard.scoreLeaderScore) (\(Leaderboard.scoreLeaderName))  |  \(Leaderboard.speedLeaderScore) (\(Leaderboard.speedLeaderName))"
+        doc1_bttmLabel.text = str
         //alert(message: Leaderboard.roundLeadersString)
         
         dockView1.center = view.center

@@ -101,7 +101,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                                 let b = nestedDictionary["fb_timName"] as! String!
                                 let c = nestedDictionary["fb_SPD"] as! Double!
                                 
-                                score_string_array.append(String(describing: a) + " %MAX  " + "\n" + String(describing: b!) + " | " + String(describing: c!) + " MPH")
+                                score_string_array.append(String(describing: a) + " %MAX  " + String(describing: b!) + " | " + String(describing: c!) + " MPH")
                             }
                             
                             if key == "fb_SPD" {
@@ -109,7 +109,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                                 let e = nestedDictionary["fb_timName"] as! String!
                                 let f = nestedDictionary["fb_RND"] as! Double!
                                 
-                                speed_string_array.append(String(describing: d) + " MPH  " + "\n" + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
+                                speed_string_array.append(String(describing: d) + " MPH  " + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
                             }
                         }
                     }
@@ -124,15 +124,15 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
 //                print(stringOfWordsArray[3])
                 //Rounds.roundLeaderName = stringOfWordsArray[0]
                 //Rounds.roundLeaderScore = stringOfWordsArray[3]
-                Leaderboard.scoreLeaderName = stringOfWordsArray[0]
-                Leaderboard.scoreLeaderScore = stringOfWordsArray[3]
+                Leaderboard.scoreLeaderScore = stringOfWordsArray[0]
+                Leaderboard.scoreLeaderName = stringOfWordsArray[3]
                 
                 let stringOfWords2 = speed_string_array[0]
                 let stringOfWordsArray2 = stringOfWords2.components(separatedBy: " ")
 //                print(stringOfWordsArray2[0])
 //                print(stringOfWordsArray2[3])
-                Leaderboard.speedLeaderName = stringOfWordsArray2[0]
-                Leaderboard.speedLeaderScore = stringOfWordsArray2[3]
+                Leaderboard.speedLeaderScore = stringOfWordsArray2[0]
+                Leaderboard.speedLeaderName = stringOfWordsArray2[3]
                 
                 //self.alert(message: "\(Leaderboard.scoreLeaderName) , \(Leaderboard.scoreLeaderScore) , \(Leaderboard.speedLeaderName) , \(Leaderboard.speedLeaderScore)  ", title: "Leaders")
                 
