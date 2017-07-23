@@ -378,8 +378,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                         self.lbl_button_start.setTitle("🔴🔴", for: .normal)
-                        //self.httpGet()
-                        //print("httpGet")
                         
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
@@ -500,15 +498,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             //newSpeaker()
             newSpeakerWithClass()
         }
+
+        if dblElapsedRoundTime == 180 {
+            if ConnectionCheck.isConnectedToNetwork() {
+                getRoundDataGlobal()
+            }
+            
+        }
         
-        if dblElapsedRoundTime == 120 {
+
+        
+        if dblElapsedRoundTime == 75 {
             if ConnectionCheck.isConnectedToNetwork() {
                 getRoundDataGlobal()
             }
 
         }
         
-        if dblElapsedRoundTime == 100 {
+        if dblElapsedRoundTime == 60 {
             self.str = Leaderboard.roundLeadersString
             newSpeakerWithClass()
         }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		581EA0731F244DF0008561CC /* ForthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581EA0721F244DF0008561CC /* ForthViewController.swift */; };
 		5820B8B71EE58D3300654A4E /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820B8B61EE58D3300654A4E /* TableViewCell.swift */; };
 		584943341ED58F960017BBFA /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584943331ED58F960017BBFA /* PopupViewController.swift */; };
 		5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		581EA0721F244DF0008561CC /* ForthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForthViewController.swift; sourceTree = "<group>"; };
 		5820B8B61EE58D3300654A4E /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		584943331ED58F960017BBFA /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
@@ -74,12 +76,13 @@
 			children = (
 				588879A31EABD91900E5C75E /* AppDelegate.swift */,
 				588879A51EABD91900E5C75E /* FirstViewController.swift */,
+				588879A71EABD91900E5C75E /* SecondViewController.swift */,
+				5895A5771F0EBA1700544741 /* ThirdViewController.swift */,
+				581EA0721F244DF0008561CC /* ForthViewController.swift */,
+				588879A91EABD91A00E5C75E /* Main.storyboard */,
 				5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */,
 				588879B71EABDB0100E5C75E /* Model.swift */,
 				588B4CE91EAC2A0400364AEE /* Decoder.swift */,
-				588879A71EABD91900E5C75E /* SecondViewController.swift */,
-				588879A91EABD91A00E5C75E /* Main.storyboard */,
-				5895A5771F0EBA1700544741 /* ThirdViewController.swift */,
 				584943331ED58F960017BBFA /* PopupViewController.swift */,
 				5820B8B61EE58D3300654A4E /* TableViewCell.swift */,
 				58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */,
@@ -175,6 +178,7 @@
 				588879A41EABD91900E5C75E /* AppDelegate.swift in Sources */,
 				588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */,
 				58B88D481EACDA1300144C0F /* Timer.swift in Sources */,
+				581EA0731F244DF0008561CC /* ForthViewController.swift in Sources */,
 				588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */,
 				5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */,
 				58FDD2A91F0FF0A700BAB193 /* TableViewCell1.swift in Sources */,
