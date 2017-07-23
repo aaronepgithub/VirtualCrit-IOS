@@ -266,8 +266,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  //best spd
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) BPM"  //best hr
+        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!)) Mph"  //best spd
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
         startScanning()
     }
     

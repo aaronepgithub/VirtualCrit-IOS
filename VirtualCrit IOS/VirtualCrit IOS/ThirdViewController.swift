@@ -79,6 +79,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     func getRoundData() {
     
         //print("httpGet Started")
+        score_string_array = []
+        speed_string_array = []
         let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
         let url = NSURL(string: todosEndpoint)
         
@@ -218,8 +220,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
-                score_string_array = []
-                speed_string_array = []
+//                score_string_array = []
+//                speed_string_array = []
             }
         }
     }
@@ -245,8 +247,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
-                score_string_array = []
-                speed_string_array = []
+//                score_string_array = []
+//                speed_string_array = []
             }
         
         }
