@@ -87,39 +87,39 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 //    }
     
-    func prepareAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, with: .mixWithOthers)
-        } catch {
-            print(error)
-        }
-        
-        do {
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print(error)
-        }
-    }
-    
-
-    
-    func newSpeaker() {
-    
-        let synth = AVSpeechSynthesizer()
-        let str = self.str
-        let lang = "en-US"
-        
-            prepareAudioSession()
-            let utterance = AVSpeechUtterance(string: str)
-            utterance.voice = AVSpeechSynthesisVoice(language: lang)
-            synth.speak(utterance)
-        
-        
-        if synth.isSpeaking {
-            synth.stopSpeaking(at: .immediate)
-        }
-    
-    }
+//    func prepareAudioSession() {
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, with: .mixWithOthers)
+//        } catch {
+//            print(error)
+//        }
+//        
+//        do {
+//            try AVAudioSession.sharedInstance().setActive(true)
+//        } catch {
+//            print(error)
+//        }
+//    }
+//    
+//
+//    
+//    func newSpeaker() {
+//    
+//        let synth = AVSpeechSynthesizer()
+//        let str = self.str
+//        let lang = "en-US"
+//        
+//            prepareAudioSession()
+//            let utterance = AVSpeechUtterance(string: str)
+//            utterance.voice = AVSpeechSynthesisVoice(language: lang)
+//            synth.speak(utterance)
+//        
+//        
+//        if synth.isSpeaking {
+//            synth.stopSpeaking(at: .immediate)
+//        }
+//    
+//    }
     
     func newSpeakerWithClass() {
         let str = self.str

@@ -30,7 +30,7 @@ class TextToSpeechUtils: NSObject, AVSpeechSynthesizerDelegate {
         let utterance = AVSpeechUtterance(string:text)
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
         utterance.volume = 0.7
-        utterance.voice = AVSpeechSynthesisVoice(language: detectLanguageFromText(text))
+        utterance.voice = AVSpeechSynthesisVoice(language: defaultLanguage)
         self.synthesizer.speak(utterance)
         
         self.lastPlayingUtterance = utterance
