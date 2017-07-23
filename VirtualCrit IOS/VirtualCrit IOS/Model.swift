@@ -11,7 +11,9 @@ import Foundation
 
 func getRoundDataGlobal() {
     
-    //print("httpGet Started")
+    score_string_array = []
+    speed_string_array = []
+    
     let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
     let url = NSURL(string: todosEndpoint)
     

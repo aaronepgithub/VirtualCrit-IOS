@@ -502,13 +502,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         
         if dblElapsedRoundTime == 120 {
-            getRoundDataGlobal()
-            //self.str = Leaderboard.roundLeadersString
-            //newSpeakerWithClass()
+            if ConnectionCheck.isConnectedToNetwork() {
+                getRoundDataGlobal()
+            }
+
         }
         
         if dblElapsedRoundTime == 100 {
-            
             self.str = Leaderboard.roundLeadersString
             newSpeakerWithClass()
         }
