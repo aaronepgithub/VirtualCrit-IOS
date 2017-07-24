@@ -286,6 +286,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         //newSpeakerWithClass()
         getFirebase()
+        getFirebaseSpeed()
         
 //        if ConnectionCheck.isConnectedToNetwork() {
 //            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
@@ -376,7 +377,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
                 self.lbl_button_start.setTitle("🔴🔴🔴🔴", for: .normal)
                 print("httpPut")
-                pushFBTotals()
+                getFirebase()
+                getFirebaseSpeed()
                 
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
@@ -431,27 +433,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
         lbl_RoundTime.text = String(dblElapsedRoundTime)
         
+        
+        //MARK:  END OF ROUND
+        
         if dblElapsedRoundTime == 0 {
-        print("New Round...")
-        printCurrentDateAndTime()
+            print("New Round...")
+            printCurrentDateAndTime()
 
-        roundsCompleted = roundsCompleted + 1
+            roundsCompleted = roundsCompleted + 1
             
-        Totals.arrHRTotal.append(Rounds.avg_hr)
-        AllRounds.arrHR.append(Rounds.avg_hr)
-        AllRounds.arrSPD.append(Rounds.avg_speed)
-        AllRounds.arrCAD.append(Rounds.avg_cadence)
+            Totals.arrHRTotal.append(Rounds.avg_hr)
+            AllRounds.arrHR.append(Rounds.avg_hr)
+            AllRounds.arrSPD.append(Rounds.avg_speed)
+            AllRounds.arrCAD.append(Rounds.avg_cadence)
             
-        Rounds.distanceRound = 0
-        Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = []
-        Rounds.crankRevolutionTime = 0
-        Rounds.crankRevolutions = 0
-        lbl_Speed.text = "..."
-        lbl_Cadence.text = "..."
-        lbl_Heartrate.text = "..."
-        lbl_Score.text = "..."
-        updateTimerRound()
+            Rounds.distanceRound = 0
+            Rounds.totalWheelEventTime = 0
+            Rounds.arrHRRound = []
+            Rounds.crankRevolutionTime = 0
+            Rounds.crankRevolutions = 0
+            lbl_Speed.text = "..."
+            lbl_Cadence.text = "..."
+            lbl_Heartrate.text = "..."
+            lbl_Score.text = "..."
+            updateTimerRound()
             
         }
         
@@ -482,7 +487,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
         if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
-            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
+            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
+            
+            //"\(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
+            //"\(String(format:"%.2f", AllRounds.arrSPD.last!))"
+            
+            
             //newSpeaker()
             newSpeakerWithClass()
         }

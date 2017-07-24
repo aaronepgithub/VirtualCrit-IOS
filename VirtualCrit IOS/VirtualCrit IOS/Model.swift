@@ -230,7 +230,7 @@ func getFirebase() {  //get Round leaders
     let ref = refDB.child(result)
     
     
-    ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
+    ref.queryLimited(toLast: 50).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
         
         if ( snapshot.value is NSNull ) {
             print("not found")
@@ -284,7 +284,7 @@ func getFirebaseSpeed() {
     let ref = refDB.child(result)
     
     
-    ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
+    ref.queryLimited(toLast: 50).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
         
         if ( snapshot.value is NSNull ) {
             print("not found")
@@ -428,7 +428,7 @@ func getFBTotals() { //get Totals from fb, ordered by score
     
     let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
     
-    ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
+    ref.queryLimited(toLast: 50).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
         
         if ( snapshot.value is NSNull ) {
             print("not found")
@@ -484,7 +484,7 @@ func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
     
     let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
     
-    ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
+    ref.queryLimited(toLast: 50).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
         
         if ( snapshot.value is NSNull ) {
             print("not found")
