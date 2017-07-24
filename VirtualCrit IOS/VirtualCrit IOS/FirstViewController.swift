@@ -504,7 +504,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
         
         self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  //best spd
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) BPM"  //best hr
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
         
         
         if dblElapsedRoundTime == 150 {

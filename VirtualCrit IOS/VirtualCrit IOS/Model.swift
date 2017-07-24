@@ -277,7 +277,7 @@ func getFirebaseSpeed() {
     
     var counter = 0
     
-    // FIREBASE GET  - START
+    // FIREBASE GET ROUND SPEED - START
     let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
     let ref = refDB.child(result)
     
@@ -295,7 +295,7 @@ func getFirebaseSpeed() {
                 let fbNAME = dict["fb_timName"]!
                 let fbSPD = dict["fb_SPD"]!
                 
-                print("\(counter) : \(fbNAME) score :  \(fbRND) :  \(fbSPD)")
+                print("\(counter) : \(fbNAME) speed :  \(fbSPD) :  \(fbRND)")
                 arrRoundLeaders.insert("\(counter) : \(fbNAME) : \(fbRND) : \(fbSPD)", at: 0)
                 
                 let x = dict["fb_RND"]! as! Double
