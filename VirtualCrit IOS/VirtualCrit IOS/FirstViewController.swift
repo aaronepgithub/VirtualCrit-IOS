@@ -507,24 +507,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
         
         
+
+
+        if dblElapsedRoundTime == 180 {
+            if ConnectionCheck.isConnectedToNetwork() {
+                //getRoundDataGlobal()
+                getFirebase()
+                getFirebaseSpeed()
+            }
+            
+        }
+        
         if dblElapsedRoundTime == 150 {
             self.str = "Midway"
             //newSpeaker()
             newSpeakerWithClass()
-        }
-
-        if dblElapsedRoundTime == 180 {
-            if ConnectionCheck.isConnectedToNetwork() {
-                getRoundDataGlobal()
-            }
-            
         }
         
 
         
         if dblElapsedRoundTime == 75 {
             if ConnectionCheck.isConnectedToNetwork() {
-                getRoundDataGlobal()
+                //getRoundDataGlobal()
+                getFirebase()
+                getFirebaseSpeed()
             }
 
         }
