@@ -10,6 +10,7 @@ import UIKit
 import CoreBluetooth
 import AVFoundation
 import AVKit
+import Firebase
 
 
 
@@ -208,13 +209,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected")
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     self.dockView1.removeFromSuperview()
-                    self.httpPost()
+                    
+                    pushFBRound()
+                    //self.httpPost()
                     print("httpPost")
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-                        self.httpPut()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                        //self.httpPut()
+                        pushFBTotals()
                         print("httpPut")
                     })
                     
@@ -280,16 +284,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        let x = TextToSpeechUtils.init()
 //        x.synthesizeSpeech(forText: "Hi Kazumi, Let's Start")
         
-        newSpeakerWithClass()
+        //newSpeakerWithClass()
+        getFirebase()
         
-        if ConnectionCheck.isConnectedToNetwork() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-            self.httpPost()
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
-            self.httpPut()
-            })
-        }
+//        if ConnectionCheck.isConnectedToNetwork() {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+//            self.httpPost()
+//            })
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
+//            self.httpPut()
+//            })
+//        }
         
         if hasPressedStart == true {
             print("already started")
@@ -359,6 +364,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func updateTimerRound() {
         //at the end of each round
         Rounds.roundsComplete = 1 + Rounds.roundsComplete
+        
+        pushFBRound()
+        pushFBTotals()
+        
 
 
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
@@ -366,22 +375,27 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
                 self.lbl_button_start.setTitle("🔴🔴🔴🔴", for: .normal)
-                print("httpPost")
-                self.httpPost()
+                print("httpPut")
+                pushFBTotals()
                 
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                     self.lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
-                    self.httpPut()
+                    //self.httpPut()
                     print("httpPut")
+                    pushFBTotals()
                     
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                         self.lbl_button_start.setTitle("🔴🔴", for: .normal)
+                        print("httpPut")
+                        pushFBTotals()
                         
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                             self.lbl_button_start.setTitle("🔴", for: .normal)
+                            print("httpPut")
+                            pushFBTotals()
                             
                         })
                     })
@@ -1221,78 +1235,78 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
     
-    func httpPost() {
-    
-//        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
-        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
-        guard let todosURL = URL(string: todosEndpoint) else {
-            print("Error: cannot create URL")
-            return
-        }
-        var todosUrlRequest = URLRequest(url: todosURL)
-        todosUrlRequest.httpMethod = "POST"
-        
-        let aa = AllRounds.arrHR.last
-        let ab = aa! / Device.maxHR * 100
-        let xx = "\(String(format:"%.1f", aa!))"
-        let yy = "\(String(format:"%.1f", AllRounds.arrSPD.last!))"
-        let zz = "\(String(format:"%.1f", ab))"
-        
-        
-        let newTodo: [String: Any] = [
-            "a_scoreRoundLast": Double(zz) ?? 0,
-            "a_speedRoundLast": Double(yy) ?? 0,
-            "a_cadenceRoundLast": 1,
-            "a_heartrateRoundLast": Double(xx) ?? 0,
-            "a_calcDurationPost": Totals.displayedTime,
-            "a_timName": Settings.riderName,
-            "a_timGroup": "IOS",
-            "a_timTeam": "Square Pizza",
-            "a_Date": Settings.dateToday,
-            "a_DateNow": Settings.dateToday,
-            "a_lastCAD": 1,
-            "a_lastHR": Double(xx) ?? 0,
-            "a_timDistanceTraveled": 1,
-            "a_maxHRTotal": Double(Device.maxHR) ,
-            "fb_CAD":0,
-            "fb_Date":Settings.dateToday,
-            "fb_DateNow":"1494517025335",
-            "fb_HR":Double(xx) ?? 0,
-            "fb_RND":Double(zz) ?? 0,
-            "fb_SPD":Double(yy) ?? 0,
-            "fb_maxHRTotal":Device.maxHR,
-            "fb_scoreHRRound":Double(zz) ?? 0,
-            "fb_scoreHRRoundLast":Double(zz) ?? 0,
-            "fb_scoreHRTotal":Double(zz) ?? 0,
-            "fb_timAvgCADtotal":0,
-            "fb_timAvgHRtotal":0,
-            "fb_timAvgSPDtotal":0,
-            "fb_timDistanceTraveled":0,
-            "fb_timGroup":"IOS",
-            "fb_timName":Settings.riderName,
-            "fb_timTeam":"Square Pizza"
-        ]
-        
-        
-        let jsonTodo: Data
-        do {
-            jsonTodo = try JSONSerialization.data(withJSONObject: newTodo, options: [])
-            todosUrlRequest.httpBody = jsonTodo
-        } catch {
-            print("Error: cannot create JSON from todo")
-            return
-        }
-        
-        if ConnectionCheck.isConnectedToNetwork() {
-        //execute
-        let session = URLSession.shared
-        let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
-        task.resume()
-        }
-        
-        
-        
-    }
+//    func httpPost() {
+//    
+////        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
+//        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
+//        guard let todosURL = URL(string: todosEndpoint) else {
+//            print("Error: cannot create URL")
+//            return
+//        }
+//        var todosUrlRequest = URLRequest(url: todosURL)
+//        todosUrlRequest.httpMethod = "POST"
+//        
+//        let aa = AllRounds.arrHR.last
+//        let ab = aa! / Device.maxHR * 100
+//        let xx = "\(String(format:"%.1f", aa!))"
+//        let yy = "\(String(format:"%.1f", AllRounds.arrSPD.last!))"
+//        let zz = "\(String(format:"%.1f", ab))"
+//        
+//        
+//        let newTodo: [String: Any] = [
+//            "a_scoreRoundLast": Double(zz) ?? 0,
+//            "a_speedRoundLast": Double(yy) ?? 0,
+//            "a_cadenceRoundLast": 1,
+//            "a_heartrateRoundLast": Double(xx) ?? 0,
+//            "a_calcDurationPost": Totals.displayedTime,
+//            "a_timName": Settings.riderName,
+//            "a_timGroup": "IOS",
+//            "a_timTeam": "Square Pizza",
+//            "a_Date": Settings.dateToday,
+//            "a_DateNow": Settings.dateToday,
+//            "a_lastCAD": 1,
+//            "a_lastHR": Double(xx) ?? 0,
+//            "a_timDistanceTraveled": 1,
+//            "a_maxHRTotal": Double(Device.maxHR) ,
+//            "fb_CAD":0,
+//            "fb_Date":Settings.dateToday,
+//            "fb_DateNow":"1494517025335",
+//            "fb_HR":Double(xx) ?? 0,
+//            "fb_RND":Double(zz) ?? 0,
+//            "fb_SPD":Double(yy) ?? 0,
+//            "fb_maxHRTotal":Device.maxHR,
+//            "fb_scoreHRRound":Double(zz) ?? 0,
+//            "fb_scoreHRRoundLast":Double(zz) ?? 0,
+//            "fb_scoreHRTotal":Double(zz) ?? 0,
+//            "fb_timAvgCADtotal":0,
+//            "fb_timAvgHRtotal":0,
+//            "fb_timAvgSPDtotal":0,
+//            "fb_timDistanceTraveled":0,
+//            "fb_timGroup":"IOS",
+//            "fb_timName":Settings.riderName,
+//            "fb_timTeam":"Square Pizza"
+//        ]
+//        
+//        
+//        let jsonTodo: Data
+//        do {
+//            jsonTodo = try JSONSerialization.data(withJSONObject: newTodo, options: [])
+//            todosUrlRequest.httpBody = jsonTodo
+//        } catch {
+//            print("Error: cannot create JSON from todo")
+//            return
+//        }
+//        
+//        if ConnectionCheck.isConnectedToNetwork() {
+//        //execute
+//        let session = URLSession.shared
+//        let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
+//        task.resume()
+//        }
+//        
+//        
+//        
+//    }
 
 
     

@@ -150,7 +150,11 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         //get & parse total score data
         if ConnectionCheck.isConnectedToNetwork() {
-            getTotalData()
+            
+            //getTotalData()
+            getFBTotals()
+            
+            
             let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
                 
@@ -176,7 +180,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         
         //get & parse total speed data
         if ConnectionCheck.isConnectedToNetwork() {
-            getTotalData()
+            
+            getFBTotalsSpeed()
+            
             let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
                 
@@ -203,7 +209,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     @IBAction func btn_roundAllSpeed(_ sender: UIButton) {
         
         if ConnectionCheck.isConnectedToNetwork() {
-            getRoundData()
+            
+            getFirebaseSpeed()
+            
             let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
                 
@@ -220,8 +228,6 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
-//                score_string_array = []
-//                speed_string_array = []
             }
         }
     }
@@ -231,7 +237,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     @IBAction func btn_roundAll(_ sender: UIButton) {
         
         if ConnectionCheck.isConnectedToNetwork() {
-            getRoundData()
+            
+            getFirebase()
+            
             let when = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: when){
 
@@ -247,8 +255,6 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
-//                score_string_array = []
-//                speed_string_array = []
             }
         
         }

@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16156CFF2B7B188C5C47166E /* Pods_VirtualCrit_IOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A6AA3BB8F87BBAEA746E4AA /* Pods_VirtualCrit_IOS.framework */; };
 		581EA0731F244DF0008561CC /* ForthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581EA0721F244DF0008561CC /* ForthViewController.swift */; };
 		5820B8B71EE58D3300654A4E /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820B8B61EE58D3300654A4E /* TableViewCell.swift */; };
 		584943341ED58F960017BBFA /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584943331ED58F960017BBFA /* PopupViewController.swift */; };
 		5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */; };
+		5877DB8E1F2641AB00A4FA4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5877DB8D1F2641AB00A4FA4B /* GoogleService-Info.plist */; };
 		588879A41EABD91900E5C75E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A31EABD91900E5C75E /* AppDelegate.swift */; };
 		588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A51EABD91900E5C75E /* FirstViewController.swift */; };
 		588879A81EABD91900E5C75E /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A71EABD91900E5C75E /* SecondViewController.swift */; };
@@ -25,10 +27,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A6AA3BB8F87BBAEA746E4AA /* Pods_VirtualCrit_IOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VirtualCrit_IOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		581EA0721F244DF0008561CC /* ForthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForthViewController.swift; sourceTree = "<group>"; };
 		5820B8B61EE58D3300654A4E /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		584943331ED58F960017BBFA /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
+		5877DB8D1F2641AB00A4FA4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		588879A01EABD91900E5C75E /* VirtualCrit IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VirtualCrit IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		588879A31EABD91900E5C75E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		588879A51EABD91900E5C75E /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +46,8 @@
 		5895A5771F0EBA1700544741 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		58B88D471EACDA1300144C0F /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell1.swift; sourceTree = "<group>"; };
+		C9431505226356BBBA8556F5 /* Pods-VirtualCrit IOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualCrit IOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-VirtualCrit IOS/Pods-VirtualCrit IOS.release.xcconfig"; sourceTree = "<group>"; };
+		CFB82D7A0DD122BDB60305CF /* Pods-VirtualCrit IOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualCrit IOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VirtualCrit IOS/Pods-VirtualCrit IOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,17 +55,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16156CFF2B7B188C5C47166E /* Pods_VirtualCrit_IOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28E64A63A420A6DB63ADCC75 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A6AA3BB8F87BBAEA746E4AA /* Pods_VirtualCrit_IOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		588879971EABD91900E5C75E = {
 			isa = PBXGroup;
 			children = (
 				588879A21EABD91900E5C75E /* VirtualCrit IOS */,
 				588879A11EABD91900E5C75E /* Products */,
+				F074EB439D478B4391A3051A /* Pods */,
+				28E64A63A420A6DB63ADCC75 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +91,7 @@
 		588879A21EABD91900E5C75E /* VirtualCrit IOS */ = {
 			isa = PBXGroup;
 			children = (
+				5877DB8D1F2641AB00A4FA4B /* GoogleService-Info.plist */,
 				588879A31EABD91900E5C75E /* AppDelegate.swift */,
 				588879A51EABD91900E5C75E /* FirstViewController.swift */,
 				588879A71EABD91900E5C75E /* SecondViewController.swift */,
@@ -94,6 +112,15 @@
 			path = "VirtualCrit IOS";
 			sourceTree = "<group>";
 		};
+		F074EB439D478B4391A3051A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CFB82D7A0DD122BDB60305CF /* Pods-VirtualCrit IOS.debug.xcconfig */,
+				C9431505226356BBBA8556F5 /* Pods-VirtualCrit IOS.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -101,9 +128,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 588879B41EABD91A00E5C75E /* Build configuration list for PBXNativeTarget "VirtualCrit IOS" */;
 			buildPhases = (
+				AF80363FBFB0C8E84B2857E4 /* [CP] Check Pods Manifest.lock */,
 				5888799C1EABD91900E5C75E /* Sources */,
 				5888799D1EABD91900E5C75E /* Frameworks */,
 				5888799E1EABD91900E5C75E /* Resources */,
+				992FF664AE4055ACAF079D46 /* [CP] Embed Pods Frameworks */,
+				62469E63FE1BFE9C14EBC3F7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -160,12 +190,61 @@
 			buildActionMask = 2147483647;
 			files = (
 				588879B01EABD91A00E5C75E /* LaunchScreen.storyboard in Resources */,
+				5877DB8E1F2641AB00A4FA4B /* GoogleService-Info.plist in Resources */,
 				588879AD1EABD91A00E5C75E /* Assets.xcassets in Resources */,
 				588879AB1EABD91A00E5C75E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		62469E63FE1BFE9C14EBC3F7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VirtualCrit IOS/Pods-VirtualCrit IOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		992FF664AE4055ACAF079D46 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VirtualCrit IOS/Pods-VirtualCrit IOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AF80363FBFB0C8E84B2857E4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5888799C1EABD91900E5C75E /* Sources */ = {
@@ -306,6 +385,7 @@
 		};
 		588879B51EABD91A00E5C75E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFB82D7A0DD122BDB60305CF /* Pods-VirtualCrit IOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9483S2UTDX;
@@ -320,6 +400,7 @@
 		};
 		588879B61EABD91A00E5C75E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9431505226356BBBA8556F5 /* Pods-VirtualCrit IOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9483S2UTDX;
