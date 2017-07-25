@@ -52,8 +52,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     
     @IBAction func btn_Round(_ sender: UIButton) {
+        dock1_closeBtn.setTitle("Close", for: .normal)
         dockView1_open()
-        //httpGet()
+        
     }
     
     func prepareForPlaybackWithData(audioData: NSData) {
@@ -420,6 +421,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 getFirebase()
                 getFirebaseSpeed()
             }
+            
+            dock1_closeBtn.setTitle("4 Minutes Remain", for: .normal)
             self.dockView1_open()
             
         }
@@ -431,6 +434,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 getFirebase()
                 getFirebaseSpeed()
             }
+            dock1_closeBtn.setTitle("3 Minutes Remain", for: .normal)
             self.dockView1_open()
             
         }
@@ -439,11 +443,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             self.str = "Midway"
             //newSpeaker()
             newSpeakerWithClass()
-            self.dockView1_open()
+            //self.dockView1_open()
         }
         
 
         if dblElapsedRoundTime == 120 {
+            dock1_closeBtn.setTitle("2 Minutes Remain", for: .normal)
             self.dockView1_open()
             
         }
@@ -460,6 +465,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if dblElapsedRoundTime == 60 {
             self.str = Leaderboard.roundLeadersString
             newSpeakerWithClass()
+            dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
             self.dockView1_open()
         }
         
