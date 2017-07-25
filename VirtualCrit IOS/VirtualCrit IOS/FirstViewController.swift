@@ -441,9 +441,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if dblElapsedRoundTime == 150 {
             self.str = "Midway"
-            //newSpeaker()
             newSpeakerWithClass()
-            //self.dockView1_open()
         }
         
 
@@ -567,6 +565,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_Cadence.text = "..."
         lbl_Heartrate.text = "..."
         lbl_Score.text = "..."
+        
+        self.str = "Bluetooth Disconnected"
+        newSpeakerWithClass()
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -614,8 +615,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print("Did Disconnect Peripheral")
         // verify we have a peripheral
         
-//        alert(message: "Please rescan and connect to your Bluetooth Sensor", title: "BLE Sensor STOPPED")
-//        BleDisconnectSpeaker()
+
         
         Rounds.avg_speed = 0
         Rounds.avg_cadence = 0
@@ -630,6 +630,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         lbl_Cadence.text = "..."
         lbl_Heartrate.text = "..."
         lbl_Score.text = "..."
+        
+        self.str = "Bluetooth Disconnected"
+        newSpeakerWithClass()
         
         
         guard let peripheral = self.peripheral else {
