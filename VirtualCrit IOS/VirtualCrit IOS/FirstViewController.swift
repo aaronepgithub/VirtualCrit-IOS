@@ -71,56 +71,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     
-    var str = "Hello Kazumi, let's get started"
-    
-//    func mySpeaker() {
-    
-//        let str = self.str
-//        let synth = AVSpeechSynthesizer()
-//        let utterance = AVSpeechUtterance(string: str)
-//        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-//        let lang = "en-US"
-//        
-//        utterance.voice = AVSpeechSynthesisVoice(language: lang)
-//        synth.speak(utterance)
-        
-        //Speaker.speak("test", in: Language.english.rawValue)
-        
-//    }
-    
-//    func prepareAudioSession() {
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient, with: .mixWithOthers)
-//        } catch {
-//            print(error)
-//        }
-//        
-//        do {
-//            try AVAudioSession.sharedInstance().setActive(true)
-//        } catch {
-//            print(error)
-//        }
-//    }
-//    
-//
-//    
-//    func newSpeaker() {
-//    
-//        let synth = AVSpeechSynthesizer()
-//        let str = self.str
-//        let lang = "en-US"
-//        
-//            prepareAudioSession()
-//            let utterance = AVSpeechUtterance(string: str)
-//            utterance.voice = AVSpeechSynthesisVoice(language: lang)
-//            synth.speak(utterance)
-//        
-//        
-//        if synth.isSpeaking {
-//            synth.stopSpeaking(at: .immediate)
-//        }
-//    
-//    }
+    var str = "Hi, this is Kazumi. Let's get started"
     
     func newSpeakerWithClass() {
         let str = self.str
@@ -130,37 +81,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     
-
-    
-    
-    
-//    func BleDisconnectSpeaker() {
-//        
-//        let str = "Bluetooth has been disconnected"
-//        let synth = AVSpeechSynthesizer()
-//        let utterance = AVSpeechUtterance(string: str)
-//        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-//        let lang = "en-US"
-//        
-//        utterance.voice = AVSpeechSynthesisVoice(language: lang)
-//        synth.speak(utterance)
-//    }
-    
-//    func EndofRoundSpeaker() {
-//        
-//        //TODO, GET FROM LAST ROUND ARR
-//        
-//        let str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", Rounds.avg_speed)).  Your score for the last round was \(String(format:"%.1f", Rounds.avg_score))"
-//        let synth = AVSpeechSynthesizer()
-//        let utterance = AVSpeechUtterance(string: str)
-//        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-//        let lang = "en-US"
-//        
-//        utterance.voice = AVSpeechSynthesisVoice(language: lang)
-//        synth.speak(utterance)
-//        print("Running in BG")
-//        print("Rounds.avg_score  \(Rounds.avg_score)")
-//    }
     
     @IBOutlet var dockView1: UIView!
     @IBOutlet weak var dock1_lastSpeed: UILabel!
@@ -213,28 +133,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     self.dockView1.removeFromSuperview()
                     
                     pushFBRound()
-                    //self.httpPost()
-                    print("httpPost")
+                    print("pushFBRound")
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-                        //self.httpPut()
                         pushFBTotals()
-                        print("httpPut")
+                        print("pushFBTotals")
                     })
                     
                     
                 })
-                
-
-                
-//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
-//                    self.httpGet()
-//                    print("httpGet")
-//                })
-//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(40), execute: {
-//                    self.httpGetTotals()
-//                    print("httpGetTotals")
-//                })
             
         }
         else{
@@ -279,12 +186,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_action_start(_ sender: UIButton) {
         alert(message: "", title: "Starting")
-        //newSpeaker()
         
-//        let x = TextToSpeechUtils.init()
-//        x.synthesizeSpeech(forText: "Hi Kazumi, Let's Start")
-        
-        //newSpeakerWithClass()
+        newSpeakerWithClass()
         getFirebase()
         getFirebaseSpeed()
         
@@ -372,31 +275,31 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
 
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
-        //dockView1_open()
+        dockView1_open()
         
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
                 self.lbl_button_start.setTitle("🔴🔴🔴🔴", for: .normal)
                 print("httpPut")
                 getFirebase()
                 getFirebaseSpeed()
+                //self.dockView1_open()
                 
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                     self.lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
-                    //self.httpPut()
-                    print("httpPut")
+                    print("pushFBTotals")
                     pushFBTotals()
                     
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                         self.lbl_button_start.setTitle("🔴🔴", for: .normal)
-                        print("httpPut")
+                        print("pushFBTotals")
                         pushFBTotals()
                         
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                             self.lbl_button_start.setTitle("🔴", for: .normal)
-                            print("httpPut")
+                            print("pushFBTotals")
                             pushFBTotals()
                             
                         })
@@ -489,11 +392,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
             self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
             
-            //"\(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
-            //"\(String(format:"%.2f", AllRounds.arrSPD.last!))"
-            
-            
-            //newSpeaker()
             newSpeakerWithClass()
         }
 
@@ -510,21 +408,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
             return $0 + $1/Double(Totals.arrHRTotal.count)
         }
-//        self.lbl_round_speed.text = "\(String(describing: String(self.roundLeaderName)))"  //leader name
-//        self.lbl_round_hr.text = "\(String(format:"%.1f",  self.roundLeaderScore)) %MAX"  //leader score
+
         
         self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  //best spd
         self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
         
         
+        if dblElapsedRoundTime == 240 {
+            if ConnectionCheck.isConnectedToNetwork() {
+                //getRoundDataGlobal()
+                getFirebase()
+                getFirebaseSpeed()
+            }
+            self.dockView1_open()
+            
+        }
 
-
+        
         if dblElapsedRoundTime == 180 {
             if ConnectionCheck.isConnectedToNetwork() {
                 //getRoundDataGlobal()
                 getFirebase()
                 getFirebaseSpeed()
             }
+            self.dockView1_open()
             
         }
         
@@ -532,9 +439,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             self.str = "Midway"
             //newSpeaker()
             newSpeakerWithClass()
+            self.dockView1_open()
         }
         
 
+        if dblElapsedRoundTime == 120 {
+            self.dockView1_open()
+            
+        }
         
         if dblElapsedRoundTime == 75 {
             if ConnectionCheck.isConnectedToNetwork() {
@@ -548,6 +460,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if dblElapsedRoundTime == 60 {
             self.str = Leaderboard.roundLeadersString
             newSpeakerWithClass()
+            self.dockView1_open()
         }
         
         
@@ -569,7 +482,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         let str = "\(Leaderboard.scoreLeaderScore) (\(Leaderboard.scoreLeaderName))  |  \(Leaderboard.speedLeaderScore) (\(Leaderboard.speedLeaderName))"
         doc1_bttmLabel.text = str
-        //alert(message: Leaderboard.roundLeadersString)
         
         dockView1.center = view.center
         view.addSubview(dockView1)

@@ -253,8 +253,6 @@ func getFirebase() {  //get Round leaders
                 let yy = String(format: "%.1f", xx)
                 
                 score_string_array.insert(String(describing: y) + " %MAX  " + String(describing: fbNAME) + " | " + String(describing: yy) + " MPH", at: 0)
-                //speed_string_array.append(String(describing: d) + " MPH  " + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
-                
                 
                 counter += 1
                 Leaderboard.scoreLeaderName = "\(fbNAME)"
@@ -262,6 +260,7 @@ func getFirebase() {  //get Round leaders
                 
                 Leaderboard.roundLeadersString = "\(Leaderboard.scoreLeaderName),\(Leaderboard.scoreLeaderScore),\(Leaderboard.speedLeaderName),\(Leaderboard.speedLeaderScore)"
             }
+            print("Complete getFBScore")
         }
     })
 }
@@ -316,6 +315,7 @@ func getFirebaseSpeed() {
                 
                 Leaderboard.roundLeadersString = "\(Leaderboard.scoreLeaderName),\(Leaderboard.scoreLeaderScore),\(Leaderboard.speedLeaderName),\(Leaderboard.speedLeaderScore)"
             }
+            print("Complete getFBSpeed")
         }
     })
 }
@@ -363,6 +363,7 @@ func pushFBRound() {
         
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(result)")
         refDB.childByAutoId().setValue(round_post)
+        print("Complete pushFBRound")
     }
 } // end fb post
 
@@ -408,23 +409,22 @@ func pushFBTotals() {
         
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(Settings.riderName)")
         refDB.setValue(totals_post)
+        
+        print("Complete pushFBTotals")
     }
 }
 // end fb totals post
 
 func getFBTotals() { //get Totals from fb, ordered by score
     
-    //var arrTotalLeaders = [String]()
-    
-    //var globalFBArr = [String]()
-    //var notificationSring = ""
+    score_string_array_total = []
     var counter = 0
     let date = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyyMMdd"
     let result = formatter.string(from: date)
     
-    // FIREBASE GET  - START
+    // FIREBASE GET TOTAL SCORE - START
     
     let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
     
@@ -436,29 +436,21 @@ func getFBTotals() { //get Totals from fb, ordered by score
             for child in (snapshot.children) {
                 let snap = child as! FIRDataSnapshot //each child is a snapshot
                 let dict = snap.value as! NSDictionary // the value is a dict
-                //let fbRNDTotal = dict["a_scoreHRTotal"]!
-                //let fbSPEEDTotal = dict["a_speedTotal"]!
-                let fbNAME = dict["fb_timName"]!
-                //print("\(counter) : \(fbNAME) Total Score:  \(fbRNDTotal)")
-                //print("\(counter) : \(fbNAME) Total Speed:  \(fbSPEEDTotal)")
-                //arrTotalLeaders.insert("\(counter) : \(fbNAME) - \(fbRNDTotal)", at: 0)
-                //arrTotalLeaders.append("\(counter) : \(fbNAME) - \(fbRNDTotal)")
                 
+                let fbNAME = dict["fb_timName"]!
                 let x = dict["a_scoreHRTotal"]! as! Double
                 let y = String(format: "%.1f", x)
                 
                 let xx = dict["a_speedTotal"]! as! Double
                 let yy = String(format: "%.1f", xx)
                 
-                //notificationSring += "\(y) : \(fbNAME)\n"
-                //globalFBList += "\(y) : \(fbNAME)\n"
-                //globalFBArr.insert("\(fbNAME) | \(y)", at: 0)
-                
                 print("\(counter) : \(fbNAME) score :  \(y) :  \(yy)")
                 
                 score_string_array_total.insert(String(describing: y) + " %MAX  " + "\n" + String(describing: fbNAME) + " | " + String(describing: yy) + " MPH", at: 0)
                 counter += 1
             }
+            
+            print("Complete getFBTotals")
         }
         
     })
@@ -470,17 +462,15 @@ func getFBTotals() { //get Totals from fb, ordered by score
 
 func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
     
-    //var arrTotalLeaders = [String]()
+    speed_string_array_total = []
     
-    //var globalFBArr = [String]()
-    //var notificationSring = ""
     var counter = 0
     let date = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyyMMdd"
     let result = formatter.string(from: date)
     
-    // FIREBASE GET  - START
+    // FIREBASE GET SPEED TOTALS  - START
     
     let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
     
@@ -506,6 +496,8 @@ func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
                 speed_string_array_total.insert(String(describing: yy) + " MPH  " + "\n" + String(describing: fbNAME) + " | " + String(describing: y) + " %MAX", at: 0)
                 counter += 1
             }
+            
+            print("Complete getFBTotals - Speed")
         }
         
     })

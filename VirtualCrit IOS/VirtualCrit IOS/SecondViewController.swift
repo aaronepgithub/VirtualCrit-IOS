@@ -19,16 +19,6 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
     
-    
-//    @IBAction func btn_ctStart(_ sender: UIButton) {
-//        
-//        ctMiles = 5.0
-//        ctPaceTimeInSeconds = 1200
-//        ctDistance = 0.0
-//        
-//    }
-    
-    
     var updateUITimer: Timer!
     
     
@@ -173,20 +163,8 @@ class SecondViewController: UIViewController {
         let date = Date(timeIntervalSince1970: timeInterval)
         return formater.string(from: date as Date)
     }
-    
-    
-    
-    var ctMiles = 5.0
-    var ctPaceTimeInSeconds = 1200
-    //var ctActualMilesTraveled = 0.0
-    var targetMilesPerSecond = 0.004166667  // based on 15 Mph
-    var actualMilesPerSecond = 0.0
-    
-    
 
-    
     func updateUI() {
-        
         
         let tempHR = AllRounds.arrHR.reversed()
         let tempSPD = AllRounds.arrSPD.reversed()
