@@ -39,37 +39,31 @@ public var ctDistance = 0.0
 
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
-    
-    
-//    var timerTotal: Timer!
-//    var timerRound: Timer!
+
     var timerEachSecond: Timer!
     
     var msCounter = 1
     var roundCounter = 1
     var timeNewMS = 0.0
-    
 
-    
     @IBAction func btn_Round(_ sender: UIButton) {
         dock1_closeBtn.setTitle("Close", for: .normal)
         dockView1_open()
-        
     }
     
-    func prepareForPlaybackWithData(audioData: NSData) {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            
-            do {
-                try AVAudioSession.sharedInstance().setActive(true)
-            } catch let error as NSError {
-                print(error)
-            }
-        } catch let error as NSError {
-            print(error)
-        }
-    }
+//    func prepareForPlaybackWithData(audioData: NSData) {
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+//            
+//            do {
+//                try AVAudioSession.sharedInstance().setActive(true)
+//            } catch let error as NSError {
+//                print(error)
+//            }
+//        } catch let error as NSError {
+//            print(error)
+//        }
+//    }
     
     
     var str = "Hi, this is Kazumi. Let's get started"
@@ -122,7 +116,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         
         AllRounds.arrHR.append(0)
         AllRounds.arrSPD.append(0)
@@ -178,8 +171,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!)) Mph"  //best spd
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
+//        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!)) Mph"  //best spd
+//        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
         startScanning()
     }
     
@@ -188,26 +181,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBAction func btn_action_start(_ sender: UIButton) {
         alert(message: "", title: "Starting")
         
-        newSpeakerWithClass()
-        getFirebase()
-        getFirebaseSpeed()
-        
-//        if ConnectionCheck.isConnectedToNetwork() {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-//            self.httpPost()
-//            })
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(20), execute: {
-//            self.httpPut()
-//            })
-//        }
-        
         if hasPressedStart == true {
             print("already started")
             return
         }
         
+        newSpeakerWithClass()
+        getFirebase()
+        getFirebaseSpeed()
+        
         //let secondsPerRound = 300.0
-
         
         //Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
@@ -236,9 +219,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             print("Starting...")
             print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
             
-            
-//            AllRounds.arrHR.append(0)
-//            AllRounds.arrSPD.append(0)
+
         }
         
             hasPressedStart = true
@@ -273,6 +254,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         pushFBRound()
         pushFBTotals()
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+            print("Firebase get Round data")
+            getFirebase()
+            getFirebaseSpeed()
+        })
+        
 
 
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
@@ -280,11 +267,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
                 self.lbl_button_start.setTitle("🔴🔴🔴🔴", for: .normal)
-                print("httpPut")
                 getFirebase()
                 getFirebaseSpeed()
-                //self.dockView1_open()
-                
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                     self.lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
@@ -294,8 +278,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
                         self.lbl_button_start.setTitle("🔴🔴", for: .normal)
-                        print("pushFBTotals")
-                        pushFBTotals()
                         
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
@@ -411,8 +393,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
 
         
-        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  //best spd
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
+        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  // my best spd
+        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //my best hr
         
         
         if dblElapsedRoundTime == 240 {
