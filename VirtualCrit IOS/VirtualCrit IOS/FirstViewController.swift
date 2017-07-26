@@ -371,9 +371,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         }
         
+        if dblElapsedRoundTime == 295 {
+            if ConnectionCheck.isConnectedToNetwork() {
+                //getRoundDataGlobal()
+                getFirebase()
+                getFirebaseSpeed()
+            }
+            
+        }
+        
 
         if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
-            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
+            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
             
             newSpeakerWithClass()
         }
@@ -395,6 +404,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  // my best spd
         self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //my best hr
+        
+
+
         
         
         if dblElapsedRoundTime == 240 {
@@ -444,7 +456,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if dblElapsedRoundTime == 60 {
             self.str = Leaderboard.roundLeadersString
-            newSpeakerWithClass()
+            //newSpeakerWithClass()
             dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
             self.dockView1_open()
         }
