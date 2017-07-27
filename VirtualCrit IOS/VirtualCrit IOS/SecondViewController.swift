@@ -222,6 +222,20 @@ class SecondViewController: UIViewController {
         
         
     }
+    
+    var counter: Int = 0
+    
+    func countManager() {
+        
+        counter += 1
+        print(counter)
+        
+        if counter == 3 {
+            counter = 0
+            updateUI()
+            
+        }
+    }
 
 
     
@@ -229,9 +243,12 @@ class SecondViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        //anotherSecondElapsed
+        NotificationCenter.default.addObserver(self, selector: #selector(countManager), name: Notification.Name("anotherSecondElapsed"), object: nil)
+        
         updateUI()
-        updateUITimer = Timer()
-        updateUITimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
+//        updateUITimer = Timer()
+//        updateUITimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         
         
         
