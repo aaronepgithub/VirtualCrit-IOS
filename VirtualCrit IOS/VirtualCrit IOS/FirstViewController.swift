@@ -872,6 +872,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff  //use actual time
                         Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff  //use actual time
                         
+                        if wheelRevolutionDiff > 20 || wheelEventTimeDiff > 20 {
+                        
+                            travelDistance = 0
+                            wheelEventTimeDiff = 0
+                        }
+                        
                         Totals.distanceTotal = Totals.distanceTotal + travelDistance
                         Rounds.distanceRound = Rounds.distanceRound + travelDistance
                         Device.ThreeSecondDistance = Device.ThreeSecondDistance + travelDistance
