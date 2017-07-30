@@ -517,6 +517,14 @@
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4Vf-U2-R4C" userLabel="Stack View 1">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="132.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEW VIEW" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bkl-Ki-6Sh">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="132.5"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="50"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZLT-O6-aTC" userLabel="Stack View 2">
                                         <rect key="frame" x="0.0" y="135.5" width="320" height="132"/>
@@ -527,6 +535,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="V5Q-H4-Sj6" secondAttribute="trailing" id="Ee9-4O-9A4"/>
                             <constraint firstItem="V5Q-H4-Sj6" firstAttribute="top" secondItem="Dun-BI-ARL" secondAttribute="bottom" constant="8" id="KO7-kx-pj8"/>
@@ -719,8 +728,8 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="whk-fW-Ufa" kind="relationship" relationship="viewControllers" id="W9l-0k-eWl"/>
                         <segue destination="rkb-Bf-ngj" kind="relationship" relationship="viewControllers" id="tvN-SX-tQG"/>
                     </connections>
