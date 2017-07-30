@@ -1,0 +1,6 @@
+framework module Pods_VirtualCrit_IOS {
+  umbrella header "Pods-VirtualCrit IOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
