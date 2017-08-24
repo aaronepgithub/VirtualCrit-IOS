@@ -308,6 +308,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func updateTimerEachSecond() {
         //every 1 second
         Totals.totalTimeInSeconds += 1
+        print(Totals.totalTimeInSeconds)
         NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
         let x = NSDate()
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
