@@ -18,6 +18,7 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_ctDistance: UILabel!
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
+    @IBOutlet weak var lbl_elapsed_time: UILabel!
     
     var updateUITimer: Timer!
     
@@ -189,24 +190,25 @@ class SecondViewController: UIViewController {
 
 
         if threeSecSpeedTest > 0 && threeSecSpeedTest < 50 {
-            lbl_ctTimer.text = "\(String(format:"%.1f", threeSecSpeedTest)) MPH"
+//            lbl_ctTimer.text = "\(String(format:"%.1f", threeSecSpeedTest)) MPH"
         } else {
-            lbl_ctTimer.text = "0 MPH"
+//            lbl_ctTimer.text = "0 MPH"
         }
         
-        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
-        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
+//        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
+//        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
         
         if threeSecCadTest > 0 && threeSecCadTest < 120 {
-            lbl_currentCadence.text = "\(String(format:"%.0f", threeSecCadTest)) RPM"
+//            lbl_currentCadence.text = "\(String(format:"%.0f", threeSecCadTest)) RPM"
         } else {
-            lbl_currentCadence.text = "0 RPM"
+//            lbl_currentCadence.text = "0 RPM"
         }
         
-        
-        
-        
-
+        lbl_ctTimer.text = "  \(String(format:"%.1f", PublicVars.speed))  MH"
+        lbl_ctDistance.text = "  \(String(format:"%.2f", PublicVars.distance)) MI"
+        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
+        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
+        lbl_elapsed_time.text = PublicVars.string_elapsed_time
         
         for eachHR in tempHR {
             stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
@@ -228,7 +230,7 @@ class SecondViewController: UIViewController {
     func countManager() {
         
         counter += 1
-        print(counter)
+        //print(counter)
         
         if counter == 3 {
             counter = 0

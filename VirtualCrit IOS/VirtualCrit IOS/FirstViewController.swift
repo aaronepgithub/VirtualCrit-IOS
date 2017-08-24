@@ -37,10 +37,29 @@ public var tempArrSPD = [String]()
 public var tempArrScore = [String]()
 public var ctDistance = 0.0
 
+struct PublicVars {
+    static var elapsedMilliseconds: Double = 0
+    static var startTime: NSDate?
+    static var currentTime: NSDate?
+    static var duration: TimeInterval?
+    static var array_active_time = [TimeInterval]()
+    
+    static var wheel_revs: Double = 0
+    static var crank_revs: Double = 0
+    
+    static var cadence: Double = 0
+    static var speed: Double = 0
+    static var heartrate: Double = 0
+    static var distance: Double = 0
+    static var string_elapsed_time: String = "00:00:00"
+}
+
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
     var timerEachSecond: Timer!
+    var timerMilliSecond: Timer!
+    
     
     var msCounter = 1
     var roundCounter = 1
@@ -50,21 +69,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         dock1_closeBtn.setTitle("Close", for: .normal)
         dockView1_open()
     }
-    
-//    func prepareForPlaybackWithData(audioData: NSData) {
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-//            
-//            do {
-//                try AVAudioSession.sharedInstance().setActive(true)
-//            } catch let error as NSError {
-//                print(error)
-//            }
-//        } catch let error as NSError {
-//            print(error)
-//        }
-//    }
-    
     
     var str = "Hi, this is Kazumi. Let's get started"
     
@@ -171,11 +175,56 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
 
     @IBAction func btn_Scan(_ sender: UIButton) {
-//        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!)) Mph"  //best spd
-//        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //best hr
         startScanning()
     }
     
+
+    
+    
+    var milli_counter: Int = 0
+    var milli_elapsed_milliseconds: Int = 0
+    var milli_elapsed_seconds: Int = 0
+    
+// EACH MILLISECOND - EACH SECOND UPDATE
+    
+    func milli_each_second_update() {
+        
+        milli_elapsed_seconds += 1
+        //print("each second:  \(milli_elapsed_seconds)")
+        
+        let x = NSDate()
+        let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
+        let z = Double(y)
+        
+        //print("z:  \(z)")
+        //print("milli_elapsed_milliseconds:  \(milli_elapsed_milliseconds)")
+        
+        let cadence = PublicVars.crank_revs / z * 60
+        //print("Cadence:  \(cadence)")
+        
+        let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
+        //print("Distance:  \(distance)")
+        
+        let speed = distance / (z / 60 / 60) //miles per hour
+        //print("speed:  \(speed)")
+        
+        PublicVars.cadence = cadence
+        PublicVars.distance = distance
+        PublicVars.speed = speed
+        //heartrate is done in ble
+        PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
+        
+        
+        milli_counter = 0
+    }
+    
+
+
+    func updateTimerMilliSecond() {
+        milli_counter += 1
+        milli_elapsed_milliseconds += 1
+        if milli_counter == 100 {milli_each_second_update()}
+    }
     
     
     @IBAction func btn_action_start(_ sender: UIButton) {
@@ -183,7 +232,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         if hasPressedStart == true {
             print("already started")
+            
+            PublicVars.startTime = NSDate()
+            PublicVars.crank_revs = 0
+            PublicVars.wheel_revs = 0
+            PublicVars.distance = 0
+            
             return
+            
+            
         }
         
         newSpeakerWithClass()
@@ -198,6 +255,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.arrHRRound = []
         
         lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
+        
+
+
+        
+        if timerMilliSecond == nil {
+        
+            timerMilliSecond = Timer()
+            timerMilliSecond = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimerMilliSecond), userInfo: nil, repeats: true)
+            PublicVars.startTime = NSDate()
+        }
+        
+
+        
+        
+        
         
         if timerEachSecond == nil {
 
@@ -305,10 +377,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
     }
     
+    
+
+
+    
     func updateTimerEachSecond() {
         //every 1 second
         Totals.totalTimeInSeconds += 1
-        print(Totals.totalTimeInSeconds)
+        //print(Totals.totalTimeInSeconds)
         NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
         let x = NSDate()
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
@@ -419,7 +495,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
             
             dock1_closeBtn.setTitle("4 Minutes Remain", for: .normal)
-            self.dockView1_open()
+            //self.dockView1_open()
             
         }
 
@@ -431,7 +507,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 getFirebaseSpeed()
             }
             dock1_closeBtn.setTitle("3 Minutes Remain", for: .normal)
-            self.dockView1_open()
+            //self.dockView1_open()
             
         }
         
@@ -443,7 +519,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
         if dblElapsedRoundTime == 120 {
             dock1_closeBtn.setTitle("2 Minutes Remain", for: .normal)
-            self.dockView1_open()
+            //self.dockView1_open()
             
         }
         
@@ -460,7 +536,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             self.str = Leaderboard.roundLeadersString
             //newSpeakerWithClass()
             dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
-            self.dockView1_open()
+            //self.dockView1_open()
         }
         
         
@@ -786,7 +862,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             let newValue = decodeHRValue(withData: characteristic.value!)
             //print(newValue)
 
-            
+            PublicVars.heartrate = Double(newValue)
             if newValue < 100 {
                 lbl_Heartrate.text = "0\(String(newValue))"
 //                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
@@ -817,7 +893,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
             
             
-           
+            var speed_has_started: Bool = false
             func processWheelData(withData data :Data) -> Double {
 
                 var wheelRevolution     :Double = 0
@@ -850,6 +926,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //                print("wheelRevolution and wheelEventTime")
 //                print(wheelRevolution, wheelEventTime)
                 
+
                 
                 if Device.oldWheelRevolution > 0 {  //test for first time reading
  
@@ -862,13 +939,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     let a = wheelRevolution - Device.oldWheelRevolution
                     let b = wheelEventTime - Device.oldWheelEventTime
                     
+                    if a >= 0 && a <= 10 && b >= 0 && b <= 15000 {
+                            PublicVars.wheel_revs += a
+                            print("wheel revs:  \(PublicVars.wheel_revs)")
+                        }
+
                     
-//                    print("wheelRevDiff and wheelTimeDiff")
-//                    print(a, b)
                     
                     if a >= 0 && b >= 0 {
                         wheelRevolutionDiff = a
                         wheelEventTimeDiff = b / 1024
+                        
+                        
                         
                         travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
                         Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff  //use actual time
@@ -907,9 +989,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
                 Device.oldWheelRevolution = Double(wheelRevolution)  //changed from newWheelRevs
                 Device.oldWheelEventTime = Double(newWheelRevsTime)
+                speed_has_started = true
                 return 999
             }
-
+            
+            var cadence_has_started: Bool = false
             func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int) -> Double {
                 
                 var crankEventTime      : Double = 0
@@ -917,12 +1001,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 var crankEventTimeDiff  : Double = 0
                 var crankRevolution     : Double = 0
                 var travelCadence       : Double = 0
+
                 
                 
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
                 
                 crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
                 crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
+                
+
                 
                 
                 if Device.oldCrankRevolution > 0 {  //test for first time reading
@@ -937,6 +1024,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
                             crankEventTimeDiff = (((crankEventTime - Device.oldCrankEventTime) / 1024))
                             travelCadence = crankRevolutionDiff/crankEventTimeDiff*60
+                            
+                           
+                            let a = crankRevolution - Device.oldCrankRevolution
+                            let b = (crankEventTime - Device.oldCrankEventTime) / 1024
+                            
+                            if a >= 0 && a <= 10 && b >= 0 && b <= 10 {
+                                PublicVars.crank_revs += a
+                                print("crank revs:  \(PublicVars.crank_revs)")
+                            }
+                            
+                            
+                            
                             
                             Rounds.crankRevolutions = Rounds.crankRevolutions + crankRevolutionDiff
                             Rounds.crankRevolutionTime = Rounds.crankRevolutionTime + crankEventTimeDiff
@@ -959,6 +1058,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 }
                 Device.oldCrankRevolution = crankRevolution
                 Device.oldCrankEventTime = crankEventTime
+                cadence_has_started = true
                 return 999
                 
             }
