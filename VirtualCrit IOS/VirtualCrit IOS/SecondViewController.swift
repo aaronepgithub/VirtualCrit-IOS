@@ -20,6 +20,16 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_currentCadence: UILabel!
     @IBOutlet weak var lbl_elapsed_time: UILabel!
     
+    @IBAction func tap_for_reset(_ sender: UITapGestureRecognizer) {
+        
+        PublicVars.startTime = NSDate()
+        PublicVars.crank_revs = 0
+        PublicVars.wheel_revs = 0
+        PublicVars.distance = 0
+        
+    }
+    
+    
     var updateUITimer: Timer!
     
     
@@ -164,9 +174,9 @@ class SecondViewController: UIViewController {
         let date = Date(timeIntervalSince1970: timeInterval)
         return formater.string(from: date as Date)
     }
-
-    func updateUI() {
-        
+    
+    func create_strings() {
+    
         let tempHR = AllRounds.arrHR.reversed()
         let tempSPD = AllRounds.arrSPD.reversed()
         var stringHR = ""
@@ -175,40 +185,6 @@ class SecondViewController: UIViewController {
         tempArrHR = []
         tempArrSPD = []
         tempArrScore = []
-        
-        let threeSecSpeedTest = Device.ThreeSecondDistance / (Device.ThreeSecondDistanceTime)
-        //print(threeSecSpeedTest)
-        
-        let threeSecCadTest = Device.ThreeSecondCrankRevs / (Device.ThreeSecondCrankRevsTime) * 60
-        //print(threeSecCadTest)
-        
-        Device.ThreeSecondDistance = 0
-        Device.ThreeSecondCrankRevs = 0
-        Device.ThreeSecondCrankRevsTime = 0
-        Device.ThreeSecondDistanceTime = 0
-        
-
-
-        if threeSecSpeedTest > 0 && threeSecSpeedTest < 50 {
-//            lbl_ctTimer.text = "\(String(format:"%.1f", threeSecSpeedTest)) MPH"
-        } else {
-//            lbl_ctTimer.text = "0 MPH"
-        }
-        
-//        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
-//        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
-        
-        if threeSecCadTest > 0 && threeSecCadTest < 120 {
-//            lbl_currentCadence.text = "\(String(format:"%.0f", threeSecCadTest)) RPM"
-        } else {
-//            lbl_currentCadence.text = "0 RPM"
-        }
-        
-        lbl_ctTimer.text = "  \(String(format:"%.1f", PublicVars.speed))  MH"
-        lbl_ctDistance.text = "  \(String(format:"%.2f", PublicVars.distance)) MI"
-        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
-        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
-        lbl_elapsed_time.text = PublicVars.string_elapsed_time
         
         for eachHR in tempHR {
             stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
@@ -220,7 +196,55 @@ class SecondViewController: UIViewController {
             stringSPD = stringSPD + String(format:"%.2f", eachSPD) + ", "
             tempArrSPD.append(String(format:"%.2f", eachSPD) + "  MPH")
         }
-               
+    }
+
+    func updateUI() {
+        
+//        let tempHR = AllRounds.arrHR.reversed()
+//        let tempSPD = AllRounds.arrSPD.reversed()
+//        var stringHR = ""
+//        var stringSPD = ""
+//        
+//        tempArrHR = []
+//        tempArrSPD = []
+//        tempArrScore = []
+        
+//        let threeSecSpeedTest = Device.ThreeSecondDistance / (Device.ThreeSecondDistanceTime)
+//        //print(threeSecSpeedTest)
+//        
+//        let threeSecCadTest = Device.ThreeSecondCrankRevs / (Device.ThreeSecondCrankRevsTime) * 60
+//        //print(threeSecCadTest)
+//        
+//        Device.ThreeSecondDistance = 0
+//        Device.ThreeSecondCrankRevs = 0
+//        Device.ThreeSecondCrankRevsTime = 0
+//        Device.ThreeSecondDistanceTime = 0
+        
+
+
+//        if threeSecSpeedTest > 0 && threeSecSpeedTest < 50 {
+//            lbl_ctTimer.text = "\(String(format:"%.1f", threeSecSpeedTest)) MPH"
+//        } else {
+//            lbl_ctTimer.text = "0 MPH"
+//        }
+        
+//        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
+//        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
+        
+//        if threeSecCadTest > 0 && threeSecCadTest < 120 {
+//            lbl_currentCadence.text = "\(String(format:"%.0f", threeSecCadTest)) RPM"
+//        } else {
+//            lbl_currentCadence.text = "0 RPM"
+//        }
+        
+        lbl_ctTimer.text = "  \(String(format:"%.1f", PublicVars.speed))  MH"
+        lbl_ctDistance.text = "  \(String(format:"%.2f", PublicVars.distance)) MI"
+        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
+        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
+        lbl_elapsed_time.text = PublicVars.string_elapsed_time
+        
+
+        
         
         
     }
@@ -229,14 +253,15 @@ class SecondViewController: UIViewController {
     
     func countManager() {
         
+        updateUI()
         counter += 1
-        //print(counter)
+
         
-        if counter == 3 {
+        if counter == 30 {
+            create_strings()
             counter = 0
-            updateUI()
-            
         }
+        
     }
 
 
@@ -247,8 +272,9 @@ class SecondViewController: UIViewController {
         
         //anotherSecondElapsed
         NotificationCenter.default.addObserver(self, selector: #selector(countManager), name: Notification.Name("anotherSecondElapsed"), object: nil)
-        
         updateUI()
+        
+        
 //        updateUITimer = Timer()
 //        updateUITimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
         

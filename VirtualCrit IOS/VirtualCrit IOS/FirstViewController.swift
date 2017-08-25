@@ -254,7 +254,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.totalWheelEventTime = 0
         Rounds.arrHRRound = []
         
-        lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
+        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
         
 
 
@@ -334,30 +334,32 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
 
-        lbl_button_start.setTitle("🔴🔴🔴🔴🔴", for: .normal)
+        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
         dockView1_open()
         
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
-                self.lbl_button_start.setTitle("🔴🔴🔴🔴", for: .normal)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+                self.lbl_button_start.setTitle("🔴🔴", for: .normal)
                 getFirebase()
                 getFirebaseSpeed()
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
-                    self.lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
+                    self.lbl_button_start.setTitle("🔴", for: .normal)
                     print("pushFBTotals")
                     pushFBTotals()
                     
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
-                        self.lbl_button_start.setTitle("🔴🔴", for: .normal)
-                        
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
-                            self.lbl_button_start.setTitle("🔴", for: .normal)
-                            print("pushFBTotals")
-                            pushFBTotals()
-                            
-                        })
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(30), execute: {
+                        //self.lbl_button_start.setTitle("🔴🔴", for: .normal)
+                                                print("pushFBTotals")
+                                                pushFBTotals()
+
+                    
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+//                            self.lbl_button_start.setTitle("🔴", for: .normal)
+//                            print("pushFBTotals")
+//                            pushFBTotals()
+//                            
+//                        })
                     })
                 })
             })
@@ -494,7 +496,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 getFirebaseSpeed()
             }
             
-            dock1_closeBtn.setTitle("4 Minutes Remain", for: .normal)
+            //dock1_closeBtn.setTitle("4 Minutes Remain", for: .normal)
             //self.dockView1_open()
             
         }
@@ -506,7 +508,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 getFirebase()
                 getFirebaseSpeed()
             }
-            dock1_closeBtn.setTitle("3 Minutes Remain", for: .normal)
+            //dock1_closeBtn.setTitle("3 Minutes Remain", for: .normal)
             //self.dockView1_open()
             
         }
@@ -518,7 +520,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
         if dblElapsedRoundTime == 120 {
-            dock1_closeBtn.setTitle("2 Minutes Remain", for: .normal)
+            //dock1_closeBtn.setTitle("2 Minutes Remain", for: .normal)
             //self.dockView1_open()
             
         }
@@ -535,7 +537,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if dblElapsedRoundTime == 60 {
             self.str = Leaderboard.roundLeadersString
             //newSpeakerWithClass()
-            dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
+            //dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
             //self.dockView1_open()
         }
         
