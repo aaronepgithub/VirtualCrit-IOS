@@ -455,6 +455,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 MILES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="Wpr-RD-edg">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="57.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
                                         <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="44"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -468,10 +469,18 @@
                                 <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="47"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="HDI-UO-4LK" appends="YES" id="PuM-yS-cqJ"/>
-                                </connections>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQV-o2-sP9">
+                                <rect key="frame" x="24" y="377" width="288" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PSe-va-SCi"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="1"/>
+                                <state key="normal" title="Reset"/>
+                                <connections>
+                                    <action selector="btn_reset:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="NQJ-ds-cxb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -481,12 +490,15 @@
                             <constraint firstItem="mE4-5h-LDe" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="EQO-U4-480"/>
                             <constraint firstItem="N9L-HD-jFY" firstAttribute="top" secondItem="Uw5-kv-GAn" secondAttribute="bottom" constant="24" id="J16-W9-lz2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="u8Z-PM-CXk" secondAttribute="trailing" constant="4" id="LC7-7H-wNm"/>
+                            <constraint firstItem="hQV-o2-sP9" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="8" id="LWh-hI-l8v"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mE4-5h-LDe" secondAttribute="trailing" constant="4" id="MWw-fY-0Zc"/>
                             <constraint firstItem="u8Z-PM-CXk" firstAttribute="top" secondItem="mE4-5h-LDe" secondAttribute="bottom" constant="8" id="Nhr-L9-4aN"/>
                             <constraint firstItem="nPm-HA-FIm" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="O2d-6y-EEg"/>
+                            <constraint firstItem="hQV-o2-sP9" firstAttribute="trailing" secondItem="QS5-Rx-YEW" secondAttribute="trailingMargin" constant="8" id="TYH-4X-hnN"/>
                             <constraint firstItem="N9L-HD-jFY" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="bY6-PC-lNz"/>
                             <constraint firstItem="mE4-5h-LDe" firstAttribute="top" secondItem="N9L-HD-jFY" secondAttribute="bottom" constant="8" id="dgg-QI-ozD"/>
                             <constraint firstItem="nPm-HA-FIm" firstAttribute="top" secondItem="u8Z-PM-CXk" secondAttribute="bottom" constant="8" id="dyk-dq-7OQ"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="hQV-o2-sP9" secondAttribute="bottom" constant="4" id="iiZ-1z-0bZ"/>
                             <constraint firstItem="Uw5-kv-GAn" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="mZR-VC-CxT"/>
                             <constraint firstItem="u8Z-PM-CXk" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="mko-6h-rjK"/>
                             <constraint firstItem="Uw5-kv-GAn" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="8" id="qyw-ET-b5g"/>
@@ -502,13 +514,8 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="HDI-UO-4LK">
-                    <connections>
-                        <action selector="tap_for_reset:" destination="8rJ-Kc-sve" id="1Hu-Pd-XsJ"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="804.375" y="513.38028169014081"/>
+            <point key="canvasLocation" x="804.375" y="512.5"/>
         </scene>
         <!--Leaderboard-->
         <scene sceneID="1R3-KP-hCw">

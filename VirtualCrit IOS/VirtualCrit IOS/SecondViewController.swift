@@ -13,6 +13,7 @@ import UIKit
 
 class SecondViewController: UIViewController {
     
+
     
     @IBOutlet weak var lbl_ctTimer: UILabel!
     @IBOutlet weak var lbl_ctDistance: UILabel!
@@ -20,13 +21,12 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_currentCadence: UILabel!
     @IBOutlet weak var lbl_elapsed_time: UILabel!
     
-    @IBAction func tap_for_reset(_ sender: UITapGestureRecognizer) {
-        
+    @IBAction func btn_reset(_ sender: UIButton) {
+        print("reset")
         PublicVars.startTime = NSDate()
         PublicVars.crank_revs = 0
         PublicVars.wheel_revs = 0
         PublicVars.distance = 0
-        
     }
     
     
@@ -243,7 +243,7 @@ class SecondViewController: UIViewController {
         lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
         lbl_elapsed_time.text = PublicVars.string_elapsed_time
         
-
+        //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
         
         
         
