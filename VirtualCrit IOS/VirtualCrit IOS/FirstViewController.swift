@@ -49,7 +49,9 @@ struct PublicVars {
     
     static var cadence: Double = 0
     static var speed: Double = 0
+    static var arr_heartrate = [Double]()
     static var heartrate: Double = 0
+    
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
 }
@@ -212,8 +214,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         PublicVars.distance = distance
         PublicVars.speed = speed
         //heartrate is done in ble
-        PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
         
+        //TODO:  FIX THIS
+        let hr = PublicVars.arr_heartrate.reduce(0.0) {
+            return $0 + $1/Double(PublicVars.arr_heartrate.count)
+        }
+        PublicVars.heartrate = hr
+        PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
         
         milli_counter = 0
     }
@@ -223,7 +230,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func updateTimerMilliSecond() {
         milli_counter += 1
         milli_elapsed_milliseconds += 1
-        if milli_counter == 100 {milli_each_second_update()}
+        if milli_counter == 100 {milli_each_second_update()}  //called for each second
     }
     
     
@@ -864,7 +871,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             let newValue = decodeHRValue(withData: characteristic.value!)
             //print(newValue)
 
-            PublicVars.heartrate = Double(newValue)
+            //PublicVars.heartrate = Double(newValue)
+            PublicVars.arr_heartrate.append(Device.currentHeartrate)
+            
             if newValue < 100 {
                 lbl_Heartrate.text = "0\(String(newValue))"
 //                lbl_Score.text = "\(String(Int((round(Double(newValue) / 185 * 100)))))"
