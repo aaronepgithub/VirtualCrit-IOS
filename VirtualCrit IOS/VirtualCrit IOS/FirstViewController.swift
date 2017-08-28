@@ -67,10 +67,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var roundCounter = 1
     var timeNewMS = 0.0
 
-    @IBAction func btn_Round(_ sender: UIButton) {
-        dock1_closeBtn.setTitle("Close", for: .normal)
-        dockView1_open()
-    }
+//    @IBAction func btn_Round(_ sender: UIButton) {
+//        dock1_closeBtn.setTitle("Close", for: .normal)
+//        dockView1_open()
+//    }
     
     var str = "Hi, this is Kazumi. Let's get started"
     
@@ -83,6 +83,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     
+    
     @IBOutlet var dockView1: UIView!
     @IBOutlet weak var dock1_lastSpeed: UILabel!
     @IBOutlet weak var dock1_lastScore: UILabel!
@@ -92,8 +93,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     
-    @IBOutlet weak var lbl_TotalTime: UILabel!
-    @IBOutlet weak var lbl_RoundTime: UILabel!
+//    @IBOutlet weak var lbl_TotalTime: UILabel!
+//    @IBOutlet weak var lbl_RoundTime: UILabel!
     
     @IBOutlet weak var lbl_Speed: UILabel!
     @IBOutlet weak var lbl_Cadence: UILabel!
@@ -102,12 +103,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBOutlet weak var lbl_Distance: UILabel!
 
-    @IBOutlet weak var lbl_round_speed: UILabel!
-    @IBOutlet weak var lbl_round_hr: UILabel!
-    @IBOutlet weak var lbl_total_speed: UILabel!
-    @IBOutlet weak var lbl_total_hr: UILabel!
+//    @IBOutlet weak var lbl_round_speed: UILabel!
+//    @IBOutlet weak var lbl_round_hr: UILabel!
+//    @IBOutlet weak var lbl_total_speed: UILabel!
+//    @IBOutlet weak var lbl_total_hr: UILabel!
     
-    @IBOutlet weak var lbl_button_start: UIButton!
+//    @IBOutlet weak var lbl_button_start: UIButton!
     
     var hasPressedStart = false
     
@@ -118,47 +119,74 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var peripheralCSC:CBPeripheral?
     var arrPeripheral = [CBPeripheral?]()
     
+    
+    
+    func normalTap(_ sender: UIGestureRecognizer){
+        
+        print("Normal tap")
+    }
+    
+    func longTap(_ sender: UIGestureRecognizer){
+        print("Long tap")
+        if sender.state == .ended {
+            print("UIGestureRecognizerStateEnded")
+            //Do Whatever You want on End of Gesture
+            startScanning()
+        }
+        else if sender.state == .began {
+            print("UIGestureRecognizerStateBegan.")
+            //Do Whatever You want on Began of Gesture
+        }
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(normalTap(_:)))
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        lbl_Duration_Button.addGestureRecognizer(tapGesture)
+        lbl_Duration_Button.addGestureRecognizer(longGesture)
+        
+
         
         
         AllRounds.arrHR.append(0)
         AllRounds.arrSPD.append(0)
         
-        if ConnectionCheck.isConnectedToNetwork() {
-            print("Connected")
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-                    self.dockView1.removeFromSuperview()
-                    
-                    pushFBRound()
-                    print("pushFBRound")
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-                        pushFBTotals()
-                        print("pushFBTotals")
-                    })
-                    
-                    
-                })
-            
-        }
-        else{
-            print("Disconnected")
-        }
+//        if ConnectionCheck.isConnectedToNetwork() {
+//            print("Connected")
+//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+//                    //self.dockView1.removeFromSuperview()
+//                    pushFBRound()
+//                    print("pushFBRound")
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+//                        pushFBTotals()
+//                        print("pushFBTotals")
+//                    })
+//                })
+//            
+//        }
+//        else{
+//            print("Disconnected")
+//        }
         
         
         Device.wheelCircumference = 2105
-        //print(Device.wheelCircumference as Any)
-        
-        //set date
+
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd"
         Settings.dateToday = formatter.string(from: date)
-        
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        
+        if ConnectionCheck.isConnectedToNetwork() {
+            pushFBRound()
+            pushFBTotals()
+        }
+        start_function()
         
     }
 
@@ -176,9 +204,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
        dockView1.removeFromSuperview()
     }
 
-    @IBAction func btn_Scan(_ sender: UIButton) {
+//    @IBAction func btn_Scan(_ sender: UIButton) {
+//        startScanning()
+//    }
+    
+    @IBAction func btn_Duration(_ sender: UIButton) {
         startScanning()
     }
+    
+    @IBOutlet weak var lbl_Duration_Button: UIButton!
     
 
     
@@ -233,76 +267,91 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if milli_counter == 100 {milli_each_second_update()}  //called for each second
     }
     
+    func start_function() {
     
-    @IBAction func btn_action_start(_ sender: UIButton) {
-        alert(message: "", title: "Starting")
-        
-        if hasPressedStart == true {
-            print("already started")
-            
-            PublicVars.startTime = NSDate()
-            PublicVars.crank_revs = 0
-            PublicVars.wheel_revs = 0
-            PublicVars.distance = 0
-            
-            return
-            
-            
-        }
-        
+        PublicVars.startTime = NSDate()
+        PublicVars.crank_revs = 0
+        PublicVars.wheel_revs = 0
+        PublicVars.distance = 0
+
         newSpeakerWithClass()
-        getFirebase()
-        getFirebaseSpeed()
+
         
-        //let secondsPerRound = 300.0
-        
-        //Rounds.roundStartTime = NSDate()
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
         Rounds.arrHRRound = []
         
-        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
-        
-
-
-        
         if timerMilliSecond == nil {
-        
+            
             timerMilliSecond = Timer()
             timerMilliSecond = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimerMilliSecond), userInfo: nil, repeats: true)
             PublicVars.startTime = NSDate()
         }
         
-
-        
-        
-        
         
         if timerEachSecond == nil {
-
+            
             timerEachSecond = Timer()
             timerEachSecond = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
             
             Totals.startTime = NSDate()
             Rounds.roundStartTime = NSDate()
             
-            
-            
-            // get the current date and time
-            let currentDateTime = Date()
-            // initialize the date formatter and set the style
-            let formatter = DateFormatter()
-            formatter.timeStyle = .medium
-            formatter.dateStyle = .long
-            // get the date time String from the date object
-            print("Starting...")
-            print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
-            
-
         }
         
-            hasPressedStart = true
+        getFirebase()
+        getFirebaseSpeed()
+        
+        
+        
     }
+    
+//    @IBAction func btn_action_start(_ sender: UIButton) {
+//        alert(message: "", title: "Starting")
+//        
+//        if hasPressedStart == true {
+//            print("already started")
+//            
+////            PublicVars.startTime = NSDate()
+////            PublicVars.crank_revs = 0
+////            PublicVars.wheel_revs = 0
+////            PublicVars.distance = 0
+//            
+//            return
+//            
+//            
+//        }
+//        
+////        newSpeakerWithClass()
+////        getFirebase()
+////        getFirebaseSpeed()
+//        
+//
+////        Rounds.distanceRound = 0
+////        Rounds.totalWheelEventTime = 0
+////        Rounds.arrHRRound = []
+////        
+////        if timerMilliSecond == nil {
+////        
+////            timerMilliSecond = Timer()
+////            timerMilliSecond = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateTimerMilliSecond), userInfo: nil, repeats: true)
+////            PublicVars.startTime = NSDate()
+////        }
+////        
+////
+////        if timerEachSecond == nil {
+////
+////            timerEachSecond = Timer()
+////            timerEachSecond = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
+////            
+////            Totals.startTime = NSDate()
+////            Rounds.roundStartTime = NSDate()
+////
+////        }
+//        
+//        start_function()
+//        hasPressedStart = true
+//    }
     
     func dateStringFromTimeInterval(timeInterval : TimeInterval) -> String{
         let formater = DateFormatter()
@@ -341,16 +390,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 
 
-        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
+//        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
         dockView1_open()
         
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
-                self.lbl_button_start.setTitle("🔴🔴", for: .normal)
+//                self.lbl_button_start.setTitle("🔴🔴", for: .normal)
                 getFirebase()
                 getFirebaseSpeed()
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
-                    self.lbl_button_start.setTitle("🔴", for: .normal)
+//                    self.lbl_button_start.setTitle("🔴", for: .normal)
                     print("pushFBTotals")
                     pushFBTotals()
                     
@@ -399,12 +448,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
         Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
         
-        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
+//        lbl_TotalTime.text = dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)
+        
+        lbl_Duration_Button.setTitle(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!), for: .normal)
+        
         let doubleDurationTotal = Double(Totals.durationTotal!)
 
         let dblElapsedTime = Double(doubleDurationTotal - ((Double(roundsCompleted) * 300)))
         let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
-        lbl_RoundTime.text = String(dblElapsedRoundTime)
+//        lbl_RoundTime.text = String(dblElapsedRoundTime)
         
         
         //MARK:  END OF ROUND
@@ -476,8 +528,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
         
         Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
-        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
+//        lbl_total_hr.text = "\(String(format:"%.1f", Totals.avg_hr)) Bpm"
+//        lbl_total_speed.text = "\(String(format:"%.1f", Totals.avg_speed)) Mph"
         
         Totals.arrHRTotal.append(Device.currentHeartrate)
         Rounds.arrHRRound.append(Device.currentHeartrate)
@@ -489,8 +541,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
 
         
-        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  // my best spd
-        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //my best hr
+//        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  // my best spd
+//        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //my best hr
         
 
 
@@ -725,6 +777,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if peripheral.state != .connected {
             print("Peripheral exists but is not connected.")
             self.peripheral = nil
+            startScanning()
             return
         }
         
