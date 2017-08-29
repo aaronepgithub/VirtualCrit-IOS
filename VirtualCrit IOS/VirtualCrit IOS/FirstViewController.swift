@@ -319,7 +319,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
         //        lbl_RoundTime.text = String(dblElapsedRoundTime)
         
-        //MARK:  SET DURATION BUTTON & DISPLAY
+        //MARK:  SET DURATION BUTTON & DISPLAY - ONLY DISPLAY WHEN SHOWING ROUND DATA
         let str = "\(String(dblElapsedRoundTime))  |  \(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!))"
         lbl_Duration_Button.setTitle(str, for: .normal)
 
