@@ -777,7 +777,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if peripheral.state != .connected {
             print("Peripheral exists but is not connected.")
             self.peripheral = nil
-            startScanning()
             return
         }
         

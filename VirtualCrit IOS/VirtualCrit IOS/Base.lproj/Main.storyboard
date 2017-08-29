@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -117,7 +117,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1mq-Th-yXx" userLabel="Stack View 15">
                                         <rect key="frame" x="0.0" y="339" width="320" height="72"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQi-Oj-JXP">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQi-Oj-JXP">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="35"/>
                                                 <state key="normal" title="Duration">
@@ -373,17 +373,17 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="ofT-ZP-peC">
-                                <rect key="frame" x="20" y="389" width="280" height="42"/>
+                                <rect key="frame" x="20" y="362" width="280" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
-                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="47"/>
+                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="40"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQV-o2-sP9">
-                                <rect key="frame" x="24" y="377" width="288" height="50"/>
+                                <rect key="frame" x="24" y="362" width="288" height="66"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="PSe-va-SCi"/>
+                                    <constraint firstAttribute="height" constant="66" id="PSe-va-SCi"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="1"/>
                                 <state key="normal" title="Reset"/>
@@ -408,7 +408,7 @@
                             <constraint firstItem="N9L-HD-jFY" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="bY6-PC-lNz"/>
                             <constraint firstItem="mE4-5h-LDe" firstAttribute="top" secondItem="N9L-HD-jFY" secondAttribute="bottom" constant="8" id="dgg-QI-ozD"/>
                             <constraint firstItem="nPm-HA-FIm" firstAttribute="top" secondItem="u8Z-PM-CXk" secondAttribute="bottom" constant="8" id="dyk-dq-7OQ"/>
-                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="hQV-o2-sP9" secondAttribute="bottom" constant="4" id="iiZ-1z-0bZ"/>
+                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="hQV-o2-sP9" secondAttribute="bottom" constant="3" id="iiZ-1z-0bZ"/>
                             <constraint firstItem="Uw5-kv-GAn" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="mZR-VC-CxT"/>
                             <constraint firstItem="u8Z-PM-CXk" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="4" id="mko-6h-rjK"/>
                             <constraint firstItem="Uw5-kv-GAn" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="8" id="qyw-ET-b5g"/>
