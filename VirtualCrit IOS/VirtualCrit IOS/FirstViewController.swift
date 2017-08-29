@@ -35,7 +35,7 @@ extension UIViewController {
 public var tempArrHR = [String]()
 public var tempArrSPD = [String]()
 public var tempArrScore = [String]()
-public var ctDistance = 0.0
+//public var ctDistance = 0.0
 
 struct PublicVars {
     static var elapsedMilliseconds: Double = 0
@@ -71,6 +71,7 @@ struct Round_PublicVars {
     static var speed: Double = 0
     static var arr_heartrate = [Double]()
     static var heartrate: Double = 0
+    static var score: Double = 0
     
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
@@ -161,6 +162,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         AllRounds.arrHR.append(0)
         AllRounds.arrSPD.append(0)
+        AllRounds.arrTime.append("0")
         
         Device.wheelCircumference = 2105
 
@@ -207,37 +209,49 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func update_main_display_values() {
     
         //ROUND
-        if data_to_display == "round" {
-        
-        lbl_Duration_Button.setTitle(dateStringFromTimeInterval(timeInterval : Rounds.roundCurrentTimeElapsed!), for: .normal)
-            
-        lbl_Distance.text = "ROUND:  \(String(format:"%.2f", Rounds.distanceRound)) Miles"
-            
+//        if data_to_display == "round" {
+//        
+//        lbl_Duration_Button.setTitle(dateStringFromTimeInterval(timeInterval : Rounds.roundCurrentTimeElapsed!), for: .normal)
+//            
+//        lbl_Distance.text = "ROUND:  \(String(format:"%.2f", Rounds.distanceRound)) Miles"
+//            
+//        lbl_Heartrate.text = "\(String(format:"%.1f", Rounds.avg_hr))"
+//            
+//        Round_PublicVars.score = Rounds.avg_hr / 185 * 100
+//        lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
+//        
+//        if Rounds.avg_speed > 0 && Rounds.avg_speed < 55 {
+//            lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
+//            }
+//        
+//        let tempcad = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
+//        if tempcad > 0 && tempcad < 120 {
+//            lbl_Cadence.text = "\(String(format:"%.f", tempcad))"
+//            }
+//        
+//        }
 
-        lbl_Heartrate.text = "\(String(format:"%.1f", Rounds.avg_hr))"
-        lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
-        
+        //ROUND
+        if data_to_display == "round" {
             
-        if Rounds.avg_speed > 0 && Rounds.avg_speed < 55 {
-            lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
-        }
-        
-        let tempcad = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
-        if tempcad > 0 && tempcad < 120 {
-            lbl_Cadence.text = "\(String(format:"%.f", tempcad))"
-        }
-        
+            lbl_Duration_Button.setTitle(Round_PublicVars.string_elapsed_time, for: .normal)
+            lbl_Distance.text = "\(String(format:"%.2f", Round_PublicVars.distance)) TOTAL MILES"
+            lbl_Heartrate.text = "\(String(format:"%.1f", Round_PublicVars.heartrate))"
+            
+            lbl_Score.text = "\(String(format:"%.1f", Round_PublicVars.score))"
+            lbl_Speed.text = "\(String(format:"%.1f", Round_PublicVars.speed))"
+            lbl_Cadence.text = "\(String(format:"%.1f", Round_PublicVars.cadence))"
+            
         }
         
         //TOTAL
         if data_to_display == "total" {
         
             lbl_Duration_Button.setTitle(PublicVars.string_elapsed_time, for: .normal)
-            lbl_Distance.text = "TOTAL:  \(String(format:"%.2f", PublicVars.distance)) Miles"
+            lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) TOTAL MILES"
             lbl_Heartrate.text = "\(String(format:"%.1f", PublicVars.heartrate))"
             
-            let scr1 = PublicVars.heartrate / 185 * 100
-            lbl_Score.text = "\(String(format:"%.1f", scr1))"
+            lbl_Score.text = "\(String(format:"%.1f", PublicVars.score))"
             lbl_Speed.text = "\(String(format:"%.1f", PublicVars.speed))"
             lbl_Cadence.text = "\(String(format:"%.1f", PublicVars.cadence))"
   
@@ -252,25 +266,64 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         let x = NSDate()
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
+        let yy = x.timeIntervalSince(Rounds.roundStartTime! as Date!)
         let z = Double(y)
+        let zz = Double(yy)
         
-        Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
-        Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
+
         
-        //let doubleDurationTotal = z
-        //let dblElapsedTime = z - (Double(roundsCompleted) * 300)
-        //let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
+        Rounds.roundCurrentTimeElapsed = (yy)
+        Totals.durationTotal = y
+
+
+        //MARK:  ROUND  CALC SPD, CAD, DIST, HR FOR NEW ROUND
+        let cadence_r = Round_PublicVars.crank_revs / zz * 60
+        let distance_r = Round_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
+        let speed_r = distance_r / (zz / 60 / 60) //miles per hour
+        Round_PublicVars.cadence = cadence_r
+        Round_PublicVars.distance = distance_r
+        Round_PublicVars.speed = speed_r
+        Round_PublicVars.arr_heartrate.append(Device.currentHeartrate)
+        let hr_r = Round_PublicVars.arr_heartrate.reduce(0.0) {
+            return $0 + $1/Double(Round_PublicVars.arr_heartrate.count)
+        }
+        Round_PublicVars.heartrate = hr_r
+        Round_PublicVars.score = hr_r / Device.maxHR * 100
+        Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
+        //  END CALC FOR ROUND
         
-        //MARK:  SET DURATION BUTTON & DISPLAY - ONLY DISPLAY WHEN SHOWING ROUND DATA
-        //let str = "\(String(dblElapsedRoundTime))  (\(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)))"
-//        lbl_Duration_Button.setTitle(str, for: .normal)
         
+        //MARK:  TOTALS  CALC SPD, CAD, DIST, HR FOR NEW TOTALS
+        let cadence = PublicVars.crank_revs / z * 60
+        let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
+        let speed = distance / (z / 60 / 60) //miles per hour
+        PublicVars.cadence = cadence
+        PublicVars.distance = distance
+        PublicVars.speed = speed
+        PublicVars.arr_heartrate.append(Device.currentHeartrate)
+            let hr = PublicVars.arr_heartrate.reduce(0.0) {
+            return $0 + $1/Double(PublicVars.arr_heartrate.count)
+            }
+        PublicVars.heartrate = hr
+        PublicVars.score = hr / Device.maxHR * 100
+        PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
+        //  END CALC FOR TOTALS
         
-//        if Double(Rounds.roundCurrentTimeElapsed!) <= 0 {
-//            updateTimerRound()
-//        }
+        //print("Total:  \(PublicVars.string_elapsed_time)")
+        //print("Round:  \(Round_PublicVars.string_elapsed_time)")
         
+        let t1 = Double(Rounds.roundsComplete * 300)
+        let t2 = Int(t1)
+        let t3 = Int(z)
+        let t4 = t3 - t2
+        print("Round:  \(t4)")
+        if t4 >= 300 {
+            print("Testing Round Complete")
+            Rounds.roundStartTime = NSDate()
+            updateTimerRound()
+        }
         
+        //OLD
         Totals.arrHRTotal.append(Device.currentHeartrate)
         Rounds.arrHRRound.append(Device.currentHeartrate)
         Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
@@ -280,37 +333,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return $0 + $1/Double(Totals.arrHRTotal.count)
         }
         Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-
         
-        
-        //MARK:  CALC SPD, CAD, DIST, HR FOR NEW TOTALS - MAKE GENERIC
-        let cadence = PublicVars.crank_revs / z * 60
-        //print("Cadence:  \(cadence)")
-        
-        let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
-        //print("Distance:  \(distance)")
-        
-        let speed = distance / (z / 60 / 60) //miles per hour
-        //print("speed:  \(speed)")
-        
-        PublicVars.cadence = cadence
-        PublicVars.distance = distance
-        PublicVars.speed = speed
-
-        PublicVars.arr_heartrate.append(Device.currentHeartrate)
-        let hr = PublicVars.arr_heartrate.reduce(0.0) {
-            return $0 + $1/Double(PublicVars.arr_heartrate.count)
-        }
-        PublicVars.heartrate = hr
-        
-        PublicVars.score = hr / Device.maxHR * 100
-        
-        PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
-        
-        milli_counter = 0
         
         update_main_display_values()
-        
         NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
     }
     
@@ -321,16 +346,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         milli_round_counter += 1
         milli_elapsed_milliseconds += 1
         
-        if milli_round_counter >= 30000 {
-            Rounds.roundStartTime = NSDate()
-            //call end of round function
-            updateTimerRound()
-            milli_round_counter = 0
-        }
         
         if milli_counter == 100 {
+            milli_counter = 0
             milli_each_second_update()
-            //updateTimerEachSecond()
         }  //called for each second
     }
     
@@ -403,55 +422,60 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func updateTimerRound() {
         //at the end of each round
-        
         roundsCompleted = roundsCompleted + 1
         
         Totals.arrHRTotal.append(Rounds.avg_hr)
         AllRounds.arrHR.append(Rounds.avg_hr)
         AllRounds.arrSPD.append(Rounds.avg_speed)
         AllRounds.arrCAD.append(Rounds.avg_cadence)
+        AllRounds.arrTime.append(PublicVars.string_elapsed_time)
         
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
         Rounds.arrHRRound = []
         Rounds.crankRevolutionTime = 0
         Rounds.crankRevolutions = 0
-//        lbl_Speed.text = "..."
-//        lbl_Cadence.text = "..."
-//        lbl_Heartrate.text = "..."
-//        lbl_Score.text = "..."
+
         
+        
+        Round_PublicVars.arr_heartrate = []
         
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
         
         Rounds.roundsComplete = 1 + Rounds.roundsComplete
-        pushFBRound()
-        pushFBTotals()
+
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-            print("Firebase get Round data")
-            getFirebase()
-            getFirebaseSpeed()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+            
+            print("Firebase push Round data")
+            pushFBRound()
+            pushFBTotals()
+            
+
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                
+
+                print("Firebase get Round data")
+                getFirebase()
+                getFirebaseSpeed()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                    self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
+                    
+                    self.newSpeakerWithClass()
+                })
+                
+                
+            })
+            
+            
         })
         //        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
         dockView1_open()
         
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-                self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
-                
-                self.newSpeakerWithClass()
-                
-//                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(90), execute: {
-//                    //print("pushFBTotals")
-//                    // pushFBTotals()
-//                    
-////                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(90), execute: {
-////                                                //print("pushFBTotals")
-////                                                //pushFBTotals()
-////                    })
-//                })
-            })
+
     }
     
 
@@ -669,15 +693,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         // disconnect from the peripheral
         centralManager.cancelPeripheralConnection(peripheral)
-        Rounds.avg_speed = 0
-        Rounds.avg_cadence = 0
-        Rounds.avg_score = 0
-        Rounds.avg_hr = 0
-        Rounds.distanceRound = 0
-        Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = [0]
-        Rounds.crankRevolutionTime = 0
-        Rounds.crankRevolutions = 0
+        
+//        Rounds.avg_speed = 0
+//        Rounds.avg_cadence = 0
+//        Rounds.avg_score = 0
+//        Rounds.avg_hr = 0
+//        Rounds.distanceRound = 0
+//        Rounds.totalWheelEventTime = 0
+//        Rounds.arrHRRound = [0]
+//        Rounds.crankRevolutionTime = 0
+//        Rounds.crankRevolutions = 0
 //        lbl_Speed.text = "..."
 //        lbl_Cadence.text = "..."
 //        lbl_Heartrate.text = "..."
@@ -685,6 +710,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
+        //Device.currentHeartrate
         
         self.str = "Bluetooth Disconnected"
         newSpeakerWithClass()
@@ -746,10 +772,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Rounds.arrHRRound = [0]
         Rounds.crankRevolutionTime = 0
         Rounds.crankRevolutions = 0
-//        lbl_Speed.text = "..."
-//        lbl_Cadence.text = "..."
-//        lbl_Heartrate.text = "..."
-//        lbl_Score.text = "..."
+
         
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
@@ -1018,7 +1041,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         Device.ThreeSecondDistance = Device.ThreeSecondDistance + travelDistance
                         Device.ThreeSecondDistanceTime = Device.ThreeSecondDistanceTime + Double(Double(wheelEventTimeDiff) / 60 / 60)
                         
-                        ctDistance = ctDistance + travelDistance
+//                        ctDistance = ctDistance + travelDistance
 //                        lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
                         
                         
