@@ -235,7 +235,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if data_to_display == "round" {
             
             lbl_Duration_Button.setTitle(Round_PublicVars.string_elapsed_time, for: .normal)
-            lbl_Distance.text = "\(String(format:"%.2f", Round_PublicVars.distance)) Round Mi"
+            lbl_Distance.text = "\(String(format:"%.2f", Round_PublicVars.distance)) Round"
             lbl_Heartrate.text = "\(String(format:"%.1f", Round_PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", Round_PublicVars.score))"
@@ -248,7 +248,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if data_to_display == "total" {
         
             lbl_Duration_Button.setTitle(PublicVars.string_elapsed_time, for: .normal)
-            lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Total Mi"
+            lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Total"
             lbl_Heartrate.text = "\(String(format:"%.1f", PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", PublicVars.score))"
