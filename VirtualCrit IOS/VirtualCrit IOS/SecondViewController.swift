@@ -237,11 +237,16 @@ class SecondViewController: UIViewController {
 //            lbl_currentCadence.text = "0 RPM"
 //        }
         
-        lbl_ctTimer.text = "  \(String(format:"%.1f", PublicVars.speed))  MH"
-        lbl_ctDistance.text = "  \(String(format:"%.2f", PublicVars.distance)) MI"
-        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
-        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
+//        lbl_ctTimer.text = "  \(String(format:"%.1f", PublicVars.speed))  MH"
+//        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
+//        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
+
+        lbl_ctTimer.text = "  \(Device.peri1)  HR"
+        ctPace.text =   "  \(Device.peri2)   CSC"
+        lbl_currentCadence.text = "  \(Device.peri3)   CSC"
+
         lbl_elapsed_time.text = PublicVars.string_elapsed_time
+        lbl_ctDistance.text = "  \(String(format:"%.2f", PublicVars.distance)) MI"
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
         

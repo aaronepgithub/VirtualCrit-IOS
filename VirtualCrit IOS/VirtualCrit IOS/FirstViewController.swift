@@ -270,11 +270,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let z = Double(y)
         let zz = Double(yy)
         
-
-        
-        Rounds.roundCurrentTimeElapsed = (yy)
-        Totals.durationTotal = y
-
+        //Rounds.roundCurrentTimeElapsed = (yy)
+        //Totals.durationTotal = y
 
         //MARK:  ROUND  CALC SPD, CAD, DIST, HR FOR NEW ROUND
         let cadence_r = Round_PublicVars.crank_revs / zz * 60
@@ -309,9 +306,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
         //  END CALC FOR TOTALS
         
-        //print("Total:  \(PublicVars.string_elapsed_time)")
-        //print("Round:  \(Round_PublicVars.string_elapsed_time)")
-        
         let t1 = Double(Rounds.roundsComplete * 300)
         let t2 = Int(t1)
         let t3 = Int(z)
@@ -323,7 +317,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             updateTimerRound()
         }
         
-        //OLD
+        //TODO - REMOVE THIS
         Totals.arrHRTotal.append(Device.currentHeartrate)
         Rounds.arrHRRound.append(Device.currentHeartrate)
         Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
@@ -355,11 +349,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func start_function() {
     
-        //PublicVars.startTime = NSDate()
-//        PublicVars.crank_revs = 0
-//        PublicVars.wheel_revs = 0
-//        PublicVars.distance = 0
-
         newSpeakerWithClass()
 
         Rounds.distanceRound = 0
@@ -384,16 +373,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         getFirebase()
         getFirebaseSpeed()
         
-        
-        if timerEachSecond == nil {
-            
-            //timerEachSecond = Timer()
-            //timerEachSecond = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimerEachSecond), userInfo: nil, repeats: true)
-            //Totals.startTime = NSDate()
-            //Rounds.roundStartTime = NSDate()
-        }
-        
-
     }
     
 
@@ -424,11 +403,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         //at the end of each round
         roundsCompleted = roundsCompleted + 1
         
-        Totals.arrHRTotal.append(Rounds.avg_hr)
-        AllRounds.arrHR.append(Rounds.avg_hr)
-        AllRounds.arrSPD.append(Rounds.avg_speed)
-        AllRounds.arrCAD.append(Rounds.avg_cadence)
+//        Totals.arrHRTotal.append(Rounds.avg_hr)
+//        AllRounds.arrHR.append(Rounds.avg_hr)
+//        AllRounds.arrSPD.append(Rounds.avg_speed)
+//        AllRounds.arrCAD.append(Rounds.avg_cadence)
+//        AllRounds.arrTime.append(PublicVars.string_elapsed_time)
+
+        AllRounds.arrHR.append(Round_PublicVars.heartrate)
+        AllRounds.arrSPD.append(Round_PublicVars.speed)
+        AllRounds.arrCAD.append(Round_PublicVars.cadence)
         AllRounds.arrTime.append(PublicVars.string_elapsed_time)
+
         
         Rounds.distanceRound = 0
         Rounds.totalWheelEventTime = 0
@@ -439,7 +424,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
         Round_PublicVars.arr_heartrate = []
-        
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
         
@@ -466,16 +450,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     self.newSpeakerWithClass()
                 })
-                
-                
             })
-            
-            
         })
         //        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
         dockView1_open()
-        
-
     }
     
 
@@ -710,7 +688,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
-        //Device.currentHeartrate
+        //Round_PublicVars.heartrate = 0
         
         self.str = "Bluetooth Disconnected"
         newSpeakerWithClass()
@@ -760,19 +738,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
         print("Did Disconnect Peripheral")
         // verify we have a peripheral
-        
-
-        
-        Rounds.avg_speed = 0
-        Rounds.avg_cadence = 0
-        Rounds.avg_score = 0
-        Rounds.avg_hr = 0
-        Rounds.distanceRound = 0
-        Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = [0]
-        Rounds.crankRevolutionTime = 0
-        Rounds.crankRevolutions = 0
-
         
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
@@ -879,10 +844,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 if characteristic.uuid == CBUUID(string: Device.TransferCharacteristic) {
                     // subscribe to dynamic changes
                     peripheral.setNotifyValue(true, for: characteristic)
+                    Device.peri1 = peripheral.name!
                 }
                 if characteristic.uuid == CBUUID(string: Device.TransferCharacteristicCSC) {
                     // subscribe to dynamic changes
                     peripheral.setNotifyValue(true, for: characteristic)
+                    if Device.peri2 == "peri2" {Device.peri2 = peripheral.name!} else {Device.peri3 = peripheral.name!}
                 }
             }
         }
@@ -963,18 +930,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
             
             
-
-            
-            
             var speed_has_started: Bool = false
-            func processWheelData(withData data :Data) -> Double {
+            func processWheelData(withData data :Data) {
 
                 var wheelRevolution     :Double = 0
                 var wheelEventTime      :Double = 0
-                var wheelRevolutionDiff :Double = 0
-                var wheelEventTimeDiff  :Double = 0
+                //var wheelRevolutionDiff :Double = 0
+                //var wheelEventTimeDiff  :Double = 0
                 
-                var travelDistance      :Double = 0
+                //var travelDistance      :Double = 0
                 //var travelSpeed         :Double = 0
                 
                 var newWheelRevs        :UInt32 = 0
@@ -990,7 +954,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
                 
                 
-//MUST CHANGE TO ACTUAL TIME ELAPSED, NOT EVENT TIME
                 
                 //wheelRevolution = Double(newWheelRevs)
                 wheelEventTime = Double(newWheelRevsTime)
@@ -1004,12 +967,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 if Device.oldWheelRevolution > 0 {  //test for NOT first time reading
  
-//                        let wheelRevsDelta: UInt32 = deltaWithRollover(UInt32(newWheelRevs), old: UInt32(Device.oldWheelRevolution), max: 255)
-//                        let wheelTimeDelta: UInt16 = deltaWithRollover(UInt16(newWheelRevsTime), old: UInt16(Device.oldWheelEventTime), max: UInt16.max)
-                    
-//                        wheelRevolutionDiff = Double(wheelRevsDelta)
-//                        wheelEventTimeDiff = Double(wheelTimeDelta / 1024)
-
                     let a = wheelRevolution - Device.oldWheelRevolution
                     let b = wheelEventTime - Device.oldWheelEventTime
                     
@@ -1020,61 +977,52 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
                     
                     
-                    if a >= 0 && b >= 0 {
-                        wheelRevolutionDiff = a
-                        wheelEventTimeDiff = b / 1024
+                    //if a >= 0 && b >= 0 {
+                    //  wheelRevolutionDiff = a
+                    // wheelEventTimeDiff = b / 1024
                         
                         
+                    //    travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
+                    //    if wheelEventTimeDiff > 300 {print(wheelRevolutionDiff, travelDistance)}
                         
-                        travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
-                        Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff  //use actual time
-                        Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff  //use actual time
+                        //travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
+                        //Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff  //use actual time
+                        //Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff  //use actual time
                         
-                        if wheelRevolutionDiff > 20 || wheelEventTimeDiff > 20 {
+                        //if wheelRevolutionDiff > 20 || wheelEventTimeDiff > 20 {
+                        //    travelDistance = 0
+                        //    wheelEventTimeDiff = 0
+                        //}
                         
-                            travelDistance = 0
-                            wheelEventTimeDiff = 0
-                        }
+                        //Totals.distanceTotal = Totals.distanceTotal + travelDistance
+                        //Rounds.distanceRound = Rounds.distanceRound + travelDistance
+                        //Device.ThreeSecondDistance = Device.ThreeSecondDistance + travelDistance
+                        //Device.ThreeSecondDistanceTime = Device.ThreeSecondDistanceTime + Double(Double(wheelEventTimeDiff) / 60 / 60)
                         
-                        Totals.distanceTotal = Totals.distanceTotal + travelDistance
-                        Rounds.distanceRound = Rounds.distanceRound + travelDistance
-                        Device.ThreeSecondDistance = Device.ThreeSecondDistance + travelDistance
-                        Device.ThreeSecondDistanceTime = Device.ThreeSecondDistanceTime + Double(Double(wheelEventTimeDiff) / 60 / 60)
-                        
-//                        ctDistance = ctDistance + travelDistance
-//                        lbl_Distance.text = "\(String(format:"%.2f", Rounds.distanceRound)) Mi & \(String(format:"%.2f", Totals.distanceTotal)) Mi"
-                        
-                        
-                        //theTravelSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
-                        Device.currentSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
+                        //Device.currentSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
 
-
+                        //Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
+                        //Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
                         
-                        Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
-                        Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
                         
-                        if Rounds.avg_speed > 0 && Rounds.avg_speed < 55 {
-                            //lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
-                        }
-                        
-                    }
+                    //}
                     
                 }
 
                 Device.oldWheelRevolution = Double(wheelRevolution)
                 Device.oldWheelEventTime = Double(newWheelRevsTime)
                 speed_has_started = true
-                return 999
+                //return 999
             }
             
             var cadence_has_started: Bool = false
-            func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int) -> Double {
+            func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int) {
                 
                 var crankEventTime      : Double = 0
-                var crankRevolutionDiff : Double = 0
-                var crankEventTimeDiff  : Double = 0
+                //var crankRevolutionDiff : Double = 0
+                //var crankEventTimeDiff  : Double = 0
                 var crankRevolution     : Double = 0
-                var travelCadence       : Double = 0
+                //var travelCadence       : Double = 0
 
                 
                 
@@ -1088,17 +1036,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 if Device.oldCrankRevolution > 0 {  //test for first time reading
                     if Device.oldCrankRevolution == crankRevolution && Device.oldCrankEventTime == crankEventTime { //test for 0 cadence
-                        //print("Current Cadence is 0")
-                        travelCadence = 0
                     } else {
                         
                         if Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
-                            //print("reset counter, ignore")
                         } else {
-                            crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
-                            crankEventTimeDiff = (((crankEventTime - Device.oldCrankEventTime) / 1024))
-                            travelCadence = crankRevolutionDiff/crankEventTimeDiff*60
-                            
+                            //crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
+                            //crankEventTimeDiff = (((crankEventTime - Device.oldCrankEventTime) / 1024))
+                            //travelCadence = crankRevolutionDiff/crankEventTimeDiff*60
                            
                             let a = crankRevolution - Device.oldCrankRevolution
                             let b = (crankEventTime - Device.oldCrankEventTime) / 1024
@@ -1107,65 +1051,53 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                                 PublicVars.crank_revs += a
                                 Round_PublicVars.crank_revs += a
                             }
+
                             
-                            
-                            
-                            
-                            Rounds.crankRevolutions = Rounds.crankRevolutions + crankRevolutionDiff
-                            Rounds.crankRevolutionTime = Rounds.crankRevolutionTime + crankEventTimeDiff
-                            Device.ThreeSecondCrankRevs = Device.ThreeSecondCrankRevs + crankRevolutionDiff
-                            Device.ThreeSecondCrankRevsTime = Device.ThreeSecondCrankRevsTime + crankEventTimeDiff
+//                            Rounds.crankRevolutions = Rounds.crankRevolutions + crankRevolutionDiff
+//                            Rounds.crankRevolutionTime = Rounds.crankRevolutionTime + crankEventTimeDiff
+//                            Device.ThreeSecondCrankRevs = Device.ThreeSecondCrankRevs + crankRevolutionDiff
+//                            Device.ThreeSecondCrankRevsTime = Device.ThreeSecondCrankRevsTime + crankEventTimeDiff
                             
                         }
                     }
 
-                    let x = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
+//                    let x = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
+//                    if x >= 0 && x < 120 {
+//                            Rounds.avg_cadence = x
+//                        }
 
-                    if x >= 0 && x < 120 {
-                        //lbl_Cadence.text = "\(String(format:"%.f", x))" //round cadence
-                            Rounds.avg_cadence = x
-                        }
-
-                        Device.currentCadence = travelCadence
-                        //MARK:  CURRENT CADENCE
+                        //Device.currentCadence = travelCadence
                     
                 }
                 Device.oldCrankRevolution = crankRevolution
                 Device.oldCrankEventTime = crankEventTime
                 cadence_has_started = true
-                return 999
+                //return 999
                 
             }
             
-            func decodeCSC(withData data : Data) -> Double {
+            func decodeCSC(withData data : Data) {
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
-                //    var wheelRevDiff :Double = 0
-                //    var crankRevDiff :Double = 0
-                var returnedCadence : Double = 0
-                var returnedSpeed   : Double = 0
-                //var returnedSpeedII   : Double = 0
+                //var returnedCadence : Double = 0
+                //var returnedSpeed   : Double = 0
                 let flag = value[0]
                 
-                //print((returnedSpeed) + (returnedCadence))
-                if returnedSpeed == 10000 {
+                //if returnedSpeed == 10000 {
                     //print((returnedSpeed) + (returnedCadence))
-                }
+                //}
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
-                    returnedSpeed = processWheelData(withData: data)
-                    //returnedSpeedII = processWheelDataII(withData: data)
-                    //print(returnedSpeed)
+                    processWheelData(withData: data)
                     if flag & 0x02 == 2 {
-                        returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 7)
-                        if returnedCadence == 2000 {print(returnedCadence)}
+                        processCrankData(withData: data, andCrankRevolutionIndex: 7)
+                        //if returnedCadence == 2000 {print(returnedCadence)}
                     }
                 } else {
                     if flag & Device.CRANK_REVOLUTION_FLAG == 2 {
-                        returnedCadence = processCrankData(withData: data, andCrankRevolutionIndex: 1)
-                        //print(returnedCadence)
+                        processCrankData(withData: data, andCrankRevolutionIndex: 1)
                     }
                 }
-                return 0 //use later for testing to display or remove
+                //return 0 //use later for testing to display or remove
             }
             
             
@@ -1179,10 +1111,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
 
             
-            let x = decodeCSC(withData: characteristic.value!)
-            if x == 100 {
+            decodeCSC(withData: characteristic.value!)
+            //if x == 100 {
                 //print(x)
-            }
+            //}
                
             
         }

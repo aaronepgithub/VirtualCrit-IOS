@@ -44,14 +44,18 @@ struct Device {
     
     static var totalDistanceII                      : Double = 0.0
     
-    //test for 3 sec real-time reading
-    static var ThreeSecondSpeed                     : Double = 0
-    static var ThreeSecondCadence                   : Double = 0
+    static var peri1: String = "P1"
+    static var peri2: String = "P2"
+    static var peri3: String = "P3"
     
-    static var ThreeSecondDistance                  : Double = 0
-    static var ThreeSecondCrankRevs                 : Double = 0
-    static var ThreeSecondCrankRevsTime                 : Double = 0
-    static var ThreeSecondDistanceTime                 : Double = 0
+//    //test for 3 sec real-time reading
+//    static var ThreeSecondSpeed                     : Double = 0
+//    static var ThreeSecondCadence                   : Double = 0
+//    
+//    static var ThreeSecondDistance                  : Double = 0
+//    static var ThreeSecondCrankRevs                 : Double = 0
+//    static var ThreeSecondCrankRevsTime                 : Double = 0
+//    static var ThreeSecondDistanceTime                 : Double = 0
     
     
 
@@ -61,7 +65,6 @@ struct Device {
 struct Settings {
     static var riderName = "Tim"
     static var wheelSize_mm = "25"
-    static var maxHeartrate = "185"
     static var dateToday = "20170108"
 }
 
@@ -307,8 +310,11 @@ func pushFBTotals() {
     formatter.dateFormat = "yyyyMMdd"
     let result = formatter.string(from: date)
     
-    let a = Totals.avg_hr / Device.maxHR * 100
-    let y = "\(String(format:"%.1f", Totals.avg_speed))"
+//    let a = Totals.avg_hr / Device.maxHR * 100
+//    let y = "\(String(format:"%.1f", Totals.avg_speed))"
+    
+    let a = PublicVars.heartrate / Device.maxHR * 100
+    let y = "\(String(format:"%.1f", PublicVars.speed))"
     let z = "\(String(format:"%.1f", a))"
     
     let yyy = Double(y) ?? 0 as Any
