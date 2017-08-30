@@ -266,7 +266,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         let x = NSDate()
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
-        let yy = x.timeIntervalSince(Rounds.roundStartTime! as Date!)
+//        let yy = x.timeIntervalSince(Rounds.roundStartTime! as Date!)
+        let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
         let z = Double(y)
         let zz = Double(yy)
         
@@ -310,23 +311,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let t2 = Int(t1)
         let t3 = Int(z)
         let t4 = t3 - t2
-        print("Round:  \(t4)")
+        //print("Round:  \(t4)")
         if t4 >= 300 {
             print("Testing Round Complete")
-            Rounds.roundStartTime = NSDate()
+//            Rounds.roundStartTime = NSDate()
+            Round_PublicVars.startTime = NSDate()
             updateTimerRound()
         }
         
         //TODO - REMOVE THIS
-        Totals.arrHRTotal.append(Device.currentHeartrate)
-        Rounds.arrHRRound.append(Device.currentHeartrate)
-        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-            return $0 + $1/Double(Rounds.arrHRRound.count)
-        }
-        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-            return $0 + $1/Double(Totals.arrHRTotal.count)
-        }
-        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
+//        Totals.arrHRTotal.append(Device.currentHeartrate)
+//        Rounds.arrHRRound.append(Device.currentHeartrate)
+//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
+//            return $0 + $1/Double(Rounds.arrHRRound.count)
+//        }
+//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
+//            return $0 + $1/Double(Totals.arrHRTotal.count)
+//        }
+//        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
         
         
         update_main_display_values()
@@ -362,8 +364,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             let startNSDate = NSDate()
             PublicVars.startTime = startNSDate
-            Totals.startTime = startNSDate
-            Rounds.roundStartTime = startNSDate
+            Round_PublicVars.startTime = startNSDate
+            //Totals.startTime = startNSDate
+            //Rounds.roundStartTime = startNSDate
             
             PublicVars.crank_revs = 0
             PublicVars.wheel_revs = 0

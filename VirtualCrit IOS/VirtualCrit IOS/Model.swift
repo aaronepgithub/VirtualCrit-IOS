@@ -86,8 +86,8 @@ struct Totals {
     
     static var startTime                : NSDate?
     
-    static var currentTime              : NSDate?
-    static var durationTotal            : TimeInterval?
+    //static var currentTime              : NSDate?
+    //static var durationTotal            : TimeInterval?
     
     static var totalWheelEventTime      : Double = 0
     static var displayedTime = "00:00:00"
@@ -97,8 +97,8 @@ struct Totals {
 }
 
 struct Rounds {
-    static var roundStartTime           : NSDate?
-    static var roundCurrentTimeElapsed  : TimeInterval?
+    //static var roundStartTime           : NSDate?
+    //static var roundCurrentTimeElapsed  : TimeInterval?
     static var roundsComplete           : Int = 0
     
     static var arrHRRound = [Double]()  //during the round
