@@ -234,39 +234,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var data_to_display = "round"
     func update_main_display_values() {
     
-        //ROUND
-//        if data_to_display == "round" {
-//        
-//        lbl_Duration_Button.setTitle(dateStringFromTimeInterval(timeInterval : Rounds.roundCurrentTimeElapsed!), for: .normal)
-//            
-//        lbl_Distance.text = "ROUND:  \(String(format:"%.2f", Rounds.distanceRound)) Miles"
-//            
-//        lbl_Heartrate.text = "\(String(format:"%.1f", Rounds.avg_hr))"
-//            
-//        Round_PublicVars.score = Rounds.avg_hr / 185 * 100
-//        lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
-//        
-//        if Rounds.avg_speed > 0 && Rounds.avg_speed < 55 {
-//            lbl_Speed.text = "\(String(format:"%.1f", Rounds.avg_speed))"
-//            }
-//        
-//        let tempcad = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
-//        if tempcad > 0 && tempcad < 120 {
-//            lbl_Cadence.text = "\(String(format:"%.f", tempcad))"
-//            }
-//        
-//        }
 
         //ROUND
         if data_to_display == "round" {
             
             lbl_Duration_Button.setTitle(Round_PublicVars.string_elapsed_time, for: .normal)
             lbl_Distance.text = "\(String(format:"%.2f", Round_PublicVars.distance)) Round"
-            lbl_Heartrate.text = "\(String(format:"%.1f", Round_PublicVars.heartrate))"
+            lbl_Heartrate.text = "\(String(format:"%.0f", Round_PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", Round_PublicVars.score))"
             lbl_Speed.text = "\(String(format:"%.1f", Round_PublicVars.speed))"
-            lbl_Cadence.text = "\(String(format:"%.1f", Round_PublicVars.cadence))"
+            lbl_Cadence.text = "\(String(format:"%.0f", Round_PublicVars.cadence))"
             
         }
         
@@ -275,11 +253,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
             lbl_Duration_Button.setTitle(PublicVars.string_elapsed_time, for: .normal)
             lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Total"
-            lbl_Heartrate.text = "\(String(format:"%.1f", PublicVars.heartrate))"
+            lbl_Heartrate.text = "\(String(format:"%.0f", PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", PublicVars.score))"
             lbl_Speed.text = "\(String(format:"%.1f", PublicVars.speed))"
-            lbl_Cadence.text = "\(String(format:"%.1f", PublicVars.cadence))"
+            lbl_Cadence.text = "\(String(format:"%.0f", PublicVars.cadence))"
   
         }
         
@@ -288,11 +266,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             lbl_Duration_Button.setTitle(Lap_PublicVars.string_elapsed_time, for: .normal)
             lbl_Distance.text = "\(String(format:"%.2f", Lap_PublicVars.distance)) Lap"
-            lbl_Heartrate.text = "\(String(format:"%.1f", Lap_PublicVars.heartrate))"
+            lbl_Heartrate.text = "\(String(format:"%.0f", Lap_PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", Lap_PublicVars.score))"
             lbl_Speed.text = "\(String(format:"%.1f", Lap_PublicVars.speed))"
-            lbl_Cadence.text = "\(String(format:"%.1f", Lap_PublicVars.cadence))"
+            lbl_Cadence.text = "\(String(format:"%.0f", Lap_PublicVars.cadence))"
             
         }
         
@@ -978,6 +956,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             
             var speed_has_started: Bool = false
+            
+            
+            //NOW USING PROCESSX
             func processWheelData(withData data :Data) {
 
                 var wheelRevolution     :Double = 0
@@ -1023,6 +1004,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
             
             var cadence_has_started: Bool = false
+            
+            
             func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int) {
                 
                 var crankEventTime      : Double = 0
@@ -1037,25 +1020,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
 
                 if Device.oldCrankRevolution > 0 {  //test for first time reading
-                    if Device.oldCrankRevolution == crankRevolution && Device.oldCrankEventTime == crankEventTime { //test for 0 cadence
-                    } else {
-                        
-                        if Device.oldCrankRevolution > crankRevolution || Device.oldCrankEventTime > crankEventTime { //ignore readings when counter resets
-                        } else {
-                            //crankRevolutionDiff = crankRevolution - Device.oldCrankRevolution
-                            //crankEventTimeDiff = (((crankEventTime - Device.oldCrankEventTime) / 1024))
-                            //travelCadence = crankRevolutionDiff/crankEventTimeDiff*60
-                           
-                            let a = crankRevolution - Device.oldCrankRevolution
-                            let b = (crankEventTime - Device.oldCrankEventTime) / 1024
-                            
-                            if a >= 0 && a <= 10 && b >= 0 && b <= 10 {
-                                PublicVars.crank_revs += a
-                                Round_PublicVars.crank_revs += a
-                                Lap_PublicVars.crank_revs += a
-                            }
-                        }
+                    
+                    var a = crankRevolution - Device.oldCrankRevolution
+                    //let b = (crankEventTime - Device.oldCrankEventTime) / 1024
+                    if a < 0 {
+                        a = (crankRevolution + 255) - Device.oldCrankRevolution
                     }
+                    
+                    PublicVars.crank_revs += a
+                    Round_PublicVars.crank_revs += a
+                    Lap_PublicVars.crank_revs += a
+
                 }
                 Device.oldCrankRevolution = crankRevolution
                 Device.oldCrankEventTime = crankEventTime
