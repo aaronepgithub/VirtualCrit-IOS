@@ -22,11 +22,12 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_elapsed_time: UILabel!
     
     @IBAction func btn_reset(_ sender: UIButton) {
-//        print("reset")
-//        PublicVars.startTime = NSDate()
-//        PublicVars.crank_revs = 0
-//        PublicVars.wheel_revs = 0
-//        PublicVars.distance = 0
+        print("reset")
+        Lap_PublicVars.startTime = NSDate()
+        Lap_PublicVars.crank_revs = 0
+        Lap_PublicVars.wheel_revs = 0
+        Lap_PublicVars.distance = 0
+        Lap_PublicVars.arr_heartrate = []
     }
     
     

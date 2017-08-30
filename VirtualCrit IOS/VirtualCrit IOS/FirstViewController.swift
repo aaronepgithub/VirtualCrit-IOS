@@ -35,14 +35,13 @@ extension UIViewController {
 public var tempArrHR = [String]()
 public var tempArrSPD = [String]()
 public var tempArrScore = [String]()
-//public var ctDistance = 0.0
 
 struct PublicVars {
-    static var elapsedMilliseconds: Double = 0
+    //static var elapsedMilliseconds: Double = 0
     static var startTime: NSDate?
-    static var currentTime: NSDate?
+    //static var currentTime: NSDate?
     static var duration: TimeInterval?
-    static var array_active_time = [TimeInterval]()
+    //static var array_active_time = [TimeInterval]()
     
     static var wheel_revs: Double = 0
     static var crank_revs: Double = 0
@@ -58,11 +57,10 @@ struct PublicVars {
 }
 
 struct Round_PublicVars {
-    static var elapsedMilliseconds: Double = 0
+    //static var elapsedMilliseconds: Double = 0
     static var startTime: NSDate?
-    static var currentTime: NSDate?
+    //static var currentTime: NSDate?
     static var duration: TimeInterval?
-    static var array_active_time = [TimeInterval]()
     
     static var wheel_revs: Double = 0
     static var crank_revs: Double = 0
@@ -77,6 +75,24 @@ struct Round_PublicVars {
     static var string_elapsed_time: String = "00:00:00"
 }
 
+struct Lap_PublicVars {
+    //static var elapsedMilliseconds: Double = 0
+    static var startTime: NSDate?
+    //static var currentTime: NSDate?
+    static var duration: TimeInterval?
+    
+    static var wheel_revs: Double = 0
+    static var crank_revs: Double = 0
+    
+    static var cadence: Double = 0
+    static var speed: Double = 0
+    static var arr_heartrate = [Double]()
+    static var heartrate: Double = 0
+    static var score: Double = 0
+    
+    static var distance: Double = 0
+    static var string_elapsed_time: String = "00:00:00"
+}
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
@@ -122,8 +138,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
         if data_to_display == "round" {
             data_to_display = "total"
-        } else {
-            data_to_display = "round"}
+            return
+        }
+        
+        if data_to_display == "total" {
+            data_to_display = "lap"
+            return
+        }
+        if data_to_display == "lap" {
+            data_to_display = "round"
+            return
+        }
+
         
         
         print(data_to_display)
@@ -257,6 +283,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
   
         }
         
+        //LAP
+        if data_to_display == "lap" {
+            
+            lbl_Duration_Button.setTitle(Lap_PublicVars.string_elapsed_time, for: .normal)
+            lbl_Distance.text = "\(String(format:"%.2f", Lap_PublicVars.distance)) Lap"
+            lbl_Heartrate.text = "\(String(format:"%.1f", Lap_PublicVars.heartrate))"
+            
+            lbl_Score.text = "\(String(format:"%.1f", Lap_PublicVars.score))"
+            lbl_Speed.text = "\(String(format:"%.1f", Lap_PublicVars.speed))"
+            lbl_Cadence.text = "\(String(format:"%.1f", Lap_PublicVars.cadence))"
+            
+        }
+        
     }
     
     // EACH MILLISECOND - EACH SECOND UPDATE
@@ -266,13 +305,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         let x = NSDate()
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
-//        let yy = x.timeIntervalSince(Rounds.roundStartTime! as Date!)
         let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
+        let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
         let z = Double(y)
         let zz = Double(yy)
-        
-        //Rounds.roundCurrentTimeElapsed = (yy)
-        //Totals.durationTotal = y
+        let zzz = Double(yyy)
 
         //MARK:  ROUND  CALC SPD, CAD, DIST, HR FOR NEW ROUND
         let cadence_r = Round_PublicVars.crank_revs / zz * 60
@@ -289,6 +326,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.score = hr_r / Device.maxHR * 100
         Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
         //  END CALC FOR ROUND
+
+        
+        //MARK:  LAP  CALC SPD, CAD, DIST, HR FOR NEW LAP
+        let cadence_l = Lap_PublicVars.crank_revs / zzz * 60
+        let distance_l = Lap_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
+        let speed_l = distance_l / (zzz / 60 / 60) //miles per hour
+        Lap_PublicVars.cadence = cadence_l
+        Lap_PublicVars.distance = distance_l
+        Lap_PublicVars.speed = speed_l
+        Lap_PublicVars.arr_heartrate.append(Device.currentHeartrate)
+        let hr_l = Lap_PublicVars.arr_heartrate.reduce(0.0) {
+            return $0 + $1/Double(Lap_PublicVars.arr_heartrate.count)
+        }
+        Lap_PublicVars.heartrate = hr_l
+        Lap_PublicVars.score = hr_l / Device.maxHR * 100
+        Lap_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyy)
+        //  END CALC FOR LAP
+        
         
         
         //MARK:  TOTALS  CALC SPD, CAD, DIST, HR FOR NEW TOTALS
@@ -311,10 +366,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let t2 = Int(t1)
         let t3 = Int(z)
         let t4 = t3 - t2
-        //print("Round:  \(t4)")
         if t4 >= 300 {
-            print("Testing Round Complete")
-//            Rounds.roundStartTime = NSDate()
+            print("Round Complete")
             Round_PublicVars.startTime = NSDate()
             updateTimerRound()
         }
@@ -365,12 +418,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             let startNSDate = NSDate()
             PublicVars.startTime = startNSDate
             Round_PublicVars.startTime = startNSDate
+            Lap_PublicVars.startTime = startNSDate
             //Totals.startTime = startNSDate
             //Rounds.roundStartTime = startNSDate
             
-            PublicVars.crank_revs = 0
-            PublicVars.wheel_revs = 0
-            PublicVars.distance = 0
+//            PublicVars.crank_revs = 0
+//            PublicVars.wheel_revs = 0
+//            PublicVars.distance = 0
         }
         
         getFirebase()
@@ -418,11 +472,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         AllRounds.arrTime.append(PublicVars.string_elapsed_time)
 
         
-        Rounds.distanceRound = 0
-        Rounds.totalWheelEventTime = 0
-        Rounds.arrHRRound = []
-        Rounds.crankRevolutionTime = 0
-        Rounds.crankRevolutions = 0
+//        Rounds.distanceRound = 0
+//        Rounds.totalWheelEventTime = 0
+//        Rounds.arrHRRound = []
+//        Rounds.crankRevolutionTime = 0
+//        Rounds.crankRevolutions = 0
 
         
         
@@ -980,6 +1034,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     if a >= 0 && a <= 10 && b >= 0 && b <= 15000 {
                             PublicVars.wheel_revs += a
                             Round_PublicVars.wheel_revs += a
+                            Lap_PublicVars.wheel_revs += a
                         }
 
                     
@@ -1057,6 +1112,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                             if a >= 0 && a <= 10 && b >= 0 && b <= 10 {
                                 PublicVars.crank_revs += a
                                 Round_PublicVars.crank_revs += a
+                                Lap_PublicVars.crank_revs += a
                             }
 
                             
