@@ -14,6 +14,9 @@ import Firebase
 
 
 struct Device {
+    //temp
+    static var max_wheel_rev_value: Double = 0
+    
     //HR
     static let TransferService = "0x180D"
     static let TransferCharacteristic = "0x2A37"

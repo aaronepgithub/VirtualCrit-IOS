@@ -868,9 +868,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print("Looking for Transfer Service...")
         peripheral.discoverServices([CBUUID.init(string: Device.TransferService), CBUUID.init(string: Device.TransferServiceCSC)])
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-//            self.dataBuffer.length = 0
-//        })
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -964,18 +961,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             }
             
             let newValue = decodeHRValue(withData: characteristic.value!)
-            //print(newValue)
 
-            //PublicVars.heartrate = Double(newValue)
-//            PublicVars.arr_heartrate.append(Device.currentHeartrate)
-            
-//            if Device.currentHeartrate < 100 {
-//                lbl_Heartrate.text = "0\(String(Device.currentHeartrate))"
-//                lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
-//            } else {
-//                lbl_Heartrate.text = "\(String(Device.currentHeartrate))"
-//                lbl_Score.text = "\(String(format:"%.1f", Rounds.avg_score))"
-//            }
             
         }
         
@@ -995,7 +981,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             func processWheelData(withData data :Data) {
 
                 var wheelRevolution     :Double = 0
-                var wheelEventTime      :Double = 0
+                //var wheelEventTime      :Double = 0
                 //var wheelRevolutionDiff :Double = 0
                 //var wheelEventTimeDiff  :Double = 0
                 
@@ -1003,78 +989,37 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //var travelSpeed         :Double = 0
                 
                 var newWheelRevs        :UInt32 = 0
-                var newWheelRevsTime    :UInt16 = 0
-                
-
-
+                //var newWheelRevsTime    :UInt16 = 0
+            
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
 
                 //using newWheelRevs and newWheelTime
                 newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
-                newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
+                //newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
                 let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
-                
-                
-                
+            
                 //wheelRevolution = Double(newWheelRevs)
-                wheelEventTime = Double(newWheelRevsTime)
+                //wheelEventTime = Double(newWheelRevsTime)
                 wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
                 
+                if wheelRevolution > Device.max_wheel_rev_value {
+                    Device.max_wheel_rev_value = wheelRevolution
+                }
                 
-//                print("wheelRevolution and wheelEventTime")
-//                print(wheelRevolution, wheelEventTime)
-                
-
+                print("wheelRevolution:   \(wheelRevolution)")
                 
                 if Device.oldWheelRevolution > 0 {  //test for NOT first time reading
- 
                     let a = wheelRevolution - Device.oldWheelRevolution
-                    let b = wheelEventTime - Device.oldWheelEventTime
-                    
-                    if a >= 0 && a <= 10 && b >= 0 && b <= 15000 {
-                            PublicVars.wheel_revs += a
-                            Round_PublicVars.wheel_revs += a
-                            Lap_PublicVars.wheel_revs += a
-                        }
-
-                    
-                    
-                    //if a >= 0 && b >= 0 {
-                    //  wheelRevolutionDiff = a
-                    // wheelEventTimeDiff = b / 1024
-                        
-                        
-                    //    travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
-                    //    if wheelEventTimeDiff > 300 {print(wheelRevolutionDiff, travelDistance)}
-                        
-                        //travelDistance = wheelRevolutionDiff * Device.wheelCircumference! / 1000 * 0.000621371  //segment, in miles
-                        //Totals.totalWheelEventTime = Totals.totalWheelEventTime + wheelEventTimeDiff  //use actual time
-                        //Rounds.totalWheelEventTime = Rounds.totalWheelEventTime + wheelEventTimeDiff  //use actual time
-                        
-                        //if wheelRevolutionDiff > 20 || wheelEventTimeDiff > 20 {
-                        //    travelDistance = 0
-                        //    wheelEventTimeDiff = 0
-                        //}
-                        
-                        //Totals.distanceTotal = Totals.distanceTotal + travelDistance
-                        //Rounds.distanceRound = Rounds.distanceRound + travelDistance
-                        //Device.ThreeSecondDistance = Device.ThreeSecondDistance + travelDistance
-                        //Device.ThreeSecondDistanceTime = Device.ThreeSecondDistanceTime + Double(Double(wheelEventTimeDiff) / 60 / 60)
-                        
-                        //Device.currentSpeed = Double(Double(travelDistance) / Double(Double(wheelEventTimeDiff) / 60.0 / 60.0)) //miles/hour
-
-                        //Totals.avg_speed = Totals.distanceTotal / (Totals.totalWheelEventTime / 60 / 60)
-                        //Rounds.avg_speed = Rounds.distanceRound / (Rounds.totalWheelEventTime / 60 / 60)
-                        
-                        
-                    //}
-                    
+                    //let b = wheelEventTime - Device.oldWheelEventTime
+                    if a >= 0 && a <= 20 {
+                        //                            PublicVars.wheel_revs += a
+                        //                            Round_PublicVars.wheel_revs += a
+                        //                            Lap_PublicVars.wheel_revs += a
+                    }
                 }
-
                 Device.oldWheelRevolution = Double(wheelRevolution)
-                Device.oldWheelEventTime = Double(newWheelRevsTime)
+                //Device.oldWheelEventTime = Double(newWheelRevsTime)
                 speed_has_started = true
-                //return 999
             }
             
             var cadence_has_started: Bool = false
@@ -1085,17 +1030,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //var crankEventTimeDiff  : Double = 0
                 var crankRevolution     : Double = 0
                 //var travelCadence       : Double = 0
-
-                
                 
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
                 
                 crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
                 crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
-                
 
-                
-                
                 if Device.oldCrankRevolution > 0 {  //test for first time reading
                     if Device.oldCrankRevolution == crankRevolution && Device.oldCrankEventTime == crankEventTime { //test for 0 cadence
                     } else {
@@ -1114,43 +1054,45 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                                 Round_PublicVars.crank_revs += a
                                 Lap_PublicVars.crank_revs += a
                             }
-
-                            
-//                            Rounds.crankRevolutions = Rounds.crankRevolutions + crankRevolutionDiff
-//                            Rounds.crankRevolutionTime = Rounds.crankRevolutionTime + crankEventTimeDiff
-//                            Device.ThreeSecondCrankRevs = Device.ThreeSecondCrankRevs + crankRevolutionDiff
-//                            Device.ThreeSecondCrankRevsTime = Device.ThreeSecondCrankRevsTime + crankEventTimeDiff
-                            
                         }
                     }
-
-//                    let x = Rounds.crankRevolutions/Rounds.crankRevolutionTime*60
-//                    if x >= 0 && x < 120 {
-//                            Rounds.avg_cadence = x
-//                        }
-
-                        //Device.currentCadence = travelCadence
-                    
                 }
                 Device.oldCrankRevolution = crankRevolution
                 Device.oldCrankEventTime = crankEventTime
                 cadence_has_started = true
-                //return 999
                 
+                
+            }
+            
+
+            func processWheelDataX(withData data :Data) {
+                var wheelRevolution     :UInt8  = 0
+                var wheelRevolutionDiff :Double = 0
+                let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
+                wheelRevolution = UInt8(CFSwapInt32LittleToHost(UInt32(value[1])))
+                //print("wheelRevolution value:  \(wheelRevolution)")
+                if oldWheelRevX != 0 {
+                    wheelRevolutionDiff = Double(wheelRevolution) - Double(oldWheelRevX)
+                    if wheelRevolutionDiff < 0 {
+                        wheelRevolutionDiff = (Double(wheelRevolution) + 255) - Double(oldWheelRevX)
+                    }
+                }
+                oldWheelRevX = Int(wheelRevolution)
+                //totalWheelRevsX += wheelRevolutionDiff
+                //print("totalWheelRevsX:  \(totalWheelRevsX)")
+                PublicVars.wheel_revs += wheelRevolutionDiff
+                Round_PublicVars.wheel_revs += wheelRevolutionDiff
+                Lap_PublicVars.wheel_revs += wheelRevolutionDiff
             }
             
             func decodeCSC(withData data : Data) {
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
-                //var returnedCadence : Double = 0
-                //var returnedSpeed   : Double = 0
-                let flag = value[0]
                 
-                //if returnedSpeed == 10000 {
-                    //print((returnedSpeed) + (returnedCadence))
-                //}
+                let flag = value[0]
                 
                 if flag & Device.WHEEL_REVOLUTION_FLAG == 1 {
                     processWheelData(withData: data)
+                    processWheelDataX(withData: data)
                     if flag & 0x02 == 2 {
                         processCrankData(withData: data, andCrankRevolutionIndex: 7)
                         //if returnedCadence == 2000 {print(returnedCadence)}
@@ -1160,7 +1102,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                         processCrankData(withData: data, andCrankRevolutionIndex: 1)
                     }
                 }
-                //return 0 //use later for testing to display or remove
             }
             
             
@@ -1184,7 +1125,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     
-    
+    var oldWheelRevX: Int = 0
+    var totalWheelRevsX: Double = 0
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         // if there was an error then print it and bail out
