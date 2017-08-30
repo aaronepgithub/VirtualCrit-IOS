@@ -44,9 +44,9 @@ struct Device {
     
     static var totalDistanceII                      : Double = 0.0
     
-    static var peri1: String = "P1"
-    static var peri2: String = "P2"
-    static var peri3: String = "P3"
+    static var peri1: String = "peri1"
+    static var peri2: String = "peri2"
+    static var peri3: String = "peri3"
     
 //    //test for 3 sec real-time reading
 //    static var ThreeSecondSpeed                     : Double = 0

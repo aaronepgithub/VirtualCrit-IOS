@@ -690,7 +690,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.crank_revs = 0
         //Round_PublicVars.heartrate = 0
         
-        self.str = "Bluetooth Disconnected"
+
+        self.str = "Bluetooth Canceled for \(peripheral.name!)"
+        print(self.str)
         newSpeakerWithClass()
     }
     
@@ -742,7 +744,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
         
-        self.str = "Bluetooth Disconnected"
+        self.str = "Bluetooth Did Disconnect \(peripheral.name!)"
+        print(self.str)
         newSpeakerWithClass()
         
         
