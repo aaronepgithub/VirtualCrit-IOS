@@ -22,23 +22,20 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_elapsed_time: UILabel!
     
     @IBAction func btn_reset(_ sender: UIButton) {
-        print("reset")
+
         Lap_PublicVars.startTime = NSDate()
         Lap_PublicVars.crank_revs = 0
         Lap_PublicVars.wheel_revs = 0
         Lap_PublicVars.distance = 0
         Lap_PublicVars.arr_heartrate = []
+
     }
     
     
-    @IBAction func btn_total_reset(_ sender: UIButton) {
+    @IBAction func btn_total_reset(_ sender: UIButton) {  //pacer
         
-        PublicVars.startTime = NSDate()
-        PublicVars.crank_revs = 0
-        PublicVars.wheel_revs = 0
-        PublicVars.distance = 0
-        PublicVars.arr_heartrate = []
-        
+        alert(message: String(round(Device.idle_time/1024)))
+
     }
     
     
@@ -253,11 +250,28 @@ class SecondViewController: UIViewController {
 //        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
 //        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
 
+        
+        if Device.peri1 == "peri1" {lbl_ctTimer.text = "  HR"
+        } else {
         lbl_ctTimer.text = "  \(Device.peri1)  HR"
+        }
+        
+        
+        if Device.peri2 == "peri2" {ctPace.text =   "  CSC"
+        } else {
         ctPace.text =   "  \(Device.peri2)   CSC"
+        }
+        
+        
+        
+        if Device.peri3 == "peri3" {lbl_currentCadence.text = "  CSC"
+        } else {
         lbl_currentCadence.text = "  \(Device.peri3)   CSC"
+        }
+        
 
         lbl_elapsed_time.text = Pacer.status
+        
         lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE

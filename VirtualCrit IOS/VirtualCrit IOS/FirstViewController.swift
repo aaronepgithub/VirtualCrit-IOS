@@ -311,7 +311,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
         let z = Double(y)
         let zz = Double(yy)
-        let zzz = Double(yyy)
+        let zzz = Double(yyy)  //lap time as Double, in seconds
 
         //MARK:  ROUND CALC
         let cadence_r = Round_PublicVars.crank_revs / zz * 60
@@ -344,6 +344,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Lap_PublicVars.heartrate = hr_l
         Lap_PublicVars.score = hr_l / Device.maxHR * 100
         Lap_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyy)
+        
+        let remaining_distance = Pacer.target_distance - Lap_PublicVars.distance
+        let estimated_time_arrival = remaining_distance * (60 / Lap_PublicVars.speed)  //remaining dist * min per mile
+        
+        let pace_spd_delta = Lap_PublicVars.speed - Pacer.target_avg_speed
+        let pace_time_delta = Pacer.target_duration - ((zzz / 60) + estimated_time_arrival)
+        
+        if remaining_distance < Pacer.target_distance {
+            Pacer.status = "Sp \(Int(round(pace_spd_delta))) Ds \(Int(round(remaining_distance))) Tm \(Int(round(pace_time_delta)))"
+        }
+        
+        
+        
         //  END CALC FOR LAP
         
         
@@ -386,10 +399,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
         
         
-        Pacer.actual_distance = Pacer.target_distance - distance
-        Pacer.actual_duration = Pacer.target_duration * 60 - zzz
-        Pacer.actual_avg_speed = distance / (Pacer.actual_duration / 60 / 60)
-        Pacer.status = String(Int(Pacer.actual_avg_speed - Pacer.target_avg_speed))
+
         
         
         update_main_display_values()
@@ -992,7 +1002,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             func processWheelData(withData data :Data) {
 
                 var wheelRevolution     :Double = 0
-                //var wheelEventTime      :Double = 0
+                var wheelEventTime      :Double = 0
                 //var wheelRevolutionDiff :Double = 0
                 //var wheelEventTimeDiff  :Double = 0
                 
@@ -1000,36 +1010,36 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //var travelSpeed         :Double = 0
                 
                 var newWheelRevs        :UInt32 = 0
-                //var newWheelRevsTime    :UInt16 = 0
+                var newWheelRevsTime    :UInt16 = 0
             
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
 
                 //using newWheelRevs and newWheelTime
                 newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
-                //newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
+                newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
                 let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
             
                 //wheelRevolution = Double(newWheelRevs)
-                //wheelEventTime = Double(newWheelRevsTime)
+                wheelEventTime = Double(newWheelRevsTime)
                 wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
                 
                 if wheelRevolution > Device.max_wheel_rev_value {
                     Device.max_wheel_rev_value = wheelRevolution
                 }
                 
-                print("wheelRevolution:   \(wheelRevolution)")
+                //print("wheelRevolution:   \(wheelRevolution)")
                 
                 if Device.oldWheelRevolution > 0 {  //test for NOT first time reading
                     let a = wheelRevolution - Device.oldWheelRevolution
-                    //let b = wheelEventTime - Device.oldWheelEventTime
-                    if a >= 0 && a <= 20 {
-                        //                            PublicVars.wheel_revs += a
-                        //                            Round_PublicVars.wheel_revs += a
-                        //                            Lap_PublicVars.wheel_revs += a
+                    let b = wheelEventTime - Device.oldWheelEventTime
+                    
+                    if a == 0 {
+                        Device.idle_time += b
                     }
+                    //print(a, b, Device.idle_time)
                 }
                 Device.oldWheelRevolution = Double(wheelRevolution)
-                //Device.oldWheelEventTime = Double(newWheelRevsTime)
+                Device.oldWheelEventTime = Double(newWheelRevsTime)
                 speed_has_started = true
             }
             
