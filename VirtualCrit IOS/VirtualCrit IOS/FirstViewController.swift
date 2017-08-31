@@ -76,9 +76,7 @@ struct Round_PublicVars {
 }
 
 struct Lap_PublicVars {
-    //static var elapsedMilliseconds: Double = 0
     static var startTime: NSDate?
-    //static var currentTime: NSDate?
     static var duration: TimeInterval?
     
     static var wheel_revs: Double = 0
@@ -93,6 +91,25 @@ struct Lap_PublicVars {
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
 }
+
+//TODO
+struct RT_PublicVars {
+    static var startTime: NSDate?
+    static var duration: TimeInterval?
+    
+    static var wheel_revs: Double = 0
+    static var crank_revs: Double = 0
+    
+    static var cadence: Double = 0
+    static var speed: Double = 0
+    static var arr_heartrate = [Double]()
+    static var heartrate: Double = 0
+    static var score: Double = 0
+    
+    static var distance: Double = 0
+    static var string_elapsed_time: String = "00:00:00"
+}
+
 
 class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
 
@@ -126,6 +143,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var lbl_Distance: UILabel!
     var hasPressedStart = false
     
+    @IBAction func btn_ble_scan(_ sender: UIButton) {
+        startScanning()
+    }
+    
+    @IBAction func btn_change_display(_ sender: UIButton) {
+        changeDisplay()
+    }
     
     // Core Bluetooth properties
     var centralManager:CBCentralManager!
@@ -276,7 +300,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
     }
     
-    // EACH MILLISECOND - EACH SECOND UPDATE
+    // EACH SECOND UPDATE
     func milli_each_second_update() {
         
         milli_elapsed_seconds += 1
@@ -289,7 +313,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let zz = Double(yy)
         let zzz = Double(yyy)
 
-        //MARK:  ROUND  CALC SPD, CAD, DIST, HR FOR NEW ROUND
+        //MARK:  ROUND CALC
         let cadence_r = Round_PublicVars.crank_revs / zz * 60
         let distance_r = Round_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
         let speed_r = distance_r / (zz / 60 / 60) //miles per hour
@@ -306,7 +330,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         //  END CALC FOR ROUND
 
         
-        //MARK:  LAP  CALC SPD, CAD, DIST, HR FOR NEW LAP
+        //MARK:  LAP  CALC
         let cadence_l = Lap_PublicVars.crank_revs / zzz * 60
         let distance_l = Lap_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
         let speed_l = distance_l / (zzz / 60 / 60) //miles per hour
@@ -324,7 +348,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
         
-        //MARK:  TOTALS  CALC SPD, CAD, DIST, HR FOR NEW TOTALS
+        //MARK:  TOTALS  CALC
         let cadence = PublicVars.crank_revs / z * 60
         let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
         let speed = distance / (z / 60 / 60) //miles per hour
@@ -360,6 +384,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //            return $0 + $1/Double(Totals.arrHRTotal.count)
 //        }
 //        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
+        
+        
+        Pacer.actual_distance = Pacer.target_distance - distance
+        Pacer.actual_duration = Pacer.target_duration * 60 - zzz
+        Pacer.actual_avg_speed = distance / (Pacer.actual_duration / 60 / 60)
+        Pacer.status = String(Int(Pacer.actual_avg_speed - Pacer.target_avg_speed))
         
         
         update_main_display_values()

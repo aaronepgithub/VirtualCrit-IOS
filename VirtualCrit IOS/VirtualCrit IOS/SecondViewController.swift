@@ -257,7 +257,7 @@ class SecondViewController: UIViewController {
         ctPace.text =   "  \(Device.peri2)   CSC"
         lbl_currentCadence.text = "  \(Device.peri3)   CSC"
 
-        //lbl_elapsed_time.text = PublicVars.string_elapsed_time
+        lbl_elapsed_time.text = Pacer.status
         lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE

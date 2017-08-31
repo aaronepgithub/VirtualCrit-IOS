@@ -8,6 +8,18 @@
 
 import UIKit
 
+struct Pacer {
+    static var target_distance: Double = 5  //5 miles
+    static var target_duration: Double = 20  //20 min
+    static var target_avg_speed: Double = 15 //15 mph
+    
+    static var actual_distance: Double = 0
+    static var actual_duration: Double = 0
+    static var actual_avg_speed: Double = 0
+    
+    static var status: String = "On Pace"
+}
+
 class ForthViewController: UIViewController {
 
     override func viewDidLoad() {
