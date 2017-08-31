@@ -31,6 +31,17 @@ class SecondViewController: UIViewController {
     }
     
     
+    @IBAction func btn_total_reset(_ sender: UIButton) {
+        
+        PublicVars.startTime = NSDate()
+        PublicVars.crank_revs = 0
+        PublicVars.wheel_revs = 0
+        PublicVars.distance = 0
+        PublicVars.arr_heartrate = []
+        
+    }
+    
+    
     var updateUITimer: Timer!
     
     
@@ -246,7 +257,7 @@ class SecondViewController: UIViewController {
         ctPace.text =   "  \(Device.peri2)   CSC"
         lbl_currentCadence.text = "  \(Device.peri3)   CSC"
 
-        lbl_elapsed_time.text = PublicVars.string_elapsed_time
+        //lbl_elapsed_time.text = PublicVars.string_elapsed_time
         lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
