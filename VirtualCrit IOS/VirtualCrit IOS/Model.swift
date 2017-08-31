@@ -17,6 +17,7 @@ struct Device {
     //temp
     static var max_wheel_rev_value: Double = 0
     static var idle_time: Double = 0
+    static var total_ble_seconds: Double = 0
     
     //HR
     static let TransferService = "0x180D"

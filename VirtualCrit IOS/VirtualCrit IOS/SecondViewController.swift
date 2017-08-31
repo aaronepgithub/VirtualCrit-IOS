@@ -34,7 +34,7 @@ class SecondViewController: UIViewController {
     
     @IBAction func btn_total_reset(_ sender: UIButton) {  //pacer
         
-        alert(message: String(round(Device.idle_time/1024)))
+        //alert(message: String(round(Device.idle_time/1024)))
 
     }
     
@@ -208,47 +208,6 @@ class SecondViewController: UIViewController {
     }
 
     func updateUI() {
-        
-//        let tempHR = AllRounds.arrHR.reversed()
-//        let tempSPD = AllRounds.arrSPD.reversed()
-//        var stringHR = ""
-//        var stringSPD = ""
-//        
-//        tempArrHR = []
-//        tempArrSPD = []
-//        tempArrScore = []
-        
-//        let threeSecSpeedTest = Device.ThreeSecondDistance / (Device.ThreeSecondDistanceTime)
-//        //print(threeSecSpeedTest)
-//        
-//        let threeSecCadTest = Device.ThreeSecondCrankRevs / (Device.ThreeSecondCrankRevsTime) * 60
-//        //print(threeSecCadTest)
-//        
-//        Device.ThreeSecondDistance = 0
-//        Device.ThreeSecondCrankRevs = 0
-//        Device.ThreeSecondCrankRevsTime = 0
-//        Device.ThreeSecondDistanceTime = 0
-        
-
-
-//        if threeSecSpeedTest > 0 && threeSecSpeedTest < 50 {
-//            lbl_ctTimer.text = "\(String(format:"%.1f", threeSecSpeedTest)) MPH"
-//        } else {
-//            lbl_ctTimer.text = "0 MPH"
-//        }
-        
-//        lbl_ctDistance.text = "\(String(format:"%.1f", Totals.distanceTotal)) Miles"
-//        ctPace.text = "\(String(format:"%.0f", Device.currentHeartrate)) BPM"
-        
-//        if threeSecCadTest > 0 && threeSecCadTest < 120 {
-//            lbl_currentCadence.text = "\(String(format:"%.0f", threeSecCadTest)) RPM"
-//        } else {
-//            lbl_currentCadence.text = "0 RPM"
-//        }
-        
-//        lbl_ctTimer.text = "  \(String(format:"%.1f", PublicVars.speed))  MH"
-//        ctPace.text =   "  \(String(format:"%.0f", PublicVars.heartrate))   BM"
-//        lbl_currentCadence.text = "  \(String(format:"%.0f", PublicVars.cadence))   RM"
 
         
         if Device.peri1 == "peri1" {lbl_ctTimer.text = "  HR"

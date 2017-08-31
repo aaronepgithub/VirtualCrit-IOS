@@ -351,8 +351,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let pace_spd_delta = Lap_PublicVars.speed - Pacer.target_avg_speed
         let pace_time_delta = Pacer.target_duration - ((zzz / 60) + estimated_time_arrival)
         
+        //String(format:"%.2f", eachSPD)
+        let string_a = String(format:"%.1f", pace_spd_delta)
+        let string_b = String(format:"%.1f", remaining_distance)
+        let string_c = String(format:"%.1f", pace_time_delta)
+        let string_d = String(format:"%.1f", estimated_time_arrival)
+        
         if remaining_distance < Pacer.target_distance {
-            Pacer.status = "Sp \(Int(round(pace_spd_delta))) Ds \(Int(round(remaining_distance))) Tm \(Int(round(pace_time_delta)))"
+            Pacer.status = "Sp \(string_a) Ds \(string_b) Tm \(string_c) Ea \(string_d)"
         }
         
         
@@ -366,6 +372,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
         let speed = distance / (z / 60 / 60) //miles per hour
         PublicVars.cadence = cadence
+        if distance == PublicVars.distance{Device.idle_time += 1}
         PublicVars.distance = distance
         PublicVars.speed = speed
         PublicVars.arr_heartrate.append(Device.currentHeartrate)
@@ -384,6 +391,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if t4 >= 300 {
             print("Round Complete")
             Round_PublicVars.startTime = NSDate()
+            
+            print("Total Seconds:  \(milli_elapsed_seconds) Total BLE Seconds \(Device.total_ble_seconds / 1024) Total Seconds - Total Ble:  \(Double(milli_elapsed_seconds) - (Device.total_ble_seconds / 1024)) Total Idle Seconds:  \(Device.idle_time) ")
+            
             updateTimerRound()
         }
         
@@ -1030,13 +1040,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //print("wheelRevolution:   \(wheelRevolution)")
                 
                 if Device.oldWheelRevolution > 0 {  //test for NOT first time reading
-                    let a = wheelRevolution - Device.oldWheelRevolution
+                    //let a = wheelRevolution - Device.oldWheelRevolution
                     let b = wheelEventTime - Device.oldWheelEventTime
                     
-                    if a == 0 {
-                        Device.idle_time += b
+                    if b > 0 {
+                        Device.total_ble_seconds += b
                     }
-                    //print(a, b, Device.idle_time)
+                    
                 }
                 Device.oldWheelRevolution = Double(wheelRevolution)
                 Device.oldWheelEventTime = Double(newWheelRevsTime)
