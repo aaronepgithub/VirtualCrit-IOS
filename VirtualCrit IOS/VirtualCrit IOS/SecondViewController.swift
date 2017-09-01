@@ -30,12 +30,56 @@ class SecondViewController: UIViewController {
         Lap_PublicVars.arr_heartrate = []
         
         requestPacerDistance()
+        
+        let when = DispatchTime.now() + 10
+        DispatchQueue.main.asyncAfter(deadline: when){
+            self.requestPacerSpeed()
+        }
+        
 
     }
     
     
+    //SET PACER TARGET SPEED
+    func requestPacerSpeed() {
+        var alertController:UIAlertController?
+        alertController = UIAlertController(title: "Enter Pacer Speed",
+                                            message: "Example, 15 (mph)",
+                                            preferredStyle: .alert)
+        
+        alertController!.addTextField(
+            configurationHandler: {(textField: UITextField!) in
+                textField.placeholder = "15"
+                textField.keyboardType = .decimalPad
+        })
+        
+        let action = UIAlertAction(title: "Submit",
+                                   style: UIAlertActionStyle.default,
+                                   handler: {
+                                    (paramAction:UIAlertAction!) in
+                                    if let textFields = alertController?.textFields{
+                                        let theTextFields = textFields as [UITextField]
+                                        let enteredText = theTextFields[0].text
+                                        
+                                        if (Double(enteredText!) != nil) { Pacer.target_avg_speed = Double(enteredText!)! } else { Pacer.target_avg_speed = 15 }
+                                        
+                                    }
+                                    print(Pacer.target_avg_speed as Any)
+        })
+        
+        alertController?.addAction(action)
+        
+        self.present(alertController!,
+                     animated: true,
+                     completion: nil)
+    }
+
+
+    //END SET PACER TARGET SPEED
+    
+    
+    
     //SET PACER TARGET DISTANCE
-  
     func requestPacerDistance() {
         var alertController:UIAlertController?
         alertController = UIAlertController(title: "Enter Pacer Distance",

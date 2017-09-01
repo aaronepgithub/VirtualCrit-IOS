@@ -401,7 +401,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let string_b = String(format:"%.1f", remaining_distance)
         let string_c = String(format:"%.1f", pace_time_delta)
         let string_d = String(format:"%.1f", estimated_time_arrival)
-        let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Lap_PublicVars.speed)))
+        let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Pacer.target_avg_speed)))
         
         if remaining_distance < Pacer.target_distance {
             Pacer.status = "Goal \(string_e) Spd \(string_a) Dst \(string_b) Time \(string_c) ETA \(string_d)"
