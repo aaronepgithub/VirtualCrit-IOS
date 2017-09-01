@@ -28,15 +28,55 @@ class SecondViewController: UIViewController {
         Lap_PublicVars.wheel_revs = 0
         Lap_PublicVars.distance = 0
         Lap_PublicVars.arr_heartrate = []
+        
+        requestPacerDistance()
 
     }
+    
+    
+    //SET PACER TARGET DISTANCE
+  
+    func requestPacerDistance() {
+        var alertController:UIAlertController?
+        alertController = UIAlertController(title: "Enter Pacer Distance",
+                                            message: "Example, 20 (miles)",
+                                            preferredStyle: .alert)
+        
+        alertController!.addTextField(
+            configurationHandler: {(textField: UITextField!) in
+                textField.placeholder = "20"
+                textField.keyboardType = .decimalPad
+        })
+        
+        let action = UIAlertAction(title: "Submit",
+                                   style: UIAlertActionStyle.default,
+                                   handler: {
+                                    (paramAction:UIAlertAction!) in
+                                    if let textFields = alertController?.textFields{
+                                        let theTextFields = textFields as [UITextField]
+                                        let enteredText = theTextFields[0].text
+                                        
+                                        if (Double(enteredText!) != nil) { Pacer.target_distance = Double(enteredText!)! } else { Pacer.target_distance = 5 }
+                                        
+                                    }
+                                    print(Pacer.target_distance as Any)
+        })
+        
+        alertController?.addAction(action)
+        
+        self.present(alertController!,
+                     animated: true,
+                     completion: nil)
+    }
+    // End Alert -SET PACER DISTANCE
+    
+    
     
     
     @IBAction func btn_total_reset(_ sender: UIButton) {  //pacer
-        
-        //alert(message: String(round(Device.idle_time/1024)))
-
-    }
+        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed)) Idle: \(String(format:"%.1f", Device.idle_time))"
+        alert(message: msg)
+     }
     
     
     var updateUITimer: Timer!
@@ -247,8 +287,15 @@ class SecondViewController: UIViewController {
         counter += 1
 
         
-        if counter == 30 {
+        if counter == 2 {
             create_strings()
+            
+            //RT CALC, EVERY 2 SECONDS
+            RT_PublicVars.startTime = NSDate()
+            RT_PublicVars.crank_revs = 0
+            RT_PublicVars.wheel_revs = 0
+            RT_PublicVars.distance = 0
+            RT_PublicVars.arr_heartrate = []
             counter = 0
         }
         

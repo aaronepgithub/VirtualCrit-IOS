@@ -170,6 +170,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         if data_to_display == "lap" {
+            data_to_display = "realtime"
+            return
+        }
+        
+        if data_to_display == "realtime" {
             data_to_display = "round"
             return
         }
@@ -195,7 +200,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         else if sender.state == .began {
             print("UIGestureRecognizerStateBegan.")
             //Do Whatever You want on Began of Gesture
-            startScanning()
+            //startScanning()
         }
     }
     
@@ -298,6 +303,21 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
         }
         
+        //REALTIME
+        if data_to_display == "realtime" {
+            
+            lbl_Duration_Button.setTitle(RT_PublicVars.string_elapsed_time, for: .normal)
+            lbl_Distance.text = "\(String(format:"%.2f", RT_PublicVars.distance)) Lap"
+            lbl_Heartrate.text = "\(String(format:"%.0f", RT_PublicVars.heartrate))"
+            
+            lbl_Score.text = "\(String(format:"%.1f", RT_PublicVars.score))"
+            lbl_Speed.text = "\(String(format:"%.1f", RT_PublicVars.speed))"
+            lbl_Cadence.text = "\(String(format:"%.0f", RT_PublicVars.cadence))"
+            
+        }
+        
+        
+        
     }
     
     // EACH SECOND UPDATE
@@ -306,12 +326,34 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         milli_elapsed_seconds += 1
         
         let x = NSDate()
+        
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
         let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
         let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
+        let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
+        
         let z = Double(y)
         let zz = Double(yy)
         let zzz = Double(yyy)  //lap time as Double, in seconds
+        let zzzz = Double(yyyy)
+        
+        //MARK:  RT CALC
+        let cadence_rt = RT_PublicVars.crank_revs / zz * 60
+        let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
+        let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
+        RT_PublicVars.cadence = cadence_rt
+        RT_PublicVars.distance = distance_rt
+        RT_PublicVars.speed = speed_rt
+        RT_PublicVars.arr_heartrate.append(Device.currentHeartrate)
+        let hr_rt = RT_PublicVars.arr_heartrate.reduce(0.0) {
+            return $0 + $1/Double(RT_PublicVars.arr_heartrate.count)
+        }
+        RT_PublicVars.heartrate = hr_rt
+        RT_PublicVars.score = hr_rt / Device.maxHR * 100
+        RT_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyyy)
+        //  END CALC FOR RT
+        
+        
 
         //MARK:  ROUND CALC
         let cadence_r = Round_PublicVars.crank_revs / zz * 60
@@ -371,6 +413,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let cadence = PublicVars.crank_revs / z * 60
         let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
         let speed = distance / (z / 60 / 60) //miles per hour
+        
+        let total_moving_speed = distance / ((z - Device.idle_time) / 60 / 60) //miles per hour
+        Device.total_moving_speed = total_moving_speed
+        
         PublicVars.cadence = cadence
         if distance == PublicVars.distance{Device.idle_time += 1}
         PublicVars.distance = distance
@@ -447,6 +493,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             PublicVars.startTime = startNSDate
             Round_PublicVars.startTime = startNSDate
             Lap_PublicVars.startTime = startNSDate
+            RT_PublicVars.startTime = startNSDate
+            
+            
             //Totals.startTime = startNSDate
             //Rounds.roundStartTime = startNSDate
             
@@ -714,6 +763,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                 self.centralManager.stopScan()
                 print("Stop Scanning")
+                if PublicVars.heartrate == 0 && PublicVars.speed == 0 {
+                    self.startScanning()
+                }
+
             })
         }
         
@@ -867,12 +920,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //                    }
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristic) {
                         peripheral.setNotifyValue(false, for: characteristic)
-                        print("set Notify Value to False II")
+                        print("set Notify Value to False")
                         return
                     }
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristicCSC) {
                         peripheral.setNotifyValue(false, for: characteristic)
-                        print("set Notify Value to False II")
+                        print("set Notify Value to False")
                         return
                     }
                     
