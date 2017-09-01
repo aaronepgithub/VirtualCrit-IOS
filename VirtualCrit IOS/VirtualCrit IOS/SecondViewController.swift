@@ -74,7 +74,7 @@ class SecondViewController: UIViewController {
     
     
     @IBAction func btn_total_reset(_ sender: UIButton) {  //pacer
-        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed)) Idle: \(String(format:"%.1f", Device.idle_time))"
+        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed)) Idle: \(String(format:"%.1f", Device.idle_time))  BLE Idle: \(String(format:"%.1f", Device.total_ble_seconds))"
         alert(message: msg)
      }
     
@@ -290,7 +290,7 @@ class SecondViewController: UIViewController {
         if counter == 3 {
             create_strings()
             
-            //RT CALC, EVERY 2 SECONDS
+            //RT CALC, EVERY w3 SECONDS
             RT_PublicVars.startTime = NSDate()
             RT_PublicVars.crank_revs = 0
             RT_PublicVars.wheel_revs = 0

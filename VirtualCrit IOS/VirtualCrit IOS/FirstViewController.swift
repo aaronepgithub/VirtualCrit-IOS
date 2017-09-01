@@ -1060,7 +1060,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             var speed_has_started: Bool = false
             
             
-            //NOW USING PROCESSX
+            //NOT BEING USED...NOW USING PROCESSX
             func processWheelData(withData data :Data) {
 
                 var wheelRevolution     :Double = 0
@@ -1096,7 +1096,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     let b = wheelEventTime - Device.oldWheelEventTime
                     
                     if b > 0 {
-                        Device.total_ble_seconds += b
+                        let c = b/1024
+                        Device.total_ble_seconds += c
                     }
                     
                 }
