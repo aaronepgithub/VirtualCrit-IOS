@@ -341,7 +341,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let zzzz = Double(yyyy)
         
         //MARK:  RT CALC
-        let cadence_rt = RT_PublicVars.crank_revs / zz * 60
+        let cadence_rt = RT_PublicVars.crank_revs / zzzz * 60
         let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
         let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
         RT_PublicVars.cadence = cadence_rt
@@ -401,9 +401,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let string_b = String(format:"%.1f", remaining_distance)
         let string_c = String(format:"%.1f", pace_time_delta)
         let string_d = String(format:"%.1f", estimated_time_arrival)
+        let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Lap_PublicVars.speed)))
         
         if remaining_distance < Pacer.target_distance {
-            Pacer.status = "Sp \(string_a) Ds \(string_b) Tm \(string_c) Ea \(string_d)"
+            Pacer.status = "Goal \(string_e) Spd \(string_a) Dst \(string_b) Time \(string_c) ETA \(string_d)"
         }
         
         
@@ -813,28 +814,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         // disconnect from the peripheral
         centralManager.cancelPeripheralConnection(peripheral)
         
-//        Rounds.avg_speed = 0
-//        Rounds.avg_cadence = 0
-//        Rounds.avg_score = 0
-//        Rounds.avg_hr = 0
-//        Rounds.distanceRound = 0
-//        Rounds.totalWheelEventTime = 0
-//        Rounds.arrHRRound = [0]
-//        Rounds.crankRevolutionTime = 0
-//        Rounds.crankRevolutions = 0
-//        lbl_Speed.text = "..."
-//        lbl_Cadence.text = "..."
-//        lbl_Heartrate.text = "..."
-//        lbl_Score.text = "..."
-        
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
-        //Round_PublicVars.heartrate = 0
-        
+        Round_PublicVars.heartrate = 0
+        Round_PublicVars.arr_heartrate = [0]
 
-        self.str = "Bluetooth Canceled for \(peripheral.name!)"
+        self.str = "Function Disconnect for \(peripheral.name!)"
         print(self.str)
         newSpeakerWithClass()
+        alert(message: self.str)
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -884,9 +872,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
+        Round_PublicVars.heartrate = 0
+        Round_PublicVars.arr_heartrate = [0]
         
-        self.str = "Bluetooth Did Disconnect \(peripheral.name!)"
+        self.str = "did Disconnect Peripheral \(peripheral.name!)"
         print(self.str)
+        alert(message: self.str)
         newSpeakerWithClass()
         
         
@@ -898,15 +889,20 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         // check to see if the peripheral is connected
         if peripheral.state != .connected {
             print("Peripheral exists but is not connected.")
-            self.peripheral = nil
+            //self.peripheral = nil
+            
             //put rescan code here
+            centralManager.connect(self.peripheral!, options: nil)
+            //centralManager.connect(self.peripheral!, options: [])
+            
+            
             return
         }
         
         guard let services = peripheral.services else {
             // disconnect directly
             centralManager.cancelPeripheralConnection(peripheral)
-            print("Cancel Peripheral Connection II")
+            print("Cancel Peripheral Connection")
             return
         }
         

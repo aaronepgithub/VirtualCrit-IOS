@@ -287,7 +287,7 @@ class SecondViewController: UIViewController {
         counter += 1
 
         
-        if counter == 2 {
+        if counter == 3 {
             create_strings()
             
             //RT CALC, EVERY 2 SECONDS
