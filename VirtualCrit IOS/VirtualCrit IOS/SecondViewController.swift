@@ -296,6 +296,7 @@ class SecondViewController: UIViewController {
             RT_PublicVars.wheel_revs = 0
             RT_PublicVars.distance = 0
             RT_PublicVars.arr_heartrate = []
+            //print("RT Update")
             counter = 0
         }
         

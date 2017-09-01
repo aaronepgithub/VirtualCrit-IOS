@@ -306,8 +306,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         //REALTIME
         if data_to_display == "realtime" {
             
-            lbl_Duration_Button.setTitle(RT_PublicVars.string_elapsed_time, for: .normal)
-            lbl_Distance.text = "\(String(format:"%.2f", RT_PublicVars.distance)) Lap"
+            lbl_Duration_Button.setTitle(PublicVars.string_elapsed_time, for: .normal)
+            lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Current"
+            
+            
+            
             lbl_Heartrate.text = "\(String(format:"%.0f", RT_PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", RT_PublicVars.score))"
@@ -1133,6 +1136,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     PublicVars.crank_revs += a
                     Round_PublicVars.crank_revs += a
                     Lap_PublicVars.crank_revs += a
+                    RT_PublicVars.crank_revs += a
 
                 }
                 Device.oldCrankRevolution = crankRevolution
@@ -1161,6 +1165,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 PublicVars.wheel_revs += wheelRevolutionDiff
                 Round_PublicVars.wheel_revs += wheelRevolutionDiff
                 Lap_PublicVars.wheel_revs += wheelRevolutionDiff
+                RT_PublicVars.wheel_revs += wheelRevolutionDiff
             }
             
             func decodeCSC(withData data : Data) {
