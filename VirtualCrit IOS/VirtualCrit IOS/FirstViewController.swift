@@ -422,7 +422,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Device.total_moving_speed = total_moving_speed
         
         PublicVars.cadence = cadence
-        if distance == PublicVars.distance{Device.idle_time += 1}
+        
+        if distance == PublicVars.distance{
+            Device.idle_time += 1
+        }
+        
         PublicVars.distance = distance
         PublicVars.speed = speed
         PublicVars.arr_heartrate.append(Device.currentHeartrate)
@@ -442,7 +446,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             print("Round Complete")
             Round_PublicVars.startTime = NSDate()
             
-            print("Total Seconds:  \(milli_elapsed_seconds) Total BLE Seconds \(Device.total_ble_seconds / 1024) Total Seconds - Total Ble:  \(Double(milli_elapsed_seconds) - (Device.total_ble_seconds / 1024)) Total Idle Seconds:  \(Device.idle_time) ")
+            //print("Total Seconds:  \(milli_elapsed_seconds) Total BLE Seconds \(Device.total_ble_seconds / 1024) Total Seconds - Total Ble:  \(Double(milli_elapsed_seconds) - (Device.total_ble_seconds / 1024)) Total Idle Seconds:  \(Device.idle_time) ")
             
             updateTimerRound()
         }
@@ -818,6 +822,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.crank_revs = 0
         Round_PublicVars.heartrate = 0
         Round_PublicVars.arr_heartrate = [0]
+        oldWheelRevX = 0
 
         self.str = "Function Disconnect for \(peripheral.name!)"
         print(self.str)
@@ -874,6 +879,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.crank_revs = 0
         Round_PublicVars.heartrate = 0
         Round_PublicVars.arr_heartrate = [0]
+        oldWheelRevX = 0
         
         self.str = "did Disconnect Peripheral \(peripheral.name!)"
         print(self.str)
@@ -889,13 +895,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         // check to see if the peripheral is connected
         if peripheral.state != .connected {
             print("Peripheral exists but is not connected.")
-            //self.peripheral = nil
-            
+
             //put rescan code here
             centralManager.connect(self.peripheral!, options: nil)
-            //centralManager.connect(self.peripheral!, options: [])
-            
-            
             return
         }
         

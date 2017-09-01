@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -472,10 +472,10 @@
             </objects>
             <point key="canvasLocation" x="804" y="512.29385307346331"/>
         </scene>
-        <!--Leaderboard-->
+        <!--Pacer-->
         <scene sceneID="1R3-KP-hCw">
             <objects>
-                <viewController title="Leaderboard" id="rkb-Bf-ngj" customClass="ForthViewController" customModule="VirtualCrit_IOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pacer" id="rkb-Bf-ngj" customClass="ForthViewController" customModule="VirtualCrit_IOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dun-BI-ARL"/>
                         <viewControllerLayoutGuide type="bottom" id="GpS-O8-yDA"/>
@@ -515,11 +515,11 @@
                             <constraint firstItem="V5Q-H4-Sj6" firstAttribute="leading" secondItem="Zjj-iS-bPY" secondAttribute="leading" id="atj-cb-cG2"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="topRated" id="xuo-AA-aLm"/>
+                    <tabBarItem key="tabBarItem" title="Pacer" id="xuo-AA-aLm"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JeP-fN-vRJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="46.875" y="845"/>
+            <point key="canvasLocation" x="10" y="827"/>
         </scene>
         <!--Results-->
         <scene sceneID="cXC-mN-S50">

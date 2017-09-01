@@ -117,8 +117,9 @@ class SecondViewController: UIViewController {
     
     
     
-    @IBAction func btn_total_reset(_ sender: UIButton) {  //pacer
+    @IBAction func btn_total_reset(_ sender: UIButton) {
         let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed)) Idle: \(String(format:"%.1f", Device.idle_time))  BLE Idle: \(String(format:"%.1f", Device.total_ble_seconds))"
+        
         alert(message: msg)
      }
     
