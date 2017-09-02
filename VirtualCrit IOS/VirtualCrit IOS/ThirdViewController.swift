@@ -155,7 +155,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             getFBTotals()
             
             
-            let when = DispatchTime.now() + 2
+            let when = DispatchTime.now() + 1
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -183,7 +183,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             
             getFBTotalsSpeed()
             
-            let when = DispatchTime.now() + 2
+            let when = DispatchTime.now() + 1
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -212,7 +212,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             
             getFirebaseSpeed()
             
-            let when = DispatchTime.now() + 2
+            let when = DispatchTime.now() + 1
             DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
@@ -240,7 +240,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             
             getFirebase()
             
-            let when = DispatchTime.now() + 2
+            let when = DispatchTime.now() + 1
             DispatchQueue.main.asyncAfter(deadline: when){
 
                 tempArrHR1 = []
