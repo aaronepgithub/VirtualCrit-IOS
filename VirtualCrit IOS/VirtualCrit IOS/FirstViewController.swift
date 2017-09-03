@@ -12,7 +12,7 @@ import AVFoundation
 import AVKit
 import Firebase
 
-
+//TODO:  DISPLAY BLE MOVING TIME
 
 extension UIViewController {
     
