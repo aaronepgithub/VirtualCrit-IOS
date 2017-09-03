@@ -20,6 +20,7 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
     @IBOutlet weak var lbl_elapsed_time: UILabel!
+    @IBOutlet weak var lbl_display_moving_times: UILabel!
     
     @IBAction func btn_reset(_ sender: UIButton) {
 
@@ -318,6 +319,9 @@ class SecondViewController: UIViewController {
         lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
+        
+        let str = "Timer Moving Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
+        lbl_display_moving_times.text = str
         
         
         
