@@ -421,6 +421,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let total_moving_speed = distance / ((z - Device.idle_time) / 60 / 60) //miles per hour
         Device.total_moving_speed = total_moving_speed
         
+        let ble_moving_speed = distance / ((z - Device.total_ble_seconds) / 60 / 60) //miles per hour
+        Device.total_moving_speed_ble = ble_moving_speed
+        
+        
         PublicVars.cadence = cadence
         
         if distance == PublicVars.distance{

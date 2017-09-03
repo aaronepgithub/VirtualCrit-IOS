@@ -19,6 +19,7 @@ struct Device {
     static var idle_time: Double = 0
     static var total_ble_seconds: Double = 0
     static var total_moving_speed: Double = 0
+    static var total_moving_speed_ble: Double = 0
     
     //HR
     static let TransferService = "0x180D"

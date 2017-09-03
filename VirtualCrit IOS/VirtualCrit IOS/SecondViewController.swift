@@ -118,7 +118,7 @@ class SecondViewController: UIViewController {
     
     
     @IBAction func btn_total_reset(_ sender: UIButton) {
-        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed)) Idle: \(String(format:"%.1f", Device.idle_time))  BLE Idle: \(String(format:"%.1f", Device.total_ble_seconds))"
+        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed))  BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble)) Idle: \(String(format:"%.0f", Device.idle_time))  BLE Idle: \(String(format:"%.0f", Device.total_ble_seconds))"
         
         alert(message: msg)
      }
@@ -315,7 +315,6 @@ class SecondViewController: UIViewController {
         
 
         lbl_elapsed_time.text = Pacer.status
-        
         lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
@@ -332,7 +331,7 @@ class SecondViewController: UIViewController {
         counter += 1
 
         
-        if counter == 3 {
+        if counter == 5 {
             create_strings()
             
             //RT CALC, EVERY w3 SECONDS
