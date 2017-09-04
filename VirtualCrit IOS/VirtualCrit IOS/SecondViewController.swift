@@ -35,7 +35,7 @@ class SecondViewController: UIViewController {
         
         requestPacerDistance()
         
-        let when = DispatchTime.now() + 10
+        let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
             self.requestPacerSpeed()
         }
@@ -338,7 +338,7 @@ class SecondViewController: UIViewController {
         counter += 1
 
         
-        if counter == 2 {
+        if counter == 3 {
             create_strings()
             
             //RT CALC, EVERY w3 SECONDS

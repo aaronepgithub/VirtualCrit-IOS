@@ -397,17 +397,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let pace_time_delta = Pacer.target_duration - ((zzz / 60) + estimated_time_arrival)
         
         
-        //TEST MOVING SPD CALCS  Device.idle_time  Device.total_ble_seconds
-        let total_moving_speed = distance_l / ((zzz - Device.idle_time) / 60 / 60) //miles per hour
-        Device.total_moving_speed = total_moving_speed
-        
-        let delta_ble_seconds =  zzz - Device.total_ble_seconds
-        let ble_moving_speed = distance_l / ((zzz - delta_ble_seconds) / 60 / 60) //miles per hour
-        Device.total_moving_speed_ble = ble_moving_speed
-        // END TEST MOVING SPD CALCS
-        
-        
-        
         //String(format:"%.2f", eachSPD)
         let string_a = String(format:"%.1f", pace_spd_delta)
         let string_b = String(format:"%.1f", remaining_distance)
@@ -430,9 +419,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
         let speed = distance / (z / 60 / 60) //miles per hour
         
-        
-
-        
         PublicVars.cadence = cadence
         
         if distance == PublicVars.distance{
@@ -448,7 +434,22 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         PublicVars.heartrate = hr
         PublicVars.score = hr / Device.maxHR * 100
         PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : y)
+        
+        
+        //TEST MOVING SPD CALCS  Device.idle_time  Device.total_ble_seconds
+        let total_moving_speed = distance / ((z - Device.idle_time) / 60 / 60) //miles per hour
+        Device.total_moving_speed = total_moving_speed
+        
+        let delta_ble_seconds =  z - Device.total_ble_seconds
+        let ble_moving_speed = distance / ((z - delta_ble_seconds) / 60 / 60) //miles per hour
+        Device.total_moving_speed_ble = ble_moving_speed
+        // END TEST MOVING SPD CALCS
+        
+        
         //  END CALC FOR TOTALS
+        
+        
+        //DETERMINE END OF ROUND
         
         let t1 = Double(Rounds.roundsComplete * 300)
         let t2 = Int(t1)
@@ -457,8 +458,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if t4 >= 300 {
             print("Round Complete")
             Round_PublicVars.startTime = NSDate()
-            
-            //print("Total Seconds:  \(milli_elapsed_seconds) Total BLE Seconds \(Device.total_ble_seconds / 1024) Total Seconds - Total Ble:  \(Double(milli_elapsed_seconds) - (Device.total_ble_seconds / 1024)) Total Idle Seconds:  \(Device.idle_time) ")
             
             updateTimerRound()
         }
