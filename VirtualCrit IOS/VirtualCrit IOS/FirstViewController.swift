@@ -333,28 +333,28 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
         let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
         let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
-        let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
+        ///let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
         
         let z = Double(y)
         let zz = Double(yy)
         let zzz = Double(yyy)  //lap time as Double, in seconds
-        let zzzz = Double(yyyy)
+        //let zzzz = Double(yyyy)
         
-        //MARK:  RT CALC
-        let cadence_rt = RT_PublicVars.crank_revs / zzzz * 60
-        let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
-        let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
-        RT_PublicVars.cadence = cadence_rt
-        RT_PublicVars.distance = distance_rt
-        RT_PublicVars.speed = speed_rt
-        RT_PublicVars.arr_heartrate.append(Device.currentHeartrate)
-        let hr_rt = RT_PublicVars.arr_heartrate.reduce(0.0) {
-            return $0 + $1/Double(RT_PublicVars.arr_heartrate.count)
-        }
-        RT_PublicVars.heartrate = hr_rt
-        RT_PublicVars.score = hr_rt / Device.maxHR * 100
-        RT_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyyy)
-        //  END CALC FOR RT
+//        //MARK:  RT CALC
+//        let cadence_rt = RT_PublicVars.crank_revs / zzzz * 60
+//        let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
+//        let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
+//        RT_PublicVars.cadence = cadence_rt
+//        RT_PublicVars.distance = distance_rt
+//        RT_PublicVars.speed = speed_rt
+//        RT_PublicVars.arr_heartrate.append(Device.currentHeartrate)
+//        let hr_rt = RT_PublicVars.arr_heartrate.reduce(0.0) {
+//            return $0 + $1/Double(RT_PublicVars.arr_heartrate.count)
+//        }
+//        RT_PublicVars.heartrate = hr_rt
+//        RT_PublicVars.score = hr_rt / Device.maxHR * 100
+//        RT_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyyy)
+//        //  END CALC FOR RT
         
         
 

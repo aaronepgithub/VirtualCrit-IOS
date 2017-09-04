@@ -25,10 +25,11 @@ class ForthViewController: UIViewController {
     
     func func_one_second() {
         
-        print("4th controller")
-        lbl_label1.text = Lap_PublicVars.speed
-        lbl_label2.text = Device.total_moving_speed
-        lbl_label3.text = Device.total_moving_speed_ble
+        //String(format:"%.2f", Lap_PublicVars.speed)
+        lbl_label1.text = "\(String(format:"%.2f", Lap_PublicVars.speed))  Lap Spd "
+        lbl_label2.text = "\(String(format:"%.2f", Device.total_moving_speed))  Timer Spd "
+        lbl_label3.text = "\(String(format:"%.2f", Device.total_moving_speed_ble))  BLE Spd "
+        
     
     }
 
@@ -37,7 +38,7 @@ class ForthViewController: UIViewController {
         
         //anotherSecondElapsed
         NotificationCenter.default.addObserver(self, selector: #selector(func_one_second), name: Notification.Name("anotherSecondElapsed"), object: nil)
-        updateUI()
+        
 
         // Do any additional setup after loading the view.
     }
