@@ -17,9 +17,27 @@ struct Pacer {
 }
 
 class ForthViewController: UIViewController {
+    
+    
+    @IBOutlet weak var lbl_label1: UILabel!
+    @IBOutlet weak var lbl_label2: UILabel!
+    @IBOutlet weak var lbl_label3: UILabel!
+    
+    func func_one_second() {
+        
+        print("4th controller")
+        lbl_label1.text = Lap_PublicVars.speed
+        lbl_label2.text = Device.total_moving_speed
+        lbl_label3.text = Device.total_moving_speed_ble
+    
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //anotherSecondElapsed
+        NotificationCenter.default.addObserver(self, selector: #selector(func_one_second), name: Notification.Name("anotherSecondElapsed"), object: nil)
+        updateUI()
 
         // Do any additional setup after loading the view.
     }

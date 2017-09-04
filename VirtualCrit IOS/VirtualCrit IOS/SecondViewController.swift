@@ -30,6 +30,9 @@ class SecondViewController: UIViewController {
         Lap_PublicVars.distance = 0
         Lap_PublicVars.arr_heartrate = []
         
+        Device.idle_time = 0
+        Device.total_ble_seconds = 0
+        
         requestPacerDistance()
         
         let when = DispatchTime.now() + 10
@@ -320,7 +323,7 @@ class SecondViewController: UIViewController {
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
         
-        let str = "Timer Moving Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
+        let str = "Timer Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
         lbl_display_moving_times.text = str
         
         

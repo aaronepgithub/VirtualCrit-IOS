@@ -396,6 +396,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let pace_spd_delta = Lap_PublicVars.speed - Pacer.target_avg_speed
         let pace_time_delta = Pacer.target_duration - ((zzz / 60) + estimated_time_arrival)
         
+        
+        //TEST MOVING SPD CALCS  Device.idle_time  Device.total_ble_seconds
+        let total_moving_speed = distance_l / ((zzz - Device.idle_time) / 60 / 60) //miles per hour
+        Device.total_moving_speed = total_moving_speed
+        
+        let delta_ble_seconds =  zzz - Device.total_ble_seconds
+        let ble_moving_speed = distance_l / ((zzz - delta_ble_seconds) / 60 / 60) //miles per hour
+        Device.total_moving_speed_ble = ble_moving_speed
+        // END TEST MOVING SPD CALCS
+        
+        
+        
         //String(format:"%.2f", eachSPD)
         let string_a = String(format:"%.1f", pace_spd_delta)
         let string_b = String(format:"%.1f", remaining_distance)
@@ -418,12 +430,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let distance = PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //total distance, in miles
         let speed = distance / (z / 60 / 60) //miles per hour
         
-        let total_moving_speed = distance / ((z - Device.idle_time) / 60 / 60) //miles per hour
-        Device.total_moving_speed = total_moving_speed
         
-        let ble_moving_speed = distance / ((z - Device.total_ble_seconds) / 60 / 60) //miles per hour
-        Device.total_moving_speed_ble = ble_moving_speed
-        
+
         
         PublicVars.cadence = cadence
         
