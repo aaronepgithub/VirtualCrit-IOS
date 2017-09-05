@@ -16,7 +16,7 @@ class SecondViewController: UIViewController {
 
     
     @IBOutlet weak var lbl_ctTimer: UILabel!
-    @IBOutlet weak var lbl_ctDistance: UILabel!
+//    @IBOutlet weak var lbl_ctDistance: UILabel!
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
     @IBOutlet weak var lbl_elapsed_time: UILabel!
@@ -322,7 +322,7 @@ class SecondViewController: UIViewController {
         
 
         lbl_elapsed_time.text = Pacer.status
-        lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
+        //lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
         

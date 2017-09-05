@@ -334,6 +334,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
         let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
         ///let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
+
         
         let z = Double(y)
         let zz = Double(yy)
@@ -390,6 +391,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Lap_PublicVars.score = hr_l / Device.maxHR * 100
         Lap_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyy)
         
+        
+        
+
+        let target_finish_goal_in_seconds = (Pacer.target_distance * (60 / Pacer.target_avg_speed) * 60)
+        let pacer_finish_time = Date(timeInterval: target_finish_goal_in_seconds, since: Lap_PublicVars.startTime! as Date!)
+        
+        
+        
         let remaining_distance = Pacer.target_distance - Lap_PublicVars.distance
         let estimated_time_arrival = remaining_distance * (60 / Lap_PublicVars.speed)  //remaining dist * min per mile
         
@@ -402,11 +411,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let string_b = String(format:"%.1f", remaining_distance)
         let string_c = String(format:"%.1f", pace_time_delta)
         let string_d = String(format:"%.1f", estimated_time_arrival)
-        let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Pacer.target_avg_speed)))
+        //let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Pacer.target_avg_speed)))
+        
         
         let second:TimeInterval = 1.0
         //goal - time from now
-        let goal_time = Date(timeIntervalSinceNow: (second * (Pacer.target_distance * (60 / Pacer.target_avg_speed)) * 60 ) )
+        //let goal_time = Date(timeIntervalSinceNow: (second * (Pacer.target_distance * (60 / Pacer.target_avg_speed)) * 60 ) )
         
         //eta - time from now
         let eta_time = Date(timeIntervalSinceNow: second * (estimated_time_arrival * 60))
@@ -417,13 +427,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        print(dateFormatter.string(from: date))
         
         //print(goal_time)
-        Pacer.goal_time = dateFormatter.string(from: goal_time)
+        Pacer.goal_time = dateFormatter.string(from: pacer_finish_time)
         //print(eta_time)
         Pacer.eta_time = dateFormatter.string(from: eta_time)
         
         
-        if remaining_distance < Pacer.target_distance {
-            Pacer.status = "Goal \(string_e) Spd \(string_a) Dst \(string_b) Time \(string_c) ETA \(string_d)"
+        if remaining_distance > 0 {
+            Pacer.status = "Speed vs Target \(string_a) Distance Remaining \(string_b) Time vs Target \(string_c) Estimated Min to Finish \(string_d)"
         } else {
             Pacer.status = "Complete"
         }
