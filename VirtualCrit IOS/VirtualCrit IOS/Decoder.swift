@@ -33,7 +33,7 @@ class TextToSpeechUtils: NSObject, AVSpeechSynthesizerDelegate {
         utterance.voice = AVSpeechSynthesisVoice(language: defaultLanguage)
         self.synthesizer.speak(utterance)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15), execute: {
             do {
                 try self.audioSession.setActive(false)
             } catch {
