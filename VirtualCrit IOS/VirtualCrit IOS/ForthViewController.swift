@@ -14,6 +14,8 @@ struct Pacer {
     static var target_avg_speed: Double = 15 // 60 / 15 mph =  4 min per mile
 
     static var status: String = "On Pace"
+    static var goal_time: String = "Goal"
+    static var eta_time: String = "ETA"
 }
 
 class ForthViewController: UIViewController {

@@ -404,8 +404,28 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let string_d = String(format:"%.1f", estimated_time_arrival)
         let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Pacer.target_avg_speed)))
         
+        let second:TimeInterval = 1.0
+        //goal - time from now
+        let goal_time = Date(timeIntervalSinceNow: (second * (Pacer.target_distance * (60 / Pacer.target_avg_speed)) * 60 ) )
+        
+        //eta - time from now
+        let eta_time = Date(timeIntervalSinceNow: second * (estimated_time_arrival * 60))
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .medium
+//        print(dateFormatter.string(from: date))
+        
+        //print(goal_time)
+        Pacer.goal_time = dateFormatter.string(from: goal_time)
+        //print(eta_time)
+        Pacer.eta_time = dateFormatter.string(from: eta_time)
+        
+        
         if remaining_distance < Pacer.target_distance {
             Pacer.status = "Goal \(string_e) Spd \(string_a) Dst \(string_b) Time \(string_c) ETA \(string_d)"
+        } else {
+            Pacer.status = "Complete"
         }
         
         

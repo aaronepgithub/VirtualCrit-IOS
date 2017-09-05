@@ -20,7 +20,10 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
     @IBOutlet weak var lbl_elapsed_time: UILabel!
-    @IBOutlet weak var lbl_display_moving_times: UILabel!
+    //@IBOutlet weak var lbl_display_moving_times: UILabel!
+    
+    @IBOutlet weak var lbl_pacer_times: UILabel!
+    
     
     @IBAction func btn_reset(_ sender: UIButton) {
 
@@ -323,8 +326,10 @@ class SecondViewController: UIViewController {
         
         //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
         
-        let str = "Timer Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
-        lbl_display_moving_times.text = str
+        //let str = "Timer Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
+        //lbl_display_moving_times.text = str
+        
+        lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
         
         
         
