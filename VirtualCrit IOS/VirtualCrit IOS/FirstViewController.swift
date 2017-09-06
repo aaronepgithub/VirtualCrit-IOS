@@ -312,7 +312,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             //lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Current"
             
             if Device.raw_moving_speed_total >= 0 {
-                lbl_Distance.text = "\(String(format:"%.1f", Device.raw_moving_speed_total)) Moving Spd"
+                lbl_Distance.text = "\(String(format:"%.1f", Device.raw_moving_speed_total)) Mph | \(String(format:"%.0f", PublicVars.distance)) Mi"
             } else {
                 lbl_Distance.text = "0 Moving Spd"
             }
