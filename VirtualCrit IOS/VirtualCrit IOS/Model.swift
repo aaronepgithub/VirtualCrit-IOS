@@ -61,6 +61,10 @@ struct Device {
     
     static var raw_crank_time:  Double = 0
     static var raw_wheel_time:  Double = 0
+    static var raw_wheel_time_total:  Double = 0
+    static var raw_moving_speed_total:  Double = 0
+    static var raw_moving_time_string:  String = "00:00:00"
+    
     
     static var raw_distance:   Double = 0
     static var raw_speed:   Double = 0
