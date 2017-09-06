@@ -16,12 +16,9 @@ class SecondViewController: UIViewController {
 
     
     @IBOutlet weak var lbl_ctTimer: UILabel!
-//    @IBOutlet weak var lbl_ctDistance: UILabel!
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
     @IBOutlet weak var lbl_elapsed_time: UILabel!
-    //@IBOutlet weak var lbl_display_moving_times: UILabel!
-    
     @IBOutlet weak var lbl_pacer_times: UILabel!
     
     
@@ -124,11 +121,11 @@ class SecondViewController: UIViewController {
     
     
     
-    @IBAction func btn_total_reset(_ sender: UIButton) {
-        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed))  BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble)) Idle: \(String(format:"%.0f", Device.idle_time))  BLE Idle: \(String(format:"%.0f", Device.total_ble_seconds))"
-        
-        alert(message: msg)
-     }
+//    @IBAction func btn_total_reset(_ sender: UIButton) {
+//        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed))  BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble)) Idle: \(String(format:"%.0f", Device.idle_time))  BLE Idle: \(String(format:"%.0f", Device.total_ble_seconds))"
+//        
+//        alert(message: msg)
+//     }
     
     
     var updateUITimer: Timer!

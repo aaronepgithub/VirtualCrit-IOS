@@ -307,14 +307,18 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if data_to_display == "realtime" {
             
             //lbl_Duration_Button.setTitle(PublicVars.string_elapsed_time, for: .normal)
-            lbl_Duration_Button.setTitle(Device.raw_moving_time_string, for: .normal)
+            
+            let str_movingtime = "\(Device.raw_moving_time_string) Mt"
+            lbl_Duration_Button.setTitle(str_movingtime, for: .normal)
+            
+            //lbl_Duration_Button.setTitle(Device.raw_moving_time_string, for: .normal)
             
             //lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Current"
             
             if Device.raw_moving_speed_total >= 0 {
-                lbl_Distance.text = "\(String(format:"%.1f", Device.raw_moving_speed_total)) Mph | \(String(format:"%.0f", PublicVars.distance)) Mi"
+                lbl_Distance.text = "\(String(format:"%.1f", Device.raw_moving_speed_total)) Mph   \(String(format:"%.1f", PublicVars.distance)) Mi"
             } else {
-                lbl_Distance.text = "0 Moving Spd"
+                lbl_Distance.text = "0 Mph   \(String(format:"%.1f", PublicVars.distance)) Mi"
             }
             
             
