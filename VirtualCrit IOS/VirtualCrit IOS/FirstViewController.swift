@@ -310,7 +310,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             lbl_Duration_Button.setTitle(Device.raw_moving_time_string, for: .normal)
             
             //lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Current"
-            lbl_Distance.text = "\(String(format:"%.1f", Device.raw_moving_speed_total)) [Mov] Current"
+            
+            if Device.raw_moving_speed_total >= 0 {
+                lbl_Distance.text = "\(String(format:"%.1f", Device.raw_moving_speed_total)) Avg Moving Spd"
+            }
+            
             
             lbl_Heartrate.text = "\(String(format:"%.0f", RT_PublicVars.heartrate))"
             
