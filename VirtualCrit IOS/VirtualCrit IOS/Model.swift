@@ -55,15 +55,17 @@ struct Device {
     static var peri2: String = "peri2"
     static var peri3: String = "peri3"
     
-//    //test for 3 sec real-time reading
-//    static var ThreeSecondSpeed                     : Double = 0
-//    static var ThreeSecondCadence                   : Double = 0
-//    
-//    static var ThreeSecondDistance                  : Double = 0
-//    static var ThreeSecondCrankRevs                 : Double = 0
-//    static var ThreeSecondCrankRevsTime                 : Double = 0
-//    static var ThreeSecondDistanceTime                 : Double = 0
+    //RAW DATA
+    static var raw_wheel_revs:  Double = 0
+    static var raw_crank_revs:    Double = 0
     
+    static var raw_crank_time:  Double = 0
+    static var raw_wheel_time:  Double = 0
+    
+    static var raw_distance:   Double = 0
+    static var raw_speed:   Double = 0
+    static var raw_cadence:   Double = 0
+
     
 
 }

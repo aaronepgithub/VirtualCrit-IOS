@@ -324,7 +324,6 @@ class SecondViewController: UIViewController {
         lbl_elapsed_time.text = Pacer.status
         //lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
         
-        //TODO:  CREATE STORAGE ARR FOR EACH LAP, POST TO TABLE
         
         //let str = "Timer Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
         //lbl_display_moving_times.text = str
@@ -343,40 +342,9 @@ class SecondViewController: UIViewController {
         counter += 1
 
         
-        if counter == 3 {
+        if counter == 30 {
             create_strings()
             
-            //RT CALC, EVERY w3 SECONDS
-            
-            let x = NSDate()
-            let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
-            let zzzz = Double(yyyy)
-            
-            //MARK:  RT CALC
-            let cadence_rt = RT_PublicVars.crank_revs / zzzz * 60
-            let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
-            let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
-            RT_PublicVars.cadence = cadence_rt
-            RT_PublicVars.distance = distance_rt
-            RT_PublicVars.speed = speed_rt
-            RT_PublicVars.arr_heartrate.append(Device.currentHeartrate)
-            let hr_rt = RT_PublicVars.arr_heartrate.reduce(0.0) {
-                return $0 + $1/Double(RT_PublicVars.arr_heartrate.count)
-            }
-            RT_PublicVars.heartrate = hr_rt
-            RT_PublicVars.score = hr_rt / Device.maxHR * 100
-            RT_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyyy)
-            //  END CALC FOR RT
-            
-            
-            //RESET RT
-            RT_PublicVars.startTime = NSDate()
-            RT_PublicVars.crank_revs = 0
-            RT_PublicVars.wheel_revs = 0
-            RT_PublicVars.distance = 0
-            RT_PublicVars.arr_heartrate = []
-            //print("RT Update")
-            counter = 0
         }
         
     }

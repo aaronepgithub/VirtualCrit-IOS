@@ -308,9 +308,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             lbl_Duration_Button.setTitle(PublicVars.string_elapsed_time, for: .normal)
             lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Current"
-            
-            
-            
             lbl_Heartrate.text = "\(String(format:"%.0f", RT_PublicVars.heartrate))"
             
             lbl_Score.text = "\(String(format:"%.1f", RT_PublicVars.score))"
@@ -333,28 +330,28 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
         let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
         let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
-        ///let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
+        let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
 
         
         let z = Double(y)
         let zz = Double(yy)
         let zzz = Double(yyy)  //lap time as Double, in seconds
-        //let zzzz = Double(yyyy)
+        let zzzz = Double(yyyy)
         
 //        //MARK:  RT CALC
-//        let cadence_rt = RT_PublicVars.crank_revs / zzzz * 60
-//        let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
-//        let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
-//        RT_PublicVars.cadence = cadence_rt
-//        RT_PublicVars.distance = distance_rt
-//        RT_PublicVars.speed = speed_rt
-//        RT_PublicVars.arr_heartrate.append(Device.currentHeartrate)
-//        let hr_rt = RT_PublicVars.arr_heartrate.reduce(0.0) {
-//            return $0 + $1/Double(RT_PublicVars.arr_heartrate.count)
-//        }
-//        RT_PublicVars.heartrate = hr_rt
-//        RT_PublicVars.score = hr_rt / Device.maxHR * 100
-//        RT_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyyy)
+        let cadence_rt = RT_PublicVars.crank_revs / zzzz * 60
+        let distance_rt = RT_PublicVars.wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //round distance, in miles
+        let speed_rt = distance_rt / (zzzz / 60 / 60) //miles per hour
+        RT_PublicVars.cadence = cadence_rt
+        RT_PublicVars.distance = distance_rt
+        RT_PublicVars.speed = speed_rt
+        RT_PublicVars.arr_heartrate.append(Device.currentHeartrate)
+        let hr_rt = RT_PublicVars.arr_heartrate.reduce(0.0) {
+            return $0 + $1/Double(RT_PublicVars.arr_heartrate.count)
+        }
+        RT_PublicVars.heartrate = hr_rt
+        RT_PublicVars.score = hr_rt / Device.maxHR * 100
+        RT_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yyyy)
 //        //  END CALC FOR RT
         
         
@@ -424,11 +421,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .medium
-//        print(dateFormatter.string(from: date))
-        
-        //print(goal_time)
+
         Pacer.goal_time = dateFormatter.string(from: pacer_finish_time)
-        //print(eta_time)
         Pacer.eta_time = dateFormatter.string(from: eta_time)
         
         
@@ -440,7 +434,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
         
-        //  END CALC FOR LAP
+        //  END CALC FOR LAP & PACE
         
         
         
@@ -479,6 +473,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         //  END CALC FOR TOTALS
         
         
+
+        
+        
         //DETERMINE END OF ROUND
         
         let t1 = Double(Rounds.roundsComplete * 300)
@@ -491,21 +488,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
             updateTimerRound()
         }
-        
-        //TODO - REMOVE THIS
-//        Totals.arrHRTotal.append(Device.currentHeartrate)
-//        Rounds.arrHRRound.append(Device.currentHeartrate)
-//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-//            return $0 + $1/Double(Rounds.arrHRRound.count)
-//        }
-//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-//            return $0 + $1/Double(Totals.arrHRTotal.count)
-//        }
-//        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-        
-        
 
-        
         
         update_main_display_values()
         NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
@@ -513,16 +496,62 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
 
     var milli_round_counter = 0
+    var milli_rt_counter = 0
     func updateTimerMilliSecond() {
         milli_counter += 1
         milli_round_counter += 1
         milli_elapsed_milliseconds += 1
+        milli_rt_counter += 1
         
         
         if milli_counter == 100 {
             milli_counter = 0
             milli_each_second_update()
         }  //called for each second
+        
+        if milli_rt_counter == 3 {
+            reset_RT_vars()
+        }
+    }
+    
+    func reset_RT_vars() {
+    
+        RT_PublicVars.startTime = NSDate()
+        RT_PublicVars.crank_revs = 0
+        RT_PublicVars.wheel_revs = 0
+        RT_PublicVars.distance = 0
+        RT_PublicVars.arr_heartrate = []
+        
+        //  RAW CALC
+        let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
+        let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
+        let speed_raw = distance_raw / ((Device.raw_wheel_time / 1024) / 60 / 60) //miles per hour
+        //Round_PublicVars.cadence = cadence_r
+        //Round_PublicVars.distance = distance_r
+        //Round_PublicVars.speed = speed_r
+        //Round_PublicVars.arr_heartrate.append(Device.currentHeartrate)
+        //let hr_r = Round_PublicVars.arr_heartrate.reduce(0.0) {
+        //return $0 + $1/Double(Round_PublicVars.arr_heartrate.count)
+        //}
+        //Round_PublicVars.heartrate = hr_r
+        //Round_PublicVars.score = hr_r / Device.maxHR * 100
+        //Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
+        
+        // END RAW CALC
+        
+        print("Raw Speed:  \(speed_raw) Mph")
+        print("Raw Cadence:  \(cadence_raw) Rpm")
+        Device.raw_speed = speed_raw
+        Device.raw_cadence = cadence_raw
+        
+        Device.raw_crank_revs = 0
+        Device.raw_crank_time = 0
+        Device.raw_wheel_revs = 0
+        Device.raw_wheel_time = 0
+        
+        
+        
+        milli_rt_counter = 0
     }
     
     func start_function() {
@@ -544,13 +573,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             Lap_PublicVars.startTime = startNSDate
             RT_PublicVars.startTime = startNSDate
             
-            
-            //Totals.startTime = startNSDate
-            //Rounds.roundStartTime = startNSDate
-            
-//            PublicVars.crank_revs = 0
-//            PublicVars.wheel_revs = 0
-//            PublicVars.distance = 0
+
         }
         
         getFirebase()
@@ -585,26 +608,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func updateTimerRound() {
         //at the end of each round
         roundsCompleted = roundsCompleted + 1
-        
-//        Totals.arrHRTotal.append(Rounds.avg_hr)
-//        AllRounds.arrHR.append(Rounds.avg_hr)
-//        AllRounds.arrSPD.append(Rounds.avg_speed)
-//        AllRounds.arrCAD.append(Rounds.avg_cadence)
-//        AllRounds.arrTime.append(PublicVars.string_elapsed_time)
 
         AllRounds.arrHR.append(Round_PublicVars.heartrate)
         AllRounds.arrSPD.append(Round_PublicVars.speed)
         AllRounds.arrCAD.append(Round_PublicVars.cadence)
         AllRounds.arrTime.append(PublicVars.string_elapsed_time)
 
-        
-//        Rounds.distanceRound = 0
-//        Rounds.totalWheelEventTime = 0
-//        Rounds.arrHRRound = []
-//        Rounds.crankRevolutionTime = 0
-//        Rounds.crankRevolutions = 0
-
-        
         
         Round_PublicVars.arr_heartrate = []
         Round_PublicVars.wheel_revs = 0
@@ -1099,11 +1108,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 return
             }
             
-            
-            var speed_has_started: Bool = false
-            
-            
-            //NOT BEING USED...NOW USING PROCESSX
+            //USED FOR RAW & RT
             func processWheelData(withData data :Data) {
 
                 var wheelRevolution     :Double = 0
@@ -1122,34 +1127,39 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //using newWheelRevs and newWheelTime
                 newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
                 newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
-                let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
+                //let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
             
-                //wheelRevolution = Double(newWheelRevs)
+                wheelRevolution = Double(newWheelRevs)
                 wheelEventTime = Double(newWheelRevsTime)
-                wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
-                
-                if wheelRevolution > Device.max_wheel_rev_value {
-                    Device.max_wheel_rev_value = wheelRevolution
-                }
-                
-                //print("wheelRevolution:   \(wheelRevolution)")
+                //wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
+
+                var a: Double = 0;var b: Double = 0; var c: Double = 0;
                 
                 if Device.oldWheelRevolution > 0 {  //test for NOT first time reading
-                    //let a = wheelRevolution - Device.oldWheelRevolution
-                    let b = wheelEventTime - Device.oldWheelEventTime
+                    a = wheelRevolution - Device.oldWheelRevolution
+                    b = wheelEventTime - Device.oldWheelEventTime
                     
-                    if b > 0 {
-                        let c = b/1024
-                        Device.total_ble_seconds += c
+                    if a < 0 {
+                        a = (wheelRevolution + 255) - Device.oldWheelRevolution
                     }
+                    
+                    if b < 0 {
+                        b = (wheelEventTime + 255) - Device.oldWheelEventTime
+                    }
+                    
+                    c = b/1024
+                    
+                    Device.total_ble_seconds += c
+                    Device.raw_wheel_revs += a
+                    Device.raw_wheel_time += b // still in 1/1024 second
+                    
+                    
                     
                 }
                 Device.oldWheelRevolution = Double(wheelRevolution)
                 Device.oldWheelEventTime = Double(newWheelRevsTime)
-                speed_has_started = true
             }
             
-            var cadence_has_started: Bool = false
             
             
             func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int) {
@@ -1168,22 +1178,30 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 if Device.oldCrankRevolution > 0 {  //test for first time reading
                     
                     var a = crankRevolution - Device.oldCrankRevolution
-                    //let b = (crankEventTime - Device.oldCrankEventTime) / 1024
+                    var b = (crankEventTime - Device.oldCrankEventTime)
+                    
                     if a < 0 {
                         a = (crankRevolution + 255) - Device.oldCrankRevolution
                     }
+                    
+                    if b < 0 {
+                        b = (crankEventTime + 255) - Device.oldCrankEventTime
+                    }
+                    
+
                     
                     PublicVars.crank_revs += a
                     Round_PublicVars.crank_revs += a
                     Lap_PublicVars.crank_revs += a
                     RT_PublicVars.crank_revs += a
+                    
+                    Device.raw_crank_revs += a
+                    Device.raw_crank_time += b  //still in 1/1024 of a sec
+                    
 
                 }
                 Device.oldCrankRevolution = crankRevolution
                 Device.oldCrankEventTime = crankEventTime
-                cadence_has_started = true
-                
-                
             }
             
 
@@ -1192,7 +1210,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 var wheelRevolutionDiff :Double = 0
                 let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
                 wheelRevolution = UInt8(CFSwapInt32LittleToHost(UInt32(value[1])))
-                //print("wheelRevolution value:  \(wheelRevolution)")
+                
                 if oldWheelRevX != 0 {
                     wheelRevolutionDiff = Double(wheelRevolution) - Double(oldWheelRevX)
                     if wheelRevolutionDiff < 0 {
@@ -1200,8 +1218,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                 }
                 oldWheelRevX = Int(wheelRevolution)
-                //totalWheelRevsX += wheelRevolutionDiff
-                //print("totalWheelRevsX:  \(totalWheelRevsX)")
                 PublicVars.wheel_revs += wheelRevolutionDiff
                 Round_PublicVars.wheel_revs += wheelRevolutionDiff
                 Lap_PublicVars.wheel_revs += wheelRevolutionDiff
@@ -1239,11 +1255,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
             
             decodeCSC(withData: characteristic.value!)
-            //if x == 100 {
-                //print(x)
-            //}
-               
-            
         }
     }
     
