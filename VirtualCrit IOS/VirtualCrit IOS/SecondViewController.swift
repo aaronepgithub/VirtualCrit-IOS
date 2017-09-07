@@ -22,6 +22,16 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_pacer_times: UILabel!
     
     
+    @IBAction func btn_pacer_distance(_ sender: UIButton) {
+        requestPacerDistance()
+    }
+    
+    @IBAction func btn_pacer_speed(_ sender: UIButton) {
+        requestPacerSpeed()
+    }
+    
+    
+    
     @IBAction func btn_reset(_ sender: UIButton) {
 
         Lap_PublicVars.startTime = NSDate()
@@ -33,12 +43,12 @@ class SecondViewController: UIViewController {
         Device.idle_time = 0
         Device.total_ble_seconds = 0
         
-        requestPacerDistance()
-        
-        let when = DispatchTime.now() + 5
-        DispatchQueue.main.asyncAfter(deadline: when){
-            self.requestPacerSpeed()
-        }
+//        requestPacerDistance()
+//        
+//        let when = DispatchTime.now() + 5
+//        DispatchQueue.main.asyncAfter(deadline: when){
+//            self.requestPacerSpeed()
+//        }
         
 
     }
