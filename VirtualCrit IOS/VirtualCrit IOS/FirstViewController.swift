@@ -445,7 +445,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
         if remaining_distance > 0 {
-            Pacer.status = "Speed vs Target \(string_a) Distance Remaining \(string_b) Time vs Target \(string_c) Estimated Min to Finish \(string_d)"
+            Pacer.status = " Speed vs Target \(string_a) \n Distance Remaining \(string_b) \n Time vs Target \(string_c) \n Estimated Finish Min \(string_d) \n"
         } else {
             Pacer.status = "Complete"
         }

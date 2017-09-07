@@ -27,10 +27,11 @@ class ForthViewController: UIViewController {
     
     func func_one_second() {
         
-        //String(format:"%.2f", Lap_PublicVars.speed)
-        lbl_label1.text = "\(String(format:"%.2f", PublicVars.speed))  Total Spd "
-        lbl_label2.text = "\(String(format:"%.2f", Device.total_moving_speed))  Timer Spd "
-        lbl_label3.text = "\(String(format:"%.2f", Device.total_moving_speed_ble))  BLE Spd "
+        //lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
+
+        lbl_label1.text = "\(Pacer.goal_time) Pacer Goal"
+        lbl_label2.text = "\(Pacer.eta_time) ETA"
+        lbl_label3.text = "\(Pacer.status)"
         
     
     }

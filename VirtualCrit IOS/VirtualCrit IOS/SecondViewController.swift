@@ -18,7 +18,7 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_ctTimer: UILabel!
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
-    @IBOutlet weak var lbl_elapsed_time: UILabel!
+    //@IBOutlet weak var lbl_elapsed_time: UILabel!
     @IBOutlet weak var lbl_pacer_times: UILabel!
     
     
@@ -318,14 +318,9 @@ class SecondViewController: UIViewController {
         }
         
 
-        lbl_elapsed_time.text = Pacer.status
-        //lbl_ctDistance.text = String(Int(Device.max_wheel_rev_value))
+        //lbl_elapsed_time.text = Pacer.status
         
-        
-        //let str = "Timer Spd: \(String(format:"%.1f", Device.total_moving_speed))   BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble))"
-        //lbl_display_moving_times.text = str
-        
-        lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
+//        lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
         
         
         
