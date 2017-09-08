@@ -346,6 +346,7 @@ class SecondViewController: UIViewController {
         
         if counter == 30 {
             create_strings()
+            counter = 0
             
         }
         

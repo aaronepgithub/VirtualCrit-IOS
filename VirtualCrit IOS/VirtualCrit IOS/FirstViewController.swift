@@ -312,7 +312,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             lbl_Duration_Button.setTitle(str_movingtime, for: .normal)
             
             //lbl_Duration_Button.setTitle(Device.raw_moving_time_string, for: .normal)
-            
             //lbl_Distance.text = "\(String(format:"%.2f", PublicVars.distance)) Current"
             
             if Device.raw_moving_speed_total >= 0 {

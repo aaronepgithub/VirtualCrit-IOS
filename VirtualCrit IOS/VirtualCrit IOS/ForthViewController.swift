@@ -29,7 +29,7 @@ class ForthViewController: UIViewController {
         
         //lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
 
-        lbl_label1.text = "\(Pacer.goal_time) Pacer Goal"
+        lbl_label1.text = "\(Pacer.goal_time) Goal"
         lbl_label2.text = "\(Pacer.eta_time) ETA"
         lbl_label3.text = "\(Pacer.status)"
         
