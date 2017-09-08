@@ -344,19 +344,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let yy = x.timeIntervalSince(Round_PublicVars.startTime! as Date!)
         let yyy = x.timeIntervalSince(Lap_PublicVars.startTime! as Date!)
         //let yyyy = x.timeIntervalSince(RT_PublicVars.startTime! as Date!)
+        
+
 
         
         let z = Double(y)
         let zz = Double(yy)
         let zzz = Double(yyy)  //lap time as Double, in seconds
         //let zzzz = Double(yyyy)
-        
-//        //MARK:  RT CALC
-//        RT_PublicVars.heartrate = Device.currentHeartrate
-//        RT_PublicVars.score = Device.currentHeartrate / Device.maxHR * 100
-        
-//        //  END CALC FOR RT
-        
+
         
 
         //MARK:  ROUND CALC
@@ -372,7 +368,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         Round_PublicVars.heartrate = hr_r
         Round_PublicVars.score = hr_r / Device.maxHR * 100
-        Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
+        
+//        Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
+        print("\(301 - zz)")
+        Round_PublicVars.string_elapsed_time = String(Int(301 - Int(zz)))
+        
         //  END CALC FOR ROUND
 
         
@@ -480,6 +480,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let t2 = Int(t1)
         let t3 = Int(z)
         let t4 = t3 - t2
+
         if t4 >= 300 {
             print("Round Complete")
             Round_PublicVars.startTime = NSDate()
