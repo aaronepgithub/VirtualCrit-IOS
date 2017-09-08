@@ -371,7 +371,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
 //        Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
         //print("\(301 - zz)")
-        Round_PublicVars.string_elapsed_time = String(Int(301 - Int(zz)))
+        Round_PublicVars.string_elapsed_time = String(Int(300 - Int(zz)))
         
         //  END CALC FOR ROUND
 
@@ -508,7 +508,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             milli_each_second_update()
         }  //called for each second
         
-        if milli_rt_counter == 250 {  //3 sec for rt
+        if milli_rt_counter == 150 {  //1.5 sec for rt
             milli_rt_counter = 0
             reset_RT_vars()
         }
@@ -526,13 +526,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
         let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
         let speed_raw = distance_raw / ((Device.raw_wheel_time / 1024) / 60 / 60) //miles per hour
-        
-        Device.raw_crank_revs = 0
-        Device.raw_crank_time = 0
-        Device.raw_wheel_revs = 0
-        Device.raw_wheel_time = 0
-        
-
         // END RAW CALC
         
         if speed_raw > 0 {Device.raw_speed = speed_raw} else {Device.raw_speed = 0}
@@ -555,6 +548,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         //print("Raw Speed:  \(Device.raw_speed) Mph")
         //print("Raw Cadence:  \(Device.raw_cadence) Rpm")
+        
+        Device.raw_crank_revs = 0
+        Device.raw_crank_time = 0
+        Device.raw_wheel_revs = 0
+        Device.raw_wheel_time = 0
 
         
 
