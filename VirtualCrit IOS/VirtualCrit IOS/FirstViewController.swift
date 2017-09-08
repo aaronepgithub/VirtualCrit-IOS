@@ -370,7 +370,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.score = hr_r / Device.maxHR * 100
         
 //        Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
-        print("\(301 - zz)")
+        //print("\(301 - zz)")
         Round_PublicVars.string_elapsed_time = String(Int(301 - Int(zz)))
         
         //  END CALC FOR ROUND
