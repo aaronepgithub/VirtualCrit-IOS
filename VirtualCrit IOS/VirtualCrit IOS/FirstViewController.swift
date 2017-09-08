@@ -108,6 +108,9 @@ struct RT_PublicVars {
     
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
+    
+    static var arr_speed = [Double]()
+    static var arr_cadence = [Double]()
 }
 
 
@@ -119,6 +122,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var msCounter = 1
     var roundCounter = 1
     var timeNewMS = 0.0
+    
+    
 
     var str = "Hi, this is Kazumi. Let's get started"
     func newSpeakerWithClass() {
@@ -526,19 +531,26 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             milli_each_second_update()
         }  //called for each second
         
-        if milli_rt_counter == 200 {  //2 sec for rt
+        if milli_rt_counter == 100 {  //1 sec for rt
             reset_RT_vars()
         }
+        if milli_rt_counter == 207 {  //2 sec for rt
+            reset_RT_arrays()
+        }
+        
+        
+    }
+    
+
+    func reset_RT_arrays() {
+        
+    RT_PublicVars.arr_speed = []
+    RT_PublicVars.arr_cadence = []
+    
     }
     
     func reset_RT_vars() {
-    
-//        RT_PublicVars.startTime = NSDate()
-//        RT_PublicVars.crank_revs = 0
-//        RT_PublicVars.wheel_revs = 0
-//        RT_PublicVars.distance = 0
-//        RT_PublicVars.arr_heartrate = []
-        
+
         //  RAW CALC
         let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
         let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
@@ -552,16 +564,32 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if cadence_raw > 0 {Device.raw_cadence = cadence_raw} else {Device.raw_cadence = 0}
         
 
-        RT_PublicVars.cadence = Device.raw_cadence
-        RT_PublicVars.speed = Device.raw_speed
+        //Displayed Values
+        //RT_PublicVars.cadence = Device.raw_cadence
+        //RT_PublicVars.speed = Device.raw_speed
+        
+        RT_PublicVars.arr_speed.append(Device.raw_speed)
+        RT_PublicVars.arr_cadence.append(Device.raw_cadence)
+
+//        CALC_AVG
+        
+        if RT_PublicVars.arr_speed.count > 0 {
+            RT_PublicVars.speed = RT_PublicVars.arr_speed.reduce(0.0) {return $0 + $1/Double(RT_PublicVars.arr_speed.count)}
+        }
+        
+        if RT_PublicVars.arr_cadence.count > 0 {
+            RT_PublicVars.cadence = RT_PublicVars.arr_cadence.reduce(0.0) {return $0 + $1/Double(RT_PublicVars.arr_cadence.count)}
+        }
+        
+        
         
         Device.raw_wheel_time_total += Device.raw_wheel_time
         Device.raw_moving_speed_total = PublicVars.distance / ((Device.raw_wheel_time_total / 1024) / 60 / 60)
         Device.raw_moving_time_string = String(dateStringFromTimeInterval(timeInterval : Device.raw_wheel_time_total / 1024))
             
-        print("Raw Seconds:  \(Device.raw_wheel_time_total / 1024) Seconds")
-        print("  \(dateStringFromTimeInterval(timeInterval : Device.raw_wheel_time_total / 1024))")
-        print("Raw Moving Speed:  \(Device.raw_moving_speed_total) MPH")
+        //print("Raw Seconds:  \(Device.raw_wheel_time_total / 1024) Seconds")
+        //print("  \(dateStringFromTimeInterval(timeInterval : Device.raw_wheel_time_total / 1024))")
+        //print("Raw Moving Speed:  \(Device.raw_moving_speed_total) MPH")
         
         
         //print("Raw Speed:  \(Device.raw_speed) Mph")
@@ -578,8 +606,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         milli_rt_counter = 0
     }
     
+    
+    
+    
     func start_function() {
     
+        RT_PublicVars.arr_speed.append(0)
+        RT_PublicVars.arr_cadence.append(0)
         newSpeakerWithClass()
 
         Rounds.distanceRound = 0
@@ -683,132 +716,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
     }
     
-    //func updateTimerEachSecond() {
-      //  Totals.totalTimeInSeconds += 1
-//        NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
-        //let x = NSDate()
-//        Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
-//        Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
-
-        //MARK:  SET DURATION BUTTON & DISPLAY
-        //lbl_Duration_Button.setTitle(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!), for: .normal)
-        
-//        let doubleDurationTotal = Double(Totals.durationTotal!)
-//        let dblElapsedTime = Double(doubleDurationTotal - ((Double(roundsCompleted) * 300)))
-//        let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
-        //        lbl_RoundTime.text = String(dblElapsedRoundTime)
-        
-//        //MARK:  SET DURATION BUTTON & DISPLAY - ONLY DISPLAY WHEN SHOWING ROUND DATA
-//        let str = "\(String(dblElapsedRoundTime))  (\(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)))"
-//        lbl_Duration_Button.setTitle(str, for: .normal)
-
-        
-        
-        //MARK:  END OF ROUND
-       // if dblElapsedRoundTime <= 0 {
-//            print("New Round...")
-//            printCurrentDateAndTime()
-
-//            roundsCompleted = roundsCompleted + 1
-//            
-//            Totals.arrHRTotal.append(Rounds.avg_hr)
-//            AllRounds.arrHR.append(Rounds.avg_hr)
-//            AllRounds.arrSPD.append(Rounds.avg_speed)
-//            AllRounds.arrCAD.append(Rounds.avg_cadence)
-//            
-//            Rounds.distanceRound = 0
-//            Rounds.totalWheelEventTime = 0
-//            Rounds.arrHRRound = []
-//            Rounds.crankRevolutionTime = 0
-//            Rounds.crankRevolutions = 0
-//            lbl_Speed.text = "..."
-//            lbl_Cadence.text = "..."
-//            lbl_Heartrate.text = "..."
-//            lbl_Score.text = "..."
-            //updateTimerRound()
-            
-        //}
-        
-        
-        
-//        if dblElapsedRoundTime == 295 {
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                //getRoundDataGlobal()
-//                //getFirebase()
-//                //getFirebaseSpeed()
-//            }
-//            
-//        }
-        
-
-//        if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
-//            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
-//
-//            newSpeakerWithClass()
-//        }
-
-        
-//        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-
-        //TODO:  WHERE ARE ACTUAL TOTALS COMING FROM...
-//        Totals.arrHRTotal.append(Device.currentHeartrate)
-//        Rounds.arrHRRound.append(Device.currentHeartrate)
-//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-//            return $0 + $1/Double(Rounds.arrHRRound.count)
-//        }
-//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-//            return $0 + $1/Double(Totals.arrHRTotal.count)
-//        }
-
-//        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  // my best spd
-//        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //my best hr
-
-//        if dblElapsedRoundTime == 240 {
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                //getFirebase()
-//                //getFirebaseSpeed()
-//            }
-        
-            //dock1_closeBtn.setTitle("4 Minutes Remain", for: .normal)
-            //self.dockView1_open()
-            
-        //}
-
-        
-//        if dblElapsedRoundTime == 180 {
-//        }
-        
-//        if dblElapsedRoundTime == 150 {
-//            pushFBTotals()
-//            getFirebase()
-//            getFirebaseSpeed()
-//            self.str = "Midway"
-//            //newSpeakerWithClass()
-//        }
-        
-
-//        if dblElapsedRoundTime == 120 {
-//            //dock1_closeBtn.setTitle("2 Minutes Remain", for: .normal)
-//            //self.dockView1_open()
-//            
-//        }
-        
-//        if dblElapsedRoundTime == 75 {
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                //getRoundDataGlobal()
-//            }
-//
-//        }
-        
-//        if dblElapsedRoundTime == 60 {
-//            self.str = Leaderboard.roundLeadersString
-//            //newSpeakerWithClass()
-//            //dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
-//            //self.dockView1_open()
-//        }
-        
-        
-    //}
+    
     
     func dockView1_open() {
 

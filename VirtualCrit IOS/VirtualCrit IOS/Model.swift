@@ -99,9 +99,6 @@ struct Totals {
     
     static var startTime                : NSDate?
     
-    //static var currentTime              : NSDate?
-    //static var durationTotal            : TimeInterval?
-    
     static var totalWheelEventTime      : Double = 0
     static var displayedTime = "00:00:00"
     
