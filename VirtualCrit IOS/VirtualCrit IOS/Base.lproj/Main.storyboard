@@ -502,36 +502,75 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wU5-Q9-c2N">
-                                <rect key="frame" x="0.0" y="28" width="375" height="590"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hNV-gc-nD5">
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00.00  ETA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="lNr-9i-Jyz" userLabel="Label2">
-                                        <rect key="frame" x="16" y="110" width="343" height="56"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="32"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pacer Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tjy-EP-WFF">
+                                        <rect key="frame" x="28" y="20" width="319" height="32"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="RUY-Pk-rqG"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="28"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pacer Status" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="3lF-pO-OCw" userLabel="Label3">
-                                        <rect key="frame" x="16" y="290" width="343" height="260"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="24"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00.00 Goal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="bdH-Qe-vQH" userLabel="Label1">
-                                        <rect key="frame" x="16" y="46" width="343" height="56"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 Goal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="bdH-Qe-vQH" userLabel="Label1">
+                                        <rect key="frame" x="28" y="68" width="319" height="40"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="h1N-kC-PGp"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="32"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                         <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00  ETA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="lNr-9i-Jyz" userLabel="Label2">
+                                        <rect key="frame" x="28" y="112" width="319" height="40"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="7rx-yJ-rtS"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="32"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pacer Status" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="3lF-pO-OCw" userLabel="Label3">
+                                        <rect key="frame" x="28" y="156" width="319" height="240"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="240" id="Qe7-88-pLf"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="24"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailingMargin" secondItem="3lF-pO-OCw" secondAttribute="trailing" constant="20" id="3EU-jf-tiF"/>
+                                    <constraint firstItem="tjy-EP-WFF" firstAttribute="leading" secondItem="bdH-Qe-vQH" secondAttribute="leading" id="5DZ-m0-vUG"/>
+                                    <constraint firstItem="3lF-pO-OCw" firstAttribute="leading" secondItem="hNV-gc-nD5" secondAttribute="leadingMargin" constant="20" id="EID-rp-9Ex"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="lNr-9i-Jyz" secondAttribute="trailing" constant="20" id="KuV-gD-IVj"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="bdH-Qe-vQH" secondAttribute="trailing" constant="20" id="Mw3-Gg-wCI"/>
+                                    <constraint firstItem="tjy-EP-WFF" firstAttribute="top" secondItem="hNV-gc-nD5" secondAttribute="top" constant="20" id="Qhp-4F-MS9"/>
+                                    <constraint firstItem="lNr-9i-Jyz" firstAttribute="leading" secondItem="hNV-gc-nD5" secondAttribute="leadingMargin" constant="20" id="Smh-AJ-UeT"/>
+                                    <constraint firstItem="3lF-pO-OCw" firstAttribute="top" secondItem="lNr-9i-Jyz" secondAttribute="bottom" constant="4" id="TS3-NU-JKd"/>
+                                    <constraint firstItem="bdH-Qe-vQH" firstAttribute="leading" secondItem="hNV-gc-nD5" secondAttribute="leadingMargin" constant="20" id="VOu-5g-9SQ"/>
+                                    <constraint firstItem="tjy-EP-WFF" firstAttribute="trailing" secondItem="bdH-Qe-vQH" secondAttribute="trailing" id="ccs-bX-Pde"/>
+                                    <constraint firstItem="bdH-Qe-vQH" firstAttribute="top" secondItem="tjy-EP-WFF" secondAttribute="bottom" constant="16" id="eg0-hX-ovF"/>
+                                    <constraint firstItem="lNr-9i-Jyz" firstAttribute="top" secondItem="bdH-Qe-vQH" secondAttribute="bottom" constant="4" id="kue-fl-une"/>
+                                </constraints>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="hNV-gc-nD5" secondAttribute="trailing" id="3bn-KH-lde"/>
+                            <constraint firstItem="hNV-gc-nD5" firstAttribute="top" secondItem="Zjj-iS-bPY" secondAttribute="top" constant="20" id="QLJ-t7-Jex"/>
+                            <constraint firstItem="GpS-O8-yDA" firstAttribute="top" secondItem="hNV-gc-nD5" secondAttribute="bottom" id="VPd-4X-ni5"/>
+                            <constraint firstItem="hNV-gc-nD5" firstAttribute="leading" secondItem="Zjj-iS-bPY" secondAttribute="leading" id="e2o-ld-l9C"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Pacer" image="second" id="xuo-AA-aLm"/>
                     <connections>
