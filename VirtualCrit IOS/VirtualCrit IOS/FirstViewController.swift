@@ -171,16 +171,55 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        }
 //    }
     
+    func swipeAction(swipe: UISwipeGestureRecognizer) {
+        switch swipe.direction.rawValue {
+        case 2:
+            print("Case 2")
+            changeDisplay()
+        
+        case 1:
+            print("Case 1")
+            changeDisplay()
+            
+        case 3:
+            print("Case 3")
+            startScanning()
+        
+        case 4:
+            print("Case 4")
+            startScanning()
+            
+        default:
+            print("default Gesture - not up or right")
+            break
+        }
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        leftSwipe.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(leftSwipe)
+        
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        upSwipe.direction = UISwipeGestureRecognizerDirection.up
+        self.view.addGestureRecognizer(upSwipe)
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        rightSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(rightSwipe)
+        
         
 //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(normalTap(_:)))
 //        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap(_:)))
 //        tapGesture.numberOfTapsRequired = 1
 //        lbl_Duration_Button.addGestureRecognizer(tapGesture)
 //        lbl_Duration_Button.addGestureRecognizer(longGesture)
+        
+
         
         AllRounds.arrHR.append(0)
         AllRounds.arrSPD.append(0)
@@ -377,7 +416,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let string_a = String(format:"%.1f", pace_spd_delta)
         let string_b = String(format:"%.1f", remaining_distance)
         //let string_c = String(format:"%.1f", pace_time_delta)
-        let string_d = String(format:"%.1f", estimated_time_arrival)
+        
+        if estimated_time_arrival.isInfinite {
+        print("ETA Inf")
+        } else {
+            let string_d = String(format:"%.1f", estimated_time_arrival)
+        }
+        
         //let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Pacer.target_avg_speed)))
         
         
