@@ -18,7 +18,6 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var lbl_ctTimer: UILabel!
     @IBOutlet weak var ctPace: UILabel!
     @IBOutlet weak var lbl_currentCadence: UILabel!
-    //@IBOutlet weak var lbl_elapsed_time: UILabel!
     @IBOutlet weak var lbl_pacer_times: UILabel!
     
     
@@ -43,14 +42,6 @@ class SecondViewController: UIViewController {
         Device.idle_time = 0
         Device.total_ble_seconds = 0
         
-//        requestPacerDistance()
-//        
-//        let when = DispatchTime.now() + 5
-//        DispatchQueue.main.asyncAfter(deadline: when){
-//            self.requestPacerSpeed()
-//        }
-        
-
     }
     
     
@@ -127,15 +118,6 @@ class SecondViewController: UIViewController {
                      completion: nil)
     }
     // End Alert -SET PACER DISTANCE
-    
-    
-    
-    
-//    @IBAction func btn_total_reset(_ sender: UIButton) {
-//        let msg = "Moving Spd: \(String(format:"%.1f", Device.total_moving_speed))  BLE Moving Spd: \(String(format:"%.1f", Device.total_moving_speed_ble)) Idle: \(String(format:"%.0f", Device.idle_time))  BLE Idle: \(String(format:"%.0f", Device.total_ble_seconds))"
-//        
-//        alert(message: msg)
-//     }
     
     
     var updateUITimer: Timer!
@@ -283,28 +265,7 @@ class SecondViewController: UIViewController {
         return formater.string(from: date as Date)
     }
     
-    func create_strings() {
     
-        let tempHR = AllRounds.arrHR.reversed()
-        let tempSPD = AllRounds.arrSPD.reversed()
-        var stringHR = ""
-        var stringSPD = ""
-        
-        tempArrHR = []
-        tempArrSPD = []
-        tempArrScore = []
-        
-        for eachHR in tempHR {
-            stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
-            tempArrHR.append(String(format:"%.1f", eachHR) + "  BPM")
-            tempArrScore.append(String(format:"%.1f", (eachHR / Device.maxHR * 100.0)) + " %MAX")
-        }
-        
-        for eachSPD in tempSPD {
-            stringSPD = stringSPD + String(format:"%.2f", eachSPD) + ", "
-            tempArrSPD.append(String(format:"%.2f", eachSPD) + "  MPH")
-        }
-    }
 
     func updateUI() {
 
@@ -327,47 +288,29 @@ class SecondViewController: UIViewController {
         lbl_currentCadence.text = "  \(Device.peri3)   CSC"
         }
         
-
-        //lbl_elapsed_time.text = Pacer.status
-        
-//        lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
-        
-        
         
     }
     
     var counter: Int = 0
-    
     func countManager() {
-        
-        updateUI()
         counter += 1
-
         
         if counter == 3 {
-            create_strings()
+            //create_strings()
+            updateUI()
             counter = 0
-            
         }
-        
     }
 
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         //anotherSecondElapsed
         NotificationCenter.default.addObserver(self, selector: #selector(countManager), name: Notification.Name("anotherSecondElapsed"), object: nil)
+        
         updateUI()
-        
-        
-//        updateUITimer = Timer()
-//        updateUITimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(updateUI), userInfo: nil, repeats: true)
-        
-        
-        
+   
     }
 
     override func didReceiveMemoryWarning() {

@@ -12,7 +12,6 @@ import AVFoundation
 import AVKit
 import Firebase
 
-//TODO:  DISPLAY BLE MOVING TIME
 
 extension UIViewController {
     
@@ -37,40 +36,29 @@ public var tempArrSPD = [String]()
 public var tempArrScore = [String]()
 
 struct PublicVars {
-    //static var elapsedMilliseconds: Double = 0
     static var startTime: NSDate?
-    //static var currentTime: NSDate?
     static var duration: TimeInterval?
-    //static var array_active_time = [TimeInterval]()
-    
     static var wheel_revs: Double = 0
     static var crank_revs: Double = 0
-    
     static var cadence: Double = 0
     static var speed: Double = 0
     static var arr_heartrate = [Double]()
     static var heartrate: Double = 0
     static var score: Double = 0
-    
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
 }
 
 struct Round_PublicVars {
-    //static var elapsedMilliseconds: Double = 0
     static var startTime: NSDate?
-    //static var currentTime: NSDate?
     static var duration: TimeInterval?
-    
     static var wheel_revs: Double = 0
     static var crank_revs: Double = 0
-    
     static var cadence: Double = 0
     static var speed: Double = 0
     static var arr_heartrate = [Double]()
     static var heartrate: Double = 0
     static var score: Double = 0
-    
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
 }
@@ -78,34 +66,27 @@ struct Round_PublicVars {
 struct Lap_PublicVars {
     static var startTime: NSDate?
     static var duration: TimeInterval?
-    
     static var wheel_revs: Double = 0
     static var crank_revs: Double = 0
-    
     static var cadence: Double = 0
     static var speed: Double = 0
     static var arr_heartrate = [Double]()
     static var heartrate: Double = 0
     static var score: Double = 0
-    
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
 }
 
-//TODO
 struct RT_PublicVars {
     static var startTime: NSDate?
     static var duration: TimeInterval?
-    
     static var wheel_revs: Double = 0
     static var crank_revs: Double = 0
-    
     static var cadence: Double = 0
     static var speed: Double = 0
     static var arr_heartrate = [Double]()
     static var heartrate: Double = 0
     static var score: Double = 0
-    
     static var distance: Double = 0
     static var string_elapsed_time: String = "00:00:00"
 }
@@ -115,7 +96,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     var timerEachSecond: Timer!
     var timerMilliSecond: Timer!
-    
     var msCounter = 1
     var roundCounter = 1
     var timeNewMS = 0.0
@@ -125,7 +105,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let str = self.str
         let x = TextToSpeechUtils.init()
         x.synthesizeSpeech(forText: str)
-    
     }
     
     @IBOutlet var dockView1: UIView!
@@ -139,9 +118,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var lbl_Cadence: UILabel!
     @IBOutlet weak var lbl_Heartrate: UILabel!
     @IBOutlet weak var lbl_Score: UILabel!
-    
     @IBOutlet weak var lbl_Distance: UILabel!
-    var hasPressedStart = false
+    
     
     @IBAction func btn_ble_scan(_ sender: UIButton) {
         startScanning()
@@ -159,12 +137,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     func changeDisplay() {
-    
         if data_to_display == "round" {
             data_to_display = "total"
             return
         }
-        
         if data_to_display == "total" {
             data_to_display = "lap"
             return
@@ -173,47 +149,38 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             data_to_display = "realtime"
             return
         }
-        
         if data_to_display == "realtime" {
             data_to_display = "round"
             return
         }
-
-        
-        
-        print(data_to_display)
+        //print(data_to_display)
     }
     
-    func normalTap(_ sender: UIGestureRecognizer){
-        
-        changeDisplay()
-        print("Normal tap")
-    }
-    
-    func longTap(_ sender: UIGestureRecognizer){
-        print("Long tap")
-        if sender.state == .ended {
-            print("UIGestureRecognizerStateEnded")
-            //Do Whatever You want on End of Gesture
-            //            startScanning()
-        }
-        else if sender.state == .began {
-            print("UIGestureRecognizerStateBegan.")
-            //Do Whatever You want on Began of Gesture
-            //startScanning()
-        }
-    }
+//    func normalTap(_ sender: UIGestureRecognizer){
+//        changeDisplay()
+//        print("Normal tap")
+//    }
+//    
+//    func longTap(_ sender: UIGestureRecognizer){
+//        print("Long tap")
+//        if sender.state == .ended {
+//            print("UIGestureRecognizerStateEnded")
+//        }
+//        else if sender.state == .began {
+//            print("UIGestureRecognizerStateBegan.")
+//        }
+//    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(normalTap(_:)))
-        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap(_:)))
-        tapGesture.numberOfTapsRequired = 1
-        lbl_Duration_Button.addGestureRecognizer(tapGesture)
-        lbl_Duration_Button.addGestureRecognizer(longGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(normalTap(_:)))
+//        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap(_:)))
+//        tapGesture.numberOfTapsRequired = 1
+//        lbl_Duration_Button.addGestureRecognizer(tapGesture)
+//        lbl_Duration_Button.addGestureRecognizer(longGesture)
         
         AllRounds.arrHR.append(0)
         AllRounds.arrSPD.append(0)
@@ -377,9 +344,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         Round_PublicVars.heartrate = hr_r
         Round_PublicVars.score = hr_r / Device.maxHR * 100
-        
-//        Round_PublicVars.string_elapsed_time = dateStringFromTimeInterval(timeInterval : yy)
-        //print("\(301 - zz)")
         Round_PublicVars.string_elapsed_time = String(Int(300 - Int(zz)))
         
         //  END CALC FOR ROUND
@@ -407,7 +371,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let estimated_time_arrival = remaining_distance * (60 / Lap_PublicVars.speed)  //remaining dist * min per mile
         
         let pace_spd_delta = Lap_PublicVars.speed - Pacer.target_avg_speed
-        //let pace_time_delta = Pacer.target_duration - ((zzz / 60) + estimated_time_arrival)
         
         
         //String(format:"%.2f", eachSPD)
@@ -419,10 +382,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
         let second:TimeInterval = 1.0
-        //goal - time from now
-        //let goal_time = Date(timeIntervalSinceNow: (second * (Pacer.target_distance * (60 / Pacer.target_avg_speed)) * 60 ) )
-        
-        //eta - time from now
         let eta_time = Date(timeIntervalSinceNow: second * (estimated_time_arrival * 60))
         
         let dateFormatter = DateFormatter()
@@ -438,9 +397,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         } else {
             Pacer.status = "Complete"
         }
-        
-        
-        
         //  END CALC FOR LAP & PACE
         
         
@@ -475,12 +431,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let ble_moving_speed = distance / ((z - delta_ble_seconds) / 60 / 60) //miles per hour
         Device.total_moving_speed_ble = ble_moving_speed
         // END TEST MOVING SPD CALCS
-        
-        
         //  END CALC FOR TOTALS
-        
-        
-
         
         
         //DETERMINE END OF ROUND
@@ -493,11 +444,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         if t4 >= 300 {
             print("Round Complete")
             Round_PublicVars.startTime = NSDate()
-            
             updateTimerRound()
         }
-
         
+
         update_main_display_values()
         NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
     }
@@ -518,49 +468,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }  //called for each second
         
         if milli_rt_counter == 150 {  //x sec for rt
-            
             reset_RT_vars()
+            create_strings() //move somewhere else?
         }
+        
     }
     
     func reset_RT_vars() {
-    
-        
-//        //  RAW CALC
-//        let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
-//        let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
-//        let speed_raw = distance_raw / ((Device.raw_wheel_time / 1024) / 60 / 60) //miles per hour
-//        // END RAW CALC
-//        
-////        if speed_raw > 0 {Device.raw_speed = speed_raw} else {Device.raw_speed = 0}
-////        if cadence_raw > 0 {Device.raw_cadence = cadence_raw} else {Device.raw_cadence = 0}
-//
-//        Device.raw_speed = speed_raw
-//        Device.raw_cadence = cadence_raw
-//        
-//        print("Speed:  \(speed_raw)")
-//        print("Cadence:  \(cadence_raw)")
-//
-//        RT_PublicVars.cadence = cadence_raw
-//        RT_PublicVars.speed = speed_raw
-//        
-//        RT_PublicVars.heartrate = Device.currentHeartrate
-//        RT_PublicVars.score = Device.currentHeartrate / Device.maxHR * 100
-//        
-//        Device.raw_wheel_time_total += Device.raw_wheel_time
-//        Device.raw_moving_speed_total = PublicVars.distance / ((Device.raw_wheel_time_total / 1024) / 60 / 60)
-//        Device.raw_moving_time_string = String(dateStringFromTimeInterval(timeInterval : Device.raw_wheel_time_total / 1024))
-        
-        
         Device.raw_crank_revs = 0
         Device.raw_crank_time = 0
         Device.raw_wheel_revs = 0
         Device.raw_wheel_time = 0
         
         milli_rt_counter = 0
-
-        
-
     }
     
     func start_function() {
@@ -581,13 +501,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             Round_PublicVars.startTime = startNSDate
             Lap_PublicVars.startTime = startNSDate
             RT_PublicVars.startTime = startNSDate
-            
-
         }
-        
         getFirebase()
         getFirebaseSpeed()
-        
     }
     
 
@@ -615,37 +531,24 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     var roundsCompleted = 0
     
     func updateTimerRound() {
-        //at the end of each round
-        
         roundsCompleted = roundsCompleted + 1
-
         AllRounds.arrHR.append(Round_PublicVars.heartrate)
         AllRounds.arrSPD.append(Round_PublicVars.speed)
         AllRounds.arrCAD.append(Round_PublicVars.cadence)
         AllRounds.arrTime.append(PublicVars.string_elapsed_time)
 
-        
         Round_PublicVars.arr_heartrate = []
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
-        
         Rounds.roundsComplete = 1 + Rounds.roundsComplete
 
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-            
-
             pushFBRound()
             print("Firebase push Round data")
             pushFBTotals()
             print("Firebase push Total data")
             
-
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-                
-
-                
                 getFirebase()
                 print("Firebase get Round-Score data")
                 getFirebaseSpeed()
@@ -659,8 +562,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 })
             })
         })
-        //        lbl_button_start.setTitle("🔴🔴🔴", for: .normal)
-        
     }
     
 
@@ -674,142 +575,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print(formatter.string(from: currentDateTime)) // October 8, 2016 at 10:48:53 PM
     }
     
-    //func updateTimerEachSecond() {
-      //  Totals.totalTimeInSeconds += 1
-//        NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
-        //let x = NSDate()
-//        Rounds.roundCurrentTimeElapsed = (x.timeIntervalSince(Rounds.roundStartTime! as Date!))
-//        Totals.durationTotal = (x.timeIntervalSince(Totals.startTime! as Date!))
-
-        //MARK:  SET DURATION BUTTON & DISPLAY
-        //lbl_Duration_Button.setTitle(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!), for: .normal)
-        
-//        let doubleDurationTotal = Double(Totals.durationTotal!)
-//        let dblElapsedTime = Double(doubleDurationTotal - ((Double(roundsCompleted) * 300)))
-//        let dblElapsedRoundTime = Int(300 - (Int(round(dblElapsedTime))))
-        //        lbl_RoundTime.text = String(dblElapsedRoundTime)
-        
-//        //MARK:  SET DURATION BUTTON & DISPLAY - ONLY DISPLAY WHEN SHOWING ROUND DATA
-//        let str = "\(String(dblElapsedRoundTime))  (\(dateStringFromTimeInterval(timeInterval : Totals.durationTotal!)))"
-//        lbl_Duration_Button.setTitle(str, for: .normal)
-
-        
-        
-        //MARK:  END OF ROUND
-       // if dblElapsedRoundTime <= 0 {
-//            print("New Round...")
-//            printCurrentDateAndTime()
-
-//            roundsCompleted = roundsCompleted + 1
-//            
-//            Totals.arrHRTotal.append(Rounds.avg_hr)
-//            AllRounds.arrHR.append(Rounds.avg_hr)
-//            AllRounds.arrSPD.append(Rounds.avg_speed)
-//            AllRounds.arrCAD.append(Rounds.avg_cadence)
-//            
-//            Rounds.distanceRound = 0
-//            Rounds.totalWheelEventTime = 0
-//            Rounds.arrHRRound = []
-//            Rounds.crankRevolutionTime = 0
-//            Rounds.crankRevolutions = 0
-//            lbl_Speed.text = "..."
-//            lbl_Cadence.text = "..."
-//            lbl_Heartrate.text = "..."
-//            lbl_Score.text = "..."
-            //updateTimerRound()
-            
-        //}
-        
-        
-        
-//        if dblElapsedRoundTime == 295 {
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                //getRoundDataGlobal()
-//                //getFirebase()
-//                //getFirebaseSpeed()
-//            }
-//            
-//        }
-        
-
-//        if dblElapsedRoundTime == 290 && roundsCompleted > 0 {
-//            self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
-//
-//            newSpeakerWithClass()
-//        }
-
-        
-//        Rounds.avg_score = Rounds.avg_hr / Device.maxHR * 100
-
-        //TODO:  WHERE ARE ACTUAL TOTALS COMING FROM...
-//        Totals.arrHRTotal.append(Device.currentHeartrate)
-//        Rounds.arrHRRound.append(Device.currentHeartrate)
-//        Rounds.avg_hr = Rounds.arrHRRound.reduce(0.0) {
-//            return $0 + $1/Double(Rounds.arrHRRound.count)
-//        }
-//        Totals.avg_hr = Totals.arrHRTotal.reduce(0.0) {
-//            return $0 + $1/Double(Totals.arrHRTotal.count)
-//        }
-
-//        self.lbl_round_speed.text = "\(String(format:"%.1f", AllRounds.arrSPD.max()!))"  // my best spd
-//        self.lbl_round_hr.text = "\(String(format:"%.1f",  AllRounds.arrHR.max()!)) Bpm"  //my best hr
-
-//        if dblElapsedRoundTime == 240 {
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                //getFirebase()
-//                //getFirebaseSpeed()
-//            }
-        
-            //dock1_closeBtn.setTitle("4 Minutes Remain", for: .normal)
-            //self.dockView1_open()
-            
-        //}
-
-        
-//        if dblElapsedRoundTime == 180 {
-//        }
-        
-//        if dblElapsedRoundTime == 150 {
-//            pushFBTotals()
-//            getFirebase()
-//            getFirebaseSpeed()
-//            self.str = "Midway"
-//            //newSpeakerWithClass()
-//        }
-        
-
-//        if dblElapsedRoundTime == 120 {
-//            //dock1_closeBtn.setTitle("2 Minutes Remain", for: .normal)
-//            //self.dockView1_open()
-//            
-//        }
-        
-//        if dblElapsedRoundTime == 75 {
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                //getRoundDataGlobal()
-//            }
-//
-//        }
-        
-//        if dblElapsedRoundTime == 60 {
-//            self.str = Leaderboard.roundLeadersString
-//            //newSpeakerWithClass()
-//            //dock1_closeBtn.setTitle("1 Minute Remains", for: .normal)
-//            //self.dockView1_open()
-//        }
-        
-        
-    //}
     
     func dockView1_open() {
 
         if AllRounds.arrHR.count > 0 && AllRounds.arrCAD.count > 0 {
-        
             dock1_lastSpeed.text = "\(String(format:"%.2f", AllRounds.arrSPD.last!))"
             dock1_lastScore.text = "\(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100))"
             dock1_lastCadence.text = "\(String(format:"%.1f", AllRounds.arrCAD.last!))"
-        
         }
+        
         let str = "\(Leaderboard.scoreLeaderScore) (\(Leaderboard.scoreLeaderName))  |  \(Leaderboard.speedLeaderScore) (\(Leaderboard.speedLeaderName))"
         doc1_bttmLabel.text = str
         
@@ -823,14 +597,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     
     func startScanning() {
-        
         print("Start Scanning")
         
         if centralManager.isScanning {
             print("Central Manager is already scanning!!")
             return
         } else {
-            
             self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: Device.TransferService), CBUUID.init(string: Device.TransferServiceCSC) ], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
@@ -839,10 +611,8 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 if PublicVars.heartrate == 0 && PublicVars.speed == 0 {
                     self.startScanning()
                 }
-
             })
         }
-        
     }
     
     func disconnect() {
@@ -951,7 +721,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         alert(message: self.str)
         newSpeakerWithClass()
         
-        
         guard let peripheral = self.peripheral else {
             print("Peripheral object has not been created yet.")
             return
@@ -977,13 +746,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             // iterate through characteristics
             if let characteristics = service.characteristics {
                 for characteristic in characteristics {
-                    // find the Transfer Characteristic we defined in our Device struct
-//                    if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristic) {
-//                        // We can return after calling CBPeripheral.setNotifyValue because CBPeripheralDelegate's
-//                        // didUpdateNotificationStateForCharacteristic method will be called automatically
-//                        peripheral.setNotifyValue(false, for: characteristic)
-//                        return
-//                    }
+
                     if characteristic.uuid == CBUUID.init(string: Device.TransferCharacteristic) {
                         peripheral.setNotifyValue(false, for: characteristic)
                         print("set Notify Value to False")
@@ -1175,13 +938,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                     
                     
-                    //  RAW CALC
-//                    let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
-//                    Device.raw_cadence = cadence_raw
-//                    //        if cadence_raw > 0 {Device.raw_cadence = cadence_raw} else {Device.raw_cadence = 0}
-//                    print("Cadence:  \(cadence_raw)")
-//                    RT_PublicVars.cadence = cadence_raw
-                    
                     let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
                     let speed_raw = distance_raw / ((Device.raw_wheel_time / 1024) / 60 / 60) //miles per hour
                     //        if speed_raw > 0 {Device.raw_speed = speed_raw} else {Device.raw_speed = 0}
@@ -1189,9 +945,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     Device.raw_speed = speed_raw
                     print("Speed:  \(speed_raw)")
                     RT_PublicVars.speed = speed_raw
-                    
-//                    RT_PublicVars.heartrate = Device.currentHeartrate
-//                    RT_PublicVars.score = Device.currentHeartrate / Device.maxHR * 100
                     
                     Device.raw_wheel_time_total += Device.raw_wheel_time
                     Device.raw_moving_speed_total = PublicVars.distance / ((Device.raw_wheel_time_total / 1024) / 60 / 60)
@@ -1290,22 +1043,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                 }
             }
-            
-            
-            
-            func deltaWithRollover<T: Integer>(_ new: T, old: T, max: T) -> T {
-                return old > new ? max - old + new : new - old
-            }
-            
-            
-            
-            
-
-            
             decodeCSC(withData: characteristic.value!)
         }
     }
-    
     
     var oldWheelRevX: Int = 0
     var totalWheelRevsX: Double = 0
@@ -1332,7 +1072,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("Central Manager State Updated: \(central.state)")
         
-        
         // if Bluetooth is on, proceed...
         if central.state != .poweredOn {
             self.peripheral = nil
@@ -1349,263 +1088,33 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             return
         }
         
-        
     }
     
-    var roundLeaderScore: Double = 0
-    var roundLeaderName: String = "..."
-    
-    var totalLeaderScore: Double = 0
-    var totalLeaderSpeed: Double = 0
-    var totalLeaderName: String = "..."
-    var totalLeaderNameSpeed: String = "..."
-    
-    var namesArray = [String]()
-    var scoresArray = [Double]()
-    var speedsArray = [Double]()
-    
-    var namesArrayTotal = [String]()
-    var scoresArrayTotal = [Double]()
-    var speedsArrayTotal = [Double]()
-    
-    var leaderString = ""
-    var leaderStringSpeed = ""
-    
-    var leaderStringTotal = ""
-    var leaderStringSpeedTotal = ""
-    
-
-    
-    
-    func httpGet() {
-        //print("httpGet Started")
-        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
-        let url = NSURL(string: todosEndpoint)
+    func create_strings() {
         
-        if ConnectionCheck.isConnectedToNetwork() {
-            
-
-        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            
-            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                //print(2)
-                //print(jsonObj as Any)
-                
-                if jsonObj == nil {
-                    return
-                }
-                
-                for (key, _) in jsonObj! {
-                    //print(3)
-                    
-                    if let nestedDictionary = jsonObj?[key] as? [String: Any] {
-                            //print(4)
-                        for(key, _) in nestedDictionary {
-                            //print(5)
-
-                            if key == "fb_RND" {
-                                //print(6)
-
-                                self.namesArray.append(nestedDictionary["fb_timName"] as! String!)
-                                self.speedsArray.append(nestedDictionary["fb_SPD"] as! Double!)
-                                self.scoresArray.append(nestedDictionary["fb_RND"] as! Double!)
-                                let x = nestedDictionary["fb_RND"] as! Double!
-                                //print(x!)
-                                if x! > self.roundLeaderScore {
-                                    //print(x!)
-                                    self.roundLeaderScore = x!
-                                    let y = nestedDictionary["fb_timName"] as! String!
-                                    self.roundLeaderName = y!
-                                }
-                            }
-                        }
-                    }
-                }
-                //at the end
-                
-                
-            }
-        }).resume()
-            
-        }  //end of network test
+        let tempHR = AllRounds.arrHR.reversed()
+        let tempSPD = AllRounds.arrSPD.reversed()
+        var stringHR = ""
+        var stringSPD = ""
         
-            } // end of httpGet
-    
-    
+        tempArrHR = []
+        tempArrSPD = []
+        tempArrScore = []
         
-                
-                
-//                //print(self.scoresArray)
-//                let _max = self.scoresArray.max()
-//                //print(_max as Any)
-//                self.leaderString += "\(_max!) "
-//                let indexOfMax = self.scoresArray.index(of: _max!)
-//                //print(indexOfMax as Any)
-//                let _nameOfLeader = self.namesArray[indexOfMax!]
-//                //print(_nameOfLeader as Any)
-//                self.leaderString += String(_nameOfLeader) + " \n "
-//                
-//                
-//                //print(self.speedsArray)
-//                let _maxSpeed = self.speedsArray.max()
-//                //print(_maxSpeed as Any)
-//                self.leaderStringSpeed += "\(_maxSpeed!) "
-//                let indexOfMaxSpeed = self.speedsArray.index(of: _maxSpeed!)
-//                //print(indexOfMaxSpeed as Any)
-//                let _nameOfLeaderSpeed = self.namesArray[indexOfMaxSpeed!]
-//                //print(_nameOfLeaderSpeed as Any)
-//                self.leaderStringSpeed += String(_nameOfLeaderSpeed)
-//                
-//
-//                //print(self.leaderString)
-//                //print(self.leaderStringSpeed)
-//                //self.alert(message: self.leaderString, title: "Leaders")
-                
-
-
-        
-        
-
-    
-//    func httpPost() {
-//    
-////        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/20170513.json"
-//        let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/rounds/" + Settings.dateToday + ".json"
-//        guard let todosURL = URL(string: todosEndpoint) else {
-//            print("Error: cannot create URL")
-//            return
-//        }
-//        var todosUrlRequest = URLRequest(url: todosURL)
-//        todosUrlRequest.httpMethod = "POST"
-//        
-//        let aa = AllRounds.arrHR.last
-//        let ab = aa! / Device.maxHR * 100
-//        let xx = "\(String(format:"%.1f", aa!))"
-//        let yy = "\(String(format:"%.1f", AllRounds.arrSPD.last!))"
-//        let zz = "\(String(format:"%.1f", ab))"
-//        
-//        
-//        let newTodo: [String: Any] = [
-//            "a_scoreRoundLast": Double(zz) ?? 0,
-//            "a_speedRoundLast": Double(yy) ?? 0,
-//            "a_cadenceRoundLast": 1,
-//            "a_heartrateRoundLast": Double(xx) ?? 0,
-//            "a_calcDurationPost": Totals.displayedTime,
-//            "a_timName": Settings.riderName,
-//            "a_timGroup": "IOS",
-//            "a_timTeam": "Square Pizza",
-//            "a_Date": Settings.dateToday,
-//            "a_DateNow": Settings.dateToday,
-//            "a_lastCAD": 1,
-//            "a_lastHR": Double(xx) ?? 0,
-//            "a_timDistanceTraveled": 1,
-//            "a_maxHRTotal": Double(Device.maxHR) ,
-//            "fb_CAD":0,
-//            "fb_Date":Settings.dateToday,
-//            "fb_DateNow":"1494517025335",
-//            "fb_HR":Double(xx) ?? 0,
-//            "fb_RND":Double(zz) ?? 0,
-//            "fb_SPD":Double(yy) ?? 0,
-//            "fb_maxHRTotal":Device.maxHR,
-//            "fb_scoreHRRound":Double(zz) ?? 0,
-//            "fb_scoreHRRoundLast":Double(zz) ?? 0,
-//            "fb_scoreHRTotal":Double(zz) ?? 0,
-//            "fb_timAvgCADtotal":0,
-//            "fb_timAvgHRtotal":0,
-//            "fb_timAvgSPDtotal":0,
-//            "fb_timDistanceTraveled":0,
-//            "fb_timGroup":"IOS",
-//            "fb_timName":Settings.riderName,
-//            "fb_timTeam":"Square Pizza"
-//        ]
-//        
-//        
-//        let jsonTodo: Data
-//        do {
-//            jsonTodo = try JSONSerialization.data(withJSONObject: newTodo, options: [])
-//            todosUrlRequest.httpBody = jsonTodo
-//        } catch {
-//            print("Error: cannot create JSON from todo")
-//            return
-//        }
-//        
-//        if ConnectionCheck.isConnectedToNetwork() {
-//        //execute
-//        let session = URLSession.shared
-//        let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
-//        task.resume()
-//        }
-//        
-//        
-//        
-//    }
-
-
-    
-        func httpPut() {
-            
-//            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/20170513/IOS.json"
-            let todosEndpoint: String = "https://virtualcrit-47b94.firebaseio.com/totals/" + Settings.dateToday + "/" + Settings.riderName + ".json"
-            guard let todosURL = URL(string: todosEndpoint) else {
-                print("Error: cannot create URL")
-                return
-            }
-            var todosUrlRequest = URLRequest(url: todosURL)
-            todosUrlRequest.httpMethod = "PUT"
-            
-            let a = Totals.avg_hr / Device.maxHR * 100
-            //let x = "\(String(format:"%.1f", Totals.avg_hr))"
-            let y = "\(String(format:"%.1f", Totals.avg_speed))"
-            let z = "\(String(format:"%.1f", a))"
-            
-            let newTodo: [String: Any] = [
-                "a_speedTotal": Double(y) ?? 0,
-                "a_speedLast": Double(y) ?? 0,
-                "a_timName": Settings.riderName,
-                "a_timGroup": "IOS",
-                "a_timTeam": "IOS",
-                "a_Date": Settings.dateToday,
-                "a_DateNow": Settings.dateToday,
-                "a_timDistanceTraveled": 1,
-                "a_calcDurationPost":"00:00:05",
-                "a_scoreHRRoundLast":Double(z) ?? 0,
-                "a_scoreHRTotal":Double(z) ?? 0,
-                "fb_Date":Settings.dateToday,
-                "fb_DateNow":"1494517025353",
-                "fb_maxHRTotal":Device.maxHR,
-                "fb_scoreHRRoundLast":0,
-                "fb_scoreHRTotal":Double(z) ?? 0,
-                "fb_timAvgCADtotal":0,
-                "fb_timAvgSPDtotal":Double(y) ?? 0,
-                "fb_timDistanceTraveled":0,
-                "fb_timGroup":"IOS",
-                "fb_timLastSPD":0,
-                "fb_timName":Settings.riderName,
-                "fb_timTeam":"Square Pizza"
-            ]
-
-
-        
-        let jsonTodo: Data
-        do {
-            jsonTodo = try JSONSerialization.data(withJSONObject: newTodo, options: [])
-            todosUrlRequest.httpBody = jsonTodo
-        } catch {
-            print("Error: cannot create JSON from todo")
-            return
+        for eachHR in tempHR {
+            stringHR = stringHR + String(format:"%.1f", eachHR) + ", "
+            tempArrHR.append(String(format:"%.1f", eachHR) + "  BPM")
+            tempArrScore.append(String(format:"%.1f", (eachHR / Device.maxHR * 100.0)) + " %MAX")
         }
         
-            if ConnectionCheck.isConnectedToNetwork() {
-        //execute
-        let session = URLSession.shared
-        let task = session.dataTask(with: todosUrlRequest) { _, _, _ in }
-        task.resume()
-            }
-        
-    
+        for eachSPD in tempSPD {
+            stringSPD = stringSPD + String(format:"%.2f", eachSPD) + ", "
+            tempArrSPD.append(String(format:"%.2f", eachSPD) + "  MPH")
+        }
     }
     
-}
+    
+} // END VC
 
 
 
