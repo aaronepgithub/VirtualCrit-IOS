@@ -417,10 +417,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let string_b = String(format:"%.1f", remaining_distance)
         //let string_c = String(format:"%.1f", pace_time_delta)
         
+        var string_d = "ETA"
         if estimated_time_arrival.isInfinite {
-        print("ETA Inf")
+        //print("ETA Inf")
+            string_d = "ETA"
         } else {
-            let string_d = String(format:"%.1f", estimated_time_arrival)
+            string_d = String(format:"%.1f", estimated_time_arrival)
         }
         
         //let string_e = String(format:"%.0f", (Pacer.target_distance * (60 / Pacer.target_avg_speed)))
@@ -438,7 +440,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         
         
         if remaining_distance > 0 {
-            Pacer.status = " Speed vs Target (Mph) \(string_a) \n Distance Remaining (Mi) \(string_b) \n Estimated Finish (Min) \(string_d) \n"
+            Pacer.status = " Spd v Goal (Mph) \(string_a) \n Dst Remain (Mi) \(string_b) \n Est Finish (Min) \(string_d) \n"
         } else {
             Pacer.status = "Complete"
         }
