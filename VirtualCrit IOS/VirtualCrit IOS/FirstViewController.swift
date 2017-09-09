@@ -985,6 +985,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                     
                     
+                    //TRY THIS- SEEMS TO WORK, RESTART TIME COLLECTION AFTER RIDER STOPS.
+                    if a == 0 {
+                        Device.oldWheelRevolution = 0
+                        wheelRevolution = 0
+                    }
+                    
+                    
                     let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
                     let speed_raw = distance_raw / ((Device.raw_wheel_time / 1024) / 60 / 60) //miles per hour
                     //        if speed_raw > 0 {Device.raw_speed = speed_raw} else {Device.raw_speed = 0}
