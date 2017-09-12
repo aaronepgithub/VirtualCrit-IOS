@@ -431,12 +431,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let second:TimeInterval = 1.0
         let eta_time = Date(timeIntervalSinceNow: second * (estimated_time_arrival * 60))
         
+        let current_time = NSDate()
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .medium
 
         Pacer.goal_time = dateFormatter.string(from: pacer_finish_time)
         Pacer.eta_time = dateFormatter.string(from: eta_time)
+        Pacer.current_time = dateFormatter.string(from: current_time as Date)
+        //print(Pacer.current_time)
         
         
         if remaining_distance > 0 {
@@ -956,12 +960,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 //using newWheelRevs and newWheelTime
                 newWheelRevs = UInt32(CFSwapInt32LittleToHost(UInt32(value[1])))
                 newWheelRevsTime = (UInt16(value[6]) * 0xFF) + UInt16(value[5])
-                //print(newWheelRevsTime)
+                //print("newWheelRevsTime:  \(newWheelRevsTime)")
                 //let val2 = UInt32(CFSwapInt32LittleToHost(UInt32(value[2])))
             
                 wheelRevolution = Double(newWheelRevs)
                 wheelEventTime = Double(newWheelRevsTime)
                 //wheelRevolution = Double(Double(newWheelRevs) + (255 * Double(val2)))
+                
+                //print("wheelEventTime:  \(wheelEventTime)")
 
                 var a: Double = 0;var b: Double = 0; var c: Double = 0;
                 
@@ -982,13 +988,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     Device.total_ble_seconds += c
                     Device.raw_wheel_revs += a
                     
-                    if a > 0  && b < 20000 {
-                        Device.raw_wheel_time += b // still in 1/1024 second
+                    if a > 0 {
+                        Device.raw_wheel_time = b // still in 1/1024 second
                     }
+                    
+                    //print("Wheel Time Delta b:  \(b)")
+                    //print("Device.raw_wheel_time:  \(Device.raw_wheel_time)")
                     
                     
                     //TRY THIS- SEEMS TO WORK, RESTART TIME COLLECTION AFTER RIDER STOPS.
-                    if a == 0 || b > 20000 {
+                    if a == 0 {
                         Device.oldWheelRevolution = 0
                         wheelRevolution = 0
                     }
@@ -999,12 +1008,16 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     //        if speed_raw > 0 {Device.raw_speed = speed_raw} else {Device.raw_speed = 0}
                     // END RAW CALC
                     Device.raw_speed = speed_raw
-                    print("Speed:  \(speed_raw)")
+                    //print("Speed:  \(speed_raw)")
                     RT_PublicVars.speed = speed_raw
                     
                     Device.raw_wheel_time_total += Device.raw_wheel_time
+                    //print("raw_wheel_time_total:  \(Device.raw_wheel_time_total)")
+                    
                     Device.raw_moving_speed_total = PublicVars.distance / ((Device.raw_wheel_time_total / 1024) / 60 / 60)
                     Device.raw_moving_time_string = String(dateStringFromTimeInterval(timeInterval : Device.raw_wheel_time_total / 1024))
+                    
+                    //print("raw_moving_time_string:  \(Device.raw_moving_time_string)")
                     
                 }
                 Device.oldWheelRevolution = Double(wheelRevolution)
@@ -1052,7 +1065,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
                     Device.raw_cadence = cadence_raw
                     //        if cadence_raw > 0 {Device.raw_cadence = cadence_raw} else {Device.raw_cadence = 0}
-                    print("Cadence:  \(cadence_raw)")
+                    //print("Cadence:  \(cadence_raw)")
                     RT_PublicVars.cadence = cadence_raw
                     
 

@@ -16,6 +16,7 @@ struct Pacer {
     static var status: String = "On Pace"
     static var goal_time: String = "Goal"
     static var eta_time: String = "ETA"
+    static var current_time: String = "Current Time"
 }
 
 class ForthViewController: UIViewController {
@@ -24,6 +25,7 @@ class ForthViewController: UIViewController {
     @IBOutlet weak var lbl_label1: UILabel!
     @IBOutlet weak var lbl_label2: UILabel!
     @IBOutlet weak var lbl_label3: UILabel!
+    @IBOutlet weak var lbl_current_time: UILabel!
     
     func func_one_second() {
         
@@ -32,6 +34,7 @@ class ForthViewController: UIViewController {
         lbl_label1.text = "\(Pacer.goal_time) Goal"
         lbl_label2.text = "\(Pacer.eta_time) ETA"
         lbl_label3.text = "\(Pacer.status)"
+        lbl_current_time.text = "\(Pacer.current_time) Now"
         
     
     }
