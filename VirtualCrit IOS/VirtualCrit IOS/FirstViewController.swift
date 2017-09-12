@@ -664,6 +664,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func disconnect() {
         // verify we have a peripheral
+        Device.oldWheelRevolution = 0
         guard let peripheral = self.peripheral else {
             print("Peripheral object has not been created yet.")
             return
@@ -755,6 +756,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
         print("Did Disconnect Peripheral")
+        Device.oldWheelRevolution = 0
         // verify we have a peripheral
         
         Round_PublicVars.wheel_revs = 0
@@ -980,13 +982,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     Device.total_ble_seconds += c
                     Device.raw_wheel_revs += a
                     
-                    if a > 0 {
+                    if a > 0  && b < 20000 {
                         Device.raw_wheel_time += b // still in 1/1024 second
                     }
                     
                     
                     //TRY THIS- SEEMS TO WORK, RESTART TIME COLLECTION AFTER RIDER STOPS.
-                    if a == 0 {
+                    if a == 0 || b > 20000 {
                         Device.oldWheelRevolution = 0
                         wheelRevolution = 0
                     }
