@@ -518,7 +518,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             milli_each_second_update()
         }  //called for each second
         
-        if milli_rt_counter == 150 {  //x sec for rt
+        if milli_rt_counter == 200 {  //x sec for rt
+            
+            
+            
             reset_RT_vars()
             create_strings() //move somewhere else?
         }
@@ -530,6 +533,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Device.raw_crank_time = 0
         Device.raw_wheel_revs = 0
         Device.raw_wheel_time = 0
+        Device.raw_wheel_time2 = 0
         
         milli_rt_counter = 0
     }
@@ -990,6 +994,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     if a > 0 {
                         Device.raw_wheel_time = b // still in 1/1024 second
+                        Device.raw_wheel_time2 += b // still in 1/1024 second
                     }
                     
                     //print("Wheel Time Delta b:  \(b)")
@@ -1004,20 +1009,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     
                     
                     let distance_raw = Device.raw_wheel_revs * (Device.wheelCircumference! / 1000) * 0.000621371  //raw distance, in miles
-                    let speed_raw = distance_raw / ((Device.raw_wheel_time / 1024) / 60 / 60) //miles per hour
-                    //        if speed_raw > 0 {Device.raw_speed = speed_raw} else {Device.raw_speed = 0}
-                    // END RAW CALC
+                    let speed_raw = distance_raw / ((Device.raw_wheel_time2 / 1024) / 60 / 60) //miles per hour, chg to 2
+                    
                     Device.raw_speed = speed_raw
-                    //print("Speed:  \(speed_raw)")
                     RT_PublicVars.speed = speed_raw
                     
                     Device.raw_wheel_time_total += Device.raw_wheel_time
-                    //print("raw_wheel_time_total:  \(Device.raw_wheel_time_total)")
                     
                     Device.raw_moving_speed_total = PublicVars.distance / ((Device.raw_wheel_time_total / 1024) / 60 / 60)
                     Device.raw_moving_time_string = String(dateStringFromTimeInterval(timeInterval : Device.raw_wheel_time_total / 1024))
-                    
-                    //print("raw_moving_time_string:  \(Device.raw_moving_time_string)")
                     
                 }
                 Device.oldWheelRevolution = Double(wheelRevolution)
