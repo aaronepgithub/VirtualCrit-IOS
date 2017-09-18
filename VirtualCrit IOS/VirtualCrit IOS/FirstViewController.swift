@@ -107,12 +107,37 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         x.synthesizeSpeech(forText: str)
     }
     
+    
+    var arr_Peripherals_to_Connect = [CBPeripheral?]()
+    
     @IBOutlet var dockView1: UIView!
     @IBOutlet weak var dock1_lastSpeed: UILabel!
     @IBOutlet weak var dock1_lastScore: UILabel!
     @IBOutlet weak var dock1_lastCadence: UILabel!
     @IBOutlet weak var dock1_closeBtn: UIButton!
     @IBOutlet weak var doc1_bttmLabel: UILabel!
+    @IBOutlet weak var dock1_title: UILabel!
+    
+    
+
+    @IBOutlet weak var dock1_label1: UILabel!
+    @IBOutlet weak var dock1_label2: UILabel!
+    @IBOutlet weak var dock1_label3: UILabel!
+    
+    @IBAction func dock1_btn1(_ sender: UIButton) {
+        centralManager?.connect(arr_Peripherals_to_Connect[0]!, options: nil)
+    }
+    
+    @IBAction func dock1_btn2(_ sender: UIButton) {
+        centralManager?.connect(arr_Peripherals_to_Connect[1]!, options: nil)
+    }
+    
+    @IBAction func dock1_btn3(_ sender: UIButton) {
+        centralManager?.connect(arr_Peripherals_to_Connect[2]!, options: nil)
+    }
+    
+    
+    
     
     @IBOutlet weak var lbl_Speed: UILabel!
     @IBOutlet weak var lbl_Cadence: UILabel!
@@ -125,8 +150,33 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         startScanning()
     }
     
+    
+    
     @IBAction func btn_change_display(_ sender: UIButton) {
         changeDisplay()
+        print("Pressed Display Button")
+        
+//        dock1_label1.text = " - "
+//        dock1_label2.text = " - "
+//        dock1_label3.text = " - "
+//        
+//        for (index, peri) in arr_Peripherals_to_Connect.enumerated() {
+//            print("\(index + 1): \(String(describing: peri))")
+//            
+//            if index == 0 {
+//                dock1_label1.text = arr_Peripherals_to_Connect[0]?.name
+//            }
+//            if index == 1 {
+//                dock1_label2.text = arr_Peripherals_to_Connect[1]?.name
+//            }
+//            if index == 2 {
+//                dock1_label3.text = arr_Peripherals_to_Connect[2]?.name
+//            }
+//            
+//        }
+//        
+//        dockView1_open()
+
     }
     
     // Core Bluetooth properties
@@ -183,11 +233,13 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             
         case 3:
             print("Case 3")
-            startScanning()
+            //startScanning()
+            dockView1_open()
         
         case 4:
             print("Case 4")
-            startScanning()
+            //startScanning()
+            dockView1_open()
             
         default:
             print("default Gesture - not up or right")
@@ -249,6 +301,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     
     @IBAction func dockView1_close(_ sender: UIButton) {
+        dock1_label1.text = "SPD"
+        dock1_label2.text = "%MAX"
+        dock1_label3.text = "CAD"
+        dock1_title.text = "LAST ROUND"
        dockView1.removeFromSuperview()
     }
     
@@ -645,9 +701,19 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         dockView1.center = view.center
         view.addSubview(dockView1)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-            self.dockView1.removeFromSuperview()
-        })
+        if self.dock1_title.text == "BLUETOOTH" {
+            print("BLE Settings View for Doc1")
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                self.dock1_label1.text = "SPD"
+                self.dock1_label2.text = "%MAX"
+                self.dock1_label3.text = "CAD"
+                self.dock1_title.text = "LAST ROUND"
+                self.dockView1.removeFromSuperview()
+            })
+        }
+        
+
     }
     
     
@@ -658,14 +724,43 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             print("Central Manager is already scanning!!")
             return
         } else {
-            self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: Device.TransferService), CBUUID.init(string: Device.TransferServiceCSC) ], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
+            //changed to false
+            self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: Device.TransferService), CBUUID.init(string: Device.TransferServiceCSC) ], options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+            alert(message: "Scanning")
+            arr_Peripherals_to_Connect = []
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
                 self.centralManager.stopScan()
                 print("Stop Scanning")
-                if PublicVars.heartrate == 0 && PublicVars.speed == 0 {
-                    self.startScanning()
+//                if PublicVars.heartrate == 0 && PublicVars.speed == 0 {
+//                    self.startScanning()
+//                }
+                
+                self.dock1_label1.text = " - "
+                self.dock1_label2.text = " - "
+                self.dock1_label3.text = " - "
+                self.dock1_title.text = "BLUETOOTH"
+                
+                for (index, peri) in self.arr_Peripherals_to_Connect.enumerated() {
+                    print("\(index + 1): \(String(describing: peri))")
+                    
+                    if index == 0 {
+                        self.dock1_label1.text = self.arr_Peripherals_to_Connect[0]?.name
+                    }
+                    if index == 1 {
+                        self.dock1_label2.text = self.arr_Peripherals_to_Connect[1]?.name
+                    }
+                    if index == 2 {
+                        self.dock1_label3.text = self.arr_Peripherals_to_Connect[2]?.name
+                    }
+                    
                 }
+                
+                self.dockView1_open()
+                
+                
+                
             })
         }
     }
@@ -730,34 +825,38 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             // Save a reference to the peripheral object so Core Bluetooth doesn't get rid of it
             self.peripheral = peripheral
             self.arrPeripheral.append(peripheral)
+            arr_Peripherals_to_Connect.append(peripheral)
+            //print(arrPeripheral)
+            //print("Discovered \(peripheral.name)")
             
             // Stop scanning
-            centralManager.stopScan()
-            print("Scanning Stopped! - Discovered")
+            //centralManager.stopScan()
+            //print("Scanning Stopped! - Discovered")
             
             // connect to the peripheral
-            print("Connecting to peripheral: \(peripheral)")
+            //print("Connecting to peripheral: \(peripheral)")
 
-            let alertController = UIAlertController(title: "\(peripheral.name!)", message: "Bluetooth Sensor", preferredStyle: .actionSheet)
+            //let alertController = UIAlertController(title: "\(peripheral.name!)", message: "Bluetooth Sensor", preferredStyle: .actionSheet)
 
-            let destructiveAction = UIAlertAction(title:"Connect", style: .destructive) { (action) -> Void in
+            //let destructiveAction = UIAlertAction(title:"Connect", style: .destructive) { (action) -> Void in
                 //print("You selected the Connect action")
-                self.centralManager?.connect(peripheral, options: nil)
-            }
+//MARK - CONNECT ELSEWHERE
+                //self.centralManager?.connect(peripheral, options: nil)
+            //}
             
-            let cancelAction = UIAlertAction(title:"Cancel", style: .cancel) { (action) -> Void in
-                //print("You selected the Cancel action")
-            }
+//            let cancelAction = UIAlertAction(title:"Cancel", style: .cancel) { (action) -> Void in
+//                //print("You selected the Cancel action")
+//            }
 
-            alertController.addAction(destructiveAction)
-            alertController.addAction(cancelAction)
+//            alertController.addAction(destructiveAction)
+//            alertController.addAction(cancelAction)
 
-            self.present(alertController, animated: true, completion: nil)
+            //self.present(alertController, animated: true, completion: nil)
 
-            let when = DispatchTime.now() + 5
-            DispatchQueue.main.asyncAfter(deadline: when){
-                alertController .dismiss(animated: true, completion: nil)
-            }
+//            let when = DispatchTime.now() + 5
+//            DispatchQueue.main.asyncAfter(deadline: when){
+//                alertController .dismiss(animated: true, completion: nil)
+//            }
         }
     }
     

@@ -181,9 +181,13 @@
                     <connections>
                         <outlet property="doc1_bttmLabel" destination="KBx-ZQ-4vt" id="ezv-xc-IFD"/>
                         <outlet property="dock1_closeBtn" destination="3N0-AQ-Vn0" id="WxQ-Ad-YFg"/>
+                        <outlet property="dock1_label1" destination="rUN-1n-fXD" id="5jj-9c-lwi"/>
+                        <outlet property="dock1_label2" destination="3cO-cM-kG6" id="Am1-zW-qcK"/>
+                        <outlet property="dock1_label3" destination="GyZ-Os-hKg" id="Atn-G0-v6F"/>
                         <outlet property="dock1_lastCadence" destination="JF9-Mq-Wq0" id="H0B-5Y-ewW"/>
                         <outlet property="dock1_lastScore" destination="VKV-Tr-ZmN" id="PEJ-WX-H04"/>
                         <outlet property="dock1_lastSpeed" destination="Unv-lY-tJB" id="acA-QR-zOe"/>
+                        <outlet property="dock1_title" destination="RqS-TU-YvI" id="Xtc-cw-woV"/>
                         <outlet property="dockView1" destination="6I1-sq-ms9" id="S9U-nZ-zs3"/>
                         <outlet property="lbl_Cadence" destination="B48-Ly-J4t" id="Ezj-DG-Hx8"/>
                         <outlet property="lbl_Distance" destination="bsC-9p-TwN" id="LM1-gF-4fd"/>
@@ -205,7 +209,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ADQ-Az-9vs">
-                            <rect key="frame" x="30" y="64.5" width="260" height="112.5"/>
+                            <rect key="frame" x="15" y="64.5" width="275" height="112.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="RX9-r3-JS8" userLabel="Stack View - Values">
                                     <rect key="frame" x="0.0" y="0.0" width="75" height="112.5"/>
@@ -236,27 +240,65 @@
                                         <constraint firstAttribute="width" constant="75" id="39E-pH-CWL"/>
                                     </constraints>
                                 </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="65t-sH-YDE" userLabel="Stack View - Labels">
-                                    <rect key="frame" x="87" y="0.0" width="173" height="112.5"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="hkx-NP-7kL" userLabel="Stack View - Labels">
+                                    <rect key="frame" x="87" y="0.0" width="130" height="112.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="zTP-t5-cks">
-                                            <rect key="frame" x="0.0" y="0.0" width="173" height="35.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="rUN-1n-fXD">
+                                            <rect key="frame" x="0.0" y="0.0" width="130" height="35.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="%MAX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="mD1-Yy-gUT">
-                                            <rect key="frame" x="0.0" y="38.5" width="173" height="35.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="%MAX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="3cO-cM-kG6">
+                                            <rect key="frame" x="0.0" y="38.5" width="130" height="35.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CADENCE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="SnI-6b-zkg">
-                                            <rect key="frame" x="0.0" y="77" width="173" height="35.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="GyZ-Os-hKg">
+                                            <rect key="frame" x="0.0" y="77" width="130" height="35.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="30"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="130" id="85g-zn-tMJ"/>
+                                    </constraints>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="65t-sH-YDE" userLabel="Stack View - Buttons">
+                                    <rect key="frame" x="229" y="0.0" width="46" height="112.5"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OfF-Ud-V6f">
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="35.5"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
+                                            <state key="normal" title="1">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="dock1_btn1:" destination="9pv-A4-QxB" eventType="touchUpInside" id="91A-1F-apt"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="njS-Kk-dra">
+                                            <rect key="frame" x="0.0" y="38.5" width="46" height="35.5"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
+                                            <state key="normal" title="2">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="dock1_btn2:" destination="9pv-A4-QxB" eventType="touchUpInside" id="pl3-yL-5nK"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgJ-yX-teR">
+                                            <rect key="frame" x="0.0" y="77" width="46" height="35.5"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
+                                            <state key="normal" title="3">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="dock1_btn3:" destination="9pv-A4-QxB" eventType="touchUpInside" id="9mQ-jv-hBn"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </stackView>
                             </subviews>
@@ -297,7 +339,7 @@
                         <constraint firstItem="KBx-ZQ-4vt" firstAttribute="trailing" secondItem="RqS-TU-YvI" secondAttribute="trailing" id="giC-ds-C7W"/>
                         <constraint firstItem="RqS-TU-YvI" firstAttribute="leading" secondItem="6I1-sq-ms9" secondAttribute="leading" constant="8" id="q7o-if-rsp"/>
                         <constraint firstItem="KBx-ZQ-4vt" firstAttribute="leading" secondItem="RqS-TU-YvI" secondAttribute="leading" id="qmY-7Q-3de"/>
-                        <constraint firstItem="ADQ-Az-9vs" firstAttribute="leading" secondItem="6I1-sq-ms9" secondAttribute="leading" constant="30" id="sOy-GS-dRr"/>
+                        <constraint firstItem="ADQ-Az-9vs" firstAttribute="leading" secondItem="6I1-sq-ms9" secondAttribute="leading" constant="15" id="sOy-GS-dRr"/>
                         <constraint firstItem="RqS-TU-YvI" firstAttribute="top" secondItem="6I1-sq-ms9" secondAttribute="top" constant="8" id="une-in-o2H"/>
                     </constraints>
                 </view>
