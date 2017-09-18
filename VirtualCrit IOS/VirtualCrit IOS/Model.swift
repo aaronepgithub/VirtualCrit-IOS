@@ -254,7 +254,7 @@ func getFirebaseSpeed() {
                 let xx = dict["fb_SPD"]! as! Double
                 let yy = String(format: "%.1f", xx)
                 
-                speed_string_array.insert(String(describing: yy) + " Mph  " + String(describing: fbNAME) + "   " + String(describing: y) + " %MAX", at: 0)
+                speed_string_array.insert(String(describing: yy) + " Mph  " + String(describing: fbNAME) + "   " + String(describing: y) + " %", at: 0)
                 //speed_string_array.append(String(describing: d) + " MPH  " + String(describing: e!) + " | " + String(describing: f!) + " %MAX")
                 
                 
@@ -445,7 +445,7 @@ func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
                 
                 print("\(counter) : \(fbNAME) speed :  \(yy) :  \(y)")
                 
-                speed_string_array_total.insert(String(describing: yy) + " MPH  " + "\n" + String(describing: fbNAME) + "   " + String(describing: y) + " %MAX", at: 0)
+                speed_string_array_total.insert(String(describing: yy) + " MPH  " + "\n" + String(describing: fbNAME) + "   " + String(describing: y) + " %", at: 0)
                 counter += 1
             }
             
