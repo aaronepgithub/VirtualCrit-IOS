@@ -125,15 +125,67 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     @IBOutlet weak var dock1_label3: UILabel!
     
     @IBAction func dock1_btn1(_ sender: UIButton) {
-        centralManager?.connect(arr_Peripherals_to_Connect[0]!, options: nil)
+        
+        if dock1_title.text == "BLUETOOTH" {
+            if arr_Peripherals_to_Connect.count > 0 {
+                centralManager?.connect(arr_Peripherals_to_Connect[0]!, options: nil)
+                alert(message: "Connecting")
+            }
+        }
+        
+        if dock1_title.text == "CONNECTED" {
+            if arr_connected_peripherals.count > 0 {
+                centralManager?.connect(arr_connected_peripherals[0], options: nil)
+                alert(message: "Reconnecting")
+            }
+        }
+        
+
+
     }
     
     @IBAction func dock1_btn2(_ sender: UIButton) {
-        centralManager?.connect(arr_Peripherals_to_Connect[1]!, options: nil)
+//        if arr_Peripherals_to_Connect.count > 1 {
+//            centralManager?.connect(arr_Peripherals_to_Connect[1]!, options: nil)
+//            alert(message: "Connecting")
+//        }
+        
+        if dock1_title.text == "BLUETOOTH" {
+            if arr_Peripherals_to_Connect.count > 1 {
+                centralManager?.connect(arr_Peripherals_to_Connect[1]!, options: nil)
+                alert(message: "Connecting")
+            }
+        }
+        
+        if dock1_title.text == "CONNECTED" {
+            if arr_connected_peripherals.count > 1 {
+                centralManager?.connect(arr_connected_peripherals[1], options: nil)
+                alert(message: "Reconnecting")
+            }
+        }
+        
     }
     
     @IBAction func dock1_btn3(_ sender: UIButton) {
-        centralManager?.connect(arr_Peripherals_to_Connect[2]!, options: nil)
+//        if arr_Peripherals_to_Connect.count > 2 {
+//            centralManager?.connect(arr_Peripherals_to_Connect[2]!, options: nil)
+//            alert(message: "Connecting")
+//        }
+        
+        if dock1_title.text == "BLUETOOTH" {
+            if arr_Peripherals_to_Connect.count > 2 {
+                centralManager?.connect(arr_Peripherals_to_Connect[2]!, options: nil)
+                alert(message: "Connecting")
+            }
+        }
+        
+        if dock1_title.text == "CONNECTED" {
+            if arr_connected_peripherals.count > 2 {
+                centralManager?.connect(arr_connected_peripherals[2], options: nil)
+                alert(message: "Reconnecting")
+            }
+        }
+
     }
     
     
@@ -231,18 +283,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             print("Case 1")
             changeDisplay()
             
-        case 3:
-            print("Case 3")
-            //startScanning()
-            dockView1_open()
+
         
         case 4:
             print("Case 4")
-            //startScanning()
+            //up
             dockView1_open()
             
         default:
             print("default Gesture - not up or right")
+            //down
+            open_dock_and_present_ble()
             break
         }
     }
@@ -263,6 +314,10 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
         rightSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(rightSwipe)
+        
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        downSwipe.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(downSwipe)
         
         
 //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(normalTap(_:)))
@@ -716,6 +771,32 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     }
     
+    func open_dock_and_present_ble() {
+        
+        self.dock1_label1.text = " - "
+        self.dock1_label2.text = " - "
+        self.dock1_label3.text = " - "
+        self.dock1_title.text = "CONNECTED"
+        
+        //arr_connected_peripherals
+        for (index, peri) in self.arr_connected_peripherals.enumerated() {
+            print("\(index + 1): \(String(describing: peri))")
+            
+            if index == 0 {
+                self.dock1_label1.text = self.arr_connected_peripherals[0].name
+            }
+            if index == 1 {
+                self.dock1_label2.text = self.arr_connected_peripherals[1].name
+            }
+            if index == 2 {
+                self.dock1_label3.text = self.arr_connected_peripherals[2].name
+            }
+            
+        }
+        
+        self.dockView1_open()
+        
+    }
     
     func startScanning() {
         print("Start Scanning")
@@ -724,10 +805,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             print("Central Manager is already scanning!!")
             return
         } else {
-            //changed to false
-            self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: Device.TransferService), CBUUID.init(string: Device.TransferServiceCSC) ], options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
+            
+            self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: Device.TransferService), CBUUID.init(string: Device.TransferServiceCSC) ], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
             
             alert(message: "Scanning")
+            peripheral = nil
             arr_Peripherals_to_Connect = []
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
@@ -819,6 +901,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print("Discovered \(String(describing: peripheral.name)) at \(RSSI)")
         
+
+       
+        
         // check to see if we've already saved a reference to this peripheral
         if self.peripheral != peripheral {
             
@@ -826,6 +911,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             self.peripheral = peripheral
             self.arrPeripheral.append(peripheral)
             arr_Peripherals_to_Connect.append(peripheral)
+            
+            
+            
             //print(arrPeripheral)
             //print("Discovered \(peripheral.name)")
             
@@ -923,8 +1011,12 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print("Cancel Connection")
     }
     
+    var arr_connected_peripherals = [CBPeripheral]()
+    
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Peripheral Connected!!!")
+        
+        arr_connected_peripherals.append(peripheral)
         
         // IMPORTANT: Set the delegate property, otherwise we won't receive the discovery callbacks, like peripheral(_:didDiscoverServices)
         peripheral.delegate = self
