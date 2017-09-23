@@ -27,7 +27,7 @@ class ForthViewController: UIViewController {
     @IBOutlet weak var lbl_label3: UILabel!
     @IBOutlet weak var lbl_current_time: UILabel!
     
-    func func_one_second() {
+    @objc func func_one_second() {
         
         //lbl_pacer_times.text = "Goal:  \(Pacer.goal_time)    ETA:  \(Pacer.eta_time)"
 

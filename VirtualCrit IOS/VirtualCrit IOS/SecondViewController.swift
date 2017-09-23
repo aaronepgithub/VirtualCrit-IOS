@@ -143,8 +143,15 @@ class SecondViewController: UIViewController {
                                     if let textFields = alertController?.textFields{
                                         let theTextFields = textFields as [UITextField]
                                         let enteredText = theTextFields[0].text
+                                        let old_Settings_riderName = Settings.riderName
+                                        Settings.riderName = String(enteredText!)
                                         
-                                        if String(enteredText!) != nil { Settings.riderName = String(enteredText!) } else { Settings.riderName = "Tim" }
+                                        //if String(enteredText!) != nil { Settings.riderName = String(enteredText!) } else { Settings.riderName = "Tim" }
+                                        
+                                        if Settings.riderName == "" {
+                                            Settings.riderName = old_Settings_riderName
+                                        }
+                                        
                                         
                                     }
                                     print(Settings.riderName as Any)
@@ -292,7 +299,7 @@ class SecondViewController: UIViewController {
     }
     
     var counter: Int = 0
-    func countManager() {
+    @objc func countManager() {
         counter += 1
         
         if counter == 3 {

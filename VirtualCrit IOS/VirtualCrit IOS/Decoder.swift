@@ -56,13 +56,13 @@ class TextToSpeechUtils: NSObject, AVSpeechSynthesizerDelegate {
     }
     
     private func detectLanguageFromText(_ text: String) -> String {
-        let tagger = NSLinguisticTagger.init(tagSchemes: [NSLinguisticTagSchemeLanguage], options: 0)
+        let tagger = NSLinguisticTagger.init(tagSchemes: [NSLinguisticTagScheme.language], options: 0)
         tagger.string = text
-        let textLanguage = tagger.tag(at: 0, scheme: NSLinguisticTagSchemeLanguage, tokenRange: nil, sentenceRange: nil)
+        let textLanguage = tagger.tag(at: 0, scheme: NSLinguisticTagScheme.language, tokenRange: nil, sentenceRange: nil)
         var detectedLanguage: String?
         for installedLanguage in AVSpeechSynthesisVoice.speechVoices() {
             let languageStringParts = installedLanguage.language.components(separatedBy: "-")
-            if (languageStringParts.count > 0 && languageStringParts[0] == textLanguage) {
+            if (languageStringParts.count > 0 && languageStringParts[0] == textLanguage!.rawValue) {
                 detectedLanguage = installedLanguage.language
                 break
             }

@@ -273,7 +273,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //        }
 //    }
     
-    func swipeAction(swipe: UISwipeGestureRecognizer) {
+    @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
         switch swipe.direction.rawValue {
         case 2:
             print("Case 2")
@@ -617,7 +617,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     var milli_round_counter = 0
     var milli_rt_counter = 0
-    func updateTimerMilliSecond() {
+    @objc func updateTimerMilliSecond() {
         milli_counter += 1
         milli_round_counter += 1
         milli_elapsed_milliseconds += 1
