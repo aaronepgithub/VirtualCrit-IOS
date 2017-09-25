@@ -37,15 +37,19 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             //let when = DispatchTime.now() + 1
             //DispatchQueue.main.asyncAfter(deadline: when){
                 
-                tempArrHR1 = []
-                tempArrSPD1 = []
-                tempArrScore1 = []
-                ctrArray = []
-                tempArrHR1 = Array(score_string_array_total.prefix(50))
-                tempArrSPD1 = Array(score_string_array_total.prefix(50))
-                tempArrScore1 = Array(score_string_array_total.prefix(50))
+        tempArrHR1 = []
+        tempArrSPD1 = []
+        tempArrScore1 = []
+        ctrArray = []
+        tempArrHR1 = Array(score_string_array_total.prefix(50))
+        tempArrSPD1 = Array(score_string_array_total.prefix(50))
+        tempArrScore1 = Array(score_string_array_total.prefix(50))
         
-        if tempArrScore1.count > 0 {
+        let x = NSDate()
+        let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
+        let yy = Double(y)
+        
+        if  yy > 45 {
             ctrArray = Array(1...tempArrHR1.count)
             self.myTableView.reloadData()
             //score_string_array_total = []
@@ -68,20 +72,23 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             //let when = DispatchTime.now() + 1
             //DispatchQueue.main.asyncAfter(deadline: when){
                 
-                tempArrHR1 = []
-                tempArrSPD1 = []
-                tempArrScore1 = []
-                ctrArray = []
-                tempArrHR1 = Array(speed_string_array_total.prefix(50))
-                tempArrSPD1 = Array(speed_string_array_total.prefix(50))
-                tempArrScore1 = Array(speed_string_array_total.prefix(50))
-                
-                if tempArrScore1.count > 0 {
-                    ctrArray = Array(1...tempArrHR1.count)
-                    self.myTableView.reloadData()
-                    //score_string_array_total = []
-                    //speed_string_array_total = []
-                }
+        tempArrHR1 = []
+        tempArrSPD1 = []
+        tempArrScore1 = []
+        ctrArray = []
+        tempArrHR1 = Array(speed_string_array_total.prefix(50))
+        tempArrSPD1 = Array(speed_string_array_total.prefix(50))
+        tempArrScore1 = Array(speed_string_array_total.prefix(50))
+        
+        let x = NSDate()
+        let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
+        let yy = Double(y)
+        if  yy > 45 {
+            ctrArray = Array(1...tempArrHR1.count)
+            self.myTableView.reloadData()
+            //score_string_array_total = []
+            //speed_string_array_total = []
+        }
                 
 
             //}
