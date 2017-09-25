@@ -609,6 +609,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
             updateTimerRound()
         }
         
+        if t4 == 30 || t4 == 130 || t4 == 230 {
+            print("PushFBTotals")
+            pushFBTotals()
+        }
+        
+        if t4 == 35 || t4 == 135 || t4 == 235 {
+            print("getFBTotals")
+            getFBTotals()
+            getFBTotalsSpeed()
+        }
+        
 
         update_main_display_values()
         NotificationCenter.default.post(name: Notification.Name("anotherSecondElapsed"), object: nil)
@@ -719,6 +730,11 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 print("Firebase get Round-Score data")
                 getFirebaseSpeed()
                 print("Firebase get Round-Speed data")
+                getFBTotals()
+                print("Firebase get Total-Round data")
+                getFBTotalsSpeed()
+                print("Firebase get Total-Speed data")
+                
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
                     self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"

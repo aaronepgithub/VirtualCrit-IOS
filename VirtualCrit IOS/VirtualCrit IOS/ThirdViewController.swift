@@ -30,14 +30,12 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     @IBAction func btn_totalScore(_ sender: UIButton) {
         
         //get & parse total score data
-        if ConnectionCheck.isConnectedToNetwork() {
-            
-            //getTotalData()
-            getFBTotals()
-            
-            
-            let when = DispatchTime.now() + 1
-            DispatchQueue.main.asyncAfter(deadline: when){
+        //if ConnectionCheck.isConnectedToNetwork() {
+        
+            //getFBTotals()
+        
+            //let when = DispatchTime.now() + 1
+            //DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
                 tempArrSPD1 = []
@@ -46,26 +44,29 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrHR1 = Array(score_string_array_total.prefix(50))
                 tempArrSPD1 = Array(score_string_array_total.prefix(50))
                 tempArrScore1 = Array(score_string_array_total.prefix(50))
-                
-                ctrArray = Array(1...tempArrHR1.count)
-                self.myTableView.reloadData()
-                score_string_array_total = []
-                speed_string_array_total = []
-            }
-            
+        
+        if tempArrScore1.count > 0 {
+            ctrArray = Array(1...tempArrHR1.count)
+            self.myTableView.reloadData()
+            //score_string_array_total = []
+            //speed_string_array_total = []
+
         }
+            //}
+            
+        //}
         
     }
     
     @IBAction func btn_totalSpeed(_ sender: UIButton) {
         
         //get & parse total speed data
-        if ConnectionCheck.isConnectedToNetwork() {
+        //if ConnectionCheck.isConnectedToNetwork() {
             
-            getFBTotalsSpeed()
+            //getFBTotalsSpeed()
             
-            let when = DispatchTime.now() + 1
-            DispatchQueue.main.asyncAfter(deadline: when){
+            //let when = DispatchTime.now() + 1
+            //DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
                 tempArrSPD1 = []
@@ -75,26 +76,28 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 tempArrSPD1 = Array(speed_string_array_total.prefix(50))
                 tempArrScore1 = Array(speed_string_array_total.prefix(50))
                 
-                if tempArrHR1.count == 0 {return}
+                if tempArrScore1.count > 0 {
+                    ctrArray = Array(1...tempArrHR1.count)
+                    self.myTableView.reloadData()
+                    //score_string_array_total = []
+                    //speed_string_array_total = []
+                }
                 
-                ctrArray = Array(1...tempArrHR1.count)
-                self.myTableView.reloadData()
-                score_string_array_total = []
-                speed_string_array_total = []
-            }
+
+            //}
             
-        }
+        //}
     }
     
     //use sorted speed array
     @IBAction func btn_roundAllSpeed(_ sender: UIButton) {
         
-        if ConnectionCheck.isConnectedToNetwork() {
+        //if ConnectionCheck.isConnectedToNetwork() {
             
-            getFirebaseSpeed()
+            //getFirebaseSpeed()
             
-            let when = DispatchTime.now() + 1
-            DispatchQueue.main.asyncAfter(deadline: when){
+            //let when = DispatchTime.now() + 1
+            //DispatchQueue.main.asyncAfter(deadline: when){
                 
                 tempArrHR1 = []
                 tempArrSPD1 = []
@@ -109,20 +112,20 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
-            }
-        }
+            //}
+        //}
     }
     
 
     //use sorted score array
     @IBAction func btn_roundAll(_ sender: UIButton) {
         
-        if ConnectionCheck.isConnectedToNetwork() {
+        //if ConnectionCheck.isConnectedToNetwork() {
             
-            getFirebase()
+            //getFirebase()
             
-            let when = DispatchTime.now() + 1
-            DispatchQueue.main.asyncAfter(deadline: when){
+            //let when = DispatchTime.now() + 1
+            //DispatchQueue.main.asyncAfter(deadline: when){
 
                 tempArrHR1 = []
                 tempArrSPD1 = []
@@ -136,9 +139,9 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
-            }
+            //}
         
-        }
+        //}
         
     }
     

@@ -162,6 +162,7 @@ struct Leaderboard {
 
 func getFirebase() {  //get Round leaders
 
+    print("Start getFBScore")
     score_string_array = []
     //speed_string_array = []
     
@@ -216,6 +217,7 @@ func getFirebase() {  //get Round leaders
 
 func getFirebaseSpeed() {
     
+    print("Start getFBSpeed")
     speed_string_array = []
     
     var arrRoundLeaders = [String]()
@@ -271,6 +273,7 @@ func getFirebaseSpeed() {
 
 func pushFBRound() {
     //send round data to fb
+    print("Start pushFBRound")
     let date = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyyMMdd"
@@ -319,6 +322,7 @@ func pushFBRound() {
 
 func pushFBTotals() {
     //send totals data to fb
+    print("Start pushFBTotals")
     let date = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyyMMdd"
@@ -369,6 +373,7 @@ func pushFBTotals() {
 
 func getFBTotals() { //get Totals from fb, ordered by score
     
+    print("Start getFBTotals")
     score_string_array_total = []
     var counter = 0
     let date = Date()
@@ -385,6 +390,7 @@ func getFBTotals() { //get Totals from fb, ordered by score
         if ( snapshot.value is NSNull ) {
             print("not found")
         } else {
+            score_string_array_total = []
             for child in (snapshot.children) {
                 let snap = child as! FIRDataSnapshot //each child is a snapshot
                 let dict = snap.value as! NSDictionary // the value is a dict
@@ -414,6 +420,7 @@ func getFBTotals() { //get Totals from fb, ordered by score
 
 func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
     
+    print("Start getFBTotals - Speed")
     speed_string_array_total = []
     
     var counter = 0
@@ -431,6 +438,7 @@ func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
         if ( snapshot.value is NSNull ) {
             print("not found")
         } else {
+            speed_string_array_total = []
             for child in (snapshot.children) {
                 let snap = child as! FIRDataSnapshot //each child is a snapshot
                 let dict = snap.value as! NSDictionary // the value is a dict
@@ -445,7 +453,7 @@ func getFBTotalsSpeed() { //get Totals from fb, ordered by Speed
                 
                 print("\(counter) : \(fbNAME) speed :  \(yy) :  \(y)")
                 
-                speed_string_array_total.insert(String(describing: yy) + " MPH  " + "\n" + String(describing: fbNAME) + "   " + String(describing: y) + " %", at: 0)
+                speed_string_array_total.insert(String(describing: yy) + " MPH  " + "\n" + String(describing: fbNAME) + "   " + String(describing: y) + "%", at: 0)
                 counter += 1
             }
             
