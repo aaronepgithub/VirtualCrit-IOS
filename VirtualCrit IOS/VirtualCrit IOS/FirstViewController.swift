@@ -916,18 +916,28 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print("Discovered \(String(describing: peripheral.name)) at \(RSSI)")
-        
 
-       
-        
         // check to see if we've already saved a reference to this peripheral
         if self.peripheral != peripheral {
             
             // Save a reference to the peripheral object so Core Bluetooth doesn't get rid of it
             self.peripheral = peripheral
             self.arrPeripheral.append(peripheral)
+            //arr_Peripherals_to_Connect.append(peripheral)
+        }
+        
+        if arr_Peripherals_to_Connect.count == 0 {
             arr_Peripherals_to_Connect.append(peripheral)
-            
+        }
+        
+        if arr_Peripherals_to_Connect.first(where: {$0 == peripheral}) != nil {
+            return
+        } else {
+            arr_Peripherals_to_Connect.append(peripheral)
+        }
+        
+    
+    }
             
             
             //print(arrPeripheral)
@@ -961,8 +971,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //            DispatchQueue.main.asyncAfter(deadline: when){
 //                alertController .dismiss(animated: true, completion: nil)
 //            }
-        }
-    }
+
     
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
