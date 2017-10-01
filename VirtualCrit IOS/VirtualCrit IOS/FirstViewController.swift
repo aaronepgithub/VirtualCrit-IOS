@@ -737,10 +737,20 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-                    self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
+//                    self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
+                    
+                    self.str = "Round complete!  Last rounds Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Last rounds Speed was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) ."
                     
                     self.newSpeakerWithClass()
                     self.dockView1_open()
+                    
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(90), execute: {
+                        
+                        self.str = "Current Leaders are \(Leaderboard.roundLeadersString) ."
+                        self.newSpeakerWithClass()
+                    })
+                    
                 })
             })
         })
@@ -767,6 +777,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }
         
         let str = "\(Leaderboard.scoreLeaderScore) (\(Leaderboard.scoreLeaderName))  |  \(Leaderboard.speedLeaderScore) (\(Leaderboard.speedLeaderName))"
+        
         doc1_bttmLabel.text = str
         
         dockView1.center = view.center
