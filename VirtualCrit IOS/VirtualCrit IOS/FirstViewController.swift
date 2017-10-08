@@ -716,6 +716,9 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.crank_revs = 0
         Rounds.roundsComplete = 1 + Rounds.roundsComplete
         
+        print("RoundsCompleted \(roundsCompleted)")
+                print("RoundsCompleted Mod5 \(roundsCompleted % 5)")
+        
         if roundsCompleted % 5 == 0 {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(180), execute: {
             

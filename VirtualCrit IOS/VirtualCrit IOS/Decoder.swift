@@ -29,7 +29,7 @@ class TextToSpeechUtils: NSObject, AVSpeechSynthesizerDelegate {
         
         let utterance = AVSpeechUtterance(string:text)
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-        utterance.volume = 0.7
+        utterance.volume = 0.9
         utterance.voice = AVSpeechSynthesisVoice(language: defaultLanguage)
         self.synthesizer.speak(utterance)
         
