@@ -628,6 +628,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 
     var milli_round_counter = 0
     var milli_rt_counter = 0
+    
     @objc func updateTimerMilliSecond() {
         milli_counter += 1
         milli_round_counter += 1
@@ -641,9 +642,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         }  //called for each second
         
         if milli_rt_counter == 200 {  //x sec for rt
-            
-            
-            
             reset_RT_vars()
             create_strings() //move somewhere else?
         }
@@ -656,7 +654,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Device.raw_wheel_revs = 0
         Device.raw_wheel_time = 0
         Device.raw_wheel_time2 = 0
-        
         milli_rt_counter = 0
     }
     
@@ -718,6 +715,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         Round_PublicVars.wheel_revs = 0
         Round_PublicVars.crank_revs = 0
         Rounds.roundsComplete = 1 + Rounds.roundsComplete
+        
+        if roundsCompleted % 5 == 0 {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(180), execute: {
+            
+                                    self.str = "\(self.roundsCompleted) Rounds Completed.  Current Leaders are \(Leaderboard.roundLeadersString) ."
+                                    self.newSpeakerWithClass()
+                                })
+        }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
             pushFBRound()
@@ -739,17 +744,17 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
 //                    self.str = "Round complete!  Your speed for the last round Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Your score for the last round was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) .  The current leaders are \(Leaderboard.roundLeadersString)"
                     
-                    self.str = "Round complete!  Last rounds Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)).  Last rounds Score was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) ."
+                    self.str = "Round complete!  Last rounds Speed was \(String(format:"%.2f", AllRounds.arrSPD.last!)) MPH.  Last rounds Score was \(String(format:"%.1f", AllRounds.arrHR.last! / Device.maxHR * 100)) Percent."
                     
                     self.newSpeakerWithClass()
                     self.dockView1_open()
                     
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(90), execute: {
-                        
-                        self.str = "Current Leaders are \(Leaderboard.roundLeadersString) ."
-                        self.newSpeakerWithClass()
-                    })
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(90), execute: {
+//
+//                        self.str = "Current Leaders are \(Leaderboard.roundLeadersString) ."
+//                        self.newSpeakerWithClass()
+//                    })
                     
                 })
             })

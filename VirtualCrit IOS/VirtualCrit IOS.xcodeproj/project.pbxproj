@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		16156CFF2B7B188C5C47166E /* Pods_VirtualCrit_IOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A6AA3BB8F87BBAEA746E4AA /* Pods_VirtualCrit_IOS.framework */; };
 		581EA0731F244DF0008561CC /* ForthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581EA0721F244DF0008561CC /* ForthViewController.swift */; };
-		5820B8B71EE58D3300654A4E /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820B8B61EE58D3300654A4E /* TableViewCell.swift */; };
-		584943341ED58F960017BBFA /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584943331ED58F960017BBFA /* PopupViewController.swift */; };
 		5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */; };
 		5877DB8E1F2641AB00A4FA4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5877DB8D1F2641AB00A4FA4B /* GoogleService-Info.plist */; };
 		588879A41EABD91900E5C75E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879A31EABD91900E5C75E /* AppDelegate.swift */; };
@@ -29,8 +27,6 @@
 /* Begin PBXFileReference section */
 		2A6AA3BB8F87BBAEA746E4AA /* Pods_VirtualCrit_IOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VirtualCrit_IOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		581EA0721F244DF0008561CC /* ForthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForthViewController.swift; sourceTree = "<group>"; };
-		5820B8B61EE58D3300654A4E /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
-		584943331ED58F960017BBFA /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
 		5877DB8D1F2641AB00A4FA4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		588879A01EABD91900E5C75E /* VirtualCrit IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VirtualCrit IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,8 +97,6 @@
 				5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */,
 				588879B71EABDB0100E5C75E /* Model.swift */,
 				588B4CE91EAC2A0400364AEE /* Decoder.swift */,
-				584943331ED58F960017BBFA /* PopupViewController.swift */,
-				5820B8B61EE58D3300654A4E /* TableViewCell.swift */,
 				58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */,
 				58B88D471EACDA1300144C0F /* Timer.swift */,
 				588879AC1EABD91A00E5C75E /* Assets.xcassets */,
@@ -253,7 +247,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				588879A81EABD91900E5C75E /* SecondViewController.swift in Sources */,
-				5820B8B71EE58D3300654A4E /* TableViewCell.swift in Sources */,
 				5895A5781F0EBA1800544741 /* ThirdViewController.swift in Sources */,
 				588879A41EABD91900E5C75E /* AppDelegate.swift in Sources */,
 				588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */,
@@ -263,7 +256,6 @@
 				5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */,
 				58FDD2A91F0FF0A700BAB193 /* TableViewCell1.swift in Sources */,
 				588879B81EABDB0100E5C75E /* Model.swift in Sources */,
-				584943341ED58F960017BBFA /* PopupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
