@@ -719,13 +719,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
         print("RoundsCompleted \(roundsCompleted)")
                 print("RoundsCompleted Mod5 \(roundsCompleted % 5)")
         
-        if roundsCompleted % 5 == 0 {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(180), execute: {
-            
-                                    self.str = "\(self.roundsCompleted) Rounds Completed.  Current Leaders are \(Leaderboard.roundLeadersString) ."
-                                    self.newSpeakerWithClass()
-                                })
-        }
+
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
             pushFBRound()
@@ -758,6 +752,14 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
 //                        self.str = "Current Leaders are \(Leaderboard.roundLeadersString) ."
 //                        self.newSpeakerWithClass()
 //                    })
+                    
+                    if self.roundsCompleted % 5 == 0 {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(60), execute: {
+                            
+                            self.str = "\(self.roundsCompleted) Rounds Completed.  Current Leaders are \(Leaderboard.roundLeadersString) ."
+                            self.newSpeakerWithClass()
+                        })
+                    }
                     
                 })
             })
