@@ -20,6 +20,7 @@
 		588879B81EABDB0100E5C75E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588879B71EABDB0100E5C75E /* Model.swift */; };
 		588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B4CE91EAC2A0400364AEE /* Decoder.swift */; };
 		5895A5781F0EBA1800544741 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5895A5771F0EBA1700544741 /* ThirdViewController.swift */; };
+		58AF5E961F8EBB2400FE994F /* Settings_TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AF5E951F8EBB2400FE994F /* Settings_TableViewController.swift */; };
 		58B88D481EACDA1300144C0F /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B88D471EACDA1300144C0F /* Timer.swift */; };
 		58FDD2A91F0FF0A700BAB193 /* TableViewCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		588879B71EABDB0100E5C75E /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		588B4CE91EAC2A0400364AEE /* Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
 		5895A5771F0EBA1700544741 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
+		58AF5E951F8EBB2400FE994F /* Settings_TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings_TableViewController.swift; sourceTree = "<group>"; };
 		58B88D471EACDA1300144C0F /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		58FDD2A81F0FF0A700BAB193 /* TableViewCell1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell1.swift; sourceTree = "<group>"; };
 		C9431505226356BBBA8556F5 /* Pods-VirtualCrit IOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualCrit IOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-VirtualCrit IOS/Pods-VirtualCrit IOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				5895A5771F0EBA1700544741 /* ThirdViewController.swift */,
 				581EA0721F244DF0008561CC /* ForthViewController.swift */,
 				588879A91EABD91A00E5C75E /* Main.storyboard */,
+				58AF5E951F8EBB2400FE994F /* Settings_TableViewController.swift */,
 				5855F3761EE99A5E004F9495 /* ConnectionCheck.swift */,
 				588879B71EABDB0100E5C75E /* Model.swift */,
 				588B4CE91EAC2A0400364AEE /* Decoder.swift */,
@@ -252,6 +255,7 @@
 				588879A61EABD91900E5C75E /* FirstViewController.swift in Sources */,
 				58B88D481EACDA1300144C0F /* Timer.swift in Sources */,
 				581EA0731F244DF0008561CC /* ForthViewController.swift in Sources */,
+				58AF5E961F8EBB2400FE994F /* Settings_TableViewController.swift in Sources */,
 				588B4CEA1EAC2A0400364AEE /* Decoder.swift in Sources */,
 				5855F3771EE99A5E004F9495 /* ConnectionCheck.swift in Sources */,
 				58FDD2A91F0FF0A700BAB193 /* TableViewCell1.swift in Sources */,
