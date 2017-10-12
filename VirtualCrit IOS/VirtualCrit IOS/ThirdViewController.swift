@@ -29,14 +29,6 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     @IBAction func btn_totalScore(_ sender: UIButton) {
         
-        //get & parse total score data
-        //if ConnectionCheck.isConnectedToNetwork() {
-        
-            //getFBTotals()
-        
-            //let when = DispatchTime.now() + 1
-            //DispatchQueue.main.asyncAfter(deadline: when){
-                
         tempArrHR1 = []
         tempArrSPD1 = []
         tempArrScore1 = []
@@ -49,16 +41,16 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
         let yy = Double(y)
         
-        if  yy > 45 {
+        if  yy > 45 && tempArrHR1.count > 0 {
             ctrArray = Array(1...tempArrHR1.count)
-            self.myTableView.reloadData()
+            
+            if ctrArray.count > 0 {
+                self.myTableView.reloadData()
+            }
             //score_string_array_total = []
             //speed_string_array_total = []
 
         }
-            //}
-            
-        //}
         
     }
     
@@ -83,9 +75,15 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
         let x = NSDate()
         let y = x.timeIntervalSince(PublicVars.startTime! as Date!)
         let yy = Double(y)
-        if  yy > 45 {
+        
+        if  yy > 45 && tempArrHR1.count > 0 {
+            
             ctrArray = Array(1...tempArrHR1.count)
-            self.myTableView.reloadData()
+            if ctrArray.count > 0 {
+                self.myTableView.reloadData()
+            }
+
+
             //score_string_array_total = []
             //speed_string_array_total = []
         }
