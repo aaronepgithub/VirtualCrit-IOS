@@ -18,30 +18,36 @@ class TextToSpeechUtils: NSObject, AVSpeechSynthesizerDelegate {
     
     public func synthesizeSpeech(forText text: String) {
         
-        if (text.isEmpty) { return }
-        
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.duckOthers])
-            try audioSession.setActive(true)
-        } catch {
-            return
+        if Settings.enableAudio == true {
+            
+            if (text.isEmpty) { return }
+            
+            do {
+                try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.duckOthers])
+                try audioSession.setActive(true)
+            } catch {
+                return
+            }
+            
+            let utterance = AVSpeechUtterance(string:text)
+            utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+            utterance.volume = 0.9
+            utterance.voice = AVSpeechSynthesisVoice(language: defaultLanguage)
+            self.synthesizer.speak(utterance)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                do {
+                    try self.audioSession.setActive(false)
+                } catch {
+                    print("err closing audio session")
+                }
+            })
+            
+            self.lastPlayingUtterance = utterance
+            
         }
         
-        let utterance = AVSpeechUtterance(string:text)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-        utterance.volume = 0.9
-        utterance.voice = AVSpeechSynthesisVoice(language: defaultLanguage)
-        self.synthesizer.speak(utterance)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
-            do {
-                try self.audioSession.setActive(false)
-            } catch {
-                print("err closing audio session")
-            }
-        })
-        
-        self.lastPlayingUtterance = utterance
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
