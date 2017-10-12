@@ -535,7 +535,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="660" y="914"/>
+            <point key="canvasLocation" x="1258" y="1360"/>
         </scene>
         <!--tSettings-->
         <scene sceneID="Mic-eC-nXC">
@@ -728,7 +728,7 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="tSettings" image="first" id="23e-36-X6C"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="first" id="23e-36-X6C"/>
                     <connections>
                         <outlet property="lbl_distance" destination="wcW-Ay-1aW" id="zdQ-2h-ASX"/>
                         <outlet property="lbl_maxHR" destination="TJz-uq-m7R" id="GbX-jI-icg"/>
@@ -1033,7 +1033,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
-                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                         <segue destination="whk-fW-Ufa" kind="relationship" relationship="viewControllers" id="W9l-0k-eWl"/>
                         <segue destination="rkb-Bf-ngj" kind="relationship" relationship="viewControllers" id="tvN-SX-tQG"/>
                         <segue destination="pO0-8X-r34" kind="relationship" relationship="viewControllers" id="jSB-66-vAJ"/>

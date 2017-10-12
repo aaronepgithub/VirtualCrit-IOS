@@ -29,6 +29,8 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
     
     @IBAction func btn_totalScore(_ sender: UIButton) {
         
+        if ConnectionCheck.isConnectedToNetwork() {
+            
         tempArrHR1 = []
         tempArrSPD1 = []
         tempArrScore1 = []
@@ -51,13 +53,14 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
             //speed_string_array_total = []
 
         }
+        }
         
     }
     
     @IBAction func btn_totalSpeed(_ sender: UIButton) {
         
         //get & parse total speed data
-        //if ConnectionCheck.isConnectedToNetwork() {
+        if ConnectionCheck.isConnectedToNetwork() {
             
             //getFBTotalsSpeed()
             
@@ -91,13 +94,13 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
 
             //}
             
-        //}
+        }
     }
     
     //use sorted speed array
     @IBAction func btn_roundAllSpeed(_ sender: UIButton) {
         
-        //if ConnectionCheck.isConnectedToNetwork() {
+        if ConnectionCheck.isConnectedToNetwork() {
             
             //getFirebaseSpeed()
             
@@ -118,14 +121,14 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 ctrArray = Array(1...tempArrHR1.count)
                 self.myTableView.reloadData()
             //}
-        //}
+        }
     }
     
 
     //use sorted score array
     @IBAction func btn_roundAll(_ sender: UIButton) {
         
-        //if ConnectionCheck.isConnectedToNetwork() {
+        if ConnectionCheck.isConnectedToNetwork() {
             
             //getFirebase()
             
@@ -146,7 +149,7 @@ class ThirdViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 self.myTableView.reloadData()
             //}
         
-        //}
+        }
         
     }
     
