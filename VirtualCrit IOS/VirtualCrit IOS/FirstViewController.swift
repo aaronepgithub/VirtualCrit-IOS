@@ -145,10 +145,6 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     @IBAction func dock1_btn2(_ sender: UIButton) {
-//        if arr_Peripherals_to_Connect.count > 1 {
-//            centralManager?.connect(arr_Peripherals_to_Connect[1]!, options: nil)
-//            alert(message: "Connecting")
-//        }
         
         if dock1_title.text == "BLUETOOTH" {
             if arr_Peripherals_to_Connect.count > 1 {
@@ -167,10 +163,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     }
     
     @IBAction func dock1_btn3(_ sender: UIButton) {
-//        if arr_Peripherals_to_Connect.count > 2 {
-//            centralManager?.connect(arr_Peripherals_to_Connect[2]!, options: nil)
-//            alert(message: "Connecting")
-//        }
+
         
         if dock1_title.text == "BLUETOOTH" {
             if arr_Peripherals_to_Connect.count > 2 {
@@ -206,28 +199,7 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
     
     @IBAction func btn_change_display(_ sender: UIButton) {
         changeDisplay()
-        print("Pressed Display Button")
-        
-//        dock1_label1.text = " - "
-//        dock1_label2.text = " - "
-//        dock1_label3.text = " - "
-//        
-//        for (index, peri) in arr_Peripherals_to_Connect.enumerated() {
-//            print("\(index + 1): \(String(describing: peri))")
-//            
-//            if index == 0 {
-//                dock1_label1.text = arr_Peripherals_to_Connect[0]?.name
-//            }
-//            if index == 1 {
-//                dock1_label2.text = arr_Peripherals_to_Connect[1]?.name
-//            }
-//            if index == 2 {
-//                dock1_label3.text = arr_Peripherals_to_Connect[2]?.name
-//            }
-//            
-//        }
-//        
-//        dockView1_open()
+        //print("Pressed Display Button")
 
     }
     
@@ -1290,20 +1262,20 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     }
                     
 
-                    
-                    PublicVars.crank_revs += a
-                    Round_PublicVars.crank_revs += a
-                    Lap_PublicVars.crank_revs += a
-                    //RT_PublicVars.crank_revs += a
-                    
-                    Device.raw_crank_revs += a
-                    Device.raw_crank_time += b  //still in 1/1024 of a sec
-                    
-                    let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
-                    Device.raw_cadence = cadence_raw
-                    //        if cadence_raw > 0 {Device.raw_cadence = cadence_raw} else {Device.raw_cadence = 0}
-                    //print("Cadence:  \(cadence_raw)")
-                    RT_PublicVars.cadence = cadence_raw
+                    if a < 5 { //filter out bad readings
+                        PublicVars.crank_revs += a
+                        Round_PublicVars.crank_revs += a
+                        Lap_PublicVars.crank_revs += a
+                        //RT_PublicVars.crank_revs += a
+                        
+                        Device.raw_crank_revs += a
+                        Device.raw_crank_time += b  //still in 1/1024 of a sec
+                        
+                        let cadence_raw = Device.raw_crank_revs / (Device.raw_crank_time / 1024) * 60
+                        Device.raw_cadence = cadence_raw
+                        RT_PublicVars.cadence = cadence_raw
+                    }
+
                     
 
                 }
@@ -1323,12 +1295,15 @@ class FirstViewController: UIViewController, CBCentralManagerDelegate, CBPeriphe
                     if wheelRevolutionDiff < 0 {
                         wheelRevolutionDiff = (Double(wheelRevolution) + 255) - Double(oldWheelRevX)
                     }
+                    
+                    PublicVars.wheel_revs += wheelRevolutionDiff
+                    Round_PublicVars.wheel_revs += wheelRevolutionDiff
+                    Lap_PublicVars.wheel_revs += wheelRevolutionDiff
+                    //RT_PublicVars.wheel_revs += wheelRevolutionDiff
+                    
                 }
                 oldWheelRevX = Int(wheelRevolution)
-                PublicVars.wheel_revs += wheelRevolutionDiff
-                Round_PublicVars.wheel_revs += wheelRevolutionDiff
-                Lap_PublicVars.wheel_revs += wheelRevolutionDiff
-                //RT_PublicVars.wheel_revs += wheelRevolutionDiff
+
             }
             
             func decodeCSC(withData data : Data) {
