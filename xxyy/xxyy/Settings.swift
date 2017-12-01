@@ -9,7 +9,12 @@
 import UIKit
 
 class Settings: UITableViewController {
-
+    
+    @IBOutlet weak var lbl_TireSize: UILabel!
+    
+    @IBAction func set_TireSize(_ sender: UIButton) {
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

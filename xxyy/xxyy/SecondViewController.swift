@@ -67,7 +67,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         if let rs = raw_speed_for_avg {
             if rs.isNaN == false && rs.isInfinite == false {
-                out_Btn5.setTitle(String(Int(rs)), for: .normal)
+                //out_Btn5.setTitle(String(Int(rs)), for: .normal)
             }
 
         }
@@ -171,6 +171,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     @IBAction func act_Btn5(_ sender: UIButton) {
         
+        self.dismiss(animated: true, completion: nil)
+        
 //        let defaults = UserDefaults.standard
 //        var x = [String]()
 //
@@ -178,6 +180,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //            x.append((i?.name)!)
 //        }
 //        defaults.set(x, forKey: "Saved_Peripherals")
+        
         
         
         print("arrPeripheral")
