@@ -10,9 +10,18 @@ import UIKit
 
 class Settings: UITableViewController {
     
+    
+    
     @IBOutlet weak var lbl_TireSize: UILabel!
     
-    @IBAction func set_TireSize(_ sender: UIButton) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //Your action here
+        
+        print(indexPath)
+        
+        if indexPath.section == 0 && indexPath.row == 1 {
+            print("Pressed Name Cell")
+        }
     }
     
     override func viewDidLoad() {
