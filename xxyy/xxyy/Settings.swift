@@ -21,6 +21,8 @@ class Settings: UITableViewController {
         
         if indexPath.section == 0 && indexPath.row == 1 {
             print("Pressed Name Cell")
+            
+            //call popup to request name
         }
     }
     
