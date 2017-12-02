@@ -10,7 +10,85 @@ import UIKit
 
 class Settings: UITableViewController {
     
+    @IBOutlet weak var lbl_AudioToggle: UILabel!
+    @IBOutlet weak var lbl_TireSizeCell: UILabel!
+    @IBOutlet weak var lbl_NameCell: UILabel!
     
+    
+    
+    func callNameActionSheet() {
+        let alert = UIAlertController(title: "Enter Name", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Name Input", style: .default) { (alertAction) in
+            let textField = alert.textFields![0] as UITextField
+            
+            print(textField.text as Any)
+            if textField.text != nil {
+                self.lbl_NameCell.text = textField.text?.uppercased()
+            }
+            
+        }
+        
+        alert.addTextField { (textField) in
+            textField.placeholder = "Enter your name"
+        }
+        
+        alert.addAction(action)
+        self.present(alert, animated:true, completion: nil)
+        
+    }
+    
+    func callTireSizeActionSheet() {
+            
+            // 1
+            let optionMenu = UIAlertController(title: nil, message: "Choose Tire Size", preferredStyle: .actionSheet)
+        
+        let Action700x25 = UIAlertAction(title: "700x25", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Action700x25")
+            wheelCircumference = 2105
+            self.lbl_TireSizeCell.text = "700X25 TIRE SIZE"
+        })
+        
+        let Action700x26 = UIAlertAction(title: "700x26", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Action700x26")
+            wheelCircumference = 2110
+            self.lbl_TireSizeCell.text = "700X26 TIRE SIZE"
+        })
+        
+        let Action700x28 = UIAlertAction(title: "700x28", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Action700x28")
+            wheelCircumference = 2130
+            self.lbl_TireSizeCell.text = "700X28 TIRE SIZE"
+        })
+        
+        let Action700x32 = UIAlertAction(title: "700x32", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Action700x32")
+            wheelCircumference = 2155
+            self.lbl_TireSizeCell.text = "700X32 TIRE SIZE"
+        })
+        
+            //
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                print("Cancelled")
+            })
+            
+            
+            // 4
+            optionMenu.addAction(Action700x25)
+            optionMenu.addAction(Action700x26)
+            optionMenu.addAction(Action700x28)
+            optionMenu.addAction(Action700x32)
+            optionMenu.addAction(cancelAction)
+            
+            // 5
+            self.present(optionMenu, animated: true, completion: nil)
+        
+    }
     
     @IBOutlet weak var lbl_TireSize: UILabel!
     
@@ -21,8 +99,23 @@ class Settings: UITableViewController {
         
         if indexPath.section == 0 && indexPath.row == 1 {
             print("Pressed Name Cell")
+            callNameActionSheet()
+        }
+        
+        if indexPath.section == 0 && indexPath.row == 2 {
+            print("Audio Cell")
             
-            //call popup to request name
+            if lbl_AudioToggle.text == "AUDIO ON" {
+                lbl_AudioToggle.text = "AUDIO OFF"
+            } else {
+                lbl_AudioToggle.text = "AUDIO ON"
+            }
+
+        }
+
+        if indexPath.section == 1 && indexPath.row == 0 {
+            print("pressed tire size cell")
+            callTireSizeActionSheet()
         }
     }
     

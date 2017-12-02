@@ -182,7 +182,10 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Settings" image="ic_settings" id="Ui2-7t-Qdw"/>
                     <connections>
+                        <outlet property="lbl_AudioToggle" destination="BHr-Ko-zKy" id="2y6-Cw-rXb"/>
+                        <outlet property="lbl_NameCell" destination="tJf-56-bsa" id="WKN-sJ-L4Y"/>
                         <outlet property="lbl_TireSize" destination="ULF-a7-v3T" id="Ovv-Oa-f8z"/>
+                        <outlet property="lbl_TireSizeCell" destination="ULF-a7-v3T" id="5OY-Gb-Z80"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o02-G2-t4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
