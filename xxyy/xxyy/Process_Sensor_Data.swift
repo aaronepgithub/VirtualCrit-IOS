@@ -31,10 +31,10 @@ func calc_based_on_array_values() {
     //        let rtSpeed = rtDistance / ((seconds) / 60 / 60)
     //          get total distance, total time, avg moving speed
     
-    let last3wheelrevs = arrWheelRevs.suffix(2)
+    let last3wheelrevs = arrWheelRevs.suffix(3)
     let sum_last3wheelrevs = last3wheelrevs.reduce(0, +)
     
-    let last3wheeltimes = arrWheelTimes.suffix(2)
+    let last3wheeltimes = arrWheelTimes.suffix(3)
     let sum_last3wheeltimes = last3wheeltimes.reduce(0, +)
     //print(sum_last3wheelrevs, sum_last3wheeltimes)
     
@@ -47,8 +47,9 @@ func calc_based_on_array_values() {
     print("totaldistance:  \(totaldistance)")
     
     let avgmovingspeed = totaldistance / ((arrWheelTimes.reduce(0, +) / 1024) / 60 / 60)
-    print("avg moving speed:  \(avgmovingspeed)")
-    
+    if avgmovingspeed.isNaN == false {
+        print("avg moving speed:  \(avgmovingspeed)")
+    }
     
 }
 func get_quick_avg_speed() {
