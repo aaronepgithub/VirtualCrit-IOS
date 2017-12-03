@@ -31,11 +31,19 @@ class FirstViewController: UIViewController {
         //  causes too many zeros for display
 //        lbl_Speed.text = "\(String(format:"%.2f", rt.rt_speed))"
 //        lbl_Cadence.text = "\(String(format:"%.0f", rt.rt_cadence))"
-        
 //        lbl_Speed.text = "\(String(format:"%.1f", quick_avg.speed))"
-        lbl_Speed.text = "\(stringer1(myIn: quick_avg.speed))"
 //        lbl_Cadence.text = "\(String(format:"%.0f", quick_avg.cadence))"
-        lbl_Cadence.text = "\(stringer0(myIn: quick_avg.cadence))"
+        
+        
+        if quick_avg.speed.isNaN == false {
+            lbl_Speed.text = "\(stringer1(myIn: quick_avg.speed))"
+        }
+
+        if quick_avg.cadence.isNaN == false {
+            lbl_Cadence.text = "\(stringer0(myIn: quick_avg.cadence))"
+        }
+        
+
 //        lbl_HR.text = "\(String(format:"%.0f", rt.rt_hr))"
         lbl_HR.text = "\(stringer0(myIn: rt.rt_hr))"
 //        lbl_Distance.text = "\(String(format:"%.2f", rt.total_distance))"

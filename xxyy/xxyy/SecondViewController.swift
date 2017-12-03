@@ -9,7 +9,8 @@
 import UIKit
 import CoreBluetooth
 
-
+var avg_seconds_count: Int = 0
+var old_avg_speed: Double = 0
 
 extension UIViewController {
 
@@ -63,6 +64,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let z = Double(y)  //time in seconds
         rt.string_elapsed_time = createTimeString(seconds: Int(z))
         rt.int_elapsed_time = Int(z)  //int for seconds
+        avg_seconds_count += 1
+        
         
         
         if let rs = raw_speed_for_avg {
@@ -80,12 +83,27 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 
         
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
-        out_Top2.setTitle(String(Int(quick_avg.speed)), for: .normal)
-        out_Top3.setTitle(String(Int(quick_avg.cadence)), for: .normal)
+        
+        if quick_avg.speed.isNaN == false {
+            out_Top2.setTitle(String(Int(quick_avg.speed)), for: .normal)
+        }
+        
+        if quick_avg.cadence.isNaN == false {
+            out_Top3.setTitle(String(Int(quick_avg.cadence)), for: .normal)
+        }
+
+
         
         if Int(z) % seconds_for_quick_avg == 0 {
             get_quick_avg_speed()
             get_quick_avg_cadence()
+            
+            if quick_avg.speed.isNaN == true {
+                old_avg_speed = 0
+            } else {
+                old_avg_speed = quick_avg.speed
+            }
+            avg_seconds_count = 0
         }
         
         
@@ -507,16 +525,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         centralManager = CBCentralManager(delegate: self, queue: nil)
         self.BLTE_TableViewOutlet.addSubview(refreshControl)
         
-        mainTimer = Timer()
-        mainTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UpdateTimeDisplay), userInfo: nil, repeats: true)
-        startTime = NSDate()
-        print("Start Timer")
-        
-        //startScanning()
+        if rt.int_elapsed_time == 0 {
+            mainTimer = Timer()
+            mainTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UpdateTimeDisplay), userInfo: nil, repeats: true)
+            startTime = NSDate()
+            print("Start Timer")
+    
+        }
         
     }
     

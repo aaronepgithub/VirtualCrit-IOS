@@ -15,13 +15,20 @@ class ThirdViewController: UIViewController {
     @IBOutlet weak var out_Center: UILabel!
     @IBOutlet weak var out_Right: UILabel!
     @IBOutlet weak var out_Bottom: UILabel!
+    @IBOutlet weak var lbl_top_StatusBar: UILabel!
     
 
     
     @objc func update() {
-        out_Left.text = "\(String(format:"%.1f", quick_avg.speed))"
-        out_Right.text = "\(String(format:"%.0f", quick_avg.cadence))"
+        if quick_avg.speed.isNaN == false {
+            out_Left.text = "\(String(format:"%.1f", quick_avg.speed))"
+        }
+        
+        if quick_avg.cadence.isNaN == false {
+                    out_Right.text = "\(String(format:"%.0f", quick_avg.cadence))"
+        }
         out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+        lbl_top_StatusBar.text = "\(avg_seconds_count)  |  \(String(format:"%.1f", old_avg_speed)) prev mph"
         
         let currentDateTime = Date()
         let formatter = DateFormatter()

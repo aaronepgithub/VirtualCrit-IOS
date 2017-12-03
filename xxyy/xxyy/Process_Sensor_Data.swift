@@ -23,9 +23,12 @@ var raw_speed_for_avg: Double?
 
 func get_quick_avg_speed() {
     let distance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
+    
     quick_avg.speed = distance / ((quick_avg.wheel_event_time / 1024) / 60 / 60)
     
-    if quick_avg.speed.isNaN == true {quick_avg.speed = 0}
+    if quick_avg.speed.isNaN == true {
+        quick_avg.speed = 0
+    }
 
     quick_avg.wheel_event_time = 0
     quick_avg.wheel_rev_count = 0

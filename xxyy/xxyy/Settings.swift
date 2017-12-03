@@ -14,6 +14,7 @@ class Settings: UITableViewController {
     @IBOutlet weak var lbl_TireSizeCell: UILabel!
     @IBOutlet weak var lbl_NameCell: UILabel!
     
+    @IBOutlet weak var lbl_RT_Avg_Duration: UILabel!
     
     
     func callNameActionSheet() {
@@ -117,6 +118,39 @@ class Settings: UITableViewController {
             print("pressed tire size cell")
             callTireSizeActionSheet()
         }
+        
+        if indexPath.section == 1 && indexPath.row == 1 {
+            print("duration cell")
+            print("current seconds for quick avg: \(seconds_for_quick_avg)")
+            
+            let x = lbl_RT_Avg_Duration.text
+            
+            if x == "CALCULATION INTERVAL = 2" {
+                lbl_RT_Avg_Duration.text = "CALCULATION INTERVAL = 1"
+                seconds_for_quick_avg = 1
+            }
+            
+            if x == "CALCULATION INTERVAL = 5" {
+                lbl_RT_Avg_Duration.text = "CALCULATION INTERVAL = 300"
+                seconds_for_quick_avg = 300
+            }
+            
+            if x == "CALCULATION INTERVAL = 1" {
+                lbl_RT_Avg_Duration.text = "CALCULATION INTERVAL = 5"
+                seconds_for_quick_avg = 5
+            }
+            
+            if x == "CALCULATION INTERVAL = 300" {
+                lbl_RT_Avg_Duration.text = "CALCULATION INTERVAL = 2"
+                seconds_for_quick_avg = 2
+            }
+            
+            
+            
+            print("updated seconds for quick avg: \(seconds_for_quick_avg)")
+            
+            
+        }
     }
     
     override func viewDidLoad() {
@@ -127,6 +161,10 @@ class Settings: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
     }
 
     override func didReceiveMemoryWarning() {
