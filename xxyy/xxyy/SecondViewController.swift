@@ -66,7 +66,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.int_elapsed_time = Int(z)  //int for seconds
         avg_seconds_count += 1
         
-        
+        arrWheelRevs.append(0)
+        arrWheelTimes.append(0)
         
         if let rs = raw_speed_for_avg {
             if rs.isNaN == false && rs.isInfinite == false {
