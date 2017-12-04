@@ -68,7 +68,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         arrWheelRevs.append(0)
         arrWheelTimes.append(0)
-        if arrWheelRevs.count > 2 {
+        if arrWheelRevs.count > (numofvaluesforarraycalc - 1) {
             calc_based_on_array_values()
         }
         

@@ -30,14 +30,15 @@ var arrDistanceTotal: Double = 0
 var arrDurationTotal: Double = 0
 var arrDurationTotalString: String = "00:00:00"
 var arrAverageMovingSpeed: Double = 0
+var numofvaluesforarraycalc: Int = 4
 
 
 func calc_based_on_array_values() {
     
-    let last3wheelrevs = arrWheelRevs.suffix(3)
+    let last3wheelrevs = arrWheelRevs.suffix(numofvaluesforarraycalc)
     let sum_last3wheelrevs = last3wheelrevs.reduce(0, +)
     
-    let last3wheeltimes = arrWheelTimes.suffix(3)
+    let last3wheeltimes = arrWheelTimes.suffix(numofvaluesforarraycalc)
     let sum_last3wheeltimes = last3wheeltimes.reduce(0, +)
     //print(sum_last3wheelrevs, sum_last3wheeltimes)
     
@@ -159,7 +160,7 @@ func processWheelData(withData data :Data) {
         }
         rt.total_time = total_ble_seconds
         
-        
+        if b > 2050 {b = 0}
         arrWheelRevs.append(a)
         arrWheelTimes.append(b)
         
