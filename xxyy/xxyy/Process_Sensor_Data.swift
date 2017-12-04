@@ -14,8 +14,7 @@ var total_ble_seconds: Double = 0
 var raw_wheel_revs: Double = 0
 var raw_wheel_time: Double = 0
 
-var arrWheelRevs = [Double]()
-var arrWheelTimes = [Double]()
+
 
 
 
@@ -24,12 +23,16 @@ var raw_wheel_time_for_avg: Double = 0  //moving avg. speed (not actual avg. spe
 var raw_distance_for_avg: Double?
 var raw_speed_for_avg: Double?
 
+var arrWheelRevs = [Double]()
+var arrWheelTimes = [Double]()
+var arrSpeed: Double = 0
+var arrDistanceTotal: Double = 0
+var arrDurationTotal: Double = 0
+var arrDurationTotalString: String = "00:00:00"
+var arrAverageMovingSpeed: Double = 0
+
+
 func calc_based_on_array_values() {
-    
-    //calc distance, time, speed
-    //        let rtDistance = a * (wheelCircumference / 1000) * 0.000621371
-    //        let rtSpeed = rtDistance / ((seconds) / 60 / 60)
-    //          get total distance, total time, avg moving speed
     
     let last3wheelrevs = arrWheelRevs.suffix(3)
     let sum_last3wheelrevs = last3wheelrevs.reduce(0, +)
@@ -41,17 +44,38 @@ func calc_based_on_array_values() {
     let last3distance = sum_last3wheelrevs * (wheelCircumference / 1000) * 0.000621371
     let last3time = sum_last3wheeltimes / 1024
     let last3mph = last3distance / (last3time / 60 / 60)
-    print("last3mph:  \(last3mph)")
+    
+    if last3mph.isNaN == false {
+        //print("last3mph:  \(last3mph)")
+        arrSpeed = last3mph
+    } else {
+        arrSpeed = 0
+    }
+
     
     let totaldistance = arrWheelRevs.reduce(0, +) * (wheelCircumference / 1000) * 0.000621371
-    print("totaldistance:  \(totaldistance)")
+    if totaldistance.isNaN == false {
+        //print("totaldistance:  \(totaldistance)")
+        arrDistanceTotal = totaldistance
+    }
+
+    let totalduration = (arrWheelTimes.reduce(0, +) / 1024)
+    print("Total Duration \(totalduration)")
+    if totalduration.isNaN == false {
+        arrDurationTotal = totalduration
+        arrDurationTotalString = createTimeString(seconds: Int(arrDurationTotal))
+        print("arrDurationString \(arrDurationTotalString)")
+    }
     
     let avgmovingspeed = totaldistance / ((arrWheelTimes.reduce(0, +) / 1024) / 60 / 60)
     if avgmovingspeed.isNaN == false {
-        print("avg moving speed:  \(avgmovingspeed)")
+        //print("avg moving speed:  \(avgmovingspeed)")
+        arrAverageMovingSpeed = avgmovingspeed
     }
     
 }
+
+
 func get_quick_avg_speed() {
     let distance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
     
@@ -139,9 +163,9 @@ func processWheelData(withData data :Data) {
         arrWheelRevs.append(a)
         arrWheelTimes.append(b)
         
-        if arrWheelRevs.count > 2 {
-            calc_based_on_array_values()
-        }
+//        if arrWheelRevs.count > 2 {
+//            calc_based_on_array_values()
+//        }
 
         
     }

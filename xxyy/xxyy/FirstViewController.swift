@@ -35,10 +35,14 @@ class FirstViewController: UIViewController {
 //        lbl_Cadence.text = "\(String(format:"%.0f", quick_avg.cadence))"
         
         
-        if quick_avg.speed.isNaN == false {
-            lbl_Speed.text = "\(stringer1(myIn: quick_avg.speed))"
-        }
+//        if quick_avg.speed.isNaN == false {
+//            lbl_Speed.text = "\(stringer1(myIn: quick_avg.speed))"
+//        }
 
+        if arrSpeed.isNaN == false {
+            lbl_Speed.text = "\(stringer1(myIn: arrSpeed))"
+        }
+        
         if quick_avg.cadence.isNaN == false {
             lbl_Cadence.text = "\(stringer0(myIn: quick_avg.cadence))"
         }
@@ -47,23 +51,24 @@ class FirstViewController: UIViewController {
 //        lbl_HR.text = "\(String(format:"%.0f", rt.rt_hr))"
         lbl_HR.text = "\(stringer0(myIn: rt.rt_hr))"
 //        lbl_Distance.text = "\(String(format:"%.2f", rt.total_distance))"
-        lbl_Distance.text = "\(stringer2(myIn: rt.total_distance))"
-
+//        lbl_Distance.text = "\(stringer2(myIn: rt.total_distance))"
+        lbl_Distance.text = "\(stringer2(myIn: arrDistanceTotal))"
+        
         //lbl_Time.text = createTimeString(seconds: Int(rt.total_time))  //moving time from ble
         lbl_Time.text = rt.string_elapsed_time  //NS Date Time since launch
         
-        let x = createTimeString(seconds: Int(quick_avg.lap_time))
+//        let x = createTimeString(seconds: Int(quick_avg.lap_time))
         
-        if let rs = raw_speed_for_avg {
-            if let rd = raw_distance_for_avg {
-                if rd.isNaN == false && rs.isNaN == false {
-                    lbl_Top_Info_Bar.text = "\(stringer0(myIn: rd)) mi   \(stringer0(myIn: rs)) avg mph   \(x)"
-                }
-            }
-        }
-
+//        if let rs = raw_speed_for_avg {
+//            if let rd = raw_distance_for_avg {
+//                if rd.isNaN == false && rs.isNaN == false {
+//                    lbl_Top_Info_Bar.text = "\(stringer0(myIn: rd)) mi   \(stringer0(myIn: rs)) avg mph   \(x)"
+//                }
+//            }
+//        }
         
-                
+        lbl_Top_Info_Bar.text = "\(stringer1(myIn: arrAverageMovingSpeed)) mph  \(arrDurationTotalString) mvg"
+        
     }
     
     override func viewDidLoad() {

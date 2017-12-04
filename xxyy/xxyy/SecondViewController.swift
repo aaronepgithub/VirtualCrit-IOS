@@ -68,46 +68,65 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         arrWheelRevs.append(0)
         arrWheelTimes.append(0)
-        
-        if let rs = raw_speed_for_avg {
-            if rs.isNaN == false && rs.isInfinite == false {
-                //out_Btn5.setTitle(String(Int(rs)), for: .normal)
-            }
-
+        if arrWheelRevs.count > 2 {
+            calc_based_on_array_values()
         }
         
-        if let rd = raw_distance_for_avg {
-            if rd.isNaN == false && rd.isInfinite == false {
-                out_Btn4.setTitle(String(Int(rd)), for: .normal)
-            }
-        }
+        //print("arrCalculated Values for Speed, Distance, AvgMovingSpeed:\n\(arrSpeed) \n\(arrDistanceTotal) \n\(arrAverageMovingSpeed) \n\(arrDurationTotalString)")
+        
+        
+//        if let rs = raw_speed_for_avg {
+//            if rs.isNaN == false {
+//                //out_Btn5.setTitle(String(Int(rs)), for: .normal)
+//            }
+//
+//        }
+//
+//        if let rd = raw_distance_for_avg {
+//            if rd.isNaN == false {
+//                out_Btn4.setTitle(String(Int(rd)), for: .normal)
+//            }
+//        }
 
-        
-        NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
-        
-        if quick_avg.speed.isNaN == false {
-            out_Top2.setTitle(String(Int(quick_avg.speed)), for: .normal)
-        }
-        
-        if quick_avg.cadence.isNaN == false {
-            out_Top3.setTitle(String(Int(quick_avg.cadence)), for: .normal)
-        }
-
-
-        
         if Int(z) % seconds_for_quick_avg == 0 {
-            get_quick_avg_speed()
-            get_quick_avg_cadence()
-            
             if quick_avg.speed.isNaN == true {
                 old_avg_speed = 0
             } else {
                 old_avg_speed = quick_avg.speed
             }
+            get_quick_avg_speed()
+            get_quick_avg_cadence()
             avg_seconds_count = 0
         }
         
+        if quick_avg.speed.isNaN == false {
+            out_Top2.setTitle(stringer1(myIn: quick_avg.speed), for: .normal)
+        }
         
+        if arrSpeed.isNaN == false {
+            out_Top3.setTitle(stringer1(myIn: arrSpeed), for: .normal)
+        }
+        
+        if arrDistanceTotal.isNaN == false {
+            out_Btn5.setTitle(stringer1(myIn: arrDistanceTotal), for: .normal)
+        }
+        
+        if arrAverageMovingSpeed.isNaN == false {
+            out_Btn4.setTitle(stringer1(myIn: arrAverageMovingSpeed), for: .normal)
+        }
+        
+//        if arrDurationTotal.isNaN == false {
+//            let durationString = createTimeString(seconds: Int(arrDurationTotal))
+//            arrDurationTotalString = durationString
+//        }
+        
+        
+//        if quick_avg.cadence.isNaN == false {
+//            out_Top3.setTitle(String(Int(quick_avg.cadence)), for: .normal)
+//        }
+        
+        NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
+//END OF EACH SECOND UPDATE
     }
     
     let defaults = UserDefaults.standard
