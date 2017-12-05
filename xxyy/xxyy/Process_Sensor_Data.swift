@@ -35,20 +35,19 @@ var numofvaluesforarraycalc: Int = 4
 
 func calc_based_on_array_values() {
     
-    let last3wheelrevs = arrWheelRevs.suffix(numofvaluesforarraycalc)
-    let sum_last3wheelrevs = last3wheelrevs.reduce(0, +)
+    let lastxwheelrevs = arrWheelRevs.suffix(numofvaluesforarraycalc)
+    let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
     
-    let last3wheeltimes = arrWheelTimes.suffix(numofvaluesforarraycalc)
-    let sum_last3wheeltimes = last3wheeltimes.reduce(0, +)
-    //print(sum_last3wheelrevs, sum_last3wheeltimes)
+    let lastxwheeltimes = arrWheelTimes.suffix(numofvaluesforarraycalc)
+    let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
     
-    let last3distance = sum_last3wheelrevs * (wheelCircumference / 1000) * 0.000621371
-    let last3time = sum_last3wheeltimes / 1024
-    let last3mph = last3distance / (last3time / 60 / 60)
+    let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+    let lastxtime = sum_lastxwheeltimes / 1024
+    let lastxmph = lastxdistance / (lastxtime / 60 / 60)
     
-    if last3mph.isNaN == false {
+    if lastxmph.isNaN == false {
         //print("last3mph:  \(last3mph)")
-        arrSpeed = last3mph
+        arrSpeed = lastxmph
     } else {
         arrSpeed = 0
     }
@@ -59,9 +58,8 @@ func calc_based_on_array_values() {
         //print("totaldistance:  \(totaldistance)")
         arrDistanceTotal = totaldistance
     }
-
     let totalduration = (arrWheelTimes.reduce(0, +) / 1024)
-    print("Total Duration \(totalduration)")
+    //print("Total Duration \(totalduration)")
     if totalduration.isNaN == false {
         arrDurationTotal = totalduration
         arrDurationTotalString = createTimeString(seconds: Int(arrDurationTotal))
@@ -77,7 +75,7 @@ func calc_based_on_array_values() {
 }
 
 
-func get_quick_avg_speed() -> Double {
+func get_quick_avg_speed() {
     let distance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
     
     quick_avg.speed = distance / ((quick_avg.wheel_event_time / 1024) / 60 / 60)
@@ -89,7 +87,6 @@ func get_quick_avg_speed() -> Double {
     quick_avg.wheel_event_time = 0
     quick_avg.wheel_rev_count = 0
     
-    return distance
 }
 
 func get_quick_avg_cadence() {
@@ -165,11 +162,6 @@ func processWheelData(withData data :Data) {
         if b > 2050 {b = 0}
         arrWheelRevs.append(a)
         arrWheelTimes.append(b)
-        
-//        if arrWheelRevs.count > 2 {
-//            calc_based_on_array_values()
-//        }
-
         
     }
     oldWheelRevolution = Double(wheelRevolution)

@@ -88,10 +88,10 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //        }
 
         if Int(z) % 2 == 0 {
-            let segmentDistance = get_quick_avg_speed()
+            get_quick_avg_speed()
             get_quick_avg_cadence()
             
-            //use this to get a 30 and 300 sec avg
+            //use this to get a 30 and 300 sec avg?
         }
         
         if quick_avg.speed.isNaN == false {
