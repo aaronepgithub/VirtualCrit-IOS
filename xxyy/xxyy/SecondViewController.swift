@@ -64,7 +64,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let z = Double(y)  //time in seconds
         rt.string_elapsed_time = createTimeString(seconds: Int(z))
         rt.int_elapsed_time = Int(z)  //int for seconds
-        avg_seconds_count += 1
         
         arrWheelRevs.append(0)
         arrWheelTimes.append(0)
@@ -88,15 +87,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //            }
 //        }
 
-        if Int(z) % seconds_for_quick_avg == 0 {
-            if quick_avg.speed.isNaN == true {
-                old_avg_speed = 0
-            } else {
-                old_avg_speed = quick_avg.speed
-            }
-            get_quick_avg_speed()
+        if Int(z) % 2 == 0 {
+            let segmentDistance = get_quick_avg_speed()
             get_quick_avg_cadence()
-            avg_seconds_count = 0
+            
+            //use this to get a 30 and 300 sec avg
         }
         
         if quick_avg.speed.isNaN == false {

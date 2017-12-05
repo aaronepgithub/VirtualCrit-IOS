@@ -77,7 +77,7 @@ func calc_based_on_array_values() {
 }
 
 
-func get_quick_avg_speed() {
+func get_quick_avg_speed() -> Double {
     let distance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
     
     quick_avg.speed = distance / ((quick_avg.wheel_event_time / 1024) / 60 / 60)
@@ -88,6 +88,8 @@ func get_quick_avg_speed() {
 
     quick_avg.wheel_event_time = 0
     quick_avg.wheel_rev_count = 0
+    
+    return distance
 }
 
 func get_quick_avg_cadence() {
