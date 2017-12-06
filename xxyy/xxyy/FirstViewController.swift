@@ -47,15 +47,21 @@ class FirstViewController: UIViewController {
             lbl_Cadence.text = "\(stringer0(myIn: quick_avg.cadence))"
         }
         
+        lbl_Time.text = rt.string_elapsed_time  //NS Date Time since launch
+        lbl_Distance.text = "\(stringer2(myIn: arrDistanceTotal))"
+        lbl_HR.text = "\(stringer0(myIn: rt.rt_hr))"
+        lbl_Top_Info_Bar.text = "\(stringer1(myIn: arrAverageMovingSpeed)) mph  \(arrDurationTotalString) mvg"
+        
+        
 
 //        lbl_HR.text = "\(String(format:"%.0f", rt.rt_hr))"
-        lbl_HR.text = "\(stringer0(myIn: rt.rt_hr))"
+        
 //        lbl_Distance.text = "\(String(format:"%.2f", rt.total_distance))"
 //        lbl_Distance.text = "\(stringer2(myIn: rt.total_distance))"
-        lbl_Distance.text = "\(stringer2(myIn: arrDistanceTotal))"
+        
         
         //lbl_Time.text = createTimeString(seconds: Int(rt.total_time))  //moving time from ble
-        lbl_Time.text = rt.string_elapsed_time  //NS Date Time since launch
+        
         
 //        let x = createTimeString(seconds: Int(quick_avg.lap_time))
         
@@ -67,7 +73,7 @@ class FirstViewController: UIViewController {
 //            }
 //        }
         
-        lbl_Top_Info_Bar.text = "\(stringer1(myIn: arrAverageMovingSpeed)) mph  \(arrDurationTotalString) mvg"
+        
         
     }
     

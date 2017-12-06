@@ -30,7 +30,9 @@ var arrDistanceTotal: Double = 0
 var arrDurationTotal: Double = 0
 var arrDurationTotalString: String = "00:00:00"
 var arrAverageMovingSpeed: Double = 0
-var numofvaluesforarraycalc: Int = 4
+
+
+var numofvaluesforarraycalc: Int = 5
 
 
 func calc_based_on_array_values() {
@@ -45,12 +47,14 @@ func calc_based_on_array_values() {
     let lastxtime = sum_lastxwheeltimes / 1024
     let lastxmph = lastxdistance / (lastxtime / 60 / 60)
     
-    if lastxmph.isNaN == false {
-        //print("last3mph:  \(last3mph)")
-        arrSpeed = lastxmph
-    } else {
+    if lastxmph.isNaN == true || lastxmph.isInfinite == true {
         arrSpeed = 0
+    } else {
+        arrSpeed = lastxmph
     }
+    
+    dump(lastxwheelrevs)
+    dump(lastxwheeltimes)
 
     
     let totaldistance = arrWheelRevs.reduce(0, +) * (wheelCircumference / 1000) * 0.000621371
@@ -75,19 +79,19 @@ func calc_based_on_array_values() {
 }
 
 
-func get_quick_avg_speed() {
-    let distance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
-    
-    quick_avg.speed = distance / ((quick_avg.wheel_event_time / 1024) / 60 / 60)
-    
-    if quick_avg.speed.isNaN == true {
-        quick_avg.speed = 0
-    }
-
-    quick_avg.wheel_event_time = 0
-    quick_avg.wheel_rev_count = 0
-    
-}
+//func get_quick_avg_speed() {
+//    let distance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
+//
+//    quick_avg.speed = distance / ((quick_avg.wheel_event_time / 1024) / 60 / 60)
+//
+//    if quick_avg.speed.isNaN == true {
+//        quick_avg.speed = 0
+//    }
+//
+//    quick_avg.wheel_event_time = 0
+//    quick_avg.wheel_rev_count = 0
+//
+//}
 
 func get_quick_avg_cadence() {
     quick_avg.cadence = quick_avg.crank_rev_count / (quick_avg.crank_event_time / 1024) * 60
@@ -122,51 +126,60 @@ func processWheelData(withData data :Data) {
         
         c = b/1024
         
+//        if b > 2050 {
+//            b = 0
+//        }
+        
         total_ble_seconds += c //actual time calculated by adding all wheel event times, even when wheel revs are 0
-        raw_wheel_revs += a
-        raw_wheel_revs_for_avg += a
         
-        quick_avg.wheel_rev_count += a
-        quick_avg.wheel_event_time += b
-        quick_avg.lap_time += c   //converted to seconds
-        
-        if a > 0 {
-            raw_wheel_time += b // still in 1/1024 second - moving speed
-            raw_wheel_time_for_avg += b
+        if b < 2050 {
+            arrWheelRevs.append(a)
+            arrWheelTimes.append(b)
+            //attempt accurate moving time
         }
+        
+
+        
+//        raw_wheel_revs += a
+//        raw_wheel_revs_for_avg += a
+        
+//        quick_avg.wheel_rev_count += a
+//        quick_avg.wheel_event_time += b
+//        quick_avg.lap_time += c   //converted to seconds
+        
+//        if a > 0 {
+//            raw_wheel_time += b // still in 1/1024 second - moving speed
+//            raw_wheel_time_for_avg += b
+//        }
 
 
-        let distance_raw = raw_wheel_revs * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
+        //let distance_raw = raw_wheel_revs * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
         //let speed_raw = distance_raw / ((raw_wheel_time / 1024) / 60 / 60) //miles per hour - avg moving speed
 
-        raw_distance_for_avg = raw_wheel_revs_for_avg * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
+        //raw_distance_for_avg = raw_wheel_revs_for_avg * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
         
-        if let rd = raw_distance_for_avg {
-            if rd.isNaN == false {
-                    raw_speed_for_avg = rd / ((raw_wheel_time_for_avg / 1024) / 60 / 60) //miles per hour - avg moving speed
-            }
-        }
+//        if let rd = raw_distance_for_avg {
+//            if rd.isNaN == false {
+//                    raw_speed_for_avg = rd / ((raw_wheel_time_for_avg / 1024) / 60 / 60) //miles per hour - avg moving speed
+//            }
+//        }
 
-        rt.total_distance = distance_raw
+        //rt.total_distance = distance_raw
         
-        let rtDistance = a * (wheelCircumference / 1000) * 0.000621371
-        let rtSpeed = rtDistance / ((b / 1024) / 60 / 60)
+//        let rtDistance = a * (wheelCircumference / 1000) * 0.000621371
+//        let rtSpeed = rtDistance / ((b / 1024) / 60 / 60)
         
-        if rtSpeed.isNaN == true {
-            //print(0)
-            rt.rt_speed = 0
-        } else {
-            //print(rtSpeed)
-            rt.rt_speed = rtSpeed
-        }
-        rt.total_time = total_ble_seconds
+//        if rtSpeed.isNaN == true {
+//            //print(0)
+//            rt.rt_speed = 0
+//        } else {
+//            //print(rtSpeed)
+//            rt.rt_speed = rtSpeed
+//        }
+//        rt.total_time = total_ble_seconds
         
-        if b > 2050 {
-            b = 0
-        }
         
-        arrWheelRevs.append(a)
-        arrWheelTimes.append(b)
+
         
     }
     

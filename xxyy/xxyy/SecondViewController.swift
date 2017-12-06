@@ -58,6 +58,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         return a
     }
     
+    var index3 = 0
     var index30 = 0
     var index300 = 0
     
@@ -68,22 +69,35 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.string_elapsed_time = createTimeString(seconds: Int(z))
         rt.int_elapsed_time = Int(z)  //int for seconds
         
-        if arrWheelRevs.count > (numofvaluesforarraycalc - 1) {
+        
+        if arrWheelRevs.count >= numofvaluesforarraycalc {
             calc_based_on_array_values()
         }
         
         //print("arrCalculated Values for Speed, Distance, AvgMovingSpeed:\n\(arrSpeed) \n\(arrDistanceTotal) \n\(arrAverageMovingSpeed) \n\(arrDurationTotalString)")
 
-
         if Int(z) % 3 == 0 {
-            arrWheelRevs.append(0)
-            arrWheelTimes.append(0)
-            get_quick_avg_speed()
-            get_quick_avg_cadence()
+
+            let lastxwheelrevs = arrWheelRevs[index3 ..< arrWheelRevs.endIndex]
+            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
+            
+            let lastxwheeltimes = arrWheelTimes[index3 ..< arrWheelTimes.endIndex]
+            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
+            
+            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+            let lastxtime = sum_lastxwheeltimes / 1024
+            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
+            
+            if lastxmph.isNaN == false {
+                let disp = stringer1(myIn: lastxmph)
+                out_Btn3.setTitle(disp, for: .normal)
+            } else {
+                out_Btn3.setTitle("xxx", for: .normal)
+            }
+            index3 = arrWheelRevs.count
         }
         
         if Int(z) % 30 == 0 {
-            print("30 Seconds \(rt.string_elapsed_time)")
             
             let lastxwheelrevs = arrWheelRevs[index30 ..< arrWheelRevs.endIndex]
             let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
@@ -98,16 +112,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             if lastxmph.isNaN == false {
                 //print("last3mph:  \(last3mph)")
                 let disp = stringer1(myIn: lastxmph)
-                out_Btn5.setTitle(disp, for: .normal)
+                out_Btn4.setTitle(disp, for: .normal)
             } else {
-                out_Btn5.setTitle("xxx", for: .normal)
+                out_Btn4.setTitle("xxx", for: .normal)
             }
             index30 = arrWheelRevs.count
         }
         
         if Int(z) % 300 == 0 {
-            print("300 Seconds \(rt.string_elapsed_time)")
-
             
             let lastxwheelrevs = arrWheelRevs[index300 ..< arrWheelRevs.endIndex]
             let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
@@ -122,19 +134,19 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             if lastxmph.isNaN == false {
                 //print("last3mph:  \(last3mph)")
                 let disp = stringer1(myIn: lastxmph)
-                out_Btn4.setTitle(disp, for: .normal)
+                out_Btn5.setTitle(disp, for: .normal)
                 alert(message: "300 Avg = \(disp) mph")
             } else {
-                out_Btn4.setTitle("xxx", for: .normal)
+                out_Btn5.setTitle("xxx", for: .normal)
             }
             index300 = arrWheelRevs.count
         }
         
         
         
-        if quick_avg.speed.isNaN == false {
-            out_Top2.setTitle(stringer1(myIn: quick_avg.speed), for: .normal)
-        }
+//        if quick_avg.speed.isNaN == false {
+//            out_Top2.setTitle(stringer1(myIn: quick_avg.speed), for: .normal)
+//        }
         
         if arrSpeed.isNaN == false {
             out_Top3.setTitle(stringer1(myIn: arrSpeed), for: .normal)
@@ -411,16 +423,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
                 //print("SPD value[1]");print(value[1])
-                out_Btn2.setTitle(String(value[1]), for: .normal)
+                //out_Btn2.setTitle(String(value[1]), for: .normal)
                 processWheelData(withData: data)
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    out_Btn3.setTitle(String(value[7]), for: .normal)
+                    //out_Btn3.setTitle(String(value[7]), for: .normal)
                     //print("CAD value[7]");print(value[7])
                     processCrankData(withData: data, andCrankRevolutionIndex: 7)
                 }
             } else {
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    out_Btn3.setTitle(String(value[1]), for: .normal)
+                    //out_Btn3.setTitle(String(value[1]), for: .normal)
                     //print("CAD value[1]");print(value[1])
                     processCrankData(withData: data, andCrankRevolutionIndex: 1)
                 }

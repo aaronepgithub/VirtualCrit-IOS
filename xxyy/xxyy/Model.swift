@@ -18,18 +18,31 @@ func createTimeString(seconds: Int)->String
 }
 
 func stringer0(myIn: Double) -> String {
-    let myOut = String(format:"%.0f", myIn)
-    return myOut
+    if myIn.isInfinite == true {
+        return "0"
+    } else {
+        let myOut = String(format:"%.0f", myIn)
+        return myOut
+    }
+
 }
 
 func stringer1(myIn: Double) -> String {
-    let myOut = String(format:"%.1f", myIn)
-    return myOut
+    if myIn.isInfinite == true {
+        return "0"
+    } else {
+        let myOut = String(format:"%.1f", myIn)
+        return myOut
+    }
 }
 
 func stringer2(myIn: Double) -> String {
-    let myOut = String(format:"%.2f", myIn)
-    return myOut
+    if myIn.isInfinite == true {
+        return "0"
+    } else {
+        let myOut = String(format:"%.2f", myIn)
+        return myOut
+    }
 }
 
 
