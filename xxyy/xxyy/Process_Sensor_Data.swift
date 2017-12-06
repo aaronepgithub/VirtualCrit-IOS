@@ -63,7 +63,7 @@ func calc_based_on_array_values() {
     if totalduration.isNaN == false {
         arrDurationTotal = totalduration
         arrDurationTotalString = createTimeString(seconds: Int(arrDurationTotal))
-        print("arrDurationString \(arrDurationTotalString)")
+        //print("arrDurationString \(arrDurationTotalString)")
     }
     
     let avgmovingspeed = totaldistance / ((arrWheelTimes.reduce(0, +) / 1024) / 60 / 60)
@@ -103,6 +103,8 @@ func processWheelData(withData data :Data) {
     
     let wheelRevolution = Double(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
     let wheelEventTime = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
+
+    //print(wheelRevolution, wheelEventTime)
     
     var a: Double = 0;var b: Double = 0; var c: Double = 0;
     
@@ -159,11 +161,16 @@ func processWheelData(withData data :Data) {
         }
         rt.total_time = total_ble_seconds
         
-        if b > 2050 {b = 0}
+        if b > 2050 {
+            b = 0
+        }
+        
         arrWheelRevs.append(a)
         arrWheelTimes.append(b)
         
     }
+    
+    
     oldWheelRevolution = Double(wheelRevolution)
     oldWheelEventTime = Double(wheelEventTime)
 }

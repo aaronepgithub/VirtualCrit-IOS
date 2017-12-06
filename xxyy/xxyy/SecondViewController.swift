@@ -58,6 +58,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         return a
     }
     
+    var index30 = 0
+    var index300 = 0
+    
     @objc func UpdateTimeDisplay() {
         let x = NSDate()
         let y = x.timeIntervalSince(startTime! as Date!)
@@ -65,34 +68,69 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.string_elapsed_time = createTimeString(seconds: Int(z))
         rt.int_elapsed_time = Int(z)  //int for seconds
         
-        arrWheelRevs.append(0)
-        arrWheelTimes.append(0)
         if arrWheelRevs.count > (numofvaluesforarraycalc - 1) {
             calc_based_on_array_values()
         }
         
         //print("arrCalculated Values for Speed, Distance, AvgMovingSpeed:\n\(arrSpeed) \n\(arrDistanceTotal) \n\(arrAverageMovingSpeed) \n\(arrDurationTotalString)")
-        
-        
-//        if let rs = raw_speed_for_avg {
-//            if rs.isNaN == false {
-//                //out_Btn5.setTitle(String(Int(rs)), for: .normal)
-//            }
-//
-//        }
-//
-//        if let rd = raw_distance_for_avg {
-//            if rd.isNaN == false {
-//                out_Btn4.setTitle(String(Int(rd)), for: .normal)
-//            }
-//        }
 
-        if Int(z) % 2 == 0 {
+
+        if Int(z) % 3 == 0 {
+            arrWheelRevs.append(0)
+            arrWheelTimes.append(0)
             get_quick_avg_speed()
             get_quick_avg_cadence()
-            
-            //use this to get a 30 and 300 sec avg?
         }
+        
+        if Int(z) % 30 == 0 {
+            print("30 Seconds \(rt.string_elapsed_time)")
+            
+            let lastxwheelrevs = arrWheelRevs[index30 ..< arrWheelRevs.endIndex]
+            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
+            
+            let lastxwheeltimes = arrWheelTimes[index30 ..< arrWheelTimes.endIndex]
+            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
+            
+            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+            let lastxtime = sum_lastxwheeltimes / 1024
+            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
+            
+            if lastxmph.isNaN == false {
+                //print("last3mph:  \(last3mph)")
+                let disp = stringer1(myIn: lastxmph)
+                out_Btn5.setTitle(disp, for: .normal)
+            } else {
+                out_Btn5.setTitle("xxx", for: .normal)
+            }
+            index30 = arrWheelRevs.count
+        }
+        
+        if Int(z) % 300 == 0 {
+            print("300 Seconds \(rt.string_elapsed_time)")
+
+            
+            let lastxwheelrevs = arrWheelRevs[index300 ..< arrWheelRevs.endIndex]
+            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
+            
+            let lastxwheeltimes = arrWheelTimes[index300 ..< arrWheelTimes.endIndex]
+            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
+            
+            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+            let lastxtime = sum_lastxwheeltimes / 1024
+            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
+            
+            if lastxmph.isNaN == false {
+                //print("last3mph:  \(last3mph)")
+                let disp = stringer1(myIn: lastxmph)
+                out_Btn4.setTitle(disp, for: .normal)
+                alert(message: "300 Avg = \(disp) mph")
+            } else {
+                out_Btn4.setTitle("xxx", for: .normal)
+            }
+            index300 = arrWheelRevs.count
+        }
+        
+        
         
         if quick_avg.speed.isNaN == false {
             out_Top2.setTitle(stringer1(myIn: quick_avg.speed), for: .normal)
@@ -102,22 +140,12 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             out_Top3.setTitle(stringer1(myIn: arrSpeed), for: .normal)
         }
         
-        if arrDistanceTotal.isNaN == false {
-            out_Btn5.setTitle(stringer1(myIn: arrDistanceTotal), for: .normal)
-        }
-        
-        if arrAverageMovingSpeed.isNaN == false {
-            out_Btn4.setTitle(stringer1(myIn: arrAverageMovingSpeed), for: .normal)
-        }
-        
-//        if arrDurationTotal.isNaN == false {
-//            let durationString = createTimeString(seconds: Int(arrDurationTotal))
-//            arrDurationTotalString = durationString
+//        if arrDistanceTotal.isNaN == false {
+//            out_Btn4.setTitle(stringer1(myIn: arrDistanceTotal), for: .normal)
 //        }
         
-        
-//        if quick_avg.cadence.isNaN == false {
-//            out_Top3.setTitle(String(Int(quick_avg.cadence)), for: .normal)
+//        if arrAverageMovingSpeed.isNaN == false {
+//            out_Btn4.setTitle(stringer1(myIn: arrAverageMovingSpeed), for: .normal)
 //        }
         
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
@@ -358,6 +386,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             (data as NSData).getBytes(&array, length:count * MemoryLayout<UInt8>.size)
             var bpmValue : Int = 0
             
+            dump(array)
+            
             if ((array[0] & 0x01) == 0) {
                 bpmValue = Int(array[1])
                 
@@ -376,7 +406,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let WHEEL_REVOLUTION_FLAG               : UInt8 = 0x01
             let CRANK_REVOLUTION_FLAG               : UInt8 = 0x02
             let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
-            
+            //dump(value)
             let flag = value[0]
             
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
