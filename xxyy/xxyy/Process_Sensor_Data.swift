@@ -47,14 +47,22 @@ func calc_based_on_array_values() {
     let lastxtime = sum_lastxwheeltimes / 1024
     let lastxmph = lastxdistance / (lastxtime / 60 / 60)
     
-    if lastxmph.isNaN == true || lastxmph.isInfinite == true {
-        arrSpeed = 0
-    } else {
-        arrSpeed = lastxmph
-    }
+//    if lastxmph.isNaN == true || lastxmph.isInfinite == true {
+//        arrSpeed = 0
+//    } else {
+//        arrSpeed = lastxmph
+//    }
     
     dump(lastxwheelrevs)
     dump(lastxwheeltimes)
+    
+    if lastxmph.isNaN == false || lastxmph.isInfinite == false {
+        if sum_lastxwheelrevs > 0 {
+            arrSpeed = lastxmph
+        } else {
+            arrSpeed = 0
+        }
+    }
 
     
     let totaldistance = arrWheelRevs.reduce(0, +) * (wheelCircumference / 1000) * 0.000621371
@@ -145,6 +153,15 @@ func processWheelData(withData data :Data) {
         
 //        quick_avg.wheel_rev_count += a
 //        quick_avg.wheel_event_time += b
+        //add to arr every sec or .5 sec, 0 if nothing
+        //append until x entries, after x, remove first
+        //each sec, calc speed
+        
+//        let quickdistance = quick_avg.wheel_rev_count * (wheelCircumference / 1000) * 0.000621371  //raw total distance, in miles
+//        let quickspeed = quickdistance / ((quick_avg.wheel_event_time / 1024) / 60 / 60) //miles per hour - avg moving speed
+//        print(stringer1(myIn: quickspeed))
+
+        
 //        quick_avg.lap_time += c   //converted to seconds
         
 //        if a > 0 {

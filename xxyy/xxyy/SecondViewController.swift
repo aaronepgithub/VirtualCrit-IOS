@@ -74,73 +74,79 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             calc_based_on_array_values()
         }
         
+        if Int(z) % 2 == 0 {
+            arrWheelRevs.append(0)
+            arrWheelTimes.append(0)
+        }
+
+        
         //print("arrCalculated Values for Speed, Distance, AvgMovingSpeed:\n\(arrSpeed) \n\(arrDistanceTotal) \n\(arrAverageMovingSpeed) \n\(arrDurationTotalString)")
 
-        if Int(z) % 3 == 0 {
-
-            let lastxwheelrevs = arrWheelRevs[index3 ..< arrWheelRevs.endIndex]
-            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
-            
-            let lastxwheeltimes = arrWheelTimes[index3 ..< arrWheelTimes.endIndex]
-            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
-            
-            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
-            let lastxtime = sum_lastxwheeltimes / 1024
-            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
-            
-            if lastxmph.isNaN == false {
-                let disp = stringer1(myIn: lastxmph)
-                out_Btn3.setTitle(disp, for: .normal)
-            } else {
-                out_Btn3.setTitle("xxx", for: .normal)
-            }
-            index3 = arrWheelRevs.count
-        }
+//        if Int(z) % 3 == 0 {
+//
+//            let lastxwheelrevs = arrWheelRevs[index3 ..< arrWheelRevs.endIndex]
+//            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
+//            
+//            let lastxwheeltimes = arrWheelTimes[index3 ..< arrWheelTimes.endIndex]
+//            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
+//            
+//            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+//            let lastxtime = sum_lastxwheeltimes / 1024
+//            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
+//            
+//            if lastxmph.isNaN == false {
+//                let disp = stringer1(myIn: lastxmph)
+//                out_Btn3.setTitle(disp, for: .normal)
+//            } else {
+//                out_Btn3.setTitle("xxx", for: .normal)
+//            }
+//            index3 = arrWheelRevs.count
+//        }
+//        
+//        if Int(z) % 30 == 0 {
+//            
+//            let lastxwheelrevs = arrWheelRevs[index30 ..< arrWheelRevs.endIndex]
+//            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
+//            
+//            let lastxwheeltimes = arrWheelTimes[index30 ..< arrWheelTimes.endIndex]
+//            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
+//            
+//            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+//            let lastxtime = sum_lastxwheeltimes / 1024
+//            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
+//            
+//            if lastxmph.isNaN == false {
+//                //print("last3mph:  \(last3mph)")
+//                let disp = stringer1(myIn: lastxmph)
+//                out_Btn4.setTitle(disp, for: .normal)
+//            } else {
+//                out_Btn4.setTitle("xxx", for: .normal)
+//            }
+//            index30 = arrWheelRevs.count
+//        }
         
-        if Int(z) % 30 == 0 {
-            
-            let lastxwheelrevs = arrWheelRevs[index30 ..< arrWheelRevs.endIndex]
-            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
-            
-            let lastxwheeltimes = arrWheelTimes[index30 ..< arrWheelTimes.endIndex]
-            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
-            
-            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
-            let lastxtime = sum_lastxwheeltimes / 1024
-            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
-            
-            if lastxmph.isNaN == false {
-                //print("last3mph:  \(last3mph)")
-                let disp = stringer1(myIn: lastxmph)
-                out_Btn4.setTitle(disp, for: .normal)
-            } else {
-                out_Btn4.setTitle("xxx", for: .normal)
-            }
-            index30 = arrWheelRevs.count
-        }
-        
-        if Int(z) % 300 == 0 {
-            
-            let lastxwheelrevs = arrWheelRevs[index300 ..< arrWheelRevs.endIndex]
-            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
-            
-            let lastxwheeltimes = arrWheelTimes[index300 ..< arrWheelTimes.endIndex]
-            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
-            
-            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
-            let lastxtime = sum_lastxwheeltimes / 1024
-            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
-            
-            if lastxmph.isNaN == false {
-                //print("last3mph:  \(last3mph)")
-                let disp = stringer1(myIn: lastxmph)
-                out_Btn5.setTitle(disp, for: .normal)
-                alert(message: "300 Avg = \(disp) mph")
-            } else {
-                out_Btn5.setTitle("xxx", for: .normal)
-            }
-            index300 = arrWheelRevs.count
-        }
+//        if Int(z) % 300 == 0 {
+//
+//            let lastxwheelrevs = arrWheelRevs[index300 ..< arrWheelRevs.endIndex]
+//            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
+//
+//            let lastxwheeltimes = arrWheelTimes[index300 ..< arrWheelTimes.endIndex]
+//            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
+//
+//            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
+//            let lastxtime = sum_lastxwheeltimes / 1024
+//            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
+//
+//            if lastxmph.isNaN == false {
+//                //print("last3mph:  \(last3mph)")
+//                let disp = stringer1(myIn: lastxmph)
+//                out_Btn5.setTitle(disp, for: .normal)
+//                alert(message: "300 Avg = \(disp) mph")
+//            } else {
+//                out_Btn5.setTitle("xxx", for: .normal)
+//            }
+//            index300 = arrWheelRevs.count
+//        }
         
         
         
