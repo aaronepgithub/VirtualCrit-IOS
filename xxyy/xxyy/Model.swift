@@ -47,25 +47,30 @@ func stringer2(myIn: Double) -> String {
 
 
 var wheelCircumference: Double = 2105
-var seconds_for_quick_avg: Int = 2
+var rtTimer_Interval: Double = 2.5
 
 struct rt {
     static var rt_speed: Double = 0
     static var rt_cadence: Double = 0
     static var rt_hr: Double = 0
+    
     static var total_distance: Double = 0
+    static var total_moving_time_seconds: Double = 0  //in seconds
+    static var total_moving_time_string: String = "00:00:00"
+    
     static var total_time: Double = 0
     static var string_elapsed_time: String = "00:00:00"
     static var int_elapsed_time: Int = 0
 }
 
-struct quick_avg {
-    static var speed: Double = 0
-    static var cadence: Double = 0
-    static var wheel_rev_count: Double = 0
-    static var wheel_event_time: Double = 0
-    static var crank_rev_count: Double = 0
-    static var crank_event_time: Double = 0
-    static var lap_time: Double = 0 //seconds
-    
-}
+//struct quick_avg {
+//    static var speed: Double = 0
+//    static var cadence: Double = 0
+//    static var wheel_rev_count: Double = 0
+//    static var wheel_event_time: Double = 0
+//    static var crank_rev_count: Double = 0
+//    static var crank_event_time: Double = 0
+//    static var lap_time: Double = 0 //seconds
+//
+//}
+

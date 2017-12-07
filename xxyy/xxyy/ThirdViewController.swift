@@ -20,22 +20,14 @@ class ThirdViewController: UIViewController {
 
     
     @objc func update() {
-//        if quick_avg.speed.isNaN == false {
-//            out_Left.text = "\(String(format:"%.1f", quick_avg.speed))"
-//        }
-        
-        if arrSpeed.isNaN == false {
-            out_Left.text = "\(stringer1(myIn: arrSpeed))"
-        }
-        
-        if quick_avg.cadence.isNaN == false {
-                    out_Right.text = "\(String(format:"%.0f", quick_avg.cadence))"
-        }
+
+        out_Left.text = stringer1(myIn: rt.rt_speed)
+        out_Right.text = stringer0(myIn: rt.rt_cadence)
         out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
         
-//        lbl_top_StatusBar.text = "\(avg_seconds_count)  |  \(String(format:"%.1f", old_avg_speed)) prev mph"
+        let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         
-        lbl_top_StatusBar.text = "\(arrDurationTotalString) mv \(stringer1(myIn: arrAverageMovingSpeed)) mph"
+        lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph"
         
         let currentDateTime = Date()
         let formatter = DateFormatter()
@@ -43,13 +35,8 @@ class ThirdViewController: UIViewController {
         formatter.dateStyle = .none
         let currTime = formatter.string(from: currentDateTime)
         
-//        if let rs = raw_speed_for_avg {
-//            if rs.isNaN == false {
-//                out_Bottom.text = "\(rt.string_elapsed_time)     \(String(format:"%.1f", rt.total_distance)) Miles     \(String(format:"%.1f", rs)) Mph     \(currTime)"
-//            }
-//        }
         
-        out_Bottom.text = "\(rt.string_elapsed_time)  \(stringer1(myIn: arrDistanceTotal)) Miles  \(currTime)"
+        out_Bottom.text = "\(rt.string_elapsed_time)  \(stringer1(myIn: rt.total_distance)) Miles  \(currTime)"
         
     }
     

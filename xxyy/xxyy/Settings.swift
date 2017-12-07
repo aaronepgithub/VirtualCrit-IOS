@@ -121,38 +121,33 @@ class Settings: UITableViewController {
         
         if indexPath.section == 1 && indexPath.row == 1 {
             print("duration cell")
-            print("current seconds for quick avg: \(seconds_for_quick_avg)")
             
             let x = lbl_RT_Avg_Duration.text
             
-            if x == "CALCULATION VALUES = 2" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1"
-                seconds_for_quick_avg = 1
-                numofvaluesforarraycalc = 1
+            if x == "CALCULATION VALUES = 1.0" {
+                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.5"
+                rtTimer_Interval = 1.5
             }
             
-            if x == "CALCULATION VALUES = 5" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 3"
-                seconds_for_quick_avg = 3
-                numofvaluesforarraycalc = 3
+            if x == "CALCULATION VALUES = 1.5" {
+                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2.0"
+                rtTimer_Interval = 2.0
             }
             
-            if x == "CALCULATION VALUES = 1" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 5"
-                seconds_for_quick_avg = 5
-                numofvaluesforarraycalc = 5
+            if x == "CALCULATION VALUES = 2.0" {
+                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2.5"
+                rtTimer_Interval = 2.5
             }
             
-            if x == "CALCULATION VALUES = 3" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2"
-                seconds_for_quick_avg = 2
-                numofvaluesforarraycalc = 2
+            if x == "CALCULATION VALUES = 2.5" {
+                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 3.0"
+                rtTimer_Interval = 3.0
             }
             
-            
-            
-            print("updated seconds for quick avg: \(seconds_for_quick_avg)")
-            
+            if x == "CALCULATION VALUES = 3.0" {
+                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.0"
+                rtTimer_Interval = 1.0
+            }
             
         }
     }
