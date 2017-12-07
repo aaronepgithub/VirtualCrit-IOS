@@ -47,32 +47,24 @@ func calc_based_on_array_values() {
     let lastxtime = sum_lastxwheeltimes / 1024
     let lastxmph = lastxdistance / (lastxtime / 60 / 60)
     
-//    if lastxmph.isNaN == true || lastxmph.isInfinite == true {
-//        arrSpeed = 0
-//    } else {
-//        arrSpeed = lastxmph
-//    }
-    
-    //dump(lastxwheelrevs)
-    //dump(lastxwheeltimes)
     
     if lastxmph.isNaN == false || lastxmph.isInfinite == false {
-        if sum_lastxwheelrevs > 0 {
+        if sum_lastxwheelrevs > 0 {  //only pass a zero if all 0's in the arr
             arrSpeed = lastxmph
         } else {
-            arrSpeed = 0
+            arrSpeed = 0.0
         }
     }
 
     
     let totaldistance = arrWheelRevs.reduce(0, +) * (wheelCircumference / 1000) * 0.000621371
-    if totaldistance.isNaN == false {
+    if totaldistance.isNaN == false || totaldistance.isInfinite == false {
         //print("totaldistance:  \(totaldistance)")
         arrDistanceTotal = totaldistance
     }
     let totalduration = (arrWheelTimes.reduce(0, +) / 1024)
     //print("Total Duration \(totalduration)")
-    if totalduration.isNaN == false {
+    if totalduration.isNaN == false || totalduration.isInfinite == false {
         arrDurationTotal = totalduration
         arrDurationTotalString = createTimeString(seconds: Int(arrDurationTotal))
         //print("arrDurationString \(arrDurationTotalString)")
@@ -103,7 +95,9 @@ func calc_based_on_array_values() {
 
 func get_quick_avg_cadence() {
     quick_avg.cadence = quick_avg.crank_rev_count / (quick_avg.crank_event_time / 1024) * 60
-    if quick_avg.cadence.isNaN == true {quick_avg.cadence = 0}
+    if quick_avg.cadence.isNaN == true || quick_avg.cadence.isInfinite == true {
+        quick_avg.cadence = 0
+    }
 
     quick_avg.crank_rev_count = 0
     quick_avg.crank_event_time = 0
@@ -195,9 +189,6 @@ func processWheelData(withData data :Data) {
 //            rt.rt_speed = rtSpeed
 //        }
 //        rt.total_time = total_ble_seconds
-        
-        
-
         
     }
     
