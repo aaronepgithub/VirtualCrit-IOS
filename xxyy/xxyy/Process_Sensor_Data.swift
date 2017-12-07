@@ -53,8 +53,8 @@ func calc_based_on_array_values() {
 //        arrSpeed = lastxmph
 //    }
     
-    dump(lastxwheelrevs)
-    dump(lastxwheeltimes)
+    //dump(lastxwheelrevs)
+    //dump(lastxwheeltimes)
     
     if lastxmph.isNaN == false || lastxmph.isInfinite == false {
         if sum_lastxwheelrevs > 0 {
@@ -146,6 +146,7 @@ func processWheelData(withData data :Data) {
             //attempt accurate moving time
         }
         
+        //print(a,b)
 
         
 //        raw_wheel_revs += a
