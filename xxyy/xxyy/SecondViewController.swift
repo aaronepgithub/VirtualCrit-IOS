@@ -91,13 +91,13 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let d = totalCrankRevs - roundCrankRevs_atStart
         inRoundCadence = d / (Double(z) * 60)
         
-        let currentDateTime = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .none
-        let currTime = formatter.string(from: currentDateTime)
+//        let currentDateTime = Date()
+//        let formatter = DateFormatter()
+//        formatter.timeStyle = .medium
+//        formatter.dateStyle = .none
+//        let currTime = formatter.string(from: currentDateTime)
         
-        print(createTimeString(seconds: z), inRoundSpeed, inRoundCadence, currTime)
+        //print(createTimeString(seconds: z), inRoundSpeed, inRoundCadence, currTime)
         
         if z >= 300 {
             newRound()
@@ -522,6 +522,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         out_Top2.setTitle(stringer0(myIn: returnCadence), for: .normal)
     }
     
+    //have to restart on settings change
     func start_rtTimer() {
         rtTimer = Timer()
         rtTimer = Timer.scheduledTimer(timeInterval: rtTimer_Interval, target: self, selector: #selector(Update_rtTimer), userInfo: nil, repeats: true)
