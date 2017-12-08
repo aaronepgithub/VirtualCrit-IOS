@@ -63,14 +63,4 @@ struct rt {
     static var int_elapsed_time: Int = 0
 }
 
-//struct quick_avg {
-//    static var speed: Double = 0
-//    static var cadence: Double = 0
-//    static var wheel_rev_count: Double = 0
-//    static var wheel_event_time: Double = 0
-//    static var crank_rev_count: Double = 0
-//    static var crank_event_time: Double = 0
-//    static var lap_time: Double = 0 //seconds
-//
-//}
 

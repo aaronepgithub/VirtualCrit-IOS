@@ -43,7 +43,66 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     let CSC_Char = "0x2A5B"
     
     var startTime: NSDate?
-    var duration: TimeInterval?
+    
+    var roundStartTime: NSDate?
+    var roundWheelRevs_atStart: Double = 0
+    var roundCrankRevs_atStart: Double = 0
+    
+    var inRoundSpeed: Double = 0
+    var arrRoundSpeeds = [Double]()
+    
+    var inRoundCadence: Double = 0
+    var arrRoundCadences = [Double]()
+    
+    func newRound() {
+        arrRoundSpeeds.append(inRoundSpeed)
+        arrRoundCadences.append(inRoundCadence)
+        dump(arrRoundSpeeds)
+        roundStartTime = NSDate()
+        roundWheelRevs_atStart = totalWheelRevs
+        roundCrankRevs_atStart = totalCrankRevs
+        
+        out_Btn1.setTitle(stringer1(myIn: arrRoundSpeeds.last!), for: .normal)
+        
+        if arrRoundSpeeds.count > 1 {
+            out_Btn2.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 2]), for: .normal)
+        }
+        
+        if arrRoundSpeeds.count > 2 {
+            out_Btn3.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 3]), for: .normal)
+        }
+        
+        if arrRoundSpeeds.count > 3 {
+            out_Btn4.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 4]), for: .normal)
+        }
+        
+    }
+    
+    func roundUpdate_each_second() {
+        let x = NSDate()
+        let y = x.timeIntervalSince(roundStartTime! as Date!)
+        let z = Int(y)
+        
+        let a = totalWheelRevs - roundWheelRevs_atStart
+        let b = (wheelCircumference / 1000) * 0.000621371
+        let c = Double(z) / 60 / 60
+        inRoundSpeed = a * b / c
+        
+        let d = totalCrankRevs - roundCrankRevs_atStart
+        inRoundCadence = d / (Double(z) * 60)
+        
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .none
+        let currTime = formatter.string(from: currentDateTime)
+        
+        print(createTimeString(seconds: z), inRoundSpeed, inRoundCadence, currTime)
+        
+        if z >= 300 {
+            newRound()
+        }
+    }
     
     
     @objc func UpdateTimeDisplay() {  //each second
@@ -54,68 +113,12 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.string_elapsed_time = createTimeString(seconds: Int(z))
         rt.int_elapsed_time = Int(z)  //int for seconds
         
+        roundUpdate_each_second()
+        
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
+        
         //END OF EACH SECOND UPDATE
     }
-    
-    
-    
-//        if arrWheelRevs.count >= numofvaluesforarraycalc {
-//            calc_based_on_array_values()
-//        }
-        //calc_based_on_array_values()
-        //get_quick_avg_cadence()
-        
-        
-        //if Int(z) % 2 == 0 {
-//            arrWheelRevs.append(0)
-//            arrWheelTimes.append(0)
-        //}
-
-//        if Int(z) % 30 == 0 {
-//
-//            let lastxwheelrevs = arrWheelRevs[index30 ..< arrWheelRevs.endIndex]
-//            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
-//
-//            let lastxwheeltimes = arrWheelTimes[index30 ..< arrWheelTimes.endIndex]
-//            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
-//
-//            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
-//            let lastxtime = sum_lastxwheeltimes / 1024
-//            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
-//
-//            let disp = stringer1(myIn: lastxmph)
-//            out_Btn4.setTitle(disp, for: .normal)
-//            index30 = arrWheelRevs.count
-//        }
-        
-//        if Int(z) % 300 == 0 {
-//
-//            let lastxwheelrevs = arrWheelRevs[index300 ..< arrWheelRevs.endIndex]
-//            let sum_lastxwheelrevs = lastxwheelrevs.reduce(0, +)
-//
-//            let lastxwheeltimes = arrWheelTimes[index300 ..< arrWheelTimes.endIndex]
-//            let sum_lastxwheeltimes = lastxwheeltimes.reduce(0, +)
-//
-//            let lastxdistance = sum_lastxwheelrevs * (wheelCircumference / 1000) * 0.000621371
-//            let lastxtime = sum_lastxwheeltimes / 1024
-//            let lastxmph = lastxdistance / (lastxtime / 60 / 60)
-//
-//            if lastxmph.isNaN == false || lastxmph.isInfinite == false {
-//                //print("last3mph:  \(last3mph)")
-//                let disp = stringer1(myIn: lastxmph)
-//                out_Btn5.setTitle(disp, for: .normal)
-//                alert(message: "300 Avg = \(disp) mph")
-//            } else {
-//                out_Btn5.setTitle("xxx", for: .normal)
-//            }
-//            index300 = arrWheelRevs.count
-//        }
-        
-
-        
-        //out_Top3.setTitle(stringer1(myIn: arrSpeed), for: .normal)
-        
 
     
     let defaults = UserDefaults.standard
@@ -171,10 +174,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
 
     @IBAction func act_Btn1(_ sender: UIButton) {
-        print(arrPeripheral)
-        dump(arrPeripheral)
-        self.BLTE_TableViewOutlet.reloadData()
-        
     }
     
     @IBAction func act_Btn2(_ sender: UIButton) {
@@ -200,30 +199,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         //unpress button?
         self.dismiss(animated: true, completion: nil)
-        
-        
-//        let defaults = UserDefaults.standard
-//        var x = [String]()
-//
-//        for i in arrPeripheral {
-//            x.append((i?.name)!)
-//        }
-//        defaults.set(x, forKey: "Saved_Peripherals")
-        
-        
-        
-        //print("arrPeripheral")
-        //dump(arrPeripheral)
-        //print("\n")
-//        print("arr_connected_peripherals")
-//        dump(arr_connected_peripherals)
-//        print("\n")
-//        print("arr_hr_notifying_peripherals")
-//        dump(arr_hr_notifying_peripherals)
-//        print("\n")
-//        print("arr_CSC_notifying_peripherals")
-//        dump(arr_CSC_notifying_peripherals)
-//        print("\n")
 
     }
     
@@ -364,7 +339,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             }
             rt.rt_hr = Double(bpmValue)
             out_Top1.setTitle(String(bpmValue), for: .normal)
-            out_Btn1.setTitle(String(bpmValue), for: .normal)
+            //out_Btn1.setTitle(String(bpmValue), for: .normal)
 
         }
         
@@ -535,7 +510,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     var mainTimer = Timer()
     var rtTimer = Timer()
-//    var rtTimer_Interval: Double = 2.5
     var returnSpeed: Double = 0
     var returnCadence: Double = 0
     
@@ -551,8 +525,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func start_rtTimer() {
         rtTimer = Timer()
         rtTimer = Timer.scheduledTimer(timeInterval: rtTimer_Interval, target: self, selector: #selector(Update_rtTimer), userInfo: nil, repeats: true)
-        startTime = NSDate()
-        print("Start Main Timer")
+        print("Start rt Timer")
+        
+        roundStartTime = NSDate()
     }
     
     override func viewDidLoad() {
