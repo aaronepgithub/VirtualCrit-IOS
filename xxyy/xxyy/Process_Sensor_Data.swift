@@ -102,18 +102,28 @@ var totalCrankRevs: Double = 0
 
 func get_rt_speed_and_distance() -> Double {
     let distance = rt_WheelRevs * (wheelCircumference / 1000) * 0.000621371
-    let time = rt_WheelTime / 1024
-    let speed = distance / (time / 60 / 60)
+    let time = Double(rt_WheelTime) / Double(1024)
+    let wheelCircumferenceCM = wheelCircumference / 10
+    //let speed = distance / (time / 60 / 60)
     
-    rt.total_distance += distance
-    rt.rt_speed = speed
-    
-//    if speed.isNaN == true {
-//        print("dst \(distance)")
-//        print("time \(time)")
-//        print("spd \(speed)")
-//    }
-    
+//    let wheelTimeSeconds = Double(wheelTimeDelta) / Double(wheelTimeResolution)
+//    if wheelTimeSeconds > 0 {
+//        let wheelRPM = Double(wheelRevsDelta) / (wheelTimeSeconds / 60)
+//        let cmPerKm = 0.00001
+//        let minsPerHour = 60.0
+//        return wheelRPM * wheelCircumferenceCM * cmPerKm * minsPerHour
+    if time > 0 {
+        let wheelRPM = Double(rt_WheelRevs) / (time / 60)
+        let cmPerMile = 0.621371 * 0.00001
+        let minsPerHour = 60.0
+        let speed =  wheelRPM * wheelCircumferenceCM * cmPerMile * minsPerHour
+            
+        rt.total_distance += distance
+        rt.rt_speed = speed
+    } else {
+        rt.rt_speed = 0
+    }
+
     rt_WheelRevs = 0
     rt_WheelTime = 0
     
@@ -121,15 +131,16 @@ func get_rt_speed_and_distance() -> Double {
 }
 
 func get_rt_cadence() -> Double {
-    let rtc = rt_crank_revs / (rt_crank_time / 1024) * 60
-    rt.rt_cadence = rtc
-//    if rtc.isNaN == true || rtc.isInfinite == true {
-//        rt.rt_cadence = 0
-//    } else {
-//        rt.rt_cadence = rtc
-//    }
+    //let rtc = rt_crank_revs / (rt_crank_time / 1024) * 60
     
-    //print("cad \(rtc)")
+    let crankTimeSeconds = Double(rt_crank_time) / Double(1024)
+    if crankTimeSeconds > 0 {
+        rt.rt_cadence =  Double(rt_crank_revs) / (crankTimeSeconds / 60)
+    } else {
+        rt.rt_cadence = 0
+    }
+
+    //rt.rt_cadence = rtc
     
     rt_crank_revs = 0
     rt_crank_time = 0
@@ -142,13 +153,17 @@ var oldWheelEventTime: Double = 0
 var rt_WheelRevs: Double = 0
 var rt_WheelTime: Double = 0
 
+var single_read_speed: Double = 0
+var single_read_cad: Double = 0
+var arr_srs = [Double]()
+var arr_src = [Double]()
+var srseconds: Double = 0
+
 func processWheelData(withData data :Data) {
     let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
     var wheelRevolution = Double(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
     let wheelEventTime = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
 
-    
-    
     if oldWheelRevolution > 0 {  //test for NOT first time reading
         
         var a: Double = 0;var b: Double = 0;
@@ -158,27 +173,46 @@ func processWheelData(withData data :Data) {
         
         if a < 0 {a = (wheelRevolution + 255) - oldWheelRevolution}
         if b < 0 {b = (wheelEventTime + 65025) - oldWheelEventTime}
+        
+        //single read
+        let wheelTimeSeconds = Double(b) / Double(1024)
+        if wheelTimeSeconds > 0 {
+            let wheelCircumferenceCM = Double(wheelCircumference / 10)
+            let wheelRPM = Double(a) / (wheelTimeSeconds / 60)
+            let cmPerMi = Double(0.00001 * 0.621371)
+            let minsPerHour = 60.0
+            single_read_speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour
+        } else {
+            //logic here to not change old wheel unless time val is higher
+            single_read_speed = 0
+        }
+        arr_srs.append(single_read_speed)
+        print("spd:  \(b), \(single_read_speed)")
+        //end single read
+        //print("spd:  \(single_read_speed)")
+        
+        if single_read_speed > 0 {
+            srseconds += wheelTimeSeconds
+            //print(createTimeString(seconds: Int(srseconds)))
+        }
+
+        
 
         if b <= 2000 {
             rt_WheelRevs += a
             rt_WheelTime += b
             rt.total_moving_time_seconds += (b / 1024)
             rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
-            
-            //print(rt.total_moving_time_seconds, rt.total_moving_time_string, rt.string_elapsed_time)
-            
             totalWheelRevs += a
         }
         
         if a == 0 {
             wheelRevolution = 0
-            //wheelEventTime = 0
         }
-        //used to ensure moving time is accurate
     }
     
-    oldWheelRevolution = Double(wheelRevolution)
-    oldWheelEventTime = Double(wheelEventTime)
+    oldWheelRevolution = wheelRevolution
+    oldWheelEventTime = wheelEventTime
 }
 
 var rt_crank_revs: Double = 0
@@ -200,6 +234,18 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         
         if a < 0 {a = (crankRevolution + 255) - oldCrankRevolution}
         if b < 0 {b = (crankEventTime + 65025) - oldCrankEventTime}
+        
+        //single read
+        let crankTimeSeconds = Double(b) / 1024
+        if crankTimeSeconds > 0 {
+            single_read_cad = Double(a) / (crankTimeSeconds / 60)
+        } else {
+            single_read_cad = 0
+        }
+        arr_src.append(single_read_cad)
+        //print("cad:  \(single_read_cad), \(rt.rt_cadence), \(single_read_cad - rt.rt_cadence)")
+        //end single read
+        
         if a < 5 { //filter out bad readings
             rt_crank_revs += a
             rt_crank_time += b  //still in 1/1024 of a sec

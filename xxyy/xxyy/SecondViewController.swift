@@ -84,11 +84,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let z = Int(y)
         
         let a = totalWheelRevs - roundWheelRevs_atStart
-        let b = (wheelCircumference / 1000) * 0.000621371
-        let c = Double(z) / 60 / 60
-        inRoundSpeed = a * b / c
+        let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
+        let c = Double(z) / Double(60) / Double(60)
+        inRoundSpeed = Double(a) * Double(b) / Double(c)
         
-        let d = totalCrankRevs - roundCrankRevs_atStart
+        let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = d / (Double(z) * 60)
         
 //        let currentDateTime = Date()
@@ -515,11 +515,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     @objc func Update_rtTimer() {
         returnSpeed = get_rt_speed_and_distance()
-        //print(returnTest)
         out_Top3.setTitle(stringer1(myIn: returnSpeed), for: .normal)
-        //call for cadence update
         returnCadence = get_rt_cadence()
         out_Top2.setTitle(stringer0(myIn: returnCadence), for: .normal)
+        
+//        print("Speed")
+//        dump(arr_srs)
+//        print("Cadence")
+//        dump(arr_src)
     }
     
     //have to restart on settings change

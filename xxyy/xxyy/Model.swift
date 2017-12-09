@@ -49,7 +49,7 @@ func stringer2(myIn: Double) -> String {
 
 
 var wheelCircumference: Double = 2105
-var rtTimer_Interval: Double = 2.5
+var rtTimer_Interval: Double = 1.95 //add a rt option
 
 struct rt {
     static var rt_speed: Double = 0
