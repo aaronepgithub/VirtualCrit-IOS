@@ -54,9 +54,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var inRoundCadence: Double = 0
     var arrRoundCadences = [Double]()
     
+    var inRoundHR: Double = 0
+    var arrRoundHR = [Double]()
+    var totalAvgHR: Double = 0
+    
     func newRound() {
         arrRoundSpeeds.append(inRoundSpeed)
         arrRoundCadences.append(inRoundCadence)
+        
+        print("Speed Rnd Array")
         dump(arrRoundSpeeds)
         roundStartTime = NSDate()
         roundWheelRevs_atStart = totalWheelRevs
@@ -72,9 +78,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             out_Btn3.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 3]), for: .normal)
         }
         
-        if arrRoundSpeeds.count > 3 {
-            out_Btn4.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 4]), for: .normal)
-        }
+//        if arrRoundSpeeds.count > 3 {
+//            out_Btn4.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 4]), for: .normal)
+//        }
         
     }
     
@@ -83,6 +89,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let y = x.timeIntervalSince(roundStartTime! as Date!)
         let z = Int(y)
         
+        inRoundHR += Double(rt.rt_hr)
+        var avgInRoundHR = inRoundHR / Double(z)
+        if avgInRoundHR.isNaN == true || avgInRoundHR.isInfinite == true {avgInRoundHR = 0}
+        print("avgInRoundHR:  \(avgInRoundHR)")
+        
         let a = totalWheelRevs - roundWheelRevs_atStart
         let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
         let c = Double(z) / Double(60) / Double(60)
@@ -90,6 +101,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = d / (Double(z) * 60)
+        
+        out_Btn4.setTitle(stringer0(myIn: Double(z)), for: .normal)
+        out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
         
 //        let currentDateTime = Date()
 //        let formatter = DateFormatter()
@@ -100,6 +114,10 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         //print(createTimeString(seconds: z), inRoundSpeed, inRoundCadence, currTime)
         
         if z >= 300 {
+            arrRoundHR.append(avgInRoundHR)
+            print("arrRoundHR last: \(arrRoundHR.last!)")
+            inRoundHR = 0
+
             newRound()
         }
     }
