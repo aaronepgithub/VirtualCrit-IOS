@@ -127,16 +127,16 @@ class Settings: UITableViewController {
              let x = lbl_MaxHR.text
             
             if x == "MAX HR: 185" {
-                lbl_AudioToggle.text = "MAX HR: 190"
+                lbl_MaxHR.text = "MAX HR: 190"
                 settings_MAXHR = 190
             }
             if x == "MAX HR: 190" {
-                lbl_AudioToggle.text = "MAX HR: 195"
+                lbl_MaxHR.text = "MAX HR: 195"
                 settings_MAXHR = 195
             }
             
             if x == "MAX HR: 195" {
-                lbl_AudioToggle.text = "MAX HR: 185"
+                lbl_MaxHR.text = "MAX HR: 185"
                 settings_MAXHR = 185
             }
             
