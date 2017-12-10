@@ -8,11 +8,16 @@
 
 import UIKit
 
+var settings_MAXHR: Double = 185.0
+var settings_Audio: Bool = false
+
 class Settings: UITableViewController {
     
     @IBOutlet weak var lbl_AudioToggle: UILabel!
     @IBOutlet weak var lbl_TireSizeCell: UILabel!
     @IBOutlet weak var lbl_NameCell: UILabel!
+    @IBOutlet weak var lbl_MaxHR: UILabel!
+    
     
     @IBOutlet weak var lbl_RT_Avg_Duration: UILabel!
     
@@ -108,10 +113,33 @@ class Settings: UITableViewController {
             
             if lbl_AudioToggle.text == "AUDIO ON" {
                 lbl_AudioToggle.text = "AUDIO OFF"
+                settings_Audio = false
             } else {
                 lbl_AudioToggle.text = "AUDIO ON"
+                settings_Audio = true
             }
+            
 
+        }
+        
+        if indexPath.section == 0 && indexPath.row == 3 {
+            print("HR Cell")
+             let x = lbl_MaxHR.text
+            
+            if x == "MAX HR: 185" {
+                lbl_AudioToggle.text = "MAX HR: 190"
+                settings_MAXHR = 190
+            }
+            if x == "MAX HR: 190" {
+                lbl_AudioToggle.text = "MAX HR: 195"
+                settings_MAXHR = 195
+            }
+            
+            if x == "MAX HR: 195" {
+                lbl_AudioToggle.text = "MAX HR: 185"
+                settings_MAXHR = 185
+            }
+            
         }
 
         if indexPath.section == 1 && indexPath.row == 0 {
@@ -150,7 +178,7 @@ class Settings: UITableViewController {
             
             if x == "CALCULATION VALUES = 3.0" {
                 lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.0"
-                rtTimer_Interval = 1.0
+                rtTimer_Interval = 1.0 //rt
                 
             }
             
