@@ -67,7 +67,7 @@ class FirstViewController: UIViewController {
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         lbl_Top_Info_Bar.text = "\(stringer1(myIn: mvspd)) mph  \(rt.total_moving_time_string) mvg"
         
-        let percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
+        let percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
         lbl_hrLabel.text = "HR: \(percentofmax)%"
 
     }
