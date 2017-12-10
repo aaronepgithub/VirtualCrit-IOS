@@ -77,7 +77,7 @@ var srseconds: Double = 0
 
 func processWheelData(withData data :Data) {
     let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
-    var wheelRevolution = Double(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
+    let wheelRevolution = Double(UInt32(CFSwapInt32LittleToHost(UInt32(value[1]))))
     let wheelEventTime = Double((UInt16(value[6]) * 0xFF) + UInt16(value[5]))
 
     if oldWheelRevolution > 0 {  //test for NOT first time reading
@@ -113,7 +113,7 @@ func processWheelData(withData data :Data) {
             }  else {
                 single_read_speed = 0
             }
-        print("srs:  \(single_read_speed)")
+        //print("srs:  \(single_read_speed)")
         
     }
     oldWheelRevolution = wheelRevolution
@@ -129,7 +129,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
     
     let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
     
-    var crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
+    let crankRevolution = Double(CFSwapInt16LittleToHost(UInt16(value[index])))
     let crankEventTime  = Double((UInt16(value[index+3]) * 0xFF) + UInt16(value[index+2]))+1.0
     
     if oldCrankRevolution > 0 {  //test for first time reading
@@ -158,7 +158,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
                 single_read_cad = 0
             }
         
-        print("src:  \(single_read_cad)")
+        //print("src:  \(single_read_cad)")
     }
     oldCrankRevolution = crankRevolution
     oldCrankEventTime = crankEventTime
