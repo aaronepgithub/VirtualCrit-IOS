@@ -10,10 +10,32 @@ import UIKit
 
 class FirstViewController: UIViewController {
 
-//    @IBOutlet weak var lbl_Time: UILabel!
-//    @IBOutlet weak var lbl_Speed: UILabel!
-//    @IBOutlet weak var lbl_HR: UILabel!
-//    @IBOutlet weak var lbl_Cadence: UILabel!
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        if let touch = touches.first {
+//            let currentPoint = touch.location(in: view)
+//            print(currentPoint.x)
+//        }
+//    }
+//
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        if let touch = touches.first {
+//            let currentPoint = touch.location(in: view)
+//            print(currentPoint.x)
+//        }
+//    }
+    
+    @objc func switchToDataTabCont(){
+        tabBarController!.selectedIndex = 2
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: view)
+            print(currentPoint.x)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+        }
+    }
+
     
     @IBOutlet weak var lbl_Time: UILabel!
     @IBOutlet weak var lbl_Speed: UILabel!

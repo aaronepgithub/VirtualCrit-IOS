@@ -17,7 +17,16 @@ class ThirdViewController: UIViewController {
     @IBOutlet weak var out_Bottom: UILabel!
     @IBOutlet weak var lbl_top_StatusBar: UILabel!
     
-
+    @objc func switchToDataTabCont(){
+        tabBarController!.selectedIndex = 1
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: view)
+            print(currentPoint.x)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+        }
+    }
     
     @objc func update() {
 

@@ -92,7 +92,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         inRoundHR += Double(rt.rt_hr)
         var avgInRoundHR = inRoundHR / Double(z)
         if avgInRoundHR.isNaN == true || avgInRoundHR.isInfinite == true {avgInRoundHR = 0}
-        print("avgInRoundHR:  \(avgInRoundHR)")
+        //print("avgInRoundHR:  \(avgInRoundHR)")
         
         let a = totalWheelRevs - roundWheelRevs_atStart
         let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
