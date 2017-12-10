@@ -174,46 +174,57 @@ func processWheelData(withData data :Data) {
         if a < 0 {a = (wheelRevolution + 255) - oldWheelRevolution}
         if b < 0 {b = (wheelEventTime + 65025) - oldWheelEventTime}
         
-        //single read
-        let wheelTimeSeconds = Double(b) / Double(1024)
-        if wheelTimeSeconds > 0 {
-            let wheelCircumferenceCM = Double(wheelCircumference / 10)
-            let wheelRPM = Double(a) / (wheelTimeSeconds / 60)
-            let cmPerMi = Double(0.00001 * 0.621371)
-            let minsPerHour = 60.0
-            single_read_speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour
+        //for velo
+        if b < 950 {
+            wheelRevolution = oldWheelRevolution
         } else {
-            //logic here to not change old wheel unless time val is higher
-            single_read_speed = 0
-        }
-        arr_srs.append(single_read_speed)
-        print("spd:  \(b), \(single_read_speed)")
-        //end single read
-        //print("spd:  \(single_read_speed)")
-        
-        if single_read_speed > 0 {
-            srseconds += wheelTimeSeconds
-            //print(createTimeString(seconds: Int(srseconds)))
-        }
-
-        
-
-        if b <= 2000 {
-            rt_WheelRevs += a
-            rt_WheelTime += b
-            rt.total_moving_time_seconds += (b / 1024)
-            rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
-            totalWheelRevs += a
-        }
-        
-        if a == 0 {
-            wheelRevolution = 0
+            //single read
+            let wheelTimeSeconds = Double(b) / Double(1024)
+            if wheelTimeSeconds > 0 {
+                let wheelCircumferenceCM = Double(wheelCircumference / 10)
+                let wheelRPM = Double(a) / (wheelTimeSeconds / 60)
+                let cmPerMi = Double(0.00001 * 0.621371)
+                let minsPerHour = 60.0
+                single_read_speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour
+                
+                if single_read_speed > 0 {
+                    srseconds += wheelTimeSeconds
+                }
+                
+                rt_WheelRevs += a
+                rt_WheelTime += b
+                rt.total_moving_time_seconds += (b / 1024)
+                rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
+                totalWheelRevs += a
+                arr_srs.append(single_read_speed)
+            }
         }
     }
-    
     oldWheelRevolution = wheelRevolution
     oldWheelEventTime = wheelEventTime
 }
+            
+//        } else {
+//            //logic here to not change old wheel unless time val is higher
+//            single_read_speed = 0
+//        }
+
+//        if b <= 2000 {
+//            rt_WheelRevs += a
+//            rt_WheelTime += b
+//            rt.total_moving_time_seconds += (b / 1024)
+//            rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
+//            totalWheelRevs += a
+//        }
+        
+//        if a == 0 {
+//            wheelRevolution = 0
+//        }
+//    }
+//
+//    oldWheelRevolution = wheelRevolution
+//    oldWheelEventTime = wheelEventTime
+//}
 
 var rt_crank_revs: Double = 0
 var rt_crank_time: Double = 0
@@ -229,6 +240,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
     
     if oldCrankRevolution > 0 {  //test for first time reading
         
+        //test velo speed fix
         var a = crankRevolution - oldCrankRevolution
         var b = (crankEventTime - oldCrankEventTime)
         
