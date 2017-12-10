@@ -409,24 +409,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
         print("Did Disconnect Peripheral")
         
-        
-//        guard let peripheral = self.found_peripheral else {
-//            print("Peripheral object has not been created yet.")
-//            return
-//        }
-        
-//        let x = peripheral
-//        print(x.name as Any)
-        
-//        // check to see if the peripheral is connected
-//        if x.state != .connected {
-//            print("Peripheral exists but is not connected.")
-//            //put rescan code here
-//            centralManager.connect(x, options: nil)
-//            self.BLTE_TableViewOutlet.reloadData()
-//            return
-//        }
-        
         // check to see if the peripheral is connected
         print("did disconnect peripheral:  \(String(describing: peripheral.name))")
         if peripheral.state != .connected {
@@ -523,14 +505,24 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //        dump(arr_srs)
 //        print("Cadence")
 //        dump(arr_src)
+        if localTimerInterval != rtTimer_Interval {
+            reset_rtTimer()
+        }
     }
     
+    func reset_rtTimer() {
+        print("reset rtTimer")
+        rtTimer.invalidate()
+        start_rtTimer()
+    }
+    
+    var localTimerInterval = 2.0
     //have to restart on settings change
     func start_rtTimer() {
+        localTimerInterval = rtTimer_Interval
         rtTimer = Timer()
         rtTimer = Timer.scheduledTimer(timeInterval: rtTimer_Interval, target: self, selector: #selector(Update_rtTimer), userInfo: nil, repeats: true)
         print("Start rt Timer")
-        
         roundStartTime = NSDate()
     }
     

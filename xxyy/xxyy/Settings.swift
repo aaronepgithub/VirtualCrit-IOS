@@ -127,26 +127,31 @@ class Settings: UITableViewController {
             if x == "CALCULATION VALUES = 1.0" {
                 lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.5"
                 rtTimer_Interval = 1.5
+                
             }
             
             if x == "CALCULATION VALUES = 1.5" {
                 lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2.0"
                 rtTimer_Interval = 2.0
+                
             }
             
             if x == "CALCULATION VALUES = 2.0" {
                 lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2.5"
                 rtTimer_Interval = 2.5
+                
             }
             
             if x == "CALCULATION VALUES = 2.5" {
                 lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 3.0"
                 rtTimer_Interval = 3.0
+                
             }
             
             if x == "CALCULATION VALUES = 3.0" {
                 lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.0"
                 rtTimer_Interval = 1.0
+                
             }
             
         }
