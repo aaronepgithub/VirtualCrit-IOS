@@ -519,10 +519,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         returnCadence = get_rt_cadence()
         out_Top2.setTitle(stringer0(myIn: returnCadence), for: .normal)
         
-//        print("Speed")
-//        dump(arr_srs)
-//        print("Cadence")
-//        dump(arr_src)
         if localTimerInterval != rtTimer_Interval {
             reset_rtTimer()
         }
