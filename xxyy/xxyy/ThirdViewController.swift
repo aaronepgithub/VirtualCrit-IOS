@@ -44,8 +44,8 @@ self.dismiss(animated: true, completion: nil)
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         let percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
         
-        lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph \(stringer0(myIn: percentofmax))%"
-        lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))%"
+        lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph \(stringer0(myIn: percentofmax))% MAX"
+
         
         let currentDateTime = Date()
         let formatter = DateFormatter()
