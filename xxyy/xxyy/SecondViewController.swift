@@ -74,9 +74,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             out_Btn2.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 2]), for: .normal)
         }
         
-        if arrRoundSpeeds.count > 2 {
-            out_Btn3.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 3]), for: .normal)
-        }
+//        if arrRoundSpeeds.count > 2 {
+//            out_Btn3.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 3]), for: .normal)
+//        }
         
 //        if arrRoundSpeeds.count > 3 {
 //            out_Btn4.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 4]), for: .normal)
@@ -102,6 +102,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = d / (Double(z) * 60)
         
+        out_Btn3.setTitle(stringer0(myIn: Double(avgInRoundHR)), for: .normal)
         out_Btn4.setTitle(stringer0(myIn: Double(z)), for: .normal)
         out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
         
@@ -519,10 +520,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         returnCadence = get_rt_cadence()
         out_Top2.setTitle(stringer0(myIn: returnCadence), for: .normal)
         
-//        print("Speed")
-//        dump(arr_srs)
-//        print("Cadence")
-//        dump(arr_src)
         if localTimerInterval != rtTimer_Interval {
             reset_rtTimer()
         }

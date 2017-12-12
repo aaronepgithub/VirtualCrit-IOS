@@ -26,7 +26,15 @@ class FirstViewController: UIViewController {
 //    }
     
     @objc func switchToDataTabCont(){
-        tabBarController!.selectedIndex = 2
+//        tabBarController!.selectedIndex = 2
+        
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
+        //self.present(newViewController, animated: true, completion: nil)
+        self.present(newViewController, animated: true, completion: nil)
+        
+        
+        
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
@@ -72,10 +80,22 @@ class FirstViewController: UIViewController {
 
     }
     
+    @objc func rotated() {
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+            switchToDataTabCont()
+        } else {
+            print("Portrait")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("update"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        
     }
 
     override func didReceiveMemoryWarning() {

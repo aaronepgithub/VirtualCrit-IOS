@@ -194,7 +194,7 @@
         <!--Ride-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="xxyy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ID1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9pv-A4-QxB" customClass="FirstViewController" customModule="xxyy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -315,7 +315,7 @@
         <!-- ->-->
         <scene sceneID="20X-sa-vwF">
             <objects>
-                <viewController id="hOZ-dJ-nVY" customClass="ThirdViewController" customModule="xxyy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ID3" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hOZ-dJ-nVY" customClass="ThirdViewController" customModule="xxyy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="s1l-j0-fu5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -428,6 +428,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="-&gt;" image="first" id="Gam-lJ-hLQ"/>
                     <connections>
+                        <outlet property="lbl_hrLabel" destination="qO1-Vw-o8J" id="Suu-q5-Vha"/>
                         <outlet property="lbl_top_StatusBar" destination="CYv-wX-pQS" id="SOO-O4-eLg"/>
                         <outlet property="out_Bottom" destination="Oa6-rn-waN" id="Z6X-bo-pal"/>
                         <outlet property="out_Center" destination="hqY-u0-viy" id="mm4-tx-qyy"/>
