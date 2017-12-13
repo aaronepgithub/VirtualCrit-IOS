@@ -68,9 +68,16 @@ self.dismiss(animated: true, completion: nil)
         }
     }
     
+//    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+//        return UIInterfaceOrientationMask.landscapeLeft
+//    }
+    
     private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.landscapeLeft
+        return UIInterfaceOrientationMask.landscape
     }
+
+    
+    
     private func shouldAutorotate() -> Bool {
         return true
     }
