@@ -23,16 +23,17 @@ class ThirdViewController: UIViewController {
 //        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID1")
 //        self.present(newViewController, animated: true, completion: nil)
         
-self.dismiss(animated: true, completion: nil)
+        rotbool = true
+        self.dismiss(animated: true, completion: nil)
         
     }
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let touch = touches.first {
-//            let currentPoint = touch.location(in: view)
-//            print(currentPoint.x)
-//            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
-//        }
-//    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: view)
+            print(currentPoint.x)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+        }
+    }
     
     @IBOutlet weak var lbl_hrLabel: UILabel!
     @objc func update() {
@@ -64,7 +65,7 @@ self.dismiss(animated: true, completion: nil)
             print("Landscape")
         } else {
             print("Portrait")
-            switchToDataTabCont()
+            //switchToDataTabCont()
         }
     }
     
@@ -72,15 +73,13 @@ self.dismiss(animated: true, completion: nil)
 //        return UIInterfaceOrientationMask.landscapeLeft
 //    }
     
-    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.landscape
-    }
-
-    
-    
-    private func shouldAutorotate() -> Bool {
-        return true
-    }
+//    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+//        return UIInterfaceOrientationMask.landscape
+//    }
+//
+//    private func shouldAutorotate() -> Bool {
+//        return true
+//    }
     
     
     override func viewDidLoad() {

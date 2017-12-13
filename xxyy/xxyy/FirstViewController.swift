@@ -8,6 +8,8 @@
 
 import UIKit
 
+var rotbool = true
+
 class FirstViewController: UIViewController {
 
     
@@ -83,7 +85,11 @@ class FirstViewController: UIViewController {
     @objc func rotated() {
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
-            switchToDataTabCont()
+            if rotbool == true {
+                switchToDataTabCont()
+                rotbool = false
+            }
+            
         } else {
             print("Portrait")
         }
