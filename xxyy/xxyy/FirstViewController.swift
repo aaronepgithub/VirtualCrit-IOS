@@ -36,13 +36,13 @@ class FirstViewController: UIViewController {
         
         
     }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let currentPoint = touch.location(in: view)
-            print(currentPoint.x)
-            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
-        }
-    }
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        if let touch = touches.first {
+//            let currentPoint = touch.location(in: view)
+//            print(currentPoint.x)
+//            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+//        }
+//    }
 
     
     @IBOutlet weak var lbl_Time: UILabel!
