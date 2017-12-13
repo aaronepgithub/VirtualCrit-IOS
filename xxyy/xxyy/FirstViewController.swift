@@ -8,8 +8,6 @@
 
 import UIKit
 
-var rotbool = true
-
 class FirstViewController: UIViewController {
 
     
@@ -28,23 +26,22 @@ class FirstViewController: UIViewController {
 //    }
     
     @objc func switchToDataTabCont(){
-//        tabBarController!.selectedIndex = 2
+        tabBarController!.selectedIndex = 2
         
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
-        //self.present(newViewController, animated: true, completion: nil)
-        self.present(newViewController, animated: true, completion: nil)
+//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
+//        self.present(newViewController, animated: true, completion: nil)
         
         
         
     }
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let touch = touches.first {
-//            let currentPoint = touch.location(in: view)
-//            print(currentPoint.x)
-//            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
-//        }
-//    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: view)
+            print(currentPoint.x)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+        }
+    }
 
     
     @IBOutlet weak var lbl_Time: UILabel!
@@ -82,25 +79,21 @@ class FirstViewController: UIViewController {
 
     }
     
-    @objc func rotated() {
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-            if rotbool == true {
-                switchToDataTabCont()
-                rotbool = false
-            }
-            
-        } else {
-            print("Portrait")
-        }
-    }
+//    @objc func rotated() {
+//        if UIDevice.current.orientation.isLandscape {
+//            //print("Landscape")
+//            //switchToDataTabCont()
+//        } else {
+//            //print("Portrait")
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("update"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
     }
 

@@ -10,6 +10,8 @@ import UIKit
 
 class ThirdViewController: UIViewController {
 
+    @IBOutlet weak var out_StackViewAll: UIStackView!
+    
     
     @IBOutlet weak var out_Left: UILabel!
     @IBOutlet weak var out_Center: UILabel!
@@ -18,13 +20,16 @@ class ThirdViewController: UIViewController {
     @IBOutlet weak var lbl_top_StatusBar: UILabel!
     
     @objc func switchToDataTabCont(){
-//        tabBarController!.selectedIndex = 1
+        tabBarController!.selectedIndex = 1
+        
+        
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID1")
 //        self.present(newViewController, animated: true, completion: nil)
+
+        //another opt
         
-        rotbool = true
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
         
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,12 +66,86 @@ class ThirdViewController: UIViewController {
     }
     
     @objc func rotated() {
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-        } else {
-            print("Portrait")
-            //switchToDataTabCont()
-        }
+        
+        print(out_StackViewAll.axis.rawValue)
+        print(UIDevice.current.orientation.isPortrait)
+        
+//        if UIDevice.current.orientation.isPortrait == true {
+//            out_StackViewAll.axis = .vertical
+//        } else {
+//            out_StackViewAll.axis = .horizontal
+//        }
+
+        
+
+//                if UIInterfaceOrientation.portrait.isPortrait {
+//                    out_StackViewAll.axis = .vertical
+//                    print(1)
+//                } else {
+//                    out_StackViewAll.axis = .horizontal
+//                    print(1)
+//                }
+        
+        
+//        if out_StackViewAll.axis == .horizontal {
+//            out_StackViewAll.axis = .vertical
+//            print(3)
+//        } else {
+//            out_StackViewAll.axis = .horizontal
+//            print(2)
+//        }
+        
+//        if UIInterfaceOrientation.landscapeLeft.isLandscape {
+//            out_StackViewAll.axis = .horizontal
+//            print(1)
+//        }
+//
+//        if UIInterfaceOrientation.landscapeRight.isLandscape {
+//            out_StackViewAll.axis = .horizontal
+//            print(2)
+//        }
+        
+
+        
+//        if UIInterfaceOrientation.landscapeLeft.isLandscape {
+//
+//            if out_StackViewAll.axis == .vertical {
+//                out_StackViewAll.axis = .horizontal
+//                print(2)
+//            }
+//
+//        }
+//
+//        if UIInterfaceOrientation.landscapeRight.isLandscape {
+//
+//            if out_StackViewAll.axis == .vertical {
+//                out_StackViewAll.axis = .horizontal
+//                print(3)
+//            }
+//
+//
+//        }
+//
+//        if UIInterfaceOrientation.portrait.isPortrait {
+//
+//            if out_StackViewAll.axis == .horizontal {
+//                out_StackViewAll.axis = .vertical
+//                print(1)
+//            }
+//
+//        }
+        
+        
+        
+        
+//        if UIDevice.current.orientation.isLandscape {
+//            //print("Landscape")
+//            out_StackViewAll.axis = .horizontal
+//        } else {
+//            //print("Portrait")
+//            //switchToDataTabCont()
+//            out_StackViewAll.axis = .vertical
+//        }
     }
     
 //    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -85,12 +164,14 @@ class ThirdViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("update"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+        //let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        //UIDevice.current.setValue(value, forKey: "orientation")
     
         
         
