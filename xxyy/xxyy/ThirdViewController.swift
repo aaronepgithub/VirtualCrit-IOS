@@ -20,16 +20,16 @@ class ThirdViewController: UIViewController {
     @IBOutlet weak var lbl_top_StatusBar: UILabel!
     
     @objc func switchToDataTabCont(){
-        tabBarController!.selectedIndex = 1
         
-        
+        //opt 1
+//        tabBarController!.selectedIndex = 1
+        //opt 2
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID1")
 //        self.present(newViewController, animated: true, completion: nil)
-
-        //another opt
         
-        //self.dismiss(animated: true, completion: nil)
+        //opt 3 - another opt - for modal
+        self.dismiss(animated: true, completion: nil)
         
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -65,10 +65,22 @@ class ThirdViewController: UIViewController {
         
     }
     
-    @objc func rotated() {
+    @objc func rotated_3vc() {
+
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+        } else {
+            
+            if UIDevice.current.orientation.isFlat {
+                print("Flat")
+                return
+            }
+            print("Portrait")
+            switchToDataTabCont()
+        }
         
-        print(out_StackViewAll.axis.rawValue)
-        print(UIDevice.current.orientation.isPortrait)
+        //print(out_StackViewAll.axis.rawValue)
+     
         
 //        if UIDevice.current.orientation.isPortrait == true {
 //            out_StackViewAll.axis = .vertical
@@ -168,7 +180,7 @@ class ThirdViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("update"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated_3vc), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
         //let value = UIInterfaceOrientation.landscapeLeft.rawValue
         //UIDevice.current.setValue(value, forKey: "orientation")
