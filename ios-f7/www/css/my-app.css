@@ -23,7 +23,7 @@ user-select: auto !important;
 
 
 
-@media all and (max-width: 959px) and (min-width: 331px) {
+@media all and (max-width: 450px) and (min-width: 331px) {
     .vertride{
         font-size: 15px;
     }
@@ -37,26 +37,26 @@ user-select: auto !important;
 }
 
 
-@media all and (max-width: 959px) and (min-width: 576px) {
+@media all and (max-width: 750px) and (min-width: 601px) {
     .hrcad{
         font-size: 7em;
     }
 }
  
-@media all and (max-width: 575px) and (min-width: 300px) {
+@media all and (max-width: 600px) and (min-width: 300px) {
     .hrcad{
         font-size: 5em;
     }
  
 }
 
-@media all and (max-width: 959px) and (min-width: 576px) {
+@media all and (max-width: 750px) and (min-width: 601px) {
     .spd{
         font-size: 9em;
     }
 }
  
-@media all and (max-width: 575px) and (min-width: 300px) {
+@media all and (max-width: 600px) and (min-width: 300px) {
     .spd{
         font-size: 7em;
     }
