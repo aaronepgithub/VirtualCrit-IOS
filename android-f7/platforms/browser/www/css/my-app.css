@@ -2,6 +2,7 @@
 /* Tab bar icons */
 
 
+
 *
 {
 -webkit-user-select: none;
@@ -21,6 +22,46 @@ user-select: auto !important;
 }
 
 
+
+@media all and (max-width: 959px) and (min-width: 331px) {
+    .vertride{
+        font-size: 15px;
+    }
+}
+ 
+@media all and (max-width: 330px) and (min-width: 300px) {
+    .vertride{
+        font-size: 12px;
+    }
+ 
+}
+
+
+@media all and (max-width: 959px) and (min-width: 576px) {
+    .hrcad{
+        font-size: 7em;
+    }
+}
+ 
+@media all and (max-width: 575px) and (min-width: 300px) {
+    .hrcad{
+        font-size: 5em;
+    }
+ 
+}
+
+@media all and (max-width: 959px) and (min-width: 576px) {
+    .spd{
+        font-size: 9em;
+    }
+}
+ 
+@media all and (max-width: 575px) and (min-width: 300px) {
+    .spd{
+        font-size: 7em;
+    }
+ 
+}
 
 .box {
 
@@ -83,14 +124,11 @@ min-height: 90;
     font-size: 2em;
 }
 
-.spd {
-    font-size: 6em;
-    /*margin-bottom: 10px;*/
-}
 
-.hrcad {
+
+/*.hrcad {
   font-size: 5em;
-}
+}*/
 
 .vhbox {
   max-height: 90vmax;
@@ -181,15 +219,8 @@ font-size: 2.5em;
   text-align: center;
 }
 
-.tester {
-  /*line-height: 20vmax;*/
-  font-size: 8em; 
-}
 
-.tester2 {
-  /*line-height: 20vmax;*/
-  font-size: 5em; 
-}
+
 
 i.tabbar-demo-icon-1 {
   width: 30px;
