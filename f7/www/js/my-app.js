@@ -4,66 +4,86 @@ var myApp = new Framework7();
 // Export selectors engine
 var $$ = Dom7;
 
-// Listen for orientation changes
-// window.addEventListener("orientationchange", function() {
-// 	// Announce the new orientation number
-// 	alert(screen.orientation);
-// }, false);
+var currentTab = 0;
+var currentOrientation = "portrait"
+
+
+
+// Handle Cordova Device Ready Event
+$$(document).on('deviceready', function() {
+    console.log("Device is ready!");
+});
 
 var mql = window.matchMedia("(orientation: portrait)");
-
-// If there are matches, we're in portrait
-if(mql.matches) {  
-	// alert("portrait1")
-} else {  
-	// alert("landscape1")
-}
-
 // Add a media query change listener
 mql.addListener(function(m) {
 	if(m.matches) {
-		alert("portrait2")
+		console.log("portrait")
+        currentOrientation = "portrait"
+
+        if (currentTab == 4) {
+            myApp.showTab('#view-3');
+        }
 	}
 	else {
-		alert("landscape2")
+		console.log("landscape")
+        currentOrientation = "landscape"
+
+        if (currentTab == 3) {
+            myApp.showTab('#view-4');
+        }
+
 		//if in ride view, change to hz view
 	}
 });
 
-// $$('.chip-delete').on('click', function (e) {
-//     e.preventDefault();
-//     var chip = $$(this).parents('.chip');
-//     var chipname = $$(this).siblings().attr("class", "chip-label").html();
-//     console.log(chipname);
-//     myApp.confirm('Selected - ' + chipname, function () {
-//         chip.remove();
-//     });
-// });
 
 // Pull to refresh content
 var ptrContent = $$('.pull-to-refresh-content');
  
 // Add 'refresh' listener on it
 ptrContent.on('ptr:refresh', function (e) {
-    // Emulate 2s loading
+    // Emulate 1s loading
     setTimeout(function () {
 		myApp.pullToRefreshDone();
 		// alert("Done")
-    	}, 1000);
+//remove all chips
+$$('.blechip').remove();
+$$('.blelist').append('<div class="chip chip-extended blechip"><div class="chip-media bg-blue">CSC</div><div class="chip-label">NewBLE</div></div>');
+
+    	}, 750);
 });
 
 
 
 $$('.chip-label').on('click', function (e) {
     e.preventDefault();
-    // var chip = $$(this).parents('.chip');
-    // var chipname = $$(this).siblings().attr("class", "chip-label").html();
     var chipname = $$(this).attr("class", "chip-label").html();
     console.log(chipname);
-    myApp.confirm('Selected - ' + chipname, function () {
-        console.log(chipname);
-    });
+    console.log(currentTab);
+    // myApp.confirm('Selected - ' + chipname, function () {
+    //     console.log(chipname);
+    // });
 });
+
+
+$$('#view-4').on('tab:show', function () {
+    // myApp.alert('Tab/View 4 is visible');
+    currentTab = 4;
+    console.log(currentTab)
+});  
+
+$$('#view-3').on('tab:show', function () {
+    // myApp.alert('Tab/View 3 is visible');
+    currentTab = 3;
+    console.log(currentTab)
+});  
+
+$$('#view-2').on('tab:show', function () {
+    // myApp.alert('Tab/View 2 is visible');
+    currentTab = 2;
+    console.log(currentTab)
+});  
 
 // Add views
 var view1 = myApp.addView('#view-1');
