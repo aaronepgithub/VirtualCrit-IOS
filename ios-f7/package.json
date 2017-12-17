@@ -1,8 +1,19 @@
 {
-    "name": "com.phonegap.helloworld",
-    "version": "1.0.0",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "displayName": "helloworld"
+  "name": "com.phonegap.helloworld",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "displayName": "helloworld",
+  "dependencies": {
+    "cordova-plugin-ble-central": "^1.1.4",
+    "cordova-plugin-compat": "^1.2.0"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-ble-central": {
+        "BLUETOOTH_USAGE_DESCRIPTION": "Your description here"
+      }
+    }
+  }
 }

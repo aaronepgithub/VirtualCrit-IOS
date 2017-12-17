@@ -41,21 +41,48 @@ mql.addListener(function(m) {
 	}
 });
 
+var arrPeripherals;
+
+function scan() {
+
+            function onScan(peripheral) {
+            // this is demo code, assume there is only one heart rate monitor
+            console.log("Found " + JSON.stringify(peripheral));
+
+            // foundHeartRateMonitor = true;
+
+            // ble.connect(peripheral.id, app.onConnect, app.onDisconnect);
+            }
+
+            function scanFailure(reason) {
+                console.log("scanFailure");
+                alert("BLE Scan Failed");
+            }
+
+
+
+    console.log("scanning");
+    ble.scan([], 5, onScan, scanFailure);
+
+}
 
 // Pull to refresh content
 var ptrContent = $$('.pull-to-refresh-content');
  
 // Add 'refresh' listener on it
 ptrContent.on('ptr:refresh', function (e) {
-    // Emulate 1s loading
+    scan();
+
     setTimeout(function () {
 		myApp.pullToRefreshDone();
 		// alert("Done")
-//remove all chips
-$$('.blechip').remove();
-$$('.blelist').append('<div class="chip chip-extended blechip"><div class="chip-media bg-blue">CSC</div><div class="chip-label">NewBLE</div></div>');
-
-    	}, 750);
+        
+        
+    //remove all chips
+    $$('.blechip').remove();
+    //add chips
+    $$('.blelist').append('<div class="chip chip-extended blechip"><div class="chip-media bg-blue">CSC</div><div class="chip-label">NewBLE</div></div>');
+    	}, 2000);
 });
 
 
@@ -86,7 +113,7 @@ $$('#view-3').on('tab:show', function () {
 $$('#view-2').on('tab:show', function () {
     // myApp.alert('Tab/View 2 is visible');
     currentTab = 2;
-    console.log(currentTab)
+    console.log(currentTab);
 });  
 
 // Add views
