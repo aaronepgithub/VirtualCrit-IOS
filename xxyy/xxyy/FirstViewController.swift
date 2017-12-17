@@ -10,6 +10,9 @@ import UIKit
 
 class FirstViewController: UIViewController {
 
+    @IBOutlet weak var constraint_topInfoBar: NSLayoutConstraint!
+    
+    @IBOutlet weak var constraint_stactViewMain: NSLayoutConstraint!
     
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        if let touch = touches.first {
@@ -27,9 +30,14 @@ class FirstViewController: UIViewController {
     
     @objc func switchToDataTabCont(){
         
+        //Using constraint approach, both back to 40 on Portrait
+//        constraint_topInfoBar.constant = 0
+//        constraint_stactViewMain.constant = 0
+        
         //opt 1
         //tabBarController!.selectedIndex = 2
         //opt2
+        
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
         self.present(newViewController, animated: true, completion: nil)
@@ -41,7 +49,7 @@ class FirstViewController: UIViewController {
         if let touch = touches.first {
             let currentPoint = touch.location(in: view)
             print(currentPoint.x)
-            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+            //Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
         }
     }
 
@@ -53,18 +61,15 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var lbl_Distance: UILabel!
     
     @IBOutlet weak var lbl_Top_Info_Bar: UILabel!
+    
     @IBOutlet weak var lbl_hrLabel: UILabel!
+    @IBOutlet weak var lbl_cadLabel: UILabel!
     
     
     
     
     @objc func update() {
-        
-        //  causes too many zeros for display
-//        lbl_Speed.text = "\(String(format:"%.2f", rt.rt_speed))"
-//        lbl_Cadence.text = "\(String(format:"%.0f", rt.rt_cadence))"
-//        lbl_Speed.text = "\(String(format:"%.1f", quick_avg.speed))"
-//        lbl_Cadence.text = "\(String(format:"%.0f", quick_avg.cadence))"
+
         
         lbl_Speed.text = "\(stringer1(myIn: rt.rt_speed))"
         lbl_Cadence.text = "\(stringer0(myIn: rt.rt_cadence))"
@@ -77,17 +82,38 @@ class FirstViewController: UIViewController {
         lbl_Top_Info_Bar.text = "\(stringer1(myIn: mvspd)) mph  \(rt.total_moving_time_string) mvg"
         
         let percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
-        lbl_hrLabel.text = "HR: \(percentofmax)%"
+        
+        if UIDevice.current.orientation.isPortrait {
+            lbl_hrLabel.text = "HR: \(percentofmax)%"
+            lbl_cadLabel.text = "CAD"
+        }
+        
 
     }
     
     @objc func rotated() {
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
-            switchToDataTabCont()
+            //switchToDataTabCont()
+            constraint_topInfoBar.constant = 0
+            constraint_stactViewMain.constant = 0
+            lbl_hrLabel.text = ""
+            lbl_cadLabel.text = ""
         } else {
             print("Portrait")
+            constraint_topInfoBar.constant = 40
+            constraint_stactViewMain.constant = 40
+            
         }
+        
+        if UIDevice.current.orientation.isFlat {
+            print("Flat")
+            constraint_topInfoBar.constant = 0
+            constraint_stactViewMain.constant = 0
+            lbl_hrLabel.text = ""
+            lbl_cadLabel.text = ""
+        }
+    
     }
     
     override func viewDidLoad() {

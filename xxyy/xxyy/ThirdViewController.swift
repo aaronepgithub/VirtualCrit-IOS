@@ -45,13 +45,22 @@ class ThirdViewController: UIViewController {
 
         out_Left.text = stringer1(myIn: rt.rt_speed)
         out_Right.text = stringer0(myIn: rt.rt_cadence)
-        out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+        
+        
         
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         let percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
         
         lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph \(stringer0(myIn: percentofmax))% MAX"
-        lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
+        
+        if UIDevice.current.orientation.isLandscape {
+            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
+        } else {
+            out_Center.text = ""
+            lbl_hrLabel.text = ""
+        }
+        
 
         
         let currentDateTime = Date()
