@@ -41,13 +41,16 @@ mql.addListener(function(m) {
 	}
 });
 
-var arrPeripherals;
+var arrPeripherals = [];
 
 function scan() {
 
             function onScan(peripheral) {
             // this is demo code, assume there is only one heart rate monitor
             console.log("Found " + JSON.stringify(peripheral));
+            //console.log(peripheral.id)
+            arrPeripherals.push(peripheral.id)
+            console.log(arrPeripherals)
 
             // foundHeartRateMonitor = true;
 
