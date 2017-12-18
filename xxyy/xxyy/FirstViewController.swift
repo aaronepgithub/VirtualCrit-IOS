@@ -49,7 +49,7 @@ class FirstViewController: UIViewController {
         if let touch = touches.first {
             let currentPoint = touch.location(in: view)
             print(currentPoint.x)
-            //Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
         }
     }
 
@@ -92,6 +92,7 @@ class FirstViewController: UIViewController {
     }
     
     @objc func rotated() {
+        
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
             //switchToDataTabCont()
@@ -99,20 +100,32 @@ class FirstViewController: UIViewController {
             constraint_stactViewMain.constant = 0
             lbl_hrLabel.text = ""
             lbl_cadLabel.text = ""
-        } else {
+        }
+        
+        if UIDevice.current.orientation.isPortrait {
             print("Portrait")
             constraint_topInfoBar.constant = 40
             constraint_stactViewMain.constant = 40
+        }
             
-        }
+//            if UIDevice.current.orientation.isFlat {
+//                print("Flat")
+//                return
+//            }
+//        } else {
+//            print("Portrait")
+//            constraint_topInfoBar.constant = 40
+//            constraint_stactViewMain.constant = 40
+            
         
-        if UIDevice.current.orientation.isFlat {
-            print("Flat")
-            constraint_topInfoBar.constant = 0
-            constraint_stactViewMain.constant = 0
-            lbl_hrLabel.text = ""
-            lbl_cadLabel.text = ""
-        }
+        
+//        if UIDevice.current.orientation.isFlat {
+//            print("Flat")
+//            constraint_topInfoBar.constant = 0
+//            constraint_stactViewMain.constant = 0
+//            lbl_hrLabel.text = ""
+//            lbl_cadLabel.text = ""
+//        }
     
     }
     

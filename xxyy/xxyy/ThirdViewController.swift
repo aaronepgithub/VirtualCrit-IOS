@@ -40,28 +40,29 @@ class ThirdViewController: UIViewController {
         }
     }
     
+    var percentofmax: Double = 0.0
     @IBOutlet weak var lbl_hrLabel: UILabel!
     @objc func update() {
 
         out_Left.text = stringer1(myIn: rt.rt_speed)
         out_Right.text = stringer0(myIn: rt.rt_cadence)
         
-        
-        
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
-        let percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
+        percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
         
         lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph \(stringer0(myIn: percentofmax))% MAX"
         
         if UIDevice.current.orientation.isLandscape {
+            print("3Landscape")
             out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
             lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
-        } else {
-            out_Center.text = ""
-            lbl_hrLabel.text = ""
         }
-        
 
+//        if UIDevice.current.orientation.isPortrait {
+//            print("3Portrait")
+//            out_Center.text = ""
+//            lbl_hrLabel.text = ""
+//        }
         
         let currentDateTime = Date()
         let formatter = DateFormatter()
@@ -69,104 +70,23 @@ class ThirdViewController: UIViewController {
         formatter.dateStyle = .none
         let currTime = formatter.string(from: currentDateTime)
         
-        
         out_Bottom.text = "\(rt.string_elapsed_time)  \(stringer1(myIn: rt.total_distance)) Miles  \(currTime)"
-        
     }
     
     @objc func rotated_3vc() {
 
         if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-        } else {
-            
-            if UIDevice.current.orientation.isFlat {
-                print("Flat")
-                return
-            }
-            print("Portrait")
-            switchToDataTabCont()
+            print("3bLandscape")
+            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
         }
         
-        //print(out_StackViewAll.axis.rawValue)
-     
-        
-//        if UIDevice.current.orientation.isPortrait == true {
-//            out_StackViewAll.axis = .vertical
-//        } else {
-//            out_StackViewAll.axis = .horizontal
-//        }
+        if UIDevice.current.orientation.isPortrait {
+            print("3bPortrait")
+            out_Center.text = ""
+            lbl_hrLabel.text = ""
+        }
 
-        
-
-//                if UIInterfaceOrientation.portrait.isPortrait {
-//                    out_StackViewAll.axis = .vertical
-//                    print(1)
-//                } else {
-//                    out_StackViewAll.axis = .horizontal
-//                    print(1)
-//                }
-        
-        
-//        if out_StackViewAll.axis == .horizontal {
-//            out_StackViewAll.axis = .vertical
-//            print(3)
-//        } else {
-//            out_StackViewAll.axis = .horizontal
-//            print(2)
-//        }
-        
-//        if UIInterfaceOrientation.landscapeLeft.isLandscape {
-//            out_StackViewAll.axis = .horizontal
-//            print(1)
-//        }
-//
-//        if UIInterfaceOrientation.landscapeRight.isLandscape {
-//            out_StackViewAll.axis = .horizontal
-//            print(2)
-//        }
-        
-
-        
-//        if UIInterfaceOrientation.landscapeLeft.isLandscape {
-//
-//            if out_StackViewAll.axis == .vertical {
-//                out_StackViewAll.axis = .horizontal
-//                print(2)
-//            }
-//
-//        }
-//
-//        if UIInterfaceOrientation.landscapeRight.isLandscape {
-//
-//            if out_StackViewAll.axis == .vertical {
-//                out_StackViewAll.axis = .horizontal
-//                print(3)
-//            }
-//
-//
-//        }
-//
-//        if UIInterfaceOrientation.portrait.isPortrait {
-//
-//            if out_StackViewAll.axis == .horizontal {
-//                out_StackViewAll.axis = .vertical
-//                print(1)
-//            }
-//
-//        }
-        
-        
-        
-        
-//        if UIDevice.current.orientation.isLandscape {
-//            //print("Landscape")
-//            out_StackViewAll.axis = .horizontal
-//        } else {
-//            //print("Portrait")
-//            //switchToDataTabCont()
-//            out_StackViewAll.axis = .vertical
-//        }
     }
     
 //    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
