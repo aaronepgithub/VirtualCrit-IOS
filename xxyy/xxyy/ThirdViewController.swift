@@ -52,10 +52,13 @@ class ThirdViewController: UIViewController {
         
         lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph \(stringer0(myIn: percentofmax))% MAX"
         
+        out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+        lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
+        
         if UIDevice.current.orientation.isLandscape {
             print("3Landscape")
-            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
-            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
+//            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+//            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
         }
 
 //        if UIDevice.current.orientation.isPortrait {
@@ -77,14 +80,14 @@ class ThirdViewController: UIViewController {
 
         if UIDevice.current.orientation.isLandscape {
             print("3bLandscape")
-            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
-            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
+//            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
+//            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
         }
         
         if UIDevice.current.orientation.isPortrait {
             print("3bPortrait")
-            out_Center.text = ""
-            lbl_hrLabel.text = ""
+//            out_Center.text = ""
+//            lbl_hrLabel.text = ""
         }
 
     }
