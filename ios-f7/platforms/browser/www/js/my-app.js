@@ -93,6 +93,8 @@ ptrContent.on('ptr:refresh', function(e) {
 function connect(peripheral) {
   function onConnect() {
     console.log("connected");
+
+    //ble.startNotification(device_id, service_uuid, characteristic_uuid, success, failure);
   }
 
   function onDisconnect() {
