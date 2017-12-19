@@ -6,6 +6,16 @@ var $$ = Dom7;
 var currentTab = 0;
 var currentOrientation = "portrait";
 
+var heartRate = {
+    service: '180d',
+    measurement: '2a37'
+};
+
+var speedCadence = {
+    service: '1816',
+    measurement: '2A5B'
+};
+
 
 
 // Handle Cordova Device Ready Event
@@ -55,9 +65,6 @@ function scan() {
     arrPeripherals.push(peripheral);
 
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">'+ (arrPeripherals.length - 1) +'</div><div class="chip-label">' + peripheral.name + '</div>');
-
-    // foundHeartRateMonitor = true;
-    // ble.connect(peripheral.id, app.onConnect, app.onDisconnect);
   }
 
   function scanFailure(reason) {
@@ -65,7 +72,7 @@ function scan() {
   }
 
   console.log("scanning");
-  ble.scan(["180D", "2A37"], 5, onScan, scanFailure);
+  ble.scan(["180D", "1816"], 5, onScan, scanFailure);
 
 }
 
@@ -85,14 +92,50 @@ ptrContent.on('ptr:refresh', function(e) {
     myApp.pullToRefreshDone();
 
     console.log(JSON.stringify(arrPeripherals));
-  }, 2000);
+  }, 3000);
 });
+
 
 
 
 function connect(peripheral) {
   function onConnect() {
+
+    function onNotifySuccessHR() {
+      print("Notify Success HR");
+      var onData = function(buffer) {
+        // Decode the ArrayBuffer into a typed Array based on the data you expect
+      var data = new Uint8Array(buffer);
+      console.console.log("Button state changed to " + data[0]);
+    };
+
+    }
+
+    function onNotifySuccessCSC() {
+      print("Notify Success CSC");
+    }
+
+    function onNotifyFailure() {
+      print("Notify Failure");
+    }
+
+//https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
+
+
     console.log("connected");
+    var x = peripheral.id;
+    var y = peripheral.advertising.kCBAdvDataServiceUUIDs;  //array of service uuids
+    //peripheral.advertising.kCBAdvDataServiceUUIDs
+
+    if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D")  {
+        ble.startNotification(peripheral.id, heartRate.service, heartRate.measurement, onNotifySuccessHR, onNotifyFailure);
+    }
+
+    if (y[0] == "1816" || y[1] == "1816" || y[2] == "1816")  {
+        ble.startNotification(peripheral.id, speedCadence.service , speedCadence.measurement, onNotifySuccessCSC, onNotifyFailure);
+    }
+
+
 
     //ble.startNotification(device_id, service_uuid, characteristic_uuid, success, failure);
   }
