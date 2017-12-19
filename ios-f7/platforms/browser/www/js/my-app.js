@@ -6,6 +6,16 @@ var $$ = Dom7;
 var currentTab = 0;
 var currentOrientation = "portrait";
 
+var heartRate = {
+    service: '180d',
+    measurement: '2a37'
+};
+
+var speedCadence = {
+    service: '1816',
+    measurement: '2A5B'
+};
+
 
 
 // Handle Cordova Device Ready Event
@@ -38,7 +48,6 @@ mql.addListener(function(m) {
   }
 });
 
-var arrPeripheralIDs = [];
 var arrPeripherals = [];
 
 function scan() {
@@ -48,16 +57,21 @@ function scan() {
 
   function onScan(peripheral) {
 
+    if (peripheral.id == arrPeripherals[arrPeripherals.length - 1]) {
+      console.log("Duplicate");
+      return;
+    }
     console.log("Found " + JSON.stringify(peripheral) + "\n");
+
+//if count is > 1
+  //if id = last
+    //return
+
     //console.log(peripheral.id)
     // arrPeripherals.push(peripheral.id);
-    arrPeripheralIDs.push(peripheral.id);
     arrPeripherals.push(peripheral);
 
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">'+ (arrPeripherals.length - 1) +'</div><div class="chip-label">' + peripheral.name + '</div>');
-
-    // foundHeartRateMonitor = true;
-    // ble.connect(peripheral.id, app.onConnect, app.onDisconnect);
   }
 
   function scanFailure(reason) {
@@ -65,7 +79,7 @@ function scan() {
   }
 
   console.log("scanning");
-  ble.scan(["180D", "2A37"], 5, onScan, scanFailure);
+  ble.scan(["180D", "1816"], 5, onScan, scanFailure);
 
 }
 
@@ -84,18 +98,79 @@ ptrContent.on('ptr:refresh', function(e) {
   setTimeout(function() {
     myApp.pullToRefreshDone();
 
-    console.log(JSON.stringify(arrPeripherals));
-  }, 2000);
+    //console.log(JSON.stringify(arrPeripherals));
+    console.log("Scan Complete");
+  }, 5000);
 });
 
 
 
-function connect(peripheral) {
-  function onConnect() {
-    console.log("connected");
 
-    //ble.startNotification(device_id, service_uuid, characteristic_uuid, success, failure);
-  }
+
+
+
+
+//   console.log("Start Notification for HR");
+//   console.log(peripheral.id);
+//   ble.startNotification(peripheral.id, '180d', '2a37', this.onNotifySuccessHR, this.onNotifyFailure);
+// }
+
+
+
+
+function connect(peripheral) {
+
+
+  function onConnect() {
+
+    var serviceType = "none";
+
+//https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
+//CREATE ANDROID VERSION
+
+
+    console.log("connected");
+    var x = peripheral.id;
+    var y = peripheral.advertising.kCBAdvDataServiceUUIDs;  //array of service uuids
+    //peripheral.advertising.kCBAdvDataServiceUUIDs
+
+    console.log("y: ");
+    console.log(y);
+
+
+
+    if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D")  {
+      console.log("Identified as HR, calling Notify");
+      serviceType = "180D";
+      serviceChar = heartRate.measurement;
+      ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
+        console.log("Notify Success HR");
+          var data = new Uint8Array(buffer);
+          //console.log("HR " + data[1]);
+          onDataHR(data);
+      }, function(reason){
+        console.log("failure" + reason);
+      });
+
+
+
+    }
+
+    if (y[0] == "1816" || y[1] == "1816" || y[2] == "1816")  {
+      serviceType = "1816";
+      serviceChar = speedCadence.measurement;
+      ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
+        console.log("Notify Success CSC");
+          var data = new Uint8Array(buffer);
+          //console.log("CSC 1" + data[1]);  //need to do complete array
+          onDataCSC(data);
+      }, function(reason){
+        console.log("failure" + reason);
+      });
+    }
+
+
+}  //end onConnect
 
   function onDisconnect() {
     console.log("Disconnected");
