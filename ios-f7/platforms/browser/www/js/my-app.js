@@ -7,16 +7,14 @@ var currentTab = 0;
 var currentOrientation = "portrait";
 
 var heartRate = {
-    service: '180d',
-    measurement: '2a37'
+  service: '180d',
+  measurement: '2a37'
 };
 
 var speedCadence = {
-    service: '1816',
-    measurement: '2A5B'
+  service: '1816',
+  measurement: '2A5B'
 };
-
-
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -63,15 +61,15 @@ function scan() {
     }
     console.log("Found " + JSON.stringify(peripheral) + "\n");
 
-//if count is > 1
-  //if id = last
+    //if count is > 1
+    //if id = last
     //return
 
     //console.log(peripheral.id)
     // arrPeripherals.push(peripheral.id);
     arrPeripherals.push(peripheral);
 
-    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">'+ (arrPeripherals.length - 1) +'</div><div class="chip-label">' + peripheral.name + '</div>');
+    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
   }
 
   function scanFailure(reason) {
@@ -124,31 +122,26 @@ function connect(peripheral) {
   function onConnect() {
 
     var serviceType = "none";
-
-//https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
-//CREATE ANDROID VERSION
-
-
+    //https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
+    //CREATE ANDROID VERSION
     console.log("connected");
     var x = peripheral.id;
-    var y = peripheral.advertising.kCBAdvDataServiceUUIDs;  //array of service uuids
+    var y = peripheral.advertising.kCBAdvDataServiceUUIDs; //array of service uuids
     //peripheral.advertising.kCBAdvDataServiceUUIDs
-
-    console.log("y: ");
-    console.log(y);
+    console.log("Advertising:  " + y);
 
 
 
-    if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D")  {
+    if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D") {
       console.log("Identified as HR, calling Notify");
       serviceType = "180D";
       serviceChar = heartRate.measurement;
       ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-        console.log("Notify Success HR");
-          var data = new Uint8Array(buffer);
-          //console.log("HR " + data[1]);
-          onDataHR(data);
-      }, function(reason){
+        //console.log("Notify Success HR");
+        var data = new Uint8Array(buffer);
+        //console.log("HR " + data[1]);
+        onDataHR(data);
+      }, function(reason) {
         console.log("failure" + reason);
       });
 
@@ -156,21 +149,22 @@ function connect(peripheral) {
 
     }
 
-    if (y[0] == "1816" || y[1] == "1816" || y[2] == "1816")  {
+    if (y[0] == "1816" || y[1] == "1816" || y[2] == "1816") {
+      console.log("Identified as CSC, calling Notify");
       serviceType = "1816";
       serviceChar = speedCadence.measurement;
       ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-        console.log("Notify Success CSC");
-          var data = new Uint8Array(buffer);
-          //console.log("CSC 1" + data[1]);  //need to do complete array
-          onDataCSC(data);
-      }, function(reason){
+        //console.log("Notify Success CSC");
+        var data = new Uint8Array(buffer);
+        //console.log("CSC 1" + data[1]);  //need to do complete array
+        onDataCSC(data);
+      }, function(reason) {
         console.log("failure" + reason);
       });
     }
 
 
-}  //end onConnect
+  } //end onConnect
 
   function onDisconnect() {
     console.log("Disconnected");
@@ -183,13 +177,15 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 
   e.preventDefault();
 
-var chipname = $$(this).find('.chip-label').text();
-var chipIndex = $$(this).find('.chip-media').text();
-var chipUUID = arrPeripherals[chipIndex].id;
-console.log(chipname);console.log(chipIndex);console.log(chipUUID);
-connect(arrPeripherals[chipIndex]);
+  var chipname = $$(this).find('.chip-label').text();
+  var chipIndex = $$(this).find('.chip-media').text();
+  var chipUUID = arrPeripherals[chipIndex].id;
+  // console.log(chipname);
+  // console.log(chipIndex);
+  // console.log(chipUUID);
+  connect(arrPeripherals[chipIndex]);
 
-//call to connect
+  //call to connect
 
 });
 

@@ -122,18 +122,13 @@ function connect(peripheral) {
   function onConnect() {
 
     var serviceType = "none";
-
     //https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
     //CREATE ANDROID VERSION
-
-
     console.log("connected");
     var x = peripheral.id;
     var y = peripheral.advertising.kCBAdvDataServiceUUIDs; //array of service uuids
     //peripheral.advertising.kCBAdvDataServiceUUIDs
-
-    console.log("y: ");
-    console.log(y);
+    console.log("Advertising:  " + y);
 
 
 
@@ -142,7 +137,7 @@ function connect(peripheral) {
       serviceType = "180D";
       serviceChar = heartRate.measurement;
       ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-        console.log("Notify Success HR");
+        //console.log("Notify Success HR");
         var data = new Uint8Array(buffer);
         //console.log("HR " + data[1]);
         onDataHR(data);
@@ -155,10 +150,11 @@ function connect(peripheral) {
     }
 
     if (y[0] == "1816" || y[1] == "1816" || y[2] == "1816") {
+      console.log("Identified as CSC, calling Notify");
       serviceType = "1816";
       serviceChar = speedCadence.measurement;
       ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-        console.log("Notify Success CSC");
+        //console.log("Notify Success CSC");
         var data = new Uint8Array(buffer);
         //console.log("CSC 1" + data[1]);  //need to do complete array
         onDataCSC(data);
@@ -184,9 +180,9 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
   var chipname = $$(this).find('.chip-label').text();
   var chipIndex = $$(this).find('.chip-media').text();
   var chipUUID = arrPeripherals[chipIndex].id;
-  console.log(chipname);
-  console.log(chipIndex);
-  console.log(chipUUID);
+  // console.log(chipname);
+  // console.log(chipIndex);
+  // console.log(chipUUID);
   connect(arrPeripherals[chipIndex]);
 
   //call to connect
