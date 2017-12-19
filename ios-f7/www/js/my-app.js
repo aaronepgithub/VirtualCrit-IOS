@@ -99,20 +99,25 @@ ptrContent.on('ptr:refresh', function(e) {
 
 
 function connect(peripheral) {
+
+
   function onConnect() {
 
     function onNotifySuccessHR() {
       print("Notify Success HR");
       var onData = function(buffer) {
-        // Decode the ArrayBuffer into a typed Array based on the data you expect
-      var data = new Uint8Array(buffer);
-      console.console.log("Button state changed to " + data[0]);
-    };
+        var data = new Uint8Array(buffer);
+        console.log("HR " + data[0]);
+      };
 
     }
 
     function onNotifySuccessCSC() {
-      print("Notify Success CSC");
+        print("Notify Success CSC");
+        var onData = function(buffer) {
+          var data = new Uint8Array(buffer);
+          console.log("HR " + data[0]);
+          };
     }
 
     function onNotifyFailure() {
