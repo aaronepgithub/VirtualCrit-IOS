@@ -82,12 +82,8 @@ class FirstViewController: UIViewController {
         lbl_Top_Info_Bar.text = "\(stringer1(myIn: mvspd)) mph  \(rt.total_moving_time_string) mvg"
         
         let percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
-        
-        if UIDevice.current.orientation.isPortrait {
-            lbl_hrLabel.text = "HR: \(percentofmax)%"
-            lbl_cadLabel.text = "CAD"
-        }
-        
+        lbl_hrLabel.text = "HR: \(percentofmax)%"
+        lbl_cadLabel.text = "CAD"
 
     }
     
@@ -98,8 +94,6 @@ class FirstViewController: UIViewController {
             //switchToDataTabCont()
             constraint_topInfoBar.constant = 0
             constraint_stactViewMain.constant = 0
-            lbl_hrLabel.text = ""
-            lbl_cadLabel.text = ""
         }
         
         if UIDevice.current.orientation.isPortrait {

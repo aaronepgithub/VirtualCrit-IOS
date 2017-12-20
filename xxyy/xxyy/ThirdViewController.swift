@@ -55,11 +55,11 @@ class ThirdViewController: UIViewController {
         out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
         lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
         
-        if UIDevice.current.orientation.isLandscape {
-            print("3Landscape")
+//        if UIDevice.current.orientation.isLandscape {
+//            print("3Landscape")
 //            out_Center.text = "\(String(format:"%.0f", rt.rt_hr))"
 //            lbl_hrLabel.text = "HR: \(stringer0(myIn: percentofmax))% MAX"
-        }
+//        }
 
 //        if UIDevice.current.orientation.isPortrait {
 //            print("3Portrait")

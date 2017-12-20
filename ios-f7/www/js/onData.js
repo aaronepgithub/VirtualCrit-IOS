@@ -13,6 +13,10 @@ function onDataHR(data) {
 
 function onDataCSC(data) {
 
+//SOLVED HERE
+//https://github.com/Psygraph/pg/blob/4ae63b774dab56a3d3435ed4845675add881eef4/www/js/bluetooth.js
+
+
 //if data[0] = 3, blueCSC
 //data[0] = 1, Wahoo Speed
 //anything else must be standalone cad?
