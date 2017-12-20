@@ -92,14 +92,14 @@ class FirstViewController: UIViewController {
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
             //switchToDataTabCont()
-            constraint_topInfoBar.constant = 0
-            constraint_stactViewMain.constant = 0
+//            constraint_topInfoBar.constant = 0
+//            constraint_stactViewMain.constant = 0
         }
         
         if UIDevice.current.orientation.isPortrait {
             print("Portrait")
-            constraint_topInfoBar.constant = 40
-            constraint_stactViewMain.constant = 40
+//            constraint_topInfoBar.constant = 40
+//            constraint_stactViewMain.constant = 40
         }
             
 //            if UIDevice.current.orientation.isFlat {
