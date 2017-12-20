@@ -27,7 +27,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="svn-sh-zoM">
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="svn-sh-zoM">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="30"/>
@@ -298,18 +298,16 @@
                         <constraints>
                             <constraint firstItem="UwM-CW-sQS" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="7Dt-i7-Znk"/>
                             <constraint firstItem="vCu-hh-6sH" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="40" id="Cxf-20-1wn"/>
-                            <constraint firstItem="vCu-hh-6sH" firstAttribute="leading" secondItem="UwM-CW-sQS" secondAttribute="leading" id="HfM-sQ-Skk"/>
+                            <constraint firstItem="vCu-hh-6sH" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="HfM-sQ-Skk"/>
                             <constraint firstItem="UwM-CW-sQS" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="LoC-lK-Fh8"/>
                             <constraint firstItem="vCu-hh-6sH" firstAttribute="bottom" secondItem="PQr-Ze-W5v" secondAttribute="bottom" id="LyN-cx-Fhm"/>
-                            <constraint firstItem="vCu-hh-6sH" firstAttribute="trailing" secondItem="UwM-CW-sQS" secondAttribute="trailing" id="hHf-dp-3bI"/>
+                            <constraint firstItem="vCu-hh-6sH" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="hHf-dp-3bI"/>
                             <constraint firstItem="UwM-CW-sQS" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" id="n7S-SA-DdZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Ride" image="ic_directions_bike" id="acW-dT-cKf"/>
                     <connections>
-                        <outlet property="constraint_stactViewMain" destination="Cxf-20-1wn" id="PKn-V1-t65"/>
-                        <outlet property="constraint_topInfoBar" destination="mEq-AM-QlD" id="NOw-Z8-KRf"/>
                         <outlet property="lbl_Cadence" destination="iDy-y1-Xl6" id="nL3-fP-Htu"/>
                         <outlet property="lbl_Distance" destination="pMt-yb-nEP" id="cTP-YB-C4z"/>
                         <outlet property="lbl_HR" destination="oYd-9n-NgT" id="yTc-TN-jX6"/>

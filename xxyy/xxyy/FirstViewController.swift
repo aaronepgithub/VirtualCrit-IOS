@@ -10,9 +10,9 @@ import UIKit
 
 class FirstViewController: UIViewController {
 
-    @IBOutlet weak var constraint_topInfoBar: NSLayoutConstraint!
-    
-    @IBOutlet weak var constraint_stactViewMain: NSLayoutConstraint!
+//    @IBOutlet weak var constraint_topInfoBar: NSLayoutConstraint!
+//    
+//    @IBOutlet weak var constraint_stactViewMain: NSLayoutConstraint!
     
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        if let touch = touches.first {
@@ -87,48 +87,48 @@ class FirstViewController: UIViewController {
 
     }
     
-    @objc func rotated() {
-        
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-            //switchToDataTabCont()
-//            constraint_topInfoBar.constant = 0
-//            constraint_stactViewMain.constant = 0
-        }
-        
-        if UIDevice.current.orientation.isPortrait {
-            print("Portrait")
-//            constraint_topInfoBar.constant = 40
-//            constraint_stactViewMain.constant = 40
-        }
-            
-//            if UIDevice.current.orientation.isFlat {
-//                print("Flat")
-//                return
-//            }
-//        } else {
-//            print("Portrait")
-//            constraint_topInfoBar.constant = 40
-//            constraint_stactViewMain.constant = 40
-            
-        
-        
-//        if UIDevice.current.orientation.isFlat {
-//            print("Flat")
-//            constraint_topInfoBar.constant = 0
-//            constraint_stactViewMain.constant = 0
-//            lbl_hrLabel.text = ""
-//            lbl_cadLabel.text = ""
+//    @objc func rotated() {
+//
+//        if UIDevice.current.orientation.isLandscape {
+//            print("Landscape")
+//            //switchToDataTabCont()
+////            constraint_topInfoBar.constant = 0
+////            constraint_stactViewMain.constant = 0
 //        }
-    
-    }
+//
+//        if UIDevice.current.orientation.isPortrait {
+//            print("Portrait")
+////            constraint_topInfoBar.constant = 40
+////            constraint_stactViewMain.constant = 40
+//        }
+//
+////            if UIDevice.current.orientation.isFlat {
+////                print("Flat")
+////                return
+////            }
+////        } else {
+////            print("Portrait")
+////            constraint_topInfoBar.constant = 40
+////            constraint_stactViewMain.constant = 40
+//
+//
+//
+////        if UIDevice.current.orientation.isFlat {
+////            print("Flat")
+////            constraint_topInfoBar.constant = 0
+////            constraint_stactViewMain.constant = 0
+////            lbl_hrLabel.text = ""
+////            lbl_cadLabel.text = ""
+////        }
+//
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("update"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
     }
 
