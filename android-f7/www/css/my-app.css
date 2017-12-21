@@ -18,6 +18,8 @@ input {
   user-select: auto !important;
 }
 
+/* ANDROID-ONLY */
+
 @media all and (max-width: 450px) and (min-width: 331px) {
   .vertride {
     font-size: 11px;
@@ -53,6 +55,8 @@ input {
     font-size: 7em;
   }
 }
+
+/* ANDROID-ONLY */
 
 .box {
   display: flex;

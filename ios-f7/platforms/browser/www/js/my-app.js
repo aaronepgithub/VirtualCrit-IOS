@@ -108,7 +108,7 @@ function connect(peripheral) {
     //https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
     //CREATE ANDROID VERSION
 
-// if ios
+    // if ios
 
     console.log("connected");
     var x = peripheral.id;
@@ -116,7 +116,7 @@ function connect(peripheral) {
     //peripheral.advertising.kCBAdvDataServiceUUIDs
     console.log("Advertising:  " + y);
 
-// if android, get array of services into var y
+    // if android, get array of services into var y
 
     if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D") {
       console.log("Identified as HR, calling Notify");
