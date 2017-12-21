@@ -19,6 +19,8 @@ var speedCadence = {
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
   console.log("Device is ready!");
+  var now = new Date();
+  $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
 });
 
 var mql = window.matchMedia("(orientation: portrait)");
@@ -61,12 +63,6 @@ function scan() {
     }
     console.log("Found " + JSON.stringify(peripheral) + "\n");
 
-    //if count is > 1
-    //if id = last
-    //return
-
-    //console.log(peripheral.id)
-    // arrPeripherals.push(peripheral.id);
     arrPeripherals.push(peripheral);
 
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
@@ -103,19 +99,6 @@ ptrContent.on('ptr:refresh', function(e) {
 
 
 
-
-
-
-
-
-//   console.log("Start Notification for HR");
-//   console.log(peripheral.id);
-//   ble.startNotification(peripheral.id, '180d', '2a37', this.onNotifySuccessHR, this.onNotifyFailure);
-// }
-
-
-
-
 function connect(peripheral) {
 
 
@@ -124,13 +107,16 @@ function connect(peripheral) {
     var serviceType = "none";
     //https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
     //CREATE ANDROID VERSION
+
+// if ios
+
     console.log("connected");
     var x = peripheral.id;
     var y = peripheral.advertising.kCBAdvDataServiceUUIDs; //array of service uuids
     //peripheral.advertising.kCBAdvDataServiceUUIDs
     console.log("Advertising:  " + y);
 
-
+// if android, get array of services into var y
 
     if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D") {
       console.log("Identified as HR, calling Notify");
@@ -180,6 +166,9 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
   var chipname = $$(this).find('.chip-label').text();
   var chipIndex = $$(this).find('.chip-media').text();
   var chipUUID = arrPeripherals[chipIndex].id;
+
+  $$(this).find('.chip-media').css('color', 'red');
+  $$(this).find('.chip-label').css('color', 'red');
   // console.log(chipname);
   // console.log(chipIndex);
   // console.log(chipUUID);
