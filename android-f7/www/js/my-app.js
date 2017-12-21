@@ -19,6 +19,7 @@ var speedCadence = {
 //ANDROID
 var serviceUuids = [];
 var localNames = [];
+var flags = [];
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -60,11 +61,18 @@ function scan() {
   $$('.blechip').remove();
 
   function onScan(peripheral) {
-
+console.log("x");
     if (peripheral.id == arrPeripherals[arrPeripherals.length - 1]) {
       console.log("Duplicate");
       return;
     }
+
+    if (peripheral.name == "") {
+      console.log("No Name");
+      return;
+    }
+
+
     console.log("Found " + JSON.stringify(peripheral) + "\n");
 
     arrPeripherals.push(peripheral);
@@ -77,7 +85,8 @@ function scan() {
   }
 
   console.log("scanning");
-  ble.scan(["180D", "1816"], 5, onScan, scanFailure);
+  // ble.scan(["180D", "1816"], 5, onScan, scanFailure);
+  ble.scan([], 5, onScan, scanFailure);
 
 }
 
@@ -130,9 +139,9 @@ function connect(peripheral) {
 
         // determine data based on field type
         switch (type) {
-          //case 0x01: // Flags
-            //peripheral.advertisement.flags = data[0] & 0xFF;
-            //break;
+          case 0x01: // Flags
+            flags.push = data[0] & 0xFF;
+            break;
 
           case 0x02: // Incomplete List of 16-Bit Service UUIDs
           case 0x03: // Complete List of 16-Bit Service UUIDs
@@ -143,15 +152,15 @@ function connect(peripheral) {
 
           case 0x04: // Incomplete List of 32-Bit Service UUIDs
           case 0x05: // Complete List of 32-Bit Service UUIDs
-            for (var n=0; n<data.length; n+=4) {
-              serviceUuids.push(uuid(data.subarray(n,n+4)));
+            for (var n1=0; n1<data.length; n1+=4) {
+              serviceUuids.push(uuid(data.subarray(n1,n1+4)));
             }
             break;
 
           case 0x06: // Incomplete List of 128-Bit Service UUIDs
           case 0x07: // Complete List of 128-Bit Service UUIDs
-            for (var n=0; n<data.length; n+=16) {
-              serviceUuids.push(uuid(data.subarray(n,n+16)));
+            for (var n2=0; n2<data.length; n2+=16) {
+              serviceUuids.push(uuid(data.subarray(n2,n2+16)));
             }
             break;
 
