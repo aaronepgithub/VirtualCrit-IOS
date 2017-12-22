@@ -328,16 +328,16 @@ translate_advertisement = function (peripheral) {
 
             case 0x04: // Incomplete List of 32-Bit Service UUIDs
             case 0x05: // Complete List of 32-Bit Service UUIDs
-              for (var n=0; n<data.length; n+=4) {
-                peripheral.advertisement.serviceUuids.push(uuid(data.subarray(n,n+4)));
+              for (var n1=0; n1<data.length; n1+=4) {
+                peripheral.advertisement.serviceUuids.push(uuid(data.subarray(n1,n1+4)));
                                 console.log("serviceUuid:  " + peripheral.advertisement.serviceUuids[peripheral.advertisement.serviceUuids.length - 1]);
               }
               break;
 
             case 0x06: // Incomplete List of 128-Bit Service UUIDs
             case 0x07: // Complete List of 128-Bit Service UUIDs
-              for (var n=0; n<data.length; n+=16) {
-                peripheral.advertisement.serviceUuids.push(uuid(data.subarray(n,n+16)));
+              for (var n2=0; n2<data.length; n2+=16) {
+                peripheral.advertisement.serviceUuids.push(uuid(data.subarray(n2,n2+16)));
                 console.log("serviceUuid:  " + peripheral.advertisement.serviceUuids[peripheral.advertisement.serviceUuids.length - 1]);
               }
               break;
