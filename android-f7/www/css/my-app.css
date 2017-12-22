@@ -22,37 +22,37 @@ input {
 
 @media all and (max-width: 450px) and (min-width: 331px) {
   .vertride {
-    font-size: 11px;
+    font-size: 10px;
   }
 }
 
 @media all and (max-width: 330px) and (min-width: 300px) {
   .vertride {
-    font-size: 8px;
+    font-size: 7px;
   }
 }
 
 @media all and (max-width: 959px) and (min-width: 601px) {
   .hrcad {
-    font-size: 7em;
+    font-size: 6em;
   }
 }
 
 @media all and (max-width: 600px) and (min-width: 300px) {
   .hrcad {
-    font-size: 5em;
+    font-size: 4em;
   }
 }
 
 @media all and (max-width: 959px) and (min-width: 601px) {
   .spd {
-    font-size: 9em;
+    font-size: 8em;
   }
 }
 
 @media all and (max-width: 600px) and (min-width: 300px) {
   .spd {
-    font-size: 7em;
+    font-size: 6em;
   }
 }
 
