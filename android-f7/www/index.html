@@ -19,6 +19,7 @@
   <!-- ANDROID-ONLY -->
   <link rel="stylesheet" href="dist/css/framework7.material.min.css">
   <link rel="stylesheet" href="dist/css/framework7.material.colors.min.css">
+  <link rel="stylesheet" href="css/framework7-icons.css">
   <!-- ANDROID-ONLY -->
 
   <!-- Path to your custom app styles-->
@@ -78,7 +79,7 @@
           <!-- ANDROID-ONLY -->
           <!-- Tabbar-->
           <div class="toolbar tabbar tabbar-labels">
-            <div class="toolbar-inner"><a href="#view-1" class="tab-link active"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
+            <div class="toolbar-inner"><a href="#view-1" class="tab-link active"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
               <a href="#view-3" class="tab-link"> <i class="icon tabbar-demo-icon-3"><span id="iconNumber" class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a>
             </div>
           </div>
@@ -122,7 +123,7 @@
                   <!-- Divider -->
                   <li class="item-divider">BIKE SETTINGS</li>
 
-                  <li class="item-content">
+                  <li id="TIRESIZE" class="item-content">
                     <div class="item-media"><i class="icon icon-f7"></i></div>
                     <div class="item-inner">
                       <div class="item-title">TIRE SIZE</div>
@@ -137,7 +138,7 @@
                     </div>
                   </li>
                 </ul>
-                <div class="list-block-label">Panels are here: <a href="#" class="open-panel">left</a> and <a href="#" data-panel="right" class="open-panel">right</a></div>
+                <!-- <div class="list-block-label"><i class="icon bell"></i></div> -->
               </div>
             </div>
           </div>
@@ -147,10 +148,10 @@
 
 
 
-  <!-- Second view (for second wrap)-->
-  <div id="view-2" class="view tab">
-    <!-- We can make with view with navigation, let's add Top Navbar-->
-    <!-- <div class="navbar">
+    <!-- Second view (for second wrap)-->
+    <div id="view-2" class="view tab">
+      <!-- We can make with view with navigation, let's add Top Navbar-->
+      <!-- <div class="navbar">
         <div class="navbar-inner">
           <div class="center sliding">BLUETOOTH SENSORS</div>
         </div>
@@ -160,44 +161,44 @@
       <!-- Pages-->
       <div class="pages navbar-fixed toolbar-fixed">
 
-    <div data-page="index-2" class="page">
+        <div data-page="index-2" class="page">
 
-      <!-- ANDROID-ONLY -->
-      <!-- Navbar-->
-      <div class="navbar">
-        <div class="navbar-inner">
-          <div class="center sliding">BLUETOOTH SENSORS</div>
-        </div>
-      </div>
-      <!-- <div class="pages navbar-through"> -->
-      <!-- ANDROID-ONLY -->
-
-      <!-- ANDROID-ONLY -->
-      <!-- Tabbar-->
-      <div class="toolbar tabbar tabbar-labels">
-        <div class="toolbar-inner"><a href="#view-1" class="tab-link"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link active"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
-          <a href="#view-3" class="tab-link"> <i class="icon tabbar-demo-icon-3"><span id="iconNumber" class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a>
-        </div>
-      </div>
-      <!-- ANDROID-ONLY -->
-
-
-      <div class="page-content pull-to-refresh-content">
-
-        <div class="pull-to-refresh-layer">
-          <div class="preloader"></div>
-          <div class="pull-to-refresh-arrow"></div>
-        </div>
-        <div class="content-block">
-          <h3 id="blinker">Pull to Refresh</h3>
-        </div>
-        <div class="content-block blelist">
-
-          <div id="blechip" class="chip chip-extended blechip">
-            <div class="chip-media bg-red">0</div>
-            <div class="chip-label">HR/CSC</div>
+          <!-- ANDROID-ONLY -->
+          <!-- Navbar-->
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="center sliding">BLUETOOTH SENSORS</div>
+            </div>
           </div>
-          <!-- <div id="blechip" class="chip chip-extended blechip">
+          <!-- <div class="pages navbar-through"> -->
+          <!-- ANDROID-ONLY -->
+
+          <!-- ANDROID-ONLY -->
+          <!-- Tabbar-->
+          <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar-inner"><a href="#view-1" class="tab-link"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link active"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
+              <a href="#view-3" class="tab-link"> <i class="icon tabbar-demo-icon-3"><span id="iconNumber" class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a>
+            </div>
+          </div>
+          <!-- ANDROID-ONLY -->
+
+
+          <div class="page-content pull-to-refresh-content">
+
+            <div class="pull-to-refresh-layer">
+              <div class="preloader"></div>
+              <div class="pull-to-refresh-arrow"></div>
+            </div>
+            <div class="content-block">
+              <h3 id="blinker">Pull to Refresh</h3>
+            </div>
+            <div class="content-block blelist">
+
+              <div id="blechip" class="chip chip-extended blechip">
+                <div class="chip-media bg-red">0</div>
+                <div class="chip-label">HR/CSC</div>
+              </div>
+              <!-- <div id="blechip" class="chip chip-extended blechip">
                 <div class="chip-media bg-blue">CSC</div>
                 <div class="chip-label">Scosche</div>
               </div>
@@ -207,21 +208,21 @@
                             </div> -->
 
 
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-  </div>
 
 
 
 
 
-  <!-- VIEW 3 START -->
+    <!-- VIEW 3 START -->
 
-  <div id="view-3" class="view tab">
+    <div id="view-3" class="view tab">
 
-    <!-- <div class="navbar">
+      <!-- <div class="navbar">
         <div class="navbar-inner">
           <div class="center sliding"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH </div>
         </div>
@@ -229,110 +230,110 @@
       <div class="pages navbar-through"> -->
 
 
-    <div class="pages navbar-fixed toolbar-fixed">
-      <div data-page="index-3" class="page">
+      <div class="pages navbar-fixed toolbar-fixed">
+        <div data-page="index-3" class="page">
 
-        <!-- ANDROID-ONLY -->
-        <!-- Navbar-->
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="center sliding"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH </div>
+          <!-- ANDROID-ONLY -->
+          <!-- Navbar-->
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="center sliding"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH </div>
+            </div>
+          </div>
+          <!-- <div class="pages navbar-through"> -->
+          <!-- ANDROID-ONLY -->
+
+          <!-- ANDROID-ONLY -->
+          <!-- Tabbar-->
+          <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar-inner"><a href="#view-1" class="tab-link"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
+              <a href="#view-3" class="tab-link active"> <i class="icon tabbar-demo-icon-3"><span id="iconNumber" class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a>
+            </div>
+          </div>
+          <!-- ANDROID-ONLY -->
+
+          <div class="page-content">
+            <div class="content-block vertride">
+
+
+              <div class="row">
+                <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div>
+              </div>
+
+              <div class="row">
+                <div class="col-100" style="font-size: 1em">SPEED</div>
+              </div>
+
+              <div class="row">
+                <div class="rtSPD col-100" style="font-size: 9em">00.00</div>
+              </div>
+
+              <div class="row">
+                <div class="col-50" style="font-size: 1em">HR</div>
+                <div class="col-50" style="font-size: 1em">CAD</div>
+              </div>
+
+              <div class="row">
+                <div class="rtHR col-50" style="font-size: 6em">000</div>
+                <div class="rtCAD col-50" style="font-size: 6em">00</div>
+              </div>
+
+              <div class="row">
+                <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>
+              </div>
+
+
+              <!-- <div class="col-100"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH </div> -->
+
+
+
+            </div>
           </div>
         </div>
-        <!-- <div class="pages navbar-through"> -->
-        <!-- ANDROID-ONLY -->
+      </div>
+    </div>
 
-        <!-- ANDROID-ONLY -->
-        <!-- Tabbar-->
-        <div class="toolbar tabbar tabbar-labels">
-          <div class="toolbar-inner"><a href="#view-1" class="tab-link"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
-            <a href="#view-3" class="tab-link active"> <i class="icon tabbar-demo-icon-3"><span id="iconNumber" class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a>
+
+
+    <!-- VIEW 4 START -->
+
+    <div id="view-4" class="view tab popup popup4">
+      <div class="pages navbar-fixed toolbar-fixed">
+        <div data-page="index-4" class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH &nbsp; <span class="TIME">12:00:00 PM</span></div>
+            </div>
           </div>
-        </div>
-        <!-- ANDROID-ONLY -->
-
-        <div class="page-content">
-          <div class="content-block vertride">
-
-
-            <div class="row">
-              <div class="col-100" style="font-size: 3em">00:00:00</div>
+          <!-- <div class="page-content" style="margin-top: 20px;"> -->
+          <div class="page-content" style="margin-top: 20px;">
+            <div class="row row1">
+              <div class="col-30">HR</div>
+              <div class="col-40">SPEED</div>
+              <div class="col-30">CAD</div>
             </div>
 
-            <div class="row">
-              <div class="col-100" style="font-size: 1em">SPEED</div>
+            <div class="row row2">
+              <div class="rtHR hrcad col-30">000</div>
+              <div class="rtSPD spd col-40">00.0</div>
+              <div class="rtCAD hrcad col-30">00</div>
             </div>
 
-            <div class="row">
-              <div class="rtSPD col-100" style="font-size: 9em">00.00</div>
+            <div class="row row3">
+              <div class="col-20">xxx</div>
+              <div class="col-20">xxxxxxx</div>
+              <div class="col-20">xxxx</div>
+              <div class="col-20">xxxx</div>
+              <div class="col-20">xxxx</div>
             </div>
-
-            <div class="row">
-              <div class="col-50" style="font-size: 1em">HR</div>
-              <div class="col-50" style="font-size: 1em">CAD</div>
-            </div>
-
-            <div class="row">
-              <div class="rtHR col-50" style="font-size: 6em">000</div>
-              <div class="rtCAD col-50" style="font-size: 6em">00</div>
-            </div>
-
-            <div class="row">
-              <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>
-            </div>
-
-
-            <!-- <div class="col-100"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH </div> -->
-
-
 
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-
-
-  <!-- VIEW 4 START -->
-
-  <div id="view-4" class="view tab popup popup4">
-    <div class="pages navbar-fixed toolbar-fixed">
-      <div data-page="index-4" class="page">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MVT &nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG MPH &nbsp; <span class="TIME">12:00:00 PM</span></div>
-          </div>
-        </div>
-        <!-- <div class="page-content" style="margin-top: 20px;"> -->
-        <div class="page-content" style="margin-top: 20px;">
-          <div class="row row1">
-            <div class="col-30">HR</div>
-            <div class="col-40">SPEED</div>
-            <div class="col-30">CAD</div>
-          </div>
-
-          <div class="row row2">
-            <div class="rtHR hrcad col-30">000</div>
-            <div class="rtSPD spd col-40">00.0</div>
-            <div class="rtCAD hrcad col-30">00</div>
-          </div>
-
-          <div class="row row3">
-            <div class="col-20">xxx</div>
-            <div class="col-20">xxxxxxx</div>
-            <div class="col-20">xxxx</div>
-            <div class="col-20">xxxx</div>
-            <div class="col-20">xxxx</div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Tabbar-->
-  <!-- <div class="toolbar tabbar tabbar-labels">
+    <!-- Bottom Tabbar-->
+    <!-- <div class="toolbar tabbar tabbar-labels">
       <div class="toolbar-inner"><a href="#view-1" class="tab-link active"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a>
         <a href="#view-3" class="tab-link"> <i class="icon tabbar-demo-icon-3"><span id="iconNumber" class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a>
       </div>

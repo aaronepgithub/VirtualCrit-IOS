@@ -125,8 +125,8 @@ function processWheelData(data) {
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
 
-      var now = new Date();
-      $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
+      //var now = new Date();
+      //$$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
 
     }
     //console.log("SPD:  " + single_read_speed);
@@ -183,3 +183,30 @@ function processCrankData(data, index) {
 
 
 }
+
+
+Date.dateDiff = function(datepart, fromdate, todate) {
+  datepart = datepart.toLowerCase();
+  var diff = todate - fromdate;
+  var divideBy = {
+    w: 604800000,
+    d: 86400000,
+    h: 3600000,
+    n: 60000,
+    s: 1000
+  };
+
+  var deltaSeconds = Math.floor(diff / divideBy[datepart]);
+
+  var date = new Date(null);
+  date.setSeconds(deltaSeconds); // specify value for SECONDS here
+  var result = date.toISOString().substr(11, 8);
+
+  // return Math.floor( diff/divideBy[datepart]);
+  return result;
+
+};
+//Set the two dates
+//var y2k  = new Date(2000, 0, 1);
+var rightNow = new Date();
+//console.log('Seconds Since Start: ' + Date.dateDiff('s', startTime, rightNow));
