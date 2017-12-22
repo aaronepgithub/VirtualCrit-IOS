@@ -22,7 +22,7 @@ input {
 
 @media all and (max-width: 450px) and (min-width: 331px) {
   .vertride {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
@@ -248,8 +248,8 @@ div[class*="col-"] {
 }
 
 .row {
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: .5px;
+  margin-top: .5px;
 }
 
 .spanpadding1 {

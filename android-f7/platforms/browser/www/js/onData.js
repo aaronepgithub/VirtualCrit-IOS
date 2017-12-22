@@ -11,7 +11,7 @@ function onDataHR(data) {
   rt.hr = data[1];
   $$(".rtHR").text(rt.hr);
   $$("#blinker").text("Pull to Refresh (HR)");
-  $$("#iconNumber").text(rt.hr);
+  $$(".iconNumber").text(rt.hr);
 }
 
 function decodeUint32(bytes) {
@@ -89,6 +89,17 @@ function processWheelData(data) {
       deltaT += 65535;
     }
 
+    if (deltaW == 0) {
+      wheelRevolution = oldWheelRevolution;
+      wheelEventTime = oldWheelEventTime;
+      return;
+    }
+    if (deltaT < 750) {
+      wheelRevolution = oldWheelRevolution;
+      wheelEventTime = oldWheelEventTime;
+      return;
+    }
+
     //         //single read
     var wheelTimeSeconds = deltaT / 1024;
     if (wheelTimeSeconds > 0) {
@@ -114,19 +125,15 @@ function processWheelData(data) {
       var avgSpeed = (rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
 
       var date = new Date(null);
-      date.setSeconds(rt_WheelTime / 1024); // specify value for SECONDS here
+      date.setSeconds(rt_WheelTime / 1024);
       var result = date.toISOString().substr(11, 8);
 
       $$(".rtMOVING").text(result);
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
-      //$$(".rtMOVING_AVG").append('<div class="center">' + result + 'MVT' +  avgSpeed.toFixed(1) + 'AVG MPH </div>');
 
       rt.speed = single_read_speed.toFixed(1);
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
-
-      //var now = new Date();
-      //$$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
 
     }
     //console.log("SPD:  " + single_read_speed);
@@ -158,6 +165,18 @@ function processCrankData(data, index) {
     }
     if (deltaT < 0) {
       deltaT += 65535;
+    }
+
+    if (deltaW == 0) {
+      crankRevolution = oldCrankRevolution;
+      crankEventTime = oldCrankEventTime;
+      return;
+    }
+
+    if (deltaT < 750) {
+      crankRevolution = oldCrankRevolution;
+      crankEventTime = oldCrankEventTime;
+      return;
     }
 
     //single read

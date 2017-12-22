@@ -23,7 +23,11 @@ $$(document).on('deviceready', function() {
   console.log("Device is ready!");
   now = new Date();
   startTime = now;
-  $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
+  if (now.getHours() > 12) {
+    $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds() + " PM");
+  } else {
+    $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
+  }
 });
 
 
@@ -35,6 +39,34 @@ $$('#TIRESIZE').on('click', function(e) {
     $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after"><span class="badge">700X25</span></div></div>');
     wheelCircumference = 2105;
   }
+});
+
+var refreshInterval = 0;
+
+$$('#REFRESH').on('click', function(e) {
+  var current = refreshInterval;
+
+  if (current == 0) {
+    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">1</div></div>');
+    refreshInterval = 1;
+  }
+
+  if (current == 1) {
+    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">2</div></div>');
+    refreshInterval = 2;
+  }
+
+  if (current == 2) {
+    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">3</div></div>');
+    refreshInterval = 3;
+  }
+
+  if (current == 3) {
+    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">0</div></div>');
+    refreshInterval = 0;
+  }
+
+
 });
 
 
@@ -78,23 +110,16 @@ function scan() {
     myApp.pullToRefreshDone();
 
 
-
-
-    // if (peripheral.id == arrPeripherals[arrPeripherals.length - 1]) {
-    //   console.log("Duplicate Last");  //check all with for each
-    //   return;
-    // }
-
-
-
     var shouldReturn = 0;
     arrPeripherals.forEach(function(element) {
       if (peripheral.id == element.id) {
         shouldReturn = 1;
-        console.log("Duplicate All");  //check all with for each
+        console.log("Duplicate All"); //check all with for each
       }
     });
-    if (shouldReturn == 1) {return;}
+    if (shouldReturn == 1) {
+      return;
+    }
 
     // if (peripheral.name === "") {
     //   console.log("No Name");
@@ -109,15 +134,10 @@ function scan() {
       if (arrPeripherals.length == 0) { //knowing that I am going to add one now
         $$('.blechip').remove();
       }
-      //remove all chips
-      //arrPeripherals = [];
-
-
       console.log("Found " + JSON.stringify(peripheral) + "\n");
       arrPeripherals.push(peripheral);
       $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
     }
-
   }
 
   function scanFailure(reason) {
@@ -125,11 +145,7 @@ function scan() {
   }
 
   console.log("scanning");
-  // ble.scan(["180D", "1816"], 5, onScan, scanFailure);
-
-  //create array containing the service uuids and pass that arr into the scn ommand
   ble.scan([], 5, onScan, scanFailure);
-
 }
 
 // Pull to refresh content
@@ -137,11 +153,6 @@ var ptrContent = $$('.pull-to-refresh-content');
 
 // Add 'refresh' listener on it
 ptrContent.on('ptr:refresh', function(e) {
-
-  //remove all chips
-  //arrPeripherals = [];
-  //$$('.blechip').remove();
-
 
   scan();
 
@@ -157,31 +168,19 @@ ptrContent.on('ptr:refresh', function(e) {
 
 function connect(peripheral) {
 
-
-
   function onConnect() {
 
     var serviceType = "none";
-    //https://github.com/lab11/blees/blob/7f2e77e59b576d851448001ce0fcc86a807927fb/summon/blees-demo/js/bluetooth.js
     //CREATE ANDROID VERSION
     console.log("Peripheral Data after Connecting");
     console.log(JSON.stringify(peripheral));
 
-    //var scanRecord = new Uint8Array(peripheral);
     var scanRecord = new Uint8Array(peripheral.advertising);
     console.log("scanRecord:  " + JSON.stringify(scanRecord));
 
-    // if ios
-
     console.log("connected");
     var x = peripheral.id;
-    // var y = peripheral.advertising.kCBAdvDataServiceUUIDs; //array of service uuids
-    //peripheral.advertising.kCBAdvDataServiceUUIDs
-
     var z = translate_advertisement(peripheral);
-
-    console.log("peripheral.advertisement.serviceUuids");
-    console.log(peripheral.advertisement.serviceUuids);
     var y = [];
 
     peripheral.advertisement.serviceUuids.forEach(function(element) {
@@ -192,32 +191,6 @@ function connect(peripheral) {
         y.push("1816");
       }
     });
-
-    // if (peripheral.advertisement.serviceUuids[0] == "18D") {
-    //   y.push("180D");
-    // }
-    //
-    // if (peripheral.advertisement.serviceUuids[1] == "18D") {
-    //   y.push("180D");
-    // }
-    //
-    // if (peripheral.advertisement.serviceUuids[2] == "18D") {
-    //   y.push("180D");
-    // }
-    //
-    // if (peripheral.advertisement.serviceUuids[0] == "1816") {
-    //   y.push("1816");
-    // }
-    //
-    // if (peripheral.advertisement.serviceUuids[1] == "1816") {
-    //   y.push("1816");
-    // }
-    //
-    // if (peripheral.advertisement.serviceUuids[2] == "1816") {
-    //   y.push("1816");
-    // }
-
-
 
     console.log("y:  " + y);
     y.forEach(function(element) {
@@ -231,12 +204,10 @@ function connect(peripheral) {
           var data = new Uint8Array(buffer);
           now = new Date();
           if (now.getHours() > 12) {
-            $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds());
+            $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds() + " PM");
           } else {
-            $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
+            $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
           }
-
-
 
           var rightNow = new Date();
           //console.log('Time Since Start: ' + Date.dateDiff('s', startTime, rightNow));
@@ -259,9 +230,9 @@ function connect(peripheral) {
           //console.log("CSC 1" + data[1]);  //need to do complete array
           now = new Date();
           if (now.getHours() > 12) {
-            $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds());
+            $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds() + " PM");
           } else {
-            $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
+            $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
           }
 
 
@@ -277,51 +248,6 @@ function connect(peripheral) {
       }
 
     });
-
-
-    // if (y[0] == "180D" || y[1] == "180D" || y[2] == "180D") {
-    // console.log("Identified as HR, calling Notify");
-    // serviceType = "180D";
-    // serviceChar = heartRate.measurement;
-    // ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-    //   //console.log("Notify Success HR");
-    //   var data = new Uint8Array(buffer);
-    //   now = new Date();
-    //   $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
-    //
-    //
-    //   var rightNow = new Date();
-    //   console.log('Time Since Start: ' + Date.dateDiff('s', startTime, rightNow));
-    //
-    //
-    //   //console.log("HR " + data[1]);
-    //   onDataHR(data);
-    // }, function(reason) {
-    //   console.log("failure" + reason);
-    // });
-    // }
-
-    // if (y[0] == "1816" || y[1] == "1816" || y[2] == "1816") {
-    // console.log("Identified as CSC, calling Notify");
-    // serviceType = "1816";
-    // serviceChar = speedCadence.measurement;
-    // ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-    //   //console.log("Notify Success CSC");
-    //   var data = new Uint8Array(buffer);
-    //   //console.log("CSC 1" + data[1]);  //need to do complete array
-    //   now = new Date();
-    //   $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
-    //
-    //
-    //   var rightNow = new Date();
-    //   console.log('Time Since Start: ' + Date.dateDiff('s', startTime, rightNow));
-    //
-    //
-    //   onDataCSC(data);
-    // }, function(reason) {
-    //   console.log("failure" + reason);
-    // });
-    // }
 
 
   } //end onConnect
@@ -343,44 +269,37 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 
   $$(this).find('.chip-media').css('color', 'red');
   $$(this).find('.chip-label').css('color', 'red');
-  // console.log(chipname);
-  // console.log(chipIndex);
-  // console.log(chipUUID);
+
   connect(arrPeripherals[chipIndex]);
-
-  //call to connect
-
 });
 
 $$('#view-4').on('tab:show', function() {
   // myApp.alert('Tab/View 4 is visible');
   currentTab = 4;
-  console.log(currentTab);
+  // console.log(currentTab);
 });
 
 $$('#view-3').on('tab:show', function() {
   // myApp.alert('Tab/View 3 is visible');
   currentTab = 3;
-  console.log(currentTab);
+  // console.log(currentTab);
 });
 
 $$('#view-2').on('tab:show', function() {
   // myApp.alert('Tab/View 2 is visible');
   currentTab = 2;
-  console.log(currentTab);
+  $$(".iconNumber").text("00");
+  // console.log(currentTab);
 });
 
 // Add views
-var view1 = myApp.addView('#view-1');
-var view2 = myApp.addView('#view-2', {
-  // Because we use fixed-through navbar we can enable dynamic navbar
-  dynamicNavbar: true
-});
-var view3 = myApp.addView('#view-3');
-var view4 = myApp.addView('#view-4');
-
-
-
+// var view1 = myApp.addView('#view-1');
+// var view2 = myApp.addView('#view-2', {
+//   // Because we use fixed-through navbar we can enable dynamic navbar
+//   dynamicNavbar: true
+// });
+// var view3 = myApp.addView('#view-3');
+// var view4 = myApp.addView('#view-4');
 
 translate_advertisement = function(peripheral) {
   var advertising = peripheral.advertising;

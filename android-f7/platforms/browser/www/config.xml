@@ -2,7 +2,7 @@
 <widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Virtual Crit II</name>
     <description>
-        A basic Framework7 template for PhoneGap.
+        Virtual Crit II
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
@@ -15,6 +15,8 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <gap:plugin name="cordova-plugin-ble-central" source="npm" />
+    <preference name="phonegap-version" value="cli-6.1.0" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="orientation" value="default" />
 </widget>
