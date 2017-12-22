@@ -115,7 +115,7 @@ var ptrContent = $$('.pull-to-refresh-content');
 ptrContent.on('ptr:refresh', function(e) {
 
   //remove all chips
-  arrPeripherals = [];
+  //arrPeripherals = [];
   $$('.blechip').remove();
 
   scan();
