@@ -69,16 +69,30 @@ var arrPeripherals = [];
 var y = [];
 
 function scan() {
-  //remove all chips
-  arrPeripherals = [];
-  $$('.blechip').remove();
+  // //remove all chips
+  // arrPeripherals = [];
+  // $$('.blechip').remove();
 
   function onScan(peripheral) {
     console.log("On Scan");
-    if (peripheral.id == arrPeripherals[arrPeripherals.length - 1]) {
-      console.log("Duplicate");
-      return;
-    }
+
+
+
+    // if (peripheral.id == arrPeripherals[arrPeripherals.length - 1]) {
+    //   console.log("Duplicate Last");  //check all with for each
+    //   return;
+    // }
+
+
+
+    var shouldReturn = 0;
+    arrPeripherals.forEach(function(element) {
+      if (peripheral.id == element.id) {
+        shouldReturn = 1;
+        console.log("Duplicate All");  //check all with for each
+      }
+    });
+    if (shouldReturn == 1) {return;}
 
     // if (peripheral.name === "") {
     //   console.log("No Name");
@@ -89,6 +103,14 @@ function scan() {
       console.log("No Name");
       return;
     } else {
+
+      if (arrPeripherals.length == 0) { //knowing that I am going to add one now
+        $$('.blechip').remove();
+      }
+      //remove all chips
+      //arrPeripherals = [];
+
+
       console.log("Found " + JSON.stringify(peripheral) + "\n");
       arrPeripherals.push(peripheral);
       $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
@@ -116,7 +138,8 @@ ptrContent.on('ptr:refresh', function(e) {
 
   //remove all chips
   //arrPeripherals = [];
-  $$('.blechip').remove();
+  //$$('.blechip').remove();
+
 
   scan();
 
