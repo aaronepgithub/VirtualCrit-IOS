@@ -75,6 +75,8 @@ function scan() {
 
   function onScan(peripheral) {
     console.log("On Scan");
+    myApp.pullToRefreshDone();
+
 
 
 
