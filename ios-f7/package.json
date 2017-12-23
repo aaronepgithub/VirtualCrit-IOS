@@ -6,6 +6,7 @@
   },
   "displayName": "helloworld",
   "dependencies": {
+    "cordova-custom-config": "^5.0.1",
     "cordova-plugin-ble-central": "^1.1.4",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^1.1.7"
@@ -15,7 +16,8 @@
       "cordova-plugin-ble-central": {
         "BLUETOOTH_USAGE_DESCRIPTION": "Your description here"
       },
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-custom-config": {}
     }
   }
 }

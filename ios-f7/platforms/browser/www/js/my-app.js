@@ -33,10 +33,10 @@ $$(document).on('deviceready', function() {
 
 $$('#TIRESIZE').on('click', function(e) {
   if (wheelCircumference == 2105) {
-    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X32</div></div>');
+    $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X32</div></div>');
     wheelCircumference = 2155;
   } else {
-    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X25</div></div>');
+    $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X25</div></div>');
     wheelCircumference = 2105;
   }
 });
@@ -47,28 +47,40 @@ $$('#REFRESH').on('click', function(e) {
   var current = refreshInterval;
 
   if (current == 0) {
-    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">1</div></div>');
+    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">1</div></div>');
     refreshInterval = 1;
   }
 
   if (current == 1) {
-    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">2</div></div>');
+    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">2</div></div>');
     refreshInterval = 2;
   }
 
   if (current == 2) {
-    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">3</div></div>');
+    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">3</div></div>');
     refreshInterval = 3;
   }
 
   if (current == 3) {
-    $$(this).html('<div class="item-media"><i class="icon icon-f7"></i></div><div class="item-inner"><div class="item-title">REFRESH</div><div class="item-after">0</div></div>');
+    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">0</div></div>');
     refreshInterval = 0;
   }
 
 
 });
 
+$$('#RESTART').on('click', function(e) {
+  console.log("RESTART");
+  // arrConnectedPeripherals.forEach(function(element, index) {
+  //   ble.stopNotification(arrConnectedPeripherals[index], arrConnectedPeripheralsService[index], arrConnectedPeripheralsChar[index], function() {console.log("stop notify success");}, function() {console.log("stop notify failed");});
+  //   ble.disconnect(element, function() {console.log("disconnect success");}, function() {console.log("disconnect failed");});
+  // });
+  arrConnectedPeripherals.forEach(function(element) {
+    ble.disconnect(element, function() {console.log("disconnect success");}, function() {console.log("disconnect failed");});
+  });
+  $$('.chip-media').css('color', 'white');
+  $$('.chip-label').css('color', 'white');
+});
 
 
 
@@ -135,7 +147,6 @@ function scan() {
 
 
     arrPeripherals.push(peripheral);
-
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
   }
 
@@ -144,9 +155,6 @@ function scan() {
   }
 
   console.log("scanning");
-  // ble.scan(['180D','1816','180d'], 5, onScan, scanFailure);
-  // var items = ['180D','1816','18d','18D'];
-  // ble.scan(items, 5, onScan, scanFailure);
   ble.scan([], 5, onScan, scanFailure);
 
 }
@@ -172,7 +180,9 @@ ptrContent.on('ptr:refresh', function(e) {
 });
 
 
-
+var arrConnectedPeripherals = [];
+var arrConnectedPeripheralsService = [];
+var arrConnectedPeripheralsChar = [];
 function connect(peripheral) {
 
 
@@ -214,6 +224,9 @@ function connect(peripheral) {
         console.log("Identified as HR, calling Notify");
         serviceType = "180D";
         serviceChar = heartRate.measurement;
+        arrConnectedPeripherals.push(peripheral.id);
+        arrConnectedPeripheralsService.push(serviceType);
+        arrConnectedPeripheralsChar.push(serviceChar);
         ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
           //console.log("Notify Success HR");
           var data = new Uint8Array(buffer);
@@ -238,6 +251,9 @@ function connect(peripheral) {
         console.log("Identified as CSC, calling Notify");
         serviceType = "1816";
         serviceChar = speedCadence.measurement;
+        arrConnectedPeripherals.push(peripheral.id);
+        arrConnectedPeripheralsService.push(serviceType);
+        arrConnectedPeripheralsChar.push(serviceChar);
         ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
           //console.log("Notify Success CSC");
           var data = new Uint8Array(buffer);
