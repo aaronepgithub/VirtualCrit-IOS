@@ -18,15 +18,26 @@ input {
   user-select: auto !important;
 }
 
+.vertride {
+  margin: 15px 0;
+}
+
 @media all and (max-width: 450px) and (min-width: 331px) {
   .vertride {
     font-size: 14.5px;
   }
 }
 
-@media all and (max-width: 330px) and (min-width: 300px) {
+@media all and (max-width: 330px) and (min-width: 321px) {
   .vertride {
     font-size: 11.5px;
+  }
+}
+
+/* iphone4 */
+@media all and (max-width: 320px) and (min-width: 300px) {
+  .vertride {
+    font-size: 9.5px;
   }
 }
 
@@ -54,14 +65,14 @@ input {
   }
 }
 
-.box {
+/* .box {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-around;
   align-content: center;
   align-items: stretch;
   height: -webkit-fill-available;
-}
+} */
 
 .chip-extended {
   font-size: 20px;
@@ -70,16 +81,16 @@ input {
   padding-right: 16px;
 }
 
-.box1 {
+/* .box1 {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
   align-content: center;
   align-items: center;
   height: -webkit-fill-available;
-}
+} */
 
-.box div.H1 {
+/* .box div.H1 {
   order: 1 flex: 0 1 auto;
   align-self: auto;
   min-width: 20;
@@ -98,7 +109,7 @@ input {
   align-self: auto;
   min-width: 20;
   min-height: 90;
-}
+} */
 
 .row1 {
   font-size: 1em;
@@ -108,12 +119,12 @@ input {
   font-size: 2em;
 }
 
-.vhbox {
+/* .vhbox {
   max-height: 90vmax;
   max-width: 90vmax;
-}
+} */
 
-.box div.A {
+/* .box div.A {
   order: 1 flex: 0 1 auto;
   align-self: center;
   min-width: 0;
@@ -135,17 +146,16 @@ input {
   min-width: 0;
   min-height: 30%;
   font-size: 9em;
-}
+} */
 
-.box div.C1 {
+/* .box div.C1 {
   order: 3 flex: 0 1 auto;
-  /*align-self: center;*/
   min-width: 0%;
   min-height: 3%;
   font-size: 1em;
-}
+} */
 
-.c1Test {
+/* .c1Test {
   line-height: .1;
   font-size: .2em;
 }
@@ -162,21 +172,20 @@ input {
 
 .box div.C {
   order: 4 flex: 0 1 auto;
-  /*align-self: center;*/
   min-width: 0%;
   min-height: 27%;
   font-size: 6em;
-}
+} */
 
-.box div.D {
+/* .box div.D {
   order: 5 flex: 0 1 auto;
   align-self: center;
   min-width: 0;
   min-height: 10%;
   font-size: 2.5em;
-}
+} */
 
-.maxheight {
+/* .maxheight {
   width: 100%;
   height: 99vmax
 }
@@ -184,12 +193,9 @@ input {
 .maxheight20 {
   width: 100%;
   height: 20vmax
-}
+} */
 
-.textaligncenter {
-  /*height: 40px;*/
-  text-align: center;
-}
+
 
 i.tabbar-demo-icon-1 {
   width: 30px;
@@ -242,18 +248,4 @@ div[class*="col-"] {
 .row {
   margin-bottom: 5px;
   margin-top: 5px;
-}
-
-.spanpadding1 {
-  /*margin-left: 10px;*/
-  padding-right: 5%;
-  /*  align-content: center;
-  text-align: center;*/
-}
-
-.spanpadding2 {
-  padding-left: 5%;
-  /*  margin-right: 10px;*/
-  /*  align-content: center;
-  text-align: center;*/
 }

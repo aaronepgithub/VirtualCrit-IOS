@@ -11,7 +11,7 @@ function onDataHR(data) {
   rt.hr = data[1];
   $$(".rtHR").text(rt.hr);
   $$("#blinker").text("Pull to Refresh (HR)");
-  $$("#iconNumber").text(rt.hr);
+  $$(".iconNumber").text(rt.hr);
 }
 
 function decodeUint32(bytes) {
@@ -89,6 +89,17 @@ function processWheelData(data) {
       deltaT += 65535;
     }
 
+    if (deltaW == 0) {
+      wheelRevolution = oldWheelRevolution;
+      wheelEventTime = oldWheelEventTime;
+      return;
+    }
+    if (deltaT < 750) {
+      wheelRevolution = oldWheelRevolution;
+      wheelEventTime = oldWheelEventTime;
+      return;
+    }
+
     //         //single read
     var wheelTimeSeconds = deltaT / 1024;
     if (wheelTimeSeconds > 0) {
@@ -119,14 +130,10 @@ function processWheelData(data) {
 
       $$(".rtMOVING").text(result);
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
-      //$$(".rtMOVING_AVG").append('<div class="center">' + result + 'MVT' +  avgSpeed.toFixed(1) + 'AVG MPH </div>');
 
       rt.speed = single_read_speed.toFixed(1);
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
-
-      var now = new Date();
-      $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());
 
     }
     //console.log("SPD:  " + single_read_speed);
@@ -160,6 +167,18 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
+    if (deltaW == 0) {
+      crankRevolution = oldCrankRevolution;
+      crankEventTime = oldCrankEventTime;
+      return;
+    }
+
+    if (deltaT < 750) {
+      crankRevolution = oldCrankRevolution;
+      crankEventTime = oldCrankEventTime;
+      return;
+    }
+
     //single read
     var crankTimeSeconds = deltaT / 1024;
     if (crankTimeSeconds > 0) {
@@ -183,3 +202,30 @@ function processCrankData(data, index) {
 
 
 }
+
+
+Date.dateDiff = function(datepart, fromdate, todate) {
+  datepart = datepart.toLowerCase();
+  var diff = todate - fromdate;
+  var divideBy = {
+    w: 604800000,
+    d: 86400000,
+    h: 3600000,
+    n: 60000,
+    s: 1000
+  };
+
+  var deltaSeconds = Math.floor(diff / divideBy[datepart]);
+
+  var date = new Date(null);
+  date.setSeconds(deltaSeconds); // specify value for SECONDS here
+  var result = date.toISOString().substr(11, 8);
+
+  // return Math.floor( diff/divideBy[datepart]);
+  return result;
+
+};
+//Set the two dates
+//var y2k  = new Date(2000, 0, 1);
+var rightNow = new Date();
+//console.log('Seconds Since Start: ' + Date.dateDiff('s', startTime, rightNow));
