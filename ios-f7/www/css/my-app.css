@@ -18,15 +18,21 @@ input {
   user-select: auto !important;
 }
 
-@media all and (max-width: 450px) and (min-width: 331px) {
+@media all and (max-width: 450px) and (min-width: 370px){
   .vertride {
-    font-size: 14.5px;
+    font-size: 14px;
   }
 }
 
-@media all and (max-width: 330px) and (min-width: 300px) {
+@media all and (max-width: 369px) and (min-width: 300px){
   .vertride {
-    font-size: 11.5px;
+    font-size: 12px;
+  }
+}
+
+@media all and (max-height: 485px) and (max-width: 325px){
+  .vertride {
+    font-size: 10px;
   }
 }
 
@@ -52,6 +58,12 @@ input {
   .spd {
     font-size: 7em;
   }
+}
+
+.myContentBlock {
+  /* margin: 5px 0; */
+  margin-top: 7px;
+  margin-bottom: 3px;
 }
 
 .box {

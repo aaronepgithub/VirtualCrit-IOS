@@ -1,8 +1,8 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "helloworld",
-  "short_name": "helloworld",
+  "name": "Virtual Crit II",
+  "short_name": "Virtual Crit II",
   "version": "com.phonegap.helloworld",
   "description": "A basic Framework7 template for PhoneGap.",
   "author": "Apache Cordova Team",
