@@ -99,4 +99,5 @@
     <plugin name="cordova-plugin-ble-central" spec="^1.1.4">
         <variable name="BLUETOOTH_USAGE_DESCRIPTION" value="Your description here" />
     </plugin>
+    <plugin name="cordova-plugin-device" spec="^1.1.7" />
 </widget>

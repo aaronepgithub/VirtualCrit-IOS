@@ -37,7 +37,7 @@ and (orientation : portrait) {
 }
 
 
-/* iphone5 */
+/* iphone5/6 */
 @media only screen
 and (min-device-width : 300px)
 and (max-device-width : 320px)
@@ -45,7 +45,7 @@ and (min-device-height : 481px)
 and (max-device-height : 570px)
 and (orientation : portrait) {
   .vertride {
-    font-size: 13px;
+    font-size: 11.5px;
   }
 }
 
@@ -60,13 +60,13 @@ and (orientation : portrait) {
   }
 }
 
-/* iphone7 */
+/* iphone? */
 @media only screen
 and (min-device-width : 370px)
 and (max-device-width : 375px)
 and (orientation : portrait) {
   .vertride {
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 

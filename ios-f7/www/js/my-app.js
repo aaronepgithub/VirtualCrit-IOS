@@ -110,10 +110,6 @@ function scan() {
     myApp.pullToRefreshDone();
 
     var shouldReturn = 0;
-    // if (peripheral.id == arrPeripherals[arrPeripherals.length - 1]) {
-    //   console.log("Duplicate");
-    //   return;
-    // }
 
     arrPeripherals.forEach(function(element) {
       if (peripheral.id == element.id) {
@@ -122,6 +118,13 @@ function scan() {
       }
     });
     if (shouldReturn == 1) {
+      console.log("return");
+      return;
+    }
+
+    console.log("Found " + JSON.stringify(peripheral) + "\n");
+    if (peripheral.name === undefined) {
+      console.log("undefined");
       return;
     }
 
@@ -129,7 +132,8 @@ function scan() {
     if (arrPeripherals.length == 0) { //knowing that I am going to add one now
       $$('.blechip').remove();
     }
-    console.log("Found " + JSON.stringify(peripheral) + "\n");
+
+
     arrPeripherals.push(peripheral);
 
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
@@ -140,7 +144,10 @@ function scan() {
   }
 
   console.log("scanning");
-  ble.scan(["180D", "1816"], 5, onScan, scanFailure);
+  // ble.scan(['180D','1816','180d'], 5, onScan, scanFailure);
+  // var items = ['180D','1816','18d','18D'];
+  // ble.scan(items, 5, onScan, scanFailure);
+  ble.scan([], 5, onScan, scanFailure);
 
 }
 
