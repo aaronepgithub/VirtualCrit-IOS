@@ -25,74 +25,10 @@ input {
 /* http://stephen.io/mediaqueries/#iPhone */
 
 
-
-
-/* @media all and (max-width: 350px) and (min-width: 321px) {
-  .vertride {
-    font-size: 14px;
-  }
-} */
-
-/* @media all and (max-width: 369px) and (min-width: 322px){
-  .vertride {
-    font-size: 12px;
-  }
-}*/
-
-/* iphone7 */
-@media only screen
-and (min-device-width : 375px)
-and (max-device-width : 667px)
-and (orientation : portrait) {
-  .vertride {
-    font-size: 15px;
-  }
-}
-
-
-
-/* @media all and (max-height: 669px) and (min-height: 661px) and (min-width: 370px){
-  .vertride {
-    font-size: 14px;
-  }
-} */
-
-/* other */
-/* @media all and (max-height: 660px) and (min-height: 620px) and (max-width: 369px) and (min-width: 322px){
-  .vertride {
-    font-size: 14px;
-  }
-} */
-
-/* other */
-/* @media all and (max-height: 619px) and (min-height: 570px) and (max-width: 369px) and (min-width: 322px){
-  .vertride {
-    font-size: 12px;
-  }
-} */
-
-/* iphone5 */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-height : 568px)
-and (orientation : portrait) {
-  .vertride {
-    font-size: 12px;
-  }
-}
-
-
-
-
-/* @media all and (max-height: 569px) and (min-height: 482px) and (max-width: 321px){
-  .vertride {
-    font-size: 12px;
-  }
-} */
-
 /* iphone4 */
 @media only screen
-and (min-device-width : 320px)
+and (min-device-width : 300px)
+and (max-device-width : 320px)
 and (max-device-height : 480px)
 and (orientation : portrait) {
   .vertride {
@@ -100,18 +36,65 @@ and (orientation : portrait) {
   }
 }
 
-/* @media all and (max-height: 481px) and (max-width: 321px){
+
+/* iphone5 */
+@media only screen
+and (min-device-width : 300px)
+and (max-device-width : 320px)
+and (min-device-height : 481px)
+and (max-device-height : 570px)
+and (orientation : portrait) {
   .vertride {
-    font-size: 10px;
+    font-size: 13px;
   }
-} */
+}
+
+@media only screen
+and (min-device-width : 321px)
+and (max-device-width : 369px)
+and (min-device-height : 600px)
+and (max-device-height : 700px)
+and (orientation : portrait) {
+  .vertride {
+    font-size: 13px;
+  }
+}
+
+/* iphone7 */
+@media only screen
+and (min-device-width : 370px)
+and (max-device-width : 375px)
+and (orientation : portrait) {
+  .vertride {
+    font-size: 15px;
+  }
+}
 
 
-/* @media all and (max-width: 320px) and (min-width: 300px) {
+@media only screen
+and (min-device-width : 376px)
+and (max-device-width : 425px)
+and (min-device-height : 600px)
+and (max-device-height : 700px)
+and (orientation : portrait) {
   .vertride {
-    font-size: 9.5px;
+    font-size: 15px;
   }
-} */
+}
+
+@media only screen
+and (min-device-width : 376px)
+and (max-device-width : 425px)
+and (min-device-height : 701px)
+and (max-device-height : 800px)
+and (orientation : portrait) {
+  .vertride {
+    font-size: 16px;
+  }
+}
+
+
+
 
 @media all and (max-width: 750px) and (min-width: 601px) {
   .hrcad {
