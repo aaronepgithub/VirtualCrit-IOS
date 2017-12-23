@@ -23,6 +23,10 @@ input {
 }
 
 /* http://stephen.io/mediaqueries/#iPhone */
+
+
+
+
 /* @media all and (max-width: 350px) and (min-width: 321px) {
   .vertride {
     font-size: 14px;
@@ -32,15 +36,26 @@ input {
 /* @media all and (max-width: 369px) and (min-width: 322px){
   .vertride {
     font-size: 12px;
-  } */
-}
+  }
+}*/
 
 /* iphone7 */
-@media all and (max-height: 669px) and (min-height: 661px) and (min-width: 370px){
+@media only screen
+and (min-device-width : 375px)
+and (max-device-width : 667px)
+and (orientation : portrait) {
+  .vertride {
+    font-size: 15px;
+  }
+}
+
+
+
+/* @media all and (max-height: 669px) and (min-height: 661px) and (min-width: 370px){
   .vertride {
     font-size: 14px;
   }
-}
+} */
 
 /* other */
 /* @media all and (max-height: 660px) and (min-height: 620px) and (max-width: 369px) and (min-width: 322px){
@@ -57,18 +72,39 @@ input {
 } */
 
 /* iphone5 */
-@media all and (max-height: 569px) and (min-height: 482px) and (max-width: 321px){
+@media only screen
+and (min-device-width : 320px)
+and (max-device-height : 568px)
+and (orientation : portrait) {
   .vertride {
     font-size: 12px;
   }
 }
 
+
+
+
+/* @media all and (max-height: 569px) and (min-height: 482px) and (max-width: 321px){
+  .vertride {
+    font-size: 12px;
+  }
+} */
+
 /* iphone4 */
-@media all and (max-height: 481px) and (max-width: 321px){
+@media only screen
+and (min-device-width : 320px)
+and (max-device-height : 480px)
+and (orientation : portrait) {
   .vertride {
     font-size: 10px;
   }
 }
+
+/* @media all and (max-height: 481px) and (max-width: 321px){
+  .vertride {
+    font-size: 10px;
+  }
+} */
 
 
 /* @media all and (max-width: 320px) and (min-width: 300px) {
