@@ -307,6 +307,7 @@ function connect(peripheral) {
         });
       }
     });
+
   } //end onConnect
 
   function onDisconnect() {
