@@ -31,45 +31,75 @@ $$(document).on('deviceready', function() {
 });
 
 
+
+var audio = "OFF";
+$$('#AUDIO').on('click', function(e) {
+  $$(this).addClass('ani');
+
+  if (audio == "ON") {
+    //$$(this).html('<div class="item-media"><i class="f7-icons color-red">volume_fill</i></div><div class="item-inner active"><div class="item-title">AUDIO</div><div class="item-after">OFF</div></div>');
+    $$(this).find('.item-after').text('OFF');
+    audio = "OFF";
+  } else {
+    $$(this).find('.item-after').text('ON');
+    audio = "ON";
+  }
+
+  setTimeout(function() {
+    $$('#AUDIO').removeClass('ani');
+  }, 300);
+
+});
+
 $$('#TIRESIZE').on('click', function(e) {
+  $$(this).addClass('ani');
   if (wheelCircumference == 2105) {
-    $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X32</div></div>');
+    $$(this).find('.item-after').text('700X32');
+    // $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X32</div></div>');
     wheelCircumference = 2155;
   } else {
-    $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X25</div></div>');
+    $$(this).find('.item-after').text('700X25');
     wheelCircumference = 2105;
   }
+  setTimeout(function() {
+    $$('#TIRESIZE').removeClass('ani');
+  }, 300);
 });
 
 var refreshInterval = 0;
 
 $$('#REFRESH').on('click', function(e) {
+  $$(this).addClass('ani');
   var current = refreshInterval;
 
   if (current == 0) {
-    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">1</div></div>');
+    $$(this).find('.item-after').text('1');
+    // $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">1</div></div>');
     refreshInterval = 1;
   }
 
   if (current == 1) {
-    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">2</div></div>');
+    $$(this).find('.item-after').text('2');
     refreshInterval = 2;
   }
 
   if (current == 2) {
-    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">3</div></div>');
+    $$(this).find('.item-after').text('3');
     refreshInterval = 3;
   }
 
   if (current == 3) {
-    $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">0</div></div>');
+    $$(this).find('.item-after').text('0');
     refreshInterval = 0;
   }
 
-
+  setTimeout(function() {
+    $$('#REFRESH').removeClass('ani');
+  }, 300);
 });
 
 $$('#RESTART').on('click', function(e) {
+  $$(this).addClass('ani');
   console.log("RESTART");
   // arrConnectedPeripherals.forEach(function(element, index) {
   //   ble.stopNotification(arrConnectedPeripherals[index], arrConnectedPeripheralsService[index], arrConnectedPeripheralsChar[index], function() {console.log("stop notify success");}, function() {console.log("stop notify failed");});
@@ -80,6 +110,11 @@ $$('#RESTART').on('click', function(e) {
   });
   $$('.chip-media').css('color', 'white');
   $$('.chip-label').css('color', 'white');
+
+  setTimeout(function() {
+    $$('#RESTART').removeClass('ani');
+  }, 300);
+
 });
 
 
@@ -272,10 +307,6 @@ function connect(peripheral) {
         });
       }
     });
-
-
-
-
   } //end onConnect
 
   function onDisconnect() {
@@ -284,11 +315,6 @@ function connect(peripheral) {
 
   ble.connect(peripheral.id, onConnect, onDisconnect);
 }
-
-
-
-
-
 
 $$('.blelist').on('touchstart', '#blechip', function(e) {
 

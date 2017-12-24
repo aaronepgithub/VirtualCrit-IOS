@@ -10,6 +10,11 @@
      url("../dist/fonts/Framework7Icons-Regular.ttf") format("truetype");
 }
 
+.ani {
+  background-color: mintcream;
+    /* background-color: white; */
+}
+
 .f7-icons, .framework7-icons {
   font-family: 'Framework7 Icons';
   font-weight: normal;
