@@ -28,8 +28,29 @@ $$(document).on('deviceready', function() {
   } else {
     $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
   }
+
+  var intervalID = window.setInterval(myCallback, 1000);
 });
 
+var time = 0;
+var checktime = 0;
+var old_rtSpeed = 0;
+
+function myCallback() {
+  // console.log("time:  " + time);
+  time++;
+  checktime++;
+
+  if (checktime == 15) {
+    if (old_rtSpeed == rt.speed) {
+      $$(".rtSPD").text('0.0');
+      $$(".rtCAD").text('0.0');
+      //console.log('No Spd changes, set to 0');
+      old_rtSpeed = rt.speed;
+      checktime = 0;
+    }
+  }
+}
 
 
 var audio = "OFF";
@@ -73,22 +94,22 @@ $$('#REFRESH').on('click', function(e) {
   var current = refreshInterval;
 
   if (current == 0) {
-    $$(this).find('.item-after').text('1');
+    $$(this).find('.item-after').text('30');
     // $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">1</div></div>');
-    refreshInterval = 1;
+    refreshInterval = 30;
   }
 
-  if (current == 1) {
-    $$(this).find('.item-after').text('2');
-    refreshInterval = 2;
+  if (current == 30) {
+    $$(this).find('.item-after').text('60');
+    refreshInterval = 60;
   }
 
-  if (current == 2) {
-    $$(this).find('.item-after').text('3');
-    refreshInterval = 3;
+  if (current == 60) {
+    $$(this).find('.item-after').text('300');
+    refreshInterval = 300;
   }
 
-  if (current == 3) {
+  if (current == 300) {
     $$(this).find('.item-after').text('0');
     refreshInterval = 0;
   }
@@ -106,7 +127,11 @@ $$('#RESTART').on('click', function(e) {
   //   ble.disconnect(element, function() {console.log("disconnect success");}, function() {console.log("disconnect failed");});
   // });
   arrConnectedPeripherals.forEach(function(element) {
-    ble.disconnect(element, function() {console.log("disconnect success");}, function() {console.log("disconnect failed");});
+    ble.disconnect(element, function() {
+      console.log("disconnect success");
+    }, function() {
+      console.log("disconnect failed");
+    });
   });
   $$('.chip-media').css('color', 'white');
   $$('.chip-label').css('color', 'white');
@@ -218,6 +243,7 @@ ptrContent.on('ptr:refresh', function(e) {
 var arrConnectedPeripherals = [];
 var arrConnectedPeripheralsService = [];
 var arrConnectedPeripheralsChar = [];
+
 function connect(peripheral) {
 
 
