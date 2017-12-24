@@ -1,10 +1,10 @@
 {
-  "name": "com.phonegap.helloworld",
-  "version": "1.0.0",
+  "name": "com.virtualcrit",
+  "version": "2.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "displayName": "helloworld",
+  "displayName": "virtualcrit2",
   "dependencies": {
     "cordova-custom-config": "^5.0.1",
     "cordova-plugin-ble-central": "^1.1.4",
@@ -14,10 +14,11 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-ble-central": {
-        "BLUETOOTH_USAGE_DESCRIPTION": "Your description here"
+        "BLUETOOTH_USAGE_DESCRIPTION": "REQUIRES BLE TO READ DATA"
       },
       "cordova-plugin-device": {},
       "cordova-custom-config": {}
-    }
+    },
+    "platforms": []
   }
 }

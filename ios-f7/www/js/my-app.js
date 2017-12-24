@@ -310,12 +310,13 @@ function connect(peripheral) {
 
   } //end onConnect
 
-  function onDisconnect() {
+  function onDisconnect(peripheral) {
     console.log("Disconnected");
     // $$.each(arrConnectedPeripherals, function (index, value) {
     //   alert(index + ': ' + element);
     // });
-    scan();
+    // scan();
+    ble.connect(peripheral.id, onConnect, onDisconnect);
 
   }
 
