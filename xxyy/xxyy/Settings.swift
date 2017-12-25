@@ -152,37 +152,39 @@ class Settings: UITableViewController {
             
             let x = lbl_RT_Avg_Duration.text
             
-            if x == "CALCULATION VALUES = 1.0" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.5"
+            if x == "INTERVAL FOR AVG = 1.0" {
+                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1.5"
                 rtTimer_Interval = 1.5
                 
             }
             
-            if x == "CALCULATION VALUES = 1.5" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2.0"
+            if x == "INTERVAL FOR AVG = 1.5" {
+                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.0"
                 rtTimer_Interval = 2.0
                 
             }
             
-            if x == "CALCULATION VALUES = 2.0" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 2.5"
+            if x == "INTERVAL FOR AVG = 2.0" {
+                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.5"
                 rtTimer_Interval = 2.5
                 
             }
             
-            if x == "CALCULATION VALUES = 2.5" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 3.0"
+            if x == "INTERVAL FOR AVG = 2.5" {
+                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 3.0"
                 rtTimer_Interval = 3.0
                 
             }
             
-            if x == "CALCULATION VALUES = 3.0" {
-                lbl_RT_Avg_Duration.text = "CALCULATION VALUES = 1.0"
+            if x == "INTERVAL FOR AVG = 3.0" {
+                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1"
                 rtTimer_Interval = 1.0 //rt
                 
             }
             
         }
+        
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
     override func viewDidLoad() {

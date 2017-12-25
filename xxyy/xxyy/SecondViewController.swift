@@ -104,7 +104,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         out_Btn3.setTitle(stringer0(myIn: Double(avgInRoundHR)), for: .normal)
         out_Btn4.setTitle(stringer0(myIn: Double(z)), for: .normal)
-        out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
+//        out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
+        out_Btn5.setTitle(stringer1(myIn: rt.rt_speed), for: .normal)
         
 //        let currentDateTime = Date()
 //        let formatter = DateFormatter()
@@ -531,7 +532,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         start_rtTimer()
     }
     
-    var localTimerInterval = 2.0
+    var localTimerInterval = 1.0
     //have to restart on settings change
     func start_rtTimer() {
         localTimerInterval = rtTimer_Interval

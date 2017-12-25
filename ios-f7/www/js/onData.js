@@ -89,12 +89,14 @@ function processWheelData(data) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0) {
+    if (deltaW == 0 || deltaW > 5) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
+      single_read_speed = 0;
+      rt.speed = single_read_speed.toFixed(1);
       return;
     }
-    if (deltaT < 750) {
+    if (deltaT < 750 && deltaT > 0) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
       return;
@@ -109,13 +111,12 @@ function processWheelData(data) {
       var minsPerHour = 60.0;
       single_read_speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
 
+
       if (single_read_speed > 0) {
         rt_WheelRevs += deltaW;
         rt_WheelTime += deltaT;
         total_moving_time_seconds += (deltaT / 1024);
         //convert to display as moving time
-      } else {
-        single_read_speed = 0;
       }
 
       //total miles
@@ -167,13 +168,15 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0) {
+    if (deltaW == 0 || deltaW > 5) {
       crankRevolution = oldCrankRevolution;
       crankEventTime = oldCrankEventTime;
+      single_read_cad = 0;
+      rt.cadence = single_read_cad.toFixed(0);
       return;
     }
 
-    if (deltaT < 750) {
+    if (deltaT < 750 && deltaT > 0) {
       crankRevolution = oldCrankRevolution;
       crankEventTime = oldCrankEventTime;
       return;
@@ -181,15 +184,9 @@ function processCrankData(data, index) {
 
     //single read
     var crankTimeSeconds = deltaT / 1024;
-    if (crankTimeSeconds > 0) {
-      single_read_cad = deltaW / (crankTimeSeconds / 60);
-      if (deltaW < 10) { //filter out bad readings
-        rt_crank_revs += deltaW;
-        rt_crank_time += deltaT; //still in 1/1024 of a sec
-      }
-    } else {
-      single_read_cad = 0;
-    }
+    single_read_cad = deltaW / (crankTimeSeconds / 60);
+    rt_crank_revs += deltaW;
+    rt_crank_time += deltaT; //still in 1/1024 of a sec
 
     rt.cadence = single_read_cad.toFixed(0);
     $$(".rtCAD").text(rt.cadence);
@@ -199,7 +196,6 @@ function processCrankData(data, index) {
     oldCrankRevolution = crankRevolution;
     oldCrankEventTime = crankEventTime;
   }
-
 
 }
 
@@ -214,7 +210,7 @@ Date.dateDiffReturnSeconds = function(datepart, fromdate, todate) {
     s: 1000
   };
 
-  return Math.floor( diff/divideBy[datepart]);
+  return Math.floor(diff / divideBy[datepart]);
 
   //var deltaSeconds = Math.floor(diff / divideBy[datepart]);
 
