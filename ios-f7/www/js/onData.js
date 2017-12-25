@@ -203,6 +203,27 @@ function processCrankData(data, index) {
 
 }
 
+Date.dateDiffReturnSeconds = function(datepart, fromdate, todate) {
+  datepart = datepart.toLowerCase();
+  var diff = todate - fromdate;
+  var divideBy = {
+    w: 604800000,
+    d: 86400000,
+    h: 3600000,
+    n: 60000,
+    s: 1000
+  };
+
+  return Math.floor( diff/divideBy[datepart]);
+
+  //var deltaSeconds = Math.floor(diff / divideBy[datepart]);
+
+  // var date = new Date(null);
+  // date.setSeconds(deltaSeconds); // specify value for SECONDS here
+  // var result = date.toISOString().substr(11, 8);
+  // return Math.floor( diff/divideBy[datepart]);
+  //return result;
+};
 
 Date.dateDiff = function(datepart, fromdate, todate) {
   datepart = datepart.toLowerCase();
@@ -220,12 +241,10 @@ Date.dateDiff = function(datepart, fromdate, todate) {
   var date = new Date(null);
   date.setSeconds(deltaSeconds); // specify value for SECONDS here
   var result = date.toISOString().substr(11, 8);
-
   // return Math.floor( diff/divideBy[datepart]);
   return result;
-
 };
 //Set the two dates
 //var y2k  = new Date(2000, 0, 1);
-var rightNow = new Date();
+//var rightNow = new Date();
 //console.log('Seconds Since Start: ' + Date.dateDiff('s', startTime, rightNow));
