@@ -200,14 +200,13 @@ function scan() {
       return;
     }
 
-
     if (arrPeripherals.length == 0) { //knowing that I am going to add one now
       $$('.blechip').remove();
     }
 
-
     arrPeripherals.push(peripheral);
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
+
   }
 
   function scanFailure(reason) {

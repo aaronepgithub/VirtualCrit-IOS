@@ -37,7 +37,7 @@ var checktime = 0;
 var old_rtSpeed = 0;
 
 function myCallback() {
-  console.log("time:  " + time);
+  // console.log("time:  " + time);
   time++;
   checktime++;
 
@@ -45,7 +45,7 @@ function myCallback() {
     if (old_rtSpeed == rt.speed) {
       $$(".rtSPD").text('0.0');
       $$(".rtCAD").text('0.0');
-      console.log('No Spd changes, set to 0');
+      //console.log('No Spd changes, set to 0');
       old_rtSpeed = rt.speed;
       checktime = 0;
     }
@@ -200,14 +200,13 @@ function scan() {
       return;
     }
 
-
     if (arrPeripherals.length == 0) { //knowing that I am going to add one now
       $$('.blechip').remove();
     }
 
-
     arrPeripherals.push(peripheral);
     $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
+
   }
 
   function scanFailure(reason) {
