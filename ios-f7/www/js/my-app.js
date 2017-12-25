@@ -46,22 +46,6 @@ function myCallback() {
   } else {
     $$(".TIME").text(rightNow.getHours() + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
   }
-
-
-
-  check_for_display0++;
-
-  if (check_for_display0 == 15) {
-    if (old_rtSpeed == rt.speed) {
-      $$(".rtSPD").text('0.0');
-      $$(".rtCAD").text('0.0');
-      //console.log('No Spd changes, set to 0');
-      old_rtSpeed = rt.speed;
-      check_for_display0 = 0;
-    }
-  }
-
-
 }
 
 
@@ -300,16 +284,7 @@ function connect(peripheral) {
         arrConnectedPeripheralsService.push(serviceType);
         arrConnectedPeripheralsChar.push(serviceChar);
         ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-          //console.log("Notify Success HR");
           var data = new Uint8Array(buffer);
-          // now = new Date();
-          // if (now.getHours() > 12) {
-          //   $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds() + " PM");
-          // } else {
-          //   $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
-          // }
-          // var rightNow = new Date();
-          // $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow));
           onDataHR(data);
         }, function(reason) {
           console.log("failure" + reason);
@@ -327,16 +302,7 @@ function connect(peripheral) {
         arrConnectedPeripheralsService.push(serviceType);
         arrConnectedPeripheralsChar.push(serviceChar);
         ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
-          //console.log("Notify Success CSC");
           var data = new Uint8Array(buffer);
-          // now = new Date();
-          // if (now.getHours() > 12) {
-          //   $$(".TIME").text((now.getHours() - 12) + ":" + now.getMinutes() + ":" + now.getSeconds() + " PM");
-          // } else {
-          //   $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
-          // }
-          // var rightNow = new Date();
-          // $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow));
           onDataCSC(data);
         }, function(reason) {
           console.log("failure" + reason);
@@ -347,11 +313,7 @@ function connect(peripheral) {
   } //end onConnect
 
   function onDisconnect(peripheral) {
-    console.log("Disconnected");
-    // $$.each(arrConnectedPeripherals, function (index, value) {
-    //   alert(index + ': ' + element);
-    // });
-    // scan();
+    console.log("onDisconnect:  " + peripheral);
     ble.connect(peripheral.id, onConnect, onDisconnect);
 
   }
