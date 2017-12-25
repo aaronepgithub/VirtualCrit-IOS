@@ -92,8 +92,11 @@ function processWheelData(data) {
     if (deltaW == 0 || deltaW > 5) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
+      //velo should test, might not need to update display
       single_read_speed = 0;
       rt.speed = single_read_speed.toFixed(1);
+      $$(".rtSPD").text(rt.speed);
+      $$("#blinker").text("Pull to Refresh (SPD)");
       return;
     }
     if (deltaT < 750 && deltaT > 0) {
@@ -110,6 +113,9 @@ function processWheelData(data) {
       var cmPerMi = 0.00001 * 0.621371;
       var minsPerHour = 60.0;
       single_read_speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
+      rt.speed = single_read_speed.toFixed(1);
+      $$(".rtSPD").text(rt.speed);
+      $$("#blinker").text("Pull to Refresh (SPD)");
 
 
       if (single_read_speed > 0) {
@@ -132,10 +138,16 @@ function processWheelData(data) {
       $$(".rtMOVING").text(result);
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
 
-      rt.speed = single_read_speed.toFixed(1);
+
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
 
+    } else {
+      //velo should test, might not need to update display
+      single_read_speed = 0;
+      rt.speed = single_read_speed.toFixed(1);
+      $$(".rtSPD").text(rt.speed);
+      $$("#blinker").text("Pull to Refresh (SPD)");
     }
     //console.log("SPD:  " + single_read_speed);
     oldWheelRevolution = wheelRevolution;
@@ -173,12 +185,25 @@ function processCrankData(data, index) {
       crankEventTime = oldCrankEventTime;
       single_read_cad = 0;
       rt.cadence = single_read_cad.toFixed(0);
+      $$(".rtCAD").text(rt.cadence);
+      $$("#blinker").text("Pull to Refresh (CAD)");
       return;
     }
 
     if (deltaT < 750 && deltaT > 0) {
       crankRevolution = oldCrankRevolution;
       crankEventTime = oldCrankEventTime;
+      return;
+    }
+
+    //velo should test, might not need to update display
+    if (deltaT == 0) {
+      oldCrankRevolution = crankRevolution;
+      oldCrankEventTime = crankEventTime;
+      single_read_cad = 0;
+      rt.cadence = single_read_cad.toFixed(0);
+      $$(".rtCAD").text(rt.cadence);
+      $$("#blinker").text("Pull to Refresh (CAD)");
       return;
     }
 

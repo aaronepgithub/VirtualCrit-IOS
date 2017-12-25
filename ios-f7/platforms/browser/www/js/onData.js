@@ -89,12 +89,17 @@ function processWheelData(data) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0) {
+    if (deltaW == 0 || deltaW > 5) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
+      //velo should test, might not need to update display
+      single_read_speed = 0;
+      rt.speed = single_read_speed.toFixed(1);
+      $$(".rtSPD").text(rt.speed);
+      $$("#blinker").text("Pull to Refresh (SPD)");
       return;
     }
-    if (deltaT < 750) {
+    if (deltaT < 750 && deltaT > 0) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
       return;
@@ -108,14 +113,16 @@ function processWheelData(data) {
       var cmPerMi = 0.00001 * 0.621371;
       var minsPerHour = 60.0;
       single_read_speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
+      rt.speed = single_read_speed.toFixed(1);
+      $$(".rtSPD").text(rt.speed);
+      $$("#blinker").text("Pull to Refresh (SPD)");
+
 
       if (single_read_speed > 0) {
         rt_WheelRevs += deltaW;
         rt_WheelTime += deltaT;
         total_moving_time_seconds += (deltaT / 1024);
         //convert to display as moving time
-      } else {
-        single_read_speed = 0;
       }
 
       //total miles
@@ -131,10 +138,16 @@ function processWheelData(data) {
       $$(".rtMOVING").text(result);
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
 
-      rt.speed = single_read_speed.toFixed(1);
+
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
 
+    } else {
+      //velo should test, might not need to update display
+      single_read_speed = 0;
+      rt.speed = single_read_speed.toFixed(1);
+      $$(".rtSPD").text(rt.speed);
+      $$("#blinker").text("Pull to Refresh (SPD)");
     }
     //console.log("SPD:  " + single_read_speed);
     oldWheelRevolution = wheelRevolution;
@@ -167,29 +180,38 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0) {
+    if (deltaW == 0 || deltaW > 5) {
+      crankRevolution = oldCrankRevolution;
+      crankEventTime = oldCrankEventTime;
+      single_read_cad = 0;
+      rt.cadence = single_read_cad.toFixed(0);
+      $$(".rtCAD").text(rt.cadence);
+      $$("#blinker").text("Pull to Refresh (CAD)");
+      return;
+    }
+
+    if (deltaT < 750 && deltaT > 0) {
       crankRevolution = oldCrankRevolution;
       crankEventTime = oldCrankEventTime;
       return;
     }
 
-    if (deltaT < 750) {
-      crankRevolution = oldCrankRevolution;
-      crankEventTime = oldCrankEventTime;
+    //velo should test, might not need to update display
+    if (deltaT == 0) {
+      oldCrankRevolution = crankRevolution;
+      oldCrankEventTime = crankEventTime;
+      single_read_cad = 0;
+      rt.cadence = single_read_cad.toFixed(0);
+      $$(".rtCAD").text(rt.cadence);
+      $$("#blinker").text("Pull to Refresh (CAD)");
       return;
     }
 
     //single read
     var crankTimeSeconds = deltaT / 1024;
-    if (crankTimeSeconds > 0) {
-      single_read_cad = deltaW / (crankTimeSeconds / 60);
-      if (deltaW < 10) { //filter out bad readings
-        rt_crank_revs += deltaW;
-        rt_crank_time += deltaT; //still in 1/1024 of a sec
-      }
-    } else {
-      single_read_cad = 0;
-    }
+    single_read_cad = deltaW / (crankTimeSeconds / 60);
+    rt_crank_revs += deltaW;
+    rt_crank_time += deltaT; //still in 1/1024 of a sec
 
     rt.cadence = single_read_cad.toFixed(0);
     $$(".rtCAD").text(rt.cadence);
@@ -200,9 +222,29 @@ function processCrankData(data, index) {
     oldCrankEventTime = crankEventTime;
   }
 
-
 }
 
+Date.dateDiffReturnSeconds = function(datepart, fromdate, todate) {
+  datepart = datepart.toLowerCase();
+  var diff = todate - fromdate;
+  var divideBy = {
+    w: 604800000,
+    d: 86400000,
+    h: 3600000,
+    n: 60000,
+    s: 1000
+  };
+
+  return Math.floor(diff / divideBy[datepart]);
+
+  //var deltaSeconds = Math.floor(diff / divideBy[datepart]);
+
+  // var date = new Date(null);
+  // date.setSeconds(deltaSeconds); // specify value for SECONDS here
+  // var result = date.toISOString().substr(11, 8);
+  // return Math.floor( diff/divideBy[datepart]);
+  //return result;
+};
 
 Date.dateDiff = function(datepart, fromdate, todate) {
   datepart = datepart.toLowerCase();
@@ -220,12 +262,10 @@ Date.dateDiff = function(datepart, fromdate, todate) {
   var date = new Date(null);
   date.setSeconds(deltaSeconds); // specify value for SECONDS here
   var result = date.toISOString().substr(11, 8);
-
   // return Math.floor( diff/divideBy[datepart]);
   return result;
-
 };
 //Set the two dates
 //var y2k  = new Date(2000, 0, 1);
-var rightNow = new Date();
+//var rightNow = new Date();
 //console.log('Seconds Since Start: ' + Date.dateDiff('s', startTime, rightNow));
