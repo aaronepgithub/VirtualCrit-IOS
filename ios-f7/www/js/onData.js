@@ -5,14 +5,17 @@ var rt = {
   score: 0
 };
 
+var name = "TIM";
 var maxHeartRate = 185;
 var wheelCircumference = 2105;
 var wheelCircumferenceCM = 210.5;
 var cmPerMi = 0.00001 * 0.621371;
 var minsPerHour = 60.0;
+var totalMiles = 0;
 
-var model = {
-
+var interval = {
+  arrDistance: [],
+  arrHeartRate: []
 };
 
 var rounds = {
@@ -34,6 +37,23 @@ var rounds = {
   totalRoundCount: 0
 };
 
+function calcInterval() {
+  //console.log("calcInterval");
+  var dist = 0;
+  for (i = refreshInterval; i > 0; i--) {
+    if (interval.arrDistance[i] >= 0) {dist += interval.arrDistance[interval.arrDistance.length - i];} else {dist += 0;}
+    }
+  var speedInterval = dist / (refreshInterval / 60 / 60);
+  console.log("speedInterval:  " + speedInterval);
+
+  var hr = 0;
+  for (i = refreshInterval; i > 0; i--) {
+    if (interval.arrHeartRate[i] >= 0) {hr += interval.arrHeartRate[interval.arrHeartRate.length - i];} else {hr += 0;}
+    }
+  var heartrateInterval = hr / (refreshInterval);
+  console.log("heartrateInterval:  " + heartrateInterval);
+}
+
 function midRound(time) {
   rounds.avgHeartRate = rounds.HeartRate / 300;
   rounds.avgScore = (rounds.avgHeartRate / maxHeartRate) * 100;
@@ -42,6 +62,10 @@ function midRound(time) {
 
   if (time == 300) {
     rounds.totalRoundCount = endRound();
+  }
+  //console.log(time);
+  if (time % interval.duration == 0) {
+    calcInterval();
   }
 
   // if (time % 15 == 0) {
@@ -197,7 +221,7 @@ function processWheelData(data) {
       rounds.WheelRevs += deltaW;
       rounds.Distance += deltaW * wheelCircumferenceCM * cmPerMi;
       //total miles
-      var totalMiles = rt_WheelRevs * wheelCircumferenceCM * cmPerMi;
+      totalMiles = rt_WheelRevs * wheelCircumferenceCM * cmPerMi;
       $$(".rtMILES").text((rt_WheelRevs * wheelCircumferenceCM * cmPerMi).toFixed(2));
       //avg speed
       var avgSpeed = (rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;

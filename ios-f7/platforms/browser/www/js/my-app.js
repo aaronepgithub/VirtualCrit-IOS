@@ -56,10 +56,25 @@ function myCallback() {
   }
   //Adding a value each second
   rounds.HeartRate += rt.hr;
-  // rounds.WheelRevs += rt_WheelRevs;
-  // rounds.CrankRevs += rt_crank_revs;
+  interval.arrHeartRate.push(rt.hr);
+  interval.arrDistance.push(totalMiles);
+
   midRound(time);
 }
+
+// $$('.prompt-ok').on('click', function () {
+//     myApp.prompt('What is your name?', function (value) {
+//         myApp.alert('Your name is "' + value + '". You clicked Ok button');
+//     });
+// });
+
+$$('#NAME').on('click', function(e) {
+  myApp.prompt('What is your name?', 'WELCOME', function (value) {
+      //myApp.alert('Your name is "' + value + '". You clicked Ok button');
+      $$('#NAME').find('.item-after').text(value);
+      name = value;
+  });
+});
 
 $$('#MAXHR').on('click', function(e) {
   $$(this).addClass('ani');
@@ -132,16 +147,15 @@ $$('#TIRESIZE').on('click', function(e) {
 
 
 
-var refreshInterval = 0;
+var refreshInterval = 30;
 $$('#REFRESH').on('click', function(e) {
   $$(this).addClass('ani');
   var current = refreshInterval;
 
-  if (current == 0) {
-    $$(this).find('.item-after').text('30');
-    // $$(this).html('<div class="item-media"><i class="f7-icons color-red">timer_fill</i></div><div class="item-inner"><div class="item-title">REFRESH INTERVAL</div><div class="item-after">1</div></div>');
-    refreshInterval = 30;
-  }
+  // if (current == 0) {
+  //   $$(this).find('.item-after').text('30');
+  //   refreshInterval = 30;
+  // }
 
   if (current == 30) {
     $$(this).find('.item-after').text('60');
@@ -154,8 +168,8 @@ $$('#REFRESH').on('click', function(e) {
   }
 
   if (current == 300) {
-    $$(this).find('.item-after').text('0');
-    refreshInterval = 0;
+    $$(this).find('.item-after').text('30');
+    refreshInterval = 30;
   }
 
   setTimeout(function() {
