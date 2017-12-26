@@ -19,6 +19,7 @@ var rounds = {
   HeartRate: 0,
   WheelRevs: 0,
   CrankRevs: 0,
+  Distance: 0,
 
   arrHeartRate: [],
   arrSpeed: [],
@@ -35,13 +36,22 @@ var rounds = {
 
 function midRound(time) {
   rounds.avgHeartRate = rounds.HeartRate / 300;
-  rounds.avgScore = (rounds.avgHeartRate / 185) * 100;
+  rounds.avgScore = (rounds.avgHeartRate / maxHeartRate) * 100;
   rounds.avgSpeed = (rounds.WheelRevs / (time / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
   rounds.avgCadence = rounds.CrankRevs / (time / 60);
 
   if (time == 300) {
     rounds.totalRoundCount = endRound();
   }
+
+  // if (time % 15 == 0) {
+  //   console.log("Mid Round:  \n" +
+  //     rounds.avgHeartRate + "\n" +
+  //     rounds.avgSpeed + " - " + rounds.WheelRevs + "\n" +
+  //     rounds.avgCadence + "\n" +
+  //     rounds.avgScore + "\n"
+  //   );
+  // }
 
 }
 
@@ -51,9 +61,17 @@ function endRound() {
   rounds.arrCadence.push(rounds.avgCadence);
   rounds.arrScore.push(rounds.avgScore);
 
+  console.log("End of Round:  \n" +
+    rounds.arrHeartRate[length-1] + "\n" +
+    rounds.arrSpeed[length-1] + "\n " +
+    rounds.arrCadence[length-1] + "\n" +
+    rounds.arrScore[length-1] + "\n"
+  );
+
   rounds.WheelRevs = 0;
   rounds.HeartRate = 0;
   rounds.CrankRevs = 0;
+  rounds.Distance = 0;
   time = 0;
   return(rounds.arrScore.length - 1);
 }
@@ -141,7 +159,7 @@ function processWheelData(data) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0 || deltaW > 5) {
+    if (deltaW == 0 || deltaW > 10) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
       //velo should test, might not need to update display
@@ -176,7 +194,8 @@ function processWheelData(data) {
         total_moving_time_seconds += (deltaT / 1024);
         //convert to display as moving time
       }
-
+      rounds.WheelRevs += deltaW;
+      rounds.Distance += deltaW * wheelCircumferenceCM * cmPerMi;
       //total miles
       var totalMiles = rt_WheelRevs * wheelCircumferenceCM * cmPerMi;
       $$(".rtMILES").text((rt_WheelRevs * wheelCircumferenceCM * cmPerMi).toFixed(2));
@@ -262,6 +281,7 @@ function processCrankData(data, index) {
     //single read
     var crankTimeSeconds = deltaT / 1024;
     single_read_cad = deltaW / (crankTimeSeconds / 60);
+    rounds.CrankRevs += deltaW;
     rt_crank_revs += deltaW;
     rt_crank_time += deltaT; //still in 1/1024 of a sec
 

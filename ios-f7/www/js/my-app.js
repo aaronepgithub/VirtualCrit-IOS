@@ -18,6 +18,8 @@ var speedCadence = {
 
 var now;
 var startTime;
+
+
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
   console.log("Device is ready!");
@@ -40,17 +42,52 @@ function myCallback() {
   var rightNow = new Date();
   $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow));
   if (rightNow.getHours() > 12) {
-    $$(".TIME").text((rightNow.getHours() - 12) + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " PM");
+    if (rightNow.getMinutes() < 10) {
+      $$(".TIME").text((rightNow.getHours() - 12) + ":0" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " PM");
+    } else {
+      $$(".TIME").text((rightNow.getHours() - 12) + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " PM");
+    }
   } else {
-    $$(".TIME").text(rightNow.getHours() + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
+    if (rightNow.getMinutes() < 10) {
+      $$(".TIME").text((rightNow.getHours()) + ":0" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
+    } else {
+      $$(".TIME").text((rightNow.getHours()) + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
+    }
   }
   //Adding a value each second
   rounds.HeartRate += rt.hr;
-  rounds.WheelRevs += rt_WheelRevs;
-  rounds.CrankRevs += rt_crank_revs;
+  // rounds.WheelRevs += rt_WheelRevs;
+  // rounds.CrankRevs += rt_crank_revs;
   midRound(time);
 }
 
+$$('#MAXHR').on('click', function(e) {
+  $$(this).addClass('ani');
+  var current = maxHeartRate;
+  if (current == 185) {
+    $$(this).find('.item-after').text(190);
+    maxHeartRate = 190;
+  }
+  if (current == 190) {
+    $$(this).find('.item-after').text(195);
+    maxHeartRate = 195;
+  }
+  if (current == 195) {
+    $$(this).find('.item-after').text(200);
+    maxHeartRate = 200;
+  }
+  if (current == 200) {
+    $$(this).find('.item-after').text(205);
+    maxHeartRate = 205;
+  }
+  if (current == 205) {
+    $$(this).find('.item-after').text(185);
+    maxHeartRate = 185;
+  }
+  setTimeout(function() {
+    $$('#MAXHR').removeClass('ani');
+  }, 300);
+});
 
 var audio = "OFF";
 $$('#AUDIO').on('click', function(e) {
@@ -73,12 +110,18 @@ $$('#AUDIO').on('click', function(e) {
 
 $$('#TIRESIZE').on('click', function(e) {
   $$(this).addClass('ani');
-  if (wheelCircumference == 2105) {
+  var current = wheelCircumference;
+  if (current == 2105) {
+    $$(this).find('.item-after').text('700X26');
+    wheelCircumference = 2115;
+    wheelCircumferenceCM = wheelCircumference / 10;
+  }
+  if (current == 2115) {
     $$(this).find('.item-after').text('700X32');
-    // $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X32</div></div>');
     wheelCircumference = 2155;
     wheelCircumferenceCM = wheelCircumference / 10;
-  } else {
+  }
+  if (current == 2155) {
     $$(this).find('.item-after').text('700X25');
     wheelCircumference = 2105;wheelCircumferenceCM = wheelCircumference / 10;
   }
@@ -87,8 +130,9 @@ $$('#TIRESIZE').on('click', function(e) {
   }, 300);
 });
 
-var refreshInterval = 0;
 
+
+var refreshInterval = 0;
 $$('#REFRESH').on('click', function(e) {
   $$(this).addClass('ani');
   var current = refreshInterval;
@@ -118,6 +162,8 @@ $$('#REFRESH').on('click', function(e) {
     $$('#REFRESH').removeClass('ani');
   }, 300);
 });
+
+
 
 $$('#RESTART').on('click', function(e) {
   $$(this).addClass('ani');
@@ -314,7 +360,7 @@ function connect(peripheral) {
   } //end onConnect
 
   function onDisconnect(peripheral) {
-    console.log("onDisconnect:  " + peripheral);
+    console.log("onDisconnect:  " + peripheral.name);
     ble.connect(peripheral.id, onConnect, onDisconnect);
 
   }
