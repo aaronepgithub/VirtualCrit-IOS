@@ -1,24 +1,69 @@
 var rt = {
   hr: 0,
   speed: 0,
-  cadence: 0
+  cadence: 0,
+  score: 0
 };
+
+var maxHeartRate = 185;
+var wheelCircumference = 2105;
+var wheelCircumferenceCM = 210.5;
+var cmPerMi = 0.00001 * 0.621371;
+var minsPerHour = 60.0;
 
 var model = {
-  arrHR: [],
-  arrWheelRevs: [],
-  arrCrankRevs: []
 
-  // avgHR = totalHR / seconds;
-  // avgSpeed = (totalWheelRevs / (seconds / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
-  // avgCadence = totalCrankRevs / (seconds / 60);
 };
 
-var wheelCircumference = 2105;
+var rounds = {
+  HeartRate: 0,
+  WheelRevs: 0,
+  CrankRevs: 0,
+
+  arrHeartRate: [],
+  arrSpeed: [],
+  arrCadence: [],
+  arrScore: [],
+
+  avgHeartRate: 0,
+  avgSpeed: 0,
+  avgCadence: 0,
+  avgScore: 0,
+
+  totalRoundCount: 0
+};
+
+function midRound(time) {
+  rounds.avgHeartRate = rounds.HeartRate / 300;
+  rounds.avgScore = (rounds.avgHeartRate / 185) * 100;
+  rounds.avgSpeed = (rounds.WheelRevs / (time / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+  rounds.avgCadence = rounds.CrankRevs / (time / 60);
+
+  if (time == 300) {
+    rounds.totalRoundCount = endRound();
+  }
+
+}
+
+function endRound() {
+  rounds.arrHeartRate.push(rounds.HeartRate);
+  rounds.arrSpeed.push(rounds.avgSpeed);
+  rounds.arrCadence.push(rounds.avgCadence);
+  rounds.arrScore.push(rounds.avgScore);
+
+  rounds.WheelRevs = 0;
+  rounds.HeartRate = 0;
+  rounds.CrankRevs = 0;
+  time = 0;
+  return(rounds.arrScore.length - 1);
+}
+
+
 
 function onDataHR(data) {
   //console.log(data[1]);
   rt.hr = data[1];
+  rt.score = (rt.hr / maxHeartRate) * 100;
   $$(".rtHR").text(rt.hr);
   $$("#blinker").text("Pull to Refresh (HR)");
   $$(".iconNumber").text(rt.hr);
@@ -115,10 +160,10 @@ function processWheelData(data) {
     //         //single read
     var wheelTimeSeconds = deltaT / 1024;
     if (wheelTimeSeconds > 0) {
-      var wheelCircumferenceCM = wheelCircumference / 10;
+      // var wheelCircumferenceCM = wheelCircumference / 10;
       var wheelRPM = deltaW / (wheelTimeSeconds / 60);
-      var cmPerMi = 0.00001 * 0.621371;
-      var minsPerHour = 60.0;
+      // var cmPerMi = 0.00001 * 0.621371;
+      // var minsPerHour = 60.0;
       single_read_speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
       rt.speed = single_read_speed.toFixed(1);
       $$(".rtSPD").text(rt.speed);

@@ -45,10 +45,10 @@ function myCallback() {
     $$(".TIME").text(rightNow.getHours() + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
   }
   //Adding a value each second
-  model.arrHR.push(rt.hr);
-  model.arrWheelRevs.push(rt_WheelRevs);
-  model.arrCrankRevs.push(rt_crank_revs);
-
+  rounds.HeartRate += rt.hr;
+  rounds.WheelRevs += rt_WheelRevs;
+  rounds.CrankRevs += rt_crank_revs;
+  midRound(time);
 }
 
 
@@ -77,9 +77,10 @@ $$('#TIRESIZE').on('click', function(e) {
     $$(this).find('.item-after').text('700X32');
     // $$(this).html('<div class="item-media"><i class="f7-icons color-red">settings_fill</i></div><div class="item-inner"><div class="item-title">TIRE SIZE</div><div class="item-after">700X32</div></div>');
     wheelCircumference = 2155;
+    wheelCircumferenceCM = wheelCircumference / 10;
   } else {
     $$(this).find('.item-after').text('700X25');
-    wheelCircumference = 2105;
+    wheelCircumference = 2105;wheelCircumferenceCM = wheelCircumference / 10;
   }
   setTimeout(function() {
     $$('#TIRESIZE').removeClass('ani');
