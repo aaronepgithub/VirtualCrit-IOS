@@ -33,9 +33,7 @@ $$(document).on('deviceready', function() {
 });
 
 var time = 0;
-var check_for_display0 = 0;
-var old_rtSpeed = 0;
-
+//each second
 function myCallback() {
   time++;
   //get actual time
@@ -46,6 +44,11 @@ function myCallback() {
   } else {
     $$(".TIME").text(rightNow.getHours() + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
   }
+  //Adding a value each second
+  model.arrHR.push(rt.hr);
+  model.arrWheelRevs.push(rt_WheelRevs);
+  model.arrCrankRevs.push(rt_crank_revs);
+
 }
 
 
@@ -118,10 +121,7 @@ $$('#REFRESH').on('click', function(e) {
 $$('#RESTART').on('click', function(e) {
   $$(this).addClass('ani');
   console.log("RESTART");
-  // arrConnectedPeripherals.forEach(function(element, index) {
-  //   ble.stopNotification(arrConnectedPeripherals[index], arrConnectedPeripheralsService[index], arrConnectedPeripheralsChar[index], function() {console.log("stop notify success");}, function() {console.log("stop notify failed");});
-  //   ble.disconnect(element, function() {console.log("disconnect success");}, function() {console.log("disconnect failed");});
-  // });
+
   arrConnectedPeripherals.forEach(function(element) {
     ble.disconnect(element, function() {
       console.log("disconnect success");

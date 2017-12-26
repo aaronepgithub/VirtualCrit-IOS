@@ -4,6 +4,16 @@ var rt = {
   cadence: 0
 };
 
+var model = {
+  arrHR: [],
+  arrWheelRevs: [],
+  arrCrankRevs: []
+
+  // avgHR = totalHR / seconds;
+  // avgSpeed = (totalWheelRevs / (seconds / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+  // avgCadence = totalCrankRevs / (seconds / 60);
+};
+
 var wheelCircumference = 2105;
 
 function onDataHR(data) {
@@ -65,9 +75,6 @@ var total_moving_time_seconds = 0;
 var single_read_speed = 0;
 var single_read_cad = 0;
 
-var arr_srs = [];
-var arr_src = [];
-var srseconds = 0;
 
 function processWheelData(data) {
 
@@ -200,10 +207,10 @@ function processCrankData(data, index) {
     if (deltaT == 0) {
       oldCrankRevolution = crankRevolution;
       oldCrankEventTime = crankEventTime;
-      single_read_cad = 0;
-      rt.cadence = single_read_cad.toFixed(0);
-      $$(".rtCAD").text(rt.cadence);
-      $$("#blinker").text("Pull to Refresh (CAD)");
+      // single_read_cad = 0;
+      // rt.cadence = single_read_cad.toFixed(0);
+      // $$(".rtCAD").text(rt.cadence);
+      // $$("#blinker").text("Pull to Refresh (CAD)");
       return;
     }
 
