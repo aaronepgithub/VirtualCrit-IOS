@@ -57,6 +57,7 @@ function myCallback() {
   //Adding a value each second
   rounds.HeartRate += rt.hr;
   interval.arrHeartRate.push(rt.hr);
+  interval.arrCadence.push(rt.cadence);
   interval.arrDistance.push(totalMiles);
 
   midRound(time);
@@ -545,14 +546,29 @@ $$('#view3nav').on('click', function(e) {
     $$('#view3pagecontent').html(page3option1);
     page3info = 1;
   }
-
   if (currentPage == 1) {
-    $$('#view3pagecontent').html(page3default);
-    page3info = 0;    
+    $$('#view3pagecontent').html(page3option2);
+    page3info = 2;
   }
-
-
+  if (currentPage == 2) {
+    $$('#view3pagecontent').html(page3default);
+    page3info = 0;
+  }
 });
+
+  var page4info = 0;
+  $$('#view4nav').on('click', function(e) {
+    var currentPage = page4info;
+    if (currentPage == 0) {
+      $$('#view4pagecontent').html(page4option1);
+      page4info = 1;
+    }
+
+    if (currentPage == 1) {
+      $$('#view4pagecontent').html(page4default);
+      page4info = 0;
+    }
+  });
 
 // Add views
 var view1 = myApp.addView('#view-1');
@@ -574,17 +590,17 @@ var page3default = '  <div class="myContentBlock content-block vertride"> ' +
 '  </div>' +
 
 '  <div class="row">' +
-'    <div class="rtSPD col-100" style="font-size: 9em">00.00</div>' +
+'    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
 '  </div>' +
 
 '  <div class="row">' +
-'    <div class="col-50" style="font-size: 1em">HR</div>' +
-'    <div class="col-50" style="font-size: 1em">CAD</div>' +
+'    <div class="col-50 rtSCORE" style="font-size: 1.5em">HR 0%</div>' +
+'    <div class="col-50" style="font-size: 1.5em">CAD</div>' +
 '  </div>' +
 
   '<div class="row">' +
-'    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-'    <div class="rtCAD col-50" style="font-size: 6em">00</div>' +
+'    <div class="rtHR col-50" style="font-size: 8em">0</div>' +
+'    <div class="rtCAD col-50" style="font-size: 8em">0</div>' +
 '  </div>' +
 
 '  <div class="row">' +
@@ -602,7 +618,7 @@ var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
 '  </div>' +
 
 '  <div class="row">' +
-'    <div class="rtSPD col-100" style="font-size: 9em">00.00</div>' +
+'    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
 '  </div>' +
 
 '  <div class="row">' +
@@ -612,10 +628,75 @@ var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
 
   '<div class="row">' +
 // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-'    <div class="rtCAD col-100" style="font-size: 9em">00</div>' +
+'    <div class="rtCAD col-100" style="font-size: 9em">0</div>' +
 '  </div>' +
 
 '  <div class="row">' +
 '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
 '  </div>' +
 '</div>   ';
+
+
+
+var page3option2 = '  <div class="myContentBlock content-block vertride"> ' +
+  '<div class="row">' +
+'    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+'  </div>' +
+
+'  <div class="row">' +
+ '    <div class="col-100" style="font-size: 1.5em">CAD INTERVAL</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="intervalCAD col-100" style="font-size: 8.5em">0</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="col-100" style="font-size: 1.5em">HR INTERVAL</div>' +
+// '    <div class="col-50" style="font-size: 1em">CAD</div>' +
+'  </div>' +
+
+  '<div class="row">' +
+// '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+'    <div class="intervalHR col-100" style="font-size: 8.5em">0</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+'  </div>' +
+'</div>   ';
+
+
+page4default = ' <div content-block horizride> ' +
+'             <div class="row row1">' +
+'                <div class="col-30 rtSCORE">HR</div>' +
+'                <div class="col-40">SPEED</div>' +
+'                <div class="col-30">CAD</div>' +
+'              </div>' +
+'              <div class="row row2">' +
+'                <div class="rtHR hrcad col-30">0</div>' +
+'                <div class="rtSPD spd col-40">0</div>' +
+'                <div class="rtCAD hrcad col-30">0</div>'+
+'              </div>' +
+'              <div class="row row3">' +
+'                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
+'                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
+'              </div>' +
+'            </div>';
+
+page4option1 = ' <div content-block horizride> ' +
+'             <div class="row row1">' +
+// '                <div class="col-30 rtSCORE">HR</div>' +
+'                <div class="col-50">SPEED</div>' +
+'                <div class="col-50">CAD</div>' +
+'              </div>' +
+'              <div class="row row2">' +
+// '                <div class="rtHR hrcad col-30">0</div>' +
+'                <div class="rtSPD spd col-50">0</div>' +
+'                <div class="rtCAD spd col-50">0</div>'+
+'              </div>' +
+'              <div class="row row3">' +
+'                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
+'                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
+'              </div>' +
+'            </div>';

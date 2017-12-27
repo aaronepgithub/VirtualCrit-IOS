@@ -66,7 +66,7 @@ and (max-device-width : 320px)
 and (max-device-height : 480px)
 and (orientation : portrait) {
   .vertride {
-    font-size: 10px;
+    font-size: 9px;
   }
 }
 
@@ -182,7 +182,7 @@ and (orientation : portrait) {
 }
 
 @media all and (max-width: 600px) and (min-width: 300px) {
-  .spd {
+  .spd .cadopt {
     font-size: 7em;
   }
 }

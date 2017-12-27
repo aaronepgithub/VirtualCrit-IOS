@@ -16,7 +16,9 @@ var totalMiles = 0;
 
 var interval = {
   arrDistance: [],
-  arrHeartRate: []
+  arrHeartRate: [],
+  arrCadence: [],
+  arrCurrentIntervals: []
 };
 
 var rounds = {
@@ -58,20 +60,34 @@ function calcInterval() {
   var heartrateInterval = hr / (refreshInterval);
   //console.log("heartrateInterval:  " + heartrateInterval);
 
+  var cad = 0;
+  for (i = refreshInterval; i > 0; i--) {
+    if (interval.arrCadence[i] >= 0) {cad += interval.arrCadence[interval.arrCadence.length - i];} else {cad += 0;}
+    }
+  var cadenceInterval = cad / (refreshInterval);
+  //console.log("cadenceInterval:  " + cadenceInterval);
+
+  interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
+  $$('.intervalSPD').text(speedInterval.toFixed(1));
+  $$('.intervalCAD').text(cadenceInterval.toFixed(0));
+  $$('.intervalHR').text(heartrateInterval.toFixed(0));
+
 
   if (time % 5 == 0) {
     var h = $$(".rtHR").text();
     var s = $$(".rtSPD").text();
     var c = $$(".rtCAD").text();
 
-    if (h == veloH) {$$(".rtHR").text(0.00);}
-    if (s == veloS) {$$(".rtSPD").text(0.00);}
-    if (c == veloC) {$$(".rtCAD").text(0.00);}
+    if (h == veloH) {$$(".rtHR").text(0);rt.score=0;$$(".rtSCORE").text("HR " + rt.score.toFixed(0)+"%");}
+    if (s == veloS) {$$(".rtSPD").text(0);}
+    if (c == veloC) {$$(".rtCAD").text(0);}
 
     veloH = h;
     veloS = s;
     veloC = c;
   }
+
+
 
 }
 
@@ -116,13 +132,12 @@ function endRound() {
   return(rounds.arrScore.length - 1);
 }
 
-
-
 function onDataHR(data) {
   //console.log(data[1]);
   rt.hr = data[1];
   rt.score = (rt.hr / maxHeartRate) * 100;
   $$(".rtHR").text(rt.hr);
+  $$(".rtSCORE").text("HR " + rt.score.toFixed(0)+"%");
   $$("#blinker").text("Pull to Refresh (HR)");
   $$(".iconNumber").text(rt.hr);
 }
@@ -246,13 +261,7 @@ function processWheelData(data) {
 
       $$(".rtMOVING").text(result);
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
-
-
-      $$(".rtSPD").text(rt.speed);
-      $$("#blinker").text("Pull to Refresh (SPD)");
-
     } else {
-      //velo should test, might not need to update display
       single_read_speed = 0;
       rt.speed = single_read_speed.toFixed(1);
       $$(".rtSPD").text(rt.speed);
