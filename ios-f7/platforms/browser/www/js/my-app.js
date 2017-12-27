@@ -70,10 +70,10 @@ function myCallback() {
 // });
 
 $$('#NAME').on('click', function(e) {
-  myApp.prompt('What is your name?', 'WELCOME', function (value) {
-      //myApp.alert('Your name is "' + value + '". You clicked Ok button');
-      $$('#NAME').find('.item-after').text(value);
-      name = value;
+  myApp.prompt('What is your name?', 'WELCOME', function(value) {
+    //myApp.alert('Your name is "' + value + '". You clicked Ok button');
+    $$('#NAME').find('.item-after').text(value);
+    name = value;
   });
 });
 
@@ -139,7 +139,8 @@ $$('#TIRESIZE').on('click', function(e) {
   }
   if (current == 2155) {
     $$(this).find('.item-after').text('700X25');
-    wheelCircumference = 2105;wheelCircumferenceCM = wheelCircumference / 10;
+    wheelCircumference = 2105;
+    wheelCircumferenceCM = wheelCircumference / 10;
   }
   setTimeout(function() {
     $$('#TIRESIZE').removeClass('ani');
@@ -213,7 +214,7 @@ mql.addListener(function(m) {
     if (currentTab == 4) {
       // myApp.showTab('#view-3');
       currentTab = 3;
-myApp.closeModal('.popup4');
+      myApp.closeModal('.popup4');
     }
   } else {
     console.log("landscape");
@@ -221,7 +222,7 @@ myApp.closeModal('.popup4');
     if (currentTab == 3) {
       //myApp.showTab('#view-4');
       currentTab = 4;
-myApp.popup('.popup4');
+      myApp.popup('.popup4');
     }
     //if in ride view, change to hz view
   }
@@ -385,20 +386,30 @@ function connect(peripheral) {
 
 $$('.blelist').on('touchstart', '#blechip', function(e) {
 
+  myApp.showIndicator();
+  setTimeout(function() {
+    myApp.hideIndicator();
+  }, 1500);
+
   e.preventDefault();
 
   var chipname = $$(this).find('.chip-label').text();
   var chipIndex = $$(this).find('.chip-media').text();
-  var chipUUID = arrPeripherals[chipIndex].id;
+  if (arrPeripherals.length > 0) {
+    var chipUUID = arrPeripherals[chipIndex].id;
+  }
+
 
   $$(this).find('.chip-media').css('color', 'red');
   $$(this).find('.chip-label').css('color', 'red');
   // console.log(chipname);
   // console.log(chipIndex);
   // console.log(chipUUID);
-  connect(arrPeripherals[chipIndex]);
+  if (arrPeripherals.length > 0) {
+    connect(arrPeripherals[chipIndex]);
+    //call to connect
+  }
 
-  //call to connect
 
 });
 
@@ -556,19 +567,19 @@ $$('#view3nav').on('click', function(e) {
   }
 });
 
-  var page4info = 0;
-  $$('#view4nav').on('click', function(e) {
-    var currentPage = page4info;
-    if (currentPage == 0) {
-      $$('#view4pagecontent').html(page4option1);
-      page4info = 1;
-    }
+var page4info = 0;
+$$('#view4nav').on('click', function(e) {
+  var currentPage = page4info;
+  if (currentPage == 0) {
+    $$('#view4pagecontent').html(page4option1);
+    page4info = 1;
+  }
 
-    if (currentPage == 1) {
-      $$('#view4pagecontent').html(page4default);
-      page4info = 0;
-    }
-  });
+  if (currentPage == 1) {
+    $$('#view4pagecontent').html(page4default);
+    page4info = 0;
+  }
+});
 
 // Add views
 var view1 = myApp.addView('#view-1');
@@ -582,121 +593,121 @@ var view4 = myApp.addView('#view-4');
 
 var page3default = '  <div class="myContentBlock content-block vertride"> ' +
   '<div class="row">' +
-'    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-'  </div>' +
+  '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+  '  </div>' +
 
-'  <div class="row">' +
- '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="col-50 rtSCORE" style="font-size: 1.5em">HR 0%</div>' +
-'    <div class="col-50" style="font-size: 1.5em">CAD</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="col-50 rtSCORE" style="font-size: 1.5em">HR 0%</div>' +
+  '    <div class="col-50" style="font-size: 1.5em">CAD</div>' +
+  '  </div>' +
 
   '<div class="row">' +
-'    <div class="rtHR col-50" style="font-size: 8em">0</div>' +
-'    <div class="rtCAD col-50" style="font-size: 8em">0</div>' +
-'  </div>' +
+  '    <div class="rtHR col-50" style="font-size: 8em">0</div>' +
+  '    <div class="rtCAD col-50" style="font-size: 8em">0</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-'  </div>' +
-'</div>   ';
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+  '  </div>' +
+  '</div>   ';
 
 var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
   '<div class="row">' +
-'    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-'  </div>' +
+  '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+  '  </div>' +
 
-'  <div class="row">' +
- '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="col-100" style="font-size: 1em">CAD</div>' +
-// '    <div class="col-50" style="font-size: 1em">CAD</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 1em">CAD</div>' +
+  // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
+  '  </div>' +
 
   '<div class="row">' +
-// '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-'    <div class="rtCAD col-100" style="font-size: 9em">0</div>' +
-'  </div>' +
+  // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+  '    <div class="rtCAD col-100" style="font-size: 9em">0</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-'  </div>' +
-'</div>   ';
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+  '  </div>' +
+  '</div>   ';
 
 
 
 var page3option2 = '  <div class="myContentBlock content-block vertride"> ' +
   '<div class="row">' +
-'    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-'  </div>' +
+  '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+  '  </div>' +
 
-'  <div class="row">' +
- '    <div class="col-100" style="font-size: 1.5em">CAD INTERVAL</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 1.5em">CAD INTERVAL</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="intervalCAD col-100" style="font-size: 8.5em">0</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="intervalCAD col-100" style="font-size: 8.5em">0</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="col-100" style="font-size: 1.5em">HR INTERVAL</div>' +
-// '    <div class="col-50" style="font-size: 1em">CAD</div>' +
-'  </div>' +
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 1.5em">HR INTERVAL</div>' +
+  // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
+  '  </div>' +
 
   '<div class="row">' +
-// '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-'    <div class="intervalHR col-100" style="font-size: 8.5em">0</div>' +
-'  </div>' +
+  // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+  '    <div class="intervalHR col-100" style="font-size: 8.5em">0</div>' +
+  '  </div>' +
 
-'  <div class="row">' +
-'    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-'  </div>' +
-'</div>   ';
+  '  <div class="row">' +
+  '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+  '  </div>' +
+  '</div>   ';
 
 
 page4default = ' <div content-block horizride> ' +
-'             <div class="row row1">' +
-'                <div class="col-30 rtSCORE">HR</div>' +
-'                <div class="col-40">SPEED</div>' +
-'                <div class="col-30">CAD</div>' +
-'              </div>' +
-'              <div class="row row2">' +
-'                <div class="rtHR hrcad col-30">0</div>' +
-'                <div class="rtSPD spd col-40">0</div>' +
-'                <div class="rtCAD hrcad col-30">0</div>'+
-'              </div>' +
-'              <div class="row row3">' +
-'                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
-'                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
-'              </div>' +
-'            </div>';
+  '             <div class="row row1">' +
+  '                <div class="col-30 rtSCORE">HR</div>' +
+  '                <div class="col-40">SPEED</div>' +
+  '                <div class="col-30">CAD</div>' +
+  '              </div>' +
+  '              <div class="row row2">' +
+  '                <div class="rtHR hrcad col-30">0</div>' +
+  '                <div class="rtSPD spd col-40">0</div>' +
+  '                <div class="rtCAD hrcad col-30">0</div>' +
+  '              </div>' +
+  '              <div class="row row3">' +
+  '                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
+  '                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
+  '              </div>' +
+  '            </div>';
 
 page4option1 = ' <div content-block horizride> ' +
-'             <div class="row row1">' +
-// '                <div class="col-30 rtSCORE">HR</div>' +
-'                <div class="col-50">SPEED</div>' +
-'                <div class="col-50">CAD</div>' +
-'              </div>' +
-'              <div class="row row2">' +
-// '                <div class="rtHR hrcad col-30">0</div>' +
-'                <div class="rtSPD spd col-50">0</div>' +
-'                <div class="rtCAD spd col-50">0</div>'+
-'              </div>' +
-'              <div class="row row3">' +
-'                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
-'                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
-'              </div>' +
-'            </div>';
+  '             <div class="row row1">' +
+  // '                <div class="col-30 rtSCORE">HR</div>' +
+  '                <div class="col-50">SPEED</div>' +
+  '                <div class="col-50">CAD</div>' +
+  '              </div>' +
+  '              <div class="row row2">' +
+  // '                <div class="rtHR hrcad col-30">0</div>' +
+  '                <div class="rtSPD spd col-50">0</div>' +
+  '                <div class="rtCAD spd col-50">0</div>' +
+  '              </div>' +
+  '              <div class="row row3">' +
+  '                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
+  '                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
+  '              </div>' +
+  '            </div>';

@@ -111,11 +111,19 @@ function midRound(time) {
   // }
 }
 
+function undefTest(myVar) {
+  if( myVar === void 0){
+      console.log(0);return 0;
+  } else {
+    return myVar;
+  }
+}
+
 function endRound() {
-  rounds.arrHeartRate.push(rounds.avgHeartRate);
-  rounds.arrSpeed.push(rounds.avgSpeed);
-  rounds.arrCadence.push(rounds.avgCadence);
-  rounds.arrScore.push(rounds.avgScore);
+  rounds.arrHeartRate.push(undefTest(rounds.avgHeartRate));
+  rounds.arrSpeed.push(undefTest(rounds.avgSpeed));
+  rounds.arrCadence.push(undefTest(rounds.avgCadence));
+  rounds.arrScore.push(undefTest(rounds.avgScore));
 
   console.log("End of Round:  \n" +
     rounds.arrHeartRate[length-1] + "\n" +
@@ -123,6 +131,47 @@ function endRound() {
     rounds.arrCadence[length-1] + "\n" +
     rounds.arrScore[length-1] + "\n"
   );
+
+
+  myApp.modal({
+  title:  'ROUND COMPLETE',
+  text: '',
+  verticalButtons: true,
+  buttons: [
+    {
+      text: 'SPEED: ' + undefTest(rounds.arrSpeed[length-1]).toFixed(2),
+      onClick: function() {
+        myApp.closeModal();
+        // myApp.alert('You clicked first button!';)
+      }
+    },
+    {
+      text: 'CADENCE: ' + undefTest(rounds.arrCadence[length-1]).toFixed(1),
+      onClick: function() {
+        myApp.closeModal();
+        // myApp.alert('You clicked second button!');
+      }
+    },
+    {
+      text: 'HR: ' + undefTest(rounds.arrHeartRate[length-1]).toFixed(1),
+      onClick: function() {
+        myApp.closeModal();
+        // myApp.alert('You clicked third button!');
+      }
+    },
+    {
+      text: 'SCORE: ' + undefTest(rounds.arrScore[length-1]).toFixed(1) + '  %MAX',
+      onClick: function() {
+        myApp.closeModal();
+        // myApp.alert('You clicked third button!');
+      }
+    },
+  ]
+});
+
+setTimeout(function() {
+  myApp.closeModal();
+}, 5000);
 
   rounds.WheelRevs = 0;
   rounds.HeartRate = 0;
