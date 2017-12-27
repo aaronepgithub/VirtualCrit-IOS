@@ -203,6 +203,7 @@ $$('#RESTART').on('click', function(e) {
 
 var mql = window.matchMedia("(orientation: portrait)");
 // Add a media query change listener
+
 mql.addListener(function(m) {
   if (m.matches) {
     console.log("portrait");
@@ -221,7 +222,6 @@ myApp.closeModal('.popup4');
       currentTab = 4;
 myApp.popup('.popup4');
     }
-
     //if in ride view, change to hz view
   }
 });
@@ -420,14 +420,7 @@ $$('#view-2').on('tab:show', function() {
   // console.log(currentTab);
 });
 
-// // Add views
-// var view1 = myApp.addView('#view-1');
-// var view2 = myApp.addView('#view-2', {
-//   // Because we use fixed-through navbar we can enable dynamic navbar
-//   dynamicNavbar: true
-// });
-// var view3 = myApp.addView('#view-3');
-// var view4 = myApp.addView('#view-4');
+
 
 translate_advertisement = function(peripheral) {
   var advertising = peripheral.advertising;
@@ -543,3 +536,86 @@ hex = function(byte_array) {
   }
   return hexstr;
 };
+
+var page3info = 0;
+$$('#view3nav').on('click', function(e) {
+  var currentPage = page3info;
+  //page3option1 or page3default
+  if (currentPage == 0) {
+    $$('#view3pagecontent').html(page3option1);
+    page3info = 1;
+  }
+
+  if (currentPage == 1) {
+    $$('#view3pagecontent').html(page3default);
+    page3info = 0;    
+  }
+
+
+});
+
+// Add views
+var view1 = myApp.addView('#view-1');
+var view2 = myApp.addView('#view-2', {
+  // Because we use fixed-through navbar we can enable dynamic navbar
+  dynamicNavbar: true
+});
+var view3 = myApp.addView('#view-3');
+var view4 = myApp.addView('#view-4');
+
+
+var page3default = '  <div class="myContentBlock content-block vertride"> ' +
+  '<div class="row">' +
+'    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+'  </div>' +
+
+'  <div class="row">' +
+ '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="rtSPD col-100" style="font-size: 9em">00.00</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="col-50" style="font-size: 1em">HR</div>' +
+'    <div class="col-50" style="font-size: 1em">CAD</div>' +
+'  </div>' +
+
+  '<div class="row">' +
+'    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+'    <div class="rtCAD col-50" style="font-size: 6em">00</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+'  </div>' +
+'</div>   ';
+
+var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
+  '<div class="row">' +
+'    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+'  </div>' +
+
+'  <div class="row">' +
+ '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="rtSPD col-100" style="font-size: 9em">00.00</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="col-100" style="font-size: 1em">CAD</div>' +
+// '    <div class="col-50" style="font-size: 1em">CAD</div>' +
+'  </div>' +
+
+  '<div class="row">' +
+// '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+'    <div class="rtCAD col-100" style="font-size: 9em">00</div>' +
+'  </div>' +
+
+'  <div class="row">' +
+'    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+'  </div>' +
+'</div>   ';

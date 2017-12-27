@@ -148,15 +148,6 @@
                 <div class="chip-media bg-red">0</div>
                 <div class="chip-label">HR/CSC</div>
               </div>
-              <!-- <div id="blechip" class="chip chip-extended blechip">
-                <div class="chip-media bg-blue">CSC</div>
-                <div class="chip-label">Scosche</div>
-              </div>
-              <div id="blechip" class="chip chip-extended blechip">
-                <div class="chip-media bg-blue">CSC</div>
-                <div class="chip-label">BK90876</div>
-                            </div> -->
-
 
             </div>
           </div>
@@ -171,7 +162,7 @@
 
     <div id="view-3" class="view tab">
 
-      <div class="navbar">
+      <div id="view3nav" class="navbar">
         <div class="navbar-inner">
           <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG </div>
         </div>
@@ -181,10 +172,9 @@
         <div class="pages">
           <div data-page="index-3" class="page">
 
-            <div class="page-content">
+            <div id = "view3pagecontent" class="page-content">
+              <!-- CONTENT BLOCK -->
               <div class="myContentBlock content-block vertride">
-
-
                 <div class="row">
                   <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div>
                 </div>
@@ -210,11 +200,13 @@
                 <div class="row">
                   <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>
                 </div>
-
-
-
               </div>
+                <!-- CONTENT BLOCK -->
+
+
             </div>
+
+
           </div>
         </div>
       </div>
@@ -224,14 +216,26 @@
     <!-- VIEW 4 START -->
 
     <div id="view-4" class="view tab popup popup4">
-      <div class="pages navbar-fixed">
+
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>
+        </div>
+      </div>
+
+      <div class="pages navbar-through">
+        <div data-page="index-4" class="page">
+
+
+
+      <!-- <div class="pages navbar-fixed">
         <div data-page="index-4" class="page">
           <div class="navbar">
             <div class="navbar-inner">
               <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>
             </div>
-          </div>
-          <!-- <div class="page-content" style="margin-top: 20px;"> -->
+          </div> -->
+
           <div class="page-content" style="margin-top: 20px;">
             <div class="row row1">
               <div class="col-30">HR</div>
@@ -250,24 +254,26 @@
               <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
 
+
+
+
+
+
     <!-- Bottom Tabbar-->
     <div class="toolbar tabbar tabbar-labels">
-
-
-
       <div class="toolbar-inner"><a href="#view-1" class="tab-link active"><i class="f7-icons color-red">settings_fill</i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="f7-icons color-red">radio</i><span class="tabbar-label">BLE</span></a>
         <a href="#view-3" class="tab-link"> <i class="f7-icons color-red">play_round_fill</i><span class="tabbar-label">Ride</span></a>
       </div>
-
-      <!--
-        <div class="toolbar-inner"><a href="#view-1" class="tab-link active"> <i class="icon tabbar-demo-icon-1"></i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">BLE</span></a><a href="#view-3" class="tab-link"> <i class="icon tabbar-demo-icon-3"><span class="badge bg-red">05</span></i><span class="tabbar-label">Ride</span></a><a href="#view-4" class="tab-link"> <i class="icon tabbar-demo-icon-4"></i><span class="tabbar-label">HZ</span></a>
-        </div> -->
-
     </div>
+    <!-- Bottom Tabbar-->
+
+
   </div>
   <script type="text/javascript" src="cordova.js"></script>
   <!-- Path to Framework7 Library JS-->
