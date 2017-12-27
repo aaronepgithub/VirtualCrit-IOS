@@ -73,15 +73,24 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if arrRoundSpeeds.count > 1 {
             out_Btn2.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 2]), for: .normal)
         }
+    }
+    
+    var veloS: Double = 0;
+    var veloC: Double = 0;
+    var veloH: Double = 0;
+    
+    func veloTest() {
+        let h = rt.rt_hr
+        let s = rt.rt_speed
+        let c = rt.rt_cadence
         
-//        if arrRoundSpeeds.count > 2 {
-//            out_Btn3.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 3]), for: .normal)
-//        }
+        if (h == veloH) {rt.rt_hr = 0}
+        if (s == veloS) {rt.rt_speed = 0}
+        if (c == veloC) {rt.rt_cadence = 0}
         
-//        if arrRoundSpeeds.count > 3 {
-//            out_Btn4.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 4]), for: .normal)
-//        }
-        
+        veloH = h
+        veloS = s
+        veloC = c
     }
     
     func roundUpdate_each_second() {
@@ -107,19 +116,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //        out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
         out_Btn5.setTitle(stringer1(myIn: rt.rt_speed), for: .normal)
         
-//        let currentDateTime = Date()
-//        let formatter = DateFormatter()
-//        formatter.timeStyle = .medium
-//        formatter.dateStyle = .none
-//        let currTime = formatter.string(from: currentDateTime)
-        
-        //print(createTimeString(seconds: z), inRoundSpeed, inRoundCadence, currTime)
+        if z % 5 == 0 {
+            veloTest()
+        }
         
         if z >= 300 {
             arrRoundHR.append(avgInRoundHR)
             print("arrRoundHR last: \(arrRoundHR.last!)")
             inRoundHR = 0
-
             newRound()
         }
     }
@@ -136,18 +140,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         roundUpdate_each_second()
         
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
-        
         //END OF EACH SECOND UPDATE
     }
 
-    
     let defaults = UserDefaults.standard
     
     @IBOutlet weak var out_Top1: UIButton!
     @IBOutlet weak var out_Top2: UIButton!
     @IBOutlet weak var out_Top3: UIButton!
-    
-    
     
     @IBOutlet weak var BLTE_TableViewOutlet: UITableView!
     

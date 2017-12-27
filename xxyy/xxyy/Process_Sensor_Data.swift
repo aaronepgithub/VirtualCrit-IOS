@@ -12,32 +12,6 @@ var totalWheelRevs: Double = 0
 var totalCrankRevs: Double = 0
 
 func get_rt_speed_and_distance() -> Double {
-//    let distance = rt_WheelRevs * (wheelCircumference / 1000) * 0.000621371
-//    let time = Double(rt_WheelTime) / Double(1024)
-//    let wheelCircumferenceCM = wheelCircumference / 10
-    //let speed = distance / (time / 60 / 60)
-    
-//    let wheelTimeSeconds = Double(wheelTimeDelta) / Double(wheelTimeResolution)
-//    if wheelTimeSeconds > 0 {
-//        let wheelRPM = Double(wheelRevsDelta) / (wheelTimeSeconds / 60)
-//        let cmPerKm = 0.00001
-//        let minsPerHour = 60.0
-//        return wheelRPM * wheelCircumferenceCM * cmPerKm * minsPerHour
-//    if time > 0 {
-//        let wheelRPM = Double(rt_WheelRevs) / (time / 60)
-//        let cmPerMile = 0.621371 * 0.00001
-//        let minsPerHour = 60.0
-//        let speed =  wheelRPM * wheelCircumferenceCM * cmPerMile * minsPerHour
-//
-//        rt.total_distance += distance
-//        //rt.rt_speed = speed
-//    } else {
-//        //rt.rt_speed = 0
-//    }
-//
-//    if rtTimer_Interval == 1.0 {
-//        rt.rt_speed = single_read_speed
-//    }
 
     rt_WheelRevs = 0
     rt_WheelTime = 0
@@ -46,18 +20,7 @@ func get_rt_speed_and_distance() -> Double {
 }
 
 func get_rt_cadence() -> Double {
-    //let rtc = rt_crank_revs / (rt_crank_time / 1024) * 60
-    
-//    let crankTimeSeconds = Double(rt_crank_time) / Double(1024)
-//    if crankTimeSeconds > 0 {
-//        rt.rt_cadence =  Double(rt_crank_revs) / (crankTimeSeconds / 60)
-//    } else {
-//        rt.rt_cadence = 0
-//    }
-//
-//    if rtTimer_Interval == 1.0 {
-//        rt.rt_cadence = single_read_cad
-//    }
+
     rt_crank_revs = 0
     rt_crank_time = 0
     
@@ -93,7 +56,7 @@ func processWheelData(withData data :Data) {
         if a < 0 {a = (wheelRevolution + 255) - oldWheelRevolution}
         if b < 0 {b = (wheelEventTime + 65025) - oldWheelEventTime}
 
-        if (a == 0 || a > 5) {
+        if (a == 0 || a > 10) {
             wheelRevolution = oldWheelRevolution;
             wheelEventTime = oldWheelEventTime;
             //print("return, a == 0, should display 0")
