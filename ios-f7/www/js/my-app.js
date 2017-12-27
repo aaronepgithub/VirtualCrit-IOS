@@ -211,6 +211,7 @@ mql.addListener(function(m) {
     console.log("portrait");
     currentOrientation = "portrait";
 
+
     if (currentTab == 4) {
       // myApp.showTab('#view-3');
       currentTab = 3;
@@ -416,20 +417,25 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 $$('#view-4').on('tab:show', function() {
   // myApp.alert('Tab/View 4 is visible');
   currentTab = 4;
-  // console.log(currentTab);
+  console.log(currentTab);
 });
 
 $$('#view-3').on('tab:show', function() {
   // myApp.alert('Tab/View 3 is visible');
   currentTab = 3;
-  // console.log(currentTab);
+  console.log(currentTab);
 });
 
 $$('#view-2').on('tab:show', function() {
   // myApp.alert('Tab/View 2 is visible');
   currentTab = 2;
-  $$(".iconNumber").text("00");
-  // console.log(currentTab);
+  // $$(".iconNumber").text("00");
+  console.log(currentTab);
+});
+$$('#view-1').on('tab:show', function() {
+  // myApp.alert('Tab/View 2 is visible');
+  currentTab = 1;
+  console.log(currentTab);
 });
 
 
