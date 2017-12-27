@@ -211,7 +211,7 @@ mql.addListener(function(m) {
     if (currentTab == 4) {
       // myApp.showTab('#view-3');
       currentTab = 3;
-      myApp.closeModal('.popup4');
+myApp.closeModal('.popup4');
     }
   } else {
     console.log("landscape");
@@ -219,7 +219,7 @@ mql.addListener(function(m) {
     if (currentTab == 3) {
       //myApp.showTab('#view-4');
       currentTab = 4;
-      myApp.popup('.popup4');
+myApp.popup('.popup4');
     }
 
     //if in ride view, change to hz view

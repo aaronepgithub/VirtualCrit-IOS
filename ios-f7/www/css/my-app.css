@@ -83,6 +83,18 @@ and (orientation : portrait) {
   }
 }
 
+/* iphone5/6 */
+@media only screen
+and (min-device-width : 481px)
+and (max-device-width : 570px)
+and (min-device-height : 300px)
+and (max-device-height : 320px)
+and (orientation : landscape) {
+  .vertride {
+    font-size: 6px;
+  }
+}
+
 @media only screen
 and (min-device-width : 321px)
 and (max-device-width : 369px)
@@ -94,6 +106,18 @@ and (orientation : portrait) {
   }
 }
 
+@media only screen
+and (min-device-width : 600px)
+and (max-device-width : 700px)
+and (min-device-height : 321px)
+and (max-device-height : 369px)
+and (orientation : landscape) {
+  .vertride {
+    font-size: 5px;
+  }
+}
+
+
 /* iphone? */
 @media only screen
 and (min-device-width : 370px)
@@ -104,6 +128,15 @@ and (orientation : portrait) {
   }
 }
 
+/* iphone!!! */
+@media only screen
+and (min-device-width : 600px)
+and (max-device-width : 700px)
+and (orientation : landscape) {
+  .vertride {
+    font-size: 8px;
+  }
+}
 
 @media only screen
 and (min-device-width : 376px)
