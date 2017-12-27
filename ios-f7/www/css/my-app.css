@@ -66,12 +66,12 @@ and (max-device-width : 320px)
 and (max-device-height : 480px)
 and (orientation : portrait) {
   .vertride {
-    font-size: 9px;
+    font-size: 8.5px;
   }
 }
 
 
-/* iphone5/6 */
+/* iphone 6 & 5*/
 @media only screen
 and (min-device-width : 300px)
 and (max-device-width : 320px)
@@ -79,11 +79,11 @@ and (min-device-height : 481px)
 and (max-device-height : 570px)
 and (orientation : portrait) {
   .vertride {
-    font-size: 11.5px;
+    font-size: 10.5px;
   }
 }
 
-/* iphone5/6 */
+/*  */
 @media only screen
 and (min-device-width : 481px)
 and (max-device-width : 570px)
@@ -95,6 +95,7 @@ and (orientation : landscape) {
   }
 }
 
+/* BLU */
 @media only screen
 and (min-device-width : 321px)
 and (max-device-width : 369px)
@@ -102,11 +103,11 @@ and (min-device-height : 600px)
 and (max-device-height : 700px)
 and (orientation : portrait) {
   .vertride {
-    font-size: 13px;
+    font-size: 11.5px;
   }
 }
 
-@media only screen
+/* @media only screen
 and (min-device-width : 600px)
 and (max-device-width : 700px)
 and (min-device-height : 321px)
@@ -115,10 +116,10 @@ and (orientation : landscape) {
   .vertride {
     font-size: 5px;
   }
-}
+} */
 
 
-/* iphone? */
+/* ? */
 @media only screen
 and (min-device-width : 370px)
 and (max-device-width : 375px)
@@ -128,15 +129,15 @@ and (orientation : portrait) {
   }
 }
 
-/* iphone!!! */
-@media only screen
+/* ? */
+/* @media only screen
 and (min-device-width : 600px)
 and (max-device-width : 700px)
 and (orientation : landscape) {
   .vertride {
     font-size: 8px;
   }
-}
+} */
 
 @media only screen
 and (min-device-width : 376px)
@@ -181,8 +182,9 @@ and (orientation : portrait) {
   }
 }
 
+/* i6 */
 @media all and (max-width: 600px) and (min-width: 300px) {
-  .spd .cadopt {
+  .spd {
     font-size: 7em;
   }
 }
