@@ -57,9 +57,9 @@ function myCallback() {
   //Adding a value each second
   rounds.HeartRate += rt.hr;
   interval.arrHeartRate.push(rt.hr);
-  interval.arrCadence.push(rt.cadence);
+  interval.arrCadence.push(Number(rt.cadence));
+  interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
-
   midRound(time);
 }
 
@@ -260,12 +260,12 @@ function scan() {
       return;
     }
 
-    if (arrPeripherals.length == 0) { //knowing that I am going to add one now
+    if (arrPeripherals.length === 0) { //knowing that I am going to add one now
       $$('.blechip').remove();
     }
 
     arrPeripherals.push(peripheral);
-    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
+    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>'+'</div><div class="chip-uuid">' + peripheral.id + '</div>');
 
   }
 
@@ -393,19 +393,20 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
   }, 1500);
 
   e.preventDefault();
+  var chipUUID;
 
   var chipname = $$(this).find('.chip-label').text();
   var chipIndex = $$(this).find('.chip-media').text();
   if (arrPeripherals.length > 0) {
-    var chipUUID = arrPeripherals[chipIndex].id;
+    chipUUID = arrPeripherals[chipIndex].id;
   }
 
 
   $$(this).find('.chip-media').css('color', 'red');
   $$(this).find('.chip-label').css('color', 'red');
-  // console.log(chipname);
-  // console.log(chipIndex);
-  // console.log(chipUUID);
+  console.log(chipname);
+  console.log(chipIndex);
+  console.log(chipUUID);
   if (arrPeripherals.length > 0) {
     connect(arrPeripherals[chipIndex]);
     //call to connect
@@ -464,7 +465,7 @@ translate_advertisement = function(peripheral) {
     // first is length of the field, length of zero indicates advertisement
     //  is complete
     var length = scanRecord[index++];
-    if (length == 0) {
+    if (length === 0) {
       break;
     }
 
@@ -559,7 +560,7 @@ var page3info = 0;
 $$('#view3nav').on('click', function(e) {
   var currentPage = page3info;
   //page3option1 or page3default
-  if (currentPage == 0) {
+  if (currentPage === 0) {
     $$('#view3pagecontent').html(page3option1);
     page3info = 1;
   }
@@ -576,7 +577,7 @@ $$('#view3nav').on('click', function(e) {
 var page4info = 0;
 $$('#view4nav').on('click', function(e) {
   var currentPage = page4info;
-  if (currentPage == 0) {
+  if (currentPage === 0) {
     $$('#view4pagecontent').html(page4option1);
     page4info = 1;
   }

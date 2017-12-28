@@ -57,9 +57,9 @@ function myCallback() {
   //Adding a value each second
   rounds.HeartRate += rt.hr;
   interval.arrHeartRate.push(rt.hr);
-  interval.arrCadence.push(rt.cadence);
+  interval.arrCadence.push(Number(rt.cadence));
+  interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
-
   midRound(time);
 }
 
@@ -265,7 +265,7 @@ function scan() {
     }
 
     arrPeripherals.push(peripheral);
-    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>');
+    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>'+'</div><div class="chip-uuid">' + peripheral.id + '</div>');
 
   }
 
@@ -393,19 +393,20 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
   }, 1500);
 
   e.preventDefault();
+  var chipUUID;
 
   var chipname = $$(this).find('.chip-label').text();
   var chipIndex = $$(this).find('.chip-media').text();
   if (arrPeripherals.length > 0) {
-    var chipUUID = arrPeripherals[chipIndex].id;
+    chipUUID = arrPeripherals[chipIndex].id;
   }
 
 
   $$(this).find('.chip-media').css('color', 'red');
   $$(this).find('.chip-label').css('color', 'red');
-  // console.log(chipname);
-  // console.log(chipIndex);
-  // console.log(chipUUID);
+  console.log(chipname);
+  console.log(chipIndex);
+  console.log(chipUUID);
   if (arrPeripherals.length > 0) {
     connect(arrPeripherals[chipIndex]);
     //call to connect

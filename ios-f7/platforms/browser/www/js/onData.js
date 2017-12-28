@@ -18,6 +18,7 @@ var interval = {
   arrDistance: [],
   arrHeartRate: [],
   arrCadence: [],
+  arrSpeed: [],
   arrCurrentIntervals: []
 };
 
@@ -50,30 +51,32 @@ function calcInterval() {
   // for (i = refreshInterval; i > 0; i--) {
   //   if (interval.arrDistance[i] >= 0) {dist += interval.arrDistance[interval.arrDistance.length - i];} else {dist += 0;}
   //   }
-  var speedInterval = dist / (refreshInterval / 60 / 60);
+  var speedInterval = Number(dist / (refreshInterval / 60 / 60));
   //console.log("speedInterval:  " + speedInterval);
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
     if (interval.arrHeartRate[i] >= 0) {hr += interval.arrHeartRate[interval.arrHeartRate.length - i];} else {hr += 0;}
     }
-  var heartrateInterval = hr / (refreshInterval);
+  var heartrateInterval = Number(hr / (refreshInterval));
   //console.log("heartrateInterval:  " + heartrateInterval);
 
   var cad = 0;
   for (i = refreshInterval; i > 0; i--) {
     if (interval.arrCadence[i] >= 0) {cad += interval.arrCadence[interval.arrCadence.length - i];} else {cad += 0;}
     }
-  var cadenceInterval = cad / (refreshInterval);
-  //console.log("cadenceInterval:  " + cadenceInterval);
+  var cadenceInterval = Number(cad / (refreshInterval));
 
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
-  $$('.intervalSPD').text(speedInterval.toFixed(1));
-  $$('.intervalCAD').text(cadenceInterval.toFixed(0));
-  $$('.intervalHR').text(heartrateInterval.toFixed(0));
+  $$('.intervalSPD').text(Number(speedInterval.toFixed(1)));
+  $$('.intervalCAD').text(Number(cadenceInterval.toFixed(0)));
+  $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
 
+if (time % 30 == 0) {
+  console.log("Intervals:  " + speedInterval + " - "+ cadenceInterval + " - "+ heartrateInterval);
+}
 
-  if (time % 5 == 0) {
+  if (time % 7 == 0) {
     var h = $$(".rtHR").text();
     var s = $$(".rtSPD").text();
     var c = $$(".rtCAD").text();
@@ -92,75 +95,65 @@ function calcInterval() {
 }
 
 function midRound(time) {
-  rounds.avgHeartRate = rounds.HeartRate / time;
-  rounds.avgScore = (rounds.avgHeartRate / maxHeartRate) * 100;
-  rounds.avgSpeed = (rounds.WheelRevs / (time / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
-  rounds.avgCadence = rounds.CrankRevs / (time / 60);
+  console.log("midRound");
 
-  //console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
-  //console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
+
+  console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
+  console.log("rounds.avgCadence:  " + rounds.avgCadence);
+  console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
+  console.log("rounds.avgScore:  " + rounds.avgScore);
 
   if (time == 300) {
-    rounds.totalRoundCount = endRound();
-  }
-
-  calcInterval();
-
-  // if (time % refreshInterval == 0) {
-  //   calcInterval();
-  // }
-}
-
-function undefTest(myVar) {
-  if( myVar === void 0){
-      console.log(0);return 0;
-  } else {
-    return myVar;
-  }
-}
-
-function endRound() {
-  rounds.arrHeartRate.push(undefTest(rounds.avgHeartRate));
-  rounds.arrSpeed.push(undefTest(rounds.avgSpeed));
-  rounds.arrCadence.push(undefTest(rounds.avgCadence));
-  rounds.arrScore.push(undefTest(rounds.avgScore));
-
-  console.log("End of Round:  \n" +
-    rounds.arrHeartRate[length-1] + "\n" +
-    rounds.arrSpeed[length-1] + "\n " +
-    rounds.arrCadence[length-1] + "\n" +
-    rounds.arrScore[length-1] + "\n"
-  );
+    console.log("time == 300");
+  rounds.arrHeartRate.push(Number(undefTest(rounds.avgHeartRate)));
+  rounds.arrSpeed.push(Number(undefTest(rounds.avgSpeed)));
+  rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
+  rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
 
 
+  console.log("End of Round, print arrays:  \n" +
+    rounds.arrHeartRate + "\n" +
+    rounds.arrSpeed + "\n " +
+    rounds.arrCadence + "\n" +
+    rounds.arrScore + "\n" );
+ 
+
+  rounds.WheelRevs = 0;
+  rounds.HeartRate = 0;
+  rounds.CrankRevs = 0;
+  rounds.Distance = 0;
+  time = 0;
+
+  var leng = rounds.arrSpeed.length;
+  
   myApp.modal({
   title:  'ROUND COMPLETE',
   text: '',
   verticalButtons: true,
   buttons: [
     {
-      text: 'SPEED: ' + undefTest(rounds.arrSpeed[length-1]).toFixed(2),
+      text: 'SPEED: ' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2),
       onClick: function() {
         myApp.closeModal();
         // myApp.alert('You clicked first button!';)
       }
     },
     {
-      text: 'CADENCE: ' + undefTest(rounds.arrCadence[length-1]).toFixed(1),
+      text: 'CADENCE: ' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1),
       onClick: function() {
         myApp.closeModal();
         // myApp.alert('You clicked second button!');
       }
     },
     {
-      text: 'HR: ' + undefTest(rounds.arrHeartRate[length-1]).toFixed(1),
+      text: 'HR: ' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(1),
       onClick: function() {
         myApp.closeModal();
         // myApp.alert('You clicked third button!');
       }
     },
     {
-      text: 'SCORE: ' + undefTest(rounds.arrScore[length-1]).toFixed(1) + '  %MAX',
+      text: 'SCORE: ' + Number(rounds.arrScore[(leng - 1)]).toFixed(1) + '  %MAX',
       onClick: function() {
         myApp.closeModal();
         // myApp.alert('You clicked third button!');
@@ -172,19 +165,33 @@ function endRound() {
 setTimeout(function() {
   myApp.closeModal();
 }, 5000);
+  }
 
-  rounds.WheelRevs = 0;
-  rounds.HeartRate = 0;
-  rounds.CrankRevs = 0;
-  rounds.Distance = 0;
-  time = 0;
-  return(rounds.arrScore.length - 1);
+  rounds.avgHeartRate = Number(rounds.HeartRate / time);
+  rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
+  rounds.avgSpeed = Number((rounds.WheelRevs / (time / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
+  rounds.avgCadence = Number(rounds.CrankRevs / (time / 60));
+
+  calcInterval();
+}
+
+function undefTest(myVar) {
+  if( myVar === void 0){
+      console.log(0);return 0;
+  } else {
+    return Number(myVar);
+  }
+}
+
+function endRound() {
+
+
 }
 
 function onDataHR(data) {
   //console.log(data[1]);
-  rt.hr = data[1];
-  rt.score = (rt.hr / maxHeartRate) * 100;
+  rt.hr = Number(data[1]);
+  rt.score = Number((rt.hr / maxHeartRate) * 100);
   $$(".rtHR").text(rt.hr);
   $$(".rtSCORE").text("HR " + rt.score.toFixed(0)+"%");
   $$("#blinker").text("Pull to Refresh (HR)");
@@ -266,7 +273,7 @@ function processWheelData(data) {
       wheelEventTime = oldWheelEventTime;
       //velo should test, might not need to update display
       single_read_speed = 0;
-      rt.speed = single_read_speed.toFixed(1);
+      rt.speed = Number(single_read_speed.toFixed(1));
       // $$(".rtSPD").text(rt.speed);
       // $$("#blinker").text("Pull to Refresh (SPD)");
       return;
@@ -278,14 +285,14 @@ function processWheelData(data) {
     }
 
     //         //single read
-    var wheelTimeSeconds = deltaT / 1024;
+    var wheelTimeSeconds = Number(deltaT / 1024);
     if (wheelTimeSeconds > 0) {
       // var wheelCircumferenceCM = wheelCircumference / 10;
-      var wheelRPM = deltaW / (wheelTimeSeconds / 60);
+      var wheelRPM = Number(deltaW / (wheelTimeSeconds / 60));
       // var cmPerMi = 0.00001 * 0.621371;
       // var minsPerHour = 60.0;
-      single_read_speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
-      rt.speed = single_read_speed.toFixed(1);
+      single_read_speed = Number(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour);
+      rt.speed = Number(single_read_speed.toFixed(1));
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
 
@@ -293,26 +300,26 @@ function processWheelData(data) {
       if (single_read_speed > 0) {
         rt_WheelRevs += deltaW;
         rt_WheelTime += deltaT;
-        total_moving_time_seconds += (deltaT / 1024);
+        total_moving_time_seconds += Number((deltaT / 1024));
         //convert to display as moving time
       }
-      rounds.WheelRevs += deltaW;
-      rounds.Distance += deltaW * wheelCircumferenceCM * cmPerMi;
+      rounds.WheelRevs += Number(deltaW);
+      rounds.Distance += Number(deltaW * wheelCircumferenceCM * cmPerMi);
       //total miles
-      totalMiles = rt_WheelRevs * wheelCircumferenceCM * cmPerMi;
+      totalMiles = Number(rt_WheelRevs * wheelCircumferenceCM * cmPerMi);
       $$(".rtMILES").text((totalMiles).toFixed(2));
       //avg speed
-      var avgSpeed = (rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+      var avgSpeed = Number((rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
 
       var date = new Date(null);
-      date.setSeconds(rt_WheelTime / 1024); // specify value for SECONDS here
+      date.setSeconds(Number(rt_WheelTime / 1024)); // specify value for SECONDS here
       var result = date.toISOString().substr(11, 8);
 
       $$(".rtMOVING").text(result);
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
     } else {
       single_read_speed = 0;
-      rt.speed = single_read_speed.toFixed(1);
+      rt.speed = Number(single_read_speed.toFixed(1));
       $$(".rtSPD").text(rt.speed);
       $$("#blinker").text("Pull to Refresh (SPD)");
     }
@@ -384,13 +391,13 @@ function processCrankData(data, index) {
     // }
 
     //single read
-    var crankTimeSeconds = deltaT / 1024;
-    single_read_cad = deltaW / (crankTimeSeconds / 60);
+    var crankTimeSeconds = Number(deltaT / 1024);
+    single_read_cad = Number(deltaW / (crankTimeSeconds / 60));
     rounds.CrankRevs += deltaW;
     rt_crank_revs += deltaW;
     rt_crank_time += deltaT; //still in 1/1024 of a sec
 
-    rt.cadence = single_read_cad.toFixed(0);
+    rt.cadence = Number(single_read_cad.toFixed(0));
     $$(".rtCAD").text(rt.cadence);
     $$("#blinker").text("Pull to Refresh (CAD)");
     //console.log("CAD:  " + single_read_cad);
