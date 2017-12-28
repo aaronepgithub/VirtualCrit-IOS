@@ -21,7 +21,7 @@ var startTime;
 
 
 // Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
+$$(document).on('deviceready', function () {
   console.log("Device is ready!");
   var now = new Date();
   startTime = now;
@@ -35,9 +35,12 @@ $$(document).on('deviceready', function() {
 });
 
 var time = 0;
+var localT = time;
 //each second
 function myCallback() {
-  time++;
+  localT = time;
+
+
   //get actual time
   var rightNow = new Date();
   $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow));
@@ -54,13 +57,18 @@ function myCallback() {
       $$(".TIME").text((rightNow.getHours()) + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " AM");
     }
   }
+
+  //console.log((rightNow.getHours()) + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds());
+
+
   //Adding a value each second
   rounds.HeartRate += rt.hr;
   interval.arrHeartRate.push(rt.hr);
   interval.arrCadence.push(Number(rt.cadence));
   interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
-  midRound(time);
+  midRound(localT);
+  time++;
 }
 
 // $$('.prompt-ok').on('click', function () {
@@ -69,15 +77,15 @@ function myCallback() {
 //     });
 // });
 
-$$('#NAME').on('click', function(e) {
-  myApp.prompt('What is your name?', 'WELCOME', function(value) {
+$$('#NAME').on('click', function (e) {
+  myApp.prompt('What is your name?', 'WELCOME', function (value) {
     //myApp.alert('Your name is "' + value + '". You clicked Ok button');
     $$('#NAME').find('.item-after').text(value);
     name = value;
   });
 });
 
-$$('#MAXHR').on('click', function(e) {
+$$('#MAXHR').on('click', function (e) {
   $$(this).addClass('ani');
   var current = maxHeartRate;
   if (current == 185) {
@@ -100,13 +108,13 @@ $$('#MAXHR').on('click', function(e) {
     $$(this).find('.item-after').text(185);
     maxHeartRate = 185;
   }
-  setTimeout(function() {
+  setTimeout(function () {
     $$('#MAXHR').removeClass('ani');
   }, 300);
 });
 
 var audio = "OFF";
-$$('#AUDIO').on('click', function(e) {
+$$('#AUDIO').on('click', function (e) {
   $$(this).addClass('ani');
 
   if (audio == "ON") {
@@ -118,13 +126,13 @@ $$('#AUDIO').on('click', function(e) {
     audio = "ON";
   }
 
-  setTimeout(function() {
+  setTimeout(function () {
     $$('#AUDIO').removeClass('ani');
   }, 300);
 
 });
 
-$$('#TIRESIZE').on('click', function(e) {
+$$('#TIRESIZE').on('click', function (e) {
   $$(this).addClass('ani');
   var current = wheelCircumference;
   if (current == 2105) {
@@ -142,7 +150,7 @@ $$('#TIRESIZE').on('click', function(e) {
     wheelCircumference = 2105;
     wheelCircumferenceCM = wheelCircumference / 10;
   }
-  setTimeout(function() {
+  setTimeout(function () {
     $$('#TIRESIZE').removeClass('ani');
   }, 300);
 });
@@ -150,7 +158,7 @@ $$('#TIRESIZE').on('click', function(e) {
 
 
 var refreshInterval = 30;
-$$('#REFRESH').on('click', function(e) {
+$$('#REFRESH').on('click', function (e) {
   $$(this).addClass('ani');
   var current = refreshInterval;
 
@@ -174,28 +182,28 @@ $$('#REFRESH').on('click', function(e) {
     refreshInterval = 30;
   }
 
-  setTimeout(function() {
+  setTimeout(function () {
     $$('#REFRESH').removeClass('ani');
   }, 300);
 });
 
 
 
-$$('#RESTART').on('click', function(e) {
+$$('#RESTART').on('click', function (e) {
   $$(this).addClass('ani');
   console.log("RESTART");
 
-  arrConnectedPeripherals.forEach(function(element) {
-    ble.disconnect(element, function() {
+  arrConnectedPeripherals.forEach(function (element) {
+    ble.disconnect(element, function () {
       console.log("disconnect success");
-    }, function() {
+    }, function () {
       console.log("disconnect failed");
     });
   });
   $$('.chip-media').css('color', 'white');
   $$('.chip-label').css('color', 'white');
 
-  setTimeout(function() {
+  setTimeout(function () {
     $$('#RESTART').removeClass('ani');
   }, 300);
 
@@ -206,7 +214,7 @@ $$('#RESTART').on('click', function(e) {
 var mql = window.matchMedia("(orientation: portrait)");
 // Add a media query change listener
 
-mql.addListener(function(m) {
+mql.addListener(function (m) {
   if (m.matches) {
     console.log("portrait");
     currentOrientation = "portrait";
@@ -243,7 +251,7 @@ function scan() {
 
     var shouldReturn = 0;
 
-    arrPeripherals.forEach(function(element) {
+    arrPeripherals.forEach(function (element) {
       if (peripheral.id == element.id) {
         shouldReturn = 1;
         console.log("Duplicate"); //check all with for each
@@ -260,12 +268,12 @@ function scan() {
       return;
     }
 
-    if (arrPeripherals.length == 0) { //knowing that I am going to add one now
+    if (arrPeripherals.length === 0) { //knowing that I am going to add one now
       $$('.blechip').remove();
     }
 
     arrPeripherals.push(peripheral);
-    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>'+'</div><div class="chip-uuid">' + peripheral.id + '</div>');
+    $$('.blelist').append('<div id="blechip" class="chip-added chip chip-extended blechip"><div class="chip-media bg-blue">' + (arrPeripherals.length - 1) + '</div><div class="chip-label">' + peripheral.name + '</div>' + '</div><div class="chip-uuid">' + peripheral.id + '</div>');
 
   }
 
@@ -282,7 +290,7 @@ function scan() {
 var ptrContent = $$('.pull-to-refresh-content');
 
 // Add 'refresh' listener on it
-ptrContent.on('ptr:refresh', function(e) {
+ptrContent.on('ptr:refresh', function (e) {
 
   // //remove all chips
   // arrPeripherals = [];
@@ -290,7 +298,7 @@ ptrContent.on('ptr:refresh', function(e) {
 
   scan();
 
-  setTimeout(function() {
+  setTimeout(function () {
     myApp.pullToRefreshDone();
 
     //console.log(JSON.stringify(arrPeripherals));
@@ -327,7 +335,7 @@ function connect(peripheral) {
       var z = translate_advertisement(peripheral);
       y = [];
 
-      peripheral.advertisement.serviceUuids.forEach(function(element) {
+      peripheral.advertisement.serviceUuids.forEach(function (element) {
         if (element == "18D") {
           y.push("180D");
         }
@@ -339,7 +347,7 @@ function connect(peripheral) {
     }
 
 
-    y.forEach(function(element) {
+    y.forEach(function (element) {
       if (element == "180D") {
         console.log("Identified as HR, calling Notify");
         serviceType = "180D";
@@ -347,17 +355,17 @@ function connect(peripheral) {
         arrConnectedPeripherals.push(peripheral.id);
         arrConnectedPeripheralsService.push(serviceType);
         arrConnectedPeripheralsChar.push(serviceChar);
-        ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
+        ble.startNotification(peripheral.id, serviceType, serviceChar, function (buffer) {
           var data = new Uint8Array(buffer);
           onDataHR(data);
-        }, function(reason) {
+        }, function (reason) {
           console.log("failure" + reason);
         });
       }
     });
 
 
-    y.forEach(function(element) {
+    y.forEach(function (element) {
       if (element == "1816") {
         console.log("Identified as CSC, calling Notify");
         serviceType = "1816";
@@ -365,10 +373,10 @@ function connect(peripheral) {
         arrConnectedPeripherals.push(peripheral.id);
         arrConnectedPeripheralsService.push(serviceType);
         arrConnectedPeripheralsChar.push(serviceChar);
-        ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
+        ble.startNotification(peripheral.id, serviceType, serviceChar, function (buffer) {
           var data = new Uint8Array(buffer);
           onDataCSC(data);
-        }, function(reason) {
+        }, function (reason) {
           console.log("failure" + reason);
         });
       }
@@ -385,10 +393,10 @@ function connect(peripheral) {
   ble.connect(peripheral.id, onConnect, onDisconnect);
 }
 
-$$('.blelist').on('touchstart', '#blechip', function(e) {
+$$('.blelist').on('touchstart', '#blechip', function (e) {
 
   myApp.showIndicator();
-  setTimeout(function() {
+  setTimeout(function () {
     myApp.hideIndicator();
   }, 1500);
 
@@ -415,25 +423,25 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 
 });
 
-$$('#view-4').on('tab:show', function() {
+$$('#view-4').on('tab:show', function () {
   // myApp.alert('Tab/View 4 is visible');
   currentTab = 4;
   console.log(currentTab);
 });
 
-$$('#view-3').on('tab:show', function() {
+$$('#view-3').on('tab:show', function () {
   // myApp.alert('Tab/View 3 is visible');
   currentTab = 3;
   console.log(currentTab);
 });
 
-$$('#view-2').on('tab:show', function() {
+$$('#view-2').on('tab:show', function () {
   // myApp.alert('Tab/View 2 is visible');
   currentTab = 2;
   // $$(".iconNumber").text("00");
   console.log(currentTab);
 });
-$$('#view-1').on('tab:show', function() {
+$$('#view-1').on('tab:show', function () {
   // myApp.alert('Tab/View 2 is visible');
   currentTab = 1;
   console.log(currentTab);
@@ -441,7 +449,7 @@ $$('#view-1').on('tab:show', function() {
 
 
 
-translate_advertisement = function(peripheral) {
+translate_advertisement = function (peripheral) {
   var advertising = peripheral.advertising;
 
   // common advertisement interface is created as a new field
@@ -465,7 +473,7 @@ translate_advertisement = function(peripheral) {
     // first is length of the field, length of zero indicates advertisement
     //  is complete
     var length = scanRecord[index++];
-    if (length == 0) {
+    if (length === 0) {
       break;
     }
 
@@ -531,7 +539,7 @@ translate_advertisement = function(peripheral) {
 
 // convert an array of bytes representing a UUID into a hex string
 //    Note that all arrays need to be reversed before presenting to the user
-uuid = function(id) {
+uuid = function (id) {
   if (id.length == 16) {
     // 128-bit UUIDs should be formatted specially
     return hex(id.subarray(12, 16)) + '-' +
@@ -548,7 +556,7 @@ uuid = function(id) {
 
 // convert an array of bytes into hex data
 //    assumes data needs to be in reverse order
-hex = function(byte_array) {
+hex = function (byte_array) {
   var hexstr = '';
   for (var i = (byte_array.length - 1); i >= 0; i--) {
     hexstr += byte_array[i].toString(16).toUpperCase();
@@ -557,10 +565,10 @@ hex = function(byte_array) {
 };
 
 var page3info = 0;
-$$('#view3nav').on('click', function(e) {
+$$('#view3nav').on('click', function (e) {
   var currentPage = page3info;
   //page3option1 or page3default
-  if (currentPage == 0) {
+  if (currentPage === 0) {
     $$('#view3pagecontent').html(page3option1);
     page3info = 1;
   }
@@ -575,9 +583,9 @@ $$('#view3nav').on('click', function(e) {
 });
 
 var page4info = 0;
-$$('#view4nav').on('click', function(e) {
+$$('#view4nav').on('click', function (e) {
   var currentPage = page4info;
-  if (currentPage == 0) {
+  if (currentPage === 0) {
     $$('#view4pagecontent').html(page4option1);
     page4info = 1;
   }

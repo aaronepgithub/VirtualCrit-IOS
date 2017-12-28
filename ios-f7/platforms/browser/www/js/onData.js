@@ -1,3 +1,5 @@
+var secInRound = 300;
+
 var rt = {
   hr: 0,
   speed: 0,
@@ -45,8 +47,9 @@ var veloS = 0;
 var veloC = 0;
 var veloH = 0;
 
-function calcInterval() {
-  //console.log("calcInterval");
+function calcInterval(localT) {
+  var t = localT;
+  //console.log("calcInterval:  "+ t);
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   // for (i = refreshInterval; i > 0; i--) {
   //   if (interval.arrDistance[i] >= 0) {dist += interval.arrDistance[interval.arrDistance.length - i];} else {dist += 0;}
@@ -56,15 +59,15 @@ function calcInterval() {
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
-    if (interval.arrHeartRate[i] >= 0) {hr += interval.arrHeartRate[interval.arrHeartRate.length - i];} else {hr += 0;}
-    }
+    if (interval.arrHeartRate[i] >= 0) { hr += interval.arrHeartRate[interval.arrHeartRate.length - i]; } else { hr += 0; }
+  }
   var heartrateInterval = Number(hr / (refreshInterval));
   //console.log("heartrateInterval:  " + heartrateInterval);
 
   var cad = 0;
   for (i = refreshInterval; i > 0; i--) {
-    if (interval.arrCadence[i] >= 0) {cad += interval.arrCadence[interval.arrCadence.length - i];} else {cad += 0;}
-    }
+    if (interval.arrCadence[i] >= 0) { cad += interval.arrCadence[interval.arrCadence.length - i]; } else { cad += 0; }
+  }
   var cadenceInterval = Number(cad / (refreshInterval));
 
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
@@ -72,18 +75,22 @@ function calcInterval() {
   $$('.intervalCAD').text(Number(cadenceInterval.toFixed(0)));
   $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
 
-if (time % 30 == 0) {
-  console.log("Intervals:  " + speedInterval + " - "+ cadenceInterval + " - "+ heartrateInterval);
-}
+  if (t % Number(refreshInterval) === 0) {
+    console.log("Intervals:  " + speedInterval + " - " + cadenceInterval + " - " + heartrateInterval);
+    console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
+    console.log("rounds.avgCadence:  " + rounds.avgCadence);
+    console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
+    console.log("rounds.avgScore:  " + rounds.avgScore);
+  }
 
-  if (time % 7 == 0) {
+  if (t % 15 === 0) {
     var h = $$(".rtHR").text();
     var s = $$(".rtSPD").text();
     var c = $$(".rtCAD").text();
 
-    if (h == veloH) {$$(".rtHR").text(0);rt.score=0;$$(".rtSCORE").text("HR " + rt.score.toFixed(0)+"%");}
-    if (s == veloS) {$$(".rtSPD").text(0);}
-    if (c == veloC) {$$(".rtCAD").text(0);}
+    if (h == veloH) { $$(".rtHR").text(0); rt.score = 0; $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%"); }
+    if (s == veloS) { $$(".rtSPD").text(0); }
+    if (c == veloC) { $$(".rtCAD").text(0); }
 
     veloH = h;
     veloS = s;
@@ -91,93 +98,100 @@ if (time % 30 == 0) {
   }
 
 
-
 }
 
-function midRound(time) {
-  console.log("midRound");
+function midRound(localT) {
+  var t = localT;
+
+  //console.log("midRound/time:  " + t);
+  // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
+  // console.log("rounds.avgCadence:  " + rounds.avgCadence);
+  // console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
+  // console.log("rounds.avgScore:  " + rounds.avgScore);
+
+  if (t % secInRound === 0) {
+    console.log("Round Over  t % secInRound === 0:  " + (t % secInRound));
+    rounds.arrHeartRate.push(Number(undefTest(rounds.avgHeartRate)));
+    rounds.arrSpeed.push(Number(undefTest(rounds.avgSpeed)));
+    rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
+    rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
+
+$$('#leftPcontent').prepend("End of Round:\n" +
+      rounds.arrHeartRate + "\n" +
+      rounds.arrSpeed + "\n " +
+      rounds.arrCadence + "\n" +
+      rounds.arrScore + "\n");
+
+    console.log("End of Round:\n" +
+      rounds.arrHeartRate + "\n" +
+      rounds.arrSpeed + "\n " +
+      rounds.arrCadence + "\n" +
+      rounds.arrScore + "\n");
 
 
-  console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
-  console.log("rounds.avgCadence:  " + rounds.avgCadence);
-  console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
-  console.log("rounds.avgScore:  " + rounds.avgScore);
-
-  if (time == 300) {
-    console.log("time == 300");
-  rounds.arrHeartRate.push(Number(undefTest(rounds.avgHeartRate)));
-  rounds.arrSpeed.push(Number(undefTest(rounds.avgSpeed)));
-  rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
-  rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
+    rounds.WheelRevs = 0;
+    rounds.HeartRate = 0;
+    rounds.CrankRevs = 0;
+    rounds.Distance = 0;
 
 
-  console.log("End of Round, print arrays:  \n" +
-    rounds.arrHeartRate + "\n" +
-    rounds.arrSpeed + "\n " +
-    rounds.arrCadence + "\n" +
-    rounds.arrScore + "\n" );
- 
+    var leng = rounds.arrSpeed.length;
+    if (leng > 1) {
+      myApp.modal({
+        title: 'ROUND COMPLETE',
+        text: '',
+        verticalButtons: true,
+        buttons: [
+          {
+            text: 'SPEED:   ' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2),
+            onClick: function () {
+              myApp.closeModal();
+              // myApp.alert('You clicked first button!';)
+            }
+          },
+          {
+            text: 'CADENCE: ' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1),
+            onClick: function () {
+              myApp.closeModal();
+              // myApp.alert('You clicked second button!');
+            }
+          },
+          {
+            text: 'HR:      ' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(1),
+            onClick: function () {
+              myApp.closeModal();
+              // myApp.alert('You clicked third button!');
+            }
+          },
+          {
+            text: 'SCORE:   ' + Number(rounds.arrScore[(leng - 1)]).toFixed(1) + '  %MAX',
+            onClick: function () {
+              myApp.closeModal();
+              // myApp.alert('You clicked third button!');
+            }
+          },
+        ]
+      });
 
-  rounds.WheelRevs = 0;
-  rounds.HeartRate = 0;
-  rounds.CrankRevs = 0;
-  rounds.Distance = 0;
-  time = 0;
-
-  var leng = rounds.arrSpeed.length;
-  
-  myApp.modal({
-  title:  'ROUND COMPLETE',
-  text: '',
-  verticalButtons: true,
-  buttons: [
-    {
-      text: 'SPEED: ' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2),
-      onClick: function() {
+      setTimeout(function () {
         myApp.closeModal();
-        // myApp.alert('You clicked first button!';)
-      }
-    },
-    {
-      text: 'CADENCE: ' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1),
-      onClick: function() {
-        myApp.closeModal();
-        // myApp.alert('You clicked second button!');
-      }
-    },
-    {
-      text: 'HR: ' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(1),
-      onClick: function() {
-        myApp.closeModal();
-        // myApp.alert('You clicked third button!');
-      }
-    },
-    {
-      text: 'SCORE: ' + Number(rounds.arrScore[(leng - 1)]).toFixed(1) + '  %MAX',
-      onClick: function() {
-        myApp.closeModal();
-        // myApp.alert('You clicked third button!');
-      }
-    },
-  ]
-});
+      }, 10000);
+    }
 
-setTimeout(function() {
-  myApp.closeModal();
-}, 5000);
   }
 
-  rounds.avgHeartRate = Number(rounds.HeartRate / time);
+  rounds.avgHeartRate = Number(rounds.HeartRate / t);
   rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
-  rounds.avgSpeed = Number((rounds.WheelRevs / (time / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
-  rounds.avgCadence = Number(rounds.CrankRevs / (time / 60));
+  rounds.avgSpeed = Number((rounds.WheelRevs / (t / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
+  rounds.avgCadence = Number(rounds.CrankRevs / (t / 60));
 
-  calcInterval();
+  calcInterval(t);
+
 }
 
 function undefTest(myVar) {
-  if( myVar === void 0){
-      console.log(0);return 0;
+  if (myVar === void 0) {
+    console.log(0); return 0;
   } else {
     return Number(myVar);
   }
@@ -193,7 +207,7 @@ function onDataHR(data) {
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
   $$(".rtHR").text(rt.hr);
-  $$(".rtSCORE").text("HR " + rt.score.toFixed(0)+"%");
+  $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%");
   $$("#blinker").text("Pull to Refresh (HR)");
   $$(".iconNumber").text(rt.hr);
 }
@@ -253,7 +267,7 @@ function processWheelData(data) {
   wheelRevolution = (data[2] * 256) + data[1];
   wheelEventTime = (data[6] * 256) + data[5] + 1.0;
 
-  if (oldWheelRevolution == 0) {
+  if (oldWheelRevolution === 0) {
     oldWheelRevolution = wheelRevolution;
     oldWheelEventTime = wheelEventTime;
   } else {
@@ -268,7 +282,7 @@ function processWheelData(data) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0 || deltaW > 10) {
+    if (deltaW === 0 || deltaW > 15) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
       //velo should test, might not need to update display
@@ -278,7 +292,7 @@ function processWheelData(data) {
       // $$("#blinker").text("Pull to Refresh (SPD)");
       return;
     }
-    if (deltaT < 750 && deltaT > 0) {
+    if (deltaT < 950 && deltaT > 0) {
       wheelRevolution = oldWheelRevolution;
       wheelEventTime = oldWheelEventTime;
       return;
@@ -293,7 +307,7 @@ function processWheelData(data) {
       // var minsPerHour = 60.0;
       single_read_speed = Number(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour);
       rt.speed = Number(single_read_speed.toFixed(1));
-      $$(".rtSPD").text(rt.speed);
+      $$(".rtSPD").text(rt.speed.toFixed(1));
       $$("#blinker").text("Pull to Refresh (SPD)");
 
 
@@ -340,7 +354,7 @@ function processCrankData(data, index) {
   var crankRevolution = ((data[index + 1]) * 256) + (data[index]);
   var crankEventTime = ((data[index + 3]) * 256) + (data[index + 2]) + 1.0;
 
-  if (oldCrankRevolution == 0) {
+  if (oldCrankRevolution === 0) {
     oldCrankRevolution = crankRevolution;
     oldCrankEventTime = wheelEventTime;
   } else {
@@ -354,7 +368,7 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    if (deltaW == 0 || deltaW > 5) {
+    if (deltaW === 0 || deltaW > 15) {
       crankRevolution = oldCrankRevolution;
       crankEventTime = oldCrankEventTime;
       //single_read_cad = 0;
@@ -364,7 +378,7 @@ function processCrankData(data, index) {
       return;
     }
 
-    if (deltaT < 750 && deltaT > 0) {
+    if (deltaT < 950 && deltaT > 0) {
       crankRevolution = oldCrankRevolution;
       crankEventTime = oldCrankEventTime;
       return;
@@ -408,7 +422,7 @@ function processCrankData(data, index) {
 
 }
 
-Date.dateDiffReturnSeconds = function(datepart, fromdate, todate) {
+Date.dateDiffReturnSeconds = function (datepart, fromdate, todate) {
   datepart = datepart.toLowerCase();
   var diff = todate - fromdate;
   var divideBy = {
@@ -430,7 +444,7 @@ Date.dateDiffReturnSeconds = function(datepart, fromdate, todate) {
   //return result;
 };
 
-Date.dateDiff = function(datepart, fromdate, todate) {
+Date.dateDiff = function (datepart, fromdate, todate) {
   datepart = datepart.toLowerCase();
   var diff = todate - fromdate;
   var divideBy = {
