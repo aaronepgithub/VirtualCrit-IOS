@@ -1,4 +1,4 @@
-var secInRound = 300;
+var secInRound = 5;
 
 var rt = {
   hr: 0,
@@ -116,15 +116,17 @@ function midRound(localT) {
     rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
     rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
 
-$$('#leftPcontent').prepend("End of Round:\n" +
-      rounds.arrHeartRate + "\n" +
-      rounds.arrSpeed + "\n " +
-      rounds.arrCadence + "\n" +
-      rounds.arrScore + "\n");
+// $$('#leftPcontent').prepend("End of Round:\n" +
+//       rounds.arrHeartRate + "\n" +
+//       rounds.arrSpeed + "\n " +
+//       rounds.arrCadence + "\n" +
+//       rounds.arrScore + "\n");
+
+$$('#leftPcontent').html('<p>AVG SCORE:  '+rounds.arrScore+' %MAX</p><p>AVG SPEED:  '+rounds.arrSpeed+' MPH</p>');
 
     console.log("End of Round:\n" +
       rounds.arrHeartRate + "\n" +
-      rounds.arrSpeed + "\n " +
+      rounds.arrSpeed + "\n" +
       rounds.arrCadence + "\n" +
       rounds.arrScore + "\n");
 
@@ -139,43 +141,43 @@ $$('#leftPcontent').prepend("End of Round:\n" +
     if (leng > 1) {
       myApp.modal({
         title: 'ROUND COMPLETE',
-        text: '',
-        verticalButtons: true,
-        buttons: [
-          {
-            text: 'SPEED:   ' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2),
-            onClick: function () {
-              myApp.closeModal();
-              // myApp.alert('You clicked first button!';)
-            }
-          },
-          {
-            text: 'CADENCE: ' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1),
-            onClick: function () {
-              myApp.closeModal();
-              // myApp.alert('You clicked second button!');
-            }
-          },
-          {
-            text: 'HR:      ' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(1),
-            onClick: function () {
-              myApp.closeModal();
-              // myApp.alert('You clicked third button!');
-            }
-          },
-          {
-            text: 'SCORE:   ' + Number(rounds.arrScore[(leng - 1)]).toFixed(1) + '  %MAX',
-            onClick: function () {
-              myApp.closeModal();
-              // myApp.alert('You clicked third button!');
-            }
-          },
-        ]
+        text: '<h3 style="text-align: left">SPEED&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2)+'</h3>'+'<h3 style="text-align: left">CADENCE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1)+'</h3>'+'<h3 style="text-align: left">HR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(2)+'</h3><h3 style="text-align: left">SCORE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrScore[(leng - 1)]).toFixed(2)+'</h3',
+        // verticalButtons: false,
+        // buttons: [
+        //   {
+        //     text: 'SPEED:   ' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2),
+        //     onClick: function () {
+        //       myApp.closeModal();
+        //       // myApp.alert('You clicked first button!';)
+        //     }
+        //   },
+        //   {
+        //     text: 'CADENCE: ' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1),
+        //     onClick: function () {
+        //       myApp.closeModal();
+        //       // myApp.alert('You clicked second button!');
+        //     }
+        //   },
+        //   {
+        //     text: 'HR:      ' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(1),
+        //     onClick: function () {
+        //       myApp.closeModal();
+        //       // myApp.alert('You clicked third button!');
+        //     }
+        //   },
+        //   {
+        //     text: 'SCORE:   ' + Number(rounds.arrScore[(leng - 1)]).toFixed(1) + '  %MAX',
+        //     onClick: function () {
+        //       myApp.closeModal();
+        //       // myApp.alert('You clicked third button!');
+        //     }
+        //   },
+        // ]
       });
 
       setTimeout(function () {
         myApp.closeModal();
-      }, 10000);
+      }, 5000);
     }
 
   }
