@@ -1,4 +1,4 @@
-var secInRound = 5;
+var secInRound = 10;
 
 var rt = {
   hr: 0,
@@ -100,6 +100,50 @@ function calcInterval(localT) {
 
 }
 
+function actionEndofRound() {
+
+  var buttons1 = [
+    {
+        text: '<h2>ROUND COMPLETE</h2>',
+        bold: true,
+        color: 'black',
+        label: true
+    },
+    {
+      text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
+        bold: false,
+        label: true
+    },
+    {
+      text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
+      bold: false,
+      label: true
+    }
+];
+var buttons2 = [
+
+  {
+    text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
+    bold: false,
+    label: true
+},
+{
+  text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
+  bold: false,
+  label: true
+}
+];
+var buttons3 = [
+    {
+        text: 'DISMISS',
+        color: 'red'
+    }
+];
+var groups = [buttons1, buttons2, buttons3];
+myApp.actions(groups);
+
+}
+
 function midRound(localT) {
   var t = localT;
 
@@ -139,9 +183,12 @@ $$('#leftPcontent').html('<p>AVG SCORE:  '+rounds.arrScore+' %MAX</p><p>AVG SPEE
 
     var leng = rounds.arrSpeed.length;
     if (leng > 1) {
-      myApp.modal({
-        title: 'ROUND COMPLETE',
-        text: '<h3 style="text-align: left">SPEED&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2)+'</h3>'+'<h3 style="text-align: left">CADENCE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1)+'</h3>'+'<h3 style="text-align: left">HR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(2)+'</h3><h3 style="text-align: left">SCORE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrScore[(leng - 1)]).toFixed(2)+'</h3',
+
+
+
+      // myApp.modal({
+      //   title: 'ROUND COMPLETE',
+      //   text: '<h3 style="text-align: left">SPEED&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2)+'</h3>'+'<h3 style="text-align: left">CADENCE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1)+'</h3>'+'<h3 style="text-align: left">HR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(2)+'</h3><h3 style="text-align: left">SCORE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrScore[(leng - 1)]).toFixed(2)+'</h3',
         // verticalButtons: false,
         // buttons: [
         //   {
@@ -173,7 +220,9 @@ $$('#leftPcontent').html('<p>AVG SCORE:  '+rounds.arrScore+' %MAX</p><p>AVG SPEE
         //     }
         //   },
         // ]
-      });
+      //});
+
+      actionEndofRound();
 
       setTimeout(function () {
         myApp.closeModal();
