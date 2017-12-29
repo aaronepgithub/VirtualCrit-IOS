@@ -52,6 +52,16 @@ input {
   user-select: auto !important;
 }
 
+
+.v3pagecontent {
+  height: 100%;
+}
+
+.footerRow {
+  bottom: 50px;
+  position: fixed;
+}
+
 .vertride {
   margin: 15px 0;
 }

@@ -1,4 +1,4 @@
-var secInRound = 10;
+var secInRound = 300;
 
 var rt = {
   hr: 0,
