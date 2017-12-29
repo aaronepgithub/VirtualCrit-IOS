@@ -71,11 +71,6 @@ function myCallback() {
   time++;
 }
 
-// $$('.prompt-ok').on('click', function () {
-//     myApp.prompt('What is your name?', function (value) {
-//         myApp.alert('Your name is "' + value + '". You clicked Ok button');
-//     });
-// });
 
 $$('#NAME').on('click', function (e) {
   myApp.prompt('What is your name?', 'WELCOME', function (value) {
@@ -118,7 +113,6 @@ $$('#AUDIO').on('click', function (e) {
   $$(this).addClass('ani');
 
   if (audio == "ON") {
-    //$$(this).html('<div class="item-media"><i class="f7-icons color-red">volume_fill</i></div><div class="item-inner active"><div class="item-title">AUDIO</div><div class="item-after">OFF</div></div>');
     $$(this).find('.item-after').text('OFF');
     audio = "OFF";
   } else {
@@ -161,11 +155,6 @@ var refreshInterval = 30;
 $$('#REFRESH').on('click', function (e) {
   $$(this).addClass('ani');
   var current = refreshInterval;
-
-  // if (current == 0) {
-  //   $$(this).find('.item-after').text('30');
-  //   refreshInterval = 30;
-  // }
 
   if (current == 30) {
     $$(this).find('.item-after').text('60');
@@ -221,9 +210,9 @@ mql.addListener(function (m) {
 
 
     if (currentTab == 4) {
-      // myApp.showTab('#view-3');
+      //myApp.showTab('#view-3');
       currentTab = 3;
-      myApp.closeModal('.popup4');
+      myApp.closeModal('.popup4', false);
     }
   } else {
     console.log("landscape");
@@ -231,7 +220,8 @@ mql.addListener(function (m) {
     if (currentTab == 3) {
       //myApp.showTab('#view-4');
       currentTab = 4;
-      myApp.popup('.popup4');
+      myApp.popup('.popup4', false, false);
+      //$$('#view-3').html(view4HTML);
     }
     //if in ride view, change to hz view
   }
@@ -693,7 +683,7 @@ var page3option2 = '  <div class="myContentBlock content-block vertride"> ' +
   '</div>   ';
 
 
-page4default = ' <div content-block horizride> ' +
+var page4default = ' <div content-block horizride> ' +
   '             <div class="row row1">' +
   '                <div class="col-30 rtSCORE">HR</div>' +
   '                <div class="col-40">SPEED</div>' +
@@ -710,7 +700,7 @@ page4default = ' <div content-block horizride> ' +
   '              </div>' +
   '            </div>';
 
-page4option1 = ' <div content-block horizride> ' +
+var page4option1 = ' <div content-block horizride> ' +
   '             <div class="row row1">' +
   // '                <div class="col-30 rtSCORE">HR</div>' +
   '                <div class="col-50">SPEED</div>' +
@@ -726,3 +716,39 @@ page4option1 = ' <div content-block horizride> ' +
   '                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
   '              </div>' +
   '            </div>';
+
+
+  //view4 html
+var view4HTML = '<div id="view4nav" class="navbar">' +
+'<div class="navbar-inner">' +
+'  <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>' +
+'</div>' +
+'</div>'+
+'<div class="pages navbar-through">'+
+'<div data-page="index-4" class="page">'+
+'  <div class="navbar">'+
+'    <div class="navbar-inner">'+
+'      <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>' +
+'    </div>'+
+'  </div>'+
+'  <div id="view4pagecontent" class="page-content" style="margin-top: 20px;">'+
+'    <div content-block horizride>'+
+'      <div class="row row1">'+
+'        <div class="col-30 rtSCORE">HR</div>'+
+'        <div class="col-40">SPEED</div>'+
+'        <div class="col-30">CAD</div>'+
+'      </div>'+
+'      <div class="row row2">'+
+'        <div class="rtHR hrcad col-30">0</div>'+
+'        <div class="rtSPD spd col-40">0</div>'+
+'        <div class="rtCAD hrcad col-30">0</div>'+
+'      </div>'+
+'      <div class="row row3">'+
+'        <div class="ACTUAL_TIME col-50">00:00:00</div>'+
+'        <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>'+
+'      </div>'+
+'    </div>'+
+'  </div>'+
+'</div>'+
+'</div>';
+
