@@ -55,6 +55,18 @@ input {
 
 .v3pagecontent {
   height: 100%;
+  weight: 100%;
+
+}
+
+.vertride {
+  width: 100%;
+  height: 100%;
+  /* margin-top: 0px;
+  margin-bottom: 0px; */
+
+  margin: 0px;
+  /* position: fixed; */
 }
 
 .footerRow {
@@ -62,6 +74,39 @@ input {
   position: fixed;
 }
 
+.headerRow {
+  top: 50px;
+  position: fixed;
+}
+
+.tryMe {
+
+
+    position: fixed;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    margin-top: 80px;
+    /* margin-bottom: 10px; */
+    width: 100%;
+    height: 100%;
+
+}
+
+.midRows {
+  /* height: 50%; */
+  /* weight: 100%; */
+  /* margin: auto; */
+    /* top: 80px;
+      bottom: 80px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+  position: fixed; */
+/* height: -webkit-calc(100% - 100px);
+height: -moz-calc(100% - 100px);
+height: calc(100% - 100px);
+  position: fixed; */
+}
 /* .vertride {
   margin: 15px 0;
 } */
@@ -144,11 +189,11 @@ and (orientation : portrait) {
 
 
 
-.myContentBlock {
+/* .myContentBlock {
   /* margin: 5px 0; */
   margin-top: 7px;
   margin-bottom: 3px;
-}
+} */
 
 
 .chip-extended {
@@ -159,13 +204,13 @@ and (orientation : portrait) {
 }
 
 
-.row1 {
+/* .row1 {
   font-size: 1em;
 }
 
 .row3 {
   font-size: 2em;
-}
+} */
 
 
 i.tabbar-demo-icon-1 {
@@ -216,7 +261,7 @@ div[class*="col-"] {
   padding: 2px;
 }
 
-.row {
+/* .row {
   margin-bottom: 5px;
   margin-top: 5px;
-}
+} */
