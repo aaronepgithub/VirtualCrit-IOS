@@ -62,9 +62,9 @@ input {
   position: fixed;
 }
 
-.vertride {
+/* .vertride {
   margin: 15px 0;
-}
+} */
 
 /* http://stephen.io/mediaqueries/#iPhone */
 
@@ -93,17 +93,6 @@ and (orientation : portrait) {
   }
 }
 
-/*  */
-@media only screen
-and (min-device-width : 481px)
-and (max-device-width : 570px)
-and (min-device-height : 300px)
-and (max-device-height : 320px)
-and (orientation : landscape) {
-  .vertride {
-    font-size: 6px;
-  }
-}
 
 /* BLU */
 @media only screen
@@ -117,41 +106,10 @@ and (orientation : portrait) {
   }
 }
 
-/* @media only screen
-and (min-device-width : 600px)
-and (max-device-width : 700px)
-and (min-device-height : 321px)
-and (max-device-height : 369px)
-and (orientation : landscape) {
-  .vertride {
-    font-size: 5px;
-  }
-} */
 
-
-/* ? */
 @media only screen
 and (min-device-width : 370px)
-and (max-device-width : 375px)
-and (orientation : portrait) {
-  .vertride {
-    font-size: 14px;
-  }
-}
-
-/* ? */
-/* @media only screen
-and (min-device-width : 600px)
-and (max-device-width : 700px)
-and (orientation : landscape) {
-  .vertride {
-    font-size: 8px;
-  }
-} */
-
-@media only screen
-and (min-device-width : 376px)
-and (max-device-width : 425px)
+and (max-device-width : 500px)
 and (min-device-height : 600px)
 and (max-device-height : 700px)
 and (orientation : portrait) {
@@ -161,8 +119,8 @@ and (orientation : portrait) {
 }
 
 @media only screen
-and (min-device-width : 376px)
-and (max-device-width : 425px)
+and (min-device-width : 370px)
+and (max-device-width : 500px)
 and (min-device-height : 701px)
 and (max-device-height : 800px)
 and (orientation : portrait) {
@@ -171,33 +129,20 @@ and (orientation : portrait) {
   }
 }
 
-
-
-
-@media all and (max-width: 750px) and (min-width: 601px) {
-  .hrcad {
-    font-size: 7em;
+@media only screen
+and (min-device-width : 501px)
+and (max-device-width : 699px)
+and (min-device-height : 801px)
+and (max-device-height : 999px)
+and (orientation : portrait) {
+  .vertride {
+    font-size: 20px;
   }
 }
 
-@media all and (max-width: 600px) and (min-width: 300px) {
-  .hrcad {
-    font-size: 5em;
-  }
-}
 
-@media all and (max-width: 750px) and (min-width: 601px) {
-  .spd {
-    font-size: 9em;
-  }
-}
 
-/* i6 */
-@media all and (max-width: 600px) and (min-width: 300px) {
-  .spd {
-    font-size: 7em;
-  }
-}
+
 
 .myContentBlock {
   /* margin: 5px 0; */

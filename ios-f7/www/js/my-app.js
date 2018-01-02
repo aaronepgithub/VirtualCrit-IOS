@@ -200,31 +200,31 @@ $$('#RESTART').on('click', function (e) {
 
 
 
-var mql = window.matchMedia("(orientation: portrait)");
+//var mql = window.matchMedia("(orientation: portrait)");
 // Add a media query change listener
 
-mql.addListener(function (m) {
-  if (m.matches) {
-    console.log("portrait");
-    currentOrientation = "portrait";
+// mql.addListener(function (m) {
+//   if (m.matches) {
+//     console.log("portrait");
+//     currentOrientation = "portrait";
 
 
-    // if (currentTab == 4) {
-    //   //myApp.showTab('#view-3');
-    //   currentTab = 3;
-    //   //myApp.closeModal('.popup4', false);
-    // }
-  } else {
-    console.log("landscape");
-    currentOrientation = "landscape";
-    // if (currentTab == 3) {
-    //   //myApp.showTab('#view-4');
-    //   currentTab = 4;
-      //myApp.popup('.popup4', false, false);
-      //$$('#view-3').html(view4HTML);
-    // }
-  }
-});
+//     // if (currentTab == 4) {
+//     //   //myApp.showTab('#view-3');
+//     //   currentTab = 3;
+//     //   //myApp.closeModal('.popup4', false);
+//     // }
+//   } else {
+//     console.log("landscape");
+//     currentOrientation = "landscape";
+//     // if (currentTab == 3) {
+//     //   //myApp.showTab('#view-4');
+//     //   currentTab = 4;
+//       //myApp.popup('.popup4', false, false);
+//       //$$('#view-3').html(view4HTML);
+//     // }
+//   }
+// });
 
 var arrPeripherals = [];
 var y = [];
