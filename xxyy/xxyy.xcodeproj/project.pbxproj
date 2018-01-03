@@ -16,6 +16,7 @@
 		58BE2F8C1FA16C3600CB8A6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58BE2F8B1FA16C3600CB8A6D /* Assets.xcassets */; };
 		58BE2F8F1FA16C3600CB8A6D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58BE2F8D1FA16C3600CB8A6D /* LaunchScreen.storyboard */; };
 		58C7ED7C1FC32A2600B44AC1 /* BLTE_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C7ED7B1FC32A2600B44AC1 /* BLTE_TableViewCell.swift */; };
+		58F590F51FFD75A4000D3735 /* Ride3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F590F41FFD75A4000D3735 /* Ride3ViewController.swift */; };
 		58FBC8831FC788FB00D58897 /* Process_Sensor_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */; };
 		58FBC8851FC79FC600D58897 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBC8841FC79FC600D58897 /* Model.swift */; };
 		58FD2BB71FF28992008EF243 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58FD2BB61FF28992008EF243 /* Images.xcassets */; };
@@ -33,6 +34,7 @@
 		58BE2F8E1FA16C3600CB8A6D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		58BE2F901FA16C3600CB8A6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58C7ED7B1FC32A2600B44AC1 /* BLTE_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLTE_TableViewCell.swift; sourceTree = "<group>"; };
+		58F590F41FFD75A4000D3735 /* Ride3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ride3ViewController.swift; sourceTree = "<group>"; };
 		58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process_Sensor_Data.swift; sourceTree = "<group>"; };
 		58FBC8841FC79FC600D58897 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		58FD2BB61FF28992008EF243 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				58BE2F841FA16C3600CB8A6D /* FirstViewController.swift */,
 				58BE2F861FA16C3600CB8A6D /* SecondViewController.swift */,
 				586336B51FCC841800AD1D64 /* ThirdViewController.swift */,
+				58F590F41FFD75A4000D3735 /* Ride3ViewController.swift */,
 				589F936A1FCF626700B7078E /* Settings.swift */,
 				58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */,
 				58FBC8841FC79FC600D58897 /* Model.swift */,
@@ -166,6 +169,7 @@
 				58BE2F871FA16C3600CB8A6D /* SecondViewController.swift in Sources */,
 				58BE2F831FA16C3600CB8A6D /* AppDelegate.swift in Sources */,
 				589F936B1FCF626700B7078E /* Settings.swift in Sources */,
+				58F590F51FFD75A4000D3735 /* Ride3ViewController.swift in Sources */,
 				58FBC8831FC788FB00D58897 /* Process_Sensor_Data.swift in Sources */,
 				586336B61FCC841800AD1D64 /* ThirdViewController.swift in Sources */,
 				58FBC8851FC79FC600D58897 /* Model.swift in Sources */,

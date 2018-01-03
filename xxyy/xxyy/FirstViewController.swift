@@ -30,21 +30,21 @@ class FirstViewController: UIViewController {
     
     @objc func switchToDataTabCont(){
         
-        //Using constraint approach, both back to 40 on Portrait
-//        constraint_topInfoBar.constant = 0
-//        constraint_stactViewMain.constant = 0
+//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
         
-        //opt 1
-        //tabBarController!.selectedIndex = 2
-        //opt2
+        self.tabBarController?.selectedIndex = 3;
         
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
-        self.present(newViewController, animated: true, completion: nil)
+        //self.tabBarController?.present(newViewController, animated: true, completion: nil)
+
+        //this is modal
+        //self.present(newViewController, animated: true, completion: nil)
         
-        
-        
+        //performSegue(withIdentifier: "SEG1", sender: nil)
+        //self.performSegue(withIdentifier: "SEG1", sender: nil)
     }
+    
+    //touch anywhere to present the other view controller
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let currentPoint = touch.location(in: view)
@@ -68,67 +68,34 @@ class FirstViewController: UIViewController {
     
     
     
-    @objc func update() {
-
-        
-        lbl_Speed.text = "\(stringer1(myIn: rt.rt_speed))"
-        lbl_Cadence.text = "\(stringer0(myIn: rt.rt_cadence))"
-        
+    @objc func update1() {
         lbl_Time.text = rt.string_elapsed_time  //NS Date Time since launch
         lbl_Distance.text = "\(stringer2(myIn: rt.total_distance))"
-        lbl_HR.text = "\(stringer0(myIn: rt.rt_hr))"
         
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         lbl_Top_Info_Bar.text = "\(stringer1(myIn: mvspd)) mph  \(rt.total_moving_time_string) mvg"
-        
+    }
+    
+    @objc func update2() {
+        lbl_HR.text = "\(stringer0(myIn: rt.rt_hr))"
         let percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
         lbl_hrLabel.text = "HR: \(percentofmax)%"
         lbl_cadLabel.text = "CAD"
-
     }
-    
-//    @objc func rotated() {
-//
-//        if UIDevice.current.orientation.isLandscape {
-//            print("Landscape")
-//            //switchToDataTabCont()
-////            constraint_topInfoBar.constant = 0
-////            constraint_stactViewMain.constant = 0
-//        }
-//
-//        if UIDevice.current.orientation.isPortrait {
-//            print("Portrait")
-////            constraint_topInfoBar.constant = 40
-////            constraint_stactViewMain.constant = 40
-//        }
-//
-////            if UIDevice.current.orientation.isFlat {
-////                print("Flat")
-////                return
-////            }
-////        } else {
-////            print("Portrait")
-////            constraint_topInfoBar.constant = 40
-////            constraint_stactViewMain.constant = 40
-//
-//
-//
-////        if UIDevice.current.orientation.isFlat {
-////            print("Flat")
-////            constraint_topInfoBar.constant = 0
-////            constraint_stactViewMain.constant = 0
-////            lbl_hrLabel.text = ""
-////            lbl_cadLabel.text = ""
-////        }
-//
-//    }
+    @objc func update3() {
+        lbl_Speed.text = "\(stringer1(myIn: rt.rt_speed))"
+    }
+    @objc func update4() {
+        lbl_Cadence.text = "\(stringer0(myIn: rt.rt_cadence))"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        NotificationCenter.default.addObserver(self, selector: #selector(update), name: Notification.Name("update"), object: nil)
-        
-        //NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(update3), name: Notification.Name("speed"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(update4), name: Notification.Name("cadence"), object: nil)
         
     }
 

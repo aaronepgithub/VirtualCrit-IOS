@@ -91,6 +91,10 @@ func processWheelData(withData data :Data) {
             rt.total_moving_time_seconds += (Double(b) / Double(1024))
             rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
         }
+        
+        NotificationCenter.default.post(name: Notification.Name("speed"), object: nil)
+        
+        
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
     }
@@ -142,6 +146,8 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             rt_crank_revs += a
             rt_crank_time += b  //still in 1/1024 of a sec
             totalCrankRevs += a
+            
+            NotificationCenter.default.post(name: Notification.Name("cadence"), object: nil)
             
             oldCrankRevolution = crankRevolution
             oldCrankEventTime = crankEventTime
