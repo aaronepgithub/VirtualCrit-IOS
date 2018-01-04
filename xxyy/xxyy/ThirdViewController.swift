@@ -45,7 +45,7 @@ class ThirdViewController: UIViewController {
 
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
-        lbl_top_StatusBar.text = "\(rt.total_moving_time_string) mv \(stringer1(myIn: mvspd)) mph \(stringer0(myIn: percentofmax))% MAX"
+        lbl_top_StatusBar.text = "MOV:\(rt.total_moving_time_string) AVG:\(stringer1(myIn: mvspd)) \(stringer0(myIn: percentofmax))% MAX"
         
         let currentDateTime = Date()
         let formatter = DateFormatter()
@@ -53,7 +53,7 @@ class ThirdViewController: UIViewController {
         formatter.dateStyle = .none
         let currTime = formatter.string(from: currentDateTime)
         
-        out_Bottom.text = "\(rt.string_elapsed_time)  \(stringer1(myIn: rt.total_distance)) Miles  \(currTime)"
+        out_Bottom.text = "\(rt.string_elapsed_time)  \(stringer1(myIn: rt.total_distance)) MILES  \(currTime)"
     }
     
     @objc func update2() {
