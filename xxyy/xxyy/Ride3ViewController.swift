@@ -10,14 +10,11 @@ import UIKit
 
 class Ride3ViewController: UIViewController {
     
+    @IBOutlet weak var lbl_Speed: UILabel!
+    @IBOutlet weak var lbl_Title: UILabel!
+    
     @objc func switchToDataTabCont(){
-//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID1")
-        
-        self.tabBarController?.selectedIndex = 2;
-        
-//        self.tabBarController?.present(newViewController, animated: true, completion: nil)
-//        self.performSegue(withIdentifier: "SEG3", sender: nil)
+        self.tabBarController?.selectedIndex = 1;
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -25,6 +22,45 @@ class Ride3ViewController: UIViewController {
             let currentPoint = touch.location(in: view)
             print(currentPoint.x)
             Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
+        }
+    }
+    
+    var currentTitle: Int = 1
+    func changeTitle() {
+        let x = currentTitle
+        
+        if (x == 1) {
+            lbl_Title.text = "CADENCE"
+            currentTitle = 2
+        }
+        
+        if (x == 2) {
+            lbl_Title.text = "HEARTRATE"
+            currentTitle = 3
+        }
+        
+        if (x == 3) {
+            lbl_Title.text = "SPEED"
+            currentTitle = 1
+        }
+
+        
+
+    }
+    
+    @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
+        switch swipe.direction.rawValue {
+        case 2:
+            print("Case 2")
+        case 1:
+            print("Case 1")
+        case 4:
+            print("Case 4 UP")
+            changeTitle()
+            
+        default:
+            print("default Gesture - not up or right")
+            break
         }
     }
     
@@ -40,9 +76,26 @@ class Ride3ViewController: UIViewController {
     @objc func update4() {
         //update
     }
+    
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        leftSwipe.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(leftSwipe)
+        
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        upSwipe.direction = UISwipeGestureRecognizerDirection.up
+        self.view.addGestureRecognizer(upSwipe)
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        rightSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(rightSwipe)
+        
 
         NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)

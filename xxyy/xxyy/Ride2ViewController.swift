@@ -23,7 +23,7 @@ class ThirdViewController: UIViewController {
         //let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         //let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID4")
         
-        self.tabBarController?.selectedIndex = 4;
+        self.tabBarController?.selectedIndex = 3;
         
         
         //self.tabBarController?.present(newViewController, animated: true, completion: nil)

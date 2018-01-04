@@ -88,15 +88,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var veloH: Double = 0;
     
     func veloTest() {
-        let h = rt.rt_hr
+//        let h = rt.rt_hr
         let s = rt.rt_speed
         let c = rt.rt_cadence
         
-        if (h == veloH) {rt.rt_hr = 0}
+//        if (h == veloH) {rt.rt_hr = 0}
         if (s == veloS) {rt.rt_speed = 0}
         if (c == veloC) {rt.rt_cadence = 0}
         
-        veloH = h
+//        veloH = h
         veloS = s
         veloC = c
     }
@@ -127,6 +127,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if z % 5 == 0 
         {
             veloTest()
+        }
+        
+        if z % 60 == 0
+        {
+            let h = rt.rt_hr
+            if (h == veloH) {rt.rt_hr = 0}
+            veloH = h
+            
         }
         
         if z >= 300 {
@@ -554,6 +562,17 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         roundStartTime = NSDate()
     }
     
+    var firstLoad = 0
+    @IBOutlet var ViewStartup: UIView!
+    
+    @IBAction func action_CloseStartupView(_ sender: UIButton) {
+        firstLoad = 1
+        ViewStartup.removeFromSuperview()
+        self.tabBarController?.selectedIndex = 0;
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -568,7 +587,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             start_rtTimer()
         }
         
+        
+        if (firstLoad == 0) {
+            firstLoad = 1
+            ViewStartup.center = view.center
+            view.addSubview(ViewStartup)
+        }
+        
     }
+    
     
 //    override func viewDidAppear(_ animated: Bool) {
 //

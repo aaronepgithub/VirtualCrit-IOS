@@ -33,7 +33,7 @@ class FirstViewController: UIViewController {
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let newViewController = storyBoard.instantiateViewController(withIdentifier: "ID3")
         
-        self.tabBarController?.selectedIndex = 3;
+        self.tabBarController?.selectedIndex = 2;
         
         //self.tabBarController?.present(newViewController, animated: true, completion: nil)
 

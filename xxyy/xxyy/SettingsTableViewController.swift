@@ -184,12 +184,22 @@ class Settings: UITableViewController {
             
         }
         
+        if indexPath.section == 1 && indexPath.row == 3 {
+            //launch ble
+            self.tabBarController?.selectedIndex = 4;
+        }
+        
+        if indexPath.section == 1 && indexPath.row == 4 {
+            //launch history
+            self.performSegue(withIdentifier: "segue_History", sender: nil)
+        }
+        
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
