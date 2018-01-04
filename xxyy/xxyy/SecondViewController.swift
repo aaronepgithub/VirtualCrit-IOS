@@ -79,6 +79,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if arrRoundSpeeds.count > 1 {
             out_Btn2.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 2]), for: .normal)
         }
+        
+//        TODO:  USE ACTIONSHEET FOR NOTIFICATION - SPECIFIC FOR EACH VIEW, OR JUST UPDATE STATUS BAR?
     }
     
     var veloS: Double = 0;
