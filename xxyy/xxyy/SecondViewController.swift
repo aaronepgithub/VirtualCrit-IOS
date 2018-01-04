@@ -24,6 +24,12 @@ extension UIViewController {
     }
 }
 
+extension Date {
+    func addedBy(minutes:Int) -> Date {
+        return Calendar.current.date(byAdding: .second, value: minutes, to: self)!
+    }
+}
+
 
 
 class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDataSource, UITableViewDelegate {
@@ -116,7 +122,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //        out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
         out_Btn5.setTitle(stringer1(myIn: rt.rt_speed), for: .normal)
         
-        if z % 5 == 0 {
+        if z % 5 == 0 
+        {
             veloTest()
         }
         
@@ -124,6 +131,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             arrRoundHR.append(avgInRoundHR)
             print("arrRoundHR last: \(arrRoundHR.last!)")
             inRoundHR = 0
+            LocalNotification.registerForLocalNotification(on: UIApplication.shared)
+            LocalNotification.dispatchlocalNotification(with: "New Round", body: "You have completed another 5 minutes", at: Date().addedBy(minutes: 5))
             newRound()
         }
     }

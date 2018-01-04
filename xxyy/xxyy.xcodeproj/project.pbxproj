@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		586336B61FCC841800AD1D64 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586336B51FCC841800AD1D64 /* ThirdViewController.swift */; };
 		589F936B1FCF626700B7078E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589F936A1FCF626700B7078E /* Settings.swift */; };
+		58AC5D501FFDD87E0031A499 /* LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AC5D4F1FFDD87E0031A499 /* LocalNotifications.swift */; };
 		58BE2F831FA16C3600CB8A6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BE2F821FA16C3600CB8A6D /* AppDelegate.swift */; };
 		58BE2F851FA16C3600CB8A6D /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BE2F841FA16C3600CB8A6D /* FirstViewController.swift */; };
 		58BE2F871FA16C3600CB8A6D /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BE2F861FA16C3600CB8A6D /* SecondViewController.swift */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		586336B51FCC841800AD1D64 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		589F936A1FCF626700B7078E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		58AC5D4F1FFDD87E0031A499 /* LocalNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
 		58BE2F7F1FA16C3600CB8A6D /* xxyy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xxyy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BE2F821FA16C3600CB8A6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		58BE2F841FA16C3600CB8A6D /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */,
 				58FBC8841FC79FC600D58897 /* Model.swift */,
 				58BE2F881FA16C3600CB8A6D /* Main.storyboard */,
+				58AC5D4F1FFDD87E0031A499 /* LocalNotifications.swift */,
 				58C7ED7B1FC32A2600B44AC1 /* BLTE_TableViewCell.swift */,
 				58BE2F8B1FA16C3600CB8A6D /* Assets.xcassets */,
 				58BE2F8D1FA16C3600CB8A6D /* LaunchScreen.storyboard */,
@@ -174,6 +177,7 @@
 				586336B61FCC841800AD1D64 /* ThirdViewController.swift in Sources */,
 				58FBC8851FC79FC600D58897 /* Model.swift in Sources */,
 				58C7ED7C1FC32A2600B44AC1 /* BLTE_TableViewCell.swift in Sources */,
+				58AC5D501FFDD87E0031A499 /* LocalNotifications.swift in Sources */,
 				58BE2F851FA16C3600CB8A6D /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
