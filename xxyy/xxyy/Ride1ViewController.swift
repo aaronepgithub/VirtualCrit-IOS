@@ -88,7 +88,7 @@ class FirstViewController: UIViewController {
     
     @objc func update1() {
         lbl_Time.text = rt.string_elapsed_time  //NS Date Time since launch
-        lbl_Distance.text = "\(stringer2(myIn: rt.total_distance)) MILES"
+        lbl_Distance.text = "\(stringer2(myIn: rt.total_distance))"
         
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         lbl_Top_Info_Bar.text = "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"

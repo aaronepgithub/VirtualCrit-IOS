@@ -17,6 +17,9 @@
         <array key="VerdanaBold.ttf">
             <string>Verdana-Bold</string>
         </array>
+        <array key="VerdanaItalic.ttf">
+            <string>Verdana-Italic</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Settings-->
@@ -97,7 +100,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-<<<<<<< HEAD
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="saK-1Q-I64">
                                         <rect key="frame" x="0.0" y="226" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -106,18 +108,12 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-=======
->>>>>>> origin/master
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="BIKE SETTINGS" id="2LW-RI-5xJ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="avi-3n-HBX">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="298" width="375" height="44"/>
-=======
-                                        <rect key="frame" x="0.0" y="254" width="375" height="44"/>
->>>>>>> origin/master
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="avi-3n-HBX" id="yEp-2r-4kZ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -134,11 +130,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="WUC-Gu-qaJ" style="IBUITableViewCellStyleDefault" id="K8M-0P-tEw">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="342" width="375" height="44"/>
-=======
-                                        <rect key="frame" x="0.0" y="298" width="375" height="44"/>
->>>>>>> origin/master
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="K8M-0P-tEw" id="dBl-wJ-B2T">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -155,11 +147,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="7eH-Bs-Cfg">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="386" width="375" height="44"/>
-=======
-                                        <rect key="frame" x="0.0" y="342" width="375" height="44"/>
->>>>>>> origin/master
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7eH-Bs-Cfg" id="b2D-Hq-WM4">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -167,11 +155,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Ble_Identifier" textLabel="IZk-pG-aOC" style="IBUITableViewCellStyleDefault" id="g8u-oi-6uN">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="430" width="375" height="44"/>
-=======
-                                        <rect key="frame" x="0.0" y="386" width="375" height="44"/>
->>>>>>> origin/master
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="g8u-oi-6uN" id="Gf6-Ye-zuI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -188,11 +172,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="cg3-m0-sYO" style="IBUITableViewCellStyleDefault" id="RhG-ew-29s">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="474" width="375" height="44"/>
-=======
-                                        <rect key="frame" x="0.0" y="430" width="375" height="44"/>
->>>>>>> origin/master
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RhG-ew-29s" id="p6j-yT-7mI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -229,7 +209,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o02-G2-t4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="977" y="-399"/>
+            <point key="canvasLocation" x="1042.5" y="-534.50704225352115"/>
         </scene>
         <!--Ride1-->
         <scene sceneID="hNz-n2-bh7">
@@ -239,11 +219,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-<<<<<<< HEAD
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.00  00:00:00 MOV" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UwM-CW-sQS">
-=======
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.00  00:00:00 MOV" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UwM-CW-sQS">
->>>>>>> origin/master
                                 <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -252,12 +228,8 @@
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact">
-                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
-                                </variation>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="vCu-hh-6sH" userLabel="Stack View Main">
-<<<<<<< HEAD
                                 <rect key="frame" x="0.0" y="60" width="375" height="558"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Bna-Un-tgM" userLabel="Stack View1">
@@ -266,31 +238,14 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Cvk-kM-b9z" userLabel="Label1">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="32"/>
-=======
-                                <rect key="frame" x="0.0" y="73" width="375" height="545"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Bna-Un-tgM" userLabel="Stack View1">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="271"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Cvk-kM-b9z" userLabel="Label1">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="Ax4-pI-pYK"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
->>>>>>> origin/master
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                                 <variation key="heightClass=compact-widthClass=compact" hidden="YES">
-                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="15" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wr7-PG-xg9" userLabel="Big Speed">
-<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="59.5" width="375" height="203.5"/>
-=======
-                                                <rect key="frame" x="0.0" y="20" width="375" height="251"/>
->>>>>>> origin/master
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="110"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -301,7 +256,6 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="XEY-Em-VBs" userLabel="Stack View2">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="263" width="375" height="295"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="3IM-QL-j2H">
@@ -310,52 +264,24 @@
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HR  00 %MAX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="2u0-0o-UD0">
                                                         <rect key="frame" x="0.0" y="0.0" width="187.5" height="31.5"/>
                                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="15"/>
-=======
-                                        <rect key="frame" x="0.0" y="271" width="375" height="274"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="3IM-QL-j2H">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="15"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HR  00 %MAX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="2u0-0o-UD0">
-                                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="15"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="15" id="z5g-w6-7oA"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
->>>>>>> origin/master
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="ALt-22-Jly" userLabel="Lbl cad Label">
-<<<<<<< HEAD
                                                         <rect key="frame" x="187.5" y="0.0" width="187.5" height="31.5"/>
                                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="15"/>
-=======
-                                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="15"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="15" id="tAB-nj-hPf"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
->>>>>>> origin/master
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="LX8-WO-8w6">
-<<<<<<< HEAD
                                                 <rect key="frame" x="0.0" y="31.5" width="375" height="155"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="oYd-9n-NgT" userLabel="Label3a">
                                                         <rect key="frame" x="0.0" y="0.0" width="182.5" height="155"/>
-=======
-                                                <rect key="frame" x="0.0" y="15" width="375" height="211"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="oYd-9n-NgT" userLabel="Label3a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="182.5" height="211"/>
->>>>>>> origin/master
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="70"/>
+                                                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="75"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                         <variation key="heightClass=compact-widthClass=compact">
@@ -363,11 +289,7 @@
                                                         </variation>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="iDy-y1-Xl6" userLabel="Label3b">
-<<<<<<< HEAD
                                                         <rect key="frame" x="192.5" y="0.0" width="182.5" height="155"/>
-=======
-                                                        <rect key="frame" x="192.5" y="0.0" width="182.5" height="211"/>
->>>>>>> origin/master
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="75"/>
                                                         <nil key="textColor"/>
@@ -381,7 +303,6 @@
                                                     <constraint firstItem="iDy-y1-Xl6" firstAttribute="width" secondItem="oYd-9n-NgT" secondAttribute="width" id="YNg-X7-Qf9"/>
                                                 </constraints>
                                             </stackView>
-<<<<<<< HEAD
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="mNp-rw-a55">
                                                 <rect key="frame" x="0.0" y="186.5" width="375" height="60.5"/>
                                                 <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
@@ -390,20 +311,13 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="pMt-yb-nEP">
                                                 <rect key="frame" x="0.0" y="247" width="375" height="48"/>
-=======
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="pMt-yb-nEP">
-                                                <rect key="frame" x="0.0" y="226" width="375" height="48"/>
->>>>>>> origin/master
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="0ZE-xx-ei8"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="35"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
-                                                <variation key="heightClass=compact-widthClass=compact">
-                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
-                                                </variation>
                                             </label>
                                         </subviews>
                                     </stackView>
@@ -413,7 +327,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UwM-CW-sQS" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="7Dt-i7-Znk"/>
-                            <constraint firstItem="vCu-hh-6sH" firstAttribute="top" secondItem="UwM-CW-sQS" secondAttribute="bottom" constant="5" id="Cxf-20-1wn"/>
+                            <constraint firstItem="vCu-hh-6sH" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="40" id="Cxf-20-1wn"/>
                             <constraint firstItem="vCu-hh-6sH" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="HfM-sQ-Skk"/>
                             <constraint firstItem="UwM-CW-sQS" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="LoC-lK-Fh8"/>
                             <constraint firstItem="vCu-hh-6sH" firstAttribute="bottom" secondItem="PQr-Ze-W5v" secondAttribute="bottom" id="LyN-cx-Fhm"/>
@@ -448,21 +362,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-<<<<<<< HEAD
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MOV:00:00:00  AVG:00.0  00% MAX" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CYv-wX-pQS">
-=======
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.00  00:00:00 MOV" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="CYv-wX-pQS">
->>>>>>> origin/master
                                 <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="dtT-67-MQ3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact">
-                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
                                 </variation>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" restorationIdentifier="SVALL" translatesAutoresizingMaskIntoConstraints="NO" id="qnW-Ol-Gqw" userLabel="Stack View All">
@@ -544,21 +454,17 @@
                                     <constraint firstItem="YJJ-co-Eed" firstAttribute="width" secondItem="qnW-Ol-Gqw" secondAttribute="width" multiplier="0.3" id="djL-hq-p3v"/>
                                 </constraints>
                             </stackView>
-<<<<<<< HEAD
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00 PM  00.00 MILES  00:00:00          " textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-rn-waN">
-=======
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 00:00:00  00.00 MILES  00:00:00 PM      " textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-rn-waN">
->>>>>>> origin/master
                                 <rect key="frame" x="0.0" y="570" width="375" height="48"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="V9J-dU-7y3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="23"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact">
-                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="16"/>
                                 </variation>
                             </label>
                         </subviews>
@@ -770,56 +676,61 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="ucZ-5j-3fd" userLabel="ViewStartup">
-                    <rect key="frame" x="0.0" y="0.0" width="879" height="584"/>
+                    <rect key="frame" x="0.0" y="0.0" width="411" height="584"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wAH-id-bcZ">
-                            <rect key="frame" x="8" y="20" width="863" height="564"/>
+                            <rect key="frame" x="8" y="20" width="395" height="564"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VIRTUAL CRIT II" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCo-GC-fu9">
-                                    <rect key="frame" x="0.0" y="20" width="863" height="31"/>
+                                    <rect key="frame" x="0.0" y="20" width="395" height="31"/>
                                     <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CDv-SF-TVJ">
+                                    <rect key="frame" x="0.0" y="59" width="395" height="43"/>
+                                    <fontDescription key="fontDescription" name="Verdana-Italic" family="Verdana" pointSize="25"/>
+                                    <state key="normal" title="Disclaimer"/>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvO-Xe-i48">
-                                    <rect key="frame" x="0.0" y="71" width="863" height="43"/>
+                                    <rect key="frame" x="0.0" y="110" width="395" height="43"/>
                                     <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
                                     <state key="normal" title="Start"/>
                                     <connections>
                                         <action selector="action_CloseStartupView:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="kSc-kg-xoq"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default-12426s-portrait_1242x2208" translatesAutoresizingMaskIntoConstraints="NO" id="Klr-xn-bWm">
-                                    <rect key="frame" x="-10" y="71" width="886" height="682"/>
+                                <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Default-12426s-portrait_1242x2208" translatesAutoresizingMaskIntoConstraints="NO" id="Klr-xn-bWm">
+                                    <rect key="frame" x="-10" y="90" width="414" height="413"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="Klr-xn-bWm" firstAttribute="top" secondItem="uCo-GC-fu9" secondAttribute="bottom" constant="20" id="4ZC-bQ-DW1"/>
-                                <constraint firstItem="cvO-Xe-i48" firstAttribute="top" secondItem="uCo-GC-fu9" secondAttribute="bottom" constant="20" id="BO8-C6-Pau"/>
-                                <constraint firstAttribute="trailing" secondItem="uCo-GC-fu9" secondAttribute="trailing" id="KNh-YA-zY7"/>
-                                <constraint firstItem="Klr-xn-bWm" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" constant="-10" id="XX8-uN-CXt"/>
-                                <constraint firstAttribute="trailing" secondItem="Klr-xn-bWm" secondAttribute="trailing" constant="-13" id="dBW-hF-2yL"/>
-                                <constraint firstAttribute="trailing" secondItem="cvO-Xe-i48" secondAttribute="trailing" id="eOu-qX-0H9"/>
-                                <constraint firstItem="uCo-GC-fu9" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" id="ga2-Sp-ZIk"/>
-                                <constraint firstItem="cvO-Xe-i48" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" id="mY1-xD-Xj8"/>
-                                <constraint firstItem="uCo-GC-fu9" firstAttribute="top" secondItem="wAH-id-bcZ" secondAttribute="top" constant="20" id="rbc-0C-iDg"/>
-                                <constraint firstItem="uCo-GC-fu9" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" id="sI0-hq-KL0"/>
+                                <constraint firstItem="CDv-SF-TVJ" firstAttribute="top" secondItem="uCo-GC-fu9" secondAttribute="bottom" constant="8" symbolic="YES" id="4ru-YN-eql"/>
+                                <constraint firstItem="uCo-GC-fu9" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" id="6pn-G8-Kz0"/>
+                                <constraint firstItem="cvO-Xe-i48" firstAttribute="top" secondItem="CDv-SF-TVJ" secondAttribute="bottom" constant="8" symbolic="YES" id="9aU-5S-8Al"/>
+                                <constraint firstItem="CDv-SF-TVJ" firstAttribute="trailing" secondItem="cvO-Xe-i48" secondAttribute="trailing" id="D8T-jZ-GIA"/>
+                                <constraint firstItem="CDv-SF-TVJ" firstAttribute="leading" secondItem="cvO-Xe-i48" secondAttribute="leading" id="DPt-JA-dmC"/>
+                                <constraint firstAttribute="trailing" secondItem="uCo-GC-fu9" secondAttribute="trailing" id="LT6-Ik-MKm"/>
+                                <constraint firstItem="uCo-GC-fu9" firstAttribute="trailing" secondItem="CDv-SF-TVJ" secondAttribute="trailing" id="WGa-sz-6Z2"/>
+                                <constraint firstItem="uCo-GC-fu9" firstAttribute="top" secondItem="wAH-id-bcZ" secondAttribute="top" constant="20" id="ewa-GW-UfW"/>
+                                <constraint firstItem="uCo-GC-fu9" firstAttribute="leading" secondItem="CDv-SF-TVJ" secondAttribute="leading" id="uhc-ic-mKH"/>
                             </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="wAH-id-bcZ" firstAttribute="leading" secondItem="ySs-Vd-9m7" secondAttribute="leading" constant="8" id="7u3-Jz-RWH"/>
-                        <constraint firstItem="wAH-id-bcZ" firstAttribute="centerX" secondItem="ucZ-5j-3fd" secondAttribute="centerX" id="HOQ-TL-0lv"/>
-                        <constraint firstItem="wAH-id-bcZ" firstAttribute="top" secondItem="ySs-Vd-9m7" secondAttribute="top" id="MRB-P9-rqY"/>
-                        <constraint firstItem="wAH-id-bcZ" firstAttribute="bottom" secondItem="ySs-Vd-9m7" secondAttribute="bottom" id="wed-MQ-KMA"/>
+                        <constraint firstItem="wAH-id-bcZ" firstAttribute="centerX" secondItem="ucZ-5j-3fd" secondAttribute="centerX" id="BNz-Tq-Y57"/>
+                        <constraint firstItem="wAH-id-bcZ" firstAttribute="top" secondItem="ySs-Vd-9m7" secondAttribute="top" id="HwT-xa-eEs"/>
+                        <constraint firstItem="wAH-id-bcZ" firstAttribute="leading" secondItem="ySs-Vd-9m7" secondAttribute="leading" constant="8" id="uaJ-Wa-7CN"/>
+                        <constraint firstItem="wAH-id-bcZ" firstAttribute="bottom" secondItem="ySs-Vd-9m7" secondAttribute="bottom" id="ulx-mB-gga"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="ySs-Vd-9m7"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="2246" y="87"/>
+            <point key="canvasLocation" x="1798" y="76"/>
         </scene>
         <!--Ride3-->
         <scene sceneID="iFm-CG-XTr">
@@ -835,64 +746,39 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qDV-hB-jtI">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                         <subviews>
-<<<<<<< HEAD
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0   00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mcr-pj-Uiu">
-=======
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.00  00:00:00 MOV" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mcr-pj-Uiu">
->>>>>>> origin/master
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="1fR-DX-6cF"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="30"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
-                                                <variation key="heightClass=compact-widthClass=compact">
-                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
-                                                </variation>
                                             </label>
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPEED" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZHn-p4-LEy">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="58" width="375" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="dnm-HA-PNi"/>
                                         </constraints>
-=======
-                                        <rect key="frame" x="0.0" y="58" width="375" height="40"/>
->>>>>>> origin/master
                                         <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
-                                        <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                        <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="200" verticalHuggingPriority="200" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="MIF-aI-wvH" userLabel="Label3 Middle">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="113" width="375" height="183"/>
-=======
-                                        <rect key="frame" x="0.0" y="108" width="375" height="199"/>
->>>>>>> origin/master
                                         <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="100"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
-                                        <variation key="heightClass=compact-widthClass=compact">
-                                            <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="94"/>
-                                        </variation>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="zfA-tw-rP3">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="306" width="375" height="109.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="xhl-SK-oPB">
                                                 <rect key="frame" x="0.0" y="0.0" width="187.5" height="109.5"/>
-=======
-                                        <rect key="frame" x="0.0" y="317" width="375" height="119"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="xhl-SK-oPB">
-                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="119"/>
->>>>>>> origin/master
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -901,11 +787,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="INO-Pb-RaF">
-<<<<<<< HEAD
                                                 <rect key="frame" x="187.5" y="0.0" width="187.5" height="109.5"/>
-=======
-                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="119"/>
->>>>>>> origin/master
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -916,28 +798,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="DLX-ir-ZaT">
-<<<<<<< HEAD
                                         <rect key="frame" x="0.0" y="425.5" width="375" height="114.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 SEC" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6w-WV-f8n">
                                                 <rect key="frame" x="0.0" y="0.0" width="187.5" height="114.5"/>
-=======
-                                        <rect key="frame" x="0.0" y="446" width="375" height="94"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 SEC" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6w-WV-f8n">
-                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="94"/>
->>>>>>> origin/master
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                                 <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 MIN" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uc-Ga-aDt">
-<<<<<<< HEAD
                                                 <rect key="frame" x="187.5" y="0.0" width="187.5" height="114.5"/>
-=======
-                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="94"/>
->>>>>>> origin/master
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -953,12 +824,9 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="1th-Vj-l76"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
+                                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
-                                        <variation key="heightClass=compact-widthClass=compact">
-                                            <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
-                                        </variation>
                                     </label>
                                 </subviews>
                             </stackView>
