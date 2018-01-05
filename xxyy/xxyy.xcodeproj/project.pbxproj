@@ -80,6 +80,7 @@
 				586336B51FCC841800AD1D64 /* Ride2ViewController.swift */,
 				58F590F41FFD75A4000D3735 /* Ride3ViewController.swift */,
 				589F936A1FCF626700B7078E /* SettingsTableViewController.swift */,
+				58E2F4481FFE6B83005FCE41 /* HistoryViewController.swift */,
 				58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */,
 				58FBC8841FC79FC600D58897 /* Model.swift */,
 				58BE2F881FA16C3600CB8A6D /* Main.storyboard */,
@@ -89,7 +90,6 @@
 				58BE2F8D1FA16C3600CB8A6D /* LaunchScreen.storyboard */,
 				58BE2F901FA16C3600CB8A6D /* Info.plist */,
 				58FD2BB61FF28992008EF243 /* Images.xcassets */,
-				58E2F4481FFE6B83005FCE41 /* HistoryViewController.swift */,
 			);
 			path = xxyy;
 			sourceTree = "<group>";

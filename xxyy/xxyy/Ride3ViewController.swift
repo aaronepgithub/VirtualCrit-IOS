@@ -28,24 +28,19 @@ class Ride3ViewController: UIViewController {
     var currentTitle: Int = 1
     func changeTitle() {
         let x = currentTitle
-        
+    
         if (x == 1) {
             lbl_Title.text = "CADENCE"
             currentTitle = 2
         }
-        
         if (x == 2) {
             lbl_Title.text = "HEARTRATE"
             currentTitle = 3
         }
-        
         if (x == 3) {
             lbl_Title.text = "SPEED"
             currentTitle = 1
         }
-
-        
-
     }
     
     @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
@@ -59,7 +54,7 @@ class Ride3ViewController: UIViewController {
             changeTitle()
             
         default:
-            print("default Gesture - not up or right")
+            print("default Gesture - not up, left, or right")
             break
         }
     }
