@@ -44,32 +44,14 @@ class FirstViewController: UIViewController {
         //self.performSegue(withIdentifier: "SEG1", sender: nil)
     }
     
-    @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
-        switch swipe.direction.rawValue {
-        case 2:
-            print("Case 2")
-            switchToDataTabCont()
-        case 1:
-            print("Case 1")
-            switchToDataTabCont()
-        case 4:
-            print("Case 4 UP")
-            //changeTitle()
-            
-        default:
-            print("default Gesture - not up, left, or right")
-            break
+    //touch anywhere to present the other view controller
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: view)
+            print(currentPoint.x)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
         }
     }
-    
-    //touch anywhere to present the other view controller
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let touch = touches.first {
-//            let currentPoint = touch.location(in: view)
-//            print(currentPoint.x)
-//            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(switchToDataTabCont), userInfo: nil, repeats: false)
-//        }
-//    }
 
     
     @IBOutlet weak var lbl_Time: UILabel!
