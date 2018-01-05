@@ -200,6 +200,12 @@ class Settings: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "Default-7506-landscape_1334x750")
+        backgroundImage.contentMode = UIViewContentMode.scaleAspectFill
+        backgroundImage.alpha = 0.2
+        self.view.insertSubview(backgroundImage, at: 0)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

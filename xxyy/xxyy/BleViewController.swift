@@ -576,6 +576,12 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+//        backgroundImage.image = UIImage(named: "Default-7506-landscape_1334x750")
+//        backgroundImage.contentMode = UIViewContentMode.scaleAspectFill
+//        backgroundImage.alpha = 0.2
+//        self.view.insertSubview(backgroundImage, at: 0)
+        
         centralManager = CBCentralManager(delegate: self, queue: nil)
         self.BLTE_TableViewOutlet.addSubview(refreshControl)
         
