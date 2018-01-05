@@ -45,7 +45,7 @@ class ThirdViewController: UIViewController {
 
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         percentofmax = (Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)
-        lbl_top_StatusBar.text = "MOV:\(rt.total_moving_time_string) AVG:\(stringer1(myIn: mvspd)) \(stringer0(myIn: percentofmax))% MAX"
+        lbl_top_StatusBar.text = "MOV:\(rt.total_moving_time_string)   AVG:\(stringer1(myIn: mvspd))"
         
         let currentDateTime = Date()
         let formatter = DateFormatter()
