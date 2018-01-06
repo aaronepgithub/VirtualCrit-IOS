@@ -105,7 +105,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         round.cadence = inRoundCadence
         
-        
+
         if z % 5 == 0 
         {
             let s = rt.rt_speed
@@ -130,8 +130,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if z >= 300 {
             round.heartrates.append(round.hr)
             inRoundHR = 0
-            LocalNotification.registerForLocalNotification(on: UIApplication.shared)
-            LocalNotification.dispatchlocalNotification(with: "New Round", body: "You have completed another 5 minutes", at: Date().addedBy(minutes: 5))
+//            LocalNotification.registerForLocalNotification(on: UIApplication.shared)
+//            LocalNotification.dispatchlocalNotification(with: "New Round", body: "You have completed another 5 minutes", at: Date().addedBy(minutes: 5))
             newRound()
         }
     }
