@@ -49,7 +49,7 @@ func stringer2(myIn: Double) -> String {
 
 
 var wheelCircumference: Double = 2105
-var rtTimer_Interval: Double = 1.0 //
+var rtTimer_Interval: Double = 1.0
 
 struct rt {
     static var rt_speed: Double = 0
@@ -63,6 +63,30 @@ struct rt {
     static var total_time: Double = 0
     static var string_elapsed_time: String = "00:00:00"
     static var int_elapsed_time: Int = 0
+}
+
+struct interval {
+    static var counter: Double = 0
+    //averages
+    static var speed: Double = 0
+    static var cadence: Double = 0
+    static var hr: Double = 0
+    //data
+    static var cadences = [Double]()
+    static var distances = [Double]()
+    static var heartrates = [Double]()
+    
+}
+
+struct round {
+    static var speed: Double = 0
+    static var cadence: Double = 0
+    static var hr: Double = 0
+    
+    static var speeds = [Double]()
+    static var cadences = [Double]()
+    static var heartrates = [Double]()
+    
 }
 
 

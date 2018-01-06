@@ -11,32 +11,13 @@ import Foundation
 var totalWheelRevs: Double = 0
 var totalCrankRevs: Double = 0
 
-func get_rt_speed_and_distance() -> Double {
-
-    rt_WheelRevs = 0
-    rt_WheelTime = 0
-    
-    return rt.rt_speed
-}
-
-func get_rt_cadence() -> Double {
-
-    rt_crank_revs = 0
-    rt_crank_time = 0
-    
-    return rt.rt_cadence
-}
 
 var oldWheelRevolution: Double = 0
 var oldWheelEventTime: Double = 0
 var rt_WheelRevs: Double = 0
 var rt_WheelTime: Double = 0
 
-var single_read_speed: Double = 0
-var single_read_cad: Double = 0
-var arr_srs = [Double]()
-var arr_src = [Double]()
-var srseconds: Double = 0
+
 
 func processWheelData(withData data :Data) {
     
@@ -59,9 +40,7 @@ func processWheelData(withData data :Data) {
         if (a == 0 || a > 10) {
             wheelRevolution = oldWheelRevolution;
             wheelEventTime = oldWheelEventTime;
-            //print("return, a == 0, should display 0")
-            single_read_speed = 0
-            rt.rt_speed = single_read_speed
+            rt.rt_speed = 0
             return
         }
         if (b < 750 && b > 0) {
@@ -77,28 +56,27 @@ func processWheelData(withData data :Data) {
         let wheelRPM = Double(a) / (wheelTimeSeconds / 60)
         let cmPerMi = Double(0.00001 * 0.621371)
         let minsPerHour = 60.0
-        single_read_speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour
-        rt.rt_speed = single_read_speed
+        rt.rt_speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour
+        
     
     
-        srseconds += wheelTimeSeconds
+        //srseconds += wheelTimeSeconds
         rt_WheelRevs += a
         rt_WheelTime += b
         totalWheelRevs += a
         rt.total_distance = totalWheelRevs * (wheelCircumference / 1000) * 0.000621371
 
-        if single_read_speed > 0 {
+        if rt.rt_speed > 0 {
             rt.total_moving_time_seconds += (Double(b) / Double(1024))
             rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
         }
         
         NotificationCenter.default.post(name: Notification.Name("speed"), object: nil)
         
-        
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
     }
-//    print("SR Speed:  \(single_read_speed)")
+
 }
 
 var rt_crank_revs: Double = 0
@@ -130,19 +108,16 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
                     crankRevolution = oldCrankRevolution
                     crankEventTime = oldCrankEventTime
                     //print("return, a == 0, should display 0 CAD")
-                    single_read_cad = 0
-                    rt.rt_cadence = single_read_cad
+                    rt.rt_cadence = 0
                     return
                 }
             if (b < 750 && b > 0) {
                 crankRevolution = oldCrankRevolution
                 crankEventTime = oldCrankEventTime
-                //print("return, b < 750 && b > 0 CAD")
                 return
             }
             let crankTimeSeconds = Double(b) / Double(1024)
-            single_read_cad = Double(a) / (crankTimeSeconds / 60)
-            rt.rt_cadence = single_read_cad
+            rt.rt_cadence = Double(a) / (crankTimeSeconds / 60)
             rt_crank_revs += a
             rt_crank_time += b  //still in 1/1024 of a sec
             totalCrankRevs += a
@@ -152,6 +127,5 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             oldCrankRevolution = crankRevolution
             oldCrankEventTime = crankEventTime
             }
-    //print("SR CAD:  \(single_read_cad)")
     }
 

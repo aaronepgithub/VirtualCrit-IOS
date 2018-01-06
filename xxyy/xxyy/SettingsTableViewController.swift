@@ -147,49 +147,49 @@ class Settings: UITableViewController {
             callTireSizeActionSheet()
         }
         
-        if indexPath.section == 1 && indexPath.row == 1 {
-            print("duration cell")
-            
-            let x = lbl_RT_Avg_Duration.text
-            
-            if x == "INTERVAL FOR AVG = 1.0" {
-                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1.5"
-                rtTimer_Interval = 1.5
-                
-            }
-            
-            if x == "INTERVAL FOR AVG = 1.5" {
-                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.0"
-                rtTimer_Interval = 2.0
-                
-            }
-            
-            if x == "INTERVAL FOR AVG = 2.0" {
-                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.5"
-                rtTimer_Interval = 2.5
-                
-            }
-            
-            if x == "INTERVAL FOR AVG = 2.5" {
-                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 3.0"
-                rtTimer_Interval = 3.0
-                
-            }
-            
-            if x == "INTERVAL FOR AVG = 3.0" {
-                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1"
-                rtTimer_Interval = 1.0 //rt
-                
-            }
-            
-        }
+//        if indexPath.section == 1 && indexPath.row == 1 {
+//            print("duration cell")
+//
+//            let x = lbl_RT_Avg_Duration.text
+//
+//            if x == "INTERVAL FOR AVG = 1.0" {
+//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1.5"
+//                rtTimer_Interval = 1.5
+//
+//            }
+//
+//            if x == "INTERVAL FOR AVG = 1.5" {
+//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.0"
+//                rtTimer_Interval = 2.0
+//
+//            }
+//
+//            if x == "INTERVAL FOR AVG = 2.0" {
+//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.5"
+//                rtTimer_Interval = 2.5
+//
+//            }
+//
+//            if x == "INTERVAL FOR AVG = 2.5" {
+//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 3.0"
+//                rtTimer_Interval = 3.0
+//
+//            }
+//
+//            if x == "INTERVAL FOR AVG = 3.0" {
+//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1"
+//                rtTimer_Interval = 1.0 //rt
+//
+//            }
+//
+//        }
         
-        if indexPath.section == 1 && indexPath.row == 3 {
+        if indexPath.section == 1 && indexPath.row == 2 {
             //launch ble
             self.tabBarController?.selectedIndex = 4;
         }
         
-        if indexPath.section == 1 && indexPath.row == 4 {
+        if indexPath.section == 1 && indexPath.row == 3 {
             //launch history
             self.performSegue(withIdentifier: "segue_History", sender: nil)
         }

@@ -55,30 +55,23 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var roundCrankRevs_atStart: Double = 0
     
     var inRoundSpeed: Double = 0
-    var arrRoundSpeeds = [Double]()
     
     var inRoundCadence: Double = 0
-    var arrRoundCadences = [Double]()
     
     var inRoundHR: Double = 0
-    var arrRoundHR = [Double]()
     var totalAvgHR: Double = 0
     
-    func newRound() {
-        arrRoundSpeeds.append(inRoundSpeed)
-        arrRoundCadences.append(inRoundCadence)
+    func newRound() {  //every 300 sec
+        
+        round.speeds.append(round.speed)
+        round.cadences.append(round.cadence)
         
         print("Speed Rnd Array")
-        dump(arrRoundSpeeds)
+        dump(round.speeds)
         roundStartTime = NSDate()
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
         
-        out_Btn1.setTitle(stringer1(myIn: arrRoundSpeeds.last!), for: .normal)
-        
-        if arrRoundSpeeds.count > 1 {
-            out_Btn2.setTitle(stringer1(myIn: arrRoundSpeeds[arrRoundSpeeds.count - 2]), for: .normal)
-        }
         
 //        TODO:  USE ACTIONSHEET FOR NOTIFICATION - SPECIFIC FOR EACH VIEW, OR JUST UPDATE STATUS BAR?
     }
@@ -87,19 +80,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var veloC: Double = 0;
     var veloH: Double = 0;
     
-    func veloTest() {
-//        let h = rt.rt_hr
-        let s = rt.rt_speed
-        let c = rt.rt_cadence
-        
-//        if (h == veloH) {rt.rt_hr = 0}
-        if (s == veloS) {rt.rt_speed = 0}
-        if (c == veloC) {rt.rt_cadence = 0}
-        
-//        veloH = h
-        veloS = s
-        veloC = c
-    }
     
     func roundUpdate_each_second() {
         let x = NSDate()
@@ -108,25 +88,35 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         inRoundHR += Double(rt.rt_hr)
         var avgInRoundHR = inRoundHR / Double(z)
-        if avgInRoundHR.isNaN == true || avgInRoundHR.isInfinite == true {avgInRoundHR = 0}
-        //print("avgInRoundHR:  \(avgInRoundHR)")
-        
+        if avgInRoundHR.isNaN == true || avgInRoundHR.isInfinite == true {
+            avgInRoundHR = 0
+        }
+        round.hr = avgInRoundHR
+
         let a = totalWheelRevs - roundWheelRevs_atStart
         let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
         let c = Double(z) / Double(60) / Double(60)
         inRoundSpeed = Double(a) * Double(b) / Double(c)
         
+        round.speed = inRoundSpeed
+        
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = d / (Double(z) * 60)
         
-        out_Btn3.setTitle(stringer0(myIn: Double(avgInRoundHR)), for: .normal)
-        out_Btn4.setTitle(stringer0(myIn: Double(z)), for: .normal)
-//        out_Btn5.setTitle(stringer1(myIn: inRoundSpeed), for: .normal)
-        out_Btn5.setTitle(stringer1(myIn: rt.rt_speed), for: .normal)
+        round.cadence = inRoundCadence
+        
         
         if z % 5 == 0 
         {
-            veloTest()
+            let s = rt.rt_speed
+            let c = rt.rt_cadence
+            
+            
+            if (s == veloS) {rt.rt_speed = 0}
+            if (c == veloC) {rt.rt_cadence = 0}
+            
+            veloS = s
+            veloC = c
         }
         
         if z % 60 == 0
@@ -138,8 +128,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
         
         if z >= 300 {
-            arrRoundHR.append(avgInRoundHR)
-            print("arrRoundHR last: \(arrRoundHR.last!)")
+            round.heartrates.append(round.hr)
             inRoundHR = 0
             LocalNotification.registerForLocalNotification(on: UIApplication.shared)
             LocalNotification.dispatchlocalNotification(with: "New Round", body: "You have completed another 5 minutes", at: Date().addedBy(minutes: 5))
@@ -221,11 +210,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     @IBAction func act_Btn3(_ sender: UIButton) {
-        // reset timer start
-        //startTime = NSDate()
-        //raw_wheel_time_for_avg = 0  //reset ble moving speed
-        //raw_wheel_revs_for_avg = 0
-        //quick_avg.lap_time = 0
         
     }
     
@@ -532,18 +516,30 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     var mainTimer = Timer()
     var rtTimer = Timer()
-    var returnSpeed: Double = 0
-    var returnCadence: Double = 0
     
-    @objc func Update_rtTimer() {
-        returnSpeed = get_rt_speed_and_distance()
-        out_Top3.setTitle(stringer1(myIn: returnSpeed), for: .normal)
-        returnCadence = get_rt_cadence()
-        out_Top2.setTitle(stringer0(myIn: returnCadence), for: .normal)
+//    var returnSpeed: Double = 0
+//    var returnCadence: Double = 0
+//    var returnHR: Double = 0
+    
+    @objc func update_Interval_Values() {
+
+        interval.heartrates.append(rt.rt_hr)
+        interval.distances.append(rt.total_distance)
+        interval.cadences.append(rt.rt_cadence)
         
-        if localTimerInterval != rtTimer_Interval {
-            reset_rtTimer()
+        interval.hr = (interval.heartrates.reduce(0, +)) / 30
+        interval.cadence = (interval.heartrates.reduce(0, +)) / 30
+        interval.speed = (interval.distances.last! - interval.distances.first!) / (30 * 60 * 60)
+        
+        print("interval hr, spd, cad")
+        print(interval.hr, interval.speed, interval.cadence)
+        
+        if interval.heartrates.count == 29 {
+            interval.heartrates.removeFirst()
+            interval.cadences.removeFirst()
+            interval.distances.removeFirst();
         }
+        
     }
     
     func reset_rtTimer() {
@@ -552,13 +548,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         start_rtTimer()
     }
     
-    var localTimerInterval = 1.0
+
     //have to restart on settings change
     func start_rtTimer() {
-        localTimerInterval = rtTimer_Interval
         rtTimer = Timer()
-        rtTimer = Timer.scheduledTimer(timeInterval: rtTimer_Interval, target: self, selector: #selector(Update_rtTimer), userInfo: nil, repeats: true)
-        print("Start rt Timer")
+        rtTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(update_Interval_Values), userInfo: nil, repeats: true)
         roundStartTime = NSDate()
     }
     
@@ -575,12 +569,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-//        backgroundImage.image = UIImage(named: "Default-7506-landscape_1334x750")
-//        backgroundImage.contentMode = UIViewContentMode.scaleAspectFill
-//        backgroundImage.alpha = 0.2
-//        self.view.insertSubview(backgroundImage, at: 0)
+
         
         centralManager = CBCentralManager(delegate: self, queue: nil)
         self.BLTE_TableViewOutlet.addSubview(refreshControl)
