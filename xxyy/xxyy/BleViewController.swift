@@ -61,6 +61,53 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var inRoundHR: Double = 0
     var totalAvgHR: Double = 0
     
+    
+    func newRoundActionSheet() {
+        
+            // 1
+            let optionMenu = UIAlertController(title: nil, message: "ROUND COMPLETE", preferredStyle: .actionSheet)
+            
+            let a1 = UIAlertAction(title: "SPD:  00.00", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                //print("Action700x25")
+                //wheelCircumference = 2105
+                //self.lbl_TireSizeCell.text = "700X25 TIRE SIZE"
+            })
+            
+            let a2 = UIAlertAction(title: "HRT:  000", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            let a3 = UIAlertAction(title: "CAD:  00", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            
+            //
+            let cancelAction = UIAlertAction(title: "%MAX:  00%", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                //print("Cancelled")
+            })
+            
+            
+            // 4
+            optionMenu.addAction(a1)
+            optionMenu.addAction(a2)
+            optionMenu.addAction(a3)
+            optionMenu.addAction(cancelAction)
+            
+            // 5
+            self.present(optionMenu, animated: true, completion: nil)
+        
+        // change to desired number of seconds (in this case 5 seconds)
+        let when = DispatchTime.now() + 5
+        DispatchQueue.main.asyncAfter(deadline: when){
+            // your code with delay
+            optionMenu.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    
     func newRound() {  //every 300 sec
         
         round.speeds.append(round.speed)
@@ -71,6 +118,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         roundStartTime = NSDate()
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
+        
+        newRoundActionSheet()
         
         
 //        TODO:  USE ACTIONSHEET FOR NOTIFICATION - SPECIFIC FOR EACH VIEW, OR JUST UPDATE STATUS BAR?
@@ -105,6 +154,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         round.cadence = inRoundCadence
         
+        if z == 10 {
+            newRoundActionSheet()
+        }
 
         if z % 5 == 0 
         {
@@ -531,8 +583,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         interval.cadence = (interval.heartrates.reduce(0, +)) / 30
         interval.speed = (interval.distances.last! - interval.distances.first!) / (30 * 60 * 60)
         
-        print("interval hr, spd, cad")
-        print(interval.hr, interval.speed, interval.cadence)
+//        print("interval hr, spd, cad")
+//        print(interval.hr, interval.speed, interval.cadence)
         
         if interval.heartrates.count == 29 {
             interval.heartrates.removeFirst()
