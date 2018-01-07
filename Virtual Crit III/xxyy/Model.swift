@@ -79,6 +79,7 @@ struct interval {
 }
 
 struct round {
+    static var inRoundTimer: Int = 0
     static var speed: Double = 0
     static var cadence: Double = 0
     static var hr: Double = 0

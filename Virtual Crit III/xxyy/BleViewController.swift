@@ -79,21 +79,19 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         // 1
         let optionMenu = UIAlertController(title: nil, message: "ROUND COMPLETE", preferredStyle: .actionSheet)
 
-        let a1 = UIAlertAction(title: "SPD:  00.00", style: .default, handler: {
+        let a1 = UIAlertAction(title: "SPD:  \(stringer2(myIn: round.speeds.last!))  MPH", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
 
-        let a2 = UIAlertAction(title: "HRT:  000", style: .default, handler: {
+        let a2 = UIAlertAction(title: "HRT:  \(stringer1(myIn: round.heartrates.last!))  BPM", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
 
-        let a3 = UIAlertAction(title: "CAD:  00", style: .default, handler: {
+        let a3 = UIAlertAction(title: "CAD:  \(stringer1(myIn: round.cadences.last!))  RPM", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
-
-
-        //
-        let cancelAction = UIAlertAction(title: "00 %MAX HR", style: .cancel, handler: {
+        let percentofmax = stringer2(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
+        let cancelAction = UIAlertAction(title: "SCORE:  \(percentofmax) %MAX HR", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
             //print("Cancelled")
         })
@@ -119,7 +117,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         optionMenu.presentInOwnWindow(animated: true, completion: {
                     print("completed")
-            let when = DispatchTime.now() + 5
+            let when = DispatchTime.now() + 10
             DispatchQueue.main.asyncAfter(deadline: when){
                 optionMenu.dismiss(animated: true, completion: nil)
             }
@@ -169,12 +167,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let a = totalWheelRevs - roundWheelRevs_atStart
         let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
         let c = Double(z) / Double(60) / Double(60)
+        round.inRoundTimer = z
+        
         inRoundSpeed = Double(a) * Double(b) / Double(c)
         
         round.speed = inRoundSpeed
         
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
-        inRoundCadence = d / (Double(z) * 60)
+        inRoundCadence = (d / y) * 60.0
+        print(d)
+        print(inRoundCadence)
         
         round.cadence = inRoundCadence
         
@@ -453,16 +455,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
                 //print("SPD value[1]");print(value[1])
-                //out_Btn2.setTitle(String(value[1]), for: .normal)
+                out_Btn2.setTitle(String(value[1]), for: .normal)
                 processWheelData(withData: data)
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    //out_Btn3.setTitle(String(value[7]), for: .normal)
+                    out_Btn3.setTitle(String(value[7]), for: .normal)
                     //print("CAD value[7]");print(value[7])
                     processCrankData(withData: data, andCrankRevolutionIndex: 7)
                 }
             } else {
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    //out_Btn3.setTitle(String(value[1]), for: .normal)
+                    out_Btn3.setTitle(String(value[1]), for: .normal)
                     //print("CAD value[1]");print(value[1])
                     processCrankData(withData: data, andCrankRevolutionIndex: 1)
                 }
@@ -604,8 +606,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         interval.cadences.append(rt.rt_cadence)
         
         interval.hr = (interval.heartrates.reduce(0, +)) / 30
-        interval.cadence = (interval.heartrates.reduce(0, +)) / 30
-        interval.speed = (interval.distances.last! - interval.distances.first!) / (30 * 60 * 60)
+        interval.cadence = (interval.cadences.reduce(0, +)) / 30
+        interval.speed = (interval.distances.last! - interval.distances.first!) * (2 * 60)  //30 sec as an hour
         
 //        print("interval hr, spd, cad")
 //        print(interval.hr, interval.speed, interval.cadence)

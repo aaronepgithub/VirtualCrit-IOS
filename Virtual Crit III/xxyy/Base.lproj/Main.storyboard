@@ -13,11 +13,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Verdana.ttf">
-            <string>Verdana</string>
-        </array>
         <array key="VerdanaBold.ttf">
             <string>Verdana-Bold</string>
+        </array>
+        <array key="VerdanaBoldItalic.ttf">
+            <string>Verdana-BoldItalic</string>
         </array>
     </customFonts>
     <scenes>
@@ -29,7 +29,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" id="svn-sh-zoM">
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" id="svn-sh-zoM">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -55,10 +55,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tJf-56-bsa">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="🇯🇵  NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tJf-56-bsa">
                                                     <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -72,10 +72,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="AUDIO OFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BHr-Ko-zKy">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="🇯🇵  AUDIO OFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BHr-Ko-zKy">
                                                     <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -89,10 +89,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MAX HR: 185" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Stt-dv-Bao">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="🇯🇵  MAX HR: 185" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Stt-dv-Bao">
                                                     <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -110,10 +110,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" text="700X25 TIRE SIZE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULF-a7-v3T">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" text="🇯🇵  700X25 TIRE SIZE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULF-a7-v3T">
                                                     <rect key="frame" x="16" y="0.0" width="359" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -138,7 +138,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="BLUETOOTH SENSORS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IZk-pG-aOC">
                                                     <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-BoldItalic" family="Verdana" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -155,7 +155,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="HISTORY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cg3-m0-sYO">
                                                     <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="Verdana-BoldItalic" family="Verdana" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -205,13 +205,13 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="ALt-22-Jly" userLabel="CAD Label">
-                                <rect key="frame" x="219" y="259" width="35" height="18.5"/>
+                                <rect key="frame" x="218.5" y="259" width="35" height="18.5"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HR  00 %MAX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="2u0-0o-UD0" userLabel="HR Label">
-                                <rect key="frame" x="25.5" y="259" width="117.5" height="18.5"/>
+                                <rect key="frame" x="26" y="259" width="117.5" height="18.5"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -630,7 +630,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReuseID1" textLabel="U9j-ol-HI4" detailTextLabel="0fP-W8-vjP" style="IBUITableViewCellStyleSubtitle" id="dhv-QP-Koy" customClass="BLTE_TableViewCell" customModule="xxyy" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReuseID1" textLabel="U9j-ol-HI4" detailTextLabel="0fP-W8-vjP" style="IBUITableViewCellStyleSubtitle" id="dhv-QP-Koy" customClass="BLTE_TableViewCell" customModule="xxyy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="288" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dhv-QP-Koy" id="keL-wv-EBY">
@@ -705,18 +705,20 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VIRTUAL CRIT II" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCo-GC-fu9">
                                     <rect key="frame" x="0.0" y="317.5" width="784" height="31"/>
                                     <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
-                                    <nil key="textColor"/>
+                                    <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvO-Xe-i48">
                                     <rect key="frame" x="0.0" y="368.5" width="784" height="43"/>
                                     <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
-                                    <state key="normal" title="Start"/>
+                                    <state key="normal" title="Start">
+                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
                                     <connections>
                                         <action selector="action_CloseStartupView:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="kSc-kg-xoq"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_640x960" translatesAutoresizingMaskIntoConstraints="NO" id="Klr-xn-bWm">
+                                <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_640x960" translatesAutoresizingMaskIntoConstraints="NO" id="Klr-xn-bWm">
                                     <rect key="frame" x="-100" y="268.5" width="984" height="480"/>
                                 </imageView>
                             </subviews>
@@ -776,7 +778,7 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 SEC       5 MIN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dX7-8M-Qvw">
-                                <rect key="frame" x="63.5" y="312.5" width="193.5" height="24.5"/>
+                                <rect key="frame" x="64" y="312.5" width="193.5" height="24.5"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1076,10 +1078,26 @@
                         <viewLayoutGuide key="safeArea" id="WT6-f1-Om4"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Ride" image="ic_directions_bike" badgeValue="X" id="1dg-32-DTA"/>
+                    <connections>
+                        <outlet property="BIG_B_VERT" destination="WQo-YR-DAT" id="oGw-s6-JnV"/>
+                        <outlet property="BIG_L_HZ" destination="U9I-O9-X1q" id="lfY-WH-YLS"/>
+                        <outlet property="BIG_MIDDLE" destination="6mE-fa-A6M" id="OFw-qB-ti0"/>
+                        <outlet property="BIG_R_HZ" destination="Kdb-tx-wmz" id="GMU-gz-Kgx"/>
+                        <outlet property="BIG_T_VERT" destination="Ekp-Iu-KE3" id="x6V-bJ-yRN"/>
+                        <outlet property="btmVERT" destination="DTx-HP-u5Z" id="nSB-VR-cgq"/>
+                        <outlet property="footer" destination="yVb-ro-f1i" id="eFH-Cd-Iz4"/>
+                        <outlet property="header" destination="Jb7-WI-TFA" id="GZh-8T-f2B"/>
+                        <outlet property="leftHZ" destination="jbv-e1-uAR" id="erb-fI-Its"/>
+                        <outlet property="midHZ" destination="nZn-O0-iTq" id="zb0-3U-az1"/>
+                        <outlet property="midVERT" destination="vDg-zR-RbI" id="94h-cH-U32"/>
+                        <outlet property="rightHZ" destination="vdn-MR-Bgj" id="yis-7J-T8A"/>
+                        <outlet property="timeOfDay" destination="YRm-OM-vFo" id="FzZ-Zq-BJr"/>
+                        <outlet property="topVERT" destination="lPy-CI-Fz3" id="og9-F1-Y2s"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l2r-ot-6dz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2122.5" y="930.63380281690138"/>
+            <point key="canvasLocation" x="1974" y="883"/>
         </scene>
         <!--Item-->
         <scene sceneID="TKf-ZQ-3Yb">
@@ -1090,36 +1108,53 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HISTORY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="peK-SO-teo">
-                                <rect key="frame" x="0.0" y="28" width="320" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <rect key="frame" x="95.5" y="27" width="129" height="31"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M68-iw-Xbb">
-                                <rect key="frame" x="0.0" y="436" width="320" height="36"/>
+                                <rect key="frame" x="0.0" y="422" width="320" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="o3f-Z0-ru7"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="DISMISS"/>
                                 <connections>
                                     <action selector="act_Dismiss:" destination="7gV-ud-VO6" eventType="touchUpInside" id="dMs-hB-K4E"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0 00.00 000.0" textAlignment="center" lineBreakMode="clip" numberOfLines="6" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="QNn-o3-ofe" userLabel="Label1">
+                                <rect key="frame" x="16" y="88" width="288" height="300"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="TNF-a1-SKh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="21"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="M68-iw-Xbb" firstAttribute="leading" secondItem="Ndw-2o-UvF" secondAttribute="leading" id="1ns-Y7-zDR"/>
-                            <constraint firstItem="peK-SO-teo" firstAttribute="leading" secondItem="Ndw-2o-UvF" secondAttribute="leading" id="9Ob-mb-Jag"/>
-                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="bottom" secondItem="M68-iw-Xbb" secondAttribute="bottom" constant="8" id="MA2-2F-n6W"/>
-                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="trailing" secondItem="M68-iw-Xbb" secondAttribute="trailing" id="XoL-px-gsq"/>
-                            <constraint firstItem="peK-SO-teo" firstAttribute="top" secondItem="Ndw-2o-UvF" secondAttribute="top" constant="8" id="rPu-LK-irV"/>
-                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="trailing" secondItem="peK-SO-teo" secondAttribute="trailing" id="vM2-AA-OIm"/>
+                            <constraint firstItem="QNn-o3-ofe" firstAttribute="top" secondItem="wxs-3i-SYZ" secondAttribute="top" constant="88" id="3iB-zd-y7u"/>
+                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="trailing" secondItem="QNn-o3-ofe" secondAttribute="trailing" constant="16" id="4fE-cB-9me"/>
+                            <constraint firstItem="QNn-o3-ofe" firstAttribute="top" secondItem="peK-SO-teo" secondAttribute="bottom" constant="30" id="A6w-pI-fxe"/>
+                            <constraint firstItem="M68-iw-Xbb" firstAttribute="leading" secondItem="wxs-3i-SYZ" secondAttribute="leading" id="SLX-ab-tTa"/>
+                            <constraint firstItem="QNn-o3-ofe" firstAttribute="centerX" secondItem="peK-SO-teo" secondAttribute="centerX" id="Yg7-84-lP3"/>
+                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="bottom" secondItem="M68-iw-Xbb" secondAttribute="bottom" constant="8" id="awc-c9-jNo"/>
+                            <constraint firstItem="M68-iw-Xbb" firstAttribute="centerX" secondItem="peK-SO-teo" secondAttribute="centerX" id="ghW-H2-trU"/>
+                            <constraint firstItem="QNn-o3-ofe" firstAttribute="leading" secondItem="Ndw-2o-UvF" secondAttribute="leading" constant="16" id="hub-LP-hHN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ndw-2o-UvF"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="mb8-4q-Ozb"/>
+                    <connections>
+                        <outlet property="lbl_1" destination="QNn-o3-ofe" id="5VJ-jx-Fg4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Tb-z8-MBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="247" y="-799"/>
+            <point key="canvasLocation" x="-52" y="-866"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
