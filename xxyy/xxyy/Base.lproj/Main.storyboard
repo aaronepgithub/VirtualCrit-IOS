@@ -1133,9 +1133,9 @@
                     <connections>
                         <segue destination="BuI-6M-AlA" kind="relationship" relationship="viewControllers" id="bfd-DU-XNi"/>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="gdp-Tx-TMd" kind="relationship" relationship="viewControllers" id="6Sx-ch-nyb"/>
                         <segue destination="hOZ-dJ-nVY" kind="relationship" relationship="viewControllers" id="JYv-su-PMU"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
-                        <segue destination="gdp-Tx-TMd" kind="relationship" relationship="viewControllers" id="6Sx-ch-nyb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
