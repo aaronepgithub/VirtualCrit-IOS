@@ -9,6 +9,18 @@
 import UIKit
 import CoreBluetooth
 
+extension UIAlertController {
+    
+    func presentInOwnWindow(animated: Bool, completion: (() -> Void)?) {
+        let alertWindow = UIWindow(frame: UIScreen.main.bounds)
+        alertWindow.rootViewController = UIViewController()
+        alertWindow.windowLevel = UIWindowLevelAlert + 1;
+        alertWindow.makeKeyAndVisible()
+        alertWindow.rootViewController?.present(self, animated: animated, completion: completion)
+    }
+    
+}
+
 extension UIViewController {
 
     func alert(message: String, title: String = "") {
@@ -64,47 +76,61 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func newRoundActionSheet() {
         
-            // 1
-            let optionMenu = UIAlertController(title: nil, message: "ROUND COMPLETE", preferredStyle: .actionSheet)
-            
-            let a1 = UIAlertAction(title: "SPD:  00.00", style: .default, handler: {
-                (alert: UIAlertAction!) -> Void in
-                //print("Action700x25")
-                //wheelCircumference = 2105
-                //self.lbl_TireSizeCell.text = "700X25 TIRE SIZE"
-            })
-            
-            let a2 = UIAlertAction(title: "HRT:  000", style: .default, handler: {
-                (alert: UIAlertAction!) -> Void in
-            })
-            
-            let a3 = UIAlertAction(title: "CAD:  00", style: .default, handler: {
-                (alert: UIAlertAction!) -> Void in
-            })
-            
-            
-            //
-            let cancelAction = UIAlertAction(title: "%MAX:  00%", style: .cancel, handler: {
-                (alert: UIAlertAction!) -> Void in
-                //print("Cancelled")
-            })
-            
-            
-            // 4
-            optionMenu.addAction(a1)
-            optionMenu.addAction(a2)
-            optionMenu.addAction(a3)
-            optionMenu.addAction(cancelAction)
-            
-            // 5
-            self.present(optionMenu, animated: true, completion: nil)
+        // 1
+        let optionMenu = UIAlertController(title: nil, message: "ROUND COMPLETE", preferredStyle: .actionSheet)
+
+        let a1 = UIAlertAction(title: "SPD:  00.00", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+
+        let a2 = UIAlertAction(title: "HRT:  000", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+
+        let a3 = UIAlertAction(title: "CAD:  00", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+
+
+        //
+        let cancelAction = UIAlertAction(title: "00 %MAX HR", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            //print("Cancelled")
+        })
+
+
+        // 4
+        optionMenu.addAction(a1)
+        optionMenu.addAction(a2)
+        optionMenu.addAction(a3)
+        optionMenu.addAction(cancelAction)
+
+        //st
+//        let alertController = UIAlertController(title: "<Alert Title>", message: "<Alert Message>", preferredStyle: .alert)
+//        alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+//        alertController.presentInOwnWindow(animated: true, completion: {
+//            print("completed")
+//        })
+        //end
+        
+        
+        // 5
+        //self.present(optionMenu, animated: true, completion: nil)
+        
+        optionMenu.presentInOwnWindow(animated: true, completion: {
+                    print("completed")
+            let when = DispatchTime.now() + 5
+            DispatchQueue.main.asyncAfter(deadline: when){
+                optionMenu.dismiss(animated: true, completion: nil)
+            }
+                })
         
         // change to desired number of seconds (in this case 5 seconds)
-        let when = DispatchTime.now() + 5
-        DispatchQueue.main.asyncAfter(deadline: when){
-            // your code with delay
-            optionMenu.dismiss(animated: true, completion: nil)
-        }
+//        let when = DispatchTime.now() + 5
+//        DispatchQueue.main.asyncAfter(deadline: when){
+//            // your code with delay
+//            optionMenu.dismiss(animated: true, completion: nil)
+//        }
     }
     
     
@@ -121,8 +147,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         newRoundActionSheet()
         
-        
-//        TODO:  USE ACTIONSHEET FOR NOTIFICATION - SPECIFIC FOR EACH VIEW, OR JUST UPDATE STATUS BAR?
     }
     
     var veloS: Double = 0;
