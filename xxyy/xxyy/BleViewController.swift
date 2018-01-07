@@ -178,9 +178,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         round.cadence = inRoundCadence
         
-        if z == 10 {
-            newRoundActionSheet()
-        }
+//        if z == 10 {
+//            newRoundActionSheet()
+//        }
 
         if z % 5 == 0 
         {
@@ -663,6 +663,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             firstLoad = 1
             ViewStartup.center = view.center
             view.addSubview(ViewStartup)
+            
+            let when = DispatchTime.now() + 2
+            DispatchQueue.main.asyncAfter(deadline: when){
+                self.ViewStartup.removeFromSuperview()
+                            self.tabBarController?.selectedIndex = 0;
+            }
+            
+//            ViewStartup.removeFromSuperview()
+//            self.tabBarController?.selectedIndex = 0;
+            
         }
         
     }
