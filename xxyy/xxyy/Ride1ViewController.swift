@@ -28,6 +28,7 @@ class FirstViewController: UIViewController {
 //            print(currentPoint.x)
 //        }
 //    }
+
     
     @objc func switchToDataTabCont(){
         
@@ -85,6 +86,7 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var lbl_cadLabel: UILabel!
     
     
+
     
     
     @objc func update1() {
