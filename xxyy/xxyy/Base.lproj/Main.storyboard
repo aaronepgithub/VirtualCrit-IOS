@@ -897,10 +897,10 @@
             </objects>
             <point key="canvasLocation" x="1269" y="1028"/>
         </scene>
-        <!--Ride-->
+        <!--RIDE-->
         <scene sceneID="9OY-u8-kWl">
             <objects>
-                <viewController id="gdp-Tx-TMd" customClass="RideX_ViewController" customModule="xxyy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="gdp-Tx-TMd" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RBO-At-OVI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1075,7 +1075,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WT6-f1-Om4"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Ride" image="ic_directions_bike" badgeValue="X" id="1dg-32-DTA"/>
+                    <tabBarItem key="tabBarItem" title="RIDE" image="ic_directions_bike" badgeValue="X" id="1dg-32-DTA"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l2r-ot-6dz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
