@@ -60,7 +60,7 @@ func stringer2(myIn: Double) -> String {
             let myOut = String(format:"%.2f", myIn)
             return myOut
         } else {
-            let myOut = String(format:"%.2f", myIn)
+            //let myOut = String(format:"%.2f", myIn)
             return "0"
         }
 
