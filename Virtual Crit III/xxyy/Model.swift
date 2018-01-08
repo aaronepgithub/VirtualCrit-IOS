@@ -18,32 +18,52 @@ func createTimeString(seconds: Int)->String
 }
 
 func stringer0(myIn: Double) -> String {
-    if myIn.isNaN == true {
+    if myIn.isNaN == true || myIn.isInfinite == true  {
         return "0"
     } else {
-        let myOut = String(format:"%.0f", myIn)
-        return myOut
+        if myIn >= 0 {
+            let myOut = String(format:"%.0f", myIn)
+            return myOut
+        } else {
+            return "0"
+        }
+
     }
 
 }
 
 func stringer1(myIn: Double) -> String {
     
-    if myIn.isNaN == false {
-        let myOut = String(format:"%.1f", myIn)
-        return myOut
+    if myIn.isNaN == false || myIn.isInfinite == false {
+        if myIn >= 0 {
+            let myOut = String(format:"%.1f", myIn)
+            return myOut
+        } else {
+            return "0.0"
+        }
+
     } else {
-        let myOut = "0.0"
-        return myOut
+        if myIn >= 0 {
+            let myOut = "0.0"
+            return myOut
+        } else {
+            return "0.0"
+        }
     }
 }
 
 func stringer2(myIn: Double) -> String {
-    if myIn.isNaN == true {
+    if myIn.isNaN == true || myIn.isInfinite == true {
         return "0"
     } else {
-        let myOut = String(format:"%.2f", myIn)
-        return myOut
+        if myIn >= 0 {
+            let myOut = String(format:"%.2f", myIn)
+            return myOut
+        } else {
+            let myOut = String(format:"%.2f", myIn)
+            return "0"
+        }
+
     }
 }
 

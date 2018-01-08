@@ -40,7 +40,7 @@ class HistoryViewController: UIViewController {
         var text2 = ""
         
         while s > 0 && a < 5 {
-            text2 += "\(stringer1(myIn: round.speeds[s-1])) "
+            text2 += "\(stringer2(myIn: round.speeds[s-1])) "
             text2 += "\(stringer1(myIn: round.cadences[s-1])) "
             text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
             text2 += "\n"

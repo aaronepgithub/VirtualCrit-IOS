@@ -454,16 +454,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
                 //print("SPD value[1]");print(value[1])
-                out_Btn2.setTitle(String(value[1]), for: .normal)
+                out_Top2.setTitle(String(value[1]), for: .normal)
                 processWheelData(withData: data)
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    out_Btn3.setTitle(String(value[7]), for: .normal)
+                    out_Top3.setTitle(String(value[7]), for: .normal)
                     //print("CAD value[7]");print(value[7])
                     processCrankData(withData: data, andCrankRevolutionIndex: 7)
                 }
             } else {
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    out_Btn3.setTitle(String(value[1]), for: .normal)
+                    out_Top3.setTitle(String(value[1]), for: .normal)
                     //print("CAD value[1]");print(value[1])
                     processCrankData(withData: data, andCrankRevolutionIndex: 1)
                 }
