@@ -29,8 +29,12 @@ class Settings: UITableViewController {
             let textField = alert.textFields![0] as UITextField
             
             print(textField.text as Any)
+            
             if textField.text != nil {
+                name = textField.text!
                 self.lbl_NameCell.text = textField.text?.uppercased()
+            } else {
+                self.lbl_NameCell.text = name
             }
             
         }
@@ -41,6 +45,7 @@ class Settings: UITableViewController {
         
         alert.addAction(action)
         self.present(alert, animated:true, completion: nil)
+        self.lbl_NameCell.text = name
         
     }
     
@@ -123,8 +128,9 @@ class Settings: UITableViewController {
         }
         
         if indexPath.section == 0 && indexPath.row == 3 {
-            print("HR Cell")
+            
              let x = lbl_MaxHR.text
+            //print("HR Cell:  \(x)")
             
             if x == "MAX HR: 185" {
                 lbl_MaxHR.text = "MAX HR: 190"
@@ -139,6 +145,8 @@ class Settings: UITableViewController {
                 lbl_MaxHR.text = "MAX HR: 185"
                 settings_MAXHR = 185
             }
+            
+            lbl_MaxHR.text = "MAX HR: \(stringer0(myIn: settings_MAXHR))"
             
         }
 

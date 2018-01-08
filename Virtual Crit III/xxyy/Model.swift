@@ -50,6 +50,7 @@ func stringer2(myIn: Double) -> String {
 
 var wheelCircumference: Double = 2105
 var rtTimer_Interval: Double = 1.0
+var name = "TIM"
 
 struct rt {
     static var rt_speed: Double = 0

@@ -175,8 +175,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = (d / y) * 60.0
-        print(d)
-        print(inRoundCadence)
+
         
         round.cadence = inRoundCadence
         
