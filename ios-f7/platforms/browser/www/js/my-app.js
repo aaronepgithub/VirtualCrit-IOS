@@ -595,91 +595,76 @@ var view3 = myApp.addView('#view-3');
 var view4 = myApp.addView('#view-4');
 
 
-var page3default = '  <div class="myContentBlock content-block vertride"> ' +
-  '<div class="row">' +
-  '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-  '  </div>' +
+var page3default = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-100" style="font-size: 1em">SPEED</div></div><div class="row"><div class="rtSPD col-100" style="font-size: 6em">0</div></div><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 6em">0</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 6em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
 
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
-  '  </div>' +
 
-  '  <div class="row">' +
-  '    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
-  '  </div>' +
+var page3option1 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 9em">0</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 9em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
 
-  '  <div class="row">' +
-  '    <div class="col-50 rtSCORE" style="font-size: 1.5em">HR 0%</div>' +
-  '    <div class="col-50" style="font-size: 1.5em">CAD</div>' +
-  '  </div>' +
+// var page3option2 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-100 rtSCORE" style="font-size: 3em">HR 0%</div><div class="rtHR col-100" style="font-size: 11em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
 
-  '<div class="row">' +
-  '    <div class="rtHR col-50" style="font-size: 8em">0</div>' +
-  '    <div class="rtCAD col-50" style="font-size: 8em">0</div>' +
-  '  </div>' +
+//LIKE THIS OPTION, CORRECT THE CLASS TAGS TO GET DATA - NOT JUST SCORE TAGS
 
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-  '  </div>' +
-  '</div>   ';
-
-var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
-  '<div class="row">' +
-  '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-  '  </div>' +
-
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
-  '  </div>' +
-
-  '  <div class="row">' +
-  '    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
-  '  </div>' +
-
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 1em">CAD</div>' +
-  // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
-  '  </div>' +
-
-  '<div class="row">' +
-  // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-  '    <div class="rtCAD col-100" style="font-size: 9em">0</div>' +
-  '  </div>' +
-
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-  '  </div>' +
-  '</div>   ';
+var page3option2 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">75%</div><div class="col-80 rtSCORE" style="font-size: 6em">125</div></div><div class="row"><div class="col-20 rtSCORE" style="font-size: 2em">SPD</div><div class="col-80 rtSCORE" style="font-size: 6em">18.45</div></div><div class="row"><div class="col-20 rtSCORE" style="font-size: 2em">CAD</div><div class="col-80 rtSCORE" style="font-size: 6em">78</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
 
 
 
-var page3option2 = '  <div class="myContentBlock content-block vertride"> ' +
-  '<div class="row">' +
-  '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-  '  </div>' +
+// var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
+//   '<div class="row">' +
+//   '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="col-100" style="font-size: 1em">CAD</div>' +
+//   // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
+//   '  </div>' +
+//
+//   '<div class="row">' +
+//   // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+//   '    <div class="rtCAD col-100" style="font-size: 9em">0</div>' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+//   '  </div>' +
+//   '</div>   ';
 
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 1.5em">CAD INTERVAL</div>' +
-  '  </div>' +
 
-  '  <div class="row">' +
-  '    <div class="intervalCAD col-100" style="font-size: 8.5em">0</div>' +
-  '  </div>' +
 
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 1.5em">HR INTERVAL</div>' +
-  // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
-  '  </div>' +
-
-  '<div class="row">' +
-  // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-  '    <div class="intervalHR col-100" style="font-size: 8.5em">0</div>' +
-  '  </div>' +
-
-  '  <div class="row">' +
-  '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-  '  </div>' +
-  '</div>   ';
+// var page3option2 = '  <div class="myContentBlock content-block vertride"> ' +
+//   '<div class="row">' +
+//   '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="col-100" style="font-size: 1.5em">CAD INTERVAL</div>' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="intervalCAD col-100" style="font-size: 8.5em">0</div>' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="col-100" style="font-size: 1.5em">HR INTERVAL</div>' +
+//   // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
+//   '  </div>' +
+//
+//   '<div class="row">' +
+//   // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
+//   '    <div class="intervalHR col-100" style="font-size: 8.5em">0</div>' +
+//   '  </div>' +
+//
+//   '  <div class="row">' +
+//   '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
+//   '  </div>' +
+//   '</div>   ';
 
 
 var page4default = ' <div content-block horizride> ' +
@@ -750,4 +735,3 @@ var view4HTML = '<div id="view4nav" class="navbar">' +
 '  </div>'+
 '</div>'+
 '</div>';
-
