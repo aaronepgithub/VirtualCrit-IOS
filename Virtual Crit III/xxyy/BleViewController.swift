@@ -205,7 +205,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
         }
         
-        if z >= 300 {
+        if z >= 300 { //set to sec per round
             round.heartrates.append(round.hr)
             inRoundHR = 0
 //            LocalNotification.registerForLocalNotification(on: UIApplication.shared)

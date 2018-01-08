@@ -17,47 +17,39 @@ class HistoryViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @objc func update1() {
+        
+        var s = round.speeds.count
+        var a = 0
+        if s == 0 {return}
+        
+        let text1 = "SPD   CAD   HRT"
+        var text2 = ""
+        
+        while s > 0 && a < 5 {
+            text2 += "\(stringer1(myIn: round.speeds[s-1])) "
+            text2 += "\(stringer1(myIn: round.cadences[s-1])) "
+            text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+            text2 += "\n"
+            s = s - 1
+            a = a + 1
+            //print(text2)
+        }
+        
+        lbl_1.text = "\(text1) \n\(text2)"
+
+
+
+
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
 
-//        let s = round.speeds.count
-        
-//        let s2 = stringer1(myIn: round.speeds.last!)
-//        let s3 = stringer1(myIn: round.speeds[s-2])
-//        let s4 = stringer1(myIn: round.speeds[s-3])
-//
-//        let c2 = stringer1(myIn: round.cadences.last!)
-//        let c3 = stringer1(myIn: round.cadences[s-2])
-//        let c4 = stringer1(myIn: round.cadences[s-3])
-//
-//        let h2 = stringer1(myIn: round.heartrates.last!)
-//        let h3 = stringer1(myIn: round.heartrates[s-2])
-//        let h4 = stringer1(myIn: round.heartrates[s-3])
-       
-//        let s2 = 11.12
-//        let s3 = 11.12
-//        let s4 = 11.12
-//
-//        let c2 = 11.1
-//        let c3 = 11.1
-//        let c4 = 11.1
-//
-//        let h2 = 111.1
-//        let h3 = 111.1
-//        let h4 = 111.1
-        
-//        let text1 = "SPD   CAD   HRT"
-        
-        
-//        let text2 = " \(s2) \(c2) \(h2)"
-//        let text3 = " \(s3) \(c3) \(h3)"
-//        let text4 = " \(s4) \(c4) \(h4)"
-        
-        
-//        lbl_1.text = "\(text1) \n\(text2) \n\(text3) \n\(text4) "
-        
-//ADD REFRESH ON NOTIFY
     }
 
     override func didReceiveMemoryWarning() {
