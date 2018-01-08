@@ -353,20 +353,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="HR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="qO1-Vw-o8J" userLabel="HR LabelX">
-                                <rect key="frame" x="86" y="127" width="28" height="21"/>
-                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="CAD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="N40-85-lpg" userLabel="CAD LabelX">
-                                <rect key="frame" x="547" y="127" width="40" height="21"/>
-                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPEED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="4Y3-yb-i0N" userLabel="SPEED Label">
                                 <rect key="frame" x="123.5" y="313.5" width="73" height="24.5"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="20"/>
@@ -396,7 +382,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="96" height="384"/>
                                         <subviews>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="hqY-u0-viy" userLabel="Big HR">
-                                                <rect key="frame" x="-45" y="2.5" width="118" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="-58" width="117.5" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="55"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -473,10 +459,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Oa6-rn-waN" firstAttribute="trailing" secondItem="cZJ-kS-Jwi" secondAttribute="trailing" constant="-8" id="4Iw-wz-0be"/>
-                            <constraint firstItem="hqY-u0-viy" firstAttribute="centerY" secondItem="qO1-Vw-o8J" secondAttribute="centerY" constant="50" id="4hf-mD-ZfX"/>
                             <constraint firstItem="vIe-ng-7lK" firstAttribute="centerY" secondItem="4Y3-yb-i0N" secondAttribute="centerY" constant="-75" id="8U6-us-9JY"/>
                             <constraint firstItem="4Y3-yb-i0N" firstAttribute="centerX" secondItem="vIe-ng-7lK" secondAttribute="centerX" id="8Ur-sw-hzi"/>
-                            <constraint firstItem="N40-85-lpg" firstAttribute="centerX" secondItem="qF4-9v-juS" secondAttribute="centerX" id="A6F-MV-b14"/>
                             <constraint firstItem="cZJ-kS-Jwi" firstAttribute="trailing" secondItem="vJ9-gp-5Qi" secondAttribute="trailing" id="ANV-iK-LrK"/>
                             <constraint firstItem="Oa6-rn-waN" firstAttribute="leading" secondItem="cZJ-kS-Jwi" secondAttribute="leading" constant="8" id="FnX-VU-LBK"/>
                             <constraint firstItem="CYv-wX-pQS" firstAttribute="leading" secondItem="cZJ-kS-Jwi" secondAttribute="leading" constant="8" id="MC4-WI-VNV"/>
@@ -487,26 +471,17 @@
                             <constraint firstItem="Oa6-rn-waN" firstAttribute="top" secondItem="vJ9-gp-5Qi" secondAttribute="bottom" id="WE1-Ya-8zD"/>
                             <constraint firstItem="cZJ-kS-Jwi" firstAttribute="bottom" secondItem="Oa6-rn-waN" secondAttribute="bottom" constant="8" id="bfp-pH-DjU"/>
                             <constraint firstItem="cZJ-kS-Jwi" firstAttribute="trailing" secondItem="qnW-Ol-Gqw" secondAttribute="trailing" id="eE7-pC-Its"/>
-                            <constraint firstItem="qF4-9v-juS" firstAttribute="centerY" secondItem="N40-85-lpg" secondAttribute="centerY" constant="50" id="hNl-70-Rnj"/>
                             <constraint firstItem="vJ9-gp-5Qi" firstAttribute="top" secondItem="cZJ-kS-Jwi" secondAttribute="top" id="lCZ-4G-7p4"/>
                             <constraint firstItem="qnW-Ol-Gqw" firstAttribute="leading" secondItem="cZJ-kS-Jwi" secondAttribute="leading" id="lWu-aF-4iN"/>
-                            <constraint firstItem="qO1-Vw-o8J" firstAttribute="centerX" secondItem="hqY-u0-viy" secondAttribute="centerX" id="qEf-eh-2uN"/>
                             <constraint firstItem="vJ9-gp-5Qi" firstAttribute="centerX" secondItem="s1l-j0-fu5" secondAttribute="centerX" id="xkt-Au-hib"/>
                             <constraint firstItem="Oa6-rn-waN" firstAttribute="top" secondItem="qnW-Ol-Gqw" secondAttribute="bottom" id="yM0-9q-Jiw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cZJ-kS-Jwi"/>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="constraints">
-                                <exclude reference="hNl-70-Rnj"/>
-                                <exclude reference="A6F-MV-b14"/>
-                            </mask>
-                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="&lt;&gt;" image="ic_directions_bike" badgeValue="2" id="Gam-lJ-hLQ">
                         <color key="badgeColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBarItem>
                     <connections>
-                        <outlet property="lbl_hrLabel" destination="qO1-Vw-o8J" id="Suu-q5-Vha"/>
                         <outlet property="lbl_top_StatusBar" destination="CYv-wX-pQS" id="SOO-O4-eLg"/>
                         <outlet property="out_Bottom" destination="Oa6-rn-waN" id="Z6X-bo-pal"/>
                         <outlet property="out_Center" destination="hqY-u0-viy" id="mm4-tx-qyy"/>
@@ -631,7 +606,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReuseID1" textLabel="U9j-ol-HI4" detailTextLabel="0fP-W8-vjP" style="IBUITableViewCellStyleSubtitle" id="dhv-QP-Koy" customClass="BLTE_TableViewCell" customModule="xxyy" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReuseID1" textLabel="U9j-ol-HI4" detailTextLabel="0fP-W8-vjP" style="IBUITableViewCellStyleSubtitle" id="dhv-QP-Koy" customClass="BLTE_TableViewCell" customModule="xxyy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="288" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dhv-QP-Koy" id="keL-wv-EBY">
