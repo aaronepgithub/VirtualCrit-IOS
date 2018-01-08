@@ -9,6 +9,19 @@
 import UIKit
 
 class HistoryViewController: UIViewController {
+    
+    @objc func closeMe() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    //touch anywhere to present the other view controller
+        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+            if let touch = touches.first {
+                let currentPoint = touch.location(in: view)
+                print(currentPoint.x)
+                Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(closeMe), userInfo: nil, repeats: false)
+            }
+        }
 
     @IBOutlet weak var lbl_1: UILabel!
 

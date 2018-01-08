@@ -12,6 +12,7 @@ class RideX_ViewController: UIViewController {
 
     var swipeValue: Int = 0
     var totalSwipeValues: Int = 2 //3 with zero - 0, 1, 2
+    var percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
     
     //standard
     @IBOutlet weak var timeOfDay: UILabel!
@@ -86,22 +87,26 @@ class RideX_ViewController: UIViewController {
             BIG_R_HZ.text = stringer0(myIn: rt.rt_cadence)
             BIG_T_VERT.text = stringer0(myIn: rt.rt_hr)
             BIG_B_VERT.text = stringer0(myIn: rt.rt_cadence)
+            
+            percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
+            
             //labels
             midHZ.text = "SPEED"
             midVERT.text = "SPEED"
-            leftHZ.text = "HRT"
-            topVERT.text = "HRT"
+            leftHZ.text = "HRT \(percentofmax)%"
+            topVERT.text = "HRT \(percentofmax)%"
             rightHZ.text = "CAD"
             btmVERT.text = "CAD"
             
         case 1:
             initialTextFields()
             footer.text = getFooter()
-            
-            leftHZ.text = "HRT 30i"
-            topVERT.text = "HRT 30i"
+            percentofmax = stringer0(myIn: Double((Double(interval.hr) / Double(settings_MAXHR)) * Double(100)))
+            leftHZ.text = "HRT 30i \(percentofmax)%"
+            topVERT.text = "HRT 30i \(percentofmax)%"
             BIG_L_HZ.text = stringer0(myIn: interval.hr)
             BIG_T_VERT.text = stringer0(myIn: interval.hr)
+
             
             BIG_MIDDLE.text = stringer1(myIn: interval.speed)
             midHZ.text = "SPD 30i"
@@ -112,15 +117,20 @@ class RideX_ViewController: UIViewController {
             rightHZ.text = "CAD 30i"
             btmVERT.text = "CAD 30i"
             
+
+            
+            
         case 2:
             //RND
             initialTextFields()
             footer.text = getFooter()
-            
-            leftHZ.text = "HRT RND"
-            topVERT.text = "HRT RND"
+            percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
+            leftHZ.text = "HRT RND \(percentofmax)%"
+            topVERT.text = "HRT RND \(percentofmax)%"
             BIG_L_HZ.text = stringer0(myIn: round.hr)
             BIG_T_VERT.text = stringer0(myIn: round.hr)
+
+            
             
             BIG_MIDDLE.text = stringer1(myIn: round.speed)
             midHZ.text = "SPD RND:  \(round.inRoundTimer)"
@@ -146,19 +156,19 @@ class RideX_ViewController: UIViewController {
         case 0:
             BIG_L_HZ.text = stringer0(myIn: rt.rt_hr)
             BIG_T_VERT.text = stringer0(myIn: rt.rt_hr)
-            leftHZ.text = "HRT"
-            topVERT.text = "HRT"
+            leftHZ.text = "HRT \(percentofmax)%"
+            topVERT.text = "HRT \(percentofmax)%"
             
         case 1:
             //HRT 30i
-            leftHZ.text = "HRT 30i"
-//            topVERT.text = "HRT 30i"
+            leftHZ.text = "HRT 30i \(percentofmax)%"
+//            topVERT.text = "HRT 30i \(percentofmax)%"
 //            BIG_L_HZ.text = stringer0(myIn: interval.hr)
 //            BIG_T_VERT.text = stringer0(myIn: interval.hr)
             
         case 2:
             //HRT RND
-            leftHZ.text = "HRT RND"
+            leftHZ.text = "HRT RND \(percentofmax)%"
             
         default:
             print("Default update hr")
@@ -207,13 +217,27 @@ class RideX_ViewController: UIViewController {
         //self.tabBarController?.selectedIndex = 2;
     }
     
+    func animateTextColor() {
+        midHZ.textColor = UIColor.red
+        midVERT.textColor = UIColor.red
+        BIG_MIDDLE.textColor = UIColor.red
+        let when = DispatchTime.now() + 2
+        DispatchQueue.main.asyncAfter(deadline: when){
+            self.midHZ.textColor = UIColor.black
+            self.midVERT.textColor = UIColor.black
+            self.BIG_MIDDLE.textColor = UIColor.black
+        }
+    }
+    
     func changeSwipeNumber() {
         if (swipeValue == totalSwipeValues) {
             swipeValue = 0
             print("Swipe Value \(swipeValue)")
+            animateTextColor()
         } else {
             swipeValue = swipeValue + 1
             print("Swipe Value \(swipeValue)")
+            animateTextColor()
         }
     }
     
