@@ -634,7 +634,7 @@ var page3option2 = '<div class="myContentBlock content-block vertride">'+
 '<div class="col-80 rtHR" style="font-size: 7em">125</div>'+
 '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
 '</div>'+
-'<div class="row"><div class="col-10 rt speedRow" style="font-size: 1em">SPD</div><div class="col-80 rtSPD speedRow" style="font-size: 7em">18.45'+
+'<div class="row"><div class="col-10 rt speedRow" style="font-size: 1em">SPD</div><div class="col-80 rtSPD speedRow" style="font-size: 7em">18.4'+
 // '<span class="rtSmallLabel" style="font-size: .3em">&nbsp&nbspMPH</span>'+
 '</div><div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div></div>'+
 '<div class="row"><div class="col-10 rt" style="font-size: 1em">CAD</div><div class="col-80 rtCAD" style="font-size: 6em">78'+

@@ -89,8 +89,10 @@ function calcInterval(localT) {
     var c = $$(".rtCAD").text();
 
 //    if (h == veloH) { $$(".rtHR").text(0); rt.score = 0; $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%"); }
-    if (s == veloS) { $$(".rtSPD").text(0); }
-    if (c == veloC) { $$(".rtCAD").text(0); }
+    // if (s == veloS) { $$(".rtSPD").text(0); }
+    // if (c == veloC) { $$(".rtCAD").text(0); }
+
+//REMOVE AFTER TESTING
 
     veloH = h;
     veloS = s;

@@ -12,6 +12,7 @@
 
 body {
   font-weight: bold;
+    /* font-family: 'Krona One', sans-serif; */
 }
 
 .ani {
@@ -83,11 +84,17 @@ input {
   position: fixed;
 }
 
+.rtSPD {
+  font-size: 7em;
+}
+
 .tryMe {
 
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+  /* font-family: 'Krona One', sans-serif; */
+
 
 
     /* position: fixed; */
