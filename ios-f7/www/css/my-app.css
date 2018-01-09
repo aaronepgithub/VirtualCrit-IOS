@@ -10,6 +10,10 @@
      url("../dist/fonts/Framework7Icons-Regular.ttf") format("truetype");
 }
 
+body {
+  font-weight: bold;
+}
+
 .ani {
   background-color: darkgray;
     /* background-color: white; */

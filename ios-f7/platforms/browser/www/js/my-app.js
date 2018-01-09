@@ -604,7 +604,7 @@ var page3option1 = '<div class="myContentBlock content-block vertride"><div clas
 
 //LIKE THIS OPTION, CORRECT THE CLASS TAGS TO GET DATA - NOT JUST SCORE TAGS
 
-var page3option2 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">75%</div><div class="col-80 rtSCORE" style="font-size: 6em">125</div></div><div class="row"><div class="col-20 rtSCORE" style="font-size: 2em">SPD</div><div class="col-80 rtSCORE" style="font-size: 6em">18.45</div></div><div class="row"><div class="col-20 rtSCORE" style="font-size: 2em">CAD</div><div class="col-80 rtSCORE" style="font-size: 6em">78</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
+var page3option2 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">75%</div><div class="col-90 rtSCORE" style="font-size: 6em">125</div></div><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">SPD</div><div class="col-90 rtSCORE" style="font-size: 6em">18.45</div></div><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">CAD</div><div class="col-90 rtSCORE" style="font-size: 6em">78</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
 
 
 
