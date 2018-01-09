@@ -88,6 +88,10 @@ input {
   font-size: 7em;
 }
 
+.rt {
+  font-size: 1.5em;
+}
+
 .tryMe {
 
   position: relative;

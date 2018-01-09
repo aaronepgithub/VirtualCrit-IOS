@@ -31,6 +31,8 @@ $$(document).on('deviceready', function () {
     $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
   }
 
+startDisplay();
+
   var intervalID = window.setInterval(myCallback, 1000);
 });
 
@@ -183,15 +185,16 @@ $$('#RESTART').on('click', function (e) {
   h1 = h;
   $$(this).addClass('ani');
   console.log("RESTART");
-  var x = $$(".speedRow");
-if (h1==0) {
-  x.hide();
-  h = 1;
-}
-if (h1 == 1) {
-  x.show();
-  h = 0;
-}
+
+  // var x = $$(".speedRow");
+  // if (h1==0) {
+  //   x.hide();
+  //   h = 1;
+  // }
+  // if (h1 == 1) {
+  //   x.show();
+  //   h = 0;
+  // }
 
   arrConnectedPeripherals.forEach(function (element) {
     ble.disconnect(element, function () {
@@ -564,22 +567,31 @@ hex = function (byte_array) {
   return hexstr;
 };
 
+function startDisplay() {
+  $$('#view3pagecontent').html(page3option3);
+  page3info = 1;
+}
+
 var page3info = 0;
 $$('#view3nav').on('click', function (e) {
   var currentPage = page3info;
   //page3option1 or page3default
   if (currentPage === 0) {
-    $$('#view3pagecontent').html(page3option1);
+    $$('#view3pagecontent').html(page3option3);
     page3info = 1;
   }
   if (currentPage == 1) {
-    $$('#view3pagecontent').html(page3option2);
+    $$('#view3pagecontent').html(page3option4);
     page3info = 2;
   }
   if (currentPage == 2) {
-    $$('#view3pagecontent').html(page3default);
+    $$('#view3pagecontent').html(page3option5);
     page3info = 0;
   }
+});
+
+$$('#footerRow').on('click', function (e) {
+  console.log("footerClick");
 });
 
 var page4info = 0;
@@ -634,15 +646,79 @@ var page3option2 = '<div class="myContentBlock content-block vertride">'+
 '<div class="col-80 rtHR" style="font-size: 7em">125</div>'+
 '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
 '</div>'+
-'<div class="row"><div class="col-10 rt speedRow" style="font-size: 1em">SPD</div><div class="col-80 rtSPD speedRow" style="font-size: 7em">18.4'+
-// '<span class="rtSmallLabel" style="font-size: .3em">&nbsp&nbspMPH</span>'+
-'</div><div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div></div>'+
-'<div class="row"><div class="col-10 rt" style="font-size: 1em">CAD</div><div class="col-80 rtCAD" style="font-size: 6em">78'+
-// '<span class="rtSmallLabel" style="font-size: .3em">&nbsp&nbspRPM</span>'+
-'</div><div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div></div>'+
+'<div class="row">'+
+'<div class="col-10 rt speedRow" style="font-size: 1em">SPD</div>'+
+'<div class="col-80 rtSPD speedRow" style="font-size: 7em">18.4</div>'+
+'<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
+'</div>'+
+'<div class="row"><div class="col-10 rt" style="font-size: 1em">CAD</div>'+
+'<div class="col-80 rtCAD" style="font-size: 6em">78</div>'+
+'<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
+'</div>'+
 '</div></div></div>'+
 '<div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div>'+
 '</div>';
+
+
+
+var page3option3 = '<div class="myContentBlock content-block vertride">'+
+'<div class="row">'+
+'<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>'+
+'<div id="tryMe" class="tryMe lh16">'+
+'<div class="row">'+
+'<div class="col-10 rt">HR<br>75%</div>'+
+'<div class="col-90 rtHR" style="font-size: 6em">125</div>'+
+// '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
+'</div><hr>'+
+'<div class="row">'+
+'<div class="col-10 rt speedRow">SPD<br>MPH</div>'+
+'<div class="col-90 rtSPD speedRow" style="font-size: 7.5em">18.4</div>'+
+// '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
+'</div><hr>'+
+'<div class="row"><div class="col-10 rt">CAD<br>RPM</div>'+
+'<div class="col-90 rtCAD" style="font-size: 6em">78</div>'+
+// '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
+'</div>'+
+'</div></div></div>'+
+'<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>'+
+'</div>';
+
+
+var page3option4 = '<div class="myContentBlock content-block vertride">'+
+'<div class="row">'+
+'<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>'+
+'<div id="tryMe" class="tryMe lh16">'+
+'<div class="row">'+
+'<div class="col-10 rt speedRow">SPD<br>MPH</div>'+
+'<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>'+
+'</div><hr>'+
+'<div class="row"><div class="col-10 rt">CAD<br>RPM</div>'+
+'<div class="col-90 rtCAD" style="font-size: 9em">78</div>'+
+'</div>'+
+'</div></div></div>'+
+'<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>'+
+'</div>';
+
+var page3option5 = '<div class="myContentBlock content-block vertride">'+
+'<div class="row">'+
+'<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>'+
+'<div id="tryMe" class="tryMe lh16">'+
+'<div class="row">'+
+'<div class="col-10 rt speedRow">HR<br>BPM</div>'+
+'<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>'+
+'</div><hr>'+
+'<div class="row"><div class="col-10 rt">%<br>MAX</div>'+
+'<div class="col-90 rtCAD" style="font-size: 9em">65%</div>'+
+'</div>'+
+'</div></div></div>'+
+'<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>'+
+'</div>';
+
+
+
+
+
+
 
 
 
