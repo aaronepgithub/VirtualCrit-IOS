@@ -177,10 +177,21 @@ $$('#REFRESH').on('click', function (e) {
 });
 
 
-
+var h1;
+var h = 0;
 $$('#RESTART').on('click', function (e) {
+  h1 = h;
   $$(this).addClass('ani');
   console.log("RESTART");
+  var x = $$(".speedRow");
+if (h1==0) {
+  x.hide();
+  h = 1;
+}
+if (h1 == 1) {
+  x.show();
+  h = 0;
+}
 
   arrConnectedPeripherals.forEach(function (element) {
     ble.disconnect(element, function () {
@@ -595,7 +606,7 @@ var view3 = myApp.addView('#view-3');
 var view4 = myApp.addView('#view-4');
 
 
-var page3default = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-100" style="font-size: 1em">SPEED</div></div><div class="row"><div class="rtSPD col-100" style="font-size: 6em">0</div></div><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 6em">0</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 6em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
+var page3default = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-100" style="font-size: 1em">SPEED</div></div><div class="row"><div class="rtSPD col-100" style="font-size: 6em">19.9</div></div><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 6em">123</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 6em">88</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
 
 
 var page3option1 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 9em">0</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 9em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
@@ -604,7 +615,34 @@ var page3option1 = '<div class="myContentBlock content-block vertride"><div clas
 
 //LIKE THIS OPTION, CORRECT THE CLASS TAGS TO GET DATA - NOT JUST SCORE TAGS
 
-var page3option2 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="tryMe" class="tryMe"><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">75%</div><div class="col-90 rtSCORE" style="font-size: 6em">125</div></div><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">SPD</div><div class="col-90 rtSCORE" style="font-size: 6em">18.45</div></div><div class="row"><div class="col-10 rtSCORE" style="font-size: 2em">CAD</div><div class="col-90 rtSCORE" style="font-size: 6em">78</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
+// $$('.footerRow').on('click', function (e) {
+//   console.log("footerRow Clicked");
+//   var x = document.getElementById("speedRow");
+// if (x.style.display === "none") {
+//     x.style.display = "block";
+// } else {
+//     x.style.display = "none";
+// }
+// });
+
+var page3option2 = '<div class="myContentBlock content-block vertride">'+
+'<div class="row">'+
+'<div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div>'+
+'<div id="tryMe" class="tryMe lh16">'+
+'<div class="row">'+
+'<div class="col-10 rt" style="font-size: 1em">75%</div>'+
+'<div class="col-80 rtHR" style="font-size: 7em">125</div>'+
+'<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
+'</div>'+
+'<div class="row"><div class="col-10 rt speedRow" style="font-size: 1em">SPD</div><div class="col-80 rtSPD speedRow" style="font-size: 7em">18.45'+
+// '<span class="rtSmallLabel" style="font-size: .3em">&nbsp&nbspMPH</span>'+
+'</div><div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div></div>'+
+'<div class="row"><div class="col-10 rt" style="font-size: 1em">CAD</div><div class="col-80 rtCAD" style="font-size: 6em">78'+
+// '<span class="rtSmallLabel" style="font-size: .3em">&nbsp&nbspRPM</span>'+
+'</div><div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div></div>'+
+'</div></div></div>'+
+'<div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div>'+
+'</div>';
 
 
 
