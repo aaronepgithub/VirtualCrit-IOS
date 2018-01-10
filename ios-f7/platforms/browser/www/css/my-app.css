@@ -15,6 +15,12 @@ body {
     /* font-family: 'Krona One', sans-serif; */
 }
 
+.blechip {
+      font-size: 20px;
+          height: 45px;
+              line-height: 45px;
+}
+
 .ani {
   background-color: darkgray;
     /* background-color: white; */
