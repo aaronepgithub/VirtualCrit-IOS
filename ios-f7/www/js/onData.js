@@ -253,6 +253,9 @@ function endRound() {
 
 }
 
+// var simData = [0, 100];
+//   var hrID = window.setInterval(onDataHR(simData), 1000);
+
 function onDataHR(data) {
   //console.log(data[1]);
   rt.hr = Number(data[1]);
@@ -312,6 +315,19 @@ var total_moving_time_seconds = 0;
 var single_read_speed = 0;
 var single_read_cad = 0;
 
+// var counter = 1;
+// var simCSC = [1, 1, 1, 1, 1, 1];
+//
+// var cscID = window.setInterval(function(){
+//   $$.each(simCSC, function(val){
+//     simCSC[val] = counter ;
+//   });
+//   simCSC[0] = 0;
+//   simCSC[6] = 1;
+//   simCSC[2] = 1;
+//   processWheelData(simCSC);
+//       counter += 3;
+// }, 1000);
 
 function processWheelData(data) {
 
