@@ -49,7 +49,7 @@ var veloH = 0;
 
 function calcInterval(localT) {
   var t = localT;
-  console.log("calcInterval:  "+ t);
+  //console.log("calcInterval:  "+ t);
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
   //console.log("speedInterval:  " + speedInterval);
@@ -159,7 +159,6 @@ function actionEndofRound() {
 function midRound(localT) {
   var t = localT;
 
-  console.log("midRound/time:  " + t);
   // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
   // console.log("rounds.avgCadence:  " + rounds.avgCadence);
   // console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);

@@ -76,11 +76,17 @@ function calcInterval(localT) {
   var cadenceInterval = Number(cad / (refreshInterval));
 
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
-  $$('.intervalSPD').text(Number(speedInterval.toFixed(1)));
-  $$('.intervalCAD').text(Number(cadenceInterval.toFixed(0)));
-  $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
+  // $$('.intervalSPD').text(Number(speedInterval.toFixed(1)));
+  // $$('.intervalCAD').text(Number(cadenceInterval.toFixed(0)));
+  // $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
+  // var sc = Number((heartrateInterval / maxHeartRate) * 100);
+  // $$('.intervalSCORE').text(Number(sc.toFixed(0)));
+  $$('.rtSPDi').text(Number(speedInterval.toFixed(1)));
+  $$('.rtCADi').text(Number(cadenceInterval.toFixed(0)));
+  $$('.rtHRi').text(Number(heartrateInterval.toFixed(0)));
   var sc = Number((heartrateInterval / maxHeartRate) * 100);
-  $$('.intervalSCORE').text(Number(sc.toFixed(0)));
+  $$('.rtSCOREi').text(Number(sc.toFixed(0)));
+
 
   if (t % Number(refreshInterval) === 0) {
     console.log("Intervals:  " + speedInterval + " MPH  - " + cadenceInterval + " RPM   - " + heartrateInterval + " BPM  - " + sc + " % ");
@@ -153,7 +159,6 @@ function actionEndofRound() {
 function midRound(localT) {
   var t = localT;
 
-  //console.log("midRound/time:  " + t);
   // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
   // console.log("rounds.avgCadence:  " + rounds.avgCadence);
   // console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
@@ -171,6 +176,11 @@ function midRound(localT) {
     //       rounds.arrSpeed + "\n " +
     //       rounds.arrCadence + "\n" +
     //       rounds.arrScore + "\n");
+    $$('.rtSPDr').text(Number(rounds.arrSpeed.toFixed(1)));
+    $$('.rtCADr').text(Number(rounds.arrCadence.toFixed(0)));
+    $$('.rtHRr').text(Number(rounds.arrHeartRate.toFixed(0)));
+    var sc = Number((rounds.arrHeartRate / maxHeartRate) * 100);
+    $$('.rtSCOREr').text(Number(sc.toFixed(0)));
 
     $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX</p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p>');
 

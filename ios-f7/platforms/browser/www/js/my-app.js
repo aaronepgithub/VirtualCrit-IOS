@@ -31,16 +31,18 @@ $$(document).on('deviceready', function() {
     $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
   }
 
+  console.log(now);
+
   startDisplay();
 
   var intervalID = window.setInterval(myCallback, 1000);
 });
 
 var time = 0;
-var localT = time;
+var localT = time + 1;
 //each second
 function myCallback() {
-  localT = time;
+  localT = time + 1;
 
 
   //get actual time
@@ -69,8 +71,9 @@ function myCallback() {
   interval.arrCadence.push(Number(rt.cadence));
   interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
-  midRound(localT);
+
   time++;
+  midRound(localT + 1);
 }
 
 
@@ -429,25 +432,25 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 $$('#view-4').on('tab:show', function() {
   // myApp.alert('Tab/View 4 is visible');
   currentTab = 4;
-  console.log(currentTab);
+  //console.log(currentTab);
 });
 
 $$('#view-3').on('tab:show', function() {
   // myApp.alert('Tab/View 3 is visible');
   currentTab = 3;
-  console.log(currentTab);
+  //console.log(currentTab);
 });
 
 $$('#view-2').on('tab:show', function() {
   // myApp.alert('Tab/View 2 is visible');
   currentTab = 2;
   // $$(".iconNumber").text("00");
-  console.log(currentTab);
+  //console.log(currentTab);
 });
 $$('#view-1').on('tab:show', function() {
   // myApp.alert('Tab/View 2 is visible');
   currentTab = 1;
-  console.log(currentTab);
+  //console.log(currentTab);
 });
 
 
@@ -568,19 +571,20 @@ hex = function(byte_array) {
 };
 
 function startDisplay() {
+  console.log("startDisplay");
   $$('#view3pagecontent').html(page3option3);
   page3info = 1;
 }
 
 var displayDataOption = 0;  //realtime
 $$('#view3pagecontent').on('click', function(e) {
-  console.log("#view3pagecontent clicked");
+  //console.log("#view3pagecontent clicked");
   var dopt = displayDataOption;
-  console.log("dopt:  " + dopt);
+  //console.log("dopt:  " + dopt);
   switch (dopt) {
     case 0:
       displayDataOption = 1;
-      console.log("switch to Inteval");
+      //console.log("switch to Interval");
       if (page3info == 0) {
         $$('#view3pagecontent').html(page3option5i);
       }
@@ -593,7 +597,7 @@ $$('#view3pagecontent').on('click', function(e) {
       break;
       case 1:
         displayDataOption = 2;
-              console.log("switch to Round");
+              //console.log("switch to Round");
               if (page3info == 0) {
                 $$('#view3pagecontent').html(page3option5r);
               }
@@ -606,7 +610,7 @@ $$('#view3pagecontent').on('click', function(e) {
         break;
         case 2:
           displayDataOption = 0;
-                console.log("switch to RT");
+                //console.log("switch to RT");
                 if (page3info == 0) {
                   $$('#view3pagecontent').html(page3option5);
                 }
@@ -625,7 +629,7 @@ $$('#view3pagecontent').on('click', function(e) {
 
 var page3info = 0;
 $$('#view3nav').on('click', function(e) {
-  console.log("#view3nav clicked");
+  //console.log("#view3nav clicked");
   var currentPage = page3info;
   if (currentPage === 0) {
     $$('#view3pagecontent').html(page3option3);
@@ -670,7 +674,7 @@ var view4 = myApp.addView('#view-4');
 
 
 
-
+//CURRENT
 var page3option3 = '<div class="myContentBlock content-block vertride">' +
   '<div class="row">' +
   '<div class="col-100 headerRow" style="font-size: 2em">CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
@@ -693,44 +697,46 @@ var page3option3 = '<div class="myContentBlock content-block vertride">' +
   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
   '</div>';
 
+  //INTERVAL
   var page3option3i = '<div class="myContentBlock content-block vertride">' +
     '<div class="row">' +
     '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
     '<div id="tryMe" class="tryMe lh16">' +
     '<div class="row">' +
     '<div class="col-10 rt">HR<br>75%</div>' +
-    '<div class="col-90 rtHR" style="font-size: 6em">125</div>' +
+    '<div class="col-90 rtHRi" style="font-size: 6em">125</div>' +
     // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
     '</div><hr>' +
     '<div class="row">' +
     '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-    '<div class="col-90 rtSPD speedRow" style="font-size: 7.5em">18.4</div>' +
+    '<div class="col-90 rtSPDi speedRow" style="font-size: 7.5em">18.4</div>' +
     // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
     '</div><hr>' +
     '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-    '<div class="col-90 rtCAD" style="font-size: 6em">78</div>' +
+    '<div class="col-90 rtCADi" style="font-size: 6em">78</div>' +
     // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
     '</div>' +
     '</div></div></div>' +
     '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
     '</div>';
 
+    //ROUND
     var page3option3r = '<div class="myContentBlock content-block vertride">' +
       '<div class="row">' +
       '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
       '<div id="tryMe" class="tryMe lh16">' +
       '<div class="row">' +
       '<div class="col-10 rt">HR<br>75%</div>' +
-      '<div class="col-90 rtHR" style="font-size: 6em">125</div>' +
+      '<div class="col-90 rtHRr" style="font-size: 6em">125</div>' +
       // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
       '</div><hr>' +
       '<div class="row">' +
       '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-      '<div class="col-90 rtSPD speedRow" style="font-size: 7.5em">18.4</div>' +
+      '<div class="col-90 rtSPDr speedRow" style="font-size: 7.5em">18.4</div>' +
       // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
       '</div><hr>' +
       '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-      '<div class="col-90 rtCAD" style="font-size: 6em">78</div>' +
+      '<div class="col-90 rtCADr" style="font-size: 6em">78</div>' +
       // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
       '</div>' +
       '</div></div></div>' +
@@ -744,10 +750,10 @@ var page3option3 = '<div class="myContentBlock content-block vertride">' +
         '<div id="tryMe" class="tryMe lh16">' +
         '<div class="row">' +
         '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-        '<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>' +
+        '<div class="col-90 rtSPDr speedRow" style="font-size: 9em">18.4</div>' +
         '</div><hr>' +
         '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-        '<div class="col-90 rtCAD" style="font-size: 9em">78</div>' +
+        '<div class="col-90 rtCADr" style="font-size: 9em">78</div>' +
         '</div>' +
         '</div></div></div>' +
         '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
@@ -759,10 +765,10 @@ var page3option3 = '<div class="myContentBlock content-block vertride">' +
           '<div id="tryMe" class="tryMe lh16">' +
           '<div class="row">' +
           '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-          '<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>' +
+          '<div class="col-90 rtSPDi speedRow" style="font-size: 9em">18.4</div>' +
           '</div><hr>' +
           '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-          '<div class="col-90 rtCAD" style="font-size: 9em">78</div>' +
+          '<div class="col-90 rtCADi" style="font-size: 9em">78</div>' +
           '</div>' +
           '</div></div></div>' +
           '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
@@ -790,10 +796,10 @@ var page3option4 = '<div class="myContentBlock content-block vertride">' +
     '<div id="tryMe" class="tryMe lh16">' +
     '<div class="row">' +
     '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-    '<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>' +
+    '<div class="col-90 rtHRr speedRow" style="font-size: 9em">18.4</div>' +
     '</div><hr>' +
     '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-    '<div class="col-90 rtCAD" style="font-size: 9em">65%</div>' +
+    '<div class="col-90 rtSCOREr" style="font-size: 9em">65%</div>' +
     '</div>' +
     '</div></div></div>' +
     '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
@@ -805,10 +811,10 @@ var page3option4 = '<div class="myContentBlock content-block vertride">' +
       '<div id="tryMe" class="tryMe lh16">' +
       '<div class="row">' +
       '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-      '<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>' +
+      '<div class="col-90 rtHRi speedRow" style="font-size: 9em">18.4</div>' +
       '</div><hr>' +
       '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-      '<div class="col-90 rtCAD" style="font-size: 9em">65%</div>' +
+      '<div class="col-90 rtSCOREi" style="font-size: 9em">65%</div>' +
       '</div>' +
       '</div></div></div>' +
       '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
@@ -821,10 +827,10 @@ var page3option5 = '<div class="myContentBlock content-block vertride">' +
   '<div id="tryMe" class="tryMe lh16">' +
   '<div class="row">' +
   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-  '<div class="col-90 rtSPD speedRow" style="font-size: 9em">18.4</div>' +
+  '<div class="col-90 rtHR speedRow" style="font-size: 9em">18.4</div>' +
   '</div><hr>' +
   '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-  '<div class="col-90 rtCAD" style="font-size: 9em">65%</div>' +
+  '<div class="col-90 rtSCORE" style="font-size: 9em">65%</div>' +
   '</div>' +
   '</div></div></div>' +
   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +

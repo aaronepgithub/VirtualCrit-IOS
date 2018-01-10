@@ -42,7 +42,6 @@ var time = 0;
 var localT = time + 1;
 //each second
 function myCallback() {
-  console.log("myCallback");
   localT = time + 1;
 
 
@@ -74,7 +73,6 @@ function myCallback() {
   interval.arrDistance.push(totalMiles);
 
   time++;
-  console.log("time++:  " + time);
   midRound(localT + 1);
 }
 
