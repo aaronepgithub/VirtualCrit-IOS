@@ -40,10 +40,10 @@ $$(document).on('deviceready', function() {
 });
 
 var time = 0;
-var localT = time + 1;
+var localT = 1;
 //each second
 function myCallback() {
-  localT = time + 1;
+  //localT = time + 1;
 
 
   //get actual time
@@ -74,7 +74,8 @@ function myCallback() {
   interval.arrDistance.push(totalMiles);
 
   time++;
-  midRound(localT + 1);
+  // localT++;
+  midRound();
 }
 
 
