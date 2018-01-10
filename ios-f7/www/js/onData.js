@@ -1,4 +1,4 @@
-var secInRound = 15;
+var secInRound = 300;
 
 var inRoundHR = 0;
 var inRoundSPD = 0;
