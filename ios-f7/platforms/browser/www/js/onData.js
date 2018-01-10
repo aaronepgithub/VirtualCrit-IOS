@@ -51,22 +51,27 @@ function calcInterval(localT) {
   var t = localT;
   //console.log("calcInterval:  "+ t);
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
-  // for (i = refreshInterval; i > 0; i--) {
-  //   if (interval.arrDistance[i] >= 0) {dist += interval.arrDistance[interval.arrDistance.length - i];} else {dist += 0;}
-  //   }
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
   //console.log("speedInterval:  " + speedInterval);
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
-    if (interval.arrHeartRate[i] >= 0) { hr += interval.arrHeartRate[interval.arrHeartRate.length - i]; } else { hr += 0; }
+    if (interval.arrHeartRate[i] >= 0) {
+      hr += interval.arrHeartRate[interval.arrHeartRate.length - i];
+    } else {
+      hr += 0;
+    }
   }
   var heartrateInterval = Number(hr / (refreshInterval));
   //console.log("heartrateInterval:  " + heartrateInterval);
 
   var cad = 0;
   for (i = refreshInterval; i > 0; i--) {
-    if (interval.arrCadence[i] >= 0) { cad += interval.arrCadence[interval.arrCadence.length - i]; } else { cad += 0; }
+    if (interval.arrCadence[i] >= 0) {
+      cad += interval.arrCadence[interval.arrCadence.length - i];
+    } else {
+      cad += 0;
+    }
   }
   var cadenceInterval = Number(cad / (refreshInterval));
 
@@ -74,25 +79,27 @@ function calcInterval(localT) {
   $$('.intervalSPD').text(Number(speedInterval.toFixed(1)));
   $$('.intervalCAD').text(Number(cadenceInterval.toFixed(0)));
   $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
+  var sc = Number((heartrateInterval / maxHeartRate) * 100);
+  $$('.intervalSCORE').text(Number(sc.toFixed(0)));
 
   if (t % Number(refreshInterval) === 0) {
-    console.log("Intervals:  " + speedInterval + " - " + cadenceInterval + " - " + heartrateInterval);
+    console.log("Intervals:  " + speedInterval + " MPH  - " + cadenceInterval + " RPM   - " + heartrateInterval + " BPM  - " + sc + " % ");
     console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
     console.log("rounds.avgCadence:  " + rounds.avgCadence);
     console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
     console.log("rounds.avgScore:  " + rounds.avgScore);
   }
 
+//used to rem zeros
   if (t % 15 === 0) {
     var h = $$(".rtHR").text();
     var s = $$(".rtSPD").text();
     var c = $$(".rtCAD").text();
 
-//    if (h == veloH) { $$(".rtHR").text(0); rt.score = 0; $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%"); }
-    // if (s == veloS) { $$(".rtSPD").text(0); }
-    // if (c == veloC) { $$(".rtCAD").text(0); }
+    if (h == veloH) { $$(".rtHR").text(0); rt.score = 0; $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%"); }
+    if (s == veloS) { $$(".rtSPD").text(0); }
+    if (c == veloC) { $$(".rtCAD").text(0); }
 
-//REMOVE AFTER TESTING
 
     veloH = h;
     veloS = s;
@@ -104,45 +111,42 @@ function calcInterval(localT) {
 
 function actionEndofRound() {
 
-  var buttons1 = [
-    {
-        text: '<h2>ROUND COMPLETE</h2>',
-        bold: true,
-        color: 'black',
-        label: true
+  var buttons1 = [{
+      text: '<h2>ROUND COMPLETE</h2>',
+      bold: true,
+      color: 'black',
+      label: true
     },
     {
       text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
-        bold: false,
-        label: true
+      bold: false,
+      label: true
     },
     {
       text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
       bold: false,
       label: true
     }
-];
-var buttons2 = [
+  ];
+  var buttons2 = [
 
-  {
-    text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
-    bold: false,
-    label: true
-},
-{
-  text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
-  bold: false,
-  label: true
-}
-];
-var buttons3 = [
     {
-        text: 'DISMISS',
-        color: 'red'
+      text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
+      bold: false,
+      label: true
+    },
+    {
+      text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (SPEED)</h2>',
+      bold: false,
+      label: true
     }
-];
-var groups = [buttons1, buttons2, buttons3];
-myApp.actions(groups);
+  ];
+  var buttons3 = [{
+    text: 'DISMISS',
+    color: 'red'
+  }];
+  var groups = [buttons1, buttons2, buttons3];
+  myApp.actions(groups);
 
 }
 
@@ -162,13 +166,13 @@ function midRound(localT) {
     rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
     rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
 
-// $$('#leftPcontent').prepend("End of Round:\n" +
-//       rounds.arrHeartRate + "\n" +
-//       rounds.arrSpeed + "\n " +
-//       rounds.arrCadence + "\n" +
-//       rounds.arrScore + "\n");
+    // $$('#leftPcontent').prepend("End of Round:\n" +
+    //       rounds.arrHeartRate + "\n" +
+    //       rounds.arrSpeed + "\n " +
+    //       rounds.arrCadence + "\n" +
+    //       rounds.arrScore + "\n");
 
-$$('#leftPcontent').html('<p>AVG SCORE:  '+rounds.arrScore+' %MAX</p><p>AVG SPEED:  '+rounds.arrSpeed+' MPH</p>');
+    $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX</p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p>');
 
     console.log("End of Round:\n" +
       rounds.arrHeartRate + "\n" +
@@ -186,57 +190,24 @@ $$('#leftPcontent').html('<p>AVG SCORE:  '+rounds.arrScore+' %MAX</p><p>AVG SPEE
     var leng = rounds.arrSpeed.length;
     if (leng > 1) {
 
-
-
-      // myApp.modal({
-      //   title: 'ROUND COMPLETE',
-      //   text: '<h3 style="text-align: left">SPEED&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2)+'</h3>'+'<h3 style="text-align: left">CADENCE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1)+'</h3>'+'<h3 style="text-align: left">HR&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(2)+'</h3><h3 style="text-align: left">SCORE&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp' + Number(rounds.arrScore[(leng - 1)]).toFixed(2)+'</h3',
-        // verticalButtons: false,
-        // buttons: [
-        //   {
-        //     text: 'SPEED:   ' + Number(rounds.arrSpeed[(leng - 1)]).toFixed(2),
-        //     onClick: function () {
-        //       myApp.closeModal();
-        //       // myApp.alert('You clicked first button!';)
-        //     }
-        //   },
-        //   {
-        //     text: 'CADENCE: ' + Number(rounds.arrCadence[(leng - 1)]).toFixed(1),
-        //     onClick: function () {
-        //       myApp.closeModal();
-        //       // myApp.alert('You clicked second button!');
-        //     }
-        //   },
-        //   {
-        //     text: 'HR:      ' + Number(rounds.arrHeartRate[(leng - 1)]).toFixed(1),
-        //     onClick: function () {
-        //       myApp.closeModal();
-        //       // myApp.alert('You clicked third button!');
-        //     }
-        //   },
-        //   {
-        //     text: 'SCORE:   ' + Number(rounds.arrScore[(leng - 1)]).toFixed(1) + '  %MAX',
-        //     onClick: function () {
-        //       myApp.closeModal();
-        //       // myApp.alert('You clicked third button!');
-        //     }
-        //   },
-        // ]
-      //});
-
       actionEndofRound();
 
-      setTimeout(function () {
+      setTimeout(function() {
         myApp.closeModal();
-      }, 5000);
+      }, 10000);
     }
 
   }
 
   rounds.avgHeartRate = Number(rounds.HeartRate / t);
   rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
-  rounds.avgSpeed = Number((rounds.WheelRevs / (t / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
+  rounds.avgSpeed= Number((rounds.WheelRevs / (t / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
   rounds.avgCadence = Number(rounds.CrankRevs / (t / 60));
+
+  $$('.roundSPD').text(Number(rounds.avgScore.toFixed(1)));
+  $$('.roundCAD').text(Number(rounds.avgCadence.toFixed(0)));
+  $$('.roundHR').text(Number(rounds.avgHeartRate.toFixed(0)));
+  $$('.roundSCORE').text(Number(rounds.avgScore.toFixed(0)));
 
   calcInterval(t);
 
@@ -244,7 +215,8 @@ $$('#leftPcontent').html('<p>AVG SCORE:  '+rounds.arrScore+' %MAX</p><p>AVG SPEE
 
 function undefTest(myVar) {
   if (myVar === void 0) {
-    console.log(0); return 0;
+    console.log(0);
+    return 0;
   } else {
     return Number(myVar);
   }
@@ -475,7 +447,7 @@ function processCrankData(data, index) {
 
 }
 
-Date.dateDiffReturnSeconds = function (datepart, fromdate, todate) {
+Date.dateDiffReturnSeconds = function(datepart, fromdate, todate) {
   datepart = datepart.toLowerCase();
   var diff = todate - fromdate;
   var divideBy = {
@@ -497,7 +469,7 @@ Date.dateDiffReturnSeconds = function (datepart, fromdate, todate) {
   //return result;
 };
 
-Date.dateDiff = function (datepart, fromdate, todate) {
+Date.dateDiff = function(datepart, fromdate, todate) {
   datepart = datepart.toLowerCase();
   var diff = todate - fromdate;
   var divideBy = {
