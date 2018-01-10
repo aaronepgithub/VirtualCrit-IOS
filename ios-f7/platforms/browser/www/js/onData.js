@@ -81,7 +81,8 @@ function calcInterval(localT) {
   // $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
   // var sc = Number((heartrateInterval / maxHeartRate) * 100);
   // $$('.intervalSCORE').text(Number(sc.toFixed(0)));
-  $$('.rtSPDi').text(Number(speedInterval.toFixed(1)));
+  if (speedInterval >= 0 ) {  $$('.rtSPDi').text(Number(speedInterval.toFixed(1))); } else {$$('.rtSPDi').text(0);}
+  // $$('.rtSPDi').text(Number(speedInterval.toFixed(1)));
   $$('.rtCADi').text(Number(cadenceInterval.toFixed(0)));
   $$('.rtHRi').text(Number(heartrateInterval.toFixed(0)));
   var sc = Number((heartrateInterval / maxHeartRate) * 100);
@@ -158,11 +159,17 @@ function actionEndofRound() {
 
 function midRound(localT) {
   var t = localT;
+  //console.log("midRound:" + t);
 
   // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
   // console.log("rounds.avgCadence:  " + rounds.avgCadence);
   // console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
   // console.log("rounds.avgScore:  " + rounds.avgScore);
+  $$('.rtSPDr').text(Number(rounds.avgSpeed.toFixed(1)));
+  $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
+  $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
+  var sc = Number((rounds.avgHeartRate / maxHeartRate) * 100);
+  $$('.rtSCOREr').text(Number(sc.toFixed(0)));
 
   if (t % secInRound === 0) {
     console.log("Round Over  t % secInRound === 0:  " + (t % secInRound));
@@ -176,11 +183,7 @@ function midRound(localT) {
     //       rounds.arrSpeed + "\n " +
     //       rounds.arrCadence + "\n" +
     //       rounds.arrScore + "\n");
-    $$('.rtSPDr').text(Number(rounds.arrSpeed.toFixed(1)));
-    $$('.rtCADr').text(Number(rounds.arrCadence.toFixed(0)));
-    $$('.rtHRr').text(Number(rounds.arrHeartRate.toFixed(0)));
-    var sc = Number((rounds.arrHeartRate / maxHeartRate) * 100);
-    $$('.rtSCOREr').text(Number(sc.toFixed(0)));
+
 
     $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX</p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p>');
 
@@ -214,10 +217,10 @@ function midRound(localT) {
   rounds.avgSpeed= Number((rounds.WheelRevs / (t / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
   rounds.avgCadence = Number(rounds.CrankRevs / (t / 60));
 
-  $$('.roundSPD').text(Number(rounds.avgScore.toFixed(1)));
-  $$('.roundCAD').text(Number(rounds.avgCadence.toFixed(0)));
-  $$('.roundHR').text(Number(rounds.avgHeartRate.toFixed(0)));
-  $$('.roundSCORE').text(Number(rounds.avgScore.toFixed(0)));
+  // $$('.roundSPD').text(Number(rounds.avgScore.toFixed(1)));
+  // $$('.roundCAD').text(Number(rounds.avgCadence.toFixed(0)));
+  // $$('.roundHR').text(Number(rounds.avgHeartRate.toFixed(0)));
+  // $$('.roundSCORE').text(Number(rounds.avgScore.toFixed(0)));
 
   calcInterval(t);
 
