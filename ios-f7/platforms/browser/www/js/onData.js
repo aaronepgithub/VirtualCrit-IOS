@@ -157,6 +157,7 @@ function actionEndofRound() {
 
 }
 
+
 function midRound(localT) {
   var t = localT;
   //console.log("midRound:" + t);
@@ -165,11 +166,11 @@ function midRound(localT) {
   // console.log("rounds.avgCadence:  " + rounds.avgCadence);
   // console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
   // console.log("rounds.avgScore:  " + rounds.avgScore);
-  $$('.rtSPDr').text(Number(rounds.avgSpeed.toFixed(1)));
-  $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
-  $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
-  var sc = Number((rounds.avgHeartRate / maxHeartRate) * 100);
-  $$('.rtSCOREr').text(Number(sc.toFixed(0)));
+
+
+
+
+
 
   if (t % secInRound === 0) {
     console.log("Round Over  t % secInRound === 0:  " + (t % secInRound));
@@ -178,6 +179,9 @@ function midRound(localT) {
     rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
     rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
 
+    $$('#rightPcontent').prepend(rounds.arrSpeed[rounds.arrSpeed.length - 1] + ' MPH</p>');
+    $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX </p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p><p>AVG HR:  ' + rounds.arrHeartRate + ' BPM </p><p>AVG CAD:  ' + rounds.arrCadence + ' RPM </p>');
+
     // $$('#leftPcontent').prepend("End of Round:\n" +
     //       rounds.arrHeartRate + "\n" +
     //       rounds.arrSpeed + "\n " +
@@ -185,7 +189,10 @@ function midRound(localT) {
     //       rounds.arrScore + "\n");
 
 
-    $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX</p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p>');
+
+
+
+
 
     console.log("End of Round:\n" +
       rounds.arrHeartRate + "\n" +
@@ -217,6 +224,12 @@ function midRound(localT) {
   rounds.avgSpeed= Number((rounds.WheelRevs / (t / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
   rounds.avgCadence = Number(rounds.CrankRevs / (t / 60));
 
+  $$('.rtSPDr').text(Number(rounds.avgSpeed.toFixed(1)));
+  $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
+  $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
+  var scr = Number((rounds.avgHeartRate / maxHeartRate) * 100);
+  $$('.rtSCOREr').text(Number(scr.toFixed(0)));
+
   // $$('.roundSPD').text(Number(rounds.avgScore.toFixed(1)));
   // $$('.roundCAD').text(Number(rounds.avgCadence.toFixed(0)));
   // $$('.roundHR').text(Number(rounds.avgHeartRate.toFixed(0)));
@@ -245,7 +258,7 @@ function onDataHR(data) {
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
   $$(".rtHR").text(rt.hr);
-  $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%");
+  $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
   $$("#blinker").text("Pull to Refresh (HR)");
   $$(".iconNumber").text(rt.hr);
 }
