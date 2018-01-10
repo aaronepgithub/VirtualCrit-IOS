@@ -39,7 +39,7 @@ class HistoryViewController: UIViewController {
         let text1 = "SPD   CAD   HRT"
         var text2 = ""
         
-        while s > 0 && a < 5 {
+        while s > 0 && a < 25 {
             text2 += "\(stringer2(myIn: round.speeds[s-1])) "
             text2 += "\(stringer1(myIn: round.cadences[s-1])) "
             text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
