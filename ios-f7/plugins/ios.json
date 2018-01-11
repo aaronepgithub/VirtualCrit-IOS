@@ -1,0 +1,26 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-custom-config": {
+      "PACKAGE_NAME": "com.virtualcrit"
+    },
+    "cordova-plugin-ble-central": {
+      "BLUETOOTH_USAGE_DESCRIPTION": "Your description here",
+      "PACKAGE_NAME": "com.virtualcrit"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.virtualcrit"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "com.virtualcrit"
+    }
+  }
+}
