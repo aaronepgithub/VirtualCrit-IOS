@@ -33,18 +33,20 @@ $$(document).on('deviceready', function() {
   }
 
   console.log(now);
-
   startDisplay();
 
   var intervalID = window.setInterval(myCallback, 1000);
 });
 
 var time = 0;
-var localT = 1;
+var roundTimer = 1;
 //each second
 function myCallback() {
-  //localT = time + 1;
 
+  if (time % secInRound === 0 && time > 0) {
+    console.log("Calling roundEnd\n")
+    roundEnd(time);
+  }
 
   //get actual time
   var rightNow = new Date();
@@ -65,7 +67,6 @@ function myCallback() {
 
   //console.log((rightNow.getHours()) + ":" + rightNow.getMinutes() + ":" + rightNow.getSeconds());
 
-
   //Adding a value each second
   rounds.HeartRate += rt.hr;
   interval.arrHeartRate.push(rt.hr);
@@ -73,9 +74,8 @@ function myCallback() {
   interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
 
+  midRound(roundTimer);
   time++;
-  // localT++;
-  midRound();
 }
 
 
