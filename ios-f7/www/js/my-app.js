@@ -52,13 +52,13 @@ function myCallback() {
   //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
 
   if (timeSinceStartInSeconds % secInRound === 0 && timeSinceStartInSeconds > 1) {
-    console.log("Calling roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
+    console.log("Calling roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
     totalRoundsCompleted += 1;
-    console.log("RoundsCompleted:  " + totalRoundsCompleted)
+    console.log("RoundsCompleted:  " + totalRoundsCompleted);
     roundEnd();
   }
 
-  $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow));
+  $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow) + "  " + dataToDisplay  );
 
 //JUST TO DISPLAY THE TIME
   if (rightNow.getHours() > 12) {
@@ -83,9 +83,9 @@ function myCallback() {
   interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
 
-  timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound)
+  timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
   midRound(timeSinceRoundStartInSeconds);
-  
+
 }
 
 
@@ -587,52 +587,54 @@ function displayHR() {
   if (dataToDisplay == "CURRENT") {
     $$(".rtHR").text(rt.hr.toFixed(0));
     $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
-    $$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+    $$(".headerStatus").text(dataToDisplay);
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtHR").text(rounds.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(rounds.avgScore.toFixed(0) + "%");
+    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtHR").text(interval.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(interval.avgScore.toFixed(0) + "%");
-    $$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
   }
 }
 
 function displaySPD() {
   if (dataToDisplay == "CURRENT") {
     $$(".rtSPD").text(rt.speed.toFixed(1));
-    $$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
-    
+    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtSPD").text(rounds.avgSpeed.toFixed(0));
-    $$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
-    
+    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtSPD").text(interval.avgSpeed.toFixed(0));
-    $$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
-    
+    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
   }
 }
 
 function displayCAD() {
   if (dataToDisplay == "CURRENT") {
     $$(".rtCAD").text(rt.cadence.toFixed(0));
-    $$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
-    
+    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
-    $$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
-    
+    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtCAD").text(interval.avgCadence.toFixed(0));
-    $$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
-    
+    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
   }
 }
 
@@ -643,20 +645,23 @@ function changeDataToDisplay() {
   var x = dataToDisplay;
 
   if (x == "CURRENT") {
-    dataToDisplay = "INTERVAL"
+    dataToDisplay = "INTERVAL";
+    // $$(".headerStatus").text(dataToDisplay);
   }
 
 
 
   if (x == "INTERVAL") {
-    dataToDisplay = "ROUND"
+    dataToDisplay = "ROUND";
+    // $$(".headerStatus").text(dataToDisplay);
   }
 
 
   if (x == "ROUND") {
-    dataToDisplay = "CURRENT"
+    dataToDisplay = "CURRENT";
+    // $$(".headerStatus").text(dataToDisplay);
   }
-  
+
 }
 
 
