@@ -1,4 +1,4 @@
-var secInRound = 300;
+var secInRound = 15;
 
 var inRoundHR = 0;
 var inRoundSPD = 0;
@@ -52,8 +52,7 @@ var veloC = 0;
 var veloH = 0;
 
 function calcInterval(t) {
-  //var t = localT;
-  //console.log("calcInterval:  "+ t);
+  console.log("calcInterval:  "+ t);
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
   //console.log("speedInterval:  " + speedInterval);
@@ -166,21 +165,20 @@ function actionEndofRound() {
 
 }
 
-function roundEnd(t) {
-  //console.log("roundEnd, t:  " + t);
-  //console.log("roundTimer:  " + roundTimer + "/n");
+function roundEnd() {
+  //console.log("roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
   rounds.arrHeartRate.push(Number(undefTest(rounds.avgHeartRate)));
   rounds.arrSpeed.push(Number(undefTest(rounds.avgSpeed)));
   rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
   rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
 
-  roundTimer = 1;
+  
   rounds.WheelRevs = 0;
   rounds.HeartRate = 0;
   rounds.CrankRevs = 0;
   rounds.Distance = 0;
 
-  $$('#rightPcontent').prepend(rounds.arrSpeed[rounds.arrSpeed.length - 1] + ' MPH</p>');
+  $$('#rightPcontent').prepend((rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' MPH</p>');
   $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX </p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p><p>AVG HR:  ' + rounds.arrHeartRate + ' BPM </p><p>AVG CAD:  ' + rounds.arrCadence + ' RPM </p>');
 
   console.log("End of Round Arrays:\n" +
@@ -200,27 +198,18 @@ function roundEnd(t) {
 }
 
 function midRound(t) {
-  //console.log("midRound, t:  " + t);
-  //console.log("roundTimer, but using t for calc:  " + roundTimer);
-
-  // if (t % secInRound === 0) {
-  //   roundEnd(t);
-  // }
-
+  console.log("midRound, t:  " + t);
+  
   rounds.avgHeartRate = Number(rounds.HeartRate / t);
   rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
   rounds.avgCadence = Number(rounds.CrankRevs / t * 60);
-
-
 
   var a = rounds.WheelRevs;
   var b = (Number(wheelCircumference) / Number(1000)) * 0.000621371;
   var c = Number(t) / Number(60) / Number(60);
   rounds.avgSpeed = (Number(a) * Number(b)) / Number(c);
-  //console.log("t, avg.speed:  " + t, rounds.avgSpeed );
 
-
-  if (roundTimer > 1) {
+  if (t > 0) {
     $$('.rtSPDr').text(Number(rounds.avgSpeed.toFixed(1)));
     $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
     $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
@@ -234,8 +223,6 @@ function midRound(t) {
   // console.log("rounds.avgScore:  " + rounds.avgScore);
 
   calcInterval(t);
-  roundTimer++;
-
 }
 
 function undefTest(myVar) {
@@ -417,7 +404,7 @@ var oldCrankEventTime = 0;
 
 function processCrankData(data, index) {
 
-  var crankRevolution = ((data[index + 1]) * 256) + (data[index]);
+  var crankRevolution = (data[index]);
   var crankEventTime = ((data[index + 3]) * 256) + (data[index + 2]) + 1.0;
 
   if (oldCrankRevolution === 0) {
@@ -428,7 +415,7 @@ function processCrankData(data, index) {
     var deltaT = crankEventTime - oldCrankEventTime;
 
     if (deltaW < 0) {
-      deltaW += 65535;
+      deltaW += 255;
     }
     if (deltaT < 0) {
       deltaT += 65535;
@@ -529,6 +516,8 @@ Date.dateDiff = function(datepart, fromdate, todate) {
   // return Math.floor( diff/divideBy[datepart]);
   return result;
 };
+
+
 //Set the two dates
 //var y2k  = new Date(2000, 0, 1);
 //var rightNow = new Date();
