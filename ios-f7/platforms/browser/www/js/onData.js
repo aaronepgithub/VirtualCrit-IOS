@@ -53,7 +53,7 @@ var veloH = 0;
 
 function calcInterval(t) {
   //var t = localT;
-  console.log("calcInterval:  "+ t);
+  //console.log("calcInterval:  "+ t);
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
   //console.log("speedInterval:  " + speedInterval);
@@ -107,7 +107,10 @@ function calcInterval(t) {
     var s = $$(".rtSPD").text();
     var c = $$(".rtCAD").text();
 
-    if (h == veloH) { $$(".rtHR").text(0); rt.score = 0; $$(".rtSCORE").text("HR " + rt.score.toFixed(0) + "%"); }
+    if (h == veloH) {
+      $$(".rtHR").text(0); rt.score = 0;
+      $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+    }
     if (s == veloS) { $$(".rtSPD").text(0); }
     if (c == veloC) { $$(".rtCAD").text(0); }
 
@@ -164,8 +167,8 @@ function actionEndofRound() {
 }
 
 function roundEnd(t) {
-  console.log("roundEnd, t:  " + t);
-  console.log("roundTimer:  " + roundTimer + "/n");
+  //console.log("roundEnd, t:  " + t);
+  //console.log("roundTimer:  " + roundTimer + "/n");
   rounds.arrHeartRate.push(Number(undefTest(rounds.avgHeartRate)));
   rounds.arrSpeed.push(Number(undefTest(rounds.avgSpeed)));
   rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
@@ -197,8 +200,8 @@ function roundEnd(t) {
 }
 
 function midRound(t) {
-  console.log("midRound, t:  " + t);
-  console.log("roundTimer, but using t for calc:  " + roundTimer);
+  //console.log("midRound, t:  " + t);
+  //console.log("roundTimer, but using t for calc:  " + roundTimer);
 
   // if (t % secInRound === 0) {
   //   roundEnd(t);
@@ -214,7 +217,7 @@ function midRound(t) {
   var b = (Number(wheelCircumference) / Number(1000)) * 0.000621371;
   var c = Number(t) / Number(60) / Number(60);
   rounds.avgSpeed = (Number(a) * Number(b)) / Number(c);
-  console.log("t, avg.speed:  " + t, rounds.avgSpeed );
+  //console.log("t, avg.speed:  " + t, rounds.avgSpeed );
 
 
   if (roundTimer > 1) {

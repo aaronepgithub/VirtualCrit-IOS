@@ -33,7 +33,7 @@ $$(document).on('deviceready', function() {
   }
 
   console.log(now);
-  startDisplay();
+  // startDisplay();
 
   var intervalID = window.setInterval(myCallback, 1000);
 });
@@ -43,8 +43,8 @@ var roundTimer = 1;
 //each second
 function myCallback() {
 
-  if (time % secInRound === 0 && time > 0) {
-    console.log("Calling roundEnd\n")
+  if (time % secInRound === 0 && time > 10) {
+    //console.log("Calling roundEnd\n")
     roundEnd(time);
   }
 
