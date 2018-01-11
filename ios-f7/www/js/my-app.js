@@ -49,7 +49,7 @@ function myCallback() {
 
   var rightNow = new Date();
   timeSinceStartInSeconds = Date.dateDiffReturnSeconds('s', startTime, rightNow);
-  console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
+  //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
 
   if (timeSinceStartInSeconds % secInRound === 0 && timeSinceStartInSeconds > 1) {
     console.log("Calling roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
@@ -181,6 +181,7 @@ $$('#REFRESH').on('click', function(e) {
   if (current == 60) {
     $$(this).find('.item-after').text('300');
     refreshInterval = 300;
+    secInRound = 30;
   }
 
   if (current == 300) {
@@ -582,60 +583,132 @@ hex = function(byte_array) {
   return hexstr;
 };
 
-function startDisplay() {
-  console.log("startDisplay");
-  $$('#view3pagecontent').html(page3option3);
-  page3info = 1;
+function displayHR() {
+  if (dataToDisplay == "CURRENT") {
+    $$(".rtHR").text(rt.hr.toFixed(0));
+    $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+    $$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+  }
+  if (dataToDisplay == "ROUND") {
+    $$(".rtHR").text(rounds.avgHeartRate.toFixed(0));
+    $$(".rtSCORE").text(rounds.avgScore.toFixed(0) + "%");
+  }
+  if (dataToDisplay == "INTERVAL") {
+    $$(".rtHR").text(interval.avgHeartRate.toFixed(0));
+    $$(".rtSCORE").text(interval.avgScore.toFixed(0) + "%");
+    $$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+  }
 }
 
-var displayDataOption = 0;  //realtime
-$$('#view3pagecontent').on('click', function(e) {
-  //console.log("#view3pagecontent clicked");
-  var dopt = displayDataOption;
-  //console.log("dopt:  " + dopt);
-  switch (dopt) {
-    case 0:
-      displayDataOption = 1;
-      //console.log("switch to Interval");
-      if (page3info == 0) {
-        $$('#view3pagecontent').html(page3option5i);
-      }
-      if (page3info == 1) {
-        $$('#view3pagecontent').html(page3option3i);
-      }
-      if (page3info == 2) {
-        $$('#view3pagecontent').html(page3option4i);
-      }
-      break;
-      case 1:
-        displayDataOption = 2;
-              //console.log("switch to Round");
-              if (page3info == 0) {
-                $$('#view3pagecontent').html(page3option5r);
-              }
-              if (page3info == 1) {
-                $$('#view3pagecontent').html(page3option3r);
-              }
-              if (page3info == 2) {
-                $$('#view3pagecontent').html(page3option4r);
-              }
-        break;
-        case 2:
-          displayDataOption = 0;
-                //console.log("switch to RT");
-                if (page3info == 0) {
-                  $$('#view3pagecontent').html(page3option5);
-                }
-                if (page3info == 1) {
-                  $$('#view3pagecontent').html(page3option3);
-                }
-                if (page3info == 2) {
-                  $$('#view3pagecontent').html(page3option4);
-                }
-          break;
-    default:
-                console.log("default");
+function displaySPD() {
+  if (dataToDisplay == "CURRENT") {
+    $$(".rtSPD").text(rt.speed.toFixed(1));
+    $$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    
   }
+  if (dataToDisplay == "ROUND") {
+    $$(".rtSPD").text(rounds.avgSpeed.toFixed(0));
+    $$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    
+  }
+  if (dataToDisplay == "INTERVAL") {
+    $$(".rtSPD").text(interval.avgSpeed.toFixed(0));
+    $$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    
+  }
+}
+
+function displayCAD() {
+  if (dataToDisplay == "CURRENT") {
+    $$(".rtCAD").text(rt.cadence.toFixed(0));
+    $$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    
+  }
+  if (dataToDisplay == "ROUND") {
+    $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
+    $$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    
+  }
+  if (dataToDisplay == "INTERVAL") {
+    $$(".rtCAD").text(interval.avgCadence.toFixed(0));
+    $$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span>');
+    
+  }
+}
+
+
+
+var dataToDisplay = "CURRENT";
+function changeDataToDisplay() {
+  var x = dataToDisplay;
+
+  if (x == "CURRENT") {
+    dataToDisplay = "INTERVAL"
+  }
+
+
+
+  if (x == "INTERVAL") {
+    dataToDisplay = "ROUND"
+  }
+
+
+  if (x == "ROUND") {
+    dataToDisplay = "CURRENT"
+  }
+  
+}
+
+
+//var displayDataOption = 0;
+$$('#view3pagecontent').on('click', function(e) {
+  console.log("#view3pagecontent clicked");
+  changeDataToDisplay();
+  //var dopt = displayDataOption;
+  //console.log("dopt:  " + dopt);
+  // switch (dopt) {
+  //   case 0:
+  //     displayDataOption = 1;
+  //     console.log("switch to Interval");
+  //     if (page3info == 0) {
+  //       $$('#view3pagecontent').html(page3option5i);
+  //     }
+  //     if (page3info == 1) {
+  //       $$('#view3pagecontent').html(page3option3i);
+  //     }
+  //     if (page3info == 2) {
+  //       $$('#view3pagecontent').html(page3option4i);
+  //     }
+  //     break;
+  //     case 1:
+  //       displayDataOption = 2;
+  //             console.log("switch to Round");
+  //             if (page3info == 0) {
+  //               $$('#view3pagecontent').html(page3option5r);
+  //             }
+  //             if (page3info == 1) {
+  //               $$('#view3pagecontent').html(page3option3r);
+  //             }
+  //             if (page3info == 2) {
+  //               $$('#view3pagecontent').html(page3option4r);
+  //             }
+  //       break;
+  //       case 2:
+  //         displayDataOption = 0;
+  //               console.log("switch to RT");
+  //               if (page3info == 0) {
+  //                 $$('#view3pagecontent').html(page3option5);
+  //               }
+  //               if (page3info == 1) {
+  //                 $$('#view3pagecontent').html(page3option3);
+  //               }
+  //               if (page3info == 2) {
+  //                 $$('#view3pagecontent').html(page3option4);
+  //               }
+  //         break;
+  //   default:
+  //               console.log("default");
+  // }
 
 });
 
@@ -646,14 +719,17 @@ $$('#view3nav').on('click', function(e) {
   if (currentPage === 0) {
     $$('#view3pagecontent').html(page3option3);
     page3info = 1;
+    console.log("page3info:  " + page3info);
   }
   if (currentPage == 1) {
     $$('#view3pagecontent').html(page3option4);
     page3info = 2;
+    console.log("page3info:  " + page3info);
   }
   if (currentPage == 2) {
     $$('#view3pagecontent').html(page3option5);
     page3info = 0;
+    console.log("page3info:  " + page3info);
   }
 });
 

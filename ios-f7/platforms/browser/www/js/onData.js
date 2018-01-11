@@ -1,4 +1,4 @@
-var secInRound = 15;
+var secInRound = 300;
 
 var inRoundHR = 0;
 var inRoundSPD = 0;
@@ -25,7 +25,11 @@ var interval = {
   arrHeartRate: [],
   arrCadence: [],
   arrSpeed: [],
-  arrCurrentIntervals: []
+  arrCurrentIntervals: [], 
+  avgHeartRate: 0,
+  avgSpeed: 0,
+  avgCadence: 0,
+  avgScore: 0
 };
 
 var rounds = {
@@ -51,11 +55,17 @@ var veloS = 0;
 var veloC = 0;
 var veloH = 0;
 
+function stringer1(myIn) {
+var out = myIn.toFixed(1);
+console.log("out:  " + out);
+}
+
 function calcInterval(t) {
-  console.log("calcInterval:  "+ t);
+  //console.log("calcInterval:  "+ t);
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
   //console.log("speedInterval:  " + speedInterval);
+  interval.avgSpeed = speedInterval;
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
@@ -67,6 +77,8 @@ function calcInterval(t) {
   }
   var heartrateInterval = Number(hr / (refreshInterval));
   //console.log("heartrateInterval:  " + heartrateInterval);
+  interval.avgHeartRate = heartrateInterval;
+  interval.avgScore = Number((heartrateInterval / maxHeartRate) * 100);
 
   var cad = 0;
   for (i = refreshInterval; i > 0; i--) {
@@ -77,19 +89,25 @@ function calcInterval(t) {
     }
   }
   var cadenceInterval = Number(cad / (refreshInterval));
+  interval.avgCadence = cadenceInterval;
+
 
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
-  // $$('.intervalSPD').text(Number(speedInterval.toFixed(1)));
-  // $$('.intervalCAD').text(Number(cadenceInterval.toFixed(0)));
-  // $$('.intervalHR').text(Number(heartrateInterval.toFixed(0)));
+
+  if (speedInterval >= 0 ) {  
+    //$$('.rtSPDi').text(speedInterval.toFixed(1)); 
+    displaySPD();
+    } else {
+      interval.avgSpeed = 0;
+      displaySPD();
+      //$$('.rtSPDi').text(0);
+    }
+    displayHR();
+    displayCAD();
+  // $$('.rtCADi').text(Number(cadenceInterval.toFixed(0)));
+  // $$('.rtHRi').text(Number(heartrateInterval.toFixed(0)));
   // var sc = Number((heartrateInterval / maxHeartRate) * 100);
-  // $$('.intervalSCORE').text(Number(sc.toFixed(0)));
-  if (speedInterval >= 0 ) {  $$('.rtSPDi').text(Number(speedInterval.toFixed(1))); } else {$$('.rtSPDi').text(0);}
-  // $$('.rtSPDi').text(Number(speedInterval.toFixed(1)));
-  $$('.rtCADi').text(Number(cadenceInterval.toFixed(0)));
-  $$('.rtHRi').text(Number(heartrateInterval.toFixed(0)));
-  var sc = Number((heartrateInterval / maxHeartRate) * 100);
-  $$('.rtSCOREi').text(Number(sc.toFixed(0)));
+  // $$('.rtSCOREi').text(Number(sc.toFixed(0)));
 
 
   // if (t % Number(refreshInterval) === 0) {
@@ -102,19 +120,25 @@ function calcInterval(t) {
 
 //used to rem zeros
   if (t % 13 === 0) {
-    var h = $$(".rtHR").text();
-    var s = $$(".rtSPD").text();
-    var c = $$(".rtCAD").text();
+    var h = rt.hr;
+    var s = rt.speed;
+    var c = rt.cadence;
 
     if (h == veloH) {
-      $$(".rtHR").text(0); rt.score = 0;
-      $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+      //$$(".rtHR").text(0); 
+      rt.score = 0;
+      //$$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+      displayHR();
     }
-    if (s == veloS) { $$(".rtSPD").text(0); }
-    if (c == veloC) { $$(".rtCAD").text(0); }
-
     rt.speed = 0;rt.cadence = 0;
-
+    if (s == veloS) { 
+      //$$(".rtSPD").text(0); 
+      displaySPD();
+    }
+    if (c == veloC) {
+       //$$(".rtCAD").text(0);
+       displaySPD(); 
+      }
 
     veloH = h;
     veloS = s;
@@ -198,7 +222,7 @@ function roundEnd() {
 }
 
 function midRound(t) {
-  console.log("midRound, t:  " + t);
+  //console.log("midRound, t:  " + t);
   
   rounds.avgHeartRate = Number(rounds.HeartRate / t);
   rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
@@ -210,11 +234,15 @@ function midRound(t) {
   rounds.avgSpeed = (Number(a) * Number(b)) / Number(c);
 
   if (t > 0) {
-    $$('.rtSPDr').text(Number(rounds.avgSpeed.toFixed(1)));
-    $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
-    $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
-    var scr = Number((rounds.avgHeartRate / maxHeartRate) * 100);
-    $$('.rtSCOREr').text(Number(scr.toFixed(0)));
+    // $$('.rtSPDr').text(rounds.avgSpeed.toFixed(1));
+    // $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
+    // $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
+    rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
+    // $$('.rtSCOREr').text(Number(rounds.avgScore.toFixed(0)));
+    displaySPD();
+    displayCAD();
+    displayHR();
+    
   }
 
   // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
@@ -246,8 +274,9 @@ function onDataHR(data) {
   //console.log(data[1]);
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
-  $$(".rtHR").text(rt.hr);
-  $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+  // $$(".rtHR").text(rt.hr.toFixed(0));
+  // $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+  displayHR();
   $$("#blinker").text("Pull to Refresh (HR)");
   $$(".iconNumber").text(rt.hr);
 }
@@ -340,7 +369,7 @@ function processWheelData(data) {
       wheelEventTime = oldWheelEventTime;
       //velo should test, might not need to update display
       single_read_speed = 0;
-      rt.speed = Number(single_read_speed.toFixed(1));
+      rt.speed = Number(single_read_speed);
       // $$(".rtSPD").text(rt.speed);
       // $$("#blinker").text("Pull to Refresh (SPD)");
       return;
@@ -359,8 +388,9 @@ function processWheelData(data) {
       // var cmPerMi = 0.00001 * 0.621371;
       // var minsPerHour = 60.0;
       single_read_speed = Number(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour);
-      rt.speed = Number(single_read_speed.toFixed(1));
-      $$(".rtSPD").text(rt.speed.toFixed(1));
+      rt.speed = Number(single_read_speed);
+      // $$(".rtSPD").text(rt.speed.toFixed(1));
+      displaySPD();
       $$("#blinker").text("Pull to Refresh (SPD)");
 
 
@@ -386,8 +416,9 @@ function processWheelData(data) {
       $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
     } else {
       single_read_speed = 0;
-      rt.speed = Number(single_read_speed.toFixed(1));
-      $$(".rtSPD").text(rt.speed);
+      rt.speed = Number(single_read_speed);
+      // $$(".rtSPD").text(single_read_speed.toFixed(1));
+      displaySPD();
       $$("#blinker").text("Pull to Refresh (SPD)");
     }
     //console.log("SPD:  " + single_read_speed);
@@ -465,7 +496,8 @@ function processCrankData(data, index) {
     rt_crank_time += deltaT; //still in 1/1024 of a sec
 
     rt.cadence = Number(single_read_cad.toFixed(0));
-    $$(".rtCAD").text(rt.cadence);
+    // $$(".rtCAD").text(rt.cadence);
+    displayCAD();
     $$("#blinker").text("Pull to Refresh (CAD)");
     //console.log("CAD:  " + single_read_cad);
 
