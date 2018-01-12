@@ -306,8 +306,7 @@ function onDataCSC(data) {
   if ((flag & WHEEL_REVOLUTION_FLAG) == 1) {
     //console.log("SPD data[1]:  " + data[1]);
     //rt.speed = data[1];
-    console.log("wData");
-    console.log(data);
+    //console.log(data);
     processWheelData(data);
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
       //console.log("CAD CSC data[7]:  " + data[7]);
