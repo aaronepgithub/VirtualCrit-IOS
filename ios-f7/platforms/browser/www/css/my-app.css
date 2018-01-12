@@ -15,6 +15,7 @@ body {
     /* font-family: 'Krona One', sans-serif; */
 }
 
+
 .blechip {
       font-size: 20px;
           height: 45px;
@@ -98,14 +99,12 @@ input {
   font-size: 1.5em;
 }
 
-.tryMe {
+.centerRows {
 
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   /* font-family: 'Krona One', sans-serif; */
-
-
 
     /* position: fixed; */
     /* top: 50%;
@@ -117,6 +116,28 @@ input {
     height: 100%; */
 
 }
+
+.row-bottom-border {
+  border-bottom-style: solid;
+}
+
+.bigFont {
+  font-size: 7.5em;
+}
+.smallFont {
+  font-size: 6.0em;
+}
+
+.smallerFont {
+  font-size: 2.5em;
+}
+.verySmallFont {
+  font-size: 1.0em;
+}
+.smallerFont4 {
+  font-size: 2.4em;
+}
+
 
 
 .lh16 {
@@ -150,6 +171,14 @@ and (min-device-width : 300px)
 and (max-device-width : 320px)
 and (max-device-height : 480px)
 and (orientation : portrait) {
+  .vertride {
+    font-size: 8.5px;
+  }
+}
+
+@media only screen
+and (max-device-height : 320px)
+and (orientation : landscape) {
   .vertride {
     font-size: 8.5px;
   }
