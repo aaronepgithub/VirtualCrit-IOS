@@ -218,14 +218,31 @@ class RideX_ViewController: UIViewController {
     }
     
     func animateTextColor() {
-        midHZ.textColor = UIColor.red
-        midVERT.textColor = UIColor.red
+        BIG_L_HZ.textColor = UIColor.red
+        BIG_R_HZ.textColor = UIColor.red
+        BIG_B_VERT.textColor = UIColor.red
         BIG_MIDDLE.textColor = UIColor.red
+        BIG_T_VERT.textColor = UIColor.red
+        rightHZ.textColor = UIColor.red
+        leftHZ.textColor = UIColor.red
+        midHZ.textColor = UIColor.red
+        topVERT.textColor = UIColor.red
+        midVERT.textColor = UIColor.red
+        btmVERT.textColor = UIColor.red
+        
         let when = DispatchTime.now() + 2
         DispatchQueue.main.asyncAfter(deadline: when){
-            self.midHZ.textColor = UIColor.black
-            self.midVERT.textColor = UIColor.black
+            self.BIG_L_HZ.textColor = UIColor.black
+            self.BIG_R_HZ.textColor = UIColor.black
+            self.BIG_B_VERT.textColor = UIColor.black
             self.BIG_MIDDLE.textColor = UIColor.black
+            self.BIG_T_VERT.textColor = UIColor.black
+            self.rightHZ.textColor = UIColor.black
+            self.leftHZ.textColor = UIColor.black
+            self.midHZ.textColor = UIColor.black
+            self.topVERT.textColor = UIColor.black
+            self.midVERT.textColor = UIColor.black
+            self.btmVERT.textColor = UIColor.black
         }
     }
     
@@ -233,15 +250,16 @@ class RideX_ViewController: UIViewController {
         if (swipeValue == totalSwipeValues) {
             swipeValue = 0
             print("Swipe Value \(swipeValue)")
-            animateTextColor()
+            //animateTextColor()
         } else {
             swipeValue = swipeValue + 1
             print("Swipe Value \(swipeValue)")
-            animateTextColor()
+            //animateTextColor()
         }
     }
     
     @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
+        animateTextColor()
         switch swipe.direction.rawValue {
         case 2:
             print("Case 2 - LEFT")
@@ -251,8 +269,11 @@ class RideX_ViewController: UIViewController {
             changeSwipeNumber()
         case 4:
             print("Case 4 UP")
+        case 3:
+            print("Case 3")
         default:
-            print("default Gesture - not up, left, or right")
+            print("DOWN")
+            self.tabBarController?.selectedIndex = 1;
             break
         }
     }
@@ -274,6 +295,10 @@ class RideX_ViewController: UIViewController {
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
         rightSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(rightSwipe)
+        
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        downSwipe.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(downSwipe)
         
         NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)

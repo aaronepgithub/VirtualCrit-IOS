@@ -18,6 +18,7 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var L3: UILabel!
     @IBOutlet weak var B1: UILabel!
     
+
     var swipeUpVal: Int = 1
     var swipeValue: Int = 0
     var totalSwipeValues: Int = 2 //3 with zero - 0, 1, 2
@@ -337,16 +338,17 @@ class RideI_ViewController: UIViewController {
         if (swipeValue == totalSwipeValues) {
             swipeValue = 0
             print("Swipe Value \(swipeValue)")
-            animateTextColor()
+            //animateTextColor()
         } else {
             swipeValue = swipeValue + 1
             print("Swipe Value \(swipeValue)")
-            animateTextColor()
+            //animateTextColor()
         }
     }
     
     
     @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
+        animateTextColor()
         switch swipe.direction.rawValue {
         case 2:
             print("Case 2 - LEFT")
@@ -361,9 +363,13 @@ class RideI_ViewController: UIViewController {
             } else {
                 swipeUpVal = swipeUpVal + 1
             }
+        case 3:
+            print("Case 3")
+           
             
         default:
-            print("default Gesture - not up, left, or right")
+            print("DOWN")
+            self.tabBarController?.selectedIndex = 2;
             break
         }
     }
@@ -384,6 +390,10 @@ class RideI_ViewController: UIViewController {
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
         rightSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(rightSwipe)
+        
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        downSwipe.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(downSwipe)
         
         NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)

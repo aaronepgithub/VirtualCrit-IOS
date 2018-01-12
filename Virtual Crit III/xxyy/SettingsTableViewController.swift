@@ -31,10 +31,10 @@ class Settings: UITableViewController {
             print(textField.text as Any)
             
             if textField.text != nil {
-                name = textField.text!
+                name = textField.text!.uppercased()
                 self.lbl_NameCell.text = textField.text?.uppercased()
             } else {
-                self.lbl_NameCell.text = name
+                self.lbl_NameCell.text = name.uppercased()
             }
             
         }
@@ -200,6 +200,11 @@ class Settings: UITableViewController {
         if indexPath.section == 1 && indexPath.row == 3 {
             //launch history
             self.performSegue(withIdentifier: "segue_History", sender: nil)
+        }
+        
+        if indexPath.section == 1 && indexPath.row == 4 {
+            //launch ble
+            self.tabBarController?.selectedIndex = 1;
         }
         
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)

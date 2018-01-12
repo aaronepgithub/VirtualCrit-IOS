@@ -23,6 +23,9 @@ class RideII_ViewController: UIViewController {
     @IBOutlet weak var B1: UILabel!
     @IBOutlet weak var B2: UILabel!
     
+    @IBOutlet weak var B3: UILabel!
+    @IBOutlet weak var B4: UILabel!
+    
     
     var swipeUpVal: Int = 0
     var swipeValue: Int = 0
@@ -68,6 +71,8 @@ class RideII_ViewController: UIViewController {
                 //values
                 B1.text = stringer1(myIn: rt.rt_speed)
                 B2.text = stringer0(myIn: rt.rt_cadence)
+                B3.text = stringer1(myIn: rt.rt_speed)
+                B4.text = stringer0(myIn: rt.rt_cadence)
 
                 //labels
                 L1.text = "SPEED"
@@ -79,6 +84,8 @@ class RideII_ViewController: UIViewController {
                 //values
                 B1.text = stringer0(myIn: rt.rt_hr)
                 B2.text = percentofmax
+                B3.text = stringer0(myIn: rt.rt_hr)
+                B4.text = percentofmax
 
                 //labels
                 L1.text = "HR"
@@ -95,6 +102,7 @@ class RideII_ViewController: UIViewController {
             
             if swipeUpVal % 2 == 0 {
                 B1.text = stringer1(myIn: interval.speed)
+                B3.text = stringer1(myIn: interval.speed)
                 L1.text = "SPD 30i"
                 L3.text = "SPD 30i"
                 L2.text = "CAD 30i"
@@ -102,6 +110,8 @@ class RideII_ViewController: UIViewController {
             } else {
                 B1.text = stringer0(myIn: interval.hr)
                 B2.text = percentofmax
+                B3.text = stringer0(myIn: interval.hr)
+                B4.text = percentofmax
                 L1.text = "HR 30i"
                 L3.text = "HR 30i"
                 L2.text = "SCORE 30i"
@@ -119,6 +129,8 @@ class RideII_ViewController: UIViewController {
             if swipeUpVal % 2 == 0 {
                 B1.text = stringer1(myIn: round.speed)
                 B2.text = stringer0(myIn: round.cadence)
+                B3.text = stringer1(myIn: round.speed)
+                B4.text = stringer0(myIn: round.cadence)
                 L1.text = "SPD RND \(round.inRoundTimer)"
                 L3.text = "SPD RND \(round.inRoundTimer)"
                 L2.text = "CAD RND"
@@ -126,6 +138,8 @@ class RideII_ViewController: UIViewController {
             } else {
                 B1.text = stringer0(myIn: round.hr)
                 B2.text = percentofmax
+                B3.text = stringer0(myIn: round.hr)
+                B4.text = percentofmax
                 L1.text = "HR RND \(round.inRoundTimer)"
                 L3.text = "HR RND \(round.inRoundTimer)"
                 L2.text = "SCORE RND"
@@ -154,6 +168,8 @@ class RideII_ViewController: UIViewController {
                 //values
                 B1.text = stringer0(myIn: rt.rt_hr)
                 B2.text = percentofmax
+                B3.text = stringer0(myIn: rt.rt_hr)
+                B4.text = percentofmax
                 
                 //labels
                 L1.text = "HR"
@@ -166,32 +182,34 @@ class RideII_ViewController: UIViewController {
         case 1:
 
             if swipeUpVal % 2 == 0 { _ = 1} else {
-            percentofmax = stringer0(myIn: Double((Double(interval.hr) / Double(settings_MAXHR)) * Double(100)))
-                //values
-                B1.text = stringer0(myIn: interval.hr)
-                B2.text = percentofmax
-                
-                //labels
-                L1.text = "HR 30i"
-                L3.text = "HR 30i"
-                L2.text = "SCORE 30i"
-                L4.text = "SCORE 30i"
+                 _ = 1
+//            percentofmax = stringer0(myIn: Double((Double(interval.hr) / Double(settings_MAXHR)) * Double(100)))
+//                //values
+//                B1.text = stringer0(myIn: interval.hr)
+//                B2.text = percentofmax
+//
+//                //labels
+//                L1.text = "HR 30i"
+//                L3.text = "HR 30i"
+//                L2.text = "SCORE 30i"
+//                L4.text = "SCORE 30i"
             }
             
             
         case 2:
 
             if swipeUpVal % 2 == 0 { _ = 1} else {
-            percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
-                //values
-                B1.text = stringer0(myIn: round.hr)
-                B2.text = percentofmax
-                
-                //labels
-                L1.text = "HR RND"
-                L3.text = "HR RND"
-                L2.text = "SCORE RND"
-                L4.text = "SCORE RND"
+                 _ = 1
+//            percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
+//                //values
+//                B1.text = stringer0(myIn: round.hr)
+//                B2.text = percentofmax
+//
+//                //labels
+//                L1.text = "HR RND"
+//                L3.text = "HR RND"
+//                L2.text = "SCORE RND"
+//                L4.text = "SCORE RND"
             }
             
         default:
@@ -206,6 +224,7 @@ class RideII_ViewController: UIViewController {
         switch swipeValue {
         case 0:
             B1.text = stringer1(myIn: rt.rt_speed)
+            B3.text = stringer1(myIn: rt.rt_speed)
             L1.text = "SPEED"
             L3.text = "SPEED"
         case 1:
@@ -230,6 +249,7 @@ class RideII_ViewController: UIViewController {
             switch swipeValue {
             case 0:
                 B2.text = stringer0(myIn: rt.rt_cadence)
+                B4.text = stringer0(myIn: rt.rt_cadence)
                 L2.text = "CAD"
                 L4.text = "CAD"
                 //            BIG_R_HZ.text = stringer0(myIn: rt.rt_cadence)
@@ -259,17 +279,21 @@ class RideII_ViewController: UIViewController {
         L3.textColor = UIColor.red
         L1.textColor = UIColor.red
         L2.textColor = UIColor.red
-        L2.textColor = UIColor.red
+        L4.textColor = UIColor.red
         B1.textColor = UIColor.red
         B2.textColor = UIColor.red
+        B3.textColor = UIColor.red
+        B4.textColor = UIColor.red
         let when = DispatchTime.now() + 2
         DispatchQueue.main.asyncAfter(deadline: when){
             self.L3.textColor = UIColor.black
             self.L1.textColor = UIColor.black
             self.L2.textColor = UIColor.black
-            self.L3.textColor = UIColor.black
+            self.L4.textColor = UIColor.black
             self.B1.textColor = UIColor.black
             self.B2.textColor = UIColor.black
+            self.B3.textColor = UIColor.black
+            self.B4.textColor = UIColor.black
         }
     }
     
@@ -298,10 +322,11 @@ class RideII_ViewController: UIViewController {
             print("Case 4 UP")
             swipeUpVal = swipeUpVal + 1
         case 3:
-            print("Case 4 Down")
-            //swipeUpVal = swipeUpVal + 1
+            print("Case 3")
+
         default:
-            print("default Gesture - not up, left, or right")
+            print("DOWN")
+            self.tabBarController?.selectedIndex = 3;
             break
         }
     }
@@ -321,6 +346,10 @@ class RideII_ViewController: UIViewController {
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
         rightSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(rightSwipe)
+        
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+        downSwipe.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(downSwipe)
         
         NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)
