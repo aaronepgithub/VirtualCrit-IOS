@@ -91,7 +91,7 @@ function myCallback() {
 
 
 $$('#NAME').on('click', function(e) {
-  myApp.prompt('What is your name?', 'WELCOME', function(value) {
+  myApp.prompt('ENTER YOUR RIDER NAME', 'WELCOME', function(value) {
     //myApp.alert('Your name is "' + value + '". You clicked Ok button');
     $$('#NAME').find('.item-after').text(value);
     name = value;
@@ -714,6 +714,10 @@ $$('#view3nav').on('click', function(e) {
 
 function aSwipe() {
   console.log("a Swipe");
+
+  if (currentOrientation == "landscape") {
+    return;
+  }
   animateDataChange();
   console.log("#view3nav clicked, current p3info:  " + page3info);
   var currentPage = page3info;
