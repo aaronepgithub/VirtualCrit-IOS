@@ -609,12 +609,12 @@ function displaySPD() {
 
   }
   if (dataToDisplay == "ROUND") {
-    $$(".rtSPD").text(rounds.avgSpeed.toFixed(0));
+    $$(".rtSPD").text(rounds.avgSpeed.toFixed(1));
     //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
 
   }
   if (dataToDisplay == "INTERVAL") {
-    $$(".rtSPD").text(interval.avgSpeed.toFixed(0));
+    $$(".rtSPD").text(interval.avgSpeed.toFixed(1));
     //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
 
   }
@@ -669,51 +669,6 @@ function changeDataToDisplay() {
 $$('#view3pagecontent').on('click', function(e) {
   console.log("#view3pagecontent clicked");
   changeDataToDisplay();
-  //var dopt = displayDataOption;
-  //console.log("dopt:  " + dopt);
-  // switch (dopt) {
-  //   case 0:
-  //     displayDataOption = 1;
-  //     console.log("switch to Interval");
-  //     if (page3info == 0) {
-  //       $$('#view3pagecontent').html(page3option5i);
-  //     }
-  //     if (page3info == 1) {
-  //       $$('#view3pagecontent').html(page3option3i);
-  //     }
-  //     if (page3info == 2) {
-  //       $$('#view3pagecontent').html(page3option4i);
-  //     }
-  //     break;
-  //     case 1:
-  //       displayDataOption = 2;
-  //             console.log("switch to Round");
-  //             if (page3info == 0) {
-  //               $$('#view3pagecontent').html(page3option5r);
-  //             }
-  //             if (page3info == 1) {
-  //               $$('#view3pagecontent').html(page3option3r);
-  //             }
-  //             if (page3info == 2) {
-  //               $$('#view3pagecontent').html(page3option4r);
-  //             }
-  //       break;
-  //       case 2:
-  //         displayDataOption = 0;
-  //               console.log("switch to RT");
-  //               if (page3info == 0) {
-  //                 $$('#view3pagecontent').html(page3option5);
-  //               }
-  //               if (page3info == 1) {
-  //                 $$('#view3pagecontent').html(page3option3);
-  //               }
-  //               if (page3info == 2) {
-  //                 $$('#view3pagecontent').html(page3option4);
-  //               }
-  //         break;
-  //   default:
-  //               console.log("default");
-  // }
 
 });
 
@@ -740,19 +695,6 @@ $$('#view3nav').on('click', function(e) {
 
 
 
-// var page4info = 0;
-// $$('#view4nav').on('click', function(e) {
-//   var currentPage = page4info;
-//   if (currentPage === 0) {
-//     $$('#view4pagecontent').html(page4option1);
-//     page4info = 1;
-//   }
-//
-//   if (currentPage == 1) {
-//     $$('#view4pagecontent').html(page4default);
-//     page4info = 0;
-//   }
-// });
 
 // Add views
 var view1 = myApp.addView('#view-1');
@@ -767,7 +709,7 @@ var view4 = myApp.addView('#view-4');
 //CURRENT
 var page3option3 = '<div class="myContentBlock content-block vertride">' +
   '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  '<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>' +
   '<div id="tryMe" class="tryMe lh16">' +
   '<div class="row">' +
   '<div class="col-10 rt">HR<br></div>' +
@@ -784,90 +726,14 @@ var page3option3 = '<div class="myContentBlock content-block vertride">' +
   // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
   '</div>' +
   '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES"></span></div></div>' +
   '</div>';
 
-//INTERVAL
-var page3option3i = '<div class="myContentBlock content-block vertride">' +
-  '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-  '<div id="tryMe" class="tryMe lh16">' +
-  '<div class="row">' +
-  '<div class="col-10 rt">HR<br>%</div>' +
-  '<div class="col-90 rtHRi" style="font-size: 6em"></div>' +
-  // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
-  '</div><hr>' +
-  '<div class="row">' +
-  '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-  '<div class="col-90 rtSPDi speedRow" style="font-size: 7.5em"></div>' +
-  // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
-  '</div><hr>' +
-  '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-  '<div class="col-90 rtCADi" style="font-size: 6em"></div>' +
-  // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
-  '</div>' +
-  '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-  '</div>';
-
-//ROUND
-var page3option3r = '<div class="myContentBlock content-block vertride">' +
-  '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-  '<div id="tryMe" class="tryMe lh16">' +
-  '<div class="row">' +
-  '<div class="col-10 rt">HR<br>%</div>' +
-  '<div class="col-90 rtHRr" style="font-size: 6em"></div>' +
-  // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
-  '</div><hr>' +
-  '<div class="row">' +
-  '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-  '<div class="col-90 rtSPDr speedRow" style="font-size: 7.5em"></div>' +
-  // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
-  '</div><hr>' +
-  '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-  '<div class="col-90 rtCADr" style="font-size: 6em"></div>' +
-  // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
-  '</div>' +
-  '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-  '</div>';
-
-
-var page3option4r = '<div class="myContentBlock content-block vertride">' +
-  '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-  '<div id="tryMe" class="tryMe lh16">' +
-  '<div class="row">' +
-  '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-  '<div class="col-90 rtSPDr speedRow" style="font-size: 9em"></div>' +
-  '</div><hr>' +
-  '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-  '<div class="col-90 rtCADr" style="font-size: 9em"></div>' +
-  '</div>' +
-  '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-  '</div>';
-
-var page3option4i = '<div class="myContentBlock content-block vertride">' +
-'<div class="row">' +
-'<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-'<div id="tryMe" class="tryMe lh16">' +
-'<div class="row">' +
-'<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-'<div class="col-90 rtSPDi speedRow" style="font-size: 9em"></div>' +
-'</div><hr>' +
-'<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-'<div class="col-90 rtCADi" style="font-size: 9em"></div>' +
-'</div>' +
-'</div></div></div>' +
-'<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-'</div>';
 
 
 var page3option4 = '<div class="myContentBlock content-block vertride">' +
   '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  '<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>' +
   '<div id="tryMe" class="tryMe lh16">' +
   '<div class="row">' +
   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
@@ -877,43 +743,15 @@ var page3option4 = '<div class="myContentBlock content-block vertride">' +
   '<div class="col-90 rtCAD" style="font-size: 9em"></div>' +
   '</div>' +
   '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES"></span></div></div>' +
   '</div>';
 
-var page3option5r = '<div class="myContentBlock content-block vertride">' +
-  '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-  '<div id="tryMe" class="tryMe lh16">' +
-  '<div class="row">' +
-  '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-  '<div class="col-90 rtHRr speedRow" style="font-size: 9em"></div>' +
-  '</div><hr>' +
-  '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-  '<div class="col-90 rtSCOREr" style="font-size: 9em"></div>' +
-  '</div>' +
-  '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-  '</div>';
 
-var page3option5i = '<div class="myContentBlock content-block vertride">' +
-  '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-  '<div id="tryMe" class="tryMe lh16">' +
-  '<div class="row">' +
-  '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-  '<div class="col-90 rtHRi speedRow" style="font-size: 9em"></div>' +
-  '</div><hr>' +
-  '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-  '<div class="col-90 rtSCOREi" style="font-size: 9em"></div>' +
-  '</div>' +
-  '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-  '</div>';
 
 
 var page3option5 = '<div class="myContentBlock content-block vertride">' +
   '<div class="row">' +
-  '<div class="col-100 headerRow" style="font-size: 2em">CURRENT &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+'<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>' +
   '<div id="tryMe" class="tryMe lh16">' +
   '<div class="row">' +
   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
@@ -923,7 +761,7 @@ var page3option5 = '<div class="myContentBlock content-block vertride">' +
   '<div class="col-90 rtSCORE" style="font-size: 9em"></div>' +
   '</div>' +
   '</div></div></div>' +
-  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES"></span></div></div>' +
   '</div>';
 
 
@@ -1081,3 +919,176 @@ var page3option5 = '<div class="myContentBlock content-block vertride">' +
   //     x.style.display = "none";
   // }
   // });
+
+
+  // var page3option5r = '<div class="myContentBlock content-block vertride">' +
+  //   '<div class="row">' +
+  //   '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  //   '<div id="tryMe" class="tryMe lh16">' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
+  //   '<div class="col-90 rtHRr speedRow" style="font-size: 9em"></div>' +
+  //   '</div><hr>' +
+  //   '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
+  //   '<div class="col-90 rtSCOREr" style="font-size: 9em"></div>' +
+  //   '</div>' +
+  //   '</div></div></div>' +
+  //   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  //   '</div>';
+  //
+  // var page3option5i = '<div class="myContentBlock content-block vertride">' +
+  //   '<div class="row">' +
+  //   '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  //   '<div id="tryMe" class="tryMe lh16">' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
+  //   '<div class="col-90 rtHRi speedRow" style="font-size: 9em"></div>' +
+  //   '</div><hr>' +
+  //   '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
+  //   '<div class="col-90 rtSCOREi" style="font-size: 9em"></div>' +
+  //   '</div>' +
+  //   '</div></div></div>' +
+  //   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  //   '</div>';
+
+
+  // //INTERVAL
+  // var page3option3i = '<div class="myContentBlock content-block vertride">' +
+  //   '<div class="row">' +
+  //   '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  //   '<div id="tryMe" class="tryMe lh16">' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt">HR<br>%</div>' +
+  //   '<div class="col-90 rtHRi" style="font-size: 6em"></div>' +
+  //   // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
+  //   '</div><hr>' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
+  //   '<div class="col-90 rtSPDi speedRow" style="font-size: 7.5em"></div>' +
+  //   // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
+  //   '</div><hr>' +
+  //   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
+  //   '<div class="col-90 rtCADi" style="font-size: 6em"></div>' +
+  //   // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
+  //   '</div>' +
+  //   '</div></div></div>' +
+  //   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  //   '</div>';
+  //
+  // //ROUND
+  // var page3option3r = '<div class="myContentBlock content-block vertride">' +
+  //   '<div class="row">' +
+  //   '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  //   '<div id="tryMe" class="tryMe lh16">' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt">HR<br>%</div>' +
+  //   '<div class="col-90 rtHRr" style="font-size: 6em"></div>' +
+  //   // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
+  //   '</div><hr>' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
+  //   '<div class="col-90 rtSPDr speedRow" style="font-size: 7.5em"></div>' +
+  //   // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
+  //   '</div><hr>' +
+  //   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
+  //   '<div class="col-90 rtCADr" style="font-size: 6em"></div>' +
+  //   // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
+  //   '</div>' +
+  //   '</div></div></div>' +
+  //   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  //   '</div>';
+
+
+  // var page3option4r = '<div class="myContentBlock content-block vertride">' +
+  //   '<div class="row">' +
+  //   '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  //   '<div id="tryMe" class="tryMe lh16">' +
+  //   '<div class="row">' +
+  //   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
+  //   '<div class="col-90 rtSPDr speedRow" style="font-size: 9em"></div>' +
+  //   '</div><hr>' +
+  //   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
+  //   '<div class="col-90 rtCADr" style="font-size: 9em"></div>' +
+  //   '</div>' +
+  //   '</div></div></div>' +
+  //   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  //   '</div>';
+  //
+  // var page3option4i = '<div class="myContentBlock content-block vertride">' +
+  // '<div class="row">' +
+  // '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
+  // '<div id="tryMe" class="tryMe lh16">' +
+  // '<div class="row">' +
+  // '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
+  // '<div class="col-90 rtSPDi speedRow" style="font-size: 9em"></div>' +
+  // '</div><hr>' +
+  // '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
+  // '<div class="col-90 rtCADi" style="font-size: 9em"></div>' +
+  // '</div>' +
+  // '</div></div></div>' +
+  // '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
+  // '</div>';
+
+
+
+  // var page4info = 0;
+  // $$('#view4nav').on('click', function(e) {
+  //   var currentPage = page4info;
+  //   if (currentPage === 0) {
+  //     $$('#view4pagecontent').html(page4option1);
+  //     page4info = 1;
+  //   }
+  //
+  //   if (currentPage == 1) {
+  //     $$('#view4pagecontent').html(page4default);
+  //     page4info = 0;
+  //   }
+  // });
+
+
+
+  //var dopt = displayDataOption;
+  //console.log("dopt:  " + dopt);
+  // switch (dopt) {
+  //   case 0:
+  //     displayDataOption = 1;
+  //     console.log("switch to Interval");
+  //     if (page3info == 0) {
+  //       $$('#view3pagecontent').html(page3option5i);
+  //     }
+  //     if (page3info == 1) {
+  //       $$('#view3pagecontent').html(page3option3i);
+  //     }
+  //     if (page3info == 2) {
+  //       $$('#view3pagecontent').html(page3option4i);
+  //     }
+  //     break;
+  //     case 1:
+  //       displayDataOption = 2;
+  //             console.log("switch to Round");
+  //             if (page3info == 0) {
+  //               $$('#view3pagecontent').html(page3option5r);
+  //             }
+  //             if (page3info == 1) {
+  //               $$('#view3pagecontent').html(page3option3r);
+  //             }
+  //             if (page3info == 2) {
+  //               $$('#view3pagecontent').html(page3option4r);
+  //             }
+  //       break;
+  //       case 2:
+  //         displayDataOption = 0;
+  //               console.log("switch to RT");
+  //               if (page3info == 0) {
+  //                 $$('#view3pagecontent').html(page3option5);
+  //               }
+  //               if (page3info == 1) {
+  //                 $$('#view3pagecontent').html(page3option3);
+  //               }
+  //               if (page3info == 2) {
+  //                 $$('#view3pagecontent').html(page3option4);
+  //               }
+  //         break;
+  //   default:
+  //               console.log("default");
+  // }

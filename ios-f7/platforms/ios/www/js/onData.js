@@ -25,7 +25,7 @@ var interval = {
   arrHeartRate: [],
   arrCadence: [],
   arrSpeed: [],
-  arrCurrentIntervals: [], 
+  arrCurrentIntervals: [],
   avgHeartRate: 0,
   avgSpeed: 0,
   avgCadence: 0,
@@ -94,8 +94,8 @@ function calcInterval(t) {
 
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
 
-  if (speedInterval >= 0 ) {  
-    //$$('.rtSPDi').text(speedInterval.toFixed(1)); 
+  if (speedInterval >= 0 ) {
+    //$$('.rtSPDi').text(speedInterval.toFixed(1));
     displaySPD();
     } else {
       interval.avgSpeed = 0;
@@ -125,19 +125,19 @@ function calcInterval(t) {
     var c = rt.cadence;
 
     if (h == veloH) {
-      //$$(".rtHR").text(0); 
+      //$$(".rtHR").text(0);
       rt.score = 0;
       //$$(".rtSCORE").text(rt.score.toFixed(0) + "%");
       displayHR();
     }
     rt.speed = 0;rt.cadence = 0;
-    if (s == veloS) { 
-      //$$(".rtSPD").text(0); 
+    if (s == veloS) {
+      //$$(".rtSPD").text(0);
       displaySPD();
     }
     if (c == veloC) {
        //$$(".rtCAD").text(0);
-       displaySPD(); 
+       displaySPD();
       }
 
     veloH = h;
@@ -196,7 +196,7 @@ function roundEnd() {
   rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
   rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
 
-  
+
   rounds.WheelRevs = 0;
   rounds.HeartRate = 0;
   rounds.CrankRevs = 0;
@@ -223,7 +223,7 @@ function roundEnd() {
 
 function midRound(t) {
   //console.log("midRound, t:  " + t);
-  
+
   rounds.avgHeartRate = Number(rounds.HeartRate / t);
   rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
   rounds.avgCadence = Number(rounds.CrankRevs / t * 60);
@@ -242,7 +242,7 @@ function midRound(t) {
     displaySPD();
     displayCAD();
     displayHR();
-    
+
   }
 
   // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
@@ -306,6 +306,8 @@ function onDataCSC(data) {
   if ((flag & WHEEL_REVOLUTION_FLAG) == 1) {
     //console.log("SPD data[1]:  " + data[1]);
     //rt.speed = data[1];
+    console.log("wData");
+    console.log(data);
     processWheelData(data);
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
       //console.log("CAD CSC data[7]:  " + data[7]);
@@ -404,7 +406,7 @@ function processWheelData(data) {
       rounds.Distance += Number(deltaW * wheelCircumferenceCM * cmPerMi);
       //total miles
       totalMiles = Number(rt_WheelRevs * wheelCircumferenceCM * cmPerMi);
-      $$(".rtMILES").text((totalMiles).toFixed(2));
+      $$(".rtMILES").text((totalMiles).toFixed(2) + " MILES");
       //avg speed
       var avgSpeed = Number((rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
 
