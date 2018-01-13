@@ -254,13 +254,14 @@ function endRound() {
 //   var hrID = window.setInterval(onDataHR(simData), 1000);
 
 function onDataHR(data) {
+  $$("#blinker").text("HR");
   //console.log(data[1]);
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
   // $$(".rtHR").text(rt.hr.toFixed(0));
   // $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
   displayHR();
-  $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
+
   // $$(".iconNumber").text(rt.hr);
 }
 
@@ -316,7 +317,7 @@ var veloSpeedCounter = 0;
 
 function processWheelData(data) {
 
-
+  $$("#blinker").text("SPD");
   wheelRevolution = data[1];
   wheelEventTime = (data[6] * 255) + data[5] + 1.0;
 
@@ -340,7 +341,6 @@ function processWheelData(data) {
       oldWheelEventTime = wheelEventTime;
       rt.speed = Number(0);
       $$(".rtSPD").text(rt.speed);
-        $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
       return;
     }
 
@@ -350,6 +350,7 @@ function processWheelData(data) {
         veloSpeedCounter = 0;
         //print("spd, 0's in a row, set rt_spd to 0")
         rt.speed = Double(0);
+        displaySPD();
       }
       return;
     }
@@ -368,8 +369,6 @@ function processWheelData(data) {
     rt_WheelRevs += deltaW;
     rt_WheelTime += deltaT;
     displaySPD();
-      $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
-
 
     if (rt.speed > 0) {
       total_moving_time_seconds += Number((deltaT / 1024));
@@ -400,7 +399,7 @@ var oldCrankRevolution = 999999;
 var oldCrankEventTime = 0;
 
 function processCrankData(data, index) {
-
+    $$("#blinker").text("CAD");
   var crankRevolution = (data[index]);
   var crankEventTime = ((data[index + 3]) * 255) + (data[index + 2]) + 1.0;
 
@@ -432,7 +431,8 @@ function processCrankData(data, index) {
       if (veloCadCounter > 2) {
         veloCadCounter = 0;
         //print("0's in a row, rt.rt_cad is set to 0")
-        rt.rt_cadence = Number(0);
+        rt.rt_cadence = 0;
+        displayCAD();
       }
       return;
     }
@@ -451,9 +451,7 @@ function processCrankData(data, index) {
     rounds.CrankRevs += deltaW;
     rt_crank_revs += deltaW;
     rt_crank_time += deltaT; //still in 1/1024 of a sec
-
     displayCAD();
-      $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
 
     oldCrankRevolution = crankRevolution;
     oldCrankEventTime = crankEventTime;
