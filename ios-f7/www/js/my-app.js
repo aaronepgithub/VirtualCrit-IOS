@@ -845,7 +845,8 @@ var view4 = myApp.addView('#view-4');
 
 
 function detectswipe(el, func) {
-  swipe_det = new Object();
+  // swipe_det = new Object();
+    swipe_det = {};
   swipe_det.sX = 0;
   swipe_det.sY = 0;
   swipe_det.eX = 0;
