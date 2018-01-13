@@ -33,7 +33,7 @@ func processWheelData(withData data :Data) {
         a = wheelRevolution - oldWheelRevolution
         b = wheelEventTime - oldWheelEventTime
         if a < 0 {a = (wheelRevolution + 255) - oldWheelRevolution}
-        if b < 0 {b = (wheelEventTime + 65025) - oldWheelEventTime}
+        if b < 0 {b = (wheelEventTime + 65535) - oldWheelEventTime}
 
         if (a == 0 && b > 1500) {  //no wheel inc, but time did inc, this is 0
             //print("no wheel inc, but time did inc, this is 0")
@@ -110,7 +110,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             b = (crankEventTime - oldCrankEventTime)
             
             if a < 0 {a = (crankRevolution + 255) - oldCrankRevolution}
-            if b < 0 {b = (crankEventTime + 65025) - oldCrankEventTime}
+            if b < 0 {b = (crankEventTime + 65535) - oldCrankEventTime}
             
             if (a == 0 && b > 1500) {  //no crank increase but time did, this is a zero cadence
                 //print("(a == 0 && b > 1500), this should be a zero:  \(a), \(b)")
