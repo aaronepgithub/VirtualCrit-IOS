@@ -254,7 +254,7 @@ function endRound() {
 //   var hrID = window.setInterval(onDataHR(simData), 1000);
 
 function onDataHR(data) {
-  $$("#blinker").text("HR");
+      $$("#blinker").text("Pull to Refresh (HR)");
   //console.log(data[1]);
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
@@ -317,7 +317,7 @@ var veloSpeedCounter = 0;
 
 function processWheelData(data) {
 
-  $$("#blinker").text("SPD");
+$$("#blinker").text("Pull to Refresh (SPD)");
   wheelRevolution = data[1];
   wheelEventTime = (data[6] * 255) + data[5] + 1.0;
 
@@ -397,9 +397,10 @@ var rt_crank_revs = 0;
 var rt_crank_time = 0;
 var oldCrankRevolution = 999999;
 var oldCrankEventTime = 0;
+var veloCadCounter = 0;
 
 function processCrankData(data, index) {
-    $$("#blinker").text("CAD");
+  $$("#blinker").text("Pull to Refresh (CAD)");
   var crankRevolution = (data[index]);
   var crankEventTime = ((data[index + 3]) * 255) + (data[index + 2]) + 1.0;
 
@@ -417,7 +418,10 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    if (deltaW === 0 && deltaW > 1500) { //no crank increase but time did, this is a zero cadence
+    print("1.  deltaW, deltaT:  " + deltaW,deltaT);
+
+    if (deltaW === 0 && deltaT > 1500) { //no crank increase but time did, this is a zero cadence
+      print("2.  Crank didn't but time did (deltaW === 0 && deltaT > 1500)  :  " + deltaW,deltaT);
       oldCrankRevolution = crankRevolution;
       oldCrankEventTime = crankEventTime;
       rt.cadence = 0;
@@ -426,19 +430,19 @@ function processCrankData(data, index) {
     }
 
     if (deltaT < 500 && deltaW == 0) { //ignore velo quick reads
-      //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+      print("3.  Velo Test (deltaT < 500 && deltaW == 0)  :  " + deltaW,deltaT);
       veloCadCounter += 1;
       if (veloCadCounter > 2) {
         veloCadCounter = 0;
-        //print("0's in a row, rt.rt_cad is set to 0")
-        rt.rt_cadence = 0;
+        print("0's in a row, rt.rt_cad is set to 0");
+        rt.cadence = 0;
         displayCAD();
       }
       return;
     }
 
     if (deltaW > 15 || deltaT > 10000) { //catch after breaks
-      //print("After a break, too much time or too much crank revs (a > 15 || b > 10000):  \(a), \(b)")
+      print("3.  Long break, ignore (deltaW > 15 || deltaT > 10000) :  " + deltaW,deltaT);
       oldCrankRevolution = crankRevolution;
       oldCrankEventTime = crankEventTime;
       veloCadCounter = 0;
