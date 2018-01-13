@@ -195,7 +195,7 @@ class RideX_ViewController: UIViewController {
     }
     @objc func update4() {
         //CAD
-        //initialTextFields()
+        //print("rt.rt_cadence - notify:  \(rt.rt_cadence)");
         switch swipeValue {
         case 0:
             BIG_R_HZ.text = stringer0(myIn: rt.rt_cadence)

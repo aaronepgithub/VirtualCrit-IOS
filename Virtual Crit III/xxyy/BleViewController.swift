@@ -147,9 +147,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
     }
     
-    var veloS: Double = 0;
-    var veloC: Double = 0;
     var veloH: Double = 0;
+    
     
     
     func roundUpdate_each_second() {
@@ -183,20 +182,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //            newRoundActionSheet()
 //        }
 
-        if z % 30 == 0
-        {
-            let s = rt.rt_speed
-            let c = rt.rt_cadence
-            
-            
-            if (s == veloS) {rt.rt_speed = 0}
-            if (c == veloC) {rt.rt_cadence = 0}
-            
-            veloS = s
-            veloC = c
-        }
         
-        if z % 60 == 0
+        if z % 45 == 0
         {
             let h = rt.rt_hr
             if (h == veloH) {rt.rt_hr = 0}
@@ -508,8 +495,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func disconnectAllPeripherals() {
-        dump(arr_connected_peripherals)
-        for p in arr_connected_peripherals {
+        dump(arrPeripheral)
+        for p in arrPeripheral {
         // verify we have a peripheral
             
         // check to see if the peripheral is connected
