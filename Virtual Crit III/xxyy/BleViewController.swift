@@ -183,7 +183,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
 //            newRoundActionSheet()
 //        }
 
-        if z % 5 == 0 
+        if z % 30 == 0
         {
             let s = rt.rt_speed
             let c = rt.rt_cadence
@@ -296,8 +296,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     @IBAction func act_Btn5(_ sender: UIButton) {
-        
-        //unpress button?
+        disconnectAllPeripherals()
+        print("disconnect All")
         self.dismiss(animated: true, completion: nil)
 
     }
@@ -505,6 +505,45 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         
         
+    }
+    
+    func disconnectAllPeripherals() {
+        dump(arr_connected_peripherals)
+        for p in arr_connected_peripherals {
+        // verify we have a peripheral
+            
+        // check to see if the peripheral is connected
+            if p?.state != .connected {
+            print("Peripheral exists but is not connected.")
+            return
+        }
+            guard let services = p?.services else {
+            print("Cancel Peripheral Connection")
+                centralManager.cancelPeripheralConnection(p!)  //no services
+            return
+        }
+        for service in services {
+            // iterate through characteristics
+            if let characteristics = service.characteristics {
+                for characteristic in characteristics {
+                    // find the Transfer Characteristic we defined in our Device struct
+                    if characteristic.uuid == CBUUID.init(string: CSC_Char) {
+                        p?.setNotifyValue(false, for: characteristic)
+                        print("set Notify Value to False for:  \(String(describing: p?.name))")
+                        return
+                    }
+                    if characteristic.uuid == CBUUID.init(string: HR_Char) {
+                        p?.setNotifyValue(false, for: characteristic)
+                        print("set Notify Value to False for:  \(String(describing: p?.name))")
+                        return
+                    }
+                }
+            }
+        }
+        // disconnect from the peripheral
+            centralManager.cancelPeripheralConnection(p!)
+        }
+        arr_connected_peripherals = []
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){

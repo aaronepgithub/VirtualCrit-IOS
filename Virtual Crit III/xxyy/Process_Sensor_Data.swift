@@ -30,14 +30,13 @@ func processWheelData(withData data :Data) {
         oldWheelEventTime = wheelEventTime;
         print("First Read")
     } else {  //test for NOT first time reading
-        
         var a: Double = 0;var b: Double = 0;
         a = wheelRevolution - oldWheelRevolution
         b = wheelEventTime - oldWheelEventTime
         if a < 0 {a = (wheelRevolution + 255) - oldWheelRevolution}
         if b < 0 {b = (wheelEventTime + 65025) - oldWheelEventTime}
 
-        if (a == 0 || a > 10) {
+        if (a == 0 || a > 20) {
             wheelRevolution = oldWheelRevolution;
             wheelEventTime = oldWheelEventTime;
             rt.rt_speed = 0
@@ -49,7 +48,6 @@ func processWheelData(withData data :Data) {
             //print("return, b < 750 && b > 0")
             return;
         }
-        
         //single read
         let wheelTimeSeconds = Double(b) / Double(1024)
         let wheelCircumferenceCM = Double(wheelCircumference / 10)
@@ -57,9 +55,7 @@ func processWheelData(withData data :Data) {
         let cmPerMi = Double(0.00001 * 0.621371)
         let minsPerHour = 60.0
         rt.rt_speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour
-        
-    
-    
+
         //srseconds += wheelTimeSeconds
         rt_WheelRevs += a
         rt_WheelTime += b
@@ -72,11 +68,10 @@ func processWheelData(withData data :Data) {
         }
         
         NotificationCenter.default.post(name: Notification.Name("speed"), object: nil)
-        
+        print("rt.rt_speed, notify:  \(rt.rt_speed)")
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
     }
-
 }
 
 var rt_crank_revs: Double = 0
@@ -104,7 +99,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
                 if a < 0 {a = (crankRevolution + 255) - oldCrankRevolution}
                 if b < 0 {b = (crankEventTime + 65025) - oldCrankEventTime}
                 
-                if (a == 0 || a > 5) {
+                if (a == 0 || a > 15) {
                     crankRevolution = oldCrankRevolution
                     crankEventTime = oldCrankEventTime
                     //print("return, a == 0, should display 0 CAD")
@@ -123,6 +118,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             totalCrankRevs += a
             
             NotificationCenter.default.post(name: Notification.Name("cadence"), object: nil)
+            print("rt.rt_cadence - notify:  \(rt.rt_cadence)");
             
             oldCrankRevolution = crankRevolution
             oldCrankEventTime = crankEventTime

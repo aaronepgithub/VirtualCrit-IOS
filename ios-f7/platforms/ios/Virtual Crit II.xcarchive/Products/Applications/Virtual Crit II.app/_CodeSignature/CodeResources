@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		fm/NeVz6LfPo0R5l2FPv4EY3UY4=
+		ab8LzJufS3wWuQkcZk3Xls2AZfc=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		QY9Dx9XmyXqJmz4QWqNPE6Ngb28=
+		qcsKxDkxQ69MU1sTRZTDUN3F0Qc=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		0ETBorOrY7HtqA70oQ84hMzdOxY=
+		fKZIG85ARgLvzR83exh/NDORooY=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		s/ytckfU8YUNbEMF9zigEJkS1hk=
+		oxheBovcXX1guQjVdhDTK+s+zJQ=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -228,9 +228,17 @@
 		<data>
 		psYp/ZVETG0ySlnEh3VV3vHbKFY=
 		</data>
+		<key>www/css/Biryani400.woff2</key>
+		<data>
+		i3mLATOb80LL0B9RYagfzckaYX4=
+		</data>
+		<key>www/css/Biryani700.woff2</key>
+		<data>
+		qee4IoZtNNDuiEKsTXjtNyjM8LM=
+		</data>
 		<key>www/css/my-app.css</key>
 		<data>
-		XUt7GBABAp8PVvTc53JaUckMhu8=
+		+VccFjCDFaEPU0JTjyjXjSk8Q1Y=
 		</data>
 		<key>www/dist/about.html</key>
 		<data>
@@ -307,10 +315,6 @@
 		<key>www/dist/fonts/Framework7Icons-Regular.woff2</key>
 		<data>
 		faeO+evqOzaZoWswF1udTN+Hddw=
-		</data>
-		<key>www/dist/fonts/WideFont.woff2</key>
-		<data>
-		4F1pcRJegMY73wjuRWN7xJ+Cenc=
 		</data>
 		<key>www/dist/form.html</key>
 		<data>
@@ -474,7 +478,7 @@
 		</data>
 		<key>www/index.html</key>
 		<data>
-		MLJTtZlbo9XRjJFcGL7wrN8zMJU=
+		GlruaXbaZEX+E95xOYxqGSceOrc=
 		</data>
 		<key>www/js/my-app.js</key>
 		<data>
@@ -828,22 +832,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fm/NeVz6LfPo0R5l2FPv4EY3UY4=
+			ab8LzJufS3wWuQkcZk3Xls2AZfc=
 			</data>
 			<key>hash2</key>
 			<data>
-			NYmou/ndDsLPfTc1EyA4elNWm7j+kt+yoZxnmY9q3do=
+			qMHU3+NdezOq0kfye+KGoA5CPd5Ll6tKKWo9Tdb3C3U=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			QY9Dx9XmyXqJmz4QWqNPE6Ngb28=
+			qcsKxDkxQ69MU1sTRZTDUN3F0Qc=
 			</data>
 			<key>hash2</key>
 			<data>
-			kF+lFCS2cPmdLZCMORoIKM6d8Y4Te+2TwdN3XkGAnP8=
+			B9LCpIxnjJb8+WVt5VzdlXei33P4+1oyTe5NW8OA/Xo=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -861,11 +865,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			0ETBorOrY7HtqA70oQ84hMzdOxY=
+			fKZIG85ARgLvzR83exh/NDORooY=
 			</data>
 			<key>hash2</key>
 			<data>
-			oZot2tsxSFSbcB0AcKYe4wl7wOtYAmOY+bI8aCFwA/0=
+			4CcdgE/FJa4W2n49kZ6Z8CYHfksMHXQOV9QubOZQW6w=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1048,11 +1052,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			s/ytckfU8YUNbEMF9zigEJkS1hk=
+			oxheBovcXX1guQjVdhDTK+s+zJQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			PSf1HyZBMNDQKU/5o6+8T4GjO8uuuE7KxSvCgzmxCSQ=
+			SNgH9B47H40BZJ4kDX/vJU0/PYZA7beeExHMnr5XtvU=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1165,15 +1169,37 @@
 			MgISnpQUyWjEawI/IoSSmdEag2CeNysIUAU5SmheGVQ=
 			</data>
 		</dict>
+		<key>www/css/Biryani400.woff2</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			i3mLATOb80LL0B9RYagfzckaYX4=
+			</data>
+			<key>hash2</key>
+			<data>
+			5cAd55z8G9eYhfqKjwlQVMN++amL7WQFCawjV5yZsWs=
+			</data>
+		</dict>
+		<key>www/css/Biryani700.woff2</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			qee4IoZtNNDuiEKsTXjtNyjM8LM=
+			</data>
+			<key>hash2</key>
+			<data>
+			VsUnsTEXNs7UvyPD6FdNcOMcwiMsdPPW8UCH8nT7k2Q=
+			</data>
+		</dict>
 		<key>www/css/my-app.css</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			XUt7GBABAp8PVvTc53JaUckMhu8=
+			+VccFjCDFaEPU0JTjyjXjSk8Q1Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			jiKydpNxoADZr/prlGf5WUB7i6TnRJsch7KY2yfwSxk=
+			efHUTHXDr9tx5XVW2Ux0P1CULJZXnlQXj/UkF0ATDxQ=
 			</data>
 		</dict>
 		<key>www/dist/about.html</key>
@@ -1383,17 +1409,6 @@
 			<key>hash2</key>
 			<data>
 			IRpEHpiQBxwRCSeHw2ItpXA8Se4NINZ/LpxyjYFyOkI=
-			</data>
-		</dict>
-		<key>www/dist/fonts/WideFont.woff2</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			4F1pcRJegMY73wjuRWN7xJ+Cenc=
-			</data>
-			<key>hash2</key>
-			<data>
-			GmRn98v7YsL0YK1Alh7G/J1zBpz+goknm8gwROeEjKo=
 			</data>
 		</dict>
 		<key>www/dist/form.html</key>
@@ -1840,11 +1855,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			MLJTtZlbo9XRjJFcGL7wrN8zMJU=
+			GlruaXbaZEX+E95xOYxqGSceOrc=
 			</data>
 			<key>hash2</key>
 			<data>
-			gAGx5pyhmXaFcbIglNqSrnsJvtuXjcq+ulrWyHhK84E=
+			0meHFYwqxsa6XPRsO9oA+WOJ5IgSeNvb3jYklWxZMb8=
 			</data>
 		</dict>
 		<key>www/js/my-app.js</key>
