@@ -254,7 +254,7 @@ function endRound() {
 //   var hrID = window.setInterval(onDataHR(simData), 1000);
 
 function onDataHR(data) {
-      $$("#blinker").text("Pull to Refresh (HR)");
+      $$("#blinker").text("Pull to Refresh (HR)" + data[1]);
   //console.log(data[1]);
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
@@ -288,18 +288,20 @@ function onDataCSC(data) {
   var flag = data[0];
 
   if ((flag & WHEEL_REVOLUTION_FLAG) == 1) {
+    $$("#blinker").text("Pull to Refresh (SPD)" + data[1]);
     //console.log("SPD data[1]:  " + data[1]);
     //rt.speed = data[1];
     //console.log(data);
     processWheelData(data);
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
+      $$("#blinker").text("Pull to Refresh (SPD,CAD)" + data[1],data[7]);
       //console.log("CAD CSC data[7]:  " + data[7]);
       //rt.cadence = data[7];
       processCrankData(data, 7);
     }
   } else {
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
-      //console.log("\n CAD SA data[1]:  " + data[1] + "\n");
+      $$("#blinker").text("Pull to Refresh (CAD)" + data[7]);
       //rt.cadence = data[1];
       processCrankData(data, 1);
     }
@@ -317,7 +319,6 @@ var veloSpeedCounter = 0;
 
 function processWheelData(data) {
 
-$$("#blinker").text("Pull to Refresh (SPD)");
   wheelRevolution = data[1];
   wheelEventTime = (data[6] * 255) + data[5] + 1.0;
 
@@ -349,7 +350,7 @@ $$("#blinker").text("Pull to Refresh (SPD)");
       if (veloSpeedCounter > 2) {
         veloSpeedCounter = 0;
         //print("spd, 0's in a row, set rt_spd to 0")
-        rt.speed = Double(0);
+        rt.speed = 0;
         displaySPD();
       }
       return;
@@ -400,7 +401,7 @@ var oldCrankEventTime = 0;
 var veloCadCounter = 0;
 
 function processCrankData(data, index) {
-  $$("#blinker").text("Pull to Refresh (CAD)");
+
   var crankRevolution = (data[index]);
   var crankEventTime = ((data[index + 3]) * 255) + (data[index + 2]) + 1.0;
 
@@ -418,10 +419,10 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    print("1.  deltaW, deltaT:  " + deltaW,deltaT);
+    console.log("1.  deltaW, deltaT:  " + deltaW,deltaT);
 
     if (deltaW === 0 && deltaT > 1500) { //no crank increase but time did, this is a zero cadence
-      print("2.  Crank didn't but time did (deltaW === 0 && deltaT > 1500)  :  " + deltaW,deltaT);
+      //console.log("2.  Crank didn't but time did (deltaW === 0 && deltaT > 1500)  :  " + deltaW,deltaT);
       oldCrankRevolution = crankRevolution;
       oldCrankEventTime = crankEventTime;
       rt.cadence = 0;
@@ -430,11 +431,11 @@ function processCrankData(data, index) {
     }
 
     if (deltaT < 500 && deltaW == 0) { //ignore velo quick reads
-      print("3.  Velo Test (deltaT < 500 && deltaW == 0)  :  " + deltaW,deltaT);
+      //console.log("3.  Velo Test (deltaT < 500 && deltaW == 0)  :  " + deltaW,deltaT);
       veloCadCounter += 1;
       if (veloCadCounter > 2) {
         veloCadCounter = 0;
-        print("0's in a row, rt.rt_cad is set to 0");
+        //console.log("0's in a row, rt.rt_cad is set to 0");
         rt.cadence = 0;
         displayCAD();
       }
@@ -442,7 +443,7 @@ function processCrankData(data, index) {
     }
 
     if (deltaW > 15 || deltaT > 10000) { //catch after breaks
-      print("3.  Long break, ignore (deltaW > 15 || deltaT > 10000) :  " + deltaW,deltaT);
+      //console.log("3.  Long break, ignore (deltaW > 15 || deltaT > 10000) :  " + deltaW,deltaT);
       oldCrankRevolution = crankRevolution;
       oldCrankEventTime = crankEventTime;
       veloCadCounter = 0;
