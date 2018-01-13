@@ -10,9 +10,33 @@
      url("../dist/fonts/Framework7Icons-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: 'Biryani';
+  font-style: normal;
+  font-weight: 700;
+  src: url('Biryani700.woff2') format('woff2');
+  
+}
+@font-face {
+  font-family: 'Biryani';
+  font-style: normal;
+  font-weight: 400;
+  src: url('Biryani400.woff2') format('woff2');
+  
+}
+@font-face {
+  font-family: 'Biryani';
+  font-style: normal;
+  font-weight: 700;
+  src: url('Biryani.woff2') format('woff2');
+  
+}
+
 body {
   font-weight: bold;
     /* font-family: 'Krona One', sans-serif; */
+    font-family: 'Biryani', sans-serif;
+
 }
 
 
