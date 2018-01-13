@@ -711,21 +711,15 @@
                                         <action selector="action_CloseStartupView:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="kSc-kg-xoq"/>
                                     </connections>
                                 </button>
-                                <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default_640x960" translatesAutoresizingMaskIntoConstraints="NO" id="Klr-xn-bWm">
-                                    <rect key="frame" x="-100" y="268.5" width="984" height="480"/>
-                                </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="cvO-Xe-i48" firstAttribute="top" secondItem="uCo-GC-fu9" secondAttribute="bottom" constant="20" id="EWV-Ye-JSy"/>
                                 <constraint firstAttribute="trailing" secondItem="uCo-GC-fu9" secondAttribute="trailing" id="Vq2-MK-zfn"/>
-                                <constraint firstItem="Klr-xn-bWm" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" constant="-100" id="bNj-hS-dqF"/>
                                 <constraint firstItem="uCo-GC-fu9" firstAttribute="leading" secondItem="cvO-Xe-i48" secondAttribute="leading" id="hGg-22-7G4"/>
                                 <constraint firstItem="cvO-Xe-i48" firstAttribute="centerY" secondItem="wAH-id-bcZ" secondAttribute="centerY" id="nwF-R3-VPv"/>
                                 <constraint firstItem="uCo-GC-fu9" firstAttribute="leading" secondItem="wAH-id-bcZ" secondAttribute="leading" id="oI7-nA-iAj"/>
-                                <constraint firstAttribute="trailing" secondItem="Klr-xn-bWm" secondAttribute="trailing" constant="-100" id="uNE-i0-1Mi"/>
                                 <constraint firstItem="uCo-GC-fu9" firstAttribute="trailing" secondItem="cvO-Xe-i48" secondAttribute="trailing" id="uzk-w6-mPK"/>
-                                <constraint firstItem="Klr-xn-bWm" firstAttribute="top" secondItem="cvO-Xe-i48" secondAttribute="top" constant="-100" id="xmN-4S-CD7"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -901,7 +895,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default-7506-landscape_1334x750" translatesAutoresizingMaskIntoConstraints="NO" id="5CI-IQ-GwK">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="54" width="375" height="530"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00 AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRm-OM-vFo" userLabel="TIME OF DAY">
                                 <rect key="frame" x="127" y="69" width="121.5" height="42"/>
@@ -1046,7 +1040,7 @@
                             <constraint firstItem="nZn-O0-iTq" firstAttribute="centerX" secondItem="RBO-At-OVI" secondAttribute="centerX" id="MuB-Bg-xKl"/>
                             <constraint firstItem="vDg-zR-RbI" firstAttribute="centerY" secondItem="6mE-fa-A6M" secondAttribute="centerY" constant="-50" id="NRA-hP-iYE"/>
                             <constraint firstItem="yVb-ro-f1i" firstAttribute="top" secondItem="hrd-8g-TmT" secondAttribute="bottom" id="OLA-57-KHE"/>
-                            <constraint firstItem="5CI-IQ-GwK" firstAttribute="top" secondItem="WT6-f1-Om4" secondAttribute="top" id="SeT-nV-SCQ"/>
+                            <constraint firstItem="5CI-IQ-GwK" firstAttribute="top" secondItem="Jb7-WI-TFA" secondAttribute="bottom" id="SeT-nV-SCQ"/>
                             <constraint firstItem="Jb7-WI-TFA" firstAttribute="bottom" secondItem="hrd-8g-TmT" secondAttribute="top" constant="8" symbolic="YES" id="UMG-rn-E6j"/>
                             <constraint firstItem="DTx-HP-u5Z" firstAttribute="centerX" secondItem="WQo-YR-DAT" secondAttribute="centerX" id="Uff-ii-KR9"/>
                             <constraint firstItem="5CI-IQ-GwK" firstAttribute="leading" secondItem="WT6-f1-Om4" secondAttribute="leading" id="VME-gq-0Xf"/>
@@ -1067,7 +1061,7 @@
                             <constraint firstItem="vdn-MR-Bgj" firstAttribute="centerX" secondItem="Kdb-tx-wmz" secondAttribute="centerX" constant="25" id="vQF-Xu-lI2"/>
                             <constraint firstAttribute="bottomMargin" secondItem="U9I-O9-X1q" secondAttribute="bottom" constant="10" id="wXJ-i6-RBI"/>
                             <constraint firstItem="vDg-zR-RbI" firstAttribute="centerX" secondItem="6mE-fa-A6M" secondAttribute="centerX" id="xvV-z8-OAJ"/>
-                            <constraint firstAttribute="bottom" secondItem="5CI-IQ-GwK" secondAttribute="bottom" id="yRO-Bf-NvN"/>
+                            <constraint firstItem="5CI-IQ-GwK" firstAttribute="bottom" secondItem="yVb-ro-f1i" secondAttribute="top" id="yRO-Bf-NvN"/>
                             <constraint firstItem="U9I-O9-X1q" firstAttribute="firstBaseline" secondItem="Kdb-tx-wmz" secondAttribute="firstBaseline" id="zvr-M3-Mke"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WT6-f1-Om4"/>
@@ -1432,7 +1426,6 @@
                             <constraint firstItem="gAD-nG-EBP" firstAttribute="centerX" secondItem="Gx2-BT-YXK" secondAttribute="centerX" id="KX4-ar-Suz"/>
                             <constraint firstItem="gAD-nG-EBP" firstAttribute="centerY" secondItem="Gx2-BT-YXK" secondAttribute="centerY" id="ME8-3O-VFa"/>
                             <constraint firstItem="KJb-5y-wgb" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="4" id="Oeb-aQ-Fi1"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" constant="38" id="Udu-WR-KQy"/>
                             <constraint firstItem="cRB-3T-98U" firstAttribute="centerY" secondItem="rqQ-xt-OiS" secondAttribute="centerY" constant="100" id="Y6N-gX-W7T"/>
                             <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="Gx2-BT-YXK" secondAttribute="bottom" id="aBW-5f-J3a"/>
                             <constraint firstItem="i1p-Yr-XlG" firstAttribute="centerY" secondItem="cRB-3T-98U" secondAttribute="centerY" constant="-70" id="exx-1D-hlG"/>
@@ -1465,7 +1458,6 @@
     </scenes>
     <resources>
         <image name="Default-7506-landscape_1334x750" width="667" height="375"/>
-        <image name="Default_640x960" width="320" height="480"/>
         <image name="ic_bluetooth" width="24" height="24"/>
         <image name="ic_directions_bike" width="24" height="24"/>
         <image name="ic_settings" width="24" height="24"/>

@@ -672,7 +672,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             ViewStartup.center = view.center
             view.addSubview(ViewStartup)
             
-            let when = DispatchTime.now() + 2
+            let when = DispatchTime.now() + 1
             DispatchQueue.main.asyncAfter(deadline: when){
                 self.ViewStartup.removeFromSuperview()
                             self.tabBarController?.selectedIndex = 0;
