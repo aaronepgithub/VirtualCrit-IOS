@@ -254,7 +254,7 @@ function endRound() {
 //   var hrID = window.setInterval(onDataHR(simData), 1000);
 
 function onDataHR(data) {
-      $$("#blinker").text("Pull to Refresh (HR)" + data[1]);
+      $$("#blinker").text("Pull to Refresh (HR) " + data[1]);
   //console.log(data[1]);
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
@@ -288,20 +288,20 @@ function onDataCSC(data) {
   var flag = data[0];
 
   if ((flag & WHEEL_REVOLUTION_FLAG) == 1) {
-    $$("#blinker").text("Pull to Refresh (SPD)" + data[1]);
+    $$("#blinker").text("Pull to Refresh (SPD) " + data[1]);
     //console.log("SPD data[1]:  " + data[1]);
     //rt.speed = data[1];
     //console.log(data);
     processWheelData(data);
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
-      $$("#blinker").text("Pull to Refresh (SPD,CAD)" + data[1],data[7]);
+      $$("#blinker").text("Pull to Refresh (S,C) " + data[1] + " " + data[7]);
       //console.log("CAD CSC data[7]:  " + data[7]);
       //rt.cadence = data[7];
       processCrankData(data, 7);
     }
   } else {
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
-      $$("#blinker").text("Pull to Refresh (CAD)" + data[7]);
+      $$("#blinker").text("Pull to Refresh (CAD) " + data[7]);
       //rt.cadence = data[1];
       processCrankData(data, 1);
     }
@@ -419,7 +419,7 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    console.log("1.  deltaW, deltaT:  " + deltaW,deltaT);
+    //console.log("1.  deltaW, deltaT:  " + deltaW,deltaT);
 
     if (deltaW === 0 && deltaT > 1500) { //no crank increase but time did, this is a zero cadence
       //console.log("2.  Crank didn't but time did (deltaW === 0 && deltaT > 1500)  :  " + deltaW,deltaT);
