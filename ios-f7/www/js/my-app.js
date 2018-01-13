@@ -792,7 +792,7 @@ mql.addListener(function(m) {
       $$('.rtCAD').addClass('bigFont');
       $$('.forthRow').show(); //already has bigfont
     }
-    if (page3info == 0) {
+    if (page3info === 0) {
       //$$('#view3pagecontent').html(page3option3);
       //back to all start
       $$('.rtHR').removeClass('bigFont');
@@ -880,7 +880,7 @@ function detectswipe(el, func) {
       else direc = "u";
     }
 
-    if (direc != "") {
+    if (direc !== "") {
       if (typeof func == 'function') func(el, direc);
     }
     direc = "";

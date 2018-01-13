@@ -56,8 +56,8 @@ var veloC = 0;
 var veloH = 0;
 
 function stringer1(myIn) {
-var out = myIn.toFixed(1);
-console.log("out:  " + out);
+  var out = myIn.toFixed(1);
+  console.log("out:  " + out);
 }
 
 function calcInterval(t) {
@@ -94,16 +94,16 @@ function calcInterval(t) {
 
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
 
-  if (speedInterval >= 0 ) {
+  if (speedInterval >= 0) {
     //$$('.rtSPDi').text(speedInterval.toFixed(1));
     displaySPD();
-    } else {
-      interval.avgSpeed = 0;
-      displaySPD();
-      //$$('.rtSPDi').text(0);
-    }
-    displayHR();
-    displayCAD();
+  } else {
+    interval.avgSpeed = 0;
+    displaySPD();
+    //$$('.rtSPDi').text(0);
+  }
+  displayHR();
+  displayCAD();
   // $$('.rtCADi').text(Number(cadenceInterval.toFixed(0)));
   // $$('.rtHRi').text(Number(heartrateInterval.toFixed(0)));
   // var sc = Number((heartrateInterval / maxHeartRate) * 100);
@@ -118,34 +118,17 @@ function calcInterval(t) {
   //   console.log("rounds.avgScore:  " + rounds.avgScore);
   // }
 
-//used to rem zeros
-  if (t % 13 === 0) {
+  //used to rem zeros
+  if (t % 40 === 0) {
     var h = rt.hr;
-    var s = rt.speed;
-    var c = rt.cadence;
 
     if (h == veloH) {
-      //$$(".rtHR").text(0);
+      rt.hr = 0;
       rt.score = 0;
-      //$$(".rtSCORE").text(rt.score.toFixed(0) + "%");
       displayHR();
     }
-    rt.speed = 0;rt.cadence = 0;
-    if (s == veloS) {
-      //$$(".rtSPD").text(0);
-      displaySPD();
-    }
-    if (c == veloC) {
-       //$$(".rtCAD").text(0);
-       displaySPD();
-      }
-
     veloH = h;
-    veloS = s;
-    veloC = c;
   }
-
-
 }
 
 function actionEndofRound() {
@@ -277,8 +260,8 @@ function onDataHR(data) {
   // $$(".rtHR").text(rt.hr.toFixed(0));
   // $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
   displayHR();
-  $$("#blinker").text("Pull to Refresh (HR)");
-  $$(".iconNumber").text(rt.hr);
+  $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
+  // $$(".iconNumber").text(rt.hr);
 }
 
 function decodeUint32(bytes) {
@@ -306,8 +289,7 @@ function onDataCSC(data) {
   if ((flag & WHEEL_REVOLUTION_FLAG) == 1) {
     //console.log("SPD data[1]:  " + data[1]);
     //rt.speed = data[1];
-    console.log("wData");
-    console.log(data);
+    //console.log(data);
     processWheelData(data);
     if ((flag & CRANK_REVOLUTION_FLAG) == 2) {
       //console.log("CAD CSC data[7]:  " + data[7]);
@@ -323,126 +305,108 @@ function onDataCSC(data) {
   }
 }
 
-var oldWheelRevolution = 0;
+
+var oldWheelRevolution = 999999;
 var oldWheelEventTime = 0;
 var rt_WheelRevs = 0;
 var rt_WheelTime = 0;
 var total_moving_time_seconds = 0;
 
-var single_read_speed = 0;
-var single_read_cad = 0;
-
-// var counter = 1;
-// var simCSC = [1, 1, 1, 1, 1, 1];
-//
-// var cscID = window.setInterval(function(){
-//   $$.each(simCSC, function(val){
-//     simCSC[val] = counter ;
-//   });
-//   simCSC[0] = 0;
-//   simCSC[6] = 1;
-//   simCSC[2] = 1;
-//   processWheelData(simCSC);
-//       counter += 3;
-// }, 1000);
+var veloSpeedCounter = 0;
 
 function processWheelData(data) {
 
-  wheelRevolution = (data[2] * 256) + data[1];
-  wheelEventTime = (data[6] * 256) + data[5] + 1.0;
 
-  if (oldWheelRevolution === 0) {
+  wheelRevolution = data[1];
+  wheelEventTime = (data[6] * 255) + data[5] + 1.0;
+
+  if (oldWheelRevolution === 999999) {
     oldWheelRevolution = wheelRevolution;
     oldWheelEventTime = wheelEventTime;
   } else {
-
     var deltaW = wheelRevolution - oldWheelRevolution;
     var deltaT = wheelEventTime - oldWheelEventTime;
 
     if (deltaW < 0) {
-      deltaW += 65535;
+      deltaW += 255;
     }
     if (deltaT < 0) {
       deltaT += 65535;
     }
 
-    if (deltaW === 0 || deltaW > 15) {
-      wheelRevolution = oldWheelRevolution;
-      wheelEventTime = oldWheelEventTime;
-      //velo should test, might not need to update display
-      single_read_speed = 0;
-      rt.speed = Number(single_read_speed);
-      // $$(".rtSPD").text(rt.speed);
-      // $$("#blinker").text("Pull to Refresh (SPD)");
-      return;
-    }
-    if (deltaT < 950 && deltaT > 0) {
-      wheelRevolution = oldWheelRevolution;
-      wheelEventTime = oldWheelEventTime;
+    // if (deltaW === 0 || deltaW > 15) {
+    if (deltaW === 0 && deltaT > 1500) { //no wheel inc, but time did inc, this is 0
+      oldWheelRevolution = wheelRevolution;
+      oldWheelEventTime = wheelEventTime;
+      rt.speed = Number(0);
+      $$(".rtSPD").text(rt.speed);
+        $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
       return;
     }
 
-    //         //single read
-    var wheelTimeSeconds = Number(deltaT / 1024);
-    if (wheelTimeSeconds > 0) {
-      // var wheelCircumferenceCM = wheelCircumference / 10;
-      var wheelRPM = Number(deltaW / (wheelTimeSeconds / 60));
-      // var cmPerMi = 0.00001 * 0.621371;
-      // var minsPerHour = 60.0;
-      single_read_speed = Number(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour);
-      rt.speed = Number(single_read_speed);
-      // $$(".rtSPD").text(rt.speed.toFixed(1));
-      displaySPD();
-      $$("#blinker").text("Pull to Refresh (SPD)");
-
-
-      if (single_read_speed > 0) {
-        rt_WheelRevs += deltaW;
-        rt_WheelTime += deltaT;
-        total_moving_time_seconds += Number((deltaT / 1024));
-        //convert to display as moving time
+    if (deltaT < 500 && deltaW == 0) { //ignore velo quickies
+      veloSpeedCounter += 1;
+      if (veloSpeedCounter > 2) {
+        veloSpeedCounter = 0;
+        //print("spd, 0's in a row, set rt_spd to 0")
+        rt.speed = Double(0);
       }
-      rounds.WheelRevs += Number(deltaW);
-      rounds.Distance += Number(deltaW * wheelCircumferenceCM * cmPerMi);
-      //total miles
-      totalMiles = Number(rt_WheelRevs * wheelCircumferenceCM * cmPerMi);
-      $$(".rtMILES").text((totalMiles).toFixed(2) + " MILES");
-      //avg speed
-      var avgSpeed = Number((rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
-
-      var date = new Date(null);
-      date.setSeconds(Number(rt_WheelTime / 1024)); // specify value for SECONDS here
-      var result = date.toISOString().substr(11, 8);
-
-      $$(".rtMOVING").text(result);
-      $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
-    } else {
-      single_read_speed = 0;
-      rt.speed = Number(single_read_speed);
-      // $$(".rtSPD").text(single_read_speed.toFixed(1));
-      displaySPD();
-      $$("#blinker").text("Pull to Refresh (SPD)");
+      return;
     }
-    //console.log("SPD:  " + single_read_speed);
+
+    if (deltaW > 15 || deltaT > 10000) { //catch after breaks
+      //print("After a break, too much time or too much wheel revs (a > 15 || b > 10000):  \(a), \(b)")
+      oldWheelRevolution = wheelRevolution;
+      oldWheelEventTime = wheelEventTime;
+      veloSpeedCounter = 0;
+      return;
+    }
+
+    var wheelTimeSeconds = Number(deltaT / 1024);
+    var wheelRPM = Number(deltaW / (wheelTimeSeconds / 60));
+    rt.speed = Number(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour);
+    rt_WheelRevs += deltaW;
+    rt_WheelTime += deltaT;
+    displaySPD();
+      $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
+
+
+    if (rt.speed > 0) {
+      total_moving_time_seconds += Number((deltaT / 1024));
+    }
+    rounds.WheelRevs += Number(deltaW);
+    rounds.Distance += Number(deltaW * wheelCircumferenceCM * cmPerMi);
+    totalMiles = Number(rt_WheelRevs * wheelCircumferenceCM * cmPerMi);
+    $$(".rtMILES").text((totalMiles).toFixed(2) + " MILES");
+    var avgSpeed = Number((rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
+
+    var date = new Date(null);
+    date.setSeconds(Number(rt_WheelTime / 1024));
+    var result = date.toISOString().substr(11, 8);
+
+    $$(".rtMOVING").text(result);
+    $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
+
     oldWheelRevolution = wheelRevolution;
     oldWheelEventTime = wheelEventTime;
+    veloSpeedCounter = 0;
   }
 }
 
 
 var rt_crank_revs = 0;
 var rt_crank_time = 0;
-var oldCrankRevolution = 0;
+var oldCrankRevolution = 999999;
 var oldCrankEventTime = 0;
 
 function processCrankData(data, index) {
 
   var crankRevolution = (data[index]);
-  var crankEventTime = ((data[index + 3]) * 256) + (data[index + 2]) + 1.0;
+  var crankEventTime = ((data[index + 3]) * 255) + (data[index + 2]) + 1.0;
 
-  if (oldCrankRevolution === 0) {
+  if (oldCrankRevolution === 999999) {
     oldCrankRevolution = crankRevolution;
-    oldCrankEventTime = wheelEventTime;
+    oldCrankEventTime = crankEventTime;
   } else {
     var deltaW = crankRevolution - oldCrankRevolution;
     var deltaT = crankEventTime - oldCrankEventTime;
@@ -454,57 +418,46 @@ function processCrankData(data, index) {
       deltaT += 65535;
     }
 
-    if (deltaW === 0 || deltaW > 15) {
-      crankRevolution = oldCrankRevolution;
-      crankEventTime = oldCrankEventTime;
-      //single_read_cad = 0;
-      //rt.cadence = single_read_cad.toFixed(0);
-      //$$(".rtCAD").text(rt.cadence);
-      //$$("#blinker").text("Pull to Refresh (CAD)");
+    if (deltaW === 0 && deltaW > 1500) { //no crank increase but time did, this is a zero cadence
+      oldCrankRevolution = crankRevolution;
+      oldCrankEventTime = crankEventTime;
+      rt.cadence = 0;
+      rt_crank_time += deltaW;
       return;
     }
 
-    if (deltaT < 950 && deltaT > 0) {
-      crankRevolution = oldCrankRevolution;
-      crankEventTime = oldCrankEventTime;
+    if (deltaT < 500 && deltaW == 0) { //ignore velo quick reads
+      //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+      veloCadCounter += 1;
+      if (veloCadCounter > 2) {
+        veloCadCounter = 0;
+        //print("0's in a row, rt.rt_cad is set to 0")
+        rt.rt_cadence = Number(0);
+      }
       return;
     }
 
-    // if (deltaT > 2000) {
-    //   crankRevolution = oldCrankRevolution;
-    //   crankEventTime = oldCrankEventTime;
-    //   single_read_cad = 0;
-    //   rt.cadence = single_read_cad.toFixed(0);
-    //   $$(".rtCAD").text(rt.cadence);
-    //   $$("#blinker").text("Pull to Refresh (CAD)");
-    //   return;
-    // }
+    if (deltaW > 15 || deltaT > 10000) { //catch after breaks
+      //print("After a break, too much time or too much crank revs (a > 15 || b > 10000):  \(a), \(b)")
+      oldCrankRevolution = crankRevolution;
+      oldCrankEventTime = crankEventTime;
+      veloCadCounter = 0;
+      return;
+    }
 
-    // if (deltaT == 0) {
-    //   oldCrankRevolution = crankRevolution;
-    //   oldCrankEventTime = crankEventTime;
-    //   // single_read_cad = 0;
-    //   // rt.cadence = single_read_cad.toFixed(0);
-    //   // $$(".rtCAD").text(rt.cadence);
-    //   // $$("#blinker").text("Pull to Refresh (CAD)");
-    //   return;
-    // }
 
-    //single read
     var crankTimeSeconds = Number(deltaT / 1024);
-    single_read_cad = Number(deltaW / (crankTimeSeconds / 60));
+    rt.cadence = Number(deltaW / (crankTimeSeconds / 60));
     rounds.CrankRevs += deltaW;
     rt_crank_revs += deltaW;
     rt_crank_time += deltaT; //still in 1/1024 of a sec
 
-    rt.cadence = Number(single_read_cad.toFixed(0));
-    // $$(".rtCAD").text(rt.cadence);
     displayCAD();
-    $$("#blinker").text("Pull to Refresh (CAD)");
-    //console.log("CAD:  " + single_read_cad);
+      $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
 
     oldCrankRevolution = crankRevolution;
     oldCrankEventTime = crankEventTime;
+    veloCadCounter = 0;
   }
 
 }

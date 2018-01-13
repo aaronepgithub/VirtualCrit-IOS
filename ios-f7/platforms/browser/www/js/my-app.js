@@ -792,7 +792,7 @@ mql.addListener(function(m) {
       $$('.rtCAD').addClass('bigFont');
       $$('.forthRow').show(); //already has bigfont
     }
-    if (page3info == 0) {
+    if (page3info === 0) {
       //$$('#view3pagecontent').html(page3option3);
       //back to all start
       $$('.rtHR').removeClass('bigFont');
@@ -845,7 +845,8 @@ var view4 = myApp.addView('#view-4');
 
 
 function detectswipe(el, func) {
-  swipe_det = new Object();
+  // swipe_det = new Object();
+    swipe_det = {};
   swipe_det.sX = 0;
   swipe_det.sY = 0;
   swipe_det.eX = 0;
@@ -879,7 +880,7 @@ function detectswipe(el, func) {
       else direc = "u";
     }
 
-    if (direc != "") {
+    if (direc !== "") {
       if (typeof func == 'function') func(el, direc);
     }
     direc = "";

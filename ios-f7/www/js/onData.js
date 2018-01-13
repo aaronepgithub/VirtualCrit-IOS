@@ -260,7 +260,7 @@ function onDataHR(data) {
   // $$(".rtHR").text(rt.hr.toFixed(0));
   // $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
   displayHR();
-  $$("#blinker").text("Pull to Refresh " + rt.hr, Math.round(rt.cad), Math.round(rt.speed));
+  $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
   // $$(".iconNumber").text(rt.hr);
 }
 
@@ -340,7 +340,7 @@ function processWheelData(data) {
       oldWheelEventTime = wheelEventTime;
       rt.speed = Number(0);
       $$(".rtSPD").text(rt.speed);
-      $$("#blinker").text("Pull to Refresh " + rt.hr, Math.round(rt.cad), Math.round(rt.speed));
+        $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
       return;
     }
 
@@ -368,7 +368,7 @@ function processWheelData(data) {
     rt_WheelRevs += deltaW;
     rt_WheelTime += deltaT;
     displaySPD();
-    $$("#blinker").text("Pull to Refresh " + rt.hr, Math.round(rt.cad), Math.round(rt.speed));
+      $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
 
 
     if (rt.speed > 0) {
@@ -406,7 +406,7 @@ function processCrankData(data, index) {
 
   if (oldCrankRevolution === 999999) {
     oldCrankRevolution = crankRevolution;
-    oldCrankEventTime = wheelEventTime;
+    oldCrankEventTime = crankEventTime;
   } else {
     var deltaW = crankRevolution - oldCrankRevolution;
     var deltaT = crankEventTime - oldCrankEventTime;
@@ -453,7 +453,7 @@ function processCrankData(data, index) {
     rt_crank_time += deltaT; //still in 1/1024 of a sec
 
     displayCAD();
-    $$("#blinker").text("Pull to Refresh " + rt.hr, Math.round(rt.cad), Math.round(rt.speed));
+      $$("#blinker").text("Pull to Refresh " + rt.hr + " : " + Math.round(rt.cad) + " : " +  Math.round(rt.speed));
 
     oldCrankRevolution = crankRevolution;
     oldCrankEventTime = crankEventTime;
