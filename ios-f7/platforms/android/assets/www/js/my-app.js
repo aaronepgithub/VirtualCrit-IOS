@@ -39,7 +39,11 @@ $$(document).on('deviceready', function() {
 // var roundTimer = 1;
 $$('.forthRow').hide();
 $$('.landRow').hide();
+$$('.landRowHR').hide();
+$$('.landRowSPD').hide();
 $$('.landscapeLabels').hide();
+$$('.landscapeLabelsHR').hide();
+$$('.landscapeLabelsSPD').hide();
 
 var timeSinceStartInSeconds = 0;
 var totalRoundsCompleted = 0;
@@ -59,7 +63,9 @@ function myCallback() {
     roundEnd();
   }
 
-  $$(".ACTUAL_TIME").text(Date.dateDiff('s', startTime, rightNow) + "  " + dataToDisplay);
+  $$(".ACTUAL_TIME").text( "(" + (299-timeSinceRoundStartInSeconds) + ")  " + dataToDisplayString + "  " + Date.dateDiff('s', startTime, rightNow) );
+  $$(".rndSec").text(300-timeSinceRoundStartInSeconds-1);
+
 
   //JUST TO DISPLAY THE TIME
   if (rightNow.getHours() > 12) {
@@ -564,17 +570,21 @@ function displayHR() {
   if (dataToDisplay == "CURRENT") {
     $$(".rtHR").text(rt.hr.toFixed(0));
     $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
+    $$(".labHR").html("HR<br>"+rt.score.toFixed(0) + "%");
+
     //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
     $$(".headerStatus").text(dataToDisplay);
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtHR").text(rounds.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(rounds.avgScore.toFixed(0) + "%");
+    $$(".labHR").html("HR<br>"+rounds.avgScore.toFixed(0) + "%");
     //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtHR").text(interval.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(interval.avgScore.toFixed(0) + "%");
+    $$(".labHR").html("HR<br>"+interval.avgScore.toFixed(0) + "%");
     //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
   }
 }
@@ -631,6 +641,7 @@ function animateDataChange() {
 }
 
 var dataToDisplay = "CURRENT";
+var dataToDisplayString = "";
 
 function changeDataToDisplay() {
   animateDataChange();
@@ -638,6 +649,7 @@ function changeDataToDisplay() {
 
   if (x == "CURRENT") {
     dataToDisplay = "INTERVAL";
+    dataToDisplayString = "INTERVAL";
     // $$(".headerStatus").text(dataToDisplay);
   }
 
@@ -645,12 +657,14 @@ function changeDataToDisplay() {
 
   if (x == "INTERVAL") {
     dataToDisplay = "ROUND";
+    dataToDisplayString = " CRIT ";
     // $$(".headerStatus").text(dataToDisplay);
   }
 
 
   if (x == "ROUND") {
     dataToDisplay = "CURRENT";
+    dataToDisplayString = "";
     // $$(".headerStatus").text(dataToDisplay);
   }
 
@@ -669,47 +683,52 @@ $$('.secondRow').addClass('row-bottom-border');
 
 
 var page3info = 0;
+var landToggle = 0;
 $$('#view3nav').on('click', function(e) {
-  animateDataChange();
-  console.log("#view3nav clicked, current p3info:  " + page3info);
-  var currentPage = page3info;
-  if (currentPage === 0) {
-    //$$('#view3pagecontent').html(page3option4);
-    //show only SPD/CAD
-    $$('.firstRow').hide();
-    $$('.rtCAD').removeClass('smallFont');
-    $$('.rtCAD').addClass('bigFont');
+  var x = landToggle;
+  if (currentOrientation == "portrait") {
+    return;
+  } else {
+    if (x === 0) {
+      $$('.landRow').hide();
+      $$('.landscapeLabels').hide();
+      $$('.landRowSPD').hide();
+      $$('.landscapeLabelsSPD').hide();
+      $$('.landRowHR').show();
+      $$('.landscapeLabelsHR').show();
+      // $$('.rtHR').addClass('bigFont');
+      // $$('.rtCAD').addClass('bigFont');
+      landToggle += 1;
+    }
 
-    page3info = 1;
-    console.log("page3info:  " + page3info);
+    if (x === 1) {
+      $$('.landRow').hide();
+      $$('.landRowHR').hide();
+      $$('.landRowSPD').show();
+      $$('.landscapeLabels').hide();
+      $$('.landscapeLabelsSPD').show();
+      $$('.landscapeLabelsHR').hide();
+      // $$('.rtHR').addClass('bigFont');
+      // $$('.rtCAD').addClass('bigFont');
+      landToggle += 1;
+    }
+
+    if (x === 2) {
+      $$('.landRowSPD').hide();
+      $$('.landRowHR').hide();
+      $$('.landRow').show();
+      $$('.landscapeLabels').show();
+      $$('.landscapeLabelsSPD').hide();
+      $$('.landscapeLabelsHR').hide();
+      // $$('.rtHR').addClass('bigFont');
+      // $$('.rtCAD').addClass('bigFont');
+      landToggle = 0;
+    }
+
+
+
   }
-  if (currentPage == 1) {
-    //$$('#view3pagecontent').html(page3option5);
-    //show only hr/score
-    $$('.firstRow').show();
-    $$('.rtHR').removeClass('smallFont');
-    $$('.rtHR').addClass('bigFont');
-    $$('.secondRow').hide(); //spd
-    $$('.thirdRow').hide(); //cad
-    $$('.rtCAD').removeClass('smallFont');
-    $$('.rtCAD').addClass('bigFont');
-    $$('.forthRow').show(); //already has bigfont
-    page3info = 2;
-    console.log("page3info:  " + page3info);
-  }
-  if (currentPage == 2) {
-    //$$('#view3pagecontent').html(page3option3);
-    //back to all start
-    $$('.rtHR').removeClass('bigFont');
-    $$('.rtHR').addClass('smallFont');
-    $$('.secondRow').show();
-    $$('.rtCAD').removeClass('bigFont');
-    $$('.rtCAD').addClass('smallFont');
-    $$('.thirdRow').show(); //cad
-    $$('.forthRow').hide();
-    page3info = 0;
-    console.log("page3info:  " + page3info);
-  }
+
 });
 
 function aSwipe() {
@@ -769,7 +788,11 @@ mql.addListener(function(m) {
     console.log("portrait");
     currentOrientation = "portrait";
     $$('.landRow').hide();
+    $$('.landRowHR').hide();
+    $$('.landRowSPD').hide();
     $$('.landscapeLabels').hide();
+    $$('.landscapeLabelsHR').hide();
+    $$('.landscapeLabelsSPD').hide();
     if (page3info === 1) {
       //$$('#view3pagecontent').html(page3option4);
       //show only SPD/CAD
@@ -805,16 +828,6 @@ mql.addListener(function(m) {
       $$('.forthRow').hide();
     }
 
-    // $$('.firstRow').show();
-    // $$('.rtHR').addClass('smallFont');
-    // $$('.secondRow').show(); //spd
-    // $$('.thirdRow').show();  //cad
-    // $$('.rtCAD').removeClass('bigFont');
-    // $$('.rtCAD').addClass('smallFont');
-    // $$('.forthRow').hide(); //already has bigfont
-    // page3info = 2;
-    // console.log("page3info:  " + page3info);
-
 
 
   } else {
@@ -826,6 +839,10 @@ mql.addListener(function(m) {
     $$('.forthRow').hide();
     $$('.landRow').show();
     $$('.landRow').addClass('smallerFont');
+    $$('.landRowHR').hide();
+    $$('.landRowSPD').hide();
+    $$('.landscapeLabelsHR').hide();
+    $$('.landscapeLabelsSPD').hide();
     $$('.landscapeLabels').show();
 
   }

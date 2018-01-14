@@ -220,7 +220,6 @@ function midRound(t) {
     // $$('.rtSPDr').text(rounds.avgSpeed.toFixed(1));
     // $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
     // $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
-    rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
     // $$('.rtSCOREr').text(Number(rounds.avgScore.toFixed(0)));
     displaySPD();
     displayCAD();
