@@ -151,6 +151,8 @@
 
 const int fluxEitherSide = 2;
 
+
+
 - (void)simulateHeartRateFlux
 {
     //if (self.targetHeartRate < fluxEitherSide)

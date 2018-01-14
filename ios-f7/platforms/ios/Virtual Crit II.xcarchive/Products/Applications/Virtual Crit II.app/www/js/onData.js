@@ -90,8 +90,6 @@ function calcInterval(t) {
   }
   var cadenceInterval = Number(cad / (refreshInterval));
   interval.avgCadence = cadenceInterval;
-
-
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
 
   if (speedInterval >= 0) {
@@ -104,23 +102,21 @@ function calcInterval(t) {
   }
   displayHR();
   displayCAD();
-  // $$('.rtCADi').text(Number(cadenceInterval.toFixed(0)));
-  // $$('.rtHRi').text(Number(heartrateInterval.toFixed(0)));
-  // var sc = Number((heartrateInterval / maxHeartRate) * 100);
-  // $$('.rtSCOREi').text(Number(sc.toFixed(0)));
-
-
-  // if (t % Number(refreshInterval) === 0) {
-  //   console.log("Intervals:  " + speedInterval + " MPH  - " + cadenceInterval + " RPM   - " + heartrateInterval + " BPM  - " + sc + " % ");
-  //   console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
-  //   console.log("rounds.avgCadence:  " + rounds.avgCadence);
-  //   console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
-  //   console.log("rounds.avgScore:  " + rounds.avgScore);
-  // }
 
   //used to rem zeros
-  if (t % 40 === 0) {
+  if (t % 45 === 0) {
     var h = rt.hr;
+    var s = rt.speed;
+    var c = rt.cadence;
+
+    if (s == veloS) {
+      rt.speed = 0;
+      displaySPD();
+    }
+    if (h == veloC) {
+      rt.cadence = 0;
+      displayCAD();
+    }
 
     if (h == veloH) {
       rt.hr = 0;
@@ -128,6 +124,8 @@ function calcInterval(t) {
       displayHR();
     }
     veloH = h;
+    veloH = s;
+    veloH = c;
   }
 }
 
@@ -280,7 +278,6 @@ function decodeUint8(bytes) {
 
 function onDataCSC(data) {
 
-  //console.log("onDataCSC");
   var WHEEL_REVOLUTION_FLAG = 0x01;
   var CRANK_REVOLUTION_FLAG = 0x02;
   //var value = data;

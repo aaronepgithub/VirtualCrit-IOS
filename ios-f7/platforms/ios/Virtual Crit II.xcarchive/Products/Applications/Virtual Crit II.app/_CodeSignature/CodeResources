@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		ZfAw01EH0D/2ISo8oIoxtJLV9uw=
+		j0yrIgrNyd1B6EbBFaNLXqqwHco=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		p7WWw4UxArullrz9XwSTO34s0Bg=
+		eP4wxPq7wWZ1GhhGc3TBwQOhqic=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		P9ih4RLtNq3CbglIk6vnQRzW2VU=
+		lvIEfGhDjCbmjQ+Uwy/f9ffaFEY=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		ftAnMNwCfjNnyEK0lZfh+uNXE3w=
+		Lg1VYDjERrEZlejjCoNXiKzR5n0=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -490,7 +490,7 @@
 		</data>
 		<key>www/js/my-app.js</key>
 		<data>
-		inFMboPdUVxaOH+XAejFAoy1sbU=
+		AIbedAgRZ49YoqC9vZJFohcoGc0=
 		</data>
 		<key>www/js/my-app.js.white.js</key>
 		<data>
@@ -498,7 +498,7 @@
 		</data>
 		<key>www/js/onData.js</key>
 		<data>
-		j/59lfrUjM9drHgKor70UFgdR7o=
+		zN/wiPTZxE4GfcfJdEAHou7RTuc=
 		</data>
 		<key>www/lib/framework7/css/framework7.ios.colors.css</key>
 		<data>
@@ -844,22 +844,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ZfAw01EH0D/2ISo8oIoxtJLV9uw=
+			j0yrIgrNyd1B6EbBFaNLXqqwHco=
 			</data>
 			<key>hash2</key>
 			<data>
-			Wdb3IKgQFOZt3LLhimPz4Bs9pQjRFvtJoXEsRfh0Suc=
+			gfmIsKyB6TI9QvkwD9a3DgmkIxCxPQoweRRuFHxIcb8=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			p7WWw4UxArullrz9XwSTO34s0Bg=
+			eP4wxPq7wWZ1GhhGc3TBwQOhqic=
 			</data>
 			<key>hash2</key>
 			<data>
-			2GHb+bjVK+kiIPsVsfbEReNmJL831vBkOpmvD4OFMeI=
+			+eTdu8EozcrnAYtrEmNC1avWEdB7cwlBeVq1jHeeGHE=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -877,11 +877,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			P9ih4RLtNq3CbglIk6vnQRzW2VU=
+			lvIEfGhDjCbmjQ+Uwy/f9ffaFEY=
 			</data>
 			<key>hash2</key>
 			<data>
-			CIy/qwMCx9S0fgZJoAUdxJTC8tGnfis3EY/yGeGhflQ=
+			iXAXCSVPoSXHnxL8GDB5B14K89Bc6TamsBw5P8xEfOM=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1064,11 +1064,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ftAnMNwCfjNnyEK0lZfh+uNXE3w=
+			Lg1VYDjERrEZlejjCoNXiKzR5n0=
 			</data>
 			<key>hash2</key>
 			<data>
-			/4482gRK9apdO1q2R0bEqsZRpk3EEzEzYNypdCtfz00=
+			fPix3ckqvi9GLgd/Ar+YXSFh7kbzC31PoqMr8+CNen0=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1900,11 +1900,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			inFMboPdUVxaOH+XAejFAoy1sbU=
+			AIbedAgRZ49YoqC9vZJFohcoGc0=
 			</data>
 			<key>hash2</key>
 			<data>
-			YGVh2qGIsw4B9dsvk3EFi4GWYyg61dTLu2oj5nXnvxs=
+			/UIbkbAGtdMK9vYHfXwQHxA54Qfe1BDgzYxXBPfEDSY=
 			</data>
 		</dict>
 		<key>www/js/my-app.js.white.js</key>
@@ -1922,11 +1922,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			j/59lfrUjM9drHgKor70UFgdR7o=
+			zN/wiPTZxE4GfcfJdEAHou7RTuc=
 			</data>
 			<key>hash2</key>
 			<data>
-			V6uI34arhK5nXKSH+yhUz6Y5O6DBZWG83qdpZ9JfmOo=
+			1K2KXisl4C6teMdQ+T8J0OJgo2ET5zERYn42luYbjKY=
 			</data>
 		</dict>
 		<key>www/lib/framework7/css/framework7.ios.colors.css</key>
