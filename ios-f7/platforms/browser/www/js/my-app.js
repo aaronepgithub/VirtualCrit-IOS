@@ -7,8 +7,8 @@ var currentTab = 0;
 var currentOrientation = "";
 
 var heartRate = {
-  service: '180d',
-  measurement: '2a37'
+  service: '180D',
+  measurement: '2A37'
 };
 
 var speedCadence = {
@@ -99,13 +99,17 @@ function myCallback() {
 $$('#NAME').on('click', function(e) {
   myApp.prompt('ENTER YOUR RIDER NAME', 'WELCOME', function(value) {
     //myApp.alert('Your name is "' + value + '". You clicked Ok button');
-    $$('#NAME').find('.item-after').text(value);
-    name = value;
+    if (value !== "") {
+    $$('#NAME').find('.item-after').text(value.toUpperCase());
+    name = value.toUpperCase();
+    }
+
   });
 });
 
 $$('#MAXHR').on('click', function(e) {
-  $$(this).addClass('ani');
+  // $$(this).addClass('ani');
+  $$('#MAXHR').css('color', 'darkgray');
   var current = maxHeartRate;
   if (current == 185) {
     $$(this).find('.item-after').text(190);
@@ -128,14 +132,15 @@ $$('#MAXHR').on('click', function(e) {
     maxHeartRate = 185;
   }
   setTimeout(function() {
-    $$('#MAXHR').removeClass('ani');
+    // $$('#MAXHR').removeClass('ani');
+        $$('#MAXHR').css('color', 'white');
   }, 300);
 });
 
 var audio = "OFF";
 $$('#AUDIO').on('click', function(e) {
-  $$(this).addClass('ani');
-
+  //$$(this).addClass('ani');
+$$('#AUDIO').css('color', 'darkgray');
   if (audio == "ON") {
     $$(this).find('.item-after').text('OFF');
     audio = "OFF";
@@ -145,13 +150,15 @@ $$('#AUDIO').on('click', function(e) {
   }
 
   setTimeout(function() {
-    $$('#AUDIO').removeClass('ani');
+    $$('#AUDIO').css('color', 'white');
+    // $$('#AUDIO').removeClass('ani');
   }, 300);
 
 });
 
 $$('#TIRESIZE').on('click', function(e) {
-  $$(this).addClass('ani');
+  //$$(this).addClass('ani');
+  $$('#TIRESIZE').css('color', 'darkgray');
   var current = wheelCircumference;
   if (current == 2105) {
     $$(this).find('.item-after').text('700X26');
@@ -169,7 +176,8 @@ $$('#TIRESIZE').on('click', function(e) {
     wheelCircumferenceCM = wheelCircumference / 10;
   }
   setTimeout(function() {
-    $$('#TIRESIZE').removeClass('ani');
+    // $$('#TIRESIZE').removeClass('ani');
+    $$('#TIRESIZE').css('color', 'white');
   }, 300);
 });
 
@@ -177,7 +185,8 @@ $$('#TIRESIZE').on('click', function(e) {
 
 var refreshInterval = 30;
 $$('#REFRESH').on('click', function(e) {
-  $$(this).addClass('ani');
+  // $$(this).addClass('ani');
+      $$('#REFRESH').css('color', 'darkgray');
   var current = refreshInterval;
 
   if (current == 30) {
@@ -188,7 +197,7 @@ $$('#REFRESH').on('click', function(e) {
   if (current == 60) {
     $$(this).find('.item-after').text('300');
     refreshInterval = 300;
-    secInRound = 30;
+
   }
 
   if (current == 300) {
@@ -197,43 +206,66 @@ $$('#REFRESH').on('click', function(e) {
   }
 
   setTimeout(function() {
-    $$('#REFRESH').removeClass('ani');
+    $$('#REFRESH').css('color', 'white');
+    // $$('#REFRESH').removeClass('ani');
   }, 300);
 });
 
 
-var h1;
-var h = 0;
 $$('#RESTART').on('click', function(e) {
-  h1 = h;
-  $$(this).addClass('ani');
+
+  $$('#RESTART').css('color', 'darkgray');
   console.log("RESTART");
 
-  // var x = $$(".speedRow");
-  // if (h1==0) {
-  //   x.hide();
-  //   h = 1;
-  // }
-  // if (h1 == 1) {
-  //   x.show();
-  //   h = 0;
-  // }
-
-  arrConnectedPeripherals.forEach(function(element) {
-    ble.disconnect(element, function() {
-      console.log("disconnect success");
-    }, function() {
-      console.log("disconnect failed");
-    });
+  console.log("arrPeripherals restart");
+  arrPeripherals.forEach(function(element) {
+    // console.log('element:  ' + element);
+    console.log('element.id:  ' + element.id);
+    console.log('element.name:  ' + element.name);
   });
+
+
+  console.log("arrConnectedPeripherals  " + arrConnectedPeripherals);
+  console.log("arrConnectedPeripheralsNames  " + arrConnectedPeripheralsNames);
+  console.log("arrDisconnectedIDs  " + arrDisconnectedIDs);
+  console.log("arrDisconnectedNames  " + arrDisconnectedNames);
+
+
+    arrConnectedPeripheralsHR.forEach(function(h) {
+      ble.stopNotification(h, heartRate.service, heartRate.measurement, function() {
+        console.log(h + " hr stop notify success");
+        ble.disconnect(h, function() {
+          console.log(h + " disconnect success");
+        }, function() {
+          console.log(h +   "  disconnect failed");
+        });
+      }, function() {
+        console.log(h +   "  hr stop notify failed");
+      });
+    });
+
+    arrConnectedPeripheralsCSC.forEach(function(c) {
+      ble.stopNotification(c, speedCadence.service, speedCadence.measurement, function() {
+        console.log(c + " csc stop notify success");
+        ble.disconnect(c, function() {
+          console.log(c + " csc disconnect success");
+        }, function() {
+          console.log(c +   "  csc disconnect failed");
+        });
+      }, function() {
+        console.log(c +   "  csc stop notify failed");
+      });
+    });
+
+
   $$('.chip-media').css('color', 'white');
-  $$('.chip-label').css('color', 'white');
 
   setTimeout(function() {
-    $$('#RESTART').removeClass('ani');
+    // $$('#RESTART').removeClass('ani');
+    $$('#RESTART').css('color', 'white');
   }, 300);
 
-});
+});  //end restart
 
 
 
@@ -310,8 +342,14 @@ ptrContent.on('ptr:refresh', function(e) {
 
 
 var arrConnectedPeripherals = [];
+var arrConnectedPeripheralsNames = [];
 var arrConnectedPeripheralsService = [];
 var arrConnectedPeripheralsChar = [];
+var arrDisconnectedIDs = [];
+var arrDisconnectedNames = [];
+var arrConnectedPeripheralsCSC = [];
+var arrConnectedPeripheralsHR = [];
+
 
 function connect(peripheral) {
 
@@ -320,7 +358,7 @@ function connect(peripheral) {
 
     var serviceType = "none";
 
-    console.log("connected");
+    console.log(peripheral.id + " " + peripheral.name + "  connected");
     var x = peripheral.id;
 
     var y = [];
@@ -351,17 +389,19 @@ function connect(peripheral) {
 
     y.forEach(function(element) {
       if (element == "180D") {
-        console.log("Identified as HR, calling Notify");
+        console.log(peripheral.id + " " + peripheral.name + "  Identified as HR, calling Notify");
         serviceType = "180D";
         serviceChar = heartRate.measurement;
         arrConnectedPeripherals.push(peripheral.id);
+        arrConnectedPeripheralsNames.push(peripheral.name);
         arrConnectedPeripheralsService.push(serviceType);
         arrConnectedPeripheralsChar.push(serviceChar);
+        arrConnectedPeripheralsHR.push(peripheral.id);
         ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
           var data = new Uint8Array(buffer);
           onDataHR(data);
         }, function(reason) {
-          console.log("failure" + reason);
+          console.log(peripheral.id + " " + peripheral.name + " start notify failure " + reason);
         });
       }
     });
@@ -369,17 +409,19 @@ function connect(peripheral) {
 
     y.forEach(function(element) {
       if (element == "1816") {
-        console.log("Identified as CSC, calling Notify");
+        console.log(peripheral.id + " " + peripheral.name +  "Identified as CSC, calling Notify");
         serviceType = "1816";
         serviceChar = speedCadence.measurement;
         arrConnectedPeripherals.push(peripheral.id);
+        arrConnectedPeripheralsNames.push(peripheral.name);
+        arrConnectedPeripheralsCSC.push(peripheral.id);
         arrConnectedPeripheralsService.push(serviceType);
         arrConnectedPeripheralsChar.push(serviceChar);
         ble.startNotification(peripheral.id, serviceType, serviceChar, function(buffer) {
           var data = new Uint8Array(buffer);
           onDataCSC(data);
         }, function(reason) {
-          console.log("failure" + reason);
+          console.log(peripheral.id + " " + peripheral.name + " notify failure" + reason);
         });
       }
     });
@@ -387,7 +429,33 @@ function connect(peripheral) {
   } //end onConnect
 
   function onDisconnect(peripheral) {
-    console.log("onDisconnect:  " + peripheral.name);
+    console.log(peripheral.id + " " + peripheral.name + " onDisconnect");
+    $$("#blinker").text("DISCONNECT:  " + peripheral.name);
+    arrDisconnectedIDs.push(peripheral.id);
+    arrDisconnectedNames.push(peripheral.name);
+
+    console.log("arrPeripherals onDisconnect");
+
+
+    arrPeripherals.forEach(function(element) {
+      console.log('element.id:  ' + element.id);
+      console.log('element.name:  ' + element.name);
+    });
+
+    console.log("od arrConnectedPeripherals  " + arrConnectedPeripherals);
+    console.log("od arrConnectedPeripheralsNames  " + arrConnectedPeripheralsNames);
+    console.log("od arrDisconnectedIDs  " + arrDisconnectedIDs);
+    console.log("od arrDisconnectedNames  " + arrDisconnectedNames);
+
+    rt.speed = 0;
+    displaySPD();
+    rt.cadence = 0;
+    displayCAD();
+    rt.hr = 0;
+    rt.score = 0;
+    displayHR();
+
+
     ble.connect(peripheral.id, onConnect, onDisconnect);
 
   }
@@ -413,7 +481,7 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 
 
   $$(this).find('.chip-media').css('color', 'red');
-  $$(this).find('.chip-label').css('color', 'red');
+  // $$(this).find('.chip-label').css('color', 'red');
   console.log(chipname);
   console.log(chipIndex);
   console.log(chipUUID);
@@ -632,7 +700,7 @@ function animateDataChange() {
 
   setTimeout(function() {
     $$('[class*="col-"]').css({
-      color: '#000'
+      color: 'white'
     });
   }, 200);
 

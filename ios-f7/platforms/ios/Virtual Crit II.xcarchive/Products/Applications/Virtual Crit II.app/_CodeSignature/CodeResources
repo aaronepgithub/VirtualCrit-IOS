@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		4Ad4T/6VhqWmkdyxdpS4nLgtJYc=
+		ZfAw01EH0D/2ISo8oIoxtJLV9uw=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		eIdYzwi/ck6tpC2+KMAocuy+lug=
+		p7WWw4UxArullrz9XwSTO34s0Bg=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		3afjHRkqCY9caFDdEqCDseYn2kc=
+		P9ih4RLtNq3CbglIk6vnQRzW2VU=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		wWOMyagvqmP6C2oWGxjRmGiQDpM=
+		ftAnMNwCfjNnyEK0lZfh+uNXE3w=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -237,6 +237,10 @@
 		Moi7cUPxk+CQXqr6lnMC66cZ82M=
 		</data>
 		<key>www/css/my-app.css</key>
+		<data>
+		jx+m0doRdzP0aI3nnpiOBypJ9B0=
+		</data>
+		<key>www/css/my-app.css.white.css</key>
 		<data>
 		W4v/63u1tnjfnfwNVnaod6hri20=
 		</data>
@@ -478,9 +482,17 @@
 		</data>
 		<key>www/index.html</key>
 		<data>
+		g/3h+hgvIlKgfWHDJtxXHkWviG4=
+		</data>
+		<key>www/index.html.white.html</key>
+		<data>
 		vOFnnY324JoIN5Ee20LLl2IXZwE=
 		</data>
 		<key>www/js/my-app.js</key>
+		<data>
+		inFMboPdUVxaOH+XAejFAoy1sbU=
+		</data>
+		<key>www/js/my-app.js.white.js</key>
 		<data>
 		mZcqekTRKmXbnRmtk1a9AdHzea0=
 		</data>
@@ -832,22 +844,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4Ad4T/6VhqWmkdyxdpS4nLgtJYc=
+			ZfAw01EH0D/2ISo8oIoxtJLV9uw=
 			</data>
 			<key>hash2</key>
 			<data>
-			c1ddSnPq7gTqmJmj4WrLKwZuyOayyUc1PNT+usAvRXw=
+			Wdb3IKgQFOZt3LLhimPz4Bs9pQjRFvtJoXEsRfh0Suc=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			eIdYzwi/ck6tpC2+KMAocuy+lug=
+			p7WWw4UxArullrz9XwSTO34s0Bg=
 			</data>
 			<key>hash2</key>
 			<data>
-			CjEir7AGuiMm+EqvoKZBFYsghiaq0s4eDWRp3Ayeozs=
+			2GHb+bjVK+kiIPsVsfbEReNmJL831vBkOpmvD4OFMeI=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -865,11 +877,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			3afjHRkqCY9caFDdEqCDseYn2kc=
+			P9ih4RLtNq3CbglIk6vnQRzW2VU=
 			</data>
 			<key>hash2</key>
 			<data>
-			Zq0XjUoCv9OnHedG5BAyyX5uQNcFYstNBkQQKOydBcM=
+			CIy/qwMCx9S0fgZJoAUdxJTC8tGnfis3EY/yGeGhflQ=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1052,11 +1064,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			wWOMyagvqmP6C2oWGxjRmGiQDpM=
+			ftAnMNwCfjNnyEK0lZfh+uNXE3w=
 			</data>
 			<key>hash2</key>
 			<data>
-			QWgjRg8LrUPvj1AOjdSUT7QpP/fNm5DokYYStF6dTqg=
+			/4482gRK9apdO1q2R0bEqsZRpk3EEzEzYNypdCtfz00=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1192,6 +1204,17 @@
 			</data>
 		</dict>
 		<key>www/css/my-app.css</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			jx+m0doRdzP0aI3nnpiOBypJ9B0=
+			</data>
+			<key>hash2</key>
+			<data>
+			p9rQf+FWM5nzkRQp1SXNW8DV1xVh7R9KPGo9OhgLcFA=
+			</data>
+		</dict>
+		<key>www/css/my-app.css.white.css</key>
 		<dict>
 			<key>hash</key>
 			<data>
@@ -1855,6 +1878,17 @@
 		<dict>
 			<key>hash</key>
 			<data>
+			g/3h+hgvIlKgfWHDJtxXHkWviG4=
+			</data>
+			<key>hash2</key>
+			<data>
+			RhzsvnA6tWG1Le5gq85h7ik+2PRb91vszAzhNzM3b0U=
+			</data>
+		</dict>
+		<key>www/index.html.white.html</key>
+		<dict>
+			<key>hash</key>
+			<data>
 			vOFnnY324JoIN5Ee20LLl2IXZwE=
 			</data>
 			<key>hash2</key>
@@ -1863,6 +1897,17 @@
 			</data>
 		</dict>
 		<key>www/js/my-app.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			inFMboPdUVxaOH+XAejFAoy1sbU=
+			</data>
+			<key>hash2</key>
+			<data>
+			YGVh2qGIsw4B9dsvk3EFi4GWYyg61dTLu2oj5nXnvxs=
+			</data>
+		</dict>
+		<key>www/js/my-app.js.white.js</key>
 		<dict>
 			<key>hash</key>
 			<data>

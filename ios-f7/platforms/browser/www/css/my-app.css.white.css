@@ -41,52 +41,22 @@ body {
     /* font-family: 'Biryani', sans-serif; */
     /* font-family: 'Source Code Pro', monospace; */
     font-family: 'Yanone Kaffeesatz', sans-serif;
-    background-color: black;
-    color:white;
 
-}
-
-.navbar, .toolbar {
-  background-color: red;
-  color: white;
-}
-
-
-
-.f7-icons {
-color: white;
-}
-
-.list-block .item-content {
-  color: white;
-  background-color: black;
-}
-
-#blinker {
-  font-size: 2em;
-}
-
-.page {
-  background-color: black;
-}
-.content-block {
-  color: white;
 }
 
 .navbar .center {
-    font-size: 30px;
+      font-size: 30px;
 }
 
 .blechip {
-  font-size: 30px;
-  height: 45px;
-  line-height: 45px;
-  background-color: red;
+      font-size: 30px;
+          height: 45px;
+              line-height: 45px;
 }
 
 .ani {
-  color: darkgray;
-    /* background-color: black; */
+  background-color: darkgray;
+    /* background-color: white; */
 }
 
 .f7-icons, .framework7-icons {
@@ -372,7 +342,7 @@ i.tabbar-demo-icon-4 {
 div[class*="col-"] {
   /*background: #fff;*/
   text-align: center;
-  /*color: #000;*/
+  color: #000;
   /*  border: 1px solid #ddd;*/
   padding: 2px;
 }

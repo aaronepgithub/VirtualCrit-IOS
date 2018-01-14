@@ -99,17 +99,13 @@ function myCallback() {
 $$('#NAME').on('click', function(e) {
   myApp.prompt('ENTER YOUR RIDER NAME', 'WELCOME', function(value) {
     //myApp.alert('Your name is "' + value + '". You clicked Ok button');
-    if (value !== "") {
-    $$('#NAME').find('.item-after').text(value.toUpperCase());
-    name = value.toUpperCase();
-    }
-
+    $$('#NAME').find('.item-after').text(value);
+    name = value;
   });
 });
 
 $$('#MAXHR').on('click', function(e) {
-  // $$(this).addClass('ani');
-  $$('#MAXHR').css('color', 'darkgray');
+  $$(this).addClass('ani');
   var current = maxHeartRate;
   if (current == 185) {
     $$(this).find('.item-after').text(190);
@@ -132,15 +128,14 @@ $$('#MAXHR').on('click', function(e) {
     maxHeartRate = 185;
   }
   setTimeout(function() {
-    // $$('#MAXHR').removeClass('ani');
-        $$('#MAXHR').css('color', 'white');
+    $$('#MAXHR').removeClass('ani');
   }, 300);
 });
 
 var audio = "OFF";
 $$('#AUDIO').on('click', function(e) {
-  //$$(this).addClass('ani');
-$$('#AUDIO').css('color', 'darkgray');
+  $$(this).addClass('ani');
+
   if (audio == "ON") {
     $$(this).find('.item-after').text('OFF');
     audio = "OFF";
@@ -150,15 +145,13 @@ $$('#AUDIO').css('color', 'darkgray');
   }
 
   setTimeout(function() {
-    $$('#AUDIO').css('color', 'white');
-    // $$('#AUDIO').removeClass('ani');
+    $$('#AUDIO').removeClass('ani');
   }, 300);
 
 });
 
 $$('#TIRESIZE').on('click', function(e) {
-  //$$(this).addClass('ani');
-  $$('#TIRESIZE').css('color', 'darkgray');
+  $$(this).addClass('ani');
   var current = wheelCircumference;
   if (current == 2105) {
     $$(this).find('.item-after').text('700X26');
@@ -176,8 +169,7 @@ $$('#TIRESIZE').on('click', function(e) {
     wheelCircumferenceCM = wheelCircumference / 10;
   }
   setTimeout(function() {
-    // $$('#TIRESIZE').removeClass('ani');
-    $$('#TIRESIZE').css('color', 'white');
+    $$('#TIRESIZE').removeClass('ani');
   }, 300);
 });
 
@@ -185,8 +177,7 @@ $$('#TIRESIZE').on('click', function(e) {
 
 var refreshInterval = 30;
 $$('#REFRESH').on('click', function(e) {
-  // $$(this).addClass('ani');
-      $$('#REFRESH').css('color', 'darkgray');
+  $$(this).addClass('ani');
   var current = refreshInterval;
 
   if (current == 30) {
@@ -197,7 +188,7 @@ $$('#REFRESH').on('click', function(e) {
   if (current == 60) {
     $$(this).find('.item-after').text('300');
     refreshInterval = 300;
-    
+    secInRound = 30;
   }
 
   if (current == 300) {
@@ -206,8 +197,7 @@ $$('#REFRESH').on('click', function(e) {
   }
 
   setTimeout(function() {
-    $$('#REFRESH').css('color', 'white'); 
-    // $$('#REFRESH').removeClass('ani');
+    $$('#REFRESH').removeClass('ani');
   }, 300);
 });
 
@@ -216,8 +206,7 @@ var h1;
 var h = 0;
 $$('#RESTART').on('click', function(e) {
   h1 = h;
-  // $$(this).addClass('ani');
-  $$('#RESTART').css('color', 'darkgray');      
+  $$(this).addClass('ani');
   console.log("RESTART");
 
   // var x = $$(".speedRow");
@@ -238,11 +227,10 @@ $$('#RESTART').on('click', function(e) {
     });
   });
   $$('.chip-media').css('color', 'white');
-  // $$('.chip-label').css('color', 'white');
+  $$('.chip-label').css('color', 'white');
 
   setTimeout(function() {
-    // $$('#RESTART').removeClass('ani');
-    $$('#RESTART').css('color', 'white');
+    $$('#RESTART').removeClass('ani');
   }, 300);
 
 });
@@ -425,7 +413,7 @@ $$('.blelist').on('touchstart', '#blechip', function(e) {
 
 
   $$(this).find('.chip-media').css('color', 'red');
-  // $$(this).find('.chip-label').css('color', 'red');
+  $$(this).find('.chip-label').css('color', 'red');
   console.log(chipname);
   console.log(chipIndex);
   console.log(chipUUID);
@@ -644,7 +632,7 @@ function animateDataChange() {
 
   setTimeout(function() {
     $$('[class*="col-"]').css({
-      color: 'white'
+      color: '#000'
     });
   }, 200);
 
