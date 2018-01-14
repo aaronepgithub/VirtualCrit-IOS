@@ -10,38 +10,46 @@
      url("../dist/fonts/Framework7Icons-Regular.ttf") format("truetype");
 }
 
-@font-face {
+
+ /* @font-face {
   font-family: 'Biryani';
   font-style: normal;
   font-weight: 700;
   src: url('Biryani700.woff2') format('woff2');
 
-}
+} */
+
 @font-face {
-  font-family: 'Biryani';
+  font-family: 'Yanone Kaffeesatz';
   font-style: normal;
   font-weight: 400;
-  src: url('Biryani400.woff2') format('woff2');
-
+  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url(Yan400.woff2) format('woff2');
+  /* unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; */
 }
+
 @font-face {
-  font-family: 'Biryani';
+  font-family: 'Yanone Kaffeesatz';
   font-style: normal;
   font-weight: 700;
-  src: url('Biryani.woff2') format('woff2');
-
+  src: local('Yanone Kaffeesatz Bold'), local('YanoneKaffeesatz-Bold'), url(Yan700.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
 }
 
 body {
-  font-weight: bold;
+  font-weight: 700;
     /* font-family: 'Krona One', sans-serif; */
-    font-family: 'Biryani', sans-serif;
+    /* font-family: 'Biryani', sans-serif; */
+    /* font-family: 'Source Code Pro', monospace; */
+    font-family: 'Yanone Kaffeesatz', sans-serif;
 
 }
 
+.navbar .center {
+      font-size: 30px;
+}
 
 .blechip {
-      font-size: 20px;
+      font-size: 30px;
           height: 45px;
               line-height: 45px;
 }
@@ -141,12 +149,16 @@ input {
 
 }
 
+.HeaderFooter {
+  font-size: 2.3em;
+}
+
 .row-bottom-border {
   border-bottom-style: solid;
 }
 
 .bigFont {
-  font-size: 7.5em;
+  font-size: 9.5em;
 }
 .smallFont {
   font-size: 6.0em;
@@ -156,41 +168,37 @@ input {
   font-size: 2.5em;
 }
 .verySmallFont {
-  font-size: 1.0em;
+  font-size: 1.5em;
 }
 .smallerFont4 {
-  font-size: 2.4em;
+  font-size: 2.5em;
 }
 
 .smallerFont6 {
-  font-size: 6em;
+  font-size: 8.6em;
 }
 
+.listBlockFontSize {
+  font-size: 22px;
+}
 
+.SpeedScoreCol {
+  background-color: red;
+  padding: 9px;
+}
+.SpeedScoreLink {
+  font-size: 1.5em;
+    color: white;
+
+}
 
 .lh16 {
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .midRows {
-  /* height: 50%; */
-  /* weight: 100%; */
-  /* margin: auto; */
-    /* top: 80px;
-      bottom: 80px;
-      margin-top: 15px;
-      margin-bottom: 15px;
-  position: fixed; */
-/* height: -webkit-calc(100% - 100px);
-height: -moz-calc(100% - 100px);
-height: calc(100% - 100px);
-  position: fixed; */
-}
-/* .vertride {
-  margin: 15px 0;
-} */
 
-/* http://stephen.io/mediaqueries/#iPhone */
+}
 
 
 /* iphone4 */
@@ -291,15 +299,6 @@ and (orientation : portrait) {
 }
 
 
-/* .row1 {
-  font-size: 1em;
-}
-
-.row3 {
-  font-size: 2em;
-} */
-
-
 i.tabbar-demo-icon-1 {
   width: 30px;
   height: 30px;
@@ -347,8 +346,3 @@ div[class*="col-"] {
   /*  border: 1px solid #ddd;*/
   padding: 2px;
 }
-
-/* .row {
-  margin-bottom: 5px;
-  margin-top: 5px;
-} */
