@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		zDLu6dupe3UB9t+nbuiRqUNygJY=
+		4Ad4T/6VhqWmkdyxdpS4nLgtJYc=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		ect3mseTfgxnkN3f3qz1XyPqYaU=
+		eIdYzwi/ck6tpC2+KMAocuy+lug=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		HhsZSO/AoaUtQ8S+13/9erVtz4s=
+		3afjHRkqCY9caFDdEqCDseYn2kc=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		rrodTzraozVNQmBKoW3pe09m+60=
+		wWOMyagvqmP6C2oWGxjRmGiQDpM=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -228,17 +228,17 @@
 		<data>
 		psYp/ZVETG0ySlnEh3VV3vHbKFY=
 		</data>
-		<key>www/css/Biryani400.woff2</key>
+		<key>www/css/Yan400.woff2</key>
 		<data>
-		i3mLATOb80LL0B9RYagfzckaYX4=
+		bEkHssVTWFN6kYsLPxqgobicTU0=
 		</data>
-		<key>www/css/Biryani700.woff2</key>
+		<key>www/css/Yan700.woff2</key>
 		<data>
-		qee4IoZtNNDuiEKsTXjtNyjM8LM=
+		Moi7cUPxk+CQXqr6lnMC66cZ82M=
 		</data>
 		<key>www/css/my-app.css</key>
 		<data>
-		oJ5OSOu+yiMFy4bnNg7Ip2yrMjE=
+		W4v/63u1tnjfnfwNVnaod6hri20=
 		</data>
 		<key>www/dist/about.html</key>
 		<data>
@@ -478,7 +478,7 @@
 		</data>
 		<key>www/index.html</key>
 		<data>
-		xFWdzz70yhenzRY8DPKTGf6bGVs=
+		vOFnnY324JoIN5Ee20LLl2IXZwE=
 		</data>
 		<key>www/js/my-app.js</key>
 		<data>
@@ -832,22 +832,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			zDLu6dupe3UB9t+nbuiRqUNygJY=
+			4Ad4T/6VhqWmkdyxdpS4nLgtJYc=
 			</data>
 			<key>hash2</key>
 			<data>
-			ZCk5iHpRFLvSb5Jh0+W3erBe05bsfELug3FG29nREJY=
+			c1ddSnPq7gTqmJmj4WrLKwZuyOayyUc1PNT+usAvRXw=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ect3mseTfgxnkN3f3qz1XyPqYaU=
+			eIdYzwi/ck6tpC2+KMAocuy+lug=
 			</data>
 			<key>hash2</key>
 			<data>
-			HIMYFUI7swGngY8NRqys9KjOHBmhwBavCGUfqhPe/nU=
+			CjEir7AGuiMm+EqvoKZBFYsghiaq0s4eDWRp3Ayeozs=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -865,11 +865,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			HhsZSO/AoaUtQ8S+13/9erVtz4s=
+			3afjHRkqCY9caFDdEqCDseYn2kc=
 			</data>
 			<key>hash2</key>
 			<data>
-			82a7gFRjVbjDMljgmD7H+Qp4bSnzqEQHQ/w3gt0n/dY=
+			Zq0XjUoCv9OnHedG5BAyyX5uQNcFYstNBkQQKOydBcM=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1052,11 +1052,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rrodTzraozVNQmBKoW3pe09m+60=
+			wWOMyagvqmP6C2oWGxjRmGiQDpM=
 			</data>
 			<key>hash2</key>
 			<data>
-			hQ+Dbb+UkvmobSCifQEm2GmRW3nQaE+g2dmNZGnk/2E=
+			QWgjRg8LrUPvj1AOjdSUT7QpP/fNm5DokYYStF6dTqg=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1169,37 +1169,37 @@
 			MgISnpQUyWjEawI/IoSSmdEag2CeNysIUAU5SmheGVQ=
 			</data>
 		</dict>
-		<key>www/css/Biryani400.woff2</key>
+		<key>www/css/Yan400.woff2</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			i3mLATOb80LL0B9RYagfzckaYX4=
+			bEkHssVTWFN6kYsLPxqgobicTU0=
 			</data>
 			<key>hash2</key>
 			<data>
-			5cAd55z8G9eYhfqKjwlQVMN++amL7WQFCawjV5yZsWs=
+			vLlS+mqcMYJ+m0xTWOYrJoC42GmX1QQ2J/MkyYuKkbk=
 			</data>
 		</dict>
-		<key>www/css/Biryani700.woff2</key>
+		<key>www/css/Yan700.woff2</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			qee4IoZtNNDuiEKsTXjtNyjM8LM=
+			Moi7cUPxk+CQXqr6lnMC66cZ82M=
 			</data>
 			<key>hash2</key>
 			<data>
-			VsUnsTEXNs7UvyPD6FdNcOMcwiMsdPPW8UCH8nT7k2Q=
+			4G/5iuMvNv6ESHUomz93MFJ37bFbJ/x7uNdp/uV4Llo=
 			</data>
 		</dict>
 		<key>www/css/my-app.css</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oJ5OSOu+yiMFy4bnNg7Ip2yrMjE=
+			W4v/63u1tnjfnfwNVnaod6hri20=
 			</data>
 			<key>hash2</key>
 			<data>
-			JuiWzk/ol73QKdA4PEe8fp3gwSX3NmguCN805Qikymg=
+			JpbpSyoEJSst40froP3POzfAOjZHa84LC2ZW+SaQrgc=
 			</data>
 		</dict>
 		<key>www/dist/about.html</key>
@@ -1855,11 +1855,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			xFWdzz70yhenzRY8DPKTGf6bGVs=
+			vOFnnY324JoIN5Ee20LLl2IXZwE=
 			</data>
 			<key>hash2</key>
 			<data>
-			zTzXKNYaLKB362v9Z4C6rNY42C/mWxiv+3bkWLh4BlA=
+			ulokOYYGx8sgwcpZ/UbltOZ5MdPpE8wH5QG9LSo5q68=
 			</data>
 		</dict>
 		<key>www/js/my-app.js</key>
