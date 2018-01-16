@@ -278,10 +278,6 @@ function decodeUint8(bytes) {
 
 function onDataCSC(data) {
 
-  console.log("onDataCSC");
-  console.log("["+data+"]");
-
-  
   var WHEEL_REVOLUTION_FLAG = 0x01;
   var CRANK_REVOLUTION_FLAG = 0x02;
   //var value = data;
