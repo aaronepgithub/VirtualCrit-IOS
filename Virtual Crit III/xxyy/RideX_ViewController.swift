@@ -56,21 +56,6 @@ class RideX_ViewController: UIViewController {
         
         header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
         timeOfDay.text = getFormattedTime()
-        
-//        footer.text = getFooter()
-//        //values
-//        BIG_MIDDLE.text = stringer1(myIn: rt.rt_speed)
-//        BIG_L_HZ.text = stringer0(myIn: rt.rt_hr)
-//        BIG_R_HZ.text = stringer0(myIn: rt.rt_cadence)
-//        BIG_T_VERT.text = stringer0(myIn: rt.rt_hr)
-//        BIG_B_VERT.text = stringer0(myIn: rt.rt_cadence)
-//        //labels
-//        midHZ.text = "SPEED"
-//        midVERT.text = "SPEED"
-//        leftHZ.text = "HRT"
-//        topVERT.text = "HRT"
-//        rightHZ.text = "CAD"
-//        btmVERT.text = "CAD"
     }
     
     
@@ -117,9 +102,6 @@ class RideX_ViewController: UIViewController {
             rightHZ.text = "CAD 30i"
             btmVERT.text = "CAD 30i"
             
-
-            
-            
         case 2:
             //RND
             initialTextFields()
@@ -130,8 +112,6 @@ class RideX_ViewController: UIViewController {
             BIG_L_HZ.text = stringer0(myIn: round.hr)
             BIG_T_VERT.text = stringer0(myIn: round.hr)
 
-            
-            
             BIG_MIDDLE.text = stringer1(myIn: round.speed)
             midHZ.text = "SPD RND:  \(round.inRoundTimer)"
             midVERT.text = "SPD RND:  \(round.inRoundTimer)"
@@ -246,6 +226,11 @@ class RideX_ViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var BIGL_TRAILING: NSLayoutConstraint!
+    @IBOutlet weak var BIGR_LEADING: NSLayoutConstraint!
+    @IBOutlet weak var BIGL_TOP: NSLayoutConstraint!
+    
+    
     func changeSwipeNumber() {
         if (swipeValue == totalSwipeValues) {
             swipeValue = 0
@@ -258,6 +243,8 @@ class RideX_ViewController: UIViewController {
         }
     }
     
+    //var downState: Int = 0
+    
     @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
         animateTextColor()
         switch swipe.direction.rawValue {
@@ -269,11 +256,41 @@ class RideX_ViewController: UIViewController {
             changeSwipeNumber()
         case 4:
             print("Case 4 UP")
+            self.tabBarController?.selectedIndex = 2;
         case 3:
             print("Case 3")
         default:
             print("DOWN")
-            self.tabBarController?.selectedIndex = 1;
+            //let x = downState
+            self.tabBarController?.selectedIndex = 2;
+//            if x == 0 {
+//                BIG_MIDDLE.isHidden = false
+//                midHZ.isHidden = false
+//                BIGL_TRAILING.constant = -36
+//                BIGR_LEADING.constant = -36
+//                BIGL_TOP.constant = 90
+//                downState = 1
+//            }
+//            if x == 1 {
+//                BIG_MIDDLE.isHidden = true
+//                midHZ.isHidden = true
+//                BIGL_TRAILING.constant = 0
+//                BIGR_LEADING.constant = 0
+//                BIGL_TOP.constant = 45
+//                //chg cad to score
+//                downState = 2
+//            }
+//            if x == 2 {
+//                BIG_MIDDLE.isHidden = true
+//                midHZ.isHidden = true
+//                BIGL_TRAILING.constant = 0
+//                BIGR_LEADING.constant = 0
+//                BIGL_TOP.constant = 45
+//                //chg hr to sspeed
+//                downState = 0
+//            }
+
+
             break
         }
     }

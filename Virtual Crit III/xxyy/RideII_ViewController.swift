@@ -83,9 +83,9 @@ class RideII_ViewController: UIViewController {
             } else {
                 //values
                 B1.text = stringer0(myIn: rt.rt_hr)
-                B2.text = percentofmax
+                B2.text = "\(percentofmax) %"
                 B3.text = stringer0(myIn: rt.rt_hr)
-                B4.text = percentofmax
+                B4.text = "\(percentofmax) %"
 
                 //labels
                 L1.text = "HR"
@@ -109,9 +109,9 @@ class RideII_ViewController: UIViewController {
                 L4.text = "CAD 30i"
             } else {
                 B1.text = stringer0(myIn: interval.hr)
-                B2.text = percentofmax
+                B2.text = "\(percentofmax) %"
                 B3.text = stringer0(myIn: interval.hr)
-                B4.text = percentofmax
+                B4.text = "\(percentofmax) %"
                 L1.text = "HR 30i"
                 L3.text = "HR 30i"
                 L2.text = "SCORE 30i"
@@ -137,9 +137,9 @@ class RideII_ViewController: UIViewController {
                 L4.text = "CAD RND"
             } else {
                 B1.text = stringer0(myIn: round.hr)
-                B2.text = percentofmax
+                B2.text = "\(percentofmax) %"
                 B3.text = stringer0(myIn: round.hr)
-                B4.text = percentofmax
+                B4.text = "\(percentofmax) %"
                 L1.text = "HR RND \(round.inRoundTimer)"
                 L3.text = "HR RND \(round.inRoundTimer)"
                 L2.text = "SCORE RND"
@@ -167,9 +167,9 @@ class RideII_ViewController: UIViewController {
                 percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
                 //values
                 B1.text = stringer0(myIn: rt.rt_hr)
-                B2.text = percentofmax
+                B2.text = "\(percentofmax) %"
                 B3.text = stringer0(myIn: rt.rt_hr)
-                B4.text = percentofmax
+                B4.text = "\(percentofmax) %"
                 
                 //labels
                 L1.text = "HR"
