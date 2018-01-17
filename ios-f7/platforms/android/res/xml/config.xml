@@ -6,6 +6,9 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
+    <feature name="BackgroundGeolocation">
+        <param name="android-package" value="com.tenforwardconsulting.cordova.BackgroundGeolocationPlugin" />
+    </feature>
     <name>Virtual Crit II</name>
     <description>
         Virtual Crit II

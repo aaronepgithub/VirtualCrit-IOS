@@ -16,6 +16,10 @@
     },
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.virtualcrit"
+    },
+    "cordova-plugin-mauron85-background-geolocation": {
+      "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking",
+      "PACKAGE_NAME": "com.virtualcrit"
     }
   },
   "dependent_plugins": {

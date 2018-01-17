@@ -29,6 +29,14 @@ module.exports = [
         "id": "cordova-plugin-device.DeviceProxy",
         "pluginId": "cordova-plugin-device",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-mauron85-background-geolocation/www/backgroundGeolocation.js",
+        "id": "cordova-plugin-mauron85-background-geolocation.backgroundGeolocation",
+        "pluginId": "cordova-plugin-mauron85-background-geolocation",
+        "clobbers": [
+            "backgroundGeolocation"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -37,7 +45,8 @@ module.exports.metadata =
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-ble-central": "1.1.4",
     "cordova-plugin-device": "1.1.7",
-    "cordova-custom-config": "5.0.1"
+    "cordova-custom-config": "5.0.1",
+    "cordova-plugin-mauron85-background-geolocation": "2.3.3"
 }
 // BOTTOM OF METADATA
 });

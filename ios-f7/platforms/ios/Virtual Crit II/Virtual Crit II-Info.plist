@@ -57,6 +57,24 @@
     <key>UIBackgroundModes</key>
     <array>
       <string>bluetooth-central</string>
+      <string>location</string>
+    </array>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app always requires location tracking</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app always requires location tracking</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app always requires location tracking</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>prefs</string>
+        </array>
+      </dict>
     </array>
   </dict>
 </plist>

@@ -11,7 +11,8 @@
     "cordova-ios": "^4.5.4",
     "cordova-plugin-ble-central": "^1.1.4",
     "cordova-plugin-compat": "^1.2.0",
-    "cordova-plugin-device": "^1.1.7"
+    "cordova-plugin-device": "^1.1.7",
+    "cordova-plugin-mauron85-background-geolocation": "^2.3.3"
   },
   "cordova": {
     "plugins": {
@@ -19,7 +20,17 @@
         "BLUETOOTH_USAGE_DESCRIPTION": "REQUIRES BLE TO READ DATA"
       },
       "cordova-plugin-device": {},
-      "cordova-custom-config": {}
+      "cordova-custom-config": {},
+      "cordova-plugin-mauron85-background-geolocation": {
+        "GOOGLE_PLAY_SERVICES_VERSION": "+",
+        "ICON": "@mipmap/icon",
+        "SMALL_ICON": "@mipmap/icon",
+        "ACCOUNT_NAME": "@string/app_name",
+        "ACCOUNT_LABEL": "@string/app_name",
+        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
+        "CONTENT_AUTHORITY": "$PACKAGE_NAME",
+        "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking"
+      }
     },
     "platforms": [
       "ios",

@@ -1,0 +1,65 @@
+{
+  "_from": "cordova-plugin-mauron85-background-geolocation@2.3.3",
+  "_id": "cordova-plugin-mauron85-background-geolocation@2.3.3",
+  "_inBundle": false,
+  "_integrity": "sha1-HnJqw2QfKGSQ8iY4mwkD6RcVlL0=",
+  "_location": "/cordova-plugin-mauron85-background-geolocation",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cordova-plugin-mauron85-background-geolocation@2.3.3",
+    "name": "cordova-plugin-mauron85-background-geolocation",
+    "escapedName": "cordova-plugin-mauron85-background-geolocation",
+    "rawSpec": "2.3.3",
+    "saveSpec": null,
+    "fetchSpec": "2.3.3"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-mauron85-background-geolocation/-/cordova-plugin-mauron85-background-geolocation-2.3.3.tgz",
+  "_shasum": "1e726ac3641f286490f226389b0903e9171594bd",
+  "_spec": "cordova-plugin-mauron85-background-geolocation@2.3.3",
+  "_where": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/mauron85/cordova-plugin-background-geolocation/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-mauron85-background-geolocation",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova Background Geolocation Plugin",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/mauron85/cordova-plugin-background-geolocation#readme",
+  "keywords": [
+    "gps",
+    "location",
+    "geolocation",
+    "background",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova",
+    "phonegap"
+  ],
+  "license": "Apache-2.0",
+  "name": "cordova-plugin-mauron85-background-geolocation",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mauron85/cordova-plugin-background-geolocation.git"
+  },
+  "version": "2.3.3"
+}

@@ -17,6 +17,10 @@
             {
               "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"BackgroundGeolocation\"><param name=\"ios-package\" value=\"CDVBackgroundGeolocation\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -26,6 +30,36 @@
           "NSBluetoothPeripheralUsageDescription": [
             {
               "xml": "<string>Your description here</string>",
+              "count": 1
+            }
+          ],
+          "NSLocationAlwaysUsageDescription": [
+            {
+              "xml": "<string>This app always requires location tracking</string>",
+              "count": 1
+            }
+          ],
+          "NSLocationWhenInUseUsageDescription": [
+            {
+              "xml": "<string>This app always requires location tracking</string>",
+              "count": 1
+            }
+          ],
+          "NSLocationAlwaysAndWhenInUseUsageDescription": [
+            {
+              "xml": "<string>This app always requires location tracking</string>",
+              "count": 1
+            }
+          ],
+          "UIBackgroundModes": [
+            {
+              "xml": "<array><string>location</string></array>",
+              "count": 1
+            }
+          ],
+          "CFBundleURLTypes": [
+            {
+              "xml": "<array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLSchemes</key><array><string>prefs</string></array></dict></array>",
               "count": 1
             }
           ]
@@ -46,6 +80,10 @@
     },
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.virtualcrit"
+    },
+    "cordova-plugin-mauron85-background-geolocation": {
+      "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking",
+      "PACKAGE_NAME": "com.virtualcrit"
     }
   },
   "dependent_plugins": {},
@@ -65,12 +103,21 @@
       "clobbers": [
         "device"
       ]
+    },
+    {
+      "id": "cordova-plugin-mauron85-background-geolocation.backgroundGeolocation",
+      "file": "plugins/cordova-plugin-mauron85-background-geolocation/www/backgroundGeolocation.js",
+      "pluginId": "cordova-plugin-mauron85-background-geolocation",
+      "clobbers": [
+        "backgroundGeolocation"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-custom-config": "5.0.1",
     "cordova-plugin-compat": "1.2.0",
     "cordova-plugin-ble-central": "1.1.4",
-    "cordova-plugin-device": "1.1.7"
+    "cordova-plugin-device": "1.1.7",
+    "cordova-plugin-mauron85-background-geolocation": "2.3.3"
   }
 }

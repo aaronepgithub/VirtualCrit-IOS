@@ -15,6 +15,9 @@
     },
     "cordova-custom-config": {
       "PACKAGE_NAME": "com.phonegap.helloworld"
+    },
+    "cordova-plugin-mauron85-background-geolocation": {
+      "PACKAGE_NAME": "com.virtualcrit"
     }
   },
   "dependent_plugins": {
