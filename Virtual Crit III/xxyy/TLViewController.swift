@@ -10,76 +10,68 @@ import UIKit
 
 class TLViewController: UIViewController {
 
+//    https://github.com/instant-solutions/ISTimeline
+    
+    @IBOutlet weak var timeline: ISTimeline!
     
     @IBAction func Dismiss(_ sender: UIButton) {
-        
         self.dismiss(animated: true, completion: nil)
-        
     }
     
-    var scrollView: UIScrollView!
-    var timeline:   TimelineView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        scrollView = UIScrollView(frame: view.bounds)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollView)
         
-        view.addConstraints([
-            NSLayoutConstraint(item: scrollView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: scrollView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 29),
-            NSLayoutConstraint(item: scrollView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0)
-            ])
+
+        let black = UIColor.black
+        let green = UIColor.init(red: 76/255, green: 175/255, blue: 80/255, alpha: 1)
+        let red = UIColor.init(red: 255/255, green: 0/255, blue: 0/255, alpha: 1)
         
-        timeline = TimelineView(bulletType: .circle, timeFrames: [
-            TimeFrame(text: "New Year's Day", date: "January 1", image: UIImage(named: "fireworks.jpeg")),
-            TimeFrame(text: "The month of love!", date: "February 14", image: UIImage(named: "heart.png")),
-            TimeFrame(text: "Comes like a lion, leaves like a lamb", date: "March",  image: nil),
-            TimeFrame(text: "Dumb stupid pranks.", date: "April 1", image: UIImage(named: "april.jpeg")),
-            TimeFrame(text: "That's right. No image is necessary!", date: "No image?", image: nil),
-            TimeFrame(text: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view.", date: "Long text", image: nil),
-            TimeFrame(text: "The month of love!", date: "February 14", image: UIImage(named: "heart.png")),
-            TimeFrame(text: "Comes like a lion, leaves like a lamb", date: "March",  image: nil),
-            TimeFrame(text: "Dumb stupid pranks.", date: "April 1", image: UIImage(named: "april.jpeg")),
-            TimeFrame(text: "That's right. No image is necessary!", date: "No image?", image: nil),
-            TimeFrame(text: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view.", date: "Long text", image: nil),
-            TimeFrame(text: "The month of love!", date: "February 14", image: UIImage(named: "heart.png")),
-            TimeFrame(text: "Comes like a lion, leaves like a lamb", date: "March",  image: nil),
-            TimeFrame(text: "Dumb stupid pranks.", date: "April 1", image: UIImage(named: "april.jpeg")),
-            TimeFrame(text: "That's right. No image is necessary!", date: "No image?", image: nil),
-            TimeFrame(text: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view.", date: "Long text", image: nil),
-            TimeFrame(text: "The month of love!", date: "February 14", image: UIImage(named: "heart.png")),
-            TimeFrame(text: "Comes like a lion, leaves like a lamb", date: "March",  image: nil),
-            TimeFrame(text: "Dumb stupid pranks.", date: "April 1", image: UIImage(named: "april.jpeg")),
-            TimeFrame(text: "That's right. No image is necessary!", date: "No image?", image: nil),
-            TimeFrame(text: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view.", date: "Long text", image: nil),
-            TimeFrame(text: "Hope this helps someone!", date: "That's it!", image: nil)
-            ])
-        scrollView.addSubview(timeline)
-        scrollView.addConstraints([
-            NSLayoutConstraint(item: timeline, attribute: .left, relatedBy: .equal, toItem: scrollView, attribute: .left, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: timeline, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: scrollView, attribute: .bottom, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: timeline, attribute: .top, relatedBy: .equal, toItem: scrollView, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: timeline, attribute: .right, relatedBy: .equal, toItem: scrollView, attribute: .right, multiplier: 1.0, constant: 0),
+        
+        func newTouchAction(point:ISPoint) {
+            print("again, \(ISPoint.self)")
             
-            NSLayoutConstraint(item: timeline, attribute: .width, relatedBy: .equal, toItem: scrollView, attribute: .width, multiplier: 1.0, constant: 0)
-            ])
+            let nextPt = ISPoint(title: "Next Pt Title")
+            nextPt.description = "Really long text, Really long text, Really long text, Really long text, Really long text, Really long text"
+            nextPt.touchUpInside = nil
+            nextPt.pointColor = red
+            nextPt.lineColor = red
+            nextPt.fill = true
+            self.timeline.points.insert(nextPt, at: 0)
+            
+            
+        }
         
-        view.sendSubview(toBack: scrollView)
+        let touchAction = { (point:ISPoint) in
+            print("point \(point.title)")
+            
+            let newDesc = "New Description"
+            let newPoint =  ISPoint(title: "\(Date())", description: newDesc, pointColor: black, lineColor: black, touchUpInside: newTouchAction, fill: true)
+            
+            self.timeline.points.insert(newPoint, at: 0)
+        }
+        
+        let myPoints = [
+            ISPoint(title: "06:46 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", pointColor: black, lineColor: black, touchUpInside: touchAction, fill: false),
+            ISPoint(title: "07:00 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.", pointColor: black, lineColor: black, touchUpInside: touchAction, fill: false),
+            ISPoint(title: "07:30 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", pointColor: black, lineColor: black, touchUpInside: touchAction, fill: false),
+            ISPoint(title: "08:00 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.", pointColor: green, lineColor: green, touchUpInside: touchAction, fill: true),
+            ISPoint(title: "11:30 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction),
+            ISPoint(title: "02:30 PM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction),
+            ISPoint(title: "05:00 PM", description: "Lorem ipsum dolor sit amet.", touchUpInside: touchAction),
+            ISPoint(title: "08:15 PM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction),
+            ISPoint(title: "11:45 PM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction)
+        ]
+        
+        timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
+        timeline.points = myPoints
     }
-    
-    @IBAction func bulletChanged(_ sender: UISegmentedControl) {
-        timeline.bulletType = [BulletType.circle, BulletType.hexagon, BulletType.diamond, BulletType.diamondSlash, BulletType.carrot, BulletType.arrow][sender.selectedSegmentIndex]
-    }
-    
-    override var prefersStatusBarHidden : Bool {
-        return true
-    }
-    
-    
+
+        
+
+
+
 }
 
 
