@@ -163,7 +163,8 @@ class ISTimeline: UIScrollView {
     fileprivate func buildTitleLabel(_ index:Int) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.text = points[index].title
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
+//        titleLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
+titleLabel.font = UIFont(name: "YanoneKaffeesatz-Bold", size: 20)
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.numberOfLines = 0
         titleLabel.preferredMaxLayoutWidth = calcWidth()
@@ -175,7 +176,7 @@ class ISTimeline: UIScrollView {
         if (text != nil) {
             let descriptionLabel = UILabel()
             descriptionLabel.text = text
-            descriptionLabel.font = UIFont.systemFont(ofSize: 10.0)
+            descriptionLabel.font = UIFont(name: "YanoneKaffeesatz-Regular", size: 15)
             descriptionLabel.lineBreakMode = .byWordWrapping
             descriptionLabel.numberOfLines = 0
             descriptionLabel.preferredMaxLayoutWidth = calcWidth()

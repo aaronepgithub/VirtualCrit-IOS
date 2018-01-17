@@ -215,7 +215,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o02-G2-t4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="804" y="0.0"/>
+            <point key="canvasLocation" x="1185" y="412"/>
         </scene>
         <!--BLE-->
         <scene sceneID="wg7-f3-ORb">
@@ -442,7 +442,7 @@
                     <viewLayoutGuide key="safeArea" id="ySs-Vd-9m7"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1551" y="0.0"/>
+            <point key="canvasLocation" x="1641" y="-276"/>
         </scene>
         <!--Timeline-->
         <scene sceneID="1FN-xL-ubM">
@@ -476,7 +476,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQQ-NZ-IKK" customClass="ISTimeline" customModule="xxyy">
-                                <rect key="frame" x="8" y="77" width="375" height="590"/>
+                                <rect key="frame" x="8" y="77" width="375" height="541"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -492,13 +492,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="95F-OY-vOC"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="ATL" image="first" id="YMW-5I-kVH"/>
                     <connections>
                         <outlet property="timeline" destination="CQQ-NZ-IKK" id="9Km-fg-m6a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V5T-uF-pMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2661.5999999999999" y="-287.40629685157421"/>
+            <point key="canvasLocation" x="798" y="-277"/>
         </scene>
         <!--Ride III-->
         <scene sceneID="9OY-u8-kWl">
@@ -775,7 +776,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="BuI-6M-AlA" kind="relationship" relationship="viewControllers" id="bfd-DU-XNi"/>
-                        <segue destination="5af-9N-5iY" kind="relationship" relationship="viewControllers" id="gYM-qL-nSe"/>
+                        <segue destination="ESF-V7-5Zq" kind="relationship" relationship="viewControllers" id="etW-z4-T1w"/>
                         <segue destination="MYP-DG-sid" kind="relationship" relationship="viewControllers" id="8lD-0y-dPo"/>
                         <segue destination="gdp-Tx-TMd" kind="relationship" relationship="viewControllers" id="6Sx-ch-nyb"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
@@ -962,17 +963,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default-7506-landscape_1334x750" translatesAutoresizingMaskIntoConstraints="NO" id="Gx2-BT-YXK">
-                                <rect key="frame" x="0.0" y="54" width="375" height="530"/>
+                                <rect key="frame" x="0.0" y="54" width="375" height="579"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="rqQ-xt-OiS">
-                                <rect key="frame" x="174" y="205" width="27" height="29"/>
+                                <rect key="frame" x="174" y="229.5" width="27" height="29"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-Yr-XlG" userLabel="L3">
-                                <rect key="frame" x="174" y="235" width="27" height="29"/>
+                                <rect key="frame" x="174" y="259.5" width="27" height="29"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -992,7 +993,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.0  00:00:00 MOV" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJb-5y-wgb" userLabel="Footer">
-                                <rect key="frame" x="8" y="584" width="359" height="30"/>
+                                <rect key="frame" x="8" y="633" width="359" height="30"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="lYb-gF-hFG"/>
@@ -1005,10 +1006,10 @@
                                 </variation>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gAD-nG-EBP">
-                                <rect key="frame" x="16" y="62" width="343" height="514"/>
+                                <rect key="frame" x="16" y="62" width="343" height="563"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="60" translatesAutoresizingMaskIntoConstraints="NO" id="cRB-3T-98U" userLabel="B1">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="514"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="563"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="140"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1059,9 +1060,13 @@
     </scenes>
     <resources>
         <image name="Default-7506-landscape_1334x750" width="667" height="375"/>
+        <image name="first" width="30" height="30"/>
         <image name="ic_bluetooth" width="24" height="24"/>
         <image name="ic_directions_bike" width="24" height="24"/>
         <image name="ic_settings" width="24" height="24"/>
         <image name="second" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="etW-z4-T1w"/>
+    </inferredMetricsTieBreakers>
 </document>

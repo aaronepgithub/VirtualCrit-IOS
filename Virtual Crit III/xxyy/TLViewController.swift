@@ -13,16 +13,91 @@ class TLViewController: UIViewController {
 //    https://github.com/instant-solutions/ISTimeline
     
     @IBOutlet weak var timeline: ISTimeline!
-    
     @IBAction func Dismiss(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    func newHRpoint(titleString: String) {
+        print("newHRpoint")
+        let ti = getFormattedTime()
+        let nextPt = ISPoint(title: titleString)
+        nextPt.description = ti
+        nextPt.touchUpInside = nil
+        nextPt.pointColor = .black
+        nextPt.lineColor = .black
+        nextPt.fill = true
+        self.timeline.points.insert(nextPt, at: 0)
+    }
+    
+    
+
+    func new30point(titleString: String) {
+        print("newHRpoint")
+        let ti = getFormattedTime()
+        let nextPt = ISPoint(title: titleString)
+        nextPt.description = ti
+        nextPt.touchUpInside = nil
+        nextPt.pointColor = .blue
+        nextPt.lineColor = .blue
+        nextPt.fill = false
+        self.timeline.points.insert(nextPt, at: 0)
+    }
+    
+    var hrHasVal = 0
+    @objc func updateT() {
+        if rt.rt_hr > 0 && hrHasVal == 0 {
+            newHRpoint(titleString: "HEARTRATE IS NOW BEING CAPTURED")
+            hrHasVal = 1
+        }
+        
+        if (rt.int_elapsed_time % 30) == 0 {
+            new30point(titleString: "30s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) MPH ")
+        }
+        
+        if (rt.int_elapsed_time % 300) == 0 {
+            newHRpoint(titleString: "5 MINUTES COMPLETED")
+            
+            var s = round.speeds.count
+            var a = 0
+            if s == 0 {return}
+            
+            let text1 = "SPD   CAD   HRT"
+            var text2 = ""
+            
+            while s > 0 && a < 10 {
+                text2 += "\(stringer2(myIn: round.speeds[s-1])) "
+                text2 += "\(stringer1(myIn: round.cadences[s-1])) "
+                text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+                text2 += "\n"
+                s = s - 1
+                a = a + 1
+                //print(text2)
+            }
+            
+            //lbl_1.text = "\(text1) \n\(text2)"
+            new30point(titleString: "\(text1) \n\(text2)")
+            
+            
+        }
+        
+    }
+    
+    
+    func getFormattedTime() -> String {
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .none
+        return formatter.string(from: currentDateTime)
+    }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let st = getFormattedTime()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateT), name: Notification.Name("update"), object: nil)
 
         let black = UIColor.black
         let green = UIColor.init(red: 76/255, green: 175/255, blue: 80/255, alpha: 1)
@@ -53,15 +128,8 @@ class TLViewController: UIViewController {
         }
         
         let myPoints = [
-            ISPoint(title: "06:46 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", pointColor: black, lineColor: black, touchUpInside: touchAction, fill: false),
-            ISPoint(title: "07:00 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.", pointColor: black, lineColor: black, touchUpInside: touchAction, fill: false),
-            ISPoint(title: "07:30 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", pointColor: black, lineColor: black, touchUpInside: touchAction, fill: false),
-            ISPoint(title: "08:00 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.", pointColor: green, lineColor: green, touchUpInside: touchAction, fill: true),
-            ISPoint(title: "11:30 AM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction),
-            ISPoint(title: "02:30 PM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction),
-            ISPoint(title: "05:00 PM", description: "Lorem ipsum dolor sit amet.", touchUpInside: touchAction),
-            ISPoint(title: "08:15 PM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction),
-            ISPoint(title: "11:45 PM", description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.", touchUpInside: touchAction)
+            
+            ISPoint(title: "ACTIVITY TIMELINE HAS STARTED\nSELECT AN ACTIVITY, SET YOUR NOTIFICATION RULES AND BEGIN.", description: "\(st)", touchUpInside: touchAction)
         ]
         
         timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
