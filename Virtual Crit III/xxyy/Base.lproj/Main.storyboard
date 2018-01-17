@@ -502,21 +502,21 @@
                                 <rect key="frame" x="0.0" y="54" width="375" height="530"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00 AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRm-OM-vFo" userLabel="TIME OF DAY">
-                                <rect key="frame" x="143.5" y="69" width="88.5" height="45"/>
+                                <rect key="frame" x="144" y="69" width="88.5" height="45"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZn-O0-iTq" userLabel="LABEL - MID HZ">
-                                <rect key="frame" x="175.5" y="124" width="24.5" height="27"/>
+                                <rect key="frame" x="176" y="124" width="24.5" height="27"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HRT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jbv-e1-uAR" userLabel="LABEL - L HZ">
-                                <rect key="frame" x="44.5" y="300.5" width="26" height="27"/>
+                                <rect key="frame" x="44" y="300.5" width="26" height="27"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -530,7 +530,7 @@
                                 <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vDg-zR-RbI" userLabel="LABEL - MID VERT">
-                                <rect key="frame" x="175.5" y="251.5" width="24.5" height="27"/>
+                                <rect key="frame" x="176" y="251.5" width="24.5" height="27"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -538,7 +538,7 @@
                                 <variation key="heightClass=regular-widthClass=compact" hidden="NO"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HRT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPy-CI-Fz3" userLabel="LABEL - TOP VERT">
-                                <rect key="frame" x="175" y="82" width="26" height="27"/>
+                                <rect key="frame" x="175.5" y="82" width="26" height="27"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
