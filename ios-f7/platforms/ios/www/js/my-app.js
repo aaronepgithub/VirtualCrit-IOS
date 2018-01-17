@@ -96,7 +96,17 @@ function myCallback() {
 }
 
 
+function addTl() {
+  $$('#timelineUL').append('<li class="in-view"><div><time>1934</time>TEXT, TEXT, TEXT</div></li>');
+}
+
+
+
+
+
+
 $$('#NAME').on('click', function(e) {
+  addTl();
   myApp.prompt('ENTER YOUR RIDER NAME', 'WELCOME', function(value) {
     //myApp.alert('Your name is "' + value + '". You clicked Ok button');
     if (value !== "") {
