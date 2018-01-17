@@ -26,9 +26,7 @@ class HistoryViewController: UIViewController {
     @IBOutlet weak var lbl_1: UILabel!
 
     
-    @IBAction func act_Dismiss(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    }
+
     
     @objc func update1() {
         
