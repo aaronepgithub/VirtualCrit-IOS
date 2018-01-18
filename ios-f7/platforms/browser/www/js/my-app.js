@@ -37,14 +37,7 @@ $$(document).on('deviceready', function() {
 //remove
 // var time = 0;
 // var roundTimer = 1;
-$$('.forthRow').hide();
-$$('.landRow').hide();
-$$('.landRowHR').hide();
-$$('.landRowSPD').hide();
-$$('.landRowGEO').hide();
-$$('.landscapeLabels').hide();
-$$('.landscapeLabelsHR').hide();
-$$('.landscapeLabelsSPD').hide();
+
 
 var timeSinceStartInSeconds = 0;
 var totalRoundsCompleted = 0;
@@ -56,6 +49,18 @@ function myCallback() {
   var rightNow = new Date();
   timeSinceStartInSeconds = Date.dateDiffReturnSeconds('s', startTime, rightNow);
   //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
+
+if (timeSinceStartInSeconds == 5) {
+  $$('.forthRow').hide();
+  $$('.landRow').hide();
+  $$('.landRowHR').hide();
+  $$('.landRowSPD').hide();
+  $$('.landRowGEO').hide();
+  $$('.landscapeLabels').hide();
+  $$('.landscapeLabelsHR').hide();
+  $$('.landscapeLabelsSPD').hide();
+}
+
 
   if (timeSinceStartInSeconds % secInRound === 0 && timeSinceStartInSeconds > 1) {
     console.log("Calling roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
@@ -215,11 +220,16 @@ $$('#TIRESIZE').on('click', function(e) {
 
 
 
-var refreshInterval = 30;
+var refreshInterval = 10;
 $$('#REFRESH').on('click', function(e) {
   // $$(this).addClass('ani');
       $$('#REFRESH').css('color', 'darkgray');
   var current = refreshInterval;
+
+  if (current == 10) {
+    $$(this).find('.item-after').text('30');
+    refreshInterval = 30;
+  }
 
   if (current == 30) {
     $$(this).find('.item-after').text('60');
@@ -233,8 +243,8 @@ $$('#REFRESH').on('click', function(e) {
   }
 
   if (current == 300) {
-    $$(this).find('.item-after').text('30');
-    refreshInterval = 30;
+    $$(this).find('.item-after').text('10');
+    refreshInterval = 10;
   }
 
   setTimeout(function() {
@@ -699,8 +709,8 @@ function displaySPD() {
 
   if (dataToDisplay == "ROUND" && geoEnabled == "NO") {
     $$(".rtSPD").text(rounds.avgSpeed.toFixed(1));
-  } 
-  
+  }
+
   if (dataToDisplay == "ROUND" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
     $$(".rtSPD").text(rounds.avgGeoSpeed.toFixed(1));
   }

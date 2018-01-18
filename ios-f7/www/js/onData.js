@@ -273,8 +273,10 @@ function midRound(t) {
   var a = rounds.WheelRevs;
   var b = (Number(wheelCircumference) / Number(1000)) * 0.000621371;
   var c = Number(t) / Number(60) / Number(60);
+
   rounds.avgSpeed = (Number(a) * Number(b)) / Number(c);
   rounds.avgGeoSpeed = rounds.geoDistance / Number(c);
+
 
   if (t > 0) {
     displaySPD();

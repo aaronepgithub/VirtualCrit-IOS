@@ -6,7 +6,7 @@ var geoDistanceInMiles = 0;
 var geoActualTimeSpeed = 0;
 var geoMovingTimeSpeed = 0;
 var geoMovingTimeInSeconds = 0;
-
+var la1, lo1, la2, lo2;
 
 function dispTime() {
     var rightNow = new Date();
@@ -25,7 +25,22 @@ function dispTime() {
       }
 }
 
-
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km
+    var dLat = (lat2 - lat1).toRad();
+    var dLon = (lon2 - lon1).toRad();
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    la2 = lat1;
+    lo2 = lon1;
+    return d;
+}
+Number.prototype.toRad = function () {
+    return this * Math.PI / 180;
+};
 
 function addGeoTl() {
     var x = dispTime();
@@ -33,7 +48,7 @@ function addGeoTl() {
   }
 
 $$('#btn1').on('click', function (e) {
-    console.log("btn1")
+    console.log("btn1");
     geoEnabled = "YES";
     $$('#GEO').find('.item-after').text('YES');
 
@@ -44,7 +59,7 @@ $$('#btn1').on('click', function (e) {
 
         filterOutInitial += 1;
         if (filterOutInitial <= 3) {
-            
+
                 la2 = location.latitude;
                 lo2 = location.longitude;
 
@@ -64,38 +79,31 @@ $$('#btn1').on('click', function (e) {
             console.log('Start of callbackFn');
             console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
             //console.log('BackgroundGeoSpeed:  ' + location.speed);
-    
-    
-            function calculateDistance(lat1, lon1, lat2, lon2) {
-                var R = 6371; // km
-                var dLat = (lat2 - lat1).toRad();
-                var dLon = (lon2 - lon1).toRad();
-                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                var d = R * c;
-                la2 = lat1;
-                lo2 = lon1;
-                return d;
-            }
-            Number.prototype.toRad = function () {
-                return this * Math.PI / 180;
-            };
-    
-    
+
             la1 = location.latitude;
             lo1 = location.longitude;
 
             var distInKiloMeters = calculateDistance(la1, lo1, la2, lo2);
-            var distInMiles = (distInKiloMeters * 0.621371 * 100) / 100;    
-            
+            var distInMiles = (distInKiloMeters * 0.621371 * 100) / 100;
+
+            // console.log('distInKiloMeters' + distInKiloMeters);
+            // console.log('distInMiles' + distInMiles);
+
             var rn = new Date();
-            geoMovingTimeInSeconds = Date.dateDiffReturnSeconds(s, geoStartTime, rn);
-            
+            geoMovingTimeInSeconds = Date.dateDiffReturnSeconds('s', geoStartTime, rn);
+            // console.log('geoMovingTimeInSeconds' + geoMovingTimeInSeconds);
+
             geoDistanceInMiles += distInMiles;
             geoActualTimeSpeed = geoDistanceInMiles / (timeSinceStartInSeconds / 60 / 60);
             geoMovingTimeSpeed = geoDistanceInMiles / (geoMovingTimeInSeconds / 60 / 60);
+
+            rounds.geoDistance += distInMiles;
+
+            // console.log('geoDistanceInMiles' + geoDistanceInMiles);
+            // console.log('geoActualTimeSpeed' + geoActualTimeSpeed);
+            // console.log('geoMovingTimeSpeed' + geoMovingTimeSpeed);
+            // console.log('timeSinceStartInSeconds' + timeSinceStartInSeconds);
+
 
             var date = new Date(null);
             date.setSeconds(geoMovingTimeInSeconds);
@@ -105,18 +113,19 @@ $$('#btn1').on('click', function (e) {
             $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
             $$(".rtMILES").text((geoDistanceInMiles).toFixed(2) + " MILES");
 
-            $$('#btn1').text(geoActualTimeSpeed.toFixed(1) + ' mph');
+            $$('#btn1').text(geoMovingTimeSpeed.toFixed(1) + ' mph');
             $$('#btn2').text(geoDistanceInMiles.toFixed(1) + ' mi');
-            
+            $$('#btn3').text(geoActualTimeSpeed.toFixed(1) + ' mph');
 
-    
+
+
             backgroundGeolocation.finish();
             console.log('End callbackFn');
 
         }
 
 
-    }  //end callbackFn
+    };  //end callbackFn
 
     var failureFn = function (error) {
         console.log('BackgroundGeolocation error');

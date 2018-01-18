@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		qX+/H2gm9cYy+SwmSrUCpYqoOg4=
+		HWPa4YAj7PHMjKZGTwPDNaM/xjE=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		JoGocwr4EuP4mA0oHqjtutO2uVU=
+		aXIDpcUBZ9tIhae7ph1G2LGXme0=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,11 +110,11 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		fOubC/orT0HwJj2xrgOBwv9TJHE=
+		W/kcLPBJsV8EYMBTIW5TRqcR5fs=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		3pjm15DZLLS957EwisKrnWx/nvY=
+		s8H6Z32skTi9wS5KC/MfAA3qRpQ=
 		</data>
 		<key>LaunchImage-568h@2x.png</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		8UfvkVSKS2HwiXBW8+k/f56A3b4=
+		7NMlYCdh77unxuCFYUHXY3LJVUk=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -194,7 +194,7 @@
 		</data>
 		<key>config.xml</key>
 		<data>
-		nb2LMP1zXGB0M8aBD5g58gK1JyY=
+		r1x1HJoTb2mpTayxE8TfVKDF9gw=
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
@@ -226,7 +226,7 @@
 		</data>
 		<key>www/cordova_plugins.js</key>
 		<data>
-		psYp/ZVETG0ySlnEh3VV3vHbKFY=
+		uw/psTnvUtD1Q7qbC+cKPjjcPLY=
 		</data>
 		<key>www/css/Yan400.woff2</key>
 		<data>
@@ -238,7 +238,7 @@
 		</data>
 		<key>www/css/my-app.css</key>
 		<data>
-		s8rlkf/0eFWmBEYmFxqHwkLDEgw=
+		hipzWsWp7h6MBQwjZwPcrquuoAk=
 		</data>
 		<key>www/css/my-app.css.white.css</key>
 		<data>
@@ -482,15 +482,19 @@
 		</data>
 		<key>www/index.html</key>
 		<data>
-		Br1rP+BUaS5Xsw7sBCLWyOKnkL0=
+		JKVrxeSDCl+5JfQ7nOYSZyxBRc8=
 		</data>
 		<key>www/index.html.white.html</key>
 		<data>
 		vOFnnY324JoIN5Ee20LLl2IXZwE=
 		</data>
+		<key>www/js/geo.js</key>
+		<data>
+		PWF/7VB2iOHlofkwbKziVRx9zno=
+		</data>
 		<key>www/js/my-app.js</key>
 		<data>
-		inBvOGteLPSAxCAShIqe54I7M3s=
+		95I9UQneKeW4ezs7i9AeVZEA/Y8=
 		</data>
 		<key>www/js/my-app.js.white.js</key>
 		<data>
@@ -498,7 +502,7 @@
 		</data>
 		<key>www/js/onData.js</key>
 		<data>
-		1Z96sSVpd2J/hRK6zkhcYN2rpOU=
+		sse8FqrEM6PQhZrV1duE9gO4MpA=
 		</data>
 		<key>www/lib/framework7/css/framework7.ios.colors.css</key>
 		<data>
@@ -579,6 +583,10 @@
 		<key>www/plugins/cordova-plugin-device/www/device.js</key>
 		<data>
 		1GfO/IDwwyLde/veo05ABQB5yTk=
+		</data>
+		<key>www/plugins/cordova-plugin-mauron85-background-geolocation/www/backgroundGeolocation.js</key>
+		<data>
+		OrAiGcp2+SWsWv/fQMOoBnEZUE8=
 		</data>
 		<key>www/services.html</key>
 		<data>
@@ -844,22 +852,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			qX+/H2gm9cYy+SwmSrUCpYqoOg4=
+			HWPa4YAj7PHMjKZGTwPDNaM/xjE=
 			</data>
 			<key>hash2</key>
 			<data>
-			B+ueDkh51ACESZ6jTPSRFtx3Hc0F2s3j81JZIB+xoQw=
+			1rOL967rRG5zkwH5k/PqeXdXCUHJnn7kAJ9zLIvUjfU=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			JoGocwr4EuP4mA0oHqjtutO2uVU=
+			aXIDpcUBZ9tIhae7ph1G2LGXme0=
 			</data>
 			<key>hash2</key>
 			<data>
-			crqKUBTzK1GMCl6rHXYhlqIRpKGR0SD7WoedT0O3twM=
+			k6tf/jBZNz3tq2UuGVfA0FD6+PbzBAy/sMAX9MwrywM=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -877,11 +885,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fOubC/orT0HwJj2xrgOBwv9TJHE=
+			W/kcLPBJsV8EYMBTIW5TRqcR5fs=
 			</data>
 			<key>hash2</key>
 			<data>
-			o5z7bJXOOW5340bIot8fEb1PSoPlR6JP/8fOy8JO9fo=
+			Wmwh5dZnBZl2BALN9bVHHagYkSCcuP2XZDQgP20UJoc=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1064,11 +1072,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8UfvkVSKS2HwiXBW8+k/f56A3b4=
+			7NMlYCdh77unxuCFYUHXY3LJVUk=
 			</data>
 			<key>hash2</key>
 			<data>
-			D+ub+vA6etx1pEJ7QfmDBGi5cpyIona29wX2DMCJ170=
+			ZIBdiqDsL1QE5xKj7kG+Jv5PSfT3AJviQfKuZ0ACW2Q=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1086,11 +1094,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			nb2LMP1zXGB0M8aBD5g58gK1JyY=
+			r1x1HJoTb2mpTayxE8TfVKDF9gw=
 			</data>
 			<key>hash2</key>
 			<data>
-			yw2ZFNgNqMKT6mCcVL+C92cgheiw3h9Je6LcAiqs6Zo=
+			OTdBMrLdYmcgoV0vNGwsP2fBanwkI7lpOc2RpL0N57A=
 			</data>
 		</dict>
 		<key>embedded.mobileprovision</key>
@@ -1174,11 +1182,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			psYp/ZVETG0ySlnEh3VV3vHbKFY=
+			uw/psTnvUtD1Q7qbC+cKPjjcPLY=
 			</data>
 			<key>hash2</key>
 			<data>
-			MgISnpQUyWjEawI/IoSSmdEag2CeNysIUAU5SmheGVQ=
+			iNREyqFk+JoZniQ9K7xgRsFW31tl90FVqnlOvmWNs1Y=
 			</data>
 		</dict>
 		<key>www/css/Yan400.woff2</key>
@@ -1207,11 +1215,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			s8rlkf/0eFWmBEYmFxqHwkLDEgw=
+			hipzWsWp7h6MBQwjZwPcrquuoAk=
 			</data>
 			<key>hash2</key>
 			<data>
-			DNbP+WacEKSfg1yKXF5tAtcIccitrms3HokIWRKlSsc=
+			jEi78/TeJPAH3OJ4duVEJBXSwZ1vwsSPV4ytJJ9lo5E=
 			</data>
 		</dict>
 		<key>www/css/my-app.css.white.css</key>
@@ -1878,11 +1886,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Br1rP+BUaS5Xsw7sBCLWyOKnkL0=
+			JKVrxeSDCl+5JfQ7nOYSZyxBRc8=
 			</data>
 			<key>hash2</key>
 			<data>
-			lqBQnHz2Icvrio6oqWtP1FE9Eee8TQOZ9IDIsihDR5Y=
+			iKRNB7nPJqaDGw2//UEnFBgmN8kAdxiA7rHJG6bujIM=
 			</data>
 		</dict>
 		<key>www/index.html.white.html</key>
@@ -1896,15 +1904,26 @@
 			ulokOYYGx8sgwcpZ/UbltOZ5MdPpE8wH5QG9LSo5q68=
 			</data>
 		</dict>
+		<key>www/js/geo.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PWF/7VB2iOHlofkwbKziVRx9zno=
+			</data>
+			<key>hash2</key>
+			<data>
+			YaeCdAVnX5ltsQ5rHVOnhYbsEZoSquPWzsF4B+FiqMs=
+			</data>
+		</dict>
 		<key>www/js/my-app.js</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			inBvOGteLPSAxCAShIqe54I7M3s=
+			95I9UQneKeW4ezs7i9AeVZEA/Y8=
 			</data>
 			<key>hash2</key>
 			<data>
-			XBPeAjFB5B2U25C7hxjugsE9t5SeCjigqCncHBODn7g=
+			H59A7Gl1jf3o6w6bpI8Ry6shAXUt7rOdUkHHkFxN4nw=
 			</data>
 		</dict>
 		<key>www/js/my-app.js.white.js</key>
@@ -1922,11 +1941,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			1Z96sSVpd2J/hRK6zkhcYN2rpOU=
+			sse8FqrEM6PQhZrV1duE9gO4MpA=
 			</data>
 			<key>hash2</key>
 			<data>
-			FVHBMU6fJmFCGI6vauHsfLtYtvWrSzWIkzbLOwOp0t4=
+			wgsJ7AxEDlTKTsgQnHbbZwegxBdy21SD5PeKt4ebg6A=
 			</data>
 		</dict>
 		<key>www/lib/framework7/css/framework7.ios.colors.css</key>
@@ -2147,6 +2166,17 @@
 			<key>hash2</key>
 			<data>
 			lxEtW0KU6QKkPs5VCr3ZhsLIA3wAu5RMxZ4W4izq3gE=
+			</data>
+		</dict>
+		<key>www/plugins/cordova-plugin-mauron85-background-geolocation/www/backgroundGeolocation.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			OrAiGcp2+SWsWv/fQMOoBnEZUE8=
+			</data>
+			<key>hash2</key>
+			<data>
+			GtG6CliDguEL4wkW9B1CU4HzDOGGPIP9bFamRnWj60Q=
 			</data>
 		</dict>
 		<key>www/services.html</key>

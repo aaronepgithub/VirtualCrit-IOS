@@ -37,13 +37,7 @@ $$(document).on('deviceready', function() {
 //remove
 // var time = 0;
 // var roundTimer = 1;
-$$('.forthRow').hide();
-$$('.landRow').hide();
-$$('.landRowHR').hide();
-$$('.landRowSPD').hide();
-$$('.landscapeLabels').hide();
-$$('.landscapeLabelsHR').hide();
-$$('.landscapeLabelsSPD').hide();
+
 
 var timeSinceStartInSeconds = 0;
 var totalRoundsCompleted = 0;
@@ -55,6 +49,18 @@ function myCallback() {
   var rightNow = new Date();
   timeSinceStartInSeconds = Date.dateDiffReturnSeconds('s', startTime, rightNow);
   //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
+
+if (timeSinceStartInSeconds == 5) {
+  $$('.forthRow').hide();
+  $$('.landRow').hide();
+  $$('.landRowHR').hide();
+  $$('.landRowSPD').hide();
+  $$('.landRowGEO').hide();
+  $$('.landscapeLabels').hide();
+  $$('.landscapeLabelsHR').hide();
+  $$('.landscapeLabelsSPD').hide();
+}
+
 
   if (timeSinceStartInSeconds % secInRound === 0 && timeSinceStartInSeconds > 1) {
     console.log("Calling roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
@@ -68,6 +74,7 @@ function myCallback() {
 
 
   //JUST TO DISPLAY THE TIME
+  // var rightNow = new Date();
   if (rightNow.getHours() > 12) {
     if (rightNow.getMinutes() < 10) {
       $$(".TIME").text((rightNow.getHours() - 12) + ":0" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " PM");
@@ -90,14 +97,16 @@ function myCallback() {
   interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
 
+  interval.arrGeoDistance.push(geoDistanceInMiles);
+
   timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
   midRound(timeSinceRoundStartInSeconds);
 
 }
 
 
-function addTl() {
-  $$('#timelineUL').append('<li class="in-view"><div><time>1934</time>TEXT, TEXT, TEXT</div></li>');
+function addTl(x) {
+  $$('#timelineUL').append('<li class="in-view"><div><time>NAME CHANGE</time>NICE TO MEET YOU,' + x + ' </div></li>');
 }
 
 
@@ -112,6 +121,7 @@ $$('#NAME').on('click', function(e) {
     if (value !== "") {
     $$('#NAME').find('.item-after').text(value.toUpperCase());
     name = value.toUpperCase();
+    addTl(name);
     }
 
   });
@@ -149,7 +159,6 @@ $$('#MAXHR').on('click', function(e) {
 
 var audio = "OFF";
 $$('#AUDIO').on('click', function(e) {
-  //$$(this).addClass('ani');
 $$('#AUDIO').css('color', 'darkgray');
   if (audio == "ON") {
     $$(this).find('.item-after').text('OFF');
@@ -162,6 +171,24 @@ $$('#AUDIO').css('color', 'darkgray');
   setTimeout(function() {
     $$('#AUDIO').css('color', 'white');
     // $$('#AUDIO').removeClass('ani');
+  }, 300);
+
+});
+
+
+var geoEnabled = "NO";
+$$('#GEO').on('click', function(e) {
+$$('#GEO').css('color', 'darkgray');
+  if (geoEnabled == "YES") {
+    $$(this).find('.item-after').text('NO');
+    geoEnabled = "NO";
+  } else {
+    $$(this).find('.item-after').text('YES');
+    geoEnabled = "YES";
+  }
+
+  setTimeout(function() {
+    $$('#GEO').css('color', 'white');
   }, 300);
 
 });
@@ -193,11 +220,16 @@ $$('#TIRESIZE').on('click', function(e) {
 
 
 
-var refreshInterval = 30;
+var refreshInterval = 10;
 $$('#REFRESH').on('click', function(e) {
   // $$(this).addClass('ani');
       $$('#REFRESH').css('color', 'darkgray');
   var current = refreshInterval;
+
+  if (current == 10) {
+    $$(this).find('.item-after').text('30');
+    refreshInterval = 30;
+  }
 
   if (current == 30) {
     $$(this).find('.item-after').text('60');
@@ -211,8 +243,8 @@ $$('#REFRESH').on('click', function(e) {
   }
 
   if (current == 300) {
-    $$(this).find('.item-after').text('30');
-    refreshInterval = 30;
+    $$(this).find('.item-after').text('10');
+    refreshInterval = 10;
   }
 
   setTimeout(function() {
@@ -668,21 +700,29 @@ function displayHR() {
 }
 
 function displaySPD() {
-  if (dataToDisplay == "CURRENT") {
+  if (dataToDisplay == "CURRENT" && geoEnabled == "NO") {
     $$(".rtSPD").text(rt.speed.toFixed(1));
-    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
-
   }
-  if (dataToDisplay == "ROUND") {
+  if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) ) {
+    $$(".rtSPD").text(rt.geoSpeed.toFixed(1));
+  }
+
+  if (dataToDisplay == "ROUND" && geoEnabled == "NO") {
     $$(".rtSPD").text(rounds.avgSpeed.toFixed(1));
-    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
-
   }
-  if (dataToDisplay == "INTERVAL") {
+
+  if (dataToDisplay == "ROUND" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
+    $$(".rtSPD").text(rounds.avgGeoSpeed.toFixed(1));
+  }
+
+  if (dataToDisplay == "INTERVAL" && geoEnabled == "NO") {
     $$(".rtSPD").text(interval.avgSpeed.toFixed(1));
-    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
-
   }
+
+  if (dataToDisplay == "INTERVAL" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
+    $$(".rtSPD").text(interval.avgGeoSpeed.toFixed(1));
+  }
+
 }
 
 function displayCAD() {
@@ -763,6 +803,7 @@ $$('.secondRow').addClass('row-bottom-border');
 var page3info = 0;
 var landToggle = 0;
 $$('#view3nav').on('click', function(e) {
+  console.log("view3nav clicked");
   var x = landToggle;
   if (currentOrientation == "portrait") {
     return;
@@ -774,8 +815,6 @@ $$('#view3nav').on('click', function(e) {
       $$('.landscapeLabelsSPD').hide();
       $$('.landRowHR').show();
       $$('.landscapeLabelsHR').show();
-      // $$('.rtHR').addClass('bigFont');
-      // $$('.rtCAD').addClass('bigFont');
       landToggle += 1;
     }
 
@@ -786,8 +825,6 @@ $$('#view3nav').on('click', function(e) {
       $$('.landscapeLabels').hide();
       $$('.landscapeLabelsSPD').show();
       $$('.landscapeLabelsHR').hide();
-      // $$('.rtHR').addClass('bigFont');
-      // $$('.rtCAD').addClass('bigFont');
       landToggle += 1;
     }
 
@@ -798,8 +835,6 @@ $$('#view3nav').on('click', function(e) {
       $$('.landscapeLabels').show();
       $$('.landscapeLabelsSPD').hide();
       $$('.landscapeLabelsHR').hide();
-      // $$('.rtHR').addClass('bigFont');
-      // $$('.rtCAD').addClass('bigFont');
       landToggle = 0;
     }
 
