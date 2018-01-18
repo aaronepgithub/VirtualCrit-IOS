@@ -41,6 +41,7 @@ $$('.forthRow').hide();
 $$('.landRow').hide();
 $$('.landRowHR').hide();
 $$('.landRowSPD').hide();
+$$('.landRowGEO').hide();
 $$('.landscapeLabels').hide();
 $$('.landscapeLabelsHR').hide();
 $$('.landscapeLabelsSPD').hide();
@@ -90,6 +91,8 @@ function myCallback() {
   interval.arrCadence.push(Number(rt.cadence));
   interval.arrSpeed.push(Number(rt.speed));
   interval.arrDistance.push(totalMiles);
+
+  interval.arrGeoDistance.push(geoDistanceInMiles);
 
   timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
   midRound(timeSinceRoundStartInSeconds);
@@ -151,7 +154,6 @@ $$('#MAXHR').on('click', function(e) {
 
 var audio = "OFF";
 $$('#AUDIO').on('click', function(e) {
-  //$$(this).addClass('ani');
 $$('#AUDIO').css('color', 'darkgray');
   if (audio == "ON") {
     $$(this).find('.item-after').text('OFF');
@@ -164,6 +166,24 @@ $$('#AUDIO').css('color', 'darkgray');
   setTimeout(function() {
     $$('#AUDIO').css('color', 'white');
     // $$('#AUDIO').removeClass('ani');
+  }, 300);
+
+});
+
+
+var geoEnabled = "NO";
+$$('#GEO').on('click', function(e) {
+$$('#GEO').css('color', 'darkgray');
+  if (geoEnabled == "YES") {
+    $$(this).find('.item-after').text('NO');
+    geoEnabled = "NO";
+  } else {
+    $$(this).find('.item-after').text('YES');
+    geoEnabled = "YES";
+  }
+
+  setTimeout(function() {
+    $$('#GEO').css('color', 'white');
   }, 300);
 
 });
@@ -670,21 +690,29 @@ function displayHR() {
 }
 
 function displaySPD() {
-  if (dataToDisplay == "CURRENT") {
+  if (dataToDisplay == "CURRENT" && geoEnabled == "NO") {
     $$(".rtSPD").text(rt.speed.toFixed(1));
-    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
-
   }
-  if (dataToDisplay == "ROUND") {
+  if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) ) {
+    $$(".rtSPD").text(rt.geoSpeed.toFixed(1));
+  }
+
+  if (dataToDisplay == "ROUND" && geoEnabled == "NO") {
     $$(".rtSPD").text(rounds.avgSpeed.toFixed(1));
-    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
-
+  } 
+  
+  if (dataToDisplay == "ROUND" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
+    $$(".rtSPD").text(rounds.avgGeoSpeed.toFixed(1));
   }
-  if (dataToDisplay == "INTERVAL") {
+
+  if (dataToDisplay == "INTERVAL" && geoEnabled == "NO") {
     $$(".rtSPD").text(interval.avgSpeed.toFixed(1));
-    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
-
   }
+
+  if (dataToDisplay == "INTERVAL" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
+    $$(".rtSPD").text(interval.avgGeoSpeed.toFixed(1));
+  }
+
 }
 
 function displayCAD() {
@@ -765,6 +793,7 @@ $$('.secondRow').addClass('row-bottom-border');
 var page3info = 0;
 var landToggle = 0;
 $$('#view3nav').on('click', function(e) {
+  console.log("view3nav clicked");
   var x = landToggle;
   if (currentOrientation == "portrait") {
     return;
@@ -776,8 +805,6 @@ $$('#view3nav').on('click', function(e) {
       $$('.landscapeLabelsSPD').hide();
       $$('.landRowHR').show();
       $$('.landscapeLabelsHR').show();
-      // $$('.rtHR').addClass('bigFont');
-      // $$('.rtCAD').addClass('bigFont');
       landToggle += 1;
     }
 
@@ -788,8 +815,6 @@ $$('#view3nav').on('click', function(e) {
       $$('.landscapeLabels').hide();
       $$('.landscapeLabelsSPD').show();
       $$('.landscapeLabelsHR').hide();
-      // $$('.rtHR').addClass('bigFont');
-      // $$('.rtCAD').addClass('bigFont');
       landToggle += 1;
     }
 
@@ -800,8 +825,6 @@ $$('#view3nav').on('click', function(e) {
       $$('.landscapeLabels').show();
       $$('.landscapeLabelsSPD').hide();
       $$('.landscapeLabelsHR').hide();
-      // $$('.rtHR').addClass('bigFont');
-      // $$('.rtCAD').addClass('bigFont');
       landToggle = 0;
     }
 

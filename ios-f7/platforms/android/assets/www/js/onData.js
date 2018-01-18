@@ -43,7 +43,8 @@ var rt = {
   hr: 0,
   speed: 0,
   cadence: 0,
-  score: 0
+  score: 0,
+  geoSpeed: 0  //uses interval
 };
 
 var name = "TIM";
@@ -57,6 +58,7 @@ var totalMiles = 0;
 
 var interval = {
   arrDistance: [],
+  arrGeoDistance: [],
   arrHeartRate: [],
   arrCadence: [],
   arrSpeed: [],
@@ -64,7 +66,10 @@ var interval = {
   avgHeartRate: 0,
   avgSpeed: 0,
   avgCadence: 0,
-  avgScore: 0
+  avgScore: 0,
+
+  arrGeoSpeed: 0,
+  avgGeoSpeed: 0
 };
 
 var rounds = {
@@ -72,16 +77,19 @@ var rounds = {
   WheelRevs: 0,
   CrankRevs: 0,
   Distance: 0,
+  geoDistance: 0,
 
   arrHeartRate: [],
   arrSpeed: [],
   arrCadence: [],
   arrScore: [],
+  arrGeoSpeed: [],
 
   avgHeartRate: 0,
   avgSpeed: 0,
   avgCadence: 0,
   avgScore: 0,
+  avgGeoSpeed: 0,
 
   totalRoundCount: 0
 };
@@ -97,10 +105,15 @@ function stringer1(myIn) {
 
 function calcInterval(t) {
   //console.log("calcInterval:  "+ t);
+
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
-  //console.log("speedInterval:  " + speedInterval);
   interval.avgSpeed = speedInterval;
+
+  var geoDist = interval.arrGeoDistance[interval.arrGeoDistance.length - 1] - interval.arrGeoDistance[interval.arrGeoDistance.length - refreshInterval];
+  var speedGeoInterval = Number(geoDist / (refreshInterval / 60 / 60));
+  interval.avgGeoSpeed = speedGeoInterval;
+  rt.geoSpeed = interval.avgGeoSpeed;
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
@@ -128,12 +141,16 @@ function calcInterval(t) {
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
 
   if (speedInterval >= 0) {
-    //$$('.rtSPDi').text(speedInterval.toFixed(1));
     displaySPD();
   } else {
-    interval.avgSpeed = 0;
-    displaySPD();
-    //$$('.rtSPDi').text(0);
+
+    if (geoEnabled == "YES") {
+      displaySPD();
+    } else {
+      interval.avgSpeed = 0;
+      displaySPD();
+    }
+
   }
   displayHR();
   displayCAD();
@@ -178,6 +195,11 @@ function actionEndofRound() {
       label: true
     },
     {
+      text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (GEO SPEED)</h2>',
+      bold: false,
+      label: true
+    },
+    {
       text: '<h2>' + rounds.avgScore.toFixed(2) + ' (SCORE)</h2>',
       bold: false,
       label: true
@@ -211,24 +233,28 @@ function roundEnd() {
   rounds.arrSpeed.push(Number(undefTest(rounds.avgSpeed)));
   rounds.arrCadence.push(Number(undefTest(rounds.avgCadence)));
   rounds.arrScore.push(Number(undefTest(rounds.avgScore)));
+  rounds.arrGeoSpeed.push(Number(undefTest(rounds.avgGeoSpeed)));
 
 
   rounds.WheelRevs = 0;
   rounds.HeartRate = 0;
   rounds.CrankRevs = 0;
   rounds.Distance = 0;
+  rounds.geoDistance = 0;
 
-  $$('#rightPcontent').prepend((rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' MPH</p>');
+  $$('#rightPcontent').prepend('<p>' + (rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' GEO MPH</p><p> '  +  (rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' MPH</p>');
   $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX </p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p><p>AVG HR:  ' + rounds.arrHeartRate + ' BPM </p><p>AVG CAD:  ' + rounds.arrCadence + ' RPM </p>');
 
   console.log("End of Round Arrays:\n" +
     rounds.arrHeartRate + "\n" +
     rounds.arrSpeed + "\n" +
+    rounds.arrGeoSpeed + "\n" +
     rounds.arrCadence + "\n" +
     rounds.arrScore + "\n");
 
   var leng = rounds.arrSpeed.length;
-  if (leng > 0) {
+  var lengGeo = rounds.arrGeoSpeed.length;
+  if (leng > 0 || lengGeo > 0) {
     actionEndofRound();
 
     setTimeout(function() {
@@ -248,22 +274,14 @@ function midRound(t) {
   var b = (Number(wheelCircumference) / Number(1000)) * 0.000621371;
   var c = Number(t) / Number(60) / Number(60);
   rounds.avgSpeed = (Number(a) * Number(b)) / Number(c);
+  rounds.avgGeoSpeed = rounds.geoDistance / Number(c);
 
   if (t > 0) {
-    // $$('.rtSPDr').text(rounds.avgSpeed.toFixed(1));
-    // $$('.rtCADr').text(Number(rounds.avgCadence.toFixed(0)));
-    // $$('.rtHRr').text(Number(rounds.avgHeartRate.toFixed(0)));
-    // $$('.rtSCOREr').text(Number(rounds.avgScore.toFixed(0)));
     displaySPD();
     displayCAD();
     displayHR();
 
   }
-
-  // console.log("rounds.avgSpeed:  " + rounds.avgSpeed);
-  // console.log("rounds.avgCadence:  " + rounds.avgCadence);
-  // console.log("rounds.avgHeartRate:  " + rounds.avgHeartRate);
-  // console.log("rounds.avgScore:  " + rounds.avgScore);
 
   calcInterval(t);
 }
