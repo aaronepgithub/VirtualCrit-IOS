@@ -68,6 +68,7 @@ function myCallback() {
 
 
   //JUST TO DISPLAY THE TIME
+  // var rightNow = new Date();
   if (rightNow.getHours() > 12) {
     if (rightNow.getMinutes() < 10) {
       $$(".TIME").text((rightNow.getHours() - 12) + ":0" + rightNow.getMinutes() + ":" + rightNow.getSeconds() + " PM");
@@ -96,8 +97,8 @@ function myCallback() {
 }
 
 
-function addTl() {
-  $$('#timelineUL').append('<li class="in-view"><div><time>1934</time>TEXT, TEXT, TEXT</div></li>');
+function addTl(x) {
+  $$('#timelineUL').append('<li class="in-view"><div><time>NAME CHANGE</time>NICE TO MEET YOU,' + x + ' </div></li>');
 }
 
 
@@ -112,6 +113,7 @@ $$('#NAME').on('click', function(e) {
     if (value !== "") {
     $$('#NAME').find('.item-after').text(value.toUpperCase());
     name = value.toUpperCase();
+    addTl(name);
     }
 
   });

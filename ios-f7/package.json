@@ -29,7 +29,8 @@
         "ACCOUNT_LABEL": "@string/app_name",
         "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
         "CONTENT_AUTHORITY": "$PACKAGE_NAME",
-        "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking"
+        "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking",
+        "MOTION_USAGE_DESCRIPTION": "This app requires motion detection"
       }
     },
     "platforms": [
