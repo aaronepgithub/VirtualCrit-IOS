@@ -139,9 +139,9 @@ $$('#btn1').on('click', function (e) {
 
 
     backgroundGeolocation.configure(callbackFn, failureFn, {
-        desiredAccuracy: 10, //could try 0 for better accuracy, but with more power drain
+        desiredAccuracy: 0, //could try 0 for better accuracy, but with more power drain
         stationaryRadius: 10,
-        distanceFilter: 5,
+        distanceFilter: 10,
         interval: 3000,
         fastestInterval: 1000,
         activityType: Fitness,
