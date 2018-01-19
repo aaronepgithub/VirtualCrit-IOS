@@ -48,7 +48,9 @@ function myCallback() {
 
   var rightNow = new Date();
   timeSinceStartInSeconds = Date.dateDiffReturnSeconds('s', startTime, rightNow);
-  //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds)
+  //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
+  timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
+  //console.log("timeSinceRoundStartInSeconds:  " + timeSinceRoundStartInSeconds);
 
 if (timeSinceStartInSeconds == 5) {
   $$('.forthRow').hide();
@@ -62,12 +64,23 @@ if (timeSinceStartInSeconds == 5) {
 }
 
 
+
   if (timeSinceStartInSeconds % secInRound === 0 && timeSinceStartInSeconds > 1) {
     console.log("Calling roundEnd, timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
     totalRoundsCompleted += 1;
     console.log("RoundsCompleted:  " + totalRoundsCompleted);
     roundEnd();
   }
+
+  //fallback
+  if (timeSinceRoundStartInSeconds > 300 || timeSinceRoundStartInSeconds < 0 ) {
+    console.log("Calling roundEnd fallback, timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
+    totalRoundsCompleted += 1;
+    console.log("RoundsCompleted:  " + totalRoundsCompleted);
+    roundEnd();
+  }
+
+
 
   $$(".ACTUAL_TIME").text( "(" + (299-timeSinceRoundStartInSeconds) + ")  " + dataToDisplayString + "  " + Date.dateDiff('s', startTime, rightNow) );
   $$(".rndSec").text(300-timeSinceRoundStartInSeconds-1);
@@ -99,7 +112,7 @@ if (timeSinceStartInSeconds == 5) {
 
   interval.arrGeoDistance.push(geoDistanceInMiles);
 
-  timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
+  // timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
   midRound(timeSinceRoundStartInSeconds);
 
 }
@@ -681,21 +694,17 @@ function displayHR() {
     $$(".rtHR").text(rt.hr.toFixed(0));
     $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
     $$(".labHR").html("HR<br>"+rt.score.toFixed(0) + "%");
-
-    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
     $$(".headerStatus").text(dataToDisplay);
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtHR").text(rounds.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(rounds.avgScore.toFixed(0) + "%");
     $$(".labHR").html("HR<br>"+rounds.avgScore.toFixed(0) + "%");
-    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtHR").text(interval.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(interval.avgScore.toFixed(0) + "%");
     $$(".labHR").html("HR<br>"+interval.avgScore.toFixed(0) + "%");
-    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
   }
 }
 
@@ -703,7 +712,7 @@ function displaySPD() {
   if (dataToDisplay == "CURRENT" && geoEnabled == "NO") {
     $$(".rtSPD").text(rt.speed.toFixed(1));
   }
-  if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) ) {
+  if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) && rt.geoSpeed >= 0) {
     $$(".rtSPD").text(rt.geoSpeed.toFixed(1));
   }
 
@@ -728,17 +737,17 @@ function displaySPD() {
 function displayCAD() {
   if (dataToDisplay == "CURRENT") {
     $$(".rtCAD").text(rt.cadence.toFixed(0));
-    //$$(".headerRow").html('CURRENT &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
 
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
-    //$$(".headerRow").html('ROUND &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
 
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtCAD").text(interval.avgCadence.toFixed(0));
-    //$$(".headerRow").html('INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME"></span>');
+
 
   }
 }
@@ -1021,390 +1030,3 @@ function detectswipe(el, func) {
   }, false);
 
 }
-
-//CURRENT
-// var page3option3 = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt">HR<br></div>' +
-//   '<div class="col-90 rtHR" style="font-size: 6em"></div>' +
-//   // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
-//   '</div><hr>' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-//   '<div class="col-90 rtSPD speedRow" style="font-size: 7.5em"></div>' +
-//   // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-//   '<div class="col-90 rtCAD" style="font-size: 6em"></div>' +
-//   // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES"></span></div></div>' +
-//   '</div>';
-
-
-
-// var page3option4 = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-//   '<div class="col-90 rtSPD speedRow" style="font-size: 9em"></div>' +
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-//   '<div class="col-90 rtCAD" style="font-size: 9em"></div>' +
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES"></span></div></div>' +
-//   '</div>';
-
-
-
-
-// var page3option5 = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-// '<div class="col-100 headerRow" style="font-size: 2em"><span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-//   '<div class="col-90 rtHR speedRow" style="font-size: 9em"></div>' +
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-//   '<div class="col-90 rtSCORE" style="font-size: 9em"></div>' +
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES"></span></div></div>' +
-//   '</div>';
-
-
-
-
-
-
-
-
-
-// var page3option1 = '  <div class="myContentBlock content-block vertride"> ' +
-//   '<div class="row">' +
-//   '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="col-100" style="font-size: 1em">SPEED</div>' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="rtSPD col-100" style="font-size: 9em">0</div>' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="col-100" style="font-size: 1em">CAD</div>' +
-//   // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
-//   '  </div>' +
-//
-//   '<div class="row">' +
-//   // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-//   '    <div class="rtCAD col-100" style="font-size: 9em">0</div>' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-//   '  </div>' +
-//   '</div>   ';
-
-
-
-// var page3option2 = '  <div class="myContentBlock content-block vertride"> ' +
-//   '<div class="row">' +
-//   '    <div class="ACTUAL_TIME col-100" style="font-size: 3em">00:00:00</div> ' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="col-100" style="font-size: 1.5em">CAD INTERVAL</div>' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="intervalCAD col-100" style="font-size: 8.5em">0</div>' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="col-100" style="font-size: 1.5em">HR INTERVAL</div>' +
-//   // '    <div class="col-50" style="font-size: 1em">CAD</div>' +
-//   '  </div>' +
-//
-//   '<div class="row">' +
-//   // '    <div class="rtHR col-50" style="font-size: 6em">000</div>' +
-//   '    <div class="intervalHR col-100" style="font-size: 8.5em">0</div>' +
-//   '  </div>' +
-//
-//   '  <div class="row">' +
-//   '    <div class="col-100" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div>' +
-//   '  </div>' +
-//   '</div>   ';
-
-//
-// var page4default = ' <div content-block horizride> ' +
-//   '             <div class="row row1">' +
-//   '                <div class="col-30 rtSCORE">HR</div>' +
-//   '                <div class="col-40">SPEED</div>' +
-//   '                <div class="col-30">CAD</div>' +
-//   '              </div>' +
-//   '              <div class="row row2">' +
-//   '                <div class="rtHR hrcad col-30">0</div>' +
-//   '                <div class="rtSPD spd col-40">0</div>' +
-//   '                <div class="rtCAD hrcad col-30">0</div>' +
-//   '              </div>' +
-//   '              <div class="row row3">' +
-//   '                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
-//   '                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
-//   '              </div>' +
-//   '            </div>';
-//
-// var page4option1 = ' <div content-block horizride> ' +
-//   '             <div class="row row1">' +
-//   // '                <div class="col-30 rtSCORE">HR</div>' +
-//   '                <div class="col-50">SPEED</div>' +
-//   '                <div class="col-50">CAD</div>' +
-//   '              </div>' +
-//   '              <div class="row row2">' +
-//   // '                <div class="rtHR hrcad col-30">0</div>' +
-//   '                <div class="rtSPD spd col-50">0</div>' +
-//   '                <div class="rtCAD spd col-50">0</div>' +
-//   '              </div>' +
-//   '              <div class="row row3">' +
-//   '                <div class="ACTUAL_TIME col-50">00:00:00</div>' +
-//   '                <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
-//   '              </div>' +
-//   '            </div>';
-//
-//
-// //view4 html
-// var view4HTML = '<div id="view4nav" class="navbar">' +
-//   '<div class="navbar-inner">' +
-//   '  <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>' +
-//   '</div>' +
-//   '</div>' +
-//   '<div class="pages navbar-through">' +
-//   '<div data-page="index-4" class="page">' +
-//   '  <div class="navbar">' +
-//   '    <div class="navbar-inner">' +
-//   '      <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>' +
-//   '    </div>' +
-//   '  </div>' +
-//   '  <div id="view4pagecontent" class="page-content" style="margin-top: 20px;">' +
-//   '    <div content-block horizride>' +
-//   '      <div class="row row1">' +
-//   '        <div class="col-30 rtSCORE">HR</div>' +
-//   '        <div class="col-40">SPEED</div>' +
-//   '        <div class="col-30">CAD</div>' +
-//   '      </div>' +
-//   '      <div class="row row2">' +
-//   '        <div class="rtHR hrcad col-30">0</div>' +
-//   '        <div class="rtSPD spd col-40">0</div>' +
-//   '        <div class="rtCAD hrcad col-30">0</div>' +
-//   '      </div>' +
-//   '      <div class="row row3">' +
-//   '        <div class="ACTUAL_TIME col-50">00:00:00</div>' +
-//   '        <div class="col-50" style="font-size: 1em"><span class="rtMILES">00.00</span> MILES</div>' +
-//   '      </div>' +
-//   '    </div>' +
-//   '  </div>' +
-//   '</div>' +
-//   '</div>';
-
-
-
-//var page3default = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="centerRows" class="centerRows"><div class="row"><div class="col-100" style="font-size: 1em">SPEED</div></div><div class="row"><div class="rtSPD col-100" style="font-size: 6em">19.9</div></div><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 6em">123</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 6em">88</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
-
-
-//var page3option1 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="centerRows" class="centerRows"><div class="row"><div class="col-100 rtSCORE" style="font-size: 1em">HR 0%</div><div class="rtHR col-100" style="font-size: 9em">0</div></div><div class="row"><div class="col-100" style="font-size: 1em">CAD</div></div><div class="row"><div class="rtCAD col-100" style="font-size: 9em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
-
-// var page3option2 = '<div class="myContentBlock content-block vertride"><div class="row"><div class="col-100 headerRow" style="font-size: 3em"><span class="ACTUAL_TIME">00:00:00</span></div></div><div id="centerRows" class="centerRows"><div class="row"><div class="col-100 rtSCORE" style="font-size: 3em">HR 0%</div><div class="rtHR col-100" style="font-size: 11em">0</div></div></div><div class="row"><div class="col-100 footerRow" style="font-size: 3em"><span class="rtMILES">00.00</span> MILES</div></div></div>';
-
-
-// $$('.footerRow').on('click', function (e) {
-//   console.log("footerRow Clicked");
-//   var x = document.getElementById("speedRow");
-// if (x.style.display === "none") {
-//     x.style.display = "block";
-// } else {
-//     x.style.display = "none";
-// }
-// });
-
-
-// var page3option5r = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-//   '<div class="col-90 rtHRr speedRow" style="font-size: 9em"></div>' +
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-//   '<div class="col-90 rtSCOREr" style="font-size: 9em"></div>' +
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-//   '</div>';
-//
-// var page3option5i = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">HR<br>BPM</div>' +
-//   '<div class="col-90 rtHRi speedRow" style="font-size: 9em"></div>' +
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">%<br>MAX</div>' +
-//   '<div class="col-90 rtSCOREi" style="font-size: 9em"></div>' +
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-//   '</div>';
-
-
-// //INTERVAL
-// var page3option3i = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt">HR<br>%</div>' +
-//   '<div class="col-90 rtHRi" style="font-size: 6em"></div>' +
-//   // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
-//   '</div><hr>' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-//   '<div class="col-90 rtSPDi speedRow" style="font-size: 7.5em"></div>' +
-//   // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-//   '<div class="col-90 rtCADi" style="font-size: 6em"></div>' +
-//   // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-//   '</div>';
-//
-// //ROUND
-// var page3option3r = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt">HR<br>%</div>' +
-//   '<div class="col-90 rtHRr" style="font-size: 6em"></div>' +
-//   // '<div class="col-10" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">BPM</div>'+
-//   '</div><hr>' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-//   '<div class="col-90 rtSPDr speedRow" style="font-size: 7.5em"></div>' +
-//   // '<div class="col-10 speedRow" style="font-size: 1em; padding-top: 6em; padding-right: 2em;">MPH</div>'+
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-//   '<div class="col-90 rtCADr" style="font-size: 6em"></div>' +
-//   // '<div class="col-10" style="font-size: 1em; padding-top: 7em; padding-right: 2em;">RPM</div>'+
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-//   '</div>';
-
-
-// var page3option4r = '<div class="myContentBlock content-block vertride">' +
-//   '<div class="row">' +
-//   '<div class="col-100 headerRow" style="font-size: 2em">ROUND &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-//   '<div id="centerRows" class="centerRows lh16">' +
-//   '<div class="row">' +
-//   '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-//   '<div class="col-90 rtSPDr speedRow" style="font-size: 9em"></div>' +
-//   '</div><hr>' +
-//   '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-//   '<div class="col-90 rtCADr" style="font-size: 9em"></div>' +
-//   '</div>' +
-//   '</div></div></div>' +
-//   '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-//   '</div>';
-//
-// var page3option4i = '<div class="myContentBlock content-block vertride">' +
-// '<div class="row">' +
-// '<div class="col-100 headerRow" style="font-size: 2em">INTERVAL &nbsp&nbsp<span class="ACTUAL_TIME">00:00:00</span></div></div>' +
-// '<div id="centerRows" class="centerRows lh16">' +
-// '<div class="row">' +
-// '<div class="col-10 rt speedRow">SPD<br>MPH</div>' +
-// '<div class="col-90 rtSPDi speedRow" style="font-size: 9em"></div>' +
-// '</div><hr>' +
-// '<div class="row"><div class="col-10 rt">CAD<br>RPM</div>' +
-// '<div class="col-90 rtCADi" style="font-size: 9em"></div>' +
-// '</div>' +
-// '</div></div></div>' +
-// '<div class="row"><div id="footerRow" class="col-100 footerRow" style="font-size: 2em"><span class="rtMILES">00.00</span> MILES</div></div>' +
-// '</div>';
-
-
-
-// var page4info = 0;
-// $$('#view4nav').on('click', function(e) {
-//   var currentPage = page4info;
-//   if (currentPage === 0) {
-//     $$('#view4pagecontent').html(page4option1);
-//     page4info = 1;
-//   }
-//
-//   if (currentPage == 1) {
-//     $$('#view4pagecontent').html(page4default);
-//     page4info = 0;
-//   }
-// });
-
-
-
-//var dopt = displayDataOption;
-//console.log("dopt:  " + dopt);
-// switch (dopt) {
-//   case 0:
-//     displayDataOption = 1;
-//     console.log("switch to Interval");
-//     if (page3info == 0) {
-//       $$('#view3pagecontent').html(page3option5i);
-//     }
-//     if (page3info == 1) {
-//       $$('#view3pagecontent').html(page3option3i);
-//     }
-//     if (page3info == 2) {
-//       $$('#view3pagecontent').html(page3option4i);
-//     }
-//     break;
-//     case 1:
-//       displayDataOption = 2;
-//             console.log("switch to Round");
-//             if (page3info == 0) {
-//               $$('#view3pagecontent').html(page3option5r);
-//             }
-//             if (page3info == 1) {
-//               $$('#view3pagecontent').html(page3option3r);
-//             }
-//             if (page3info == 2) {
-//               $$('#view3pagecontent').html(page3option4r);
-//             }
-//       break;
-//       case 2:
-//         displayDataOption = 0;
-//               console.log("switch to RT");
-//               if (page3info == 0) {
-//                 $$('#view3pagecontent').html(page3option5);
-//               }
-//               if (page3info == 1) {
-//                 $$('#view3pagecontent').html(page3option3);
-//               }
-//               if (page3info == 2) {
-//                 $$('#view3pagecontent').html(page3option4);
-//               }
-//         break;
-//   default:
-//               console.log("default");
-// }

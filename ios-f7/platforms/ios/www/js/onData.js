@@ -242,7 +242,7 @@ function roundEnd() {
   rounds.Distance = 0;
   rounds.geoDistance = 0;
 
-  $$('#rightPcontent').prepend('<p>' + (rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' GEO MPH</p><p> '  +  (rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' MPH</p>');
+  $$('#rightPcontent').prepend('<p>' + (rounds.arrGeoSpeed[rounds.arrGeoSpeed.length - 1]).toFixed(2) + ' GEO MPH</p><p> '  +  (rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' MPH</p>');
   $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX </p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p><p>AVG HR:  ' + rounds.arrHeartRate + ' BPM </p><p>AVG CAD:  ' + rounds.arrCadence + ' RPM </p>');
 
   console.log("End of Round Arrays:\n" +
