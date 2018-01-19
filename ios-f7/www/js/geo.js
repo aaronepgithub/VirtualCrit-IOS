@@ -51,7 +51,14 @@ function addGeoTl() {
 $$('#btn1').on('click', function (e) {
     console.log("btn1");
     geoEnabled = "YES";
+    $$('#GEO').css('color', 'darkgray');
+    $$('#btn1').css('color', 'darkgray');
     $$('#GEO').find('.item-after').text('YES');
+
+    setTimeout(function() {
+      $$('#GEO').css('color', 'white');
+      $$('#btn1').css('color', 'white');
+    }, 300);
 
     var x = dispTime();
     $$('#timelineUL').append('<li class="in-view"><div><time> ' + x + ' </time>GEO TRACKER START ATTEMPT</div></li>');

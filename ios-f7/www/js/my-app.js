@@ -31,6 +31,16 @@ $$(document).on('deviceready', function() {
     $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
   }
   console.log("StartTime:  " + startTime);
+
+  $$('.forthRow').hide();
+  $$('.landRow').hide();
+  $$('.landRowHR').hide();
+  $$('.landRowSPD').hide();
+  $$('.landRowGEO').hide();
+  $$('.landscapeLabels').hide();
+  $$('.landscapeLabelsHR').hide();
+  $$('.landscapeLabelsSPD').hide();
+
   var intervalID = window.setInterval(myCallback, 1000);
 });
 
@@ -52,16 +62,6 @@ function myCallback() {
   timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
   //console.log("timeSinceRoundStartInSeconds:  " + timeSinceRoundStartInSeconds);
 
-if (timeSinceStartInSeconds == 5) {
-  $$('.forthRow').hide();
-  $$('.landRow').hide();
-  $$('.landRowHR').hide();
-  $$('.landRowSPD').hide();
-  $$('.landRowGEO').hide();
-  $$('.landscapeLabels').hide();
-  $$('.landscapeLabelsHR').hide();
-  $$('.landscapeLabelsSPD').hide();
-}
 
 
 
@@ -233,7 +233,7 @@ $$('#TIRESIZE').on('click', function(e) {
 
 
 
-var refreshInterval = 10;
+var refreshInterval = 30;
 $$('#REFRESH').on('click', function(e) {
   // $$(this).addClass('ani');
       $$('#REFRESH').css('color', 'darkgray');
@@ -798,11 +798,11 @@ function changeDataToDisplay() {
 }
 
 
-//var displayDataOption = 0;
+
+var displayDataOption = 0;
 $$('#view3pagecontent').on('click', function(e) {
   console.log("#view3pagecontent clicked");
   changeDataToDisplay();
-
 });
 
 $$('.firstRow').addClass('row-bottom-border');
@@ -811,60 +811,93 @@ $$('.secondRow').addClass('row-bottom-border');
 
 var page3info = 0;
 var landToggle = 0;
-$$('#view3nav').on('click', function(e) {
-  console.log("view3nav clicked");
+
+// $$('#view3nav').on('click', function(e) {
+//   console.log("view3nav clicked");
+//   var x = landToggle;
+//   if (currentOrientation == "portrait") {
+//     return;
+//   } else {
+//     if (x === 0) {
+//       $$('.landRow').hide();
+//       $$('.landscapeLabels').hide();
+//       $$('.landRowSPD').hide();
+//       $$('.landscapeLabelsSPD').hide();
+//       $$('.landRowHR').show();
+//       $$('.landscapeLabelsHR').show();
+//       landToggle += 1;
+//     }
+//
+//     if (x === 1) {
+//       $$('.landRow').hide();
+//       $$('.landRowHR').hide();
+//       $$('.landRowSPD').show();
+//       $$('.landscapeLabels').hide();
+//       $$('.landscapeLabelsSPD').show();
+//       $$('.landscapeLabelsHR').hide();
+//       landToggle += 1;
+//     }
+//
+//     if (x === 2) {
+//       $$('.landRowSPD').hide();
+//       $$('.landRowHR').hide();
+//       $$('.landRow').show();
+//       $$('.landscapeLabels').show();
+//       $$('.landscapeLabelsSPD').hide();
+//       $$('.landscapeLabelsHR').hide();
+//       landToggle = 0;
+//     }
+//   }  //end of if-landscape
+//
+// });
+
+function ifLandscapeSwipe() {
   var x = landToggle;
-  if (currentOrientation == "portrait") {
-    return;
-  } else {
-    if (x === 0) {
-      $$('.landRow').hide();
-      $$('.landscapeLabels').hide();
-      $$('.landRowSPD').hide();
-      $$('.landscapeLabelsSPD').hide();
-      $$('.landRowHR').show();
-      $$('.landscapeLabelsHR').show();
-      landToggle += 1;
-    }
-
-    if (x === 1) {
-      $$('.landRow').hide();
-      $$('.landRowHR').hide();
-      $$('.landRowSPD').show();
-      $$('.landscapeLabels').hide();
-      $$('.landscapeLabelsSPD').show();
-      $$('.landscapeLabelsHR').hide();
-      landToggle += 1;
-    }
-
-    if (x === 2) {
-      $$('.landRowSPD').hide();
-      $$('.landRowHR').hide();
-      $$('.landRow').show();
-      $$('.landscapeLabels').show();
-      $$('.landscapeLabelsSPD').hide();
-      $$('.landscapeLabelsHR').hide();
-      landToggle = 0;
-    }
-
-
-
+  console.log("ifLandscapeSwipe");
+  if (x === 0) {
+    $$('.landRow').hide();
+    $$('.landscapeLabels').hide();
+    $$('.landRowSPD').hide();
+    $$('.landscapeLabelsSPD').hide();
+    $$('.landRowHR').show();
+    $$('.landscapeLabelsHR').show();
+    landToggle += 1;
   }
 
-});
+  if (x === 1) {
+    $$('.landRow').hide();
+    $$('.landRowHR').hide();
+    $$('.landRowSPD').show();
+    $$('.landscapeLabels').hide();
+    $$('.landscapeLabelsSPD').show();
+    $$('.landscapeLabelsHR').hide();
+    landToggle += 1;
+  }
+
+  if (x === 2) {
+    $$('.landRowSPD').hide();
+    $$('.landRowHR').hide();
+    $$('.landRow').show();
+    $$('.landscapeLabels').show();
+    $$('.landscapeLabelsSPD').hide();
+    $$('.landscapeLabelsHR').hide();
+    landToggle = 0;
+  }
+
+}
 
 function aSwipe() {
-  console.log("a Swipe");
+  console.log("aSwipe");
 
   if (currentOrientation == "landscape") {
+    ifLandscapeSwipe();
     return;
   }
+  console.log("Portrait Swipe");
   animateDataChange();
   console.log("#view3nav clicked, current p3info:  " + page3info);
   var currentPage = page3info;
   if (currentPage === 0) {
-    //$$('#view3pagecontent').html(page3option4);
-    //show only SPD/CAD
     $$('.firstRow').hide();
     $$('.rtCAD').removeClass('smallFont');
     $$('.rtCAD').addClass('bigFont');
@@ -873,8 +906,6 @@ function aSwipe() {
     console.log("page3info:  " + page3info);
   }
   if (currentPage == 1) {
-    //$$('#view3pagecontent').html(page3option5);
-    //show only hr/score
     $$('.firstRow').show();
     $$('.rtHR').removeClass('smallFont');
     $$('.rtHR').addClass('bigFont');
@@ -887,7 +918,6 @@ function aSwipe() {
     console.log("page3info:  " + page3info);
   }
   if (currentPage == 2) {
-    //$$('#view3pagecontent').html(page3option3);
     //back to all start
     $$('.rtHR').removeClass('bigFont');
     $$('.rtHR').addClass('smallFont');
@@ -916,7 +946,6 @@ mql.addListener(function(m) {
     $$('.landscapeLabelsHR').hide();
     $$('.landscapeLabelsSPD').hide();
     if (page3info === 1) {
-      //$$('#view3pagecontent').html(page3option4);
       //show only SPD/CAD
       $$('.firstRow').hide();
       $$('.secondRow').show();
@@ -926,7 +955,6 @@ mql.addListener(function(m) {
       $$('.rtCAD').addClass('bigFont');
     }
     if (page3info == 2) {
-      //$$('#view3pagecontent').html(page3option5);
       //show only hr/score
       $$('.firstRow').show();
       $$('.rtHR').removeClass('smallFont');
@@ -938,7 +966,6 @@ mql.addListener(function(m) {
       $$('.forthRow').show(); //already has bigfont
     }
     if (page3info === 0) {
-      //$$('#view3pagecontent').html(page3option3);
       //back to all start
       $$('.rtHR').removeClass('bigFont');
       $$('.rtHR').addClass('smallFont');
