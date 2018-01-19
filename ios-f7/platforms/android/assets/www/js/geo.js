@@ -5,6 +5,7 @@ var geoMovingTime = 0;
 var geoDistanceInMiles = 0;
 var geoActualTimeSpeed = 0;
 var geoMovingTimeSpeed = 0;
+var geoMovingTimePace = 0;
 var geoMovingTimeInSeconds = 0;
 var la1, lo1, la2, lo2;
 
@@ -96,6 +97,7 @@ $$('#btn1').on('click', function (e) {
             geoDistanceInMiles += distInMiles;
             geoActualTimeSpeed = geoDistanceInMiles / (timeSinceStartInSeconds / 60 / 60);
             geoMovingTimeSpeed = geoDistanceInMiles / (geoMovingTimeInSeconds / 60 / 60);
+            geoMovingTimePace = 60 / geoMovingTimeSpeed;
 
             rounds.geoDistance += distInMiles;
 
@@ -116,6 +118,7 @@ $$('#btn1').on('click', function (e) {
             $$('#btn1').text(geoMovingTimeSpeed.toFixed(1) + ' mph');
             $$('#btn2').text(geoDistanceInMiles.toFixed(1) + ' mi');
             $$('#btn3').text(geoActualTimeSpeed.toFixed(1) + ' mph');
+            $$('#btn4').text(geoMovingTimePace.toFixed(1) + ' min/mi');
 
 
 
@@ -136,10 +139,12 @@ $$('#btn1').on('click', function (e) {
 
 
     backgroundGeolocation.configure(callbackFn, failureFn, {
-        desiredAccuracy: 10,
-        stationaryRadius: 20,
-        distanceFilter: 30,
-        interval: 10000,
+        desiredAccuracy: 0, //could try 0 for better accuracy, but with more power drain
+        stationaryRadius: 10,
+        distanceFilter: 10,
+        interval: 3000,
+        fastestInterval: 1000,
+        activityType: Fitness,
         stopOnTerminate: true
     });
 

@@ -79,7 +79,10 @@ $$('#btn1').on('click', function (e) {
 
             console.log('Start of callbackFn');
             console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
-            //console.log('BackgroundGeoSpeed:  ' + location.speed);
+            //console.log('BackgroundGeoSpeed:  ' + location.speed);  //in km
+            var y = dispTime();
+            var z = (location.speed * 2.23694).toFixed(2);
+            $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + z + '</div></li>');
 
             la1 = location.latitude;
             lo1 = location.longitude;
@@ -110,6 +113,9 @@ $$('#btn1').on('click', function (e) {
             var date = new Date(null);
             date.setSeconds(geoMovingTimeInSeconds);
             var result = date.toISOString().substr(11, 8);
+
+            rt.geoSpeed = z;
+            displaySPD();
 
             $$(".rtMOVING").text(result);
             $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
@@ -144,7 +150,7 @@ $$('#btn1').on('click', function (e) {
         distanceFilter: 10,
         interval: 3000,
         fastestInterval: 1000,
-        activityType: Fitness,
+        activityType: 'Fitness',
         stopOnTerminate: true
     });
 

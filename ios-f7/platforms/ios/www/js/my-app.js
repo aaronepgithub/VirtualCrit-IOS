@@ -48,9 +48,9 @@ function myCallback() {
 
   var rightNow = new Date();
   timeSinceStartInSeconds = Date.dateDiffReturnSeconds('s', startTime, rightNow);
-  console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
+  //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
   timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
-  console.log("timeSinceRoundStartInSeconds:  " + timeSinceRoundStartInSeconds);
+  //console.log("timeSinceRoundStartInSeconds:  " + timeSinceRoundStartInSeconds);
 
 if (timeSinceStartInSeconds == 5) {
   $$('.forthRow').hide();
