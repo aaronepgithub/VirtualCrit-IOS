@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		9rpoMT7WL/5aS3m9MPw+XfmPZl8=
+		1HEZopL1dRF2xT1eN+ID9p8Y0DM=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		Ft83aVD883SA8os3LtJ41f8eJIs=
+		CbzkhXLbK8R7jcwnKDD1tFI28Ww=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		/ga67GoBtn9s9S/wfLrRgq7Mnao=
+		G5b5qj/uMms8sDg4H4s2ygpLP6Y=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		9MK9R9MDg5YV3B9D/+Kv4fsoVhU=
+		5cv/Kh12YuLwftZ9/nROOHmrkAw=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -490,7 +490,7 @@
 		</data>
 		<key>www/js/geo.js</key>
 		<data>
-		rcPGG/FGKOq1hLTdymuWZvJDKmQ=
+		NFujSLJVTSXCBuJ4tmGcgs8ipN4=
 		</data>
 		<key>www/js/my-app.js</key>
 		<data>
@@ -852,22 +852,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9rpoMT7WL/5aS3m9MPw+XfmPZl8=
+			1HEZopL1dRF2xT1eN+ID9p8Y0DM=
 			</data>
 			<key>hash2</key>
 			<data>
-			zEazVqCPDoU2W2hX63tr7a5RfmMKgfFfGFAScxd0O1Q=
+			ox6tWEQLT1Fs3iuwBSjbhDp+ssrqV/cRlg2OFm25xfQ=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Ft83aVD883SA8os3LtJ41f8eJIs=
+			CbzkhXLbK8R7jcwnKDD1tFI28Ww=
 			</data>
 			<key>hash2</key>
 			<data>
-			w9+BxEAY+mADKtZ1iNwo6uDCA7Mz9Jtt2CVIhiks728=
+			Fjnu+ZP5VAL1G3ML2d+CWJGncrWjEytuAgkJU+v0FZE=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -885,11 +885,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			/ga67GoBtn9s9S/wfLrRgq7Mnao=
+			G5b5qj/uMms8sDg4H4s2ygpLP6Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			aGZrcFZAeCbzs0i4guZDYWyeJfOCwrBzLQJpn4vw3Ss=
+			OdGDwjoGrsqZf690GfXnsJur9XVGNy7r0TL2kMiN6s8=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1072,11 +1072,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			9MK9R9MDg5YV3B9D/+Kv4fsoVhU=
+			5cv/Kh12YuLwftZ9/nROOHmrkAw=
 			</data>
 			<key>hash2</key>
 			<data>
-			DFgrk5XnZA8lyUHVyIT57V6SW0Fc9pGwTOZKuN0JQrc=
+			gP7ZvIiOMlVkjkA+0jxx0nphXYreL1de8IZPjSFR8Qo=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1908,11 +1908,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rcPGG/FGKOq1hLTdymuWZvJDKmQ=
+			NFujSLJVTSXCBuJ4tmGcgs8ipN4=
 			</data>
 			<key>hash2</key>
 			<data>
-			qMk+ejTqo8Q91FxDWBCDdtufcvMbsudDrc8gA7d1+wk=
+			S3906uYhVB/m5hNEOkCa9D3PYf08JpDxqfVmDM6VRhI=
 			</data>
 		</dict>
 		<key>www/js/my-app.js</key>

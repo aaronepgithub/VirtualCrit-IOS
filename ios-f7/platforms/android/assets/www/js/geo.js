@@ -145,12 +145,13 @@ $$('#btn1').on('click', function (e) {
 
 
     backgroundGeolocation.configure(callbackFn, failureFn, {
-        desiredAccuracy: 0, //could try 0 for better accuracy, but with more power drain
+        desiredAccuracy: 5,
         stationaryRadius: 10,
         distanceFilter: 10,
         interval: 3000,
         fastestInterval: 1000,
-        activityType: 'Fitness',
+        locationProvider: 1,
+        saveBatteryOnBackground: false,
         stopOnTerminate: true
     });
 
