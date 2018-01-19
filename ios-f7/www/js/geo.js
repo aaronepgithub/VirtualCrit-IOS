@@ -114,7 +114,7 @@ $$('#btn1').on('click', function (e) {
             date.setSeconds(geoMovingTimeInSeconds);
             var result = date.toISOString().substr(11, 8);
 
-            rt.geoSpeed = z;
+            rt.geoSpeed = location.speed * 2.23694;
             displaySPD();
 
             $$(".rtMOVING").text(result);
