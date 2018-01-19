@@ -44,7 +44,17 @@ var rt = {
   speed: 0,
   cadence: 0,
   score: 0,
-  geoSpeed: 0  //uses interval
+  geoSpeed: 0,
+
+//header and footer
+  distance: 0,
+  movingTime: 0,
+  avgSpeed: 0,
+
+  geoDistance: 0,
+  geoMovingTime: 0,
+  geoAvgSpeed: 0,
+  geoPace: 0
 };
 
 var name = "TIM";

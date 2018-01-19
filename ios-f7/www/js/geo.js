@@ -122,18 +122,25 @@ $$('#btn1').on('click', function (e) {
             var result = date.toISOString().substr(11, 8);
 
             rt.geoSpeed = location.speed * 2.23694;
+            rt.geoDistance = geoDistanceInMiles;
+            rt.geoMovingTime = geoMovingTimeInSeconds;
+            rt.geoAvgSpeed = geoMovingTimeSpeed;
+            rt.geoPace = geoMovingTimePace;
+
+
             displaySPD();
 
-            $$(".rtMOVING").text(result);
-            $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
-            $$(".rtMILES").text((geoDistanceInMiles).toFixed(2) + " MILES");
+            if (geoEnabled == "YES") {
+              $$(".rtMOVING").text(result);
+              $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
+              $$(".rtMILES").text((geoDistanceInMiles).toFixed(2) + " MILES");
+            }
+
 
             $$('#btn1').text(geoMovingTimeSpeed.toFixed(1) + ' mph');
             $$('#btn2').text(geoDistanceInMiles.toFixed(1) + ' mi');
             $$('#btn3').text(geoActualTimeSpeed.toFixed(1) + ' mph');
             $$('#btn4').text(geoMovingTimePace.toFixed(1) + ' min/mi');
-
-
 
             backgroundGeolocation.finish();
             console.log('End callbackFn');
