@@ -113,7 +113,7 @@ function calcInterval(t) {
   var geoDist = interval.arrGeoDistance[interval.arrGeoDistance.length - 1] - interval.arrGeoDistance[interval.arrGeoDistance.length - refreshInterval];
   var speedGeoInterval = Number(geoDist / (refreshInterval / 60 / 60));
   interval.avgGeoSpeed = speedGeoInterval;
-  rt.geoSpeed = interval.avgGeoSpeed;
+  // rt.geoSpeed = interval.avgGeoSpeed;
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
@@ -195,7 +195,7 @@ function actionEndofRound() {
       label: true
     },
     {
-      text: '<h2>' + rounds.avgSpeed.toFixed(2) + ' (GEO SPEED)</h2>',
+      text: '<h2>' + rounds.avgGeoSpeed.toFixed(2) + ' (GEO SPEED)</h2>',
       bold: false,
       label: true
     },

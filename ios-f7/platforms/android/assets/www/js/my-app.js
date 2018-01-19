@@ -48,9 +48,9 @@ function myCallback() {
 
   var rightNow = new Date();
   timeSinceStartInSeconds = Date.dateDiffReturnSeconds('s', startTime, rightNow);
-  console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
+  //console.log("timeSinceStartInSeconds:  " + timeSinceStartInSeconds);
   timeSinceRoundStartInSeconds = timeSinceStartInSeconds - (totalRoundsCompleted * secInRound);
-  console.log("timeSinceRoundStartInSeconds:  " + timeSinceRoundStartInSeconds);
+  //console.log("timeSinceRoundStartInSeconds:  " + timeSinceRoundStartInSeconds);
 
 if (timeSinceStartInSeconds == 5) {
   $$('.forthRow').hide();
@@ -712,7 +712,7 @@ function displaySPD() {
   if (dataToDisplay == "CURRENT" && geoEnabled == "NO") {
     $$(".rtSPD").text(rt.speed.toFixed(1));
   }
-  if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) ) {
+  if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) && rt.geoSpeed >= 0) {
     $$(".rtSPD").text(rt.geoSpeed.toFixed(1));
   }
 
