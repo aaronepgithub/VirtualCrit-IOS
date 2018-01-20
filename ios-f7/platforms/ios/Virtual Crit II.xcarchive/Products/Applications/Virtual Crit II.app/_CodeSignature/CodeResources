@@ -98,11 +98,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		1HEZopL1dRF2xT1eN+ID9p8Y0DM=
+		S+zkzghdcXsLRW0b1/cjPyDI/+s=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		CbzkhXLbK8R7jcwnKDD1tFI28Ww=
+		9/GenDlHOPjUkNZeJGIpUz3mYn4=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -110,11 +110,11 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		G5b5qj/uMms8sDg4H4s2ygpLP6Y=
+		rdiUrpB+ojeTR+U0lfUF9HrsQk4=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		s8H6Z32skTi9wS5KC/MfAA3qRpQ=
+		1QVmiQXjL/OoO2T51gIRYOenZ94=
 		</data>
 		<key>LaunchImage-568h@2x.png</key>
 		<data>
@@ -182,7 +182,7 @@
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
-		5cv/Kh12YuLwftZ9/nROOHmrkAw=
+		urt3N/MsiJygGx3jhOWpGAeJRw8=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -198,7 +198,7 @@
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
-		iYstx4Pk/xJzGmJT00lpU7/cAPQ=
+		FDpJffgwXl+O8nfIs27elQrnRgE=
 		</data>
 		<key>www/about.html</key>
 		<data>
@@ -238,7 +238,7 @@
 		</data>
 		<key>www/css/my-app.css</key>
 		<data>
-		hipzWsWp7h6MBQwjZwPcrquuoAk=
+		QoTC/bVMIRCm0/9/UX2oiPV17lc=
 		</data>
 		<key>www/css/my-app.css.white.css</key>
 		<data>
@@ -482,7 +482,7 @@
 		</data>
 		<key>www/index.html</key>
 		<data>
-		JKVrxeSDCl+5JfQ7nOYSZyxBRc8=
+		TFGuZaYR89mmjxxoc5hN9Z9SW3A=
 		</data>
 		<key>www/index.html.white.html</key>
 		<data>
@@ -490,11 +490,11 @@
 		</data>
 		<key>www/js/geo.js</key>
 		<data>
-		NFujSLJVTSXCBuJ4tmGcgs8ipN4=
+		oOBy2CGPMRJxIidCf4ocRqrL3XY=
 		</data>
 		<key>www/js/my-app.js</key>
 		<data>
-		vkEhy8mp3I9HZ4BTeQ730SZWrvc=
+		nk4jvNBtfDN9d97svxtEIt3hIxQ=
 		</data>
 		<key>www/js/my-app.js.white.js</key>
 		<data>
@@ -502,7 +502,7 @@
 		</data>
 		<key>www/js/onData.js</key>
 		<data>
-		H+0EisaCgpA9/6qNJwRFkODUFi0=
+		Z6iL0dcDTz0AQIu6tu6qbGmFGp0=
 		</data>
 		<key>www/lib/framework7/css/framework7.ios.colors.css</key>
 		<data>
@@ -852,22 +852,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			1HEZopL1dRF2xT1eN+ID9p8Y0DM=
+			S+zkzghdcXsLRW0b1/cjPyDI/+s=
 			</data>
 			<key>hash2</key>
 			<data>
-			ox6tWEQLT1Fs3iuwBSjbhDp+ssrqV/cRlg2OFm25xfQ=
+			lUioG2q+qxVXladQI4FFXIB/XRQLgPc982/xQU7D+BI=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			CbzkhXLbK8R7jcwnKDD1tFI28Ww=
+			9/GenDlHOPjUkNZeJGIpUz3mYn4=
 			</data>
 			<key>hash2</key>
 			<data>
-			Fjnu+ZP5VAL1G3ML2d+CWJGncrWjEytuAgkJU+v0FZE=
+			gauFJBtWyEbZtSIKqvjKLiWCA8FShljNE02fiVLRxcU=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -885,11 +885,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			G5b5qj/uMms8sDg4H4s2ygpLP6Y=
+			rdiUrpB+ojeTR+U0lfUF9HrsQk4=
 			</data>
 			<key>hash2</key>
 			<data>
-			OdGDwjoGrsqZf690GfXnsJur9XVGNy7r0TL2kMiN6s8=
+			brB7rmubSpddyMaOqErYqITiiwEVPKTuZ1I1IthIYI8=
 			</data>
 		</dict>
 		<key>LaunchImage-568h@2x.png</key>
@@ -1072,11 +1072,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			5cv/Kh12YuLwftZ9/nROOHmrkAw=
+			urt3N/MsiJygGx3jhOWpGAeJRw8=
 			</data>
 			<key>hash2</key>
 			<data>
-			gP7ZvIiOMlVkjkA+0jxx0nphXYreL1de8IZPjSFR8Qo=
+			Yn0IaqqVdNTYBWesSBVpoNJyOjyZhC6QO3TKVpkifwg=
 			</data>
 		</dict>
 		<key>archived-expanded-entitlements.xcent</key>
@@ -1105,11 +1105,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			iYstx4Pk/xJzGmJT00lpU7/cAPQ=
+			FDpJffgwXl+O8nfIs27elQrnRgE=
 			</data>
 			<key>hash2</key>
 			<data>
-			ML1JZNd576044vPr8ePZYTXAaBVOfVO0B30g0dulcKI=
+			eMMjXPHSlv3DPKLTWPR7y2ecgpFGJzgSLOGzQTzPaWs=
 			</data>
 		</dict>
 		<key>www/about.html</key>
@@ -1215,11 +1215,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			hipzWsWp7h6MBQwjZwPcrquuoAk=
+			QoTC/bVMIRCm0/9/UX2oiPV17lc=
 			</data>
 			<key>hash2</key>
 			<data>
-			jEi78/TeJPAH3OJ4duVEJBXSwZ1vwsSPV4ytJJ9lo5E=
+			E65uu+xEUKtlGyGtsmUjWUZpC0OhHhPSONir+A2eHc4=
 			</data>
 		</dict>
 		<key>www/css/my-app.css.white.css</key>
@@ -1886,11 +1886,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			JKVrxeSDCl+5JfQ7nOYSZyxBRc8=
+			TFGuZaYR89mmjxxoc5hN9Z9SW3A=
 			</data>
 			<key>hash2</key>
 			<data>
-			iKRNB7nPJqaDGw2//UEnFBgmN8kAdxiA7rHJG6bujIM=
+			mb7v6ynEU7riPgPjJbBmTn2wjMvGrvY3Rp5pw9/RxnY=
 			</data>
 		</dict>
 		<key>www/index.html.white.html</key>
@@ -1908,22 +1908,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			NFujSLJVTSXCBuJ4tmGcgs8ipN4=
+			oOBy2CGPMRJxIidCf4ocRqrL3XY=
 			</data>
 			<key>hash2</key>
 			<data>
-			S3906uYhVB/m5hNEOkCa9D3PYf08JpDxqfVmDM6VRhI=
+			Gh8Biu/qjmSR8kPgEJ0jH2pe1S7UVCQI28zwK3E1QtM=
 			</data>
 		</dict>
 		<key>www/js/my-app.js</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vkEhy8mp3I9HZ4BTeQ730SZWrvc=
+			nk4jvNBtfDN9d97svxtEIt3hIxQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			aC4PZaz+E+Ihi/GX1Sw/DTL5LbP8DMVpr0lt4xcruUs=
+			3gdr1fjPPFmA2Plk5ZfmOoLpQtLQdlKmk3fD3djCl4E=
 			</data>
 		</dict>
 		<key>www/js/my-app.js.white.js</key>
@@ -1941,11 +1941,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			H+0EisaCgpA9/6qNJwRFkODUFi0=
+			Z6iL0dcDTz0AQIu6tu6qbGmFGp0=
 			</data>
 			<key>hash2</key>
 			<data>
-			9Usi8edQUhYUCQeY3AGMWoPd4yE0oVmG7cWhq9DRyLc=
+			ZQ+5XARbobR+BORbQEU8tfIEZ8CQbgQYzHAhpn7cWWM=
 			</data>
 		</dict>
 		<key>www/lib/framework7/css/framework7.ios.colors.css</key>

@@ -45,16 +45,25 @@ Number.prototype.toRad = function () {
 
 function addGeoTl() {
     var x = dispTime();
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + x + ' </time>GEO TRACKER STARTED</div></li>');
+    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + x + ' </time>GEO TRACKER STARTED</div></li>');
   }
 
-$$('#btn1').on('click', function (e) {
+
+function startGeo() {
+// $$('#btn1').on('click', function (e) {
     console.log("btn1");
     geoEnabled = "YES";
-    $$('#GEO').find('.item-after').text('YES');
+    // $$('#GEO').css('color', 'darkgray');
+    // $$('#btn1').css('color', 'darkgray');
+    // $$('#GEO').find('.item-after').text('YES');
+    //
+    // setTimeout(function() {
+    //   $$('#GEO').css('color', 'white');
+    //   $$('#btn1').css('color', 'white');
+    // }, 300);
 
     var x = dispTime();
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + x + ' </time>GEO TRACKER START ATTEMPT</div></li>');
+    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + x + ' </time>GEO TRACKER START ATTEMPT</div></li>');
 
     var callbackFn = function (location) {
 
@@ -65,12 +74,12 @@ $$('#btn1').on('click', function (e) {
                 lo2 = location.longitude;
 
                 var x = dispTime();
-                $$('#timelineUL').append('<li class="in-view"><div><time> ' + x + ' </time>' + lo2 + ' <br> ' + lo2 + '</div></li>');
+                $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + x + ' </time>' + lo2 + ' <br> ' + lo2 + '</div></li>');
 
                 if (filterOutInitial == 3) {
                     geoStartTime = new Date();
                     var gs = dispTime();
-                    $$('#timelineUL').append('<li class="in-view"><div><time> ' + gs + ' </time> GEO MOVING TIME STARTS NOW </div></li>');
+                    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + gs + ' </time> GEO MOVING TIME STARTS NOW </div></li>');
                 }
 
             backgroundGeolocation.finish();
@@ -82,7 +91,7 @@ $$('#btn1').on('click', function (e) {
             //console.log('BackgroundGeoSpeed:  ' + location.speed);  //in km
             var y = dispTime();
             var z = (location.speed * 2.23694).toFixed(2);
-            $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + z + '</div></li>');
+            //$$('#timelineUL').prepend('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + z + '</div></li>');
 
             la1 = location.latitude;
             lo1 = location.longitude;
@@ -102,6 +111,7 @@ $$('#btn1').on('click', function (e) {
             geoMovingTimeSpeed = geoDistanceInMiles / (geoMovingTimeInSeconds / 60 / 60);
             geoMovingTimePace = 60 / geoMovingTimeSpeed;
 
+
             rounds.geoDistance += distInMiles;
 
             // console.log('geoDistanceInMiles' + geoDistanceInMiles);
@@ -115,18 +125,32 @@ $$('#btn1').on('click', function (e) {
             var result = date.toISOString().substr(11, 8);
 
             rt.geoSpeed = location.speed * 2.23694;
+            rt.geoDistance = geoDistanceInMiles;
+            rt.geoMovingTime = geoMovingTimeInSeconds;
+            rt.geoAvgSpeed = geoMovingTimeSpeed;
+            rt.geoAvgPace = geoMovingTimePace;
+            rt.geoPace = 60 / rt.geoSpeed;
+
+
             displaySPD();
 
-            $$(".rtMOVING").text(result);
-            $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
-            $$(".rtMILES").text((geoDistanceInMiles).toFixed(2) + " MILES");
+            if (geoEnabled == "YES") {
+              $$(".rtMOVING").text(result);
+              $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
+              $$(".rtMILES").text(geoDistanceInMiles.toFixed(2) + " MILES");
+            }
 
-            $$('#btn1').text(geoMovingTimeSpeed.toFixed(1) + ' mph');
-            $$('#btn2').text(geoDistanceInMiles.toFixed(1) + ' mi');
-            $$('#btn3').text(geoActualTimeSpeed.toFixed(1) + ' mph');
-            $$('#btn4').text(geoMovingTimePace.toFixed(1) + ' min/mi');
+            $$(".e4").text(rt.geoSpeed.toFixed(1));
+            $$(".e15").text(rt.geoAvgPace.toFixed(1));
+            $$(".e15b").text(rt.geoPace.toFixed(1));
+            $$(".e14").text(rt.geoDistance.toFixed(2));
+            $$(".e17").text(rt.geoAvgSpeed.toFixed(1));
 
 
+            $$('#btn1').text(geoMovingTimeSpeed.toFixed(0) + ' mph');
+            $$('#btn2').text(geoDistanceInMiles.toFixed(0) + ' mi');
+            $$('#btn3').text(geoMovingTimePace.toFixed(1) + ' avg min/mi');
+            // $$('#btn4').text(geoMovingTimePace.toFixed(1) + ' min/mi');
 
             backgroundGeolocation.finish();
             console.log('End callbackFn');
@@ -139,7 +163,7 @@ $$('#btn1').on('click', function (e) {
     var failureFn = function (error) {
         console.log('BackgroundGeolocation error');
         var x = dispTime();
-        $$('#timelineUL').append('<li class="in-view"><div><time> ' + x + ' </time>NO GEOLOCATION</div></li>');
+        $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + x + ' </time>NO GEOLOCATION</div></li>');
 
     };
 
@@ -158,4 +182,5 @@ $$('#btn1').on('click', function (e) {
     console.log('backGeoStart - waiting for cb');
     backgroundGeolocation.start();
 
-});
+// });
+}
