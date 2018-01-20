@@ -113,6 +113,10 @@ function stringer1(myIn) {
   console.log("out:  " + out);
 }
 
+var maxGeoSpeedInt = 0;
+var maxSpeedInt = 0;
+
+
 function calcInterval(t) {
   //console.log("calcInterval:  "+ t);
 
@@ -123,7 +127,17 @@ function calcInterval(t) {
   var geoDist = interval.arrGeoDistance[interval.arrGeoDistance.length - 1] - interval.arrGeoDistance[interval.arrGeoDistance.length - refreshInterval];
   var speedGeoInterval = Number(geoDist / (refreshInterval / 60 / 60));
   interval.avgGeoSpeed = speedGeoInterval;
-  // rt.geoSpeed = interval.avgGeoSpeed;
+
+  if (interval.avgSpeed > maxSpeedInt) {
+    maxSpeedInt = interval.avgSpeed;
+    var y = dispTime();
+    $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + maxSpeedInt.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
+  }
+  if (interval.avgGeoSpeed > maxGeoSpeedInt) {
+    maxGeoSpeedInt = interval.avgGeoSpeed;
+    var z = dispTime();
+    $$('#timelineUL').append('<li class="in-view"><div><time> ' + z + ' </time> <br> ' + maxGeoSpeedInt.toFixed(2) + ' (NEW MAX INT GEOSPEED)' + '</div></li>');
+  }
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
@@ -193,6 +207,13 @@ function calcInterval(t) {
 
 function actionEndofRound() {
 
+  var y = dispTime();
+  $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgSpeed.toFixed(2) + ' (SPEED)' + '</div></li>');
+    $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgGeoSpeed.toFixed(2) + ' (GEO SPD)' + '</div></li>');
+      $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgHeartRate.toFixed(2) + ' (HR)' + '</div></li>');
+        $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgCadence.toFixed(2) + ' (CAD)' + '</div></li>');
+        $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgScore.toFixed(2) + ' (SCORE)' + '</div></li>');
+
   var buttons1 = [{
       text: '<h2>ROUND COMPLETE</h2>',
       bold: true,
@@ -252,8 +273,11 @@ function roundEnd() {
   rounds.Distance = 0;
   rounds.geoDistance = 0;
 
+   maxInRoundSpd = 0;
+   maxInRoundSpdGeo = 0;
+
   $$('#rightPcontent').prepend('<p>' + (rounds.arrGeoSpeed[rounds.arrGeoSpeed.length - 1]).toFixed(2) + ' GEO MPH</p><p> '  +  (rounds.arrSpeed[rounds.arrSpeed.length - 1]).toFixed(2) + ' MPH</p>');
-  $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX </p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p><p>AVG HR:  ' + rounds.arrHeartRate + ' BPM </p><p>AVG CAD:  ' + rounds.arrCadence + ' RPM </p>');
+  // $$('#leftPcontent').html('<p>AVG SCORE:  ' + rounds.arrScore + ' %MAX </p><p>AVG SPEED:  ' + rounds.arrSpeed + ' MPH</p><p>AVG HR:  ' + rounds.arrHeartRate + ' BPM </p><p>AVG CAD:  ' + rounds.arrCadence + ' RPM </p>');
 
   console.log("End of Round Arrays:\n" +
     rounds.arrHeartRate + "\n" +
@@ -273,8 +297,20 @@ function roundEnd() {
   }
 }
 
+var maxInRoundSpd = 0;
+var maxInRoundSpdGeo = 0;
+
 function midRound(t) {
   //console.log("midRound, t:  " + t);
+var dt = dispTime();
+  if (rt.speed > maxInRoundSpd) {
+    maxInRoundSpd = rt.speed;
+    $$('#timelineUL').append('<li class="in-view"><div><time> ' + dt + ' </time> <br> ' + maxInRoundSpd.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
+  }
+  if (rt.geoSpeed > maxInRoundSpdGeo) {
+    maxInRoundSpdGeo = rt.geoSpeed;
+    $$('#timelineUL').append('<li class="in-view"><div><time> ' + dt + ' </time> <br> ' + maxInRoundSpdGeo.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
+  }
 
   rounds.avgHeartRate = Number(rounds.HeartRate / t);
   rounds.avgScore = Number((rounds.avgHeartRate / maxHeartRate) * 100);
@@ -320,8 +356,6 @@ function onDataHR(data) {
   //console.log(data[1]);
   rt.hr = Number(data[1]);
   rt.score = Number((rt.hr / maxHeartRate) * 100);
-  // $$(".rtHR").text(rt.hr.toFixed(0));
-  // $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
   displayHR();
 
   // $$(".iconNumber").text(rt.hr);
@@ -402,7 +436,8 @@ function processWheelData(data) {
       oldWheelRevolution = wheelRevolution;
       oldWheelEventTime = wheelEventTime;
       rt.speed = Number(0);
-      $$(".rtSPD").text(rt.speed);
+      // $$(".rtSPD").text(rt.speed);
+      // $$(".e1").text(rt.speed);
       return;
     }
 
@@ -439,6 +474,7 @@ function processWheelData(data) {
     rounds.Distance += Number(deltaW * wheelCircumferenceCM * cmPerMi);
     totalMiles = Number(rt_WheelRevs * wheelCircumferenceCM * cmPerMi);
     $$(".rtMILES").text((totalMiles).toFixed(2) + " MILES");
+    $$(".e13").text((totalMiles).toFixed(2) + " MILES");
     var avgSpeed = Number((rt_WheelRevs / ((rt_WheelTime / 1024) / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour);
 
     var date = new Date(null);
@@ -447,7 +483,7 @@ function processWheelData(data) {
 
     $$(".rtMOVING").text(result);
     $$(".rtAVGSPD").text(avgSpeed.toFixed(1));
-
+    $$(".e16").text(avgSpeed.toFixed(1));
     oldWheelRevolution = wheelRevolution;
     oldWheelEventTime = wheelEventTime;
     veloSpeedCounter = 0;

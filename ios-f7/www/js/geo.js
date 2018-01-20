@@ -89,7 +89,7 @@ $$('#btn1').on('click', function (e) {
             //console.log('BackgroundGeoSpeed:  ' + location.speed);  //in km
             var y = dispTime();
             var z = (location.speed * 2.23694).toFixed(2);
-            $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + z + '</div></li>');
+            //$$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + z + '</div></li>');
 
             la1 = location.latitude;
             lo1 = location.longitude;
@@ -133,8 +133,13 @@ $$('#btn1').on('click', function (e) {
             if (geoEnabled == "YES") {
               $$(".rtMOVING").text(result);
               $$(".rtAVGSPD").text(geoMovingTimeSpeed.toFixed(1));
-              $$(".rtMILES").text((geoDistanceInMiles).toFixed(2) + " MILES");
+              $$(".rtMILES").text(geoDistanceInMiles.toFixed(2) + " MILES");
             }
+
+            $$(".e4").text(rt.geoSpeed.toFixed(1));
+            $$(".e15").text(rt.geoPace.toFixed(1));
+            $$(".e14").text(rt.geoDistance.toFixed(2));
+            $$(".e17").text(rt.geoAvgSpeed.toFixed(1));
 
 
             $$('#btn1').text(geoMovingTimeSpeed.toFixed(1) + ' mph');

@@ -690,55 +690,82 @@ hex = function(byte_array) {
 };
 
 function displayHR() {
+  $$(".e3").text(rt.hr.toFixed(0));
+  $$(".e18").text(rt.score.toFixed(0) + "%");
+  $$(".e11").text(rounds.avgHeartRate.toFixed(0));
+  $$(".e20").text(rounds.avgScore.toFixed(0) + "%");
+  $$(".e7").text(interval.avgHeartRate.toFixed(0));
+  $$(".e19").text(interval.avgScore.toFixed(0) + "%");
+
   if (dataToDisplay == "CURRENT") {
     $$(".rtHR").text(rt.hr.toFixed(0));
     $$(".rtSCORE").text(rt.score.toFixed(0) + "%");
     $$(".labHR").html("HR<br>"+rt.score.toFixed(0) + "%");
     $$(".headerStatus").text(dataToDisplay);
+
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtHR").text(rounds.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(rounds.avgScore.toFixed(0) + "%");
     $$(".labHR").html("HR<br>"+rounds.avgScore.toFixed(0) + "%");
+
   }
   if (dataToDisplay == "INTERVAL") {
     $$(".rtHR").text(interval.avgHeartRate.toFixed(0));
     $$(".rtSCORE").text(interval.avgScore.toFixed(0) + "%");
     $$(".labHR").html("HR<br>"+interval.avgScore.toFixed(0) + "%");
+
+
   }
 }
 
 function displaySPD() {
   if (dataToDisplay == "CURRENT" && geoEnabled == "NO") {
     $$(".rtSPD").text(rt.speed.toFixed(1));
+
   }
   if (geoEnabled == "YES" && dataToDisplay == "CURRENT" && !isNaN(rt.geoSpeed) && rt.geoSpeed >= 0) {
     $$(".rtSPD").text(rt.geoSpeed.toFixed(1));
+
   }
 
   if (dataToDisplay == "ROUND" && geoEnabled == "NO") {
     $$(".rtSPD").text(rounds.avgSpeed.toFixed(1));
+
   }
 
   if (dataToDisplay == "ROUND" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
     $$(".rtSPD").text(rounds.avgGeoSpeed.toFixed(1));
+
   }
 
   if (dataToDisplay == "INTERVAL" && geoEnabled == "NO") {
     $$(".rtSPD").text(interval.avgSpeed.toFixed(1));
+
   }
 
   if (dataToDisplay == "INTERVAL" && geoEnabled == "YES"  && !isNaN(rt.geoSpeed) ) {
     $$(".rtSPD").text(interval.avgGeoSpeed.toFixed(1));
+
   }
+  $$(".e1").text(rt.speed.toFixed(1));
+  $$(".e4").text(rt.geoSpeed.toFixed(1));
+  $$(".e9").text(rounds.avgSpeed.toFixed(1));
+  $$(".e12").text(rounds.avgGeoSpeed.toFixed(1));
+  $$(".e5").text(interval.avgSpeed.toFixed(1));
+  $$(".e7").text(interval.avgGeoSpeed.toFixed(1));
 
 }
 
 function displayCAD() {
+
+  $$(".e2").text(rt.cadence.toFixed(0));
+  $$(".e10").text(rounds.avgCadence.toFixed(0));
+  $$(".e6").text(interval.avgCadence.toFixed(0));
+
+
   if (dataToDisplay == "CURRENT") {
     $$(".rtCAD").text(rt.cadence.toFixed(0));
-
-
   }
   if (dataToDisplay == "ROUND") {
     $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
