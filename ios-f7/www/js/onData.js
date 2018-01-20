@@ -104,40 +104,46 @@ var rounds = {
   totalRoundCount: 0
 };
 
-var veloS = 0;
-var veloC = 0;
-var veloH = 0;
 
 function stringer1(myIn) {
   var out = myIn.toFixed(1);
   console.log("out:  " + out);
 }
 
-var maxGeoSpeedInt = 0;
-var maxSpeedInt = 0;
+var maxAvgSpeed = 0;
+var maxAvgSpeedGeo = 0;
 
 
 function calcInterval(t) {
   //console.log("calcInterval:  "+ t);
+  if (rt.avgSpeed > maxAvgSpeed) {
+    maxAvgSpeed = rt.avgSpeed;
+    var y = dispTime();
+    // $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + maxAvgSpeed.toFixed(2) + ' (NEW MAX AVG SPEED)' + '</div></li>');
+        $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + maxAvgSpeed.toFixed(2) + ' (NEW MAX AVG SPEED)' + ' </time> <br> ' + y + '</div></li>');
+  }
+  if (rt.avgGeoSpeed > maxAvgSpeedGeo) {
+    maxAvgSpeedGeo = rt.avgGeoSpeed;
+    var z = dispTime();
+    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + maxAvgSpeedGeo.toFixed(2) + ' (NEW MAX INT GEOSPEED)' + ' </time> <br> ' + x + '</div></li>');
+  }
 
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
-  interval.avgSpeed = speedInterval;
+
+  if (speedInterval >= 0 && speedInterval.isNaN == false) {
+      interval.avgSpeed = speedInterval;
+  } else {
+    interval.avgSpeed = 0;
+  }
+
+
 
   var geoDist = interval.arrGeoDistance[interval.arrGeoDistance.length - 1] - interval.arrGeoDistance[interval.arrGeoDistance.length - refreshInterval];
   var speedGeoInterval = Number(geoDist / (refreshInterval / 60 / 60));
   interval.avgGeoSpeed = speedGeoInterval;
 
-  if (interval.avgSpeed > maxSpeedInt) {
-    maxSpeedInt = interval.avgSpeed;
-    var y = dispTime();
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + maxSpeedInt.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
-  }
-  if (interval.avgGeoSpeed > maxGeoSpeedInt) {
-    maxGeoSpeedInt = interval.avgGeoSpeed;
-    var z = dispTime();
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + z + ' </time> <br> ' + maxGeoSpeedInt.toFixed(2) + ' (NEW MAX INT GEOSPEED)' + '</div></li>');
-  }
+
 
   var hr = 0;
   for (i = refreshInterval; i > 0; i--) {
@@ -179,16 +185,27 @@ function calcInterval(t) {
   displayHR();
   displayCAD();
 
+
+  var veloS = 0;
+  var veloC = 0;
+  var veloH = 0;
+  var veloG = 0;
   //used to rem zeros
   if (t % 45 === 0) {
     var h = rt.hr;
     var s = rt.speed;
     var c = rt.cadence;
+    var g = rt.geoSpeed;
 
     if (s == veloS) {
       rt.speed = 0;
       displaySPD();
     }
+    if (g == veloG) {
+      rt.geoSpeed = 0;
+      displaySPD();
+    }
+
     if (h == veloC) {
       rt.cadence = 0;
       displayCAD();
@@ -208,11 +225,12 @@ function calcInterval(t) {
 function actionEndofRound() {
 
   var y = dispTime();
-  $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgSpeed.toFixed(2) + ' (SPEED)' + '</div></li>');
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgGeoSpeed.toFixed(2) + ' (GEO SPD)' + '</div></li>');
-      $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgHeartRate.toFixed(2) + ' (HR)' + '</div></li>');
-        $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgCadence.toFixed(2) + ' (CAD)' + '</div></li>');
-        $$('#timelineUL').append('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + rounds.avgScore.toFixed(2) + ' (SCORE)' + '</div></li>');
+  $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + y + ' </time> <br> ' + ' ROUND COMPLETE' + '</div></li>');
+  $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + rounds.avgSpeed.toFixed(2) + ' (SPEED)' + ' </time> <br> ' + '</div></li>');
+    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + rounds.avgGeoSpeed.toFixed(2) + ' (GEO SPD)' + ' </time> <br> ' + '</div></li>');
+      $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + rounds.avgHeartRate.toFixed(1) + ' (HR)' + ' </time> <br> ' + '</div></li>');
+        $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + rounds.avgCadence.toFixed(1) + ' (CAD)' + ' </time> <br> ' + '</div></li>');
+        $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + rounds.avgScore.toFixed(1) + ' (SCORE)' + ' </time> <br> ' + '</div></li>');
 
   var buttons1 = [{
       text: '<h2>ROUND COMPLETE</h2>',
@@ -297,19 +315,22 @@ function roundEnd() {
   }
 }
 
-var maxInRoundSpd = 0;
-var maxInRoundSpdGeo = 0;
+var maxSpd = 0;
+var maxSpdGeo = 0;
 
 function midRound(t) {
   //console.log("midRound, t:  " + t);
 var dt = dispTime();
-  if (rt.speed > maxInRoundSpd) {
-    maxInRoundSpd = rt.speed;
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + dt + ' </time> <br> ' + maxInRoundSpd.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
+
+  if (rt.speed > maxSpd) {
+    maxSpd = rt.speed;
+    // $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + dt + ' </time> <br> ' + maxSpd.toFixed(2) + ' (NEW MAX SPEED)' + '</div></li>');
+    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + maxSpd.toFixed(2) + ' (NEW MAX SPEED)' + ' </time> <br> ' + dt + '</div></li>');
   }
-  if (rt.geoSpeed > maxInRoundSpdGeo) {
-    maxInRoundSpdGeo = rt.geoSpeed;
-    $$('#timelineUL').append('<li class="in-view"><div><time> ' + dt + ' </time> <br> ' + maxInRoundSpdGeo.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
+  if (rt.geoSpeed > maxSpdGeo) {
+    maxSpdGeo = rt.geoSpeed;
+    // $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + dt + ' </time> <br> ' + maxSpdGeo.toFixed(2) + ' (NEW MAX INT SPEED)' + '</div></li>');
+        $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + maxSpdGeo.toFixed(2) + ' (NEW MAX GEO SPEED)' + ' </time> <br> ' + dt + '</div></li>');
   }
 
   rounds.avgHeartRate = Number(rounds.HeartRate / t);

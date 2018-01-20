@@ -119,7 +119,7 @@ function myCallback() {
 
 
 function addTl(x) {
-  $$('#timelineUL').append('<li class="in-view"><div><time>NAME CHANGE</time>NICE TO MEET YOU,' + x + ' </div></li>');
+  $$('#timelineUL').prepend('<li class="in-view"><div><time>NAME CHANGE</time>NICE TO MEET YOU,' + x + ' </div></li>');
 }
 
 
@@ -189,6 +189,26 @@ $$('#AUDIO').css('color', 'darkgray');
 });
 
 
+var activity = "BIKE";
+$$('#ACTIVITY').on('click', function(e) {
+$$('#ACTIVITY').css('color', 'darkgray');
+  if (activity == "BIKE") {
+    $$(this).find('.item-after').text('RUN');
+    activity = "RUN";
+    $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + 'NOW YOU ARE A RUNNER!' + ' </time></div></li>');
+  } else {
+    $$(this).find('.item-after').text('BIKE');
+    activity = "BIKE";
+        $$('#timelineUL').prepend('<li class="in-view"><div><time> ' + 'NOW YOU ARE A BIKER!' + ' </time></div></li>');
+  }
+
+  setTimeout(function() {
+    $$('#ACTIVITY').css('color', 'white');
+  }, 300);
+
+});
+
+
 var geoEnabled = "NO";
 $$('#GEO').on('click', function(e) {
 $$('#GEO').css('color', 'darkgray');
@@ -198,6 +218,8 @@ $$('#GEO').css('color', 'darkgray');
   } else {
     $$(this).find('.item-after').text('YES');
     geoEnabled = "YES";
+
+    startGeo();
   }
 
   setTimeout(function() {
@@ -763,18 +785,20 @@ function displayCAD() {
   $$(".e10").text(rounds.avgCadence.toFixed(0));
   $$(".e6").text(interval.avgCadence.toFixed(0));
 
+  if (activity == "RUN") {
+    $$(".rtCAD").text(rt.geoPace.toFixed(1));
+    $$(".labCAD").text('PACE');
+  } else {
 
-  if (dataToDisplay == "CURRENT") {
-    $$(".rtCAD").text(rt.cadence.toFixed(0));
-  }
-  if (dataToDisplay == "ROUND") {
-    $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
-
-
-  }
-  if (dataToDisplay == "INTERVAL") {
-    $$(".rtCAD").text(interval.avgCadence.toFixed(0));
-
+    if (dataToDisplay == "CURRENT") {
+      $$(".rtCAD").text(rt.cadence.toFixed(0));
+    }
+    if (dataToDisplay == "ROUND") {
+      $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
+    }
+    if (dataToDisplay == "INTERVAL") {
+      $$(".rtCAD").text(interval.avgCadence.toFixed(0));
+    }
 
   }
 }
