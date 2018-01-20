@@ -54,7 +54,8 @@ var rt = {
   geoDistance: 0,
   geoMovingTime: 0,
   geoAvgSpeed: 0,
-  geoPace: 0
+  geoPace: 0,
+  geoAvgPace: 0
 };
 
 var name = "TIM";
