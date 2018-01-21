@@ -54,7 +54,8 @@ var rt = {
   geoDistance: 0,
   geoMovingTime: 0,
   geoAvgSpeed: 0,
-  geoPace: 0
+  geoPace: 0,
+  geoAvgPace: 0
 };
 
 var name = "TIM";
@@ -131,7 +132,7 @@ function calcInterval(t) {
   var dist = interval.arrDistance[interval.arrDistance.length - 1] - interval.arrDistance[interval.arrDistance.length - refreshInterval];
   var speedInterval = Number(dist / (refreshInterval / 60 / 60));
 
-  if (speedInterval >= 0 && speedInterval.isNaN == false) {
+  if ( speedInterval >= 0 && !isNaN(speedInterval) ) {
       interval.avgSpeed = speedInterval;
   } else {
     interval.avgSpeed = 0;
@@ -170,18 +171,9 @@ function calcInterval(t) {
   interval.avgCadence = cadenceInterval;
   interval.arrCurrentIntervals = [speedInterval, cadenceInterval, heartrateInterval];
 
-  if (speedInterval >= 0) {
-    displaySPD();
-  } else {
 
-    if (geoEnabled == "YES") {
-      displaySPD();
-    } else {
-      interval.avgSpeed = 0;
-      displaySPD();
-    }
 
-  }
+  displaySPD();
   displayHR();
   displayCAD();
 

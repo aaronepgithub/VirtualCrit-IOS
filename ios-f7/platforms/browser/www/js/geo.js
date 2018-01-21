@@ -113,12 +113,6 @@ function startGeo() {
 
             rounds.geoDistance += distInMiles;
 
-            // console.log('geoDistanceInMiles' + geoDistanceInMiles);
-            // console.log('geoActualTimeSpeed' + geoActualTimeSpeed);
-            // console.log('geoMovingTimeSpeed' + geoMovingTimeSpeed);
-            // console.log('timeSinceStartInSeconds' + timeSinceStartInSeconds);
-
-
             var date = new Date(null);
             date.setSeconds(geoMovingTimeInSeconds);
             var result = date.toISOString().substr(11, 8);
@@ -127,8 +121,14 @@ function startGeo() {
             rt.geoDistance = geoDistanceInMiles;
             rt.geoMovingTime = geoMovingTimeInSeconds;
             rt.geoAvgSpeed = geoMovingTimeSpeed;
-            rt.geoPace = geoMovingTimePace;
 
+            if (isFinite(geoMovingTimePace) == true) {
+            rt.geoAvgPace = geoMovingTimePace;
+            }
+
+            if (isFinite(60 / rt.geoSpeed)) {
+            rt.geoPace = 60 / rt.geoSpeed;
+            }
 
             displaySPD();
 
@@ -139,14 +139,15 @@ function startGeo() {
             }
 
             $$(".e4").text(rt.geoSpeed.toFixed(1));
-            $$(".e15").text(rt.geoPace.toFixed(1));
+            $$(".e15").text(rt.geoAvgPace.toFixed(1));
+            $$(".e15b").text(rt.geoPace.toFixed(1));
             $$(".e14").text(rt.geoDistance.toFixed(2));
             $$(".e17").text(rt.geoAvgSpeed.toFixed(1));
 
 
             $$('#btn1').text(geoMovingTimeSpeed.toFixed(0) + ' mph');
             $$('#btn2').text(geoDistanceInMiles.toFixed(0) + ' mi');
-            $$('#btn3').text(geoMovingTimePace.toFixed(1) + ' min/mi');
+            $$('#btn3').text(geoMovingTimePace.toFixed(1) + ' avg min/mi');
             // $$('#btn4').text(geoMovingTimePace.toFixed(1) + ' min/mi');
 
             backgroundGeolocation.finish();
