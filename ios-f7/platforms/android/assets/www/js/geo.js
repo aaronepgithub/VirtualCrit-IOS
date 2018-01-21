@@ -111,14 +111,7 @@ function startGeo() {
             geoMovingTimeSpeed = geoDistanceInMiles / (geoMovingTimeInSeconds / 60 / 60);
             geoMovingTimePace = 60 / geoMovingTimeSpeed;
 
-
             rounds.geoDistance += distInMiles;
-
-            // console.log('geoDistanceInMiles' + geoDistanceInMiles);
-            // console.log('geoActualTimeSpeed' + geoActualTimeSpeed);
-            // console.log('geoMovingTimeSpeed' + geoMovingTimeSpeed);
-            // console.log('timeSinceStartInSeconds' + timeSinceStartInSeconds);
-
 
             var date = new Date(null);
             date.setSeconds(geoMovingTimeInSeconds);
@@ -128,9 +121,14 @@ function startGeo() {
             rt.geoDistance = geoDistanceInMiles;
             rt.geoMovingTime = geoMovingTimeInSeconds;
             rt.geoAvgSpeed = geoMovingTimeSpeed;
-            rt.geoAvgPace = geoMovingTimePace;
-            rt.geoPace = 60 / rt.geoSpeed;
 
+            if (isFinite(geoMovingTimePace) == true) {
+            rt.geoAvgPace = geoMovingTimePace;
+            }
+
+            if (isFinite(60 / rt.geoSpeed)) {
+            rt.geoPace = 60 / rt.geoSpeed;
+            }
 
             displaySPD();
 

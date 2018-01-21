@@ -297,7 +297,7 @@
                                         </state>
                                         <connections>
                                             <action selector="act_Btn1:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="Jxt-FI-3EE"/>
-                                            <segue destination="ESF-V7-5Zq" kind="presentation" id="tLj-eX-5ZX"/>
+                                            <segue destination="5af-9N-5iY" kind="presentation" id="7Xo-fN-u3Z"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Wn-aO-nw2">
@@ -332,7 +332,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReuseID1" textLabel="U9j-ol-HI4" detailTextLabel="0fP-W8-vjP" style="IBUITableViewCellStyleSubtitle" id="dhv-QP-Koy" customClass="BLTE_TableViewCell" customModule="xxyy" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReuseID1" textLabel="U9j-ol-HI4" detailTextLabel="0fP-W8-vjP" style="IBUITableViewCellStyleSubtitle" id="dhv-QP-Koy" customClass="BLTE_TableViewCell" customModule="xxyy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dhv-QP-Koy" id="keL-wv-EBY">
@@ -442,7 +442,7 @@
                     <viewLayoutGuide key="safeArea" id="ySs-Vd-9m7"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1641" y="-276"/>
+            <point key="canvasLocation" x="-1726" y="262"/>
         </scene>
         <!--Timeline-->
         <scene sceneID="1FN-xL-ubM">
@@ -502,14 +502,14 @@
                                 <rect key="frame" x="0.0" y="54" width="375" height="530"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00 AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRm-OM-vFo" userLabel="TIME OF DAY">
-                                <rect key="frame" x="144" y="69" width="88.5" height="45"/>
+                                <rect key="frame" x="143.5" y="69" width="88.5" height="45"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZn-O0-iTq" userLabel="LABEL - MID HZ">
-                                <rect key="frame" x="176" y="124" width="24.5" height="27"/>
+                                <rect key="frame" x="175.5" y="124" width="24.5" height="27"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -538,7 +538,7 @@
                                 <variation key="heightClass=regular-widthClass=compact" hidden="NO"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HRT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPy-CI-Fz3" userLabel="LABEL - TOP VERT">
-                                <rect key="frame" x="175.5" y="82" width="26" height="27"/>
+                                <rect key="frame" x="174.5" y="82" width="26" height="27"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -951,23 +951,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default-7506-landscape_1334x750" translatesAutoresizingMaskIntoConstraints="NO" id="Gx2-BT-YXK">
-                                <rect key="frame" x="0.0" y="54" width="375" height="579"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="rqQ-xt-OiS">
-                                <rect key="frame" x="174" y="229.5" width="27" height="29"/>
-                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-Yr-XlG" userLabel="L3">
-                                <rect key="frame" x="174" y="259.5" width="27" height="29"/>
-                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="X9a-Qe-sLw" userLabel="Stack View Horiz">
+                                <rect key="frame" x="4" y="58" width="367" height="571"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="VIH-6q-SYK" userLabel="H1">
+                                        <rect key="frame" x="0.0" y="0.0" width="120.5" height="571"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
+                                        <state key="normal" title="HZ">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btn1:" destination="5af-9N-5iY" eventType="touchUpInside" id="lWl-ki-yvZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="UAr-w1-mrI" userLabel="H2">
+                                        <rect key="frame" x="123.5" y="0.0" width="120" height="571"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="100"/>
+                                        <state key="normal" title="00.00">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="ujf-Ve-KTk" userLabel="H3">
+                                        <rect key="frame" x="246.5" y="0.0" width="120.5" height="571"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
+                                        <state key="normal" title="00">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                    </button>
+                                </subviews>
+                                <viewLayoutGuide key="safeArea" id="38q-he-cfA"/>
+                                <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00 MILES  00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ry-ZI-rIf" userLabel="Header">
                                 <rect key="frame" x="8" y="24" width="359" height="30"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -994,57 +1013,91 @@
                                     <fontDescription key="fontDescription" name="YanoneKaffeesatz-Regular" family="Yanone Kaffeesatz" pointSize="25"/>
                                 </variation>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gAD-nG-EBP">
-                                <rect key="frame" x="16" y="62" width="343" height="563"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="anM-P0-D48" userLabel="Stack View Vert">
+                                <rect key="frame" x="8" y="64" width="359" height="559"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="60" translatesAutoresizingMaskIntoConstraints="NO" id="cRB-3T-98U" userLabel="B1">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="563"/>
-                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="140"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="hvc-9R-YIo" userLabel="V1">
+                                        <rect key="frame" x="0.0" y="0.0" width="359" height="184.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
+                                        <state key="normal" title="VRT">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="3aB-D1-J2U" userLabel="V2">
+                                        <rect key="frame" x="0.0" y="187.5" width="359" height="184"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="100"/>
+                                        <state key="normal" title="00.00">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="U9I-1s-xzD" userLabel="V3">
+                                        <rect key="frame" x="0.0" y="374.5" width="359" height="184.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
+                                        <state key="normal" title="00">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                    </button>
                                 </subviews>
+                                <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9s7-At-LfL" userLabel="HEAD-R">
+                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="54"/>
+                                <connections>
+                                    <action selector="btn_HeadR:" destination="5af-9N-5iY" eventType="touchUpInside" id="Tfj-hh-RCL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aXo-P8-CU5" userLabel="HEAD-L">
+                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="54"/>
+                                <connections>
+                                    <action selector="btnHeadL:" destination="5af-9N-5iY" eventType="touchUpInside" id="bYK-xO-dAU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="i1p-Yr-XlG" firstAttribute="centerX" secondItem="cRB-3T-98U" secondAttribute="centerX" id="17H-kl-8F8"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="centerX" secondItem="KJb-5y-wgb" secondAttribute="centerX" id="4Or-cD-cS6"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="trailing" secondItem="Usf-a3-vDa" secondAttribute="trailingMargin" id="7DR-G0-di5"/>
+                            <constraint firstItem="9s7-At-LfL" firstAttribute="top" secondItem="Usf-a3-vDa" secondAttribute="top" id="3Ne-IU-fJ7"/>
+                            <constraint firstItem="9s7-At-LfL" firstAttribute="trailing" secondItem="2tt-M3-7DW" secondAttribute="trailing" id="4FV-hg-SsF"/>
+                            <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="anM-P0-D48" secondAttribute="trailing" constant="8" id="5II-lj-Jbv"/>
+                            <constraint firstItem="aXo-P8-CU5" firstAttribute="top" secondItem="Usf-a3-vDa" secondAttribute="top" id="5eY-Ie-vHG"/>
                             <constraint firstItem="6Ry-ZI-rIf" firstAttribute="top" secondItem="2tt-M3-7DW" secondAttribute="top" constant="4" id="8A9-tT-XCj"/>
                             <constraint firstItem="6Ry-ZI-rIf" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="8" id="9ES-yM-gam"/>
+                            <constraint firstItem="9s7-At-LfL" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="centerX" id="A9a-H3-B7l"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="6Ry-ZI-rIf" secondAttribute="trailing" constant="8" id="Egj-MU-nIK"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="centerX" secondItem="Gx2-BT-YXK" secondAttribute="centerX" id="KX4-ar-Suz"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="centerY" secondItem="Gx2-BT-YXK" secondAttribute="centerY" id="ME8-3O-VFa"/>
+                            <constraint firstItem="X9a-Qe-sLw" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="4" id="Hhv-ia-xES"/>
+                            <constraint firstItem="2tt-M3-7DW" firstAttribute="centerX" secondItem="aXo-P8-CU5" secondAttribute="trailing" id="NvL-2G-JR5"/>
                             <constraint firstItem="KJb-5y-wgb" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="8" id="Oeb-aQ-Fi1"/>
-                            <constraint firstItem="cRB-3T-98U" firstAttribute="centerY" secondItem="rqQ-xt-OiS" secondAttribute="centerY" constant="100" id="Y6N-gX-W7T"/>
-                            <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="Gx2-BT-YXK" secondAttribute="bottom" id="aBW-5f-J3a"/>
-                            <constraint firstItem="i1p-Yr-XlG" firstAttribute="centerY" secondItem="cRB-3T-98U" secondAttribute="centerY" constant="-70" id="exx-1D-hlG"/>
-                            <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="gAD-nG-EBP" secondAttribute="bottom" constant="8" symbolic="YES" id="fnk-YS-A7G"/>
+                            <constraint firstItem="6Ry-ZI-rIf" firstAttribute="bottom" secondItem="9s7-At-LfL" secondAttribute="bottom" id="SkX-gv-ZJz"/>
+                            <constraint firstItem="anM-P0-D48" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" constant="10" id="Way-bk-HeR"/>
+                            <constraint firstItem="X9a-Qe-sLw" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" constant="4" id="cli-sR-Q6m"/>
+                            <constraint firstItem="anM-P0-D48" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="8" id="d60-yZ-4fF"/>
+                            <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="X9a-Qe-sLw" secondAttribute="bottom" constant="4" id="fVW-0r-SIs"/>
+                            <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="X9a-Qe-sLw" secondAttribute="trailing" constant="4" id="lQP-Lk-xV8"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="bottom" secondItem="KJb-5y-wgb" secondAttribute="bottom" constant="4" id="lyD-Oq-hLd"/>
-                            <constraint firstItem="rqQ-xt-OiS" firstAttribute="centerX" secondItem="cRB-3T-98U" secondAttribute="centerX" id="nZ6-J2-RFD"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="centerX" secondItem="6Ry-ZI-rIf" secondAttribute="centerX" id="nzc-ee-a0c"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" constant="8" symbolic="YES" id="oNj-iF-WXU"/>
+                            <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="anM-P0-D48" secondAttribute="bottom" constant="10" id="qkV-F1-xjo"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="KJb-5y-wgb" secondAttribute="trailing" constant="8" id="rKP-xw-b1l"/>
-                            <constraint firstItem="Gx2-BT-YXK" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" id="t3t-lX-4zI"/>
-                            <constraint firstItem="gAD-nG-EBP" firstAttribute="leading" secondItem="Usf-a3-vDa" secondAttribute="leadingMargin" id="v37-Ry-AAY"/>
-                            <constraint firstAttribute="trailing" secondItem="Gx2-BT-YXK" secondAttribute="trailing" id="yLM-JX-VZd"/>
-                            <constraint firstItem="Gx2-BT-YXK" firstAttribute="leading" secondItem="Usf-a3-vDa" secondAttribute="leading" id="z5U-1w-Aw3"/>
+                            <constraint firstItem="6Ry-ZI-rIf" firstAttribute="bottom" secondItem="aXo-P8-CU5" secondAttribute="bottom" id="sF3-l8-8wu"/>
+                            <constraint firstItem="aXo-P8-CU5" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" id="usJ-lP-awd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2tt-M3-7DW"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="HR" image="ic_directions_bike" badgeValue="1" id="Mvh-wT-K48"/>
                     <connections>
-                        <outlet property="B1" destination="cRB-3T-98U" id="Cga-4X-3P8"/>
-                        <outlet property="L1" destination="rqQ-xt-OiS" id="uQJ-3c-5yS"/>
-                        <outlet property="L3" destination="i1p-Yr-XlG" id="3HM-RZ-Zqv"/>
-                        <outlet property="footer" destination="KJb-5y-wgb" id="zVz-1m-mia"/>
-                        <outlet property="header" destination="6Ry-ZI-rIf" id="vAo-BJ-gbS"/>
+                        <outlet property="out_H1" destination="VIH-6q-SYK" id="CpG-Im-oa6"/>
+                        <outlet property="out_H2" destination="UAr-w1-mrI" id="hSf-V7-K74"/>
+                        <outlet property="out_H3" destination="ujf-Ve-KTk" id="VEY-45-S7M"/>
+                        <outlet property="out_V1" destination="hvc-9R-YIo" id="BK7-lg-Fqt"/>
+                        <outlet property="out_V2" destination="3aB-D1-J2U" id="I4l-qb-Ky6"/>
+                        <outlet property="out_V3" destination="U9I-1s-xzD" id="EXW-ZF-HAQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T2J-Pb-Try" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1642" y="769"/>
+            <point key="canvasLocation" x="-1727" y="1221"/>
         </scene>
     </scenes>
     <resources>
@@ -1055,7 +1108,4 @@
         <image name="ic_settings" width="24" height="24"/>
         <image name="second" width="30" height="30"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="etW-z4-T1w"/>
-    </inferredMetricsTieBreakers>
 </document>
