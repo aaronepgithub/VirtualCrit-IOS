@@ -31,6 +31,8 @@ $$(document).on('deviceready', function() {
     $$(".TIME").text(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + " AM");
   }
   console.log("StartTime:  " + startTime);
+  console.log("device.model:  " + device.model);
+  // device.model
 
   $$('.forthRow').hide();
   $$('.landRow').hide();
