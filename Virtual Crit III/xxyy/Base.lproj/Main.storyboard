@@ -215,7 +215,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o02-G2-t4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1185" y="412"/>
+            <point key="canvasLocation" x="1444" y="354"/>
         </scene>
         <!--BLE-->
         <scene sceneID="wg7-f3-ORb">
@@ -297,7 +297,6 @@
                                         </state>
                                         <connections>
                                             <action selector="act_Btn1:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="Jxt-FI-3EE"/>
-                                            <segue destination="5af-9N-5iY" kind="presentation" id="7Xo-fN-u3Z"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Wn-aO-nw2">
@@ -312,6 +311,7 @@
                                         </state>
                                         <connections>
                                             <action selector="act_Btn4:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="6mr-VB-JKw"/>
+                                            <segue destination="MYP-DG-sid" kind="presentation" id="fHs-8R-r4f"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="led-gv-Pei">
@@ -766,7 +766,7 @@
                     <connections>
                         <segue destination="BuI-6M-AlA" kind="relationship" relationship="viewControllers" id="bfd-DU-XNi"/>
                         <segue destination="ESF-V7-5Zq" kind="relationship" relationship="viewControllers" id="etW-z4-T1w"/>
-                        <segue destination="MYP-DG-sid" kind="relationship" relationship="viewControllers" id="8lD-0y-dPo"/>
+                        <segue destination="5af-9N-5iY" kind="relationship" relationship="viewControllers" id="aig-k7-yvU"/>
                         <segue destination="gdp-Tx-TMd" kind="relationship" relationship="viewControllers" id="6Sx-ch-nyb"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                     </connections>
@@ -784,31 +784,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default-7506-landscape_1334x750" translatesAutoresizingMaskIntoConstraints="NO" id="JOZ-J1-OrP">
-                                <rect key="frame" x="0.0" y="54" width="375" height="530"/>
+                                <rect key="frame" x="0.0" y="54" width="375" height="579"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Udn-eN-6Qz">
-                                <rect key="frame" x="174.5" y="116" width="27" height="29"/>
+                                <rect key="frame" x="174.5" y="129" width="27" height="29"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBF-sA-oLI" userLabel="L2">
-                                <rect key="frame" x="174" y="373" width="28.5" height="29"/>
+                                <rect key="frame" x="174" y="410.5" width="28.5" height="29"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SPD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDo-Vm-5fr" userLabel="L3">
-                                <rect key="frame" x="82.5" y="242.5" width="27" height="29"/>
+                                <rect key="frame" x="82.5" y="267" width="27" height="29"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0U-wn-XTN" userLabel="L4">
-                                <rect key="frame" x="265.5" y="242.5" width="28.5" height="29"/>
+                                <rect key="frame" x="265.5" y="267" width="28.5" height="29"/>
                                 <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -828,7 +828,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.0  00:00:00 MOV" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDk-Qd-cdJ" userLabel="Footer">
-                                <rect key="frame" x="8" y="584" width="359" height="30"/>
+                                <rect key="frame" x="8" y="633" width="359" height="30"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="aQZ-hO-ugE"/>
@@ -841,10 +841,10 @@
                                 </variation>
                             </label>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yzg-h1-gaO" userLabel="Stack View HZ">
-                                <rect key="frame" x="4" y="70" width="367" height="514"/>
+                                <rect key="frame" x="4" y="70" width="367" height="563"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRr-6T-MM8" userLabel="B3">
-                                        <rect key="frame" x="0.0" y="0.0" width="183.5" height="514"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="183.5" height="563"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="120"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -853,7 +853,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="izD-fV-da7" userLabel="B4">
-                                        <rect key="frame" x="183.5" y="0.0" width="183.5" height="514"/>
+                                        <rect key="frame" x="183.5" y="0.0" width="183.5" height="563"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="120"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -866,10 +866,10 @@
                                 <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="WbN-AP-p2T">
-                                <rect key="frame" x="16" y="62" width="343" height="514"/>
+                                <rect key="frame" x="16" y="62" width="343" height="563"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3C-yX-g5k" userLabel="B1">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="257"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="281.5"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="120"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -878,7 +878,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mB0-by-LDN" userLabel="B2">
-                                        <rect key="frame" x="0.0" y="257" width="343" height="257"/>
+                                        <rect key="frame" x="0.0" y="281.5" width="343" height="281.5"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="120"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -941,7 +941,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DMo-xb-WKw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-345" y="769"/>
+            <point key="canvasLocation" x="-1017" y="1411"/>
         </scene>
         <!--Ride I-->
         <scene sceneID="pIK-LG-EEG">
@@ -951,22 +951,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="L1-V LINE2" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyr-qT-s61" userLabel="L1-V">
+                                <rect key="frame" x="18" y="74" width="24.5" height="35"/>
+                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="15"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="L2-V LINE2" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHn-k5-ygt" userLabel="L2-V">
+                                <rect key="frame" x="18" y="242" width="24.5" height="35"/>
+                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="15"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="L3-V LINE2" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kce-Tm-aNc" userLabel="L3-V">
+                                <rect key="frame" x="18" y="408" width="24.5" height="35"/>
+                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="15"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
+                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="X9a-Qe-sLw" userLabel="Stack View Horiz">
-                                <rect key="frame" x="4" y="58" width="367" height="571"/>
+                                <rect key="frame" x="4" y="58" width="367" height="522"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="VIH-6q-SYK" userLabel="H1">
-                                        <rect key="frame" x="0.0" y="0.0" width="120.5" height="571"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="120.5" height="522"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
                                         <state key="normal" title="HZ">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="btn1:" destination="5af-9N-5iY" eventType="touchUpInside" id="lWl-ki-yvZ"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="UAr-w1-mrI" userLabel="H2">
-                                        <rect key="frame" x="123.5" y="0.0" width="120" height="571"/>
+                                        <rect key="frame" x="123.5" y="0.0" width="120" height="522"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="100"/>
                                         <state key="normal" title="00.00">
@@ -975,7 +993,7 @@
                                         <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="ujf-Ve-KTk" userLabel="H3">
-                                        <rect key="frame" x="246.5" y="0.0" width="120.5" height="571"/>
+                                        <rect key="frame" x="246.5" y="0.0" width="120.5" height="522"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
                                         <state key="normal" title="00">
@@ -1001,7 +1019,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVG 0.0  00:00:00 MOV" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJb-5y-wgb" userLabel="Footer">
-                                <rect key="frame" x="8" y="633" width="359" height="30"/>
+                                <rect key="frame" x="8" y="584" width="359" height="30"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="lYb-gF-hFG"/>
@@ -1013,55 +1031,92 @@
                                     <fontDescription key="fontDescription" name="YanoneKaffeesatz-Regular" family="Yanone Kaffeesatz" pointSize="25"/>
                                 </variation>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="anM-P0-D48" userLabel="Stack View Vert">
-                                <rect key="frame" x="8" y="64" width="359" height="559"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="anM-P0-D48" userLabel="Stack View Vert">
+                                <rect key="frame" x="8" y="64" width="359" height="510"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="hvc-9R-YIo" userLabel="V1">
-                                        <rect key="frame" x="0.0" y="0.0" width="359" height="184.5"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
-                                        <state key="normal" title="VRT">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3aB-D1-J2U" userLabel="V2">
-                                        <rect key="frame" x="0.0" y="187.5" width="359" height="184"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hvc-9R-YIo" userLabel="V1">
+                                        <rect key="frame" x="0.0" y="0.0" width="359" height="165"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal">
                                             <attributedString key="attributedTitle">
-                                                <fragment content="00.0">
+                                                <fragment content="000 ">
                                                     <attributes>
-                                                        <color key="NSColor" red="1" green="0.17610099887943809" blue="0.097475948579951899" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <font key="NSFont" size="95" name="YanoneKaffeesatz-Bold"/>
-                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2" maximumLineHeight="95" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
+                                                        <color key="NSColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="85" name="YanoneKaffeesatz-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
-                                                <fragment content=" ">
+                                                <fragment content="BPM">
                                                     <attributes>
-                                                        <color key="NSColor" red="1" green="0.17610099887943809" blue="0.097475948579951899" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <font key="NSFont" size="75" name="YanoneKaffeesatz-Bold"/>
+                                                        <color key="NSColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="25" name="YanoneKaffeesatz-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
+                                        <connections>
+                                            <action selector="btn_V1:" destination="5af-9N-5iY" eventType="touchUpInside" id="bzi-xK-WQk"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3aB-D1-J2U" userLabel="V2">
+                                        <rect key="frame" x="0.0" y="168" width="359" height="163"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="00.0 ">
+                                                    <attributes>
+                                                        <color key="NSColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="95" name="YanoneKaffeesatz-Bold"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2" maximumLineHeight="95" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
                                                 <fragment content="MPH">
                                                     <attributes>
-                                                        <color key="NSColor" red="1" green="0.17610099887943809" blue="0.097475948579951899" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <font key="NSFont" size="40" name="YanoneKaffeesatz-Bold"/>
+                                                        <color key="NSColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="25" name="YanoneKaffeesatz-Bold"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2" maximumLineHeight="95" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
                                             </attributedString>
                                         </state>
                                         <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                        <connections>
+                                            <action selector="btn_V2:" destination="5af-9N-5iY" eventType="touchUpInside" id="mzb-2e-6Va"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="U9I-1s-xzD" userLabel="V3">
-                                        <rect key="frame" x="0.0" y="374.5" width="359" height="184.5"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U9I-1s-xzD" userLabel="V3">
+                                        <rect key="frame" x="0.0" y="334" width="359" height="176"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="YanoneKaffeesatz-Bold" family="Yanone Kaffeesatz" pointSize="90"/>
-                                        <state key="normal" title="00">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="00">
+                                                    <attributes>
+                                                        <color key="NSColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="85" name="YanoneKaffeesatz-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment content=" ">
+                                                    <attributes>
+                                                        <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <font key="NSFont" size="90" name="YanoneKaffeesatz-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment content="RPM">
+                                                    <attributes>
+                                                        <color key="NSColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="25" name="YanoneKaffeesatz-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                         </state>
                                         <variation key="heightClass=compact-widthClass=compact" hidden="NO"/>
+                                        <connections>
+                                            <action selector="btn_V3:" destination="5af-9N-5iY" eventType="touchUpInside" id="LeT-aU-hPB"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <variation key="heightClass=compact-widthClass=compact" hidden="YES"/>
@@ -1081,6 +1136,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="zHn-k5-ygt" firstAttribute="top" secondItem="3aB-D1-J2U" secondAttribute="top" constant="10" id="0Ih-wg-NNT"/>
                             <constraint firstItem="9s7-At-LfL" firstAttribute="top" secondItem="Usf-a3-vDa" secondAttribute="top" id="3Ne-IU-fJ7"/>
                             <constraint firstItem="9s7-At-LfL" firstAttribute="trailing" secondItem="2tt-M3-7DW" secondAttribute="trailing" id="4FV-hg-SsF"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="anM-P0-D48" secondAttribute="trailing" constant="8" id="5II-lj-Jbv"/>
@@ -1088,21 +1144,26 @@
                             <constraint firstItem="6Ry-ZI-rIf" firstAttribute="top" secondItem="2tt-M3-7DW" secondAttribute="top" constant="4" id="8A9-tT-XCj"/>
                             <constraint firstItem="6Ry-ZI-rIf" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="8" id="9ES-yM-gam"/>
                             <constraint firstItem="9s7-At-LfL" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="centerX" id="A9a-H3-B7l"/>
+                            <constraint firstItem="Zyr-qT-s61" firstAttribute="leading" secondItem="hvc-9R-YIo" secondAttribute="leading" constant="10" id="Dzj-JX-TMb"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="6Ry-ZI-rIf" secondAttribute="trailing" constant="8" id="Egj-MU-nIK"/>
                             <constraint firstItem="X9a-Qe-sLw" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="4" id="Hhv-ia-xES"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="centerX" secondItem="aXo-P8-CU5" secondAttribute="trailing" id="NvL-2G-JR5"/>
                             <constraint firstItem="KJb-5y-wgb" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="8" id="Oeb-aQ-Fi1"/>
+                            <constraint firstItem="Zyr-qT-s61" firstAttribute="top" secondItem="hvc-9R-YIo" secondAttribute="top" constant="10" id="PPu-pb-bl8"/>
                             <constraint firstItem="6Ry-ZI-rIf" firstAttribute="bottom" secondItem="9s7-At-LfL" secondAttribute="bottom" id="SkX-gv-ZJz"/>
                             <constraint firstItem="anM-P0-D48" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" constant="10" id="Way-bk-HeR"/>
                             <constraint firstItem="X9a-Qe-sLw" firstAttribute="top" secondItem="6Ry-ZI-rIf" secondAttribute="bottom" constant="4" id="cli-sR-Q6m"/>
                             <constraint firstItem="anM-P0-D48" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" constant="8" id="d60-yZ-4fF"/>
+                            <constraint firstItem="zHn-k5-ygt" firstAttribute="leading" secondItem="3aB-D1-J2U" secondAttribute="leading" constant="10" id="ehQ-2u-Xej"/>
                             <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="X9a-Qe-sLw" secondAttribute="bottom" constant="4" id="fVW-0r-SIs"/>
+                            <constraint firstItem="kce-Tm-aNc" firstAttribute="leading" secondItem="U9I-1s-xzD" secondAttribute="leading" constant="10" id="g53-vI-EtO"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="X9a-Qe-sLw" secondAttribute="trailing" constant="4" id="lQP-Lk-xV8"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="bottom" secondItem="KJb-5y-wgb" secondAttribute="bottom" constant="4" id="lyD-Oq-hLd"/>
                             <constraint firstItem="KJb-5y-wgb" firstAttribute="top" secondItem="anM-P0-D48" secondAttribute="bottom" constant="10" id="qkV-F1-xjo"/>
                             <constraint firstItem="2tt-M3-7DW" firstAttribute="trailing" secondItem="KJb-5y-wgb" secondAttribute="trailing" constant="8" id="rKP-xw-b1l"/>
                             <constraint firstItem="6Ry-ZI-rIf" firstAttribute="bottom" secondItem="aXo-P8-CU5" secondAttribute="bottom" id="sF3-l8-8wu"/>
                             <constraint firstItem="aXo-P8-CU5" firstAttribute="leading" secondItem="2tt-M3-7DW" secondAttribute="leading" id="usJ-lP-awd"/>
+                            <constraint firstItem="kce-Tm-aNc" firstAttribute="top" secondItem="U9I-1s-xzD" secondAttribute="top" constant="10" id="uwh-s1-nqO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2tt-M3-7DW"/>
                     </view>
@@ -1111,6 +1172,9 @@
                         <outlet property="out_H1" destination="VIH-6q-SYK" id="CpG-Im-oa6"/>
                         <outlet property="out_H2" destination="UAr-w1-mrI" id="hSf-V7-K74"/>
                         <outlet property="out_H3" destination="ujf-Ve-KTk" id="VEY-45-S7M"/>
+                        <outlet property="out_L1V" destination="Zyr-qT-s61" id="fNB-Cj-oTn"/>
+                        <outlet property="out_L2V" destination="zHn-k5-ygt" id="kFN-dZ-Tsg"/>
+                        <outlet property="out_L3V" destination="kce-Tm-aNc" id="xuX-p4-IbC"/>
                         <outlet property="out_V1" destination="hvc-9R-YIo" id="BK7-lg-Fqt"/>
                         <outlet property="out_V2" destination="3aB-D1-J2U" id="I4l-qb-Ky6"/>
                         <outlet property="out_V3" destination="U9I-1s-xzD" id="EXW-ZF-HAQ"/>
@@ -1118,7 +1182,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T2J-Pb-Try" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1727" y="1221"/>
+            <point key="canvasLocation" x="-102" y="867"/>
         </scene>
     </scenes>
     <resources>

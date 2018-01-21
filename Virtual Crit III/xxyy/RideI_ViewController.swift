@@ -22,79 +22,132 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V2: UIButton!
     @IBOutlet weak var out_V3: UIButton!
     
-//    func attributedText(first: String, second: String) -> NSAttributedString{
-//        let string = first + second as NSString
-//        let result = NSMutableAttributedString(string: string)
-//        let attributesForFirstWord = [
-//            NSFontAttributeName : UIFont.boldSystemFontOfSize(60),
-//            NSForegroundColorAttributeName : UIColor.blueColor(),
-//            NSBackgroundColorAttributeName : UIColor.blackColor()
-//        ]
+    
+//BETTER EXAMPLE
+    
+    func setButtonAndLabel(l: UILabel, b: UIButton, first: String, second: String, third: String) {
+        let string = first + second as NSString
+            let result = NSMutableAttributedString(string: string as String)
+        let attributesForFirstWord = [
+            //NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 90),
+            NSAttributedStringKey.foregroundColor : UIColor.white,
+//            NSAttributedStringKey.backgroundColor : UIColor.gray
+            NSAttributedStringKey.font:  UIFont(
+                name: "Yanone Kaffeesatz",
+                size: 90.0)!
+        ]
 //        let shadow = NSShadow()
-//        shadow.shadowColor = UIColor.darkGrayColor()
+//        shadow.shadowColor = UIColor.gray
 //        shadow.shadowOffset = CGSize(width: 4, height: 4)
-//        let attributesForSecondWord = [
-//            NSFontAttributeName : UIFont.boldSystemFontOfSize(30),
-//            NSForegroundColorAttributeName : UIColor.whiteColor(),
-//            NSBackgroundColorAttributeName : UIColor.greenColor(),
-//            NSShadowAttributeName : shadow,
-//            ]
-//
-//        /* Find the string "100000" in the whole string and set its attribute */
-//        result.setAttributes(attributesForFirstWord,
-//                             range: string.rangeOfString(first))
-//
-//        /* Do the same thing for the string "lbs" */
-//        result.setAttributes(attributesForSecondWord,
-//                             range: string.rangeOfString(second))
-//
-//        return NSAttributedString(attributedString: result)
-//    }
+        let attributesForSecondWord = [
+            //NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 20),
+            NSAttributedStringKey.foregroundColor : UIColor.white,
+//            NSAttributedStringKey.backgroundColor : UIColor.green,
+//            NSAttributedStringKey.shadow : shadow,
+            NSAttributedStringKey.font:  UIFont(
+                name: "Yanone Kaffeesatz",
+                size: 20.0)!
+            ]
+
+        /* Find the string "100000" in the whole string and set its attribute */
+        result.setAttributes(attributesForFirstWord,
+                             range: string.range(of: first))
+
+        /* Do the same thing for the string "lbs" */
+        result.setAttributes(attributesForSecondWord,
+                             range: string.range(of: second))
+
+        //return NSAttributedString(attributedString: result)
+        b.setAttributedTitle(result, for: .normal)
+        l.text = third
+    }
+    
+    var btnV1_counter: Int = 0
+    @IBAction func btn_V1(_ sender: UIButton) {
+        
+        //set based on counter value
+        //if btnV1_counter == 1...
+        
+        let l = out_L1V
+        let b = out_V1
+        let first = "000"
+        let second = " BPM"
+        let third = "HRT \n BPM"
+        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+        
+        btnV1_counter += 1
+    }
+    
+    
+    @IBAction func btn_V2(_ sender: UIButton) {
+        
+        let l = out_L2V
+        let b = out_V2
+        let first = "00.0"
+        let second = " MPH"
+        let third = "SPD \n MPH"
+        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+    }
+    
+    
+    @IBAction func btn_V3(_ sender: UIButton) {
+        
+        let l = out_L3V
+        let b = out_V3
+        let first = "00"
+        let second = " RPM"
+        let third = "CAD \n RPM"
+        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+    }
+    
+    
+
+    
+    
+    //just for view did load
+    func setAttribButtonTitle(x: UIButton) {
+        let myString1 = "00.0 MPH"
+        let myMutableString = NSMutableAttributedString(
+        string: myString1,
+        attributes: [NSAttributedStringKey.font:
+        UIFont(name: "Yanone Kaffeesatz", size: 20.0)!])
+    
+        myMutableString.addAttribute(
+        NSAttributedStringKey.font,
+        value: UIFont(
+        name: "Yanone Kaffeesatz",
+        size: 90.0)!,
+        range: NSRange(
+        location: 0,
+        length: 4))
+    
+    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length: 4))
+        x.setAttributedTitle(myMutableString, for: .normal)
+    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:4,length: 4))
+        x.setAttributedTitle(myMutableString, for: .normal)
+    
+    }
     
     var HeadR_Counter = 0
     @IBAction func btn_HeadR(_ sender: UIButton) {
-        //let x = HeadR_Counter
-        
-        let myString1 = "12.3 MPH"
-        let myMutableString = NSMutableAttributedString(
-            string: myString1,
-            attributes: [NSAttributedStringKey.font:
-                UIFont(name: "Yanone Kaffeesatz", size: 25.0)!])
-
-        myMutableString.addAttribute(
-            NSAttributedStringKey.font,
-            value: UIFont(
-                name: "Yanone Kaffeesatz",
-                size: 95.0)!,
-            range: NSRange(
-                location: 0,
-                length: 4))
-        
-        myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length: 4))
-            out_V2.setAttributedTitle(myMutableString, for: .normal)
-        myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:4,length: 4))
-            out_V2.setAttributedTitle(myMutableString, for: .normal)
-        
-        
-        
-        
-//        if x == 0 {
-//            out_V3.isHidden = true
-//            out_H3.isHidden = true
-//            HeadR_Counter = 1
-//        }
-//        if x == 1 {
-//            out_V2.isHidden = true
-//            out_H2.isHidden = true
-//            HeadR_Counter = 2
-//        }
-//        if x == 2 {
-//            out_V3.isHidden = false
-//            out_H3.isHidden = false
-//            out_V2.isHidden = false
-//            out_H2.isHidden = false
-//            HeadR_Counter = 0
-//        }
+        let x = HeadR_Counter
+        if x == 0 {
+            out_V3.isHidden = true
+            out_H3.isHidden = true
+            HeadR_Counter = 1
+        }
+        if x == 1 {
+            out_V2.isHidden = true
+            out_H2.isHidden = true
+            HeadR_Counter = 2
+        }
+        if x == 2 {
+            out_V3.isHidden = false
+            out_H3.isHidden = false
+            out_V2.isHidden = false
+            out_H2.isHidden = false
+            HeadR_Counter = 0
+        }
         
         
 
@@ -135,7 +188,115 @@ class RideI_ViewController: UIViewController {
         header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
     }
     
+   
     
+    func changeSwipeNumber() {
+        if (swipeValue == totalSwipeValues) {
+            swipeValue = 0
+            print("Swipe Value \(swipeValue)")
+        } else {
+            swipeValue = swipeValue + 1
+            print("Swipe Value \(swipeValue)")
+        }
+    }
+    
+    
+    @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
+        //animateTextColor()
+        switch swipe.direction.rawValue {
+        case 2:
+            print("Case 2 - LEFT")
+            changeSwipeNumber()
+        case 1:
+            print("Case 1 - RIGHT")
+            changeSwipeNumber()
+        case 4:
+            print("Case 4 UP")
+            if swipeUpVal == 3 {
+                swipeUpVal = 1
+            } else {
+                swipeUpVal = swipeUpVal + 1
+            }
+        case 3:
+            print("Case 3")
+        default:
+            print("DOWN")
+            self.tabBarController?.selectedIndex = 2;
+            break
+        }
+    }
+    
+    
+    @IBOutlet weak var out_L1V: UILabel!
+    @IBOutlet weak var out_L2V: UILabel!
+    @IBOutlet weak var out_L3V: UILabel!
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        var x = out_V1
+        setAttribButtonTitle(x: x!)
+        
+        x = out_V2
+        setAttribButtonTitle(x: x!)
+        
+        x = out_V3
+        setAttribButtonTitle(x: x!)
+        
+        self.view.bringSubview(toFront: out_L1V)
+        self.view.bringSubview(toFront: out_L2V)
+        self.view.bringSubview(toFront: out_L3V)
+        
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+
+
+
+
+
+//        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+//        leftSwipe.direction = UISwipeGestureRecognizerDirection.left
+//        self.view.addGestureRecognizer(leftSwipe)
+//
+//        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+//        upSwipe.direction = UISwipeGestureRecognizerDirection.up
+//        self.view.addGestureRecognizer(upSwipe)
+//
+//        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+//        rightSwipe.direction = UISwipeGestureRecognizerDirection.right
+//        self.view.addGestureRecognizer(rightSwipe)
+//
+//        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
+//        downSwipe.direction = UISwipeGestureRecognizerDirection.down
+//        self.view.addGestureRecognizer(downSwipe)
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(update3), name: Notification.Name("speed"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(update4), name: Notification.Name("cadence"), object: nil)
+
+
+
+
+
 //    func update1a() {
 //        switch swipeValue {
 //        case 0:
@@ -165,7 +326,7 @@ class RideI_ViewController: UIViewController {
 //            print("Default update1")
 //        }
 //    }
-    
+
 //    func update1b() {
 //        switch swipeValue {
 //        case 0:
@@ -195,7 +356,7 @@ class RideI_ViewController: UIViewController {
 //            print("Default update1")
 //        }
 //    }
-    
+
 //    @objc func update1() {
 //        //TIME
 //        let x = swipeUpVal
@@ -235,8 +396,8 @@ class RideI_ViewController: UIViewController {
 //    }  //end u1
 //
 //
-    
-    
+
+
 //    func update2a() {
 //        //HRT
 //        switch swipeValue {
@@ -262,7 +423,7 @@ class RideI_ViewController: UIViewController {
 //            print("Default update hr")
 //        }
 //    }
-    
+
 //    func update2b() {
 //        //CAD
 //        switch swipeValue {
@@ -288,7 +449,7 @@ class RideI_ViewController: UIViewController {
 //            print("Default update hr")
 //        }
 //    }
-    
+
 //    @objc func update2() {
 //        //HR
 //        let x = swipeUpVal
@@ -311,9 +472,9 @@ class RideI_ViewController: UIViewController {
 //
 //        }
 //    }
-    
-    
-    
+
+
+
 //    func update3a() {
 //        switch swipeValue {
 //        case 0:
@@ -340,8 +501,8 @@ class RideI_ViewController: UIViewController {
 //        }
 //    }
 
-    
-    
+
+
 //    @objc func update3() {
 //        //SPD
 //        let x = swipeUpVal
@@ -362,8 +523,8 @@ class RideI_ViewController: UIViewController {
 //            print("Default update")
 //        }}
 //    }
-    
-    
+
+
 //    func update4a() {
 //        switch swipeValue {
 //        case 0:
@@ -376,7 +537,7 @@ class RideI_ViewController: UIViewController {
 //            print("Default update")
 //        }
 //    }
-    
+
 //    func update4b() {
 //        switch swipeValue {
 //        case 0:
@@ -392,8 +553,8 @@ class RideI_ViewController: UIViewController {
 //            print("Default update")
 //        }
 //    }
-    
-    
+
+
 //    @objc func update4() {
 //        //CAD
 //        let x = swipeUpVal
@@ -411,7 +572,7 @@ class RideI_ViewController: UIViewController {
 //            print("Default update")
 //        }}
 //    }
-    
+
 //    func animateTextColor() {
 //        L3.textColor = UIColor.red
 //        L1.textColor = UIColor.red
@@ -423,86 +584,3 @@ class RideI_ViewController: UIViewController {
 //            self.B1.textColor = UIColor.black
 //        }
 //    }
-    
-    func changeSwipeNumber() {
-        if (swipeValue == totalSwipeValues) {
-            swipeValue = 0
-            print("Swipe Value \(swipeValue)")
-        } else {
-            swipeValue = swipeValue + 1
-            print("Swipe Value \(swipeValue)")
-        }
-    }
-    
-    
-    @objc func swipeAction(swipe: UISwipeGestureRecognizer) {
-        //animateTextColor()
-        switch swipe.direction.rawValue {
-        case 2:
-            print("Case 2 - LEFT")
-            changeSwipeNumber()
-        case 1:
-            print("Case 1 - RIGHT")
-            changeSwipeNumber()
-        case 4:
-            print("Case 4 UP")
-            if swipeUpVal == 3 {
-                swipeUpVal = 1
-            } else {
-                swipeUpVal = swipeUpVal + 1
-            }
-        case 3:
-            print("Case 3")
-        default:
-            print("DOWN")
-            self.tabBarController?.selectedIndex = 2;
-            break
-        }
-    }
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-//        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
-//        leftSwipe.direction = UISwipeGestureRecognizerDirection.left
-//        self.view.addGestureRecognizer(leftSwipe)
-//
-//        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
-//        upSwipe.direction = UISwipeGestureRecognizerDirection.up
-//        self.view.addGestureRecognizer(upSwipe)
-//
-//        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
-//        rightSwipe.direction = UISwipeGestureRecognizerDirection.right
-//        self.view.addGestureRecognizer(rightSwipe)
-//
-//        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
-//        downSwipe.direction = UISwipeGestureRecognizerDirection.down
-//        self.view.addGestureRecognizer(downSwipe)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(update2), name: Notification.Name("heartrate"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(update3), name: Notification.Name("speed"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(update4), name: Notification.Name("cadence"), object: nil)
-        
-        
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-}
