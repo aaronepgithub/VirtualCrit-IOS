@@ -22,7 +22,34 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V2: UIButton!
     @IBOutlet weak var out_V3: UIButton!
     
-
+//    func attributedText(first: String, second: String) -> NSAttributedString{
+//        let string = first + second as NSString
+//        let result = NSMutableAttributedString(string: string)
+//        let attributesForFirstWord = [
+//            NSFontAttributeName : UIFont.boldSystemFontOfSize(60),
+//            NSForegroundColorAttributeName : UIColor.blueColor(),
+//            NSBackgroundColorAttributeName : UIColor.blackColor()
+//        ]
+//        let shadow = NSShadow()
+//        shadow.shadowColor = UIColor.darkGrayColor()
+//        shadow.shadowOffset = CGSize(width: 4, height: 4)
+//        let attributesForSecondWord = [
+//            NSFontAttributeName : UIFont.boldSystemFontOfSize(30),
+//            NSForegroundColorAttributeName : UIColor.whiteColor(),
+//            NSBackgroundColorAttributeName : UIColor.greenColor(),
+//            NSShadowAttributeName : shadow,
+//            ]
+//
+//        /* Find the string "100000" in the whole string and set its attribute */
+//        result.setAttributes(attributesForFirstWord,
+//                             range: string.rangeOfString(first))
+//
+//        /* Do the same thing for the string "lbs" */
+//        result.setAttributes(attributesForSecondWord,
+//                             range: string.rangeOfString(second))
+//
+//        return NSAttributedString(attributedString: result)
+//    }
     
     var HeadR_Counter = 0
     @IBAction func btn_HeadR(_ sender: UIButton) {
