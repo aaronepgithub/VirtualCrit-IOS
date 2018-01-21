@@ -22,32 +22,61 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V2: UIButton!
     @IBOutlet weak var out_V3: UIButton!
     
+
+    
     var HeadR_Counter = 0
     @IBAction func btn_HeadR(_ sender: UIButton) {
-        let x = HeadR_Counter
-        if x == 0 {
-            out_V3.isHidden = true
-            out_H3.isHidden = true
-            HeadR_Counter = 1
-        }
-        if x == 1 {
-            out_V2.isHidden = true
-            out_H2.isHidden = true
-            HeadR_Counter = 2
-        }
-        if x == 2 {
-            out_V3.isHidden = false
-            out_H3.isHidden = false
-            out_V2.isHidden = false
-            out_H2.isHidden = false
-            HeadR_Counter = 0
-        }
+        //let x = HeadR_Counter
+        
+        let myString1 = "12.3 MPH"
+        let myMutableString = NSMutableAttributedString(
+            string: myString1,
+            attributes: [NSAttributedStringKey.font:
+                UIFont(name: "Yanone Kaffeesatz", size: 25.0)!])
+
+        myMutableString.addAttribute(
+            NSAttributedStringKey.font,
+            value: UIFont(
+                name: "Yanone Kaffeesatz",
+                size: 95.0)!,
+            range: NSRange(
+                location: 0,
+                length: 4))
+        
+        myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length: 4))
+            out_V2.setAttributedTitle(myMutableString, for: .normal)
+        myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:4,length: 4))
+            out_V2.setAttributedTitle(myMutableString, for: .normal)
+        
+        
+        
+        
+//        if x == 0 {
+//            out_V3.isHidden = true
+//            out_H3.isHidden = true
+//            HeadR_Counter = 1
+//        }
+//        if x == 1 {
+//            out_V2.isHidden = true
+//            out_H2.isHidden = true
+//            HeadR_Counter = 2
+//        }
+//        if x == 2 {
+//            out_V3.isHidden = false
+//            out_H3.isHidden = false
+//            out_V2.isHidden = false
+//            out_H2.isHidden = false
+//            HeadR_Counter = 0
+//        }
         
         
 
     }
     @IBAction func btnHeadL(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+        
+        
+        
     }
     
 
