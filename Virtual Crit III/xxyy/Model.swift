@@ -76,6 +76,7 @@ struct rt {
     static var rt_speed: Double = 0
     static var rt_cadence: Double = 0
     static var rt_hr: Double = 0
+    static var rt_score: Double = 0
     
     static var total_distance: Double = 0
     static var total_moving_time_seconds: Double = 0  //in seconds

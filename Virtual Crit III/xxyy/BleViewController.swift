@@ -425,6 +425,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
             }
             rt.rt_hr = Double(bpmValue)
+            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
             out_Top1.setTitle(String(bpmValue), for: .normal)
             NotificationCenter.default.post(name: Notification.Name("heartrate"), object: nil)
             //out_Btn1.setTitle(String(bpmValue), for: .normal)

@@ -23,119 +23,223 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V3: UIButton!
     
     
-//BETTER EXAMPLE
+//CREATE UPDATE EACH SECOND
+    //PUT VALUES INTO ARR AND LOAD VALUES EACH SECOND
     
     func setButtonAndLabel(l: UILabel, b: UIButton, first: String, second: String, third: String) {
+        var bigFontSize: CGFloat = 75
+        var smallFontSize: CGFloat = 15
+        
+        if deviceNum == 4 {
+            bigFontSize = 65.0
+            smallFontSize = 13.0
+        }
+        
+        if b == out_V1 || b == out_V2 || b == out_V1 {
+
+            if deviceNum == 4 {
+                bigFontSize = 75.0
+                smallFontSize = 15.0
+            } else {
+                bigFontSize = 95.0
+                smallFontSize = 20.0
+            }
+        }
+        
         let string = first + second as NSString
             let result = NSMutableAttributedString(string: string as String)
         let attributesForFirstWord = [
-            //NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 90),
             NSAttributedStringKey.foregroundColor : UIColor.white,
-//            NSAttributedStringKey.backgroundColor : UIColor.gray
             NSAttributedStringKey.font:  UIFont(
                 name: "Yanone Kaffeesatz",
-                size: 90.0)!
+                size: bigFontSize)!
         ]
-//        let shadow = NSShadow()
-//        shadow.shadowColor = UIColor.gray
-//        shadow.shadowOffset = CGSize(width: 4, height: 4)
-        let attributesForSecondWord = [
-            //NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 20),
+                let attributesForSecondWord = [
             NSAttributedStringKey.foregroundColor : UIColor.white,
-//            NSAttributedStringKey.backgroundColor : UIColor.green,
-//            NSAttributedStringKey.shadow : shadow,
             NSAttributedStringKey.font:  UIFont(
                 name: "Yanone Kaffeesatz",
-                size: 20.0)!
+                size: smallFontSize)!
             ]
-
-        /* Find the string "100000" in the whole string and set its attribute */
         result.setAttributes(attributesForFirstWord,
                              range: string.range(of: first))
 
-        /* Do the same thing for the string "lbs" */
         result.setAttributes(attributesForSecondWord,
                              range: string.range(of: second))
-
-        //return NSAttributedString(attributedString: result)
         b.setAttributedTitle(result, for: .normal)
         l.text = third
     }
     
 
+    func getFirst(counterNum: Int) -> (f: String, s: String, t: String) {
+        
+        switch counterNum {
+        case 0:
+            let f = stringer0(myIn: rt.rt_cadence)
+            let s = " RPM"
+            let t = "CAD"
+            return(f, s, t)
+        case 1:
+            let f = stringer1(myIn: rt.rt_speed)
+            let s = " MPH"
+            let t = "SPD"
+            return(f, s, t)
+        case 2:
+            let f = stringer0(myIn: rt.rt_hr)
+            let s = " BPM"
+            let t = "HRT \n \(stringer0(myIn: rt.rt_score)) %"
+            return(f, s, t)
+        case 3:
+            let f = stringer0(myIn: round.cadence)
+            let s = " RPM"
+            let t = "CAD (RND)"
+            return(f, s, t)
+        case 4:
+            let f = stringer1(myIn: round.speed)
+            let s = " MPH"
+            let t = "SPD (RND)"
+            return(f, s, t)
+        case 5:
+            let f = stringer0(myIn: round.hr)
+            let s = " BPM"
+            let percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
+            let t = "HRT(RND) \n \(percentofmax) %"
+            return(f, s, t)
+        default:
+            let f = "00.0"
+            let s = " MPH"
+            let t = "SPD \n (300)"
+            return(f, s, t)
+        }
+        
+    }
     
-    
+    let maxCounterOptions = 5
     var btnV1_counter: Int = 0
     @IBAction func btn_V1(_ sender: UIButton) {
         
-        //set based on counter value
-        //if btnV1_counter == 1...
-        
+        btnV1_counter = counters[0]
+        let c = btnV1_counter
+        if c == maxCounterOptions {
+            btnV1_counter = 0
+        } else {
+            btnV1_counter += 1
+        }
+        counters[0] = btnV1_counter
         let l = out_L1V
         let b = out_V1
-        let first = "000"
-        let second = " BPM"
-        let third = "HRT \n BPM"
-        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
         
-        btnV1_counter += 1
+        let gf = getFirst(counterNum: c)
+        
+        let f = gf.f
+        let s = gf.s
+        let t = gf.t
+        setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
     var btnV2_counter: Int = 0
     @IBAction func btn_V2(_ sender: UIButton) {
         
+        btnV2_counter = counters[1]
         let l = out_L2V
         let b = out_V2
-        let first = "00.0"
-        let second = " MPH"
-        let third = "SPD \n MPH"
-        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
-        btnV2_counter += 1
+        let c = btnV2_counter
+        if c == maxCounterOptions {
+            btnV2_counter = 0
+        } else {
+            btnV2_counter += 1
+        }
+        counters[1] = btnV2_counter
+
+        let gf = getFirst(counterNum: c)
+        
+        let f = gf.f
+        let s = gf.s
+        let t = gf.t
+        setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
     var btnV3_counter: Int = 0
     @IBAction func btn_V3(_ sender: UIButton) {
-        
+        btnV3_counter = counters[2]
         let l = out_L3V
         let b = out_V3
-        let first = "00"
-        let second = " RPM"
-        let third = "CAD \n RPM"
-        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
-        btnV3_counter += 1
+        let c = btnV3_counter
+        if c == maxCounterOptions {
+            btnV3_counter = 0
+        } else {
+            btnV3_counter += 1
+        }
+        counters[2] = btnV3_counter
+        
+        let gf = getFirst(counterNum: c)
+        
+        let f = gf.f
+        let s = gf.s
+        let t = gf.t
+        setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
     var btnH1_counter: Int = 0
     @IBAction func btn_H1(_ sender: UIButton) {
+        btnH1_counter = counters[3]
         let l = out_L1H
         let b = out_H1
-        let first = "00"
-        let second = " RPM"
-        let third = "CAD \n RPM"
-        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
-        btnH1_counter += 1
+        let c = btnH1_counter
+        if c == maxCounterOptions {
+            btnH1_counter = 0
+        } else {
+            btnH1_counter += 1
+        }
+        counters[3] = btnH1_counter
+        
+        let gf = getFirst(counterNum: c)
+        
+        let f = gf.f
+        let s = gf.s
+        let t = gf.t
+        setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
     var btnH2_counter: Int = 0
     @IBAction func btn_H2(_ sender: UIButton) {
+        btnH2_counter = counters[4]
         let l = out_L2H
         let b = out_H2
-        let first = "00"
-        let second = " RPM"
-        let third = "CAD \n RPM"
-        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
-        btnH2_counter += 1
+        let c = btnH2_counter
+        if c == maxCounterOptions {
+            btnH2_counter = 0
+        } else {
+            btnH2_counter += 1
+        }
+        counters[4] = btnH2_counter
+        
+        let gf = getFirst(counterNum: c)
+        
+        let f = gf.f
+        let s = gf.s
+        let t = gf.t
+        setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
     var btnH3_counter: Int = 0
     @IBAction func btn_H3(_ sender: UIButton) {
+        btnH3_counter = counters[5]
         let l = out_L3H
         let b = out_H3
-        let first = "00"
-        let second = " RPM"
-        let third = "CAD \n RPM"
-        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
-        btnH3_counter += 1
+        let c = btnH3_counter
+        if c == maxCounterOptions {
+            btnH3_counter = 0
+        } else {
+            btnH3_counter += 1
+        }
+        counters[5] = btnH3_counter
+        
+        let gf = getFirst(counterNum: c)
+        
+        let f = gf.f
+        let s = gf.s
+        let t = gf.t
+        setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
     
@@ -144,28 +248,28 @@ class RideI_ViewController: UIViewController {
     
     
     //just for view did load
-    func setAttribButtonTitle(x: UIButton) {
-        let myString1 = "00.0 MPH"
-        let myMutableString = NSMutableAttributedString(
-        string: myString1,
-        attributes: [NSAttributedStringKey.font:
-        UIFont(name: "Yanone Kaffeesatz", size: 20.0)!])
-    
-        myMutableString.addAttribute(
-        NSAttributedStringKey.font,
-        value: UIFont(
-        name: "Yanone Kaffeesatz",
-        size: 90.0)!,
-        range: NSRange(
-        location: 0,
-        length: 4))
-    
-    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length: 4))
-        x.setAttributedTitle(myMutableString, for: .normal)
-    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:4,length: 4))
-        x.setAttributedTitle(myMutableString, for: .normal)
-    
-    }
+//    func setAttribButtonTitle(x: UIButton) {
+//        let myString1 = "00.0 MPH"
+//        let myMutableString = NSMutableAttributedString(
+//        string: myString1,
+//        attributes: [NSAttributedStringKey.font:
+//        UIFont(name: "Yanone Kaffeesatz", size: 20.0)!])
+//
+//        myMutableString.addAttribute(
+//        NSAttributedStringKey.font,
+//        value: UIFont(
+//        name: "Yanone Kaffeesatz",
+//        size: 90.0)!,
+//        range: NSRange(
+//        location: 0,
+//        length: 4))
+//
+//    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length: 4))
+//        x.setAttributedTitle(myMutableString, for: .normal)
+//    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:4,length: 4))
+//        x.setAttributedTitle(myMutableString, for: .normal)
+//
+//    }
     
     var HeadR_Counter = 0
     @IBAction func btn_HeadR(_ sender: UIButton) {
@@ -173,11 +277,15 @@ class RideI_ViewController: UIViewController {
         if x == 0 {
             out_V3.isHidden = true
             out_H3.isHidden = true
+            out_L1V.isHidden = true
+            out_L1H.isHidden = true
             HeadR_Counter = 1
         }
         if x == 1 {
             out_V2.isHidden = true
             out_H2.isHidden = true
+            out_L2V.isHidden = true
+            out_L2H.isHidden = true
             HeadR_Counter = 2
         }
         if x == 2 {
@@ -185,6 +293,10 @@ class RideI_ViewController: UIViewController {
             out_H3.isHidden = false
             out_V2.isHidden = false
             out_H2.isHidden = false
+            out_L1V.isHidden = false
+            out_L1H.isHidden = false
+            out_L2V.isHidden = false
+            out_L2H.isHidden = false
             HeadR_Counter = 0
         }
         
@@ -260,7 +372,7 @@ class RideI_ViewController: UIViewController {
             print("Case 3")
         default:
             print("DOWN")
-            self.tabBarController?.selectedIndex = 2;
+            //self.tabBarController?.selectedIndex = 2;
             break
         }
     }
@@ -274,53 +386,93 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_L2H: UILabel!
     @IBOutlet weak var out_L3H: UILabel!
     
-    
-//    var buttons = [out_v1: UIButton, out_v2: UIButton, out_v3: UIButton, out_h1: UIButton, out_h2: UIButton, out_h3: UIButton]
-//
-//    var labels = [out_L1V: UILabel, out_L2V: UILabel, out_L3V: UILabel, out_L1H: UILabel, out_L2H: UILabel, out_L3H: UILabel]
 
+    var deviceNum: Int = 0
     var buttons = [UIButton]()
     var labels = [UILabel]()
     var counters = [Int]()
     
+    
+    
+    @objc func update1a() {
+        var n = 0
+        while n < 6 {
+            
+            let l = labels[n]
+            let b = buttons[n]
+            let gf = getFirst(counterNum: counters[n])
+            let f = gf.f
+            let s = gf.s
+            let t = gf.t
+            setButtonAndLabel(l: l, b: b, first: f, second: s, third: t)
+            n += 1
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        var x = out_V1
+
+        if UIDevice().userInterfaceIdiom == .phone
+        {
+            switch UIScreen.main.nativeBounds.height
+            {
+            case 480:
+                print("iPhone Classic")
+            case 960:
+                print("iPhone 4 or 4S")
+                deviceNum = 4
+                
+            case 1136:
+                print("iPhone 5 or 5S or 5C")
+                
+            case 1334:
+                print("iPhone 6 or 6S")
+                
+            case 2208:
+                print("iPhone 6+ or 6S+")
+                
+            default:
+                print("unknown")
+                
+            }
+        }
+
         buttons.append(out_V1)
         labels.append(out_L1V)
-        counters.append(btnV1_counter)
-        setAttribButtonTitle(x: x!)
+        counters.append(0)
         
-        x = out_V2
         buttons.append(out_V2)
         labels.append(out_L2V)
-        counters.append(btnV2_counter)
-        setAttribButtonTitle(x: x!)
+        counters.append(1)
         
-        x = out_V3
         buttons.append(out_V3)
         labels.append(out_L3V)
-        counters.append(btnV3_counter)
-        setAttribButtonTitle(x: x!)
+        counters.append(2)
         
-        x = out_H1
         buttons.append(out_H1)
         labels.append(out_L1H)
-        counters.append(btnH1_counter)
-        setAttribButtonTitle(x: x!)
+        counters.append(3)
         
-        x = out_H2
         buttons.append(out_H2)
         labels.append(out_L2H)
-        counters.append(btnH2_counter)
-        setAttribButtonTitle(x: x!)
+        counters.append(4)
         
-        x = out_H3
         buttons.append(out_H3)
         labels.append(out_L3H)
-        counters.append(btnH3_counter)
-        setAttribButtonTitle(x: x!)
+        counters.append(5)
+        
+        var n = 0
+        while n < 6 {
+            
+            let l = labels[n]
+            let b = buttons[n]
+            let gf = getFirst(counterNum: counters[n])
+            let f = gf.f
+            let s = gf.s
+            let t = gf.t
+            setButtonAndLabel(l: l, b: b, first: f, second: s, third: t)
+            n += 1
+        }
         
         self.view.bringSubview(toFront: out_L1V)
         self.view.bringSubview(toFront: out_L2V)
@@ -330,9 +482,9 @@ class RideI_ViewController: UIViewController {
         self.view.bringSubview(toFront: out_L2H)
         self.view.bringSubview(toFront: out_L3H)
         
-        dump(buttons)
-        dump(labels)
-        dump(counters)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(update1a), name: Notification.Name("update"), object: nil)
+
         
     }
 
