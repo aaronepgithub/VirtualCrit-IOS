@@ -14,6 +14,11 @@ class HistoryViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    @IBAction func disMe(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     //touch anywhere to present the other view controller
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             if let touch = touches.first {

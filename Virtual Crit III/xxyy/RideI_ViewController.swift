@@ -23,8 +23,7 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V3: UIButton!
     
     
-//CREATE UPDATE EACH SECOND
-    //PUT VALUES INTO ARR AND LOAD VALUES EACH SECOND
+
     
     func setButtonAndLabel(l: UILabel, b: UIButton, first: String, second: String, third: String) {
         var bigFontSize: CGFloat = 75
@@ -65,7 +64,9 @@ class RideI_ViewController: UIViewController {
 
         result.setAttributes(attributesForSecondWord,
                              range: string.range(of: second))
+        UIButton.setAnimationsEnabled(false)
         b.setAttributedTitle(result, for: .normal)
+        
         l.text = third
     }
     
@@ -271,44 +272,69 @@ class RideI_ViewController: UIViewController {
 //
 //    }
     
+
+    
+    var HeadL_Counter = 0
+    @IBAction func btn_HeadL(_ sender: UIButton) {
+        let x = HeadL_Counter
+        if x == 0 {
+            out_H3.isHidden = true
+            out_L3H.isHidden = true
+            HeadL_Counter = 1
+        }
+        if x == 1 {
+            //out_V2.isHidden = true
+            out_H2.isHidden = true
+            //out_L2V.isHidden = true
+            out_L2H.isHidden = true
+            HeadL_Counter = 2
+        }
+        if x == 2 {
+            //out_V3.isHidden = false
+            out_H3.isHidden = false
+            //out_V2.isHidden = false
+            out_H2.isHidden = false
+            //out_L2V.isHidden = false
+            out_L2H.isHidden = false
+            //out_L3V.isHidden = false
+            out_L3H.isHidden = false
+            HeadL_Counter = 0
+        }
+    }
+    
     var HeadR_Counter = 0
     @IBAction func btn_HeadR(_ sender: UIButton) {
         let x = HeadR_Counter
         if x == 0 {
             out_V3.isHidden = true
-            out_H3.isHidden = true
-            out_L1V.isHidden = true
-            out_L1H.isHidden = true
+            //out_H3.isHidden = true
+            out_L3V.isHidden = true
+            //out_L1H.isHidden = true
             HeadR_Counter = 1
         }
         if x == 1 {
             out_V2.isHidden = true
-            out_H2.isHidden = true
+            //out_H2.isHidden = true
             out_L2V.isHidden = true
-            out_L2H.isHidden = true
+            //out_L2H.isHidden = true
             HeadR_Counter = 2
         }
         if x == 2 {
             out_V3.isHidden = false
-            out_H3.isHidden = false
+            //out_H3.isHidden = false
             out_V2.isHidden = false
-            out_H2.isHidden = false
-            out_L1V.isHidden = false
-            out_L1H.isHidden = false
+            //out_H2.isHidden = false
             out_L2V.isHidden = false
-            out_L2H.isHidden = false
+            //out_L1H.isHidden = false
+            out_L3V.isHidden = false
+            //out_L2H.isHidden = false
             HeadR_Counter = 0
         }
         
         
 
     }
-    @IBAction func btnHeadL(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-        
-        
-        
-    }
+
     
 
     
