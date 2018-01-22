@@ -62,6 +62,9 @@ class RideI_ViewController: UIViewController {
         l.text = third
     }
     
+
+    
+    
     var btnV1_counter: Int = 0
     @IBAction func btn_V1(_ sender: UIButton) {
         
@@ -78,7 +81,7 @@ class RideI_ViewController: UIViewController {
         btnV1_counter += 1
     }
     
-    
+    var btnV2_counter: Int = 0
     @IBAction func btn_V2(_ sender: UIButton) {
         
         let l = out_L2V
@@ -87,9 +90,10 @@ class RideI_ViewController: UIViewController {
         let second = " MPH"
         let third = "SPD \n MPH"
         setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+        btnV2_counter += 1
     }
     
-    
+    var btnV3_counter: Int = 0
     @IBAction func btn_V3(_ sender: UIButton) {
         
         let l = out_L3V
@@ -98,10 +102,45 @@ class RideI_ViewController: UIViewController {
         let second = " RPM"
         let third = "CAD \n RPM"
         setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+        btnV3_counter += 1
+    }
+    
+    var btnH1_counter: Int = 0
+    @IBAction func btn_H1(_ sender: UIButton) {
+        let l = out_L1H
+        let b = out_H1
+        let first = "00"
+        let second = " RPM"
+        let third = "CAD \n RPM"
+        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+        btnH1_counter += 1
+    }
+    
+    var btnH2_counter: Int = 0
+    @IBAction func btn_H2(_ sender: UIButton) {
+        let l = out_L2H
+        let b = out_H2
+        let first = "00"
+        let second = " RPM"
+        let third = "CAD \n RPM"
+        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+        btnH2_counter += 1
+    }
+    
+    var btnH3_counter: Int = 0
+    @IBAction func btn_H3(_ sender: UIButton) {
+        let l = out_L3H
+        let b = out_H3
+        let first = "00"
+        let second = " RPM"
+        let third = "CAD \n RPM"
+        setButtonAndLabel(l: l!, b: b!, first: first, second: second, third: third)
+        btnH3_counter += 1
     }
     
     
-
+    
+    
     
     
     //just for view did load
@@ -231,22 +270,69 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_L2V: UILabel!
     @IBOutlet weak var out_L3V: UILabel!
     
+    @IBOutlet weak var out_L1H: UILabel!
+    @IBOutlet weak var out_L2H: UILabel!
+    @IBOutlet weak var out_L3H: UILabel!
+    
+    
+//    var buttons = [out_v1: UIButton, out_v2: UIButton, out_v3: UIButton, out_h1: UIButton, out_h2: UIButton, out_h3: UIButton]
+//
+//    var labels = [out_L1V: UILabel, out_L2V: UILabel, out_L3V: UILabel, out_L1H: UILabel, out_L2H: UILabel, out_L3H: UILabel]
+
+    var buttons = [UIButton]()
+    var labels = [UILabel]()
+    var counters = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         var x = out_V1
+        buttons.append(out_V1)
+        labels.append(out_L1V)
+        counters.append(btnV1_counter)
         setAttribButtonTitle(x: x!)
         
         x = out_V2
+        buttons.append(out_V2)
+        labels.append(out_L2V)
+        counters.append(btnV2_counter)
         setAttribButtonTitle(x: x!)
         
         x = out_V3
+        buttons.append(out_V3)
+        labels.append(out_L3V)
+        counters.append(btnV3_counter)
+        setAttribButtonTitle(x: x!)
+        
+        x = out_H1
+        buttons.append(out_H1)
+        labels.append(out_L1H)
+        counters.append(btnH1_counter)
+        setAttribButtonTitle(x: x!)
+        
+        x = out_H2
+        buttons.append(out_H2)
+        labels.append(out_L2H)
+        counters.append(btnH2_counter)
+        setAttribButtonTitle(x: x!)
+        
+        x = out_H3
+        buttons.append(out_H3)
+        labels.append(out_L3H)
+        counters.append(btnH3_counter)
         setAttribButtonTitle(x: x!)
         
         self.view.bringSubview(toFront: out_L1V)
         self.view.bringSubview(toFront: out_L2V)
         self.view.bringSubview(toFront: out_L3V)
+        
+        self.view.bringSubview(toFront: out_L1H)
+        self.view.bringSubview(toFront: out_L2H)
+        self.view.bringSubview(toFront: out_L3H)
+        
+        dump(buttons)
+        dump(labels)
+        dump(counters)
         
     }
 
