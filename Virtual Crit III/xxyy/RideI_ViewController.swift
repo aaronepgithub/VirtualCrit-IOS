@@ -45,6 +45,11 @@ class RideI_ViewController: UIViewController {
             }
         }
         
+        if b == out_V2 || b == out_H2 {
+            bigFontSize = bigFontSize * 1.05
+            smallFontSize = smallFontSize * 1.05
+        }
+        
         let string = first + second as NSString
             let result = NSMutableAttributedString(string: string as String)
         let attributesForFirstWord = [
