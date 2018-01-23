@@ -11,11 +11,30 @@ import CoreLocation
 
 var settings_MAXHR: Double = 185.0
 var settings_Audio: Bool = false
+var gpsEnabled: Bool = false
 
+func calcMinPerMile(mph: Double) -> String {
+    
+    let a = (60 / mph)
+    let b = (a - Double(Int(a)))
+    let c = b * 60
+    
+    //print("mph:  \(mph)")
+    let d = Int(a)
+    //print("min:  \(d)")
+    let e = Int(c)
+    //print("sec:  \(e)")
+    if (e < 10) {
+        return "\(d):\(e)0"
+    } else {
+        return "\(d):\(e)"
+    }
+    
+}
 
 extension Settings: CLLocationManagerDelegate {
 
-
+ 
     
     @objc func eachSecond(timer: Timer) {
         
@@ -39,23 +58,35 @@ extension Settings: CLLocationManagerDelegate {
             hours = Double(Double(geo.int_elapsed_time) / 60.0 / 60.0) // convert to hours
             
             distanceQuantity = distance  //meters, already in total format
+            
             miles = distance * 0.000621371 //Miles
+            geo.total_distance = (distance * 0.000621371)
+            
             //lbl_Moving_Distance.text = "\(String(format: "%.02f", miles)) Miles"
             
             paceQuantity = miles / hours
+            geo.avgSpeed = geo.total_distance / ( z / 60.0 / 60.0)
+            
             //lbl_Moving_Speed.text = "\(String(format: "%.02f", paceQuantity)) Avg Mph"
             
             //if secondsQuantity - oldSecondsQuantity == 300 {newRound()}
-            if geo.int_elapsed_time - oldSecondsQuantity == 15 {
+            if geo.int_elapsed_time - oldSecondsQuantity == 5 {
                 //lbl_Moving_Speed.text = "1 Minute"
-                print("\n  15S Update:")
+                print("\n  5S Update:")
                 print("miles:  \(miles) Miles")
                 print("paceQuantity:  \(paceQuantity) Avg Mph")
-                print("instantPace \(instantPace) RT Mph")
+                print("geo.speed \(geo.speed) RT Mph")
                 print("geo.string_elapsed_time:  \(geo.string_elapsed_time)")
                 print("geo.int_elapsed_time:  \(geo.int_elapsed_time)")
                 oldSecondsQuantity = geo.int_elapsed_time
+                
+                print("\n Avg Pace - Min per Mile")
+                print(calcMinPerMile(mph: geo.avgSpeed))
+                print("\n")
             }
+            
+            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", instantPace))MPH, \(calcMinPerMile(mph: instantPace))PACE)"
+            
         }
         
         
@@ -121,7 +152,7 @@ extension Settings: CLLocationManagerDelegate {
                         instantPace = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         
                         geo.speed = instantPace
-                        geo.total_distance += instantPace * 0.000621371
+                        
                         
                     }
                     
@@ -298,7 +329,7 @@ class Settings: UITableViewController {
 
     @IBOutlet weak var lbl_GPS: UILabel!
     
-    var gpsEnabled: Bool = false
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //Your action here
         

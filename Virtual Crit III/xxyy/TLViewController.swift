@@ -50,9 +50,23 @@ class TLViewController: UIViewController {
             hrHasVal = 1
         }
         
+        
         if (rt.int_elapsed_time % 30) == 0 {
-            new30point(titleString: "30s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) MPH ")
+            
+            if gpsEnabled == true {
+                
+                new30point(titleString: "30s GPS \n \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \(calcMinPerMile(mph: geo.avgSpeed)) PACE ")
+            }
+            
+            if rt.rt_hr > 0 || rt.rt_speed > 0 || rt.rt_cadence > 0 {
+                
+                new30point(titleString: "30s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) MPH ")
+            }
+
         }
+        
+        
+        
         
         if (rt.int_elapsed_time % 300) == 0 {
             newHRpoint(titleString: "5 MINUTES COMPLETED")

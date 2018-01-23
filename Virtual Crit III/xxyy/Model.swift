@@ -94,6 +94,8 @@ struct geo {
     static var score: Double = 0
     static var pace: Double = 0
     
+    static var avgSpeed: Double = 0
+    
     static var total_distance: Double = 0
     static var total_moving_time_seconds: Double = 0  //in seconds
     static var total_moving_time_string: String = "00:00:00"
