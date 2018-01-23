@@ -25,6 +25,7 @@
 		58E5AF00200F8DB50009AF85 /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E5AEFF200F8DB50009AF85 /* ISPoint.swift */; };
 		58E5AF02200F8E180009AF85 /* ISTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E5AF01200F8E180009AF85 /* ISTimeline.swift */; };
 		58F0A89C20025B5B00240391 /* RideX_ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F0A89B20025B5B00240391 /* RideX_ViewController.swift */; };
+		58F63DD820178BAB00D6F539 /* Geo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F63DD720178BAB00D6F539 /* Geo.swift */; };
 		58FBC8831FC788FB00D58897 /* Process_Sensor_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */; };
 		58FBC8851FC79FC600D58897 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FBC8841FC79FC600D58897 /* Model.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		58E5AEFF200F8DB50009AF85 /* ISPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPoint.swift; sourceTree = "<group>"; };
 		58E5AF01200F8E180009AF85 /* ISTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISTimeline.swift; sourceTree = "<group>"; };
 		58F0A89B20025B5B00240391 /* RideX_ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideX_ViewController.swift; sourceTree = "<group>"; };
+		58F63DD720178BAB00D6F539 /* Geo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geo.swift; sourceTree = "<group>"; };
 		58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process_Sensor_Data.swift; sourceTree = "<group>"; };
 		58FBC8841FC79FC600D58897 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,11 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				58BE2F881FA16C3600CB8A6D /* Main.storyboard */,
-				5895B59E200E9B2800A6BFDD /* heart.png */,
 				58E5AEFF200F8DB50009AF85 /* ISPoint.swift */,
 				58E5AF01200F8E180009AF85 /* ISTimeline.swift */,
-				581DB1F0200BEAD1002339B7 /* yanone-kaffeesatz.bold.ttf */,
-				581DB1EF200BEAD0002339B7 /* yanone-kaffeesatz.regular.ttf */,
 				58BE2F821FA16C3600CB8A6D /* AppDelegate.swift */,
 				5895B59A200E97A600A6BFDD /* TLViewController.swift */,
 				582A60992003B8010094EC8A /* RideI_ViewController.swift */,
@@ -100,8 +99,12 @@
 				58E2F4481FFE6B83005FCE41 /* HistoryViewController.swift */,
 				58FBC8821FC788FB00D58897 /* Process_Sensor_Data.swift */,
 				58FBC8841FC79FC600D58897 /* Model.swift */,
+				58F63DD720178BAB00D6F539 /* Geo.swift */,
 				58AC5D4F1FFDD87E0031A499 /* LocalNotifications.swift */,
 				58C7ED7B1FC32A2600B44AC1 /* BLTE_TableViewCell.swift */,
+				581DB1F0200BEAD1002339B7 /* yanone-kaffeesatz.bold.ttf */,
+				581DB1EF200BEAD0002339B7 /* yanone-kaffeesatz.regular.ttf */,
+				5895B59E200E9B2800A6BFDD /* heart.png */,
 				58BE2F8B1FA16C3600CB8A6D /* Assets.xcassets */,
 				58BE2F8D1FA16C3600CB8A6D /* LaunchScreen.storyboard */,
 				58BE2F901FA16C3600CB8A6D /* Info.plist */,
@@ -203,6 +206,7 @@
 				58AC5D501FFDD87E0031A499 /* LocalNotifications.swift in Sources */,
 				58E5AF00200F8DB50009AF85 /* ISPoint.swift in Sources */,
 				582A609A2003B8010094EC8A /* RideI_ViewController.swift in Sources */,
+				58F63DD820178BAB00D6F539 /* Geo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

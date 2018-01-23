@@ -87,6 +87,22 @@ struct rt {
     static var int_elapsed_time: Int = 0
 }
 
+struct geo {
+    static var speed: Double = 0
+    static var cadence: Double = 0
+    static var hr: Double = 0
+    static var score: Double = 0
+    static var pace: Double = 0
+    
+    static var total_distance: Double = 0
+    static var total_moving_time_seconds: Double = 0  //in seconds
+    static var total_moving_time_string: String = "00:00:00"
+    
+    static var total_time: Double = 0
+    static var string_elapsed_time: String = "00:00:00"
+    static var int_elapsed_time: Int = 0
+}
+
 struct interval {
     static var counter: Double = 0
     //averages
@@ -106,10 +122,13 @@ struct round {
     static var speed: Double = 0
     static var cadence: Double = 0
     static var hr: Double = 0
+    static var pace: Double = 0
     
     static var speeds = [Double]()
     static var cadences = [Double]()
     static var heartrates = [Double]()
+    static var paces = [Double]()
+    static var scores = [Double]()
     
 }
 

@@ -20,13 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = self.window?.rootViewController as! UITabBarController
         tabBarController.selectedIndex = 4 // any index you want
         
-//        for name in UIFont.familyNames {
-//            print(name)
-//            if let nameString = name as String!
-//            {
-//                print(UIFont.fontNames(forFamilyName: nameString))
-//            }
-//        }
         
         return true
     }

@@ -61,7 +61,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     let CSC_Char = "0x2A5B"
     
     var startTime: NSDate?
-    
     var roundStartTime: NSDate?
     var roundWheelRevs_atStart: Double = 0
     var roundCrankRevs_atStart: Double = 0

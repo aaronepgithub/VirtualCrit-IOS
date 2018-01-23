@@ -7,19 +7,213 @@
 //
 
 import UIKit
+import CoreLocation
 
 var settings_MAXHR: Double = 185.0
 var settings_Audio: Bool = false
 
+
+extension Settings: CLLocationManagerDelegate {
+
+
+    
+    @objc func eachSecond(timer: Timer) {
+        
+        if locations.count > 3 {
+            let x = NSDate()
+            let y = x.timeIntervalSince(startTime! as Date!)
+            let z = Double(y)  //time in seconds
+            
+            geo.string_elapsed_time = createTimeString(seconds: Int(z))
+            geo.int_elapsed_time = Int(z)  //int for seconds
+            
+            seconds += z
+            //secondsQuantity += 1
+            
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.hour, .minute, .second]
+            formatter.unitsStyle = .positional
+            //let formattedString = formatter.string(from: TimeInterval(seconds))!
+            //lbl_Duration.text = formattedString
+            
+            hours = Double(Double(geo.int_elapsed_time) / 60.0 / 60.0) // convert to hours
+            
+            distanceQuantity = distance  //meters, already in total format
+            miles = distance * 0.000621371 //Miles
+            //lbl_Moving_Distance.text = "\(String(format: "%.02f", miles)) Miles"
+            
+            paceQuantity = miles / hours
+            //lbl_Moving_Speed.text = "\(String(format: "%.02f", paceQuantity)) Avg Mph"
+            
+            //if secondsQuantity - oldSecondsQuantity == 300 {newRound()}
+            if geo.int_elapsed_time - oldSecondsQuantity == 15 {
+                //lbl_Moving_Speed.text = "1 Minute"
+                print("\n  15S Update:")
+                print("miles:  \(miles) Miles")
+                print("paceQuantity:  \(paceQuantity) Avg Mph")
+                print("instantPace \(instantPace) RT Mph")
+                print("geo.string_elapsed_time:  \(geo.string_elapsed_time)")
+                print("geo.int_elapsed_time:  \(geo.int_elapsed_time)")
+                oldSecondsQuantity = geo.int_elapsed_time
+            }
+        }
+        
+        
+    }
+    
+//    func newRound() {
+//
+//        let lastRoundSpeed = (miles - oldMiles) / (hours - oldHours)
+//        //print(lastRoundSpeed)
+//        arr_RoundSpeeds.append(lastRoundSpeed)
+//
+//        //lbl_Last_Round_Speed.text = "\(String(format: "%.02f", lastRoundSpeed)) LR Mph"
+//
+//        oldHours = hours
+//        oldMiles = miles
+//        oldSecondsQuantity = secondsQuantity
+//
+//        var string_of_arr_RoundSpeeds: String = ""
+//        let x = arr_RoundSpeeds.reversed()
+//        let y = x.prefix(5)
+//        for speed in y {
+//            string_of_arr_RoundSpeeds += "\(String(format: "%.01f", speed)),  "
+//        }
+//
+//        //alert(message: string_of_arr_RoundSpeeds)
+//        //lbl_Last_Round_Speed.text = string_of_arr_RoundSpeeds
+//
+//    }
+    
+    func stopTimer() {
+        timer.invalidate()
+    }
+    
+    func startLocationUpdates() {
+        print("startLocationUpdates")
+        locationManager.startUpdatingLocation()
+    }
+    
+    func stopWorkout() {
+        stopTimer()
+        locationManager.stopUpdatingLocation()
+        //lbl_btn_Start_Stop.setTitle("Restart", for: .normal)
+    }
+    
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //print("Did update location")
+        //print(locations)
+        for location in locations {
+            if location.horizontalAccuracy < 20 {
+                
+                if self.locations.count > 2 {
+                    
+                    if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
+                        
+                        distance += location.distance(from: self.locations.last!)  //meters
+                        
+                        var coords = [CLLocationCoordinate2D]()
+                        coords.append(self.locations.last!.coordinate)
+                        coords.append(location.coordinate)
+                        
+                        instantPace = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
+                        
+                        geo.speed = instantPace
+                        geo.total_distance += instantPace * 0.000621371
+                        
+                    }
+                    
+                    
+                    
+                } else {
+                    print("Waiting for the 3rd update")
+                    if (self.locations.count == 2) {
+                        startTime = NSDate()
+                        print("startTime:  \(String(describing: startTime))")
+                    }
+                    
+                }
+                self.locations.append(location)
+            }
+        }
+    }
+    
+    func startGeo() {
+        print("Geo Started")
+
+
+        seconds = 0.0
+        distance = 0.0
+        locations.removeAll(keepingCapacity: false)
+        
+        timer = Timer.scheduledTimer(timeInterval: 1,
+                                     target: self,
+                                     selector: #selector(self.eachSecond),
+                                     userInfo: nil,
+                                     repeats: true)
+        
+        startLocationUpdates()
+        
+        
+    }
+    
+    
+    
+}
+
+
 class Settings: UITableViewController {
     
     @IBOutlet weak var lbl_AudioToggle: UILabel!
-    @IBOutlet weak var lbl_TireSizeCell: UILabel!
     @IBOutlet weak var lbl_NameCell: UILabel!
     @IBOutlet weak var lbl_MaxHR: UILabel!
+    @IBOutlet weak var lbl_TireSizeCell: UILabel!
+    
+    var seconds     = 0.0
+    var distance    = 0.0
+    var instantPace = 0.0
+    var trainingHasBegun: Bool = false
+    
+    var startTime: NSDate?
+    var roundStartTime: NSDate?
+    var roundWheelRevs_atStart: Double = 0
     
     
-    @IBOutlet weak var lbl_RT_Avg_Duration: UILabel!
+    //var secondsQuantity: Double = 0
+    var distanceQuantity: Double = 0
+    var paceUnit: Double = 0
+    var paceQuantity: Double = 0
+    var hours: Double = 0
+    var miles: Double = 0
+    
+    var oldSecondsQuantity: Int = 0
+    var oldMiles: Double = 0
+    var oldHours: Double = 0
+    var arr_RoundSpeeds = [Double]()
+    
+    
+    
+    
+    lazy var locationManager: CLLocationManager = {
+        var _locationManager = CLLocationManager()
+        _locationManager.delegate = self
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        _locationManager.activityType = .fitness
+        _locationManager.distanceFilter = 5.0
+        
+        //locationManager.requestAlwaysAuthorization()
+        return _locationManager
+    }()
+    
+    lazy var locations = [CLLocation]()
+    lazy var timer = Timer()
+    
+    
+    
+    
+    
     
     
     func callNameActionSheet() {
@@ -101,19 +295,40 @@ class Settings: UITableViewController {
         
     }
     
-    @IBOutlet weak var lbl_TireSize: UILabel!
+
+    @IBOutlet weak var lbl_GPS: UILabel!
     
+    var gpsEnabled: Bool = false
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //Your action here
         
         print(indexPath)
         
-        if indexPath.section == 0 && indexPath.row == 1 {
+        if indexPath.section == 0 && indexPath.row == 3 {
+            print("Pressed GPS Cell")
+            let x = gpsEnabled
+            if x == false {
+                lbl_GPS.text = "DISABLE GPS"
+                gpsEnabled = true
+                startGeo()
+            }
+            if x == true {
+                lbl_GPS.text = "ENABLE GPS"
+                gpsEnabled = false
+                stopTimer()
+                locationManager.stopUpdatingLocation()
+            }
+ 
+        }
+        
+        
+        
+        if indexPath.section == 0 && indexPath.row == 0 {
             print("Pressed Name Cell")
             callNameActionSheet()
         }
         
-        if indexPath.section == 0 && indexPath.row == 2 {
+        if indexPath.section == 0 && indexPath.row == 1 {
             print("Audio Cell")
             
             if lbl_AudioToggle.text == "AUDIO ON" {
@@ -127,7 +342,7 @@ class Settings: UITableViewController {
 
         }
         
-        if indexPath.section == 0 && indexPath.row == 3 {
+        if indexPath.section == 0 && indexPath.row == 2 {
             
              let x = lbl_MaxHR.text
             //print("HR Cell:  \(x)")
@@ -192,19 +407,19 @@ class Settings: UITableViewController {
 //
 //        }
         
-        if indexPath.section == 1 && indexPath.row == 2 {
-            //launch ble
-            self.tabBarController?.selectedIndex = 4;
-        }
+//        if indexPath.section == 1 && indexPath.row == 2 {
+//            //launch ble
+//            self.tabBarController?.selectedIndex = 4;
+//        }
         
-        if indexPath.section == 1 && indexPath.row == 3 {
+        if indexPath.section == 3 && indexPath.row == 0 {
             //launch history
             self.performSegue(withIdentifier: "segue_History", sender: nil)
         }
         
-        if indexPath.section == 1 && indexPath.row == 4 {
+        if indexPath.section == 0 && indexPath.row == 4 {
             //launch ble
-            self.tabBarController?.selectedIndex = 1;
+            self.tabBarController?.selectedIndex = 4;
         }
         
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
@@ -229,6 +444,20 @@ class Settings: UITableViewController {
     override func viewDidDisappear(_ animated: Bool) {
         
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.activityType = .fitness
+        locationManager.distanceFilter = 5.0
+        locationManager.requestAlwaysAuthorization()
+    }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
