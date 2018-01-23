@@ -66,7 +66,7 @@ class TLViewController: UIViewController {
             
             if gpsEnabled == true  && rt.int_elapsed_time > 5 && geo.avgSpeed > 0 && geo.avgSpeed.isNaN == false && geo.avgSpeed.isFinite == true {
                 
-                new30pointBlack(titleString: "90s GPS \n \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \(calcMinPerMile(mph: geo.avgSpeed)) AVG PACE \n \(stringer1(myIn:  geo.speed)) RT MPH  \(geo.pace) RT PACE")
+                new30pointBlack(titleString: "90s GPS \n \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \(calcMinPerMile(mph: geo.avgSpeed)) AVG PACE \(stringer1(myIn:  geo.speed)) RT MPH  \(geo.pace) RT PACE")
             }
             
             if rt.rt_hr > 0 || rt.rt_speed > 0 || rt.rt_cadence > 0 {
