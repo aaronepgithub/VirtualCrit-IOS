@@ -85,36 +85,46 @@ class TLViewController: UIViewController {
             if round.speeds.count > 0 {
                 var s = round.speeds.count
                 var a = 0
-                if s == 0 {return}
-                let text1 = "SPD   CAD   HRT"
-                var text2 = ""
-                while s > 0 && a < 10 {
-                    text2 += "\(stringer2(myIn: round.speeds[s-1])) "
-                    text2 += "\(stringer1(myIn: round.cadences[s-1])) "
-                    text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
-                    text2 += "\n"
-                    s = s - 1
-                    a = a + 1
+                if s == 0 {
+                    return
+                    
+                } else {
+                    let text1 = "SPD   CAD   HRT"
+                    var text2 = ""
+                    while s > 0 && a < 10 {
+                        text2 += "\(stringer2(myIn: round.speeds[s-1])) "
+                        text2 += "\(stringer1(myIn: round.cadences[s-1])) "
+                        text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+                        text2 += "\n"
+                        s = s - 1
+                        a = a + 1
+                    }
+                    new30point(titleString: "\(text1) \n\(text2)")
                 }
-                new30point(titleString: "\(text1) \n\(text2)")
+
             }
             
 
             
-            if gpsEnabled == true {
+            if gpsEnabled == true && round.geoSpeeds.count > 0 {
                 
-                var s = round.speeds.count
+                var s = round.geoSpeeds.count
                 var a = 0
-                if s == 0 {return}
-                let text1 = "SPD (GEO)"
-                var text2 = ""
-                while s > 0 && a < 10 {
-                    text2 += "\(stringer2(myIn: round.geoSpeeds[s-1])) "
-                    text2 += "\n"
-                    s = s - 1
-                    a = a + 1
+                if s == 0 {
+                    return
+                    
+                } else {
+                    let text1 = "SPD (GEO)"
+                    var text2 = ""
+                    while s > 0 && a < 10 {
+                        text2 += "\(stringer2(myIn: round.geoSpeeds[s-1])) "
+                        text2 += "\n"
+                        s = s - 1
+                        a = a + 1
+                    }
+                    new30point(titleString: "\(text1) \n\(text2)")
                 }
-                new30point(titleString: "\(text1) \n\(text2)")
+
                 
             }
             
