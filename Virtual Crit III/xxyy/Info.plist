@@ -26,13 +26,18 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>REQ FOR FITNESS TRACKING</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>REQ FOR FITNESS TRACKING</string>
+	<key>NSLocationAlwaysUsageDescription</key>
 	<string>REQ FOR FITNESS TRACKING</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>REQ FOR FITNESS TRACKING</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
+		<string>fetch</string>
 		<string>location</string>
 	</array>
 	<key>UIMainStoryboardFile</key>

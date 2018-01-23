@@ -794,12 +794,15 @@ function displayCAD() {
 
     if (dataToDisplay == "CURRENT") {
       $$(".rtCAD").text(rt.cadence.toFixed(0));
+      $$(".labCAD").text('RPM');
     }
     if (dataToDisplay == "ROUND") {
       $$(".rtCAD").text(rounds.avgCadence.toFixed(0));
+      $$(".labCAD").text('RPM');
     }
     if (dataToDisplay == "INTERVAL") {
       $$(".rtCAD").text(interval.avgCadence.toFixed(0));
+      $$(".labCAD").text('RPM');
     }
 
   }

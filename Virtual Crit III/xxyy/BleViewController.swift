@@ -142,6 +142,17 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
         
+        round.geoDistances.append(geo.total_distance)
+        if round.geoDistances.count >= 2 {
+            let dd = round.geoDistances[round.geoDistances.count-1] - round.geoDistances[round.geoDistances.count-2]
+            round.geoSpeeds.append(dd / (300 / 60 / 60))
+        }
+        if round.geoSpeeds.count < 2 {
+            round.geoSpeeds.append(geo.avgSpeed)
+        }
+        
+        
+        
         newRoundActionSheet()
         
     }
@@ -192,16 +203,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         if z >= round.secondsPerRound { //set to sec per round
             round.heartrates.append(round.hr)
-            round.geoDistances.append(geo.total_distance)
-            if round.geoDistances.count >= 2 {
-                let dd = round.geoDistances[round.geoDistances.count-1] - round.geoDistances[round.geoDistances.count-2]
-                round.geoSpeeds.append(dd / (300 / 60 / 60))
-            }
-            if round.geoDistances.count == 0 {
-                round.geoSpeeds.append(geo.avgSpeed)
-            }
-            
-            
             inRoundHR = 0
             newRound()
         }
