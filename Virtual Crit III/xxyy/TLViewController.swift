@@ -30,7 +30,18 @@ class TLViewController: UIViewController {
     }
     
     
-
+    func new30pointBlack(titleString: String) {
+        print("newHRpoint")
+        let ti = getFormattedTime()
+        let nextPt = ISPoint(title: titleString)
+        nextPt.description = ti
+        nextPt.touchUpInside = nil
+        nextPt.pointColor = .black
+        nextPt.lineColor = .black
+        nextPt.fill = true
+        self.timeline.points.insert(nextPt, at: 0)
+    }
+    
     func new30point(titleString: String) {
         print("newHRpoint")
         let ti = getFormattedTime()
@@ -55,7 +66,7 @@ class TLViewController: UIViewController {
             
             if gpsEnabled == true {
                 
-                new30point(titleString: "30s GPS \n \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \(calcMinPerMile(mph: geo.avgSpeed)) PACE ")
+                new30pointBlack(titleString: "30s GPS \n \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \(calcMinPerMile(mph: geo.avgSpeed)) PACE ")
             }
             
             if rt.rt_hr > 0 || rt.rt_speed > 0 || rt.rt_cadence > 0 {
