@@ -89,12 +89,10 @@ struct rt {
 
 struct geo {
     static var speed: Double = 0
-    static var cadence: Double = 0
-    static var hr: Double = 0
-    static var score: Double = 0
-    static var pace: Double = 0
+    static var pace: String = "00:00"
     
     static var avgSpeed: Double = 0
+    static var avgPace: String = "00:00"
     
     static var total_distance: Double = 0
     static var total_moving_time_seconds: Double = 0  //in seconds
@@ -122,15 +120,22 @@ struct round {
     static var secondsPerRound: Int = 300
     static var inRoundTimer: Int = 0
     static var speed: Double = 0
+    static var pace: String = "00:00"
     static var cadence: Double = 0
     static var hr: Double = 0
-    static var pace: Double = 0
+    
+    
+    static var geoSpeed: Double = 0
+    static var geoPace: String = "00:00"
     
     static var speeds = [Double]()
     static var cadences = [Double]()
     static var heartrates = [Double]()
     static var paces = [Double]()
     static var scores = [Double]()
+    
+    static var geoDistances = [Double]()
+    static var geoSpeeds = [Double]()
     
 }
 

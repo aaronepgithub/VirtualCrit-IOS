@@ -192,9 +192,17 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         if z >= round.secondsPerRound { //set to sec per round
             round.heartrates.append(round.hr)
+            round.geoDistances.append(geo.total_distance)
+            if round.geoDistances.count >= 2 {
+                let dd = round.geoDistances[round.geoDistances.count-1] - round.geoDistances[round.geoDistances.count-2]
+                round.geoSpeeds.append(dd / (300 / 60 / 60))
+            }
+            if round.geoDistances.count == 0 {
+                round.geoSpeeds.append(geo.avgSpeed)
+            }
+            
+            
             inRoundHR = 0
-//            LocalNotification.registerForLocalNotification(on: UIApplication.shared)
-//            LocalNotification.dispatchlocalNotification(with: "New Round", body: "You have completed another 5 minutes", at: Date().addedBy(minutes: 5))
             newRound()
         }
     }

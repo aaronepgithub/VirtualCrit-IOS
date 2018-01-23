@@ -82,25 +82,41 @@ class TLViewController: UIViewController {
         if (rt.int_elapsed_time % 300) == 0 {
             newHRpoint(titleString: "5 MINUTES COMPLETED")
             
-            var s = round.speeds.count
-            var a = 0
-            if s == 0 {return}
-            
-            let text1 = "SPD   CAD   HRT"
-            var text2 = ""
-            
-            while s > 0 && a < 10 {
-                text2 += "\(stringer2(myIn: round.speeds[s-1])) "
-                text2 += "\(stringer1(myIn: round.cadences[s-1])) "
-                text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
-                text2 += "\n"
-                s = s - 1
-                a = a + 1
-                //print(text2)
+            if round.speeds.count > 0 {
+                var s = round.speeds.count
+                var a = 0
+                if s == 0 {return}
+                let text1 = "SPD   CAD   HRT"
+                var text2 = ""
+                while s > 0 && a < 10 {
+                    text2 += "\(stringer2(myIn: round.speeds[s-1])) "
+                    text2 += "\(stringer1(myIn: round.cadences[s-1])) "
+                    text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+                    text2 += "\n"
+                    s = s - 1
+                    a = a + 1
+                }
+                new30point(titleString: "\(text1) \n\(text2)")
             }
             
-            //lbl_1.text = "\(text1) \n\(text2)"
-            new30point(titleString: "\(text1) \n\(text2)")
+
+            
+            if gpsEnabled == true {
+                
+                var s = round.speeds.count
+                var a = 0
+                if s == 0 {return}
+                let text1 = "SPD (GEO)"
+                var text2 = ""
+                while s > 0 && a < 10 {
+                    text2 += "\(stringer2(myIn: round.geoSpeeds[s-1])) "
+                    text2 += "\n"
+                    s = s - 1
+                    a = a + 1
+                }
+                new30point(titleString: "\(text1) \n\(text2)")
+                
+            }
             
             
         }

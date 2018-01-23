@@ -46,7 +46,7 @@ extension Settings: CLLocationManagerDelegate {
             geo.string_elapsed_time = createTimeString(seconds: Int(z))
             geo.int_elapsed_time = Int(z)  //int for seconds
             
-            seconds += z
+            //seconds += z
             //secondsQuantity += 1
             
             let formatter = DateComponentsFormatter()
@@ -55,40 +55,28 @@ extension Settings: CLLocationManagerDelegate {
             //let formattedString = formatter.string(from: TimeInterval(seconds))!
             //lbl_Duration.text = formattedString
             
-            hours = Double(Double(geo.int_elapsed_time) / 60.0 / 60.0) // convert to hours
-            
-            distanceQuantity = distance  //meters, already in total format
-            
             miles = distance * 0.000621371 //Miles
-            geo.total_distance = (distance * 0.000621371)
-            
-            //lbl_Moving_Distance.text = "\(String(format: "%.02f", miles)) Miles"
-            
-            paceQuantity = miles / hours
+            geo.total_distance = miles
+
             geo.avgSpeed = geo.total_distance / ( z / 60.0 / 60.0)
-            
-            //lbl_Moving_Speed.text = "\(String(format: "%.02f", paceQuantity)) Avg Mph"
-            
-            //if secondsQuantity - oldSecondsQuantity == 300 {newRound()}
-            if geo.int_elapsed_time - oldSecondsQuantity == 5 {
+            geo.avgPace = calcMinPerMile(mph: geo.avgSpeed)
+            geo.pace = calcMinPerMile(mph: geo.speed)
+
+            if geo.int_elapsed_time - oldSecondsQuantity == 60 {
                 //lbl_Moving_Speed.text = "1 Minute"
-                print("\n  5S Update:")
-                print("miles:  \(miles) Miles")
-                print("paceQuantity:  \(paceQuantity) Avg Mph")
+                print("\n  60S Update:")
+                print("geo.total_distance:  \(geo.total_distance) Miles")
+                print("geo.avgSpeed:  \(geo.avgSpeed) Avg Mph")
                 print("geo.speed \(geo.speed) RT Mph")
                 print("geo.string_elapsed_time:  \(geo.string_elapsed_time)")
-                print("geo.int_elapsed_time:  \(geo.int_elapsed_time)")
-                oldSecondsQuantity = geo.int_elapsed_time
-                
-                print("\n Avg Pace - Min per Mile")
-                print(calcMinPerMile(mph: geo.avgSpeed))
+                print("Avg Pace:  \(calcMinPerMile(mph: geo.avgSpeed)) Min/Mile")
                 print("\n")
+                oldSecondsQuantity = geo.int_elapsed_time
             }
             
-            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", instantPace))MPH, \(calcMinPerMile(mph: instantPace))PACE)"
             
+            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", instantPace))MPH, \(calcMinPerMile(mph: instantPace))PACE)"
         }
-        
         
     }
     
@@ -175,7 +163,7 @@ extension Settings: CLLocationManagerDelegate {
         print("Geo Started")
 
 
-        seconds = 0.0
+        //seconds = 0.0
         distance = 0.0
         locations.removeAll(keepingCapacity: false)
         
@@ -202,7 +190,7 @@ class Settings: UITableViewController {
     @IBOutlet weak var lbl_MaxHR: UILabel!
     @IBOutlet weak var lbl_TireSizeCell: UILabel!
     
-    var seconds     = 0.0
+    //var seconds     = 0.0
     var distance    = 0.0
     var instantPace = 0.0
     var trainingHasBegun: Bool = false
