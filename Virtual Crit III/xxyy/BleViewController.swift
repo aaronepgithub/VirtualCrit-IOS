@@ -633,10 +633,10 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
 //        let x = Int(rt.rt_hr)
 //        tabBarController?.tabBar.items?[1].badgeValue = String(x)
-        let y = Int(rt.rt_speed)
-        tabBarController?.tabBar.items?[2].badgeValue = String(y)
-        let z = Int(rt.rt_cadence)
-        tabBarController?.tabBar.items?[3].badgeValue = String(z)
+//        let y = Int(rt.rt_speed)
+//        tabBarController?.tabBar.items?[2].badgeValue = String(y)
+//        let z = Int(rt.rt_cadence)
+//        tabBarController?.tabBar.items?[3].badgeValue = String(z)
         
         interval.hr = (interval.heartrates.reduce(0, +)) / 30
         interval.cadence = (interval.cadences.reduce(0, +)) / 30

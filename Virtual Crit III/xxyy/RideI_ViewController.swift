@@ -22,6 +22,24 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V2: UIButton!
     @IBOutlet weak var out_V3: UIButton!
     
+//    func getFooter() -> String {
+//        let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
+//        return "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"
+//    }
+    
+    func getFormattedTime() -> String {
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .none
+        return formatter.string(from: currentDateTime)
+    }
+    
+//    func getHeader() {
+//        footer.text = getFooter()
+//        //timeOfDay.text = getFormattedTime()
+//        header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
+//    }
     
 
     
@@ -40,7 +58,7 @@ class RideI_ViewController: UIViewController {
                 bigFontSize = 75.0
                 smallFontSize = 15.0
             } else {
-                bigFontSize = 95.0
+                bigFontSize = 85.0
                 smallFontSize = 20.0
             }
         }
@@ -348,29 +366,8 @@ class RideI_ViewController: UIViewController {
     var swipeUpVal: Int = 1
     var swipeValue: Int = 0
     var totalSwipeValues: Int = 2 //3 with zero - 0, 1, 2
-    var percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
     
-    
-    //view did load, call this
-    
-    func getFooter() -> String {
-        let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
-        return "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"
-    }
-    
-    func getFormattedTime() -> String {
-        let currentDateTime = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .none
-        return formatter.string(from: currentDateTime)
-    }
-    
-    func initialTextFields() {
-        header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
-    }
-    
-   
+
     
     func changeSwipeNumber() {
         if (swipeValue == totalSwipeValues) {
@@ -438,6 +435,8 @@ class RideI_ViewController: UIViewController {
             setButtonAndLabel(l: l, b: b, first: f, second: s, third: t)
             n += 1
         }
+        
+        //getHeader()
     }
     
     override func viewDidLoad() {
