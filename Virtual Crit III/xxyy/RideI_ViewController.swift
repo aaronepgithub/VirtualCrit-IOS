@@ -10,7 +10,7 @@ import UIKit
 
 class RideI_ViewController: UIViewController {
 
-
+    
     @IBOutlet weak var header: UILabel!
     @IBOutlet weak var footer: UILabel!
     
@@ -22,10 +22,10 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V2: UIButton!
     @IBOutlet weak var out_V3: UIButton!
     
-//    func getFooter() -> String {
-//        let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
-//        return "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"
-//    }
+    func getFooter() -> String {
+        let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
+        return "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"
+    }
     
     func getFormattedTime() -> String {
         let currentDateTime = Date()
@@ -35,11 +35,11 @@ class RideI_ViewController: UIViewController {
         return formatter.string(from: currentDateTime)
     }
     
-//    func getHeader() {
-//        footer.text = getFooter()
-//        //timeOfDay.text = getFormattedTime()
-//        header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
-//    }
+    func getHeader() {
+        footer.text = getFooter()
+        //timeOfDay.text = getFormattedTime()
+        header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
+    }
     
 
     
@@ -436,7 +436,7 @@ class RideI_ViewController: UIViewController {
             n += 1
         }
         
-        //getHeader()
+        getHeader()
     }
     
     override func viewDidLoad() {

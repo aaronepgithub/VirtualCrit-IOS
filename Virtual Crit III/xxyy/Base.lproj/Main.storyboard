@@ -1228,6 +1228,8 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="HR" image="ic_directions_bike" badgeValue="1" id="Mvh-wT-K48"/>
                     <connections>
+                        <outlet property="footer" destination="KJb-5y-wgb" id="vzh-sd-apS"/>
+                        <outlet property="header" destination="6Ry-ZI-rIf" id="qnl-AF-S8F"/>
                         <outlet property="out_H1" destination="VIH-6q-SYK" id="CpG-Im-oa6"/>
                         <outlet property="out_H2" destination="UAr-w1-mrI" id="hSf-V7-K74"/>
                         <outlet property="out_H3" destination="ujf-Ve-KTk" id="VEY-45-S7M"/>
