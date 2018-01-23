@@ -128,6 +128,12 @@ class RideI_ViewController: UIViewController {
             let percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
             let t = "HRT(RND) \n \(percentofmax) %"
             return(f, s, t)
+        case 6:
+            let f = stringer1(myIn: geo.speed)
+            let s = " MPH"
+            
+            let t = "SPD(GEO) \n \(geo.pace) m/mi"
+            return(f, s, t)
         default:
             let f = "00.0"
             let s = " MPH"
@@ -137,7 +143,7 @@ class RideI_ViewController: UIViewController {
         
     }
     
-    let maxCounterOptions = 5
+    let maxCounterOptions = 6
     var btnV1_counter: Int = 0
     @IBAction func btn_V1(_ sender: UIButton) {
         
