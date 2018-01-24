@@ -19,11 +19,8 @@ func calcMinPerMile(mph: Double) -> String {
     let b = (a - Double(Int(a)))
     let c = b * 60
     
-    //print("mph:  \(mph)")
     let d = Int(a)
-    //print("min:  \(d)")
     let e = Int(c)
-    //print("sec:  \(e)")
     if (e < 10) {
         return "\(d):\(e)0"
     } else {
@@ -75,35 +72,11 @@ extension Settings: CLLocationManagerDelegate {
             }
             
             
-            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", instantPace))MPH, \(calcMinPerMile(mph: instantPace))PACE)"
+            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", geo.speed))MPH, \(calcMinPerMile(mph: geo.speed))PACE)"
         }
         
     }
-    
-//    func newRound() {
-//
-//        let lastRoundSpeed = (miles - oldMiles) / (hours - oldHours)
-//        //print(lastRoundSpeed)
-//        arr_RoundSpeeds.append(lastRoundSpeed)
-//
-//        //lbl_Last_Round_Speed.text = "\(String(format: "%.02f", lastRoundSpeed)) LR Mph"
-//
-//        oldHours = hours
-//        oldMiles = miles
-//        oldSecondsQuantity = secondsQuantity
-//
-//        var string_of_arr_RoundSpeeds: String = ""
-//        let x = arr_RoundSpeeds.reversed()
-//        let y = x.prefix(5)
-//        for speed in y {
-//            string_of_arr_RoundSpeeds += "\(String(format: "%.01f", speed)),  "
-//        }
-//
-//        //alert(message: string_of_arr_RoundSpeeds)
-//        //lbl_Last_Round_Speed.text = string_of_arr_RoundSpeeds
-//
-//    }
-    
+
     func stopTimer() {
         timer.invalidate()
     }

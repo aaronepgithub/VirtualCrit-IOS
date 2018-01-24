@@ -92,7 +92,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let percentofmax = stringer2(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
         let cancelAction = UIAlertAction(title: "SCORE:  \(percentofmax) %MAX HR", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
-            //print("Cancelled")
         })
 
 
@@ -102,17 +101,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         optionMenu.addAction(a3)
         optionMenu.addAction(cancelAction)
 
-        //st
-//        let alertController = UIAlertController(title: "<Alert Title>", message: "<Alert Message>", preferredStyle: .alert)
-//        alertController.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
-//        alertController.presentInOwnWindow(animated: true, completion: {
-//            print("completed")
-//        })
-        //end
-        
-        
-        // 5
-        //self.present(optionMenu, animated: true, completion: nil)
         
         optionMenu.presentInOwnWindow(animated: true, completion: {
                     print("completed")
@@ -121,13 +109,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 optionMenu.dismiss(animated: true, completion: nil)
             }
                 })
-        
-        // change to desired number of seconds (in this case 5 seconds)
-//        let when = DispatchTime.now() + 5
-//        DispatchQueue.main.asyncAfter(deadline: when){
-//            // your code with delay
-//            optionMenu.dismiss(animated: true, completion: nil)
-//        }
+
     }
     
     
@@ -150,9 +132,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if round.geoSpeeds.count < 2 {
             round.geoSpeeds.append(geo.avgSpeed)
         }
-        
-        
-        
+
         newRoundActionSheet()
         
     }
@@ -179,26 +159,17 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         round.inRoundTimer = z
         
         inRoundSpeed = Double(a) * Double(b) / Double(c)
-        
         round.speed = inRoundSpeed
         
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = (d / y) * 60.0
-
-        
         round.cadence = inRoundCadence
-        
-//        if z == 10 {
-//            newRoundActionSheet()
-//        }
 
-        
         if z % 45 == 0
         {
             let h = rt.rt_hr
             if (h == veloH) {rt.rt_hr = 0}
             veloH = h
-            
         }
         
         if z >= round.secondsPerRound { //set to sec per round

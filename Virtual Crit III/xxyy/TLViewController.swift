@@ -13,9 +13,7 @@ class TLViewController: UIViewController {
 //    https://github.com/instant-solutions/ISTimeline
     
     @IBOutlet weak var timeline: ISTimeline!
-    @IBAction func Dismiss(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    }
+
     
     func newHRpoint(titleString: String) {
         print("newHRpoint")
