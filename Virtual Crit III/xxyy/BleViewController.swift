@@ -144,7 +144,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     
     func roundUpdate_each_second(xx: Int) -> Bool {
-        print("roundUpdate_each_second, xx:  \(xx)")
+        //print("roundUpdate_each_second, xx:  \(xx)")
         let x = NSDate()
         let y = x.timeIntervalSince(roundStartTime! as Date!)
         let z = Int(y)
@@ -181,8 +181,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
 
         
-        if z >= round.secondsPerRound {
-            print("new round")
+        if z > round.secondsPerRound + 1 {
+            print("backup new round, total sec, sec in rnd:  \(rt.int_elapsed_time), \(z) ")
             newRound()
         }
         
@@ -196,6 +196,16 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         return true
     }
     
+    @objc func newRoundChecker() {
+        let x = NSDate()
+        let y = x.timeIntervalSince(startTime! as Date!)
+        let z = Double(y)
+        if Int(z) % round.secondsPerRound == 0 && Int(z) > 1 {
+            newRound()
+            NotificationCenter.default.post(name: Notification.Name("newRound"), object: nil)
+        }
+        
+    }
     
     @objc func UpdateTimeDisplay() {  //each second
         let x = NSDate()
@@ -206,7 +216,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.int_elapsed_time = Int(z)  //int for seconds
         
         let ru = roundUpdate_each_second(xx: rt.int_elapsed_time)
-        print(ru)
+        if ru == false {print(ru)}
         
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
         
@@ -617,7 +627,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }()
     
     var mainTimer = Timer()
-    var rtTimer = Timer()
+    var roundMonitorTimer = Timer()
 
     
     @objc func update_Interval_Values() {
@@ -666,7 +676,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             mainTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UpdateTimeDisplay), userInfo: nil, repeats: true)
             
             print("Start Main Timer")
-            //start_rtTimer()
+            roundMonitorTimer = Timer()
+            roundMonitorTimer = Timer.scheduledTimer(timeInterval: 0.51, target: self, selector: #selector(newRoundChecker), userInfo: nil, repeats: true)
         }
         
         

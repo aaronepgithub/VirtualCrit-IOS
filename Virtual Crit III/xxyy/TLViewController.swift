@@ -53,6 +53,61 @@ class TLViewController: UIViewController {
     }
     
     var hrHasVal = 0
+    
+    @objc func updateR() {
+        
+        let when = DispatchTime.now() + 5
+        DispatchQueue.main.asyncAfter(deadline: when){
+            //self.newHRpoint(titleString: "5 MINUTES COMPLETED")
+            
+            
+            if round.speeds.count > 0  {
+                var s = round.speeds.count
+                var a = 0
+                if s == 0 {
+                    return
+                    
+                } else {
+                    let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO SPD "
+                    var text2 = ""
+                    while s > 0 && a < 10 {
+                        text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
+                        text2 += " \(stringer1(myIn: round.cadences[s-1]))  "
+                        text2 +=  "\(stringer1(myIn: round.heartrates[s-1]))  "
+                        text2 +=  "\(stringer1(myIn: round.geoSpeeds[s-1]))  "
+                        text2 += "\n"
+                        s = s - 1
+                        a = a + 1
+                    }
+                    self.self.new30point(titleString: "\(text1) \n\(text2)")
+                }
+                
+            }
+            
+            
+            
+            if gpsEnabled == true && round.geoSpeeds.count > 0 {
+                
+                var s = round.geoSpeeds.count
+                var a = 0
+                if s == 0 {
+                    return
+                    
+                } else {
+                    let text1 = "ROUND SPEEDS/PACE (GEO)"
+                    var text2 = ""
+                    while s > 0 && a < 10 {
+                        text2 += "\(stringer2(myIn: round.geoSpeeds[s-1]))  \(calcMinPerMile(mph: round.geoSpeeds[s-1])) "
+                        text2 += "\n"
+                        s = s - 1
+                        a = a + 1
+                    }
+                    self.self.new30point(titleString: "\(text1) \n\(text2)")
+                }
+            }
+        }
+    }
+    
     @objc func updateT() {
         if rt.rt_hr > 0 && hrHasVal == 0 {
             newHRpoint(titleString: "HEARTRATE IS NOW BEING CAPTURED")
@@ -77,77 +132,9 @@ class TLViewController: UIViewController {
                 
                 new30point(titleString: "\(x)s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) RT MPH ")
             }
-            
         }
-        
-        
-        
-        
-        if (rt.int_elapsed_time % 300) == 0 {
-            
-            
-            let when = DispatchTime.now() + 5
-            DispatchQueue.main.asyncAfter(deadline: when){
-                //self.newHRpoint(titleString: "5 MINUTES COMPLETED")
-                
-                
-                if round.speeds.count > 0  {
-                    var s = round.speeds.count
-                    var a = 0
-                    if s == 0 {
-                        return
-                        
-                    } else {
-                        let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO SPD "
-                        var text2 = ""
-                        while s > 0 && a < 10 {
-                            text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
-                            text2 += " \(stringer1(myIn: round.cadences[s-1]))  "
-                            text2 +=  "\(stringer1(myIn: round.heartrates[s-1]))  "
-                            text2 +=  "\(stringer1(myIn: round.geoSpeeds[s-1]))  "
-                            text2 += "\n"
-                            s = s - 1
-                            a = a + 1
-                        }
-                        self.self.new30point(titleString: "\(text1) \n\(text2)")
-                    }
-                    
-                }
-                
-                
-                
-                if gpsEnabled == true && round.geoSpeeds.count > 0 {
-                    
-                    var s = round.geoSpeeds.count
-                    var a = 0
-                    if s == 0 {
-                        return
-                        
-                    } else {
-                        let text1 = "ROUND SPEEDS/PACE (GEO)"
-                        var text2 = ""
-                        while s > 0 && a < 10 {
-                            text2 += "\(stringer2(myIn: round.geoSpeeds[s-1]))  \(calcMinPerMile(mph: round.geoSpeeds[s-1])) "
-                            text2 += "\n"
-                            s = s - 1
-                            a = a + 1
-                        }
-                        self.self.new30point(titleString: "\(text1) \n\(text2)")
-                    }
-                    
-                    
-                }
-                
-                
-            }
-            
-            
-            
-        }
-        
-        
-        
-        
+//        if (rt.int_elapsed_time % 300) == 0 {
+//        }
     }
     
     
@@ -166,6 +153,8 @@ class TLViewController: UIViewController {
         let st = getFormattedTime()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateT), name: Notification.Name("update"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateR), name: Notification.Name("newRound"), object: nil)
         
         let black = UIColor.black
         let green = UIColor.init(red: 76/255, green: 175/255, blue: 80/255, alpha: 1)
