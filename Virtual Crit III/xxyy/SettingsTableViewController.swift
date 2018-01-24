@@ -22,7 +22,7 @@ func calcMinPerMile(mph: Double) -> String {
     let d = Int(a)
     let e = Int(c)
     if (e < 10) {
-        return "\(d):\(e)0"
+        return "\(d):0\(e)"
     } else {
         return "\(d):\(e)"
     }
