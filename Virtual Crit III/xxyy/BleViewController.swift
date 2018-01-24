@@ -117,9 +117,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     
-    func newRound() {  //every 300 sec
+    func newRound(xx: Int) -> Bool {  //every 300 sec
         
-        print("Round Complete, New Round Starting")
+        print("Round Complete, New Round Starting, time:  \(xx)")
         
         round.speeds.append(round.speed)
         round.cadences.append(round.cadence)
@@ -129,13 +129,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         inRoundHR = 0
         
         roundStartTime = NSDate()
+        print("Round Complete, New Round Starting, time:  \(xx), \(String(describing: roundStartTime))")
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
         roundGeoDistance = geo.total_distance
         
         
         newRoundActionSheet()
-        
+        return true
     }
     
     var veloH: Double = 0;
@@ -145,6 +146,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func roundUpdate_each_second(xx: Int) -> Bool {
         //print("roundUpdate_each_second, xx:  \(xx)")
+        
         let x = NSDate()
         let y = x.timeIntervalSince(roundStartTime! as Date!)
         let z = Int(y)
@@ -178,13 +180,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = (d / y) * 60.0
         round.cadence = inRoundCadence
-        
-
-        
-        if z > round.secondsPerRound + 1 {
-            print("backup new round, total sec, sec in rnd:  \(rt.int_elapsed_time), \(z) ")
-            newRound()
-        }
+ 
         
         update_Interval_Values()
         if z % 45 == 0
@@ -196,14 +192,21 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         return true
     }
     
+    var IntRoundChecker = 0
     @objc func newRoundChecker() {
+        IntRoundChecker += 1
         let x = NSDate()
         let y = x.timeIntervalSince(startTime! as Date!)
         let z = Double(y)
-        if Int(z) % round.secondsPerRound == 0 && Int(z) > 1 {
-            newRound()
-            NotificationCenter.default.post(name: Notification.Name("newRound"), object: nil)
+        if Int(z) > 1 {
+            if Int(z) % round.secondsPerRound == 0 || Int(z) > (round.secondsPerRound * 2) {
+                let nr = newRound(xx: Int(z))
+                print("new round processing complete:  \(nr)")
+                IntRoundChecker = 0
+                NotificationCenter.default.post(name: Notification.Name("newRound"), object: nil)
+            }
         }
+
         
     }
     
@@ -674,10 +677,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             roundStartTime = startTime
             mainTimer = Timer()
             mainTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UpdateTimeDisplay), userInfo: nil, repeats: true)
+            print("Start Main Timer:  \(String(describing: startTime))")
             
-            print("Start Main Timer")
+            
             roundMonitorTimer = Timer()
-            roundMonitorTimer = Timer.scheduledTimer(timeInterval: 0.51, target: self, selector: #selector(newRoundChecker), userInfo: nil, repeats: true)
+            roundMonitorTimer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(newRoundChecker), userInfo: nil, repeats: true)
         }
         
         
