@@ -57,7 +57,7 @@ extension Settings: CLLocationManagerDelegate {
 
             geo.avgSpeed = geo.total_distance / ( z / 60.0 / 60.0)
             geo.avgPace = calcMinPerMile(mph: geo.avgSpeed)
-            geo.pace = calcMinPerMile(mph: geo.speed)
+           
 
             if geo.int_elapsed_time - oldSecondsQuantity == 60 {
                 //lbl_Moving_Speed.text = "1 Minute"
@@ -113,6 +113,7 @@ extension Settings: CLLocationManagerDelegate {
                         instantPace = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         
                         geo.speed = instantPace
+                         geo.pace = calcMinPerMile(mph: geo.speed)
                         
                         
                     }
