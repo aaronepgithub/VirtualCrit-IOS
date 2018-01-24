@@ -23,8 +23,11 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_V3: UIButton!
     
     func getFooter() -> String {
+        
+        // if ble dist/spd is 0, try for geo
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
         return "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"
+        
     }
     
     func getFormattedTime() -> String {

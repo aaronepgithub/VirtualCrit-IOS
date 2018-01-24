@@ -648,7 +648,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WT6-f1-Om4"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="CAD" image="ic_directions_bike" badgeValue="3" id="1dg-32-DTA"/>
+                    <tabBarItem key="tabBarItem" title="Day" image="second" id="1dg-32-DTA"/>
                     <connections>
                         <outlet property="BIGL_TOP" destination="5wm-Wb-oiz" id="JUX-RJ-9rp"/>
                         <outlet property="BIGL_TRAILING" destination="041-qS-ML3" id="aRJ-I6-9vV"/>
@@ -1208,7 +1208,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2tt-M3-7DW"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="HR" image="ic_directions_bike" badgeValue="1" id="Mvh-wT-K48"/>
+                    <tabBarItem key="tabBarItem" title="Night" image="second" id="Mvh-wT-K48"/>
                     <connections>
                         <outlet property="footer" destination="KJb-5y-wgb" id="vzh-sd-apS"/>
                         <outlet property="header" destination="6Ry-ZI-rIf" id="qnl-AF-S8F"/>

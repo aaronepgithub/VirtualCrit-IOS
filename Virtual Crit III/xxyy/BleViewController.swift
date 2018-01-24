@@ -9,6 +9,8 @@
 import UIKit
 import CoreBluetooth
 
+
+
 extension UIAlertController {
     
     func presentInOwnWindow(animated: Bool, completion: (() -> Void)?) {
@@ -72,6 +74,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var inRoundHR: Double = 0
     var totalAvgHR: Double = 0
     
+    var inRoundGeoDist: Double = 0
+    var inRoundGeoSpeed: Double = 0
+    
     
     func newRoundActionSheet() {
         
@@ -115,23 +120,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func newRound() {  //every 300 sec
         
+        print("Round Complete, New Round Starting")
+        
         round.speeds.append(round.speed)
         round.cadences.append(round.cadence)
         
-        print("Speed Rnd Array")
-        dump(round.speeds)
         roundStartTime = NSDate()
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
         
-        round.geoDistances.append(geo.total_distance)
-        if round.geoDistances.count >= 2 {
-            let dd = round.geoDistances[round.geoDistances.count-1] - round.geoDistances[round.geoDistances.count-2]
-            round.geoSpeeds.append(dd / (300 / 60 / 60))
-        }
-        if round.geoSpeeds.count < 2 {
-            round.geoSpeeds.append(geo.avgSpeed)
-        }
 
         newRoundActionSheet()
         
@@ -139,12 +136,31 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     var veloH: Double = 0;
     
+
     
     
     func roundUpdate_each_second() {
         let x = NSDate()
         let y = x.timeIntervalSince(roundStartTime! as Date!)
         let z = Int(y)
+        
+        
+        if round.geoDistances.count > 0 {
+            inRoundGeoDist = geo.total_distance - round.geoDistances.last!
+        } else {
+            inRoundGeoDist = geo.total_distance
+        }
+        
+        if inRoundGeoDist > 0 {
+                    inRoundGeoSpeed = inRoundGeoDist / Double((Double(z) / 60.0 / 60.0))
+        } else {
+            inRoundGeoSpeed = 0
+        }
+        
+        round.geoSpeed = inRoundGeoSpeed
+        round.geoPace = calcMinPerMile(mph: round.geoSpeed)
+
+        
         
         inRoundHR += Double(rt.rt_hr)
         var avgInRoundHR = inRoundHR / Double(z)
@@ -174,6 +190,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         if z >= round.secondsPerRound { //set to sec per round
             round.heartrates.append(round.hr)
+            round.geoSpeeds.append(inRoundGeoSpeed)
+            round.geoDistances.append(inRoundGeoDist)
             inRoundHR = 0
             newRound()
         }

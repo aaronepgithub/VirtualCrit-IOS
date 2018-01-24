@@ -15,7 +15,12 @@ var gpsEnabled: Bool = false
 
 func calcMinPerMile(mph: Double) -> String {
     
+    
     let a = (60 / mph)
+    if a.isFinite == false {
+        return "00:00"
+    }
+    
     let b = (a - Double(Int(a)))
     let c = b * 60
     
