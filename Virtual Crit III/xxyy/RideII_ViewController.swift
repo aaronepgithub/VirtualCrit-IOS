@@ -32,11 +32,11 @@ class RideII_ViewController: UIViewController {
     var totalSwipeValues: Int = 2 //3 with zero - 0, 1, 2
     var percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
     
-//    if swipeUpVal % 2 == 0 {
-//    print("\(myInt) is even number")
-//    } else {
-//    print("\(myInt) is odd number")
-//    }
+    //    if swipeUpVal % 2 == 0 {
+    //    print("\(myInt) is even number")
+    //    } else {
+    //    print("\(myInt) is odd number")
+    //    }
     
     func getFooter() -> String {
         let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
@@ -57,7 +57,7 @@ class RideII_ViewController: UIViewController {
     }
     
     //TODO,USE UP TO GO FROM SP/CAD TO HR/MAX
-
+    
     
     @objc func update1() {
         //TIME
@@ -73,27 +73,27 @@ class RideII_ViewController: UIViewController {
                 B2.text = stringer0(myIn: rt.rt_cadence)
                 B3.text = stringer1(myIn: rt.rt_speed)
                 B4.text = stringer0(myIn: rt.rt_cadence)
-
+                
                 //labels
                 L1.text = "SPEED"
                 L3.text = "SPEED"
                 L2.text = "CAD"
                 L4.text = "CAD"
-            
+                
             } else {
                 //values
                 B1.text = stringer0(myIn: rt.rt_hr)
                 B2.text = "\(percentofmax) %"
                 B3.text = stringer0(myIn: rt.rt_hr)
                 B4.text = "\(percentofmax) %"
-
+                
                 //labels
                 L1.text = "HR"
                 L3.text = "HR"
                 L2.text = "SCORE"
                 L4.text = "SCORE"
             }
-
+            
             
         case 1:
             initialTextFields()
@@ -117,8 +117,8 @@ class RideII_ViewController: UIViewController {
                 L2.text = "SCORE 30i"
                 L4.text = "SCORE 30i"
             }
-
-
+            
+            
             
         case 2:
             //RND
@@ -145,7 +145,7 @@ class RideII_ViewController: UIViewController {
                 L2.text = "SCORE RND"
                 L4.text = "SCORE RND"
             }
-
+            
             
         default:
             print("Default update1")
@@ -162,7 +162,7 @@ class RideII_ViewController: UIViewController {
             
             
         case 0:
-
+            
             if swipeUpVal % 2 == 0 { _ = 1} else {
                 percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
                 //values
@@ -177,39 +177,39 @@ class RideII_ViewController: UIViewController {
                 L2.text = "SCORE"
                 L4.text = "SCORE"
             }
-
+            
             
         case 1:
-
+            
             if swipeUpVal % 2 == 0 { _ = 1} else {
-                 _ = 1
-//            percentofmax = stringer0(myIn: Double((Double(interval.hr) / Double(settings_MAXHR)) * Double(100)))
-//                //values
-//                B1.text = stringer0(myIn: interval.hr)
-//                B2.text = percentofmax
-//
-//                //labels
-//                L1.text = "HR 30i"
-//                L3.text = "HR 30i"
-//                L2.text = "SCORE 30i"
-//                L4.text = "SCORE 30i"
+                _ = 1
+                //            percentofmax = stringer0(myIn: Double((Double(interval.hr) / Double(settings_MAXHR)) * Double(100)))
+                //                //values
+                //                B1.text = stringer0(myIn: interval.hr)
+                //                B2.text = percentofmax
+                //
+                //                //labels
+                //                L1.text = "HR 30i"
+                //                L3.text = "HR 30i"
+                //                L2.text = "SCORE 30i"
+                //                L4.text = "SCORE 30i"
             }
             
             
         case 2:
-
+            
             if swipeUpVal % 2 == 0 { _ = 1} else {
-                 _ = 1
-//            percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
-//                //values
-//                B1.text = stringer0(myIn: round.hr)
-//                B2.text = percentofmax
-//
-//                //labels
-//                L1.text = "HR RND"
-//                L3.text = "HR RND"
-//                L2.text = "SCORE RND"
-//                L4.text = "SCORE RND"
+                _ = 1
+                //            percentofmax = stringer0(myIn: Double((Double(round.hr) / Double(settings_MAXHR)) * Double(100)))
+                //                //values
+                //                B1.text = stringer0(myIn: round.hr)
+                //                B2.text = percentofmax
+                //
+                //                //labels
+                //                L1.text = "HR RND"
+                //                L3.text = "HR RND"
+                //                L2.text = "SCORE RND"
+                //                L4.text = "SCORE RND"
             }
             
         default:
@@ -221,22 +221,22 @@ class RideII_ViewController: UIViewController {
         //initialTextFields()
         
         if swipeUpVal % 2 == 0 {
-        switch swipeValue {
-        case 0:
-            B1.text = stringer1(myIn: rt.rt_speed)
-            B3.text = stringer1(myIn: rt.rt_speed)
-            L1.text = "SPEED"
-            L3.text = "SPEED"
-        case 1:
-            L3.text = "SPD 30i"
-            
-        case 2:
-            L1.text = "SPD RND \(round.inRoundTimer)"
-            L3.text = "SPD RND \(round.inRoundTimer)"
-            
-        default:
-            print("Default update")
-        }
+            switch swipeValue {
+            case 0:
+                B1.text = stringer1(myIn: rt.rt_speed)
+                B3.text = stringer1(myIn: rt.rt_speed)
+                L1.text = "SPEED"
+                L3.text = "SPEED"
+            case 1:
+                L3.text = "SPD 30i"
+                
+            case 2:
+                L1.text = "SPD RND \(round.inRoundTimer)"
+                L3.text = "SPD RND \(round.inRoundTimer)"
+                
+            default:
+                print("Default update")
+            }
         } else {
             _ = 1
         }
@@ -272,7 +272,7 @@ class RideII_ViewController: UIViewController {
                 print("Default update")
             }
         } else {  _ = 1}
-
+        
     }
     
     func animateTextColor() {
@@ -323,7 +323,7 @@ class RideII_ViewController: UIViewController {
             swipeUpVal = swipeUpVal + 1
         case 3:
             print("Case 3")
-
+            
         default:
             print("DOWN")
             self.tabBarController?.selectedIndex = 3;
@@ -331,10 +331,10 @@ class RideII_ViewController: UIViewController {
         }
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
         leftSwipe.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(leftSwipe)
@@ -357,21 +357,21 @@ class RideII_ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(update4), name: Notification.Name("cadence"), object: nil)
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

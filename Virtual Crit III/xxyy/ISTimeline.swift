@@ -9,7 +9,7 @@
 import UIKit
 
 class ISTimeline: UIScrollView {
-
+    
     fileprivate static let gap:CGFloat = 15.0
     
     open var pointDiameter:CGFloat = 6.0 {
@@ -163,8 +163,8 @@ class ISTimeline: UIScrollView {
     fileprivate func buildTitleLabel(_ index:Int) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.text = points[index].title
-//        titleLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
-titleLabel.font = UIFont(name: "YanoneKaffeesatz-Bold", size: 20)
+        //        titleLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
+        titleLabel.font = UIFont(name: "YanoneKaffeesatz-Bold", size: 20)
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.numberOfLines = 0
         titleLabel.preferredMaxLayoutWidth = calcWidth()

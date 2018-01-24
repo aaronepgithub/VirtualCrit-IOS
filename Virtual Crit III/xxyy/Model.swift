@@ -27,9 +27,9 @@ func stringer0(myIn: Double) -> String {
         } else {
             return "0"
         }
-
+        
     }
-
+    
 }
 
 func stringer1(myIn: Double) -> String {
@@ -41,7 +41,7 @@ func stringer1(myIn: Double) -> String {
         } else {
             return "0.0"
         }
-
+        
     } else {
         if myIn >= 0 {
             let myOut = "0.0"
@@ -63,7 +63,7 @@ func stringer2(myIn: Double) -> String {
             //let myOut = String(format:"%.2f", myIn)
             return "0"
         }
-
+        
     }
 }
 

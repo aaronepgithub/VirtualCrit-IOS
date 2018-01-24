@@ -35,8 +35,8 @@ func calcMinPerMile(mph: Double) -> String {
 }
 
 extension Settings: CLLocationManagerDelegate {
-
- 
+    
+    
     
     @objc func eachSecond(timer: Timer) {
         
@@ -59,11 +59,11 @@ extension Settings: CLLocationManagerDelegate {
             
             miles = distance * 0.000621371 //Miles
             geo.total_distance = miles
-
+            
             geo.avgSpeed = geo.total_distance / ( z / 60.0 / 60.0)
             geo.avgPace = calcMinPerMile(mph: geo.avgSpeed)
-           
-
+            
+            
             if geo.int_elapsed_time - oldSecondsQuantity == 60 {
                 //lbl_Moving_Speed.text = "1 Minute"
                 print("\n  60S Update:")
@@ -81,7 +81,7 @@ extension Settings: CLLocationManagerDelegate {
         }
         
     }
-
+    
     func stopTimer() {
         timer.invalidate()
     }
@@ -118,7 +118,7 @@ extension Settings: CLLocationManagerDelegate {
                         instantPace = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         
                         geo.speed = instantPace
-                         geo.pace = calcMinPerMile(mph: geo.speed)
+                        geo.pace = calcMinPerMile(mph: geo.speed)
                         
                         
                     }
@@ -140,8 +140,8 @@ extension Settings: CLLocationManagerDelegate {
     
     func startGeo() {
         print("Geo Started")
-
-
+        
+        
         //seconds = 0.0
         distance = 0.0
         locations.removeAll(keepingCapacity: false)
@@ -242,9 +242,9 @@ class Settings: UITableViewController {
     }
     
     func callTireSizeActionSheet() {
-            
-            // 1
-            let optionMenu = UIAlertController(title: nil, message: "Choose Tire Size", preferredStyle: .actionSheet)
+        
+        // 1
+        let optionMenu = UIAlertController(title: nil, message: "Choose Tire Size", preferredStyle: .actionSheet)
         
         let Action700x25 = UIAlertAction(title: "700x25", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
@@ -274,26 +274,26 @@ class Settings: UITableViewController {
             self.lbl_TireSizeCell.text = "700X32 TIRE SIZE"
         })
         
-            //
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-                (alert: UIAlertAction!) -> Void in
-                print("Cancelled")
-            })
-            
-            
-            // 4
-            optionMenu.addAction(Action700x25)
-            optionMenu.addAction(Action700x26)
-            optionMenu.addAction(Action700x28)
-            optionMenu.addAction(Action700x32)
-            optionMenu.addAction(cancelAction)
-            
-            // 5
-            self.present(optionMenu, animated: true, completion: nil)
+        //
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        
+        // 4
+        optionMenu.addAction(Action700x25)
+        optionMenu.addAction(Action700x26)
+        optionMenu.addAction(Action700x28)
+        optionMenu.addAction(Action700x32)
+        optionMenu.addAction(cancelAction)
+        
+        // 5
+        self.present(optionMenu, animated: true, completion: nil)
         
     }
     
-
+    
     @IBOutlet weak var lbl_GPS: UILabel!
     
     
@@ -316,7 +316,7 @@ class Settings: UITableViewController {
                 stopTimer()
                 locationManager.stopUpdatingLocation()
             }
- 
+            
         }
         
         
@@ -337,12 +337,12 @@ class Settings: UITableViewController {
                 settings_Audio = true
             }
             
-
+            
         }
         
         if indexPath.section == 0 && indexPath.row == 2 {
             
-             let x = lbl_MaxHR.text
+            let x = lbl_MaxHR.text
             //print("HR Cell:  \(x)")
             
             if x == "MAX HR: 185" {
@@ -362,53 +362,53 @@ class Settings: UITableViewController {
             lbl_MaxHR.text = "MAX HR: \(stringer0(myIn: settings_MAXHR))"
             
         }
-
+        
         if indexPath.section == 1 && indexPath.row == 0 {
             print("pressed tire size cell")
             callTireSizeActionSheet()
         }
         
-//        if indexPath.section == 1 && indexPath.row == 1 {
-//            print("duration cell")
-//
-//            let x = lbl_RT_Avg_Duration.text
-//
-//            if x == "INTERVAL FOR AVG = 1.0" {
-//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1.5"
-//                rtTimer_Interval = 1.5
-//
-//            }
-//
-//            if x == "INTERVAL FOR AVG = 1.5" {
-//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.0"
-//                rtTimer_Interval = 2.0
-//
-//            }
-//
-//            if x == "INTERVAL FOR AVG = 2.0" {
-//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.5"
-//                rtTimer_Interval = 2.5
-//
-//            }
-//
-//            if x == "INTERVAL FOR AVG = 2.5" {
-//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 3.0"
-//                rtTimer_Interval = 3.0
-//
-//            }
-//
-//            if x == "INTERVAL FOR AVG = 3.0" {
-//                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1"
-//                rtTimer_Interval = 1.0 //rt
-//
-//            }
-//
-//        }
+        //        if indexPath.section == 1 && indexPath.row == 1 {
+        //            print("duration cell")
+        //
+        //            let x = lbl_RT_Avg_Duration.text
+        //
+        //            if x == "INTERVAL FOR AVG = 1.0" {
+        //                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1.5"
+        //                rtTimer_Interval = 1.5
+        //
+        //            }
+        //
+        //            if x == "INTERVAL FOR AVG = 1.5" {
+        //                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.0"
+        //                rtTimer_Interval = 2.0
+        //
+        //            }
+        //
+        //            if x == "INTERVAL FOR AVG = 2.0" {
+        //                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 2.5"
+        //                rtTimer_Interval = 2.5
+        //
+        //            }
+        //
+        //            if x == "INTERVAL FOR AVG = 2.5" {
+        //                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 3.0"
+        //                rtTimer_Interval = 3.0
+        //
+        //            }
+        //
+        //            if x == "INTERVAL FOR AVG = 3.0" {
+        //                lbl_RT_Avg_Duration.text = "INTERVAL FOR AVG = 1"
+        //                rtTimer_Interval = 1.0 //rt
+        //
+        //            }
+        //
+        //        }
         
-//        if indexPath.section == 1 && indexPath.row == 2 {
-//            //launch ble
-//            self.tabBarController?.selectedIndex = 4;
-//        }
+        //        if indexPath.section == 1 && indexPath.row == 2 {
+        //            //launch ble
+        //            self.tabBarController?.selectedIndex = 4;
+        //        }
         
         if indexPath.section == 3 && indexPath.row == 0 {
             //launch history
@@ -434,7 +434,7 @@ class Settings: UITableViewController {
         self.view.insertSubview(backgroundImage, at: 0)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
@@ -456,77 +456,77 @@ class Settings: UITableViewController {
     }
     
     
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
-
+    
+    //    override func numberOfSections(in tableView: UITableView) -> Int {
+    //        // #warning Incomplete implementation, return the number of sections
+    //        return 0
+    //    }
+    
+    //    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //        // #warning Incomplete implementation, return the number of rows
+    //        return 0
+    //    }
+    
     /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+     
+     // Configure the cell...
+     
+     return cell
+     }
+     */
+    
     /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }    
+     }
+     */
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

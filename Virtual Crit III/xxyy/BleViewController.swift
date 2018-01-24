@@ -24,13 +24,13 @@ extension UIAlertController {
 }
 
 extension UIViewController {
-
+    
     func alert(message: String, title: String = "") {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(OKAction)
         self.present(alertController, animated: true, completion: nil)
-
+        
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
             alertController.dismiss(animated: true, completion: nil)
@@ -82,15 +82,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         // 1
         let optionMenu = UIAlertController(title: nil, message: "ROUND COMPLETE", preferredStyle: .actionSheet)
-
+        
         let a1 = UIAlertAction(title: "SPD:  \(stringer2(myIn: round.speeds.last!))  MPH", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
-
+        
         let a2 = UIAlertAction(title: "HRT:  \(stringer1(myIn: round.heartrates.last!))  BPM", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
-
+        
         let a3 = UIAlertAction(title: "CAD:  \(stringer1(myIn: round.cadences.last!))  RPM", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
@@ -98,23 +98,23 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let cancelAction = UIAlertAction(title: "SCORE:  \(percentofmax) %MAX HR", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
         })
-
-
+        
+        
         // 4
         optionMenu.addAction(a1)
         optionMenu.addAction(a2)
         optionMenu.addAction(a3)
         optionMenu.addAction(cancelAction)
-
+        
         
         optionMenu.presentInOwnWindow(animated: true, completion: {
-                    print("completed")
+            print("completed")
             let when = DispatchTime.now() + 10
             DispatchQueue.main.asyncAfter(deadline: when){
                 optionMenu.dismiss(animated: true, completion: nil)
             }
-                })
-
+        })
+        
     }
     
     
@@ -129,14 +129,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
         
-
+        
         newRoundActionSheet()
         
     }
     
     var veloH: Double = 0;
     
-
+    
     
     
     func roundUpdate_each_second() {
@@ -152,14 +152,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
         
         if inRoundGeoDist > 0 {
-                    inRoundGeoSpeed = inRoundGeoDist / Double((Double(z) / 60.0 / 60.0))
+            inRoundGeoSpeed = inRoundGeoDist / Double((Double(z) / 60.0 / 60.0))
         } else {
             inRoundGeoSpeed = 0
         }
         
         round.geoSpeed = inRoundGeoSpeed
         round.geoPace = calcMinPerMile(mph: round.geoSpeed)
-
+        
         
         
         inRoundHR += Double(rt.rt_hr)
@@ -168,7 +168,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             avgInRoundHR = 0
         }
         round.hr = avgInRoundHR
-
+        
         let a = totalWheelRevs - roundWheelRevs_atStart
         let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
         let c = Double(z) / Double(60) / Double(60)
@@ -180,7 +180,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let d = Double(totalCrankRevs - roundCrankRevs_atStart)
         inRoundCadence = (d / y) * 60.0
         round.cadence = inRoundCadence
-
+        
         if z % 45 == 0
         {
             let h = rt.rt_hr
@@ -211,7 +211,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
         //END OF EACH SECOND UPDATE
     }
-
+    
     let defaults = UserDefaults.standard
     
     @IBOutlet weak var out_Top1: UIButton!
@@ -225,13 +225,13 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return arrPeripheral.count
+        return arrPeripheral.count
     }
     
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseID1") as! BLTE_TableViewCell
-
+        
         let str = arrPeripheral[indexPath.row]?.name
         var strr: String = String(describing: arrPeripheral[indexPath.row]!.identifier)
         
@@ -248,7 +248,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         cell.BLTE_CellTitle.text = str
         cell.BLTE_CellSubTitle.text = String(describing: strr)
-            
+        
         return cell
     }
     
@@ -261,12 +261,12 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     
-
+    
     @IBAction func act_Btn1(_ sender: UIButton) {
     }
     
     @IBAction func act_Btn2(_ sender: UIButton) {
-
+        
         
     }
     
@@ -283,11 +283,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         disconnectAllPeripherals()
         print("disconnect All")
         self.dismiss(animated: true, completion: nil)
-
+        
     }
     
-
-
+    
+    
     @IBOutlet weak var out_Btn1: UIButton!
     @IBOutlet weak var out_Btn2: UIButton!
     @IBOutlet weak var out_Btn3: UIButton!
@@ -323,7 +323,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                     let transferCharacteristicUUID = CBUUID.init(string: HR_Char)
                     peripheral.discoverCharacteristics([transferCharacteristicUUID], for: service)
                 }
-
+                
                 if (service.uuid == CBUUID(string: CSC_Service)) {
                     let transferCharacteristicUUID = CBUUID.init(string: CSC_Char)
                     peripheral.discoverCharacteristics([transferCharacteristicUUID], for: service)
@@ -332,7 +332,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
     }
     
-
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         if error != nil {
             print("Error discovering characteristics: \(String(describing: error?.localizedDescription))")
@@ -375,7 +375,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func startScanning() {
         print("Started Scanning")
-
+        
         
         if centralManager.isScanning {
             print("Central Manager is already scanning!!")
@@ -383,7 +383,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         } else {
             self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: CSC_Service), CBUUID.init(string: HR_Service)], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
         }
-     
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
@@ -393,7 +393,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 self.BLTE_TableViewOutlet.reloadData()
             })
         })
-
+        
     }
     
     
@@ -426,10 +426,10 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             out_Top1.setTitle(String(bpmValue), for: .normal)
             NotificationCenter.default.post(name: Notification.Name("heartrate"), object: nil)
             //out_Btn1.setTitle(String(bpmValue), for: .normal)
-
+            
         }
         
-
+        
         func decodeCSC(withData data : Data) {
             let WHEEL_REVOLUTION_FLAG               : UInt8 = 0x01
             let CRANK_REVOLUTION_FLAG               : UInt8 = 0x02
@@ -456,7 +456,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
         
         
-
+        
         if characteristic.uuid == CBUUID(string: HR_Char) {
             guard characteristic.value != nil else {
                 print("Characteristic Value is nil on this go-round")
@@ -495,37 +495,37 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func disconnectAllPeripherals() {
         dump(arrPeripheral)
         for p in arrPeripheral {
-        // verify we have a peripheral
+            // verify we have a peripheral
             
-        // check to see if the peripheral is connected
+            // check to see if the peripheral is connected
             if p?.state != .connected {
-            print("Peripheral exists but is not connected.")
-            return
-        }
+                print("Peripheral exists but is not connected.")
+                return
+            }
             guard let services = p?.services else {
-            print("Cancel Peripheral Connection")
+                print("Cancel Peripheral Connection")
                 centralManager.cancelPeripheralConnection(p!)  //no services
-            return
-        }
-        for service in services {
-            // iterate through characteristics
-            if let characteristics = service.characteristics {
-                for characteristic in characteristics {
-                    // find the Transfer Characteristic we defined in our Device struct
-                    if characteristic.uuid == CBUUID.init(string: CSC_Char) {
-                        p?.setNotifyValue(false, for: characteristic)
-                        print("set Notify Value to False for:  \(String(describing: p?.name))")
-                        return
-                    }
-                    if characteristic.uuid == CBUUID.init(string: HR_Char) {
-                        p?.setNotifyValue(false, for: characteristic)
-                        print("set Notify Value to False for:  \(String(describing: p?.name))")
-                        return
+                return
+            }
+            for service in services {
+                // iterate through characteristics
+                if let characteristics = service.characteristics {
+                    for characteristic in characteristics {
+                        // find the Transfer Characteristic we defined in our Device struct
+                        if characteristic.uuid == CBUUID.init(string: CSC_Char) {
+                            p?.setNotifyValue(false, for: characteristic)
+                            print("set Notify Value to False for:  \(String(describing: p?.name))")
+                            return
+                        }
+                        if characteristic.uuid == CBUUID.init(string: HR_Char) {
+                            p?.setNotifyValue(false, for: characteristic)
+                            print("set Notify Value to False for:  \(String(describing: p?.name))")
+                            return
+                        }
                     }
                 }
             }
-        }
-        // disconnect from the peripheral
+            // disconnect from the peripheral
             centralManager.cancelPeripheralConnection(p!)
         }
         arr_connected_peripherals = []
@@ -618,29 +618,29 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var mainTimer = Timer()
     var rtTimer = Timer()
     
-//    var returnSpeed: Double = 0
-//    var returnCadence: Double = 0
-//    var returnHR: Double = 0
+    //    var returnSpeed: Double = 0
+    //    var returnCadence: Double = 0
+    //    var returnHR: Double = 0
     
     @objc func update_Interval_Values() {
-
+        
         interval.heartrates.append(rt.rt_hr)
         interval.distances.append(rt.total_distance)
         interval.cadences.append(rt.rt_cadence)
         
-//        let x = Int(rt.rt_hr)
-//        tabBarController?.tabBar.items?[1].badgeValue = String(x)
-//        let y = Int(rt.rt_speed)
-//        tabBarController?.tabBar.items?[2].badgeValue = String(y)
-//        let z = Int(rt.rt_cadence)
-//        tabBarController?.tabBar.items?[3].badgeValue = String(z)
+        //        let x = Int(rt.rt_hr)
+        //        tabBarController?.tabBar.items?[1].badgeValue = String(x)
+        //        let y = Int(rt.rt_speed)
+        //        tabBarController?.tabBar.items?[2].badgeValue = String(y)
+        //        let z = Int(rt.rt_cadence)
+        //        tabBarController?.tabBar.items?[3].badgeValue = String(z)
         
         interval.hr = (interval.heartrates.reduce(0, +)) / 30
         interval.cadence = (interval.cadences.reduce(0, +)) / 30
         interval.speed = (interval.distances.last! - interval.distances.first!) * (2 * 60)  //30 sec as an hour
         
-//        print("interval hr, spd, cad")
-//        print(interval.hr, interval.speed, interval.cadence)
+        //        print("interval hr, spd, cad")
+        //        print(interval.hr, interval.speed, interval.cadence)
         
         if interval.heartrates.count == 29 {
             interval.heartrates.removeFirst()
@@ -656,7 +656,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         start_rtTimer()
     }
     
-
+    
     //have to restart on settings change
     func start_rtTimer() {
         rtTimer = Timer()
@@ -677,7 +677,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         
         centralManager = CBCentralManager(delegate: self, queue: nil)
         self.BLTE_TableViewOutlet.addSubview(refreshControl)
@@ -699,20 +699,20 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let when = DispatchTime.now() + 1
             DispatchQueue.main.asyncAfter(deadline: when){
                 self.ViewStartup.removeFromSuperview()
-                            self.tabBarController?.selectedIndex = 0;
+                self.tabBarController?.selectedIndex = 0;
             }
             
-//            ViewStartup.removeFromSuperview()
-//            self.tabBarController?.selectedIndex = 0;
+            //            ViewStartup.removeFromSuperview()
+            //            self.tabBarController?.selectedIndex = 0;
             
         }
         
     }
     
     
-//    override func viewDidAppear(_ animated: Bool) {
-//
-//    }
+    //    override func viewDidAppear(_ animated: Bool) {
+    //
+    //    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -720,6 +720,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     
-
+    
 }
 

@@ -20,18 +20,18 @@ class HistoryViewController: UIViewController {
     }
     
     //touch anywhere to present the other view controller
-        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-            if let touch = touches.first {
-                let currentPoint = touch.location(in: view)
-                print(currentPoint.x)
-                Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(closeMe), userInfo: nil, repeats: false)
-            }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: view)
+            print(currentPoint.x)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(closeMe), userInfo: nil, repeats: false)
         }
-
-    @IBOutlet weak var lbl_1: UILabel!
-
+    }
     
-
+    @IBOutlet weak var lbl_1: UILabel!
+    
+    
+    
     
     @objc func update1() {
         
@@ -53,10 +53,10 @@ class HistoryViewController: UIViewController {
         }
         
         lbl_1.text = "\(text1) \n\(text2)"
-
-
-
-
+        
+        
+        
+        
         
     }
     
@@ -65,23 +65,23 @@ class HistoryViewController: UIViewController {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

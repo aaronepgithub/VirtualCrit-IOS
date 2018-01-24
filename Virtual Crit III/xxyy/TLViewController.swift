@@ -9,11 +9,11 @@
 import UIKit
 
 class TLViewController: UIViewController {
-
-//    https://github.com/instant-solutions/ISTimeline
+    
+    //    https://github.com/instant-solutions/ISTimeline
     
     @IBOutlet weak var timeline: ISTimeline!
-
+    
     
     func newHRpoint(titleString: String) {
         print("newHRpoint")
@@ -77,7 +77,7 @@ class TLViewController: UIViewController {
                 
                 new30point(titleString: "30s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) RT MPH ")
             }
-
+            
         }
         
         
@@ -86,66 +86,66 @@ class TLViewController: UIViewController {
         if (rt.int_elapsed_time % 300) == 0 {
             
             
-                    let when = DispatchTime.now() + 5
-                    DispatchQueue.main.asyncAfter(deadline: when){
-                        self.newHRpoint(titleString: "5 MINUTES COMPLETED")
+            let when = DispatchTime.now() + 5
+            DispatchQueue.main.asyncAfter(deadline: when){
+                self.newHRpoint(titleString: "5 MINUTES COMPLETED")
+                
+                
+                if round.speeds.count > 0 {
+                    var s = round.speeds.count
+                    var a = 0
+                    if s == 0 {
+                        return
                         
-                        
-                        if round.speeds.count > 0 {
-                            var s = round.speeds.count
-                            var a = 0
-                            if s == 0 {
-                                return
-                                
-                            } else {
-                                let text1 = "SPD   CAD   HRT (ROUND)"
-                                var text2 = ""
-                                while s > 0 && a < 10 {
-                                    text2 += "\(stringer2(myIn: round.speeds[s-1])) "
-                                    text2 += "\(stringer1(myIn: round.cadences[s-1])) "
-                                    text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
-                                    text2 += "\n"
-                                    s = s - 1
-                                    a = a + 1
-                                }
-                                self.self.new30point(titleString: "\(text1) \n\(text2)")
-                            }
-                            
+                    } else {
+                        let text1 = "SPD   CAD   HRT (ROUND)"
+                        var text2 = ""
+                        while s > 0 && a < 10 {
+                            text2 += "\(stringer2(myIn: round.speeds[s-1])) "
+                            text2 += "\(stringer1(myIn: round.cadences[s-1])) "
+                            text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+                            text2 += "\n"
+                            s = s - 1
+                            a = a + 1
                         }
-                        
-                        
-                        
-                        if gpsEnabled == true && round.geoSpeeds.count > 0 {
-                            
-                            var s = round.geoSpeeds.count
-                            var a = 0
-                            if s == 0 {
-                                return
-                                
-                            } else {
-                                let text1 = "ROUND SPEEDS (GEO)"
-                                var text2 = ""
-                                while s > 0 && a < 10 {
-                                    text2 += "\(stringer2(myIn: round.geoSpeeds[s-1])) "
-                                    text2 += "\n"
-                                    s = s - 1
-                                    a = a + 1
-                                }
-                                self.self.new30point(titleString: "\(text1) \n\(text2)")
-                            }
-                            
-                            
-                        }
-                        
-                        
-            }
-                        
-                        
-                        
+                        self.self.new30point(titleString: "\(text1) \n\(text2)")
                     }
+                    
+                }
+                
+                
+                
+                if gpsEnabled == true && round.geoSpeeds.count > 0 {
+                    
+                    var s = round.geoSpeeds.count
+                    var a = 0
+                    if s == 0 {
+                        return
+                        
+                    } else {
+                        let text1 = "ROUND SPEEDS (GEO)"
+                        var text2 = ""
+                        while s > 0 && a < 10 {
+                            text2 += "\(stringer2(myIn: round.geoSpeeds[s-1])) "
+                            text2 += "\n"
+                            s = s - 1
+                            a = a + 1
+                        }
+                        self.self.new30point(titleString: "\(text1) \n\(text2)")
+                    }
+                    
+                    
+                }
+                
+                
+            }
             
             
-           
+            
+        }
+        
+        
+        
         
     }
     
@@ -157,7 +157,7 @@ class TLViewController: UIViewController {
         formatter.dateStyle = .none
         return formatter.string(from: currentDateTime)
     }
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,7 +165,7 @@ class TLViewController: UIViewController {
         let st = getFormattedTime()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateT), name: Notification.Name("update"), object: nil)
-
+        
         let black = UIColor.black
         let green = UIColor.init(red: 76/255, green: 175/255, blue: 80/255, alpha: 1)
         let red = UIColor.init(red: 255/255, green: 0/255, blue: 0/255, alpha: 1)
@@ -202,11 +202,11 @@ class TLViewController: UIViewController {
         timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
         timeline.points = myPoints
     }
-
-        
-
-
-
+    
+    
+    
+    
+    
 }
 
 

@@ -9,7 +9,7 @@
 import UIKit
 
 class RideX_ViewController: UIViewController {
-
+    
     var swipeValue: Int = 0
     var totalSwipeValues: Int = 2 //3 with zero - 0, 1, 2
     var percentofmax = stringer0(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
@@ -91,7 +91,7 @@ class RideX_ViewController: UIViewController {
             topVERT.text = "HRT 30i \(percentofmax)%"
             BIG_L_HZ.text = stringer0(myIn: interval.hr)
             BIG_T_VERT.text = stringer0(myIn: interval.hr)
-
+            
             
             BIG_MIDDLE.text = stringer1(myIn: interval.speed)
             midHZ.text = "SPD 30i"
@@ -111,7 +111,7 @@ class RideX_ViewController: UIViewController {
             topVERT.text = "HRT RND \(percentofmax)%"
             BIG_L_HZ.text = stringer0(myIn: round.hr)
             BIG_T_VERT.text = stringer0(myIn: round.hr)
-
+            
             BIG_MIDDLE.text = stringer1(myIn: round.speed)
             midHZ.text = "SPD RND:  \(round.inRoundTimer)"
             midVERT.text = "SPD RND:  \(round.inRoundTimer)"
@@ -142,9 +142,9 @@ class RideX_ViewController: UIViewController {
         case 1:
             //HRT 30i
             leftHZ.text = "HRT 30i \(percentofmax)%"
-//            topVERT.text = "HRT 30i \(percentofmax)%"
-//            BIG_L_HZ.text = stringer0(myIn: interval.hr)
-//            BIG_T_VERT.text = stringer0(myIn: interval.hr)
+            //            topVERT.text = "HRT 30i \(percentofmax)%"
+            //            BIG_L_HZ.text = stringer0(myIn: interval.hr)
+            //            BIG_T_VERT.text = stringer0(myIn: interval.hr)
             
         case 2:
             //HRT RND
@@ -263,34 +263,34 @@ class RideX_ViewController: UIViewController {
             print("DOWN")
             //let x = downState
             self.tabBarController?.selectedIndex = 2;
-//            if x == 0 {
-//                BIG_MIDDLE.isHidden = false
-//                midHZ.isHidden = false
-//                BIGL_TRAILING.constant = -36
-//                BIGR_LEADING.constant = -36
-//                BIGL_TOP.constant = 90
-//                downState = 1
-//            }
-//            if x == 1 {
-//                BIG_MIDDLE.isHidden = true
-//                midHZ.isHidden = true
-//                BIGL_TRAILING.constant = 0
-//                BIGR_LEADING.constant = 0
-//                BIGL_TOP.constant = 45
-//                //chg cad to score
-//                downState = 2
-//            }
-//            if x == 2 {
-//                BIG_MIDDLE.isHidden = true
-//                midHZ.isHidden = true
-//                BIGL_TRAILING.constant = 0
-//                BIGR_LEADING.constant = 0
-//                BIGL_TOP.constant = 45
-//                //chg hr to sspeed
-//                downState = 0
-//            }
-
-
+            //            if x == 0 {
+            //                BIG_MIDDLE.isHidden = false
+            //                midHZ.isHidden = false
+            //                BIGL_TRAILING.constant = -36
+            //                BIGR_LEADING.constant = -36
+            //                BIGL_TOP.constant = 90
+            //                downState = 1
+            //            }
+            //            if x == 1 {
+            //                BIG_MIDDLE.isHidden = true
+            //                midHZ.isHidden = true
+            //                BIGL_TRAILING.constant = 0
+            //                BIGR_LEADING.constant = 0
+            //                BIGL_TOP.constant = 45
+            //                //chg cad to score
+            //                downState = 2
+            //            }
+            //            if x == 2 {
+            //                BIG_MIDDLE.isHidden = true
+            //                midHZ.isHidden = true
+            //                BIGL_TRAILING.constant = 0
+            //                BIGR_LEADING.constant = 0
+            //                BIGL_TOP.constant = 45
+            //                //chg hr to sspeed
+            //                downState = 0
+            //            }
+            
+            
             break
         }
     }

@@ -9,7 +9,7 @@
 import UIKit
 
 class RideI_ViewController: UIViewController {
-
+    
     
     @IBOutlet weak var header: UILabel!
     @IBOutlet weak var footer: UILabel!
@@ -44,7 +44,7 @@ class RideI_ViewController: UIViewController {
         header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
     }
     
-
+    
     
     func setButtonAndLabel(l: UILabel, b: UIButton, first: String, second: String, third: String) {
         var bigFontSize: CGFloat = 75
@@ -56,7 +56,7 @@ class RideI_ViewController: UIViewController {
         }
         
         if b == out_V1 || b == out_V2 || b == out_V1 {
-
+            
             if deviceNum == 4 {
                 bigFontSize = 75.0
                 smallFontSize = 15.0
@@ -72,22 +72,22 @@ class RideI_ViewController: UIViewController {
         }
         
         let string = first + second as NSString
-            let result = NSMutableAttributedString(string: string as String)
+        let result = NSMutableAttributedString(string: string as String)
         let attributesForFirstWord = [
             NSAttributedStringKey.foregroundColor : UIColor.white,
             NSAttributedStringKey.font:  UIFont(
                 name: "Yanone Kaffeesatz",
                 size: bigFontSize)!
         ]
-                let attributesForSecondWord = [
+        let attributesForSecondWord = [
             NSAttributedStringKey.foregroundColor : UIColor.white,
             NSAttributedStringKey.font:  UIFont(
                 name: "Yanone Kaffeesatz",
                 size: smallFontSize)!
-            ]
+        ]
         result.setAttributes(attributesForFirstWord,
                              range: string.range(of: first))
-
+        
         result.setAttributes(attributesForSecondWord,
                              range: string.range(of: second))
         UIButton.setAnimationsEnabled(false)
@@ -96,7 +96,7 @@ class RideI_ViewController: UIViewController {
         l.text = third
     }
     
-
+    
     func getFirst(counterNum: Int) -> (f: String, s: String, t: String) {
         
         switch counterNum {
@@ -182,7 +182,7 @@ class RideI_ViewController: UIViewController {
             btnV2_counter += 1
         }
         counters[1] = btnV2_counter
-
+        
         let gf = getFirst(counterNum: c)
         
         let f = gf.f
@@ -275,37 +275,6 @@ class RideI_ViewController: UIViewController {
         setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
-    
-    
-    
-    
-    
-    //just for view did load
-//    func setAttribButtonTitle(x: UIButton) {
-//        let myString1 = "00.0 MPH"
-//        let myMutableString = NSMutableAttributedString(
-//        string: myString1,
-//        attributes: [NSAttributedStringKey.font:
-//        UIFont(name: "Yanone Kaffeesatz", size: 20.0)!])
-//
-//        myMutableString.addAttribute(
-//        NSAttributedStringKey.font,
-//        value: UIFont(
-//        name: "Yanone Kaffeesatz",
-//        size: 90.0)!,
-//        range: NSRange(
-//        location: 0,
-//        length: 4))
-//
-//    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length: 4))
-//        x.setAttributedTitle(myMutableString, for: .normal)
-//    myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:4,length: 4))
-//        x.setAttributedTitle(myMutableString, for: .normal)
-//
-//    }
-    
-
-    
     var HeadL_Counter = 0
     @IBAction func btn_HeadL(_ sender: UIButton) {
         let x = HeadL_Counter
@@ -364,19 +333,14 @@ class RideI_ViewController: UIViewController {
         }
         
         
-
+        
     }
-
     
-
-    
-//    self.dismiss(animated: true, completion: nil)
-
     var swipeUpVal: Int = 1
     var swipeValue: Int = 0
     var totalSwipeValues: Int = 2 //3 with zero - 0, 1, 2
     
-
+    
     
     func changeSwipeNumber() {
         if (swipeValue == totalSwipeValues) {
@@ -423,7 +387,7 @@ class RideI_ViewController: UIViewController {
     @IBOutlet weak var out_L2H: UILabel!
     @IBOutlet weak var out_L3H: UILabel!
     
-
+    
     var deviceNum: Int = 0
     var buttons = [UIButton]()
     var labels = [UILabel]()
@@ -450,7 +414,7 @@ class RideI_ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if UIDevice().userInterfaceIdiom == .phone
         {
             switch UIScreen.main.nativeBounds.height
@@ -475,7 +439,7 @@ class RideI_ViewController: UIViewController {
                 
             }
         }
-
+        
         buttons.append(out_V1)
         labels.append(out_L1V)
         counters.append(0)
@@ -523,26 +487,16 @@ class RideI_ViewController: UIViewController {
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(update1a), name: Notification.Name("update"), object: nil)
-
+        
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
 
 
