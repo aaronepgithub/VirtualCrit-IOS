@@ -59,23 +59,23 @@ class TLViewController: UIViewController {
             hrHasVal = 1
         }
         
-        let x = 90
-        if (rt.int_elapsed_time % x) == 0 {
+        let x = 100
+        let y = 200
+        if ((rt.int_elapsed_time % x) == 0 || (rt.int_elapsed_time % y) == 0)  {
             
             if gpsEnabled == true  && rt.int_elapsed_time > 5 && geo.avgSpeed > 0 && geo.avgSpeed.isNaN == false && geo.avgSpeed.isFinite == true {
                 
-                new30pointBlack(titleString: "\(x)s GPS \n \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \(calcMinPerMile(mph: geo.avgSpeed)) AVG PACE")
+                var tx = ""
+                tx =  "\(rt.int_elapsed_time) SEC/RND \n RT GPS:  \(stringer1(myIn:  geo.speed)) MPH  \(geo.pace) PACE \n"
+                tx += " RND GPS:  \(stringer1(myIn:  round.geoSpeed)) MPH  \(calcMinPerMile(mph: round.geoSpeed)) PACE \n"
+                tx += " TOTAL GPS:  \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \n \(geo.avgPace) MIN PER MILE"
                 
-                new30pointBlack(titleString: "\(x)s RT GPS \n\(stringer1(myIn:  geo.speed)) RT MPH  \(geo.pace) RT PACE")
-                
-                new30pointBlack(titleString: "\(x)s RND GPS \n\(stringer1(myIn:  round.geoSpeed)) RND MPH  \(calcMinPerMile(mph: round.geoSpeed)) RND PACE")
-                
-                
+                new30pointBlack(titleString: tx)
             }
             
             if rt.rt_hr > 0 || rt.rt_speed > 0 || rt.rt_cadence > 0 {
                 
-                new30point(titleString: "30s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) RT MPH ")
+                new30point(titleString: "\(x)s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) RT MPH ")
             }
             
         }
@@ -91,19 +91,20 @@ class TLViewController: UIViewController {
                 self.newHRpoint(titleString: "5 MINUTES COMPLETED")
                 
                 
-                if round.speeds.count > 0 {
+                if round.speeds.count > 0  {
                     var s = round.speeds.count
                     var a = 0
                     if s == 0 {
                         return
                         
                     } else {
-                        let text1 = "SPD   CAD   HRT (ROUND)"
+                        let text1 = "  SPD   CAD   HRT (ROUND)  "
                         var text2 = ""
                         while s > 0 && a < 10 {
-                            text2 += "\(stringer2(myIn: round.speeds[s-1])) "
-                            text2 += "\(stringer1(myIn: round.cadences[s-1])) "
-                            text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+                            text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
+                            text2 += " \(stringer1(myIn: round.cadences[s-1]))  "
+                            text2 +=  "\(stringer1(myIn: round.heartrates[s-1]))  "
+                            text2 +=  "\(stringer1(myIn: round.geoSpeeds[s-1]))  "
                             text2 += "\n"
                             s = s - 1
                             a = a + 1
