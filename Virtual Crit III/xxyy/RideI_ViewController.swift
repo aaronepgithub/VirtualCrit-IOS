@@ -25,8 +25,17 @@ class RideI_ViewController: UIViewController {
     func getFooter() -> String {
         
         // if ble dist/spd is 0, try for geo
-        let mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
-        return "AVG \(stringer1(myIn: mvspd))  \(rt.total_moving_time_string) MOV"
+        
+        var mvspd = rt.total_distance / (rt.total_moving_time_seconds / 60 / 60)
+        var mvtime = rt.total_moving_time_string
+        
+        if rt.total_distance == 0 && geo.total_distance > 0 {
+            mvspd = geo.total_distance / (geo.total_moving_time_seconds / 60 / 60)
+            mvtime = geo.total_moving_time_string
+            
+        }
+        
+        return "AVG \(stringer1(myIn: mvspd))  \(mvtime) MOV"
         
     }
     
@@ -41,7 +50,15 @@ class RideI_ViewController: UIViewController {
     func getHeader() {
         footer.text = getFooter()
         //timeOfDay.text = getFormattedTime()
-        header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
+        if rt.total_distance > 0 {
+            header.text = "\(stringer2(myIn: rt.total_distance)) MILES   \(rt.string_elapsed_time)"
+        } else {
+            header.text = "\(stringer2(myIn: geo.total_distance)) GEO MILES   \(rt.string_elapsed_time)"
+        }
+        if rt.total_distance > 0 && geo.total_distance > 0 {
+            header.text = "\(stringer1(myIn: rt.total_distance)) (\(stringer1(myIn: geo.total_distance))) MI   \(rt.string_elapsed_time)"
+        }
+        
     }
     
     
@@ -67,8 +84,8 @@ class RideI_ViewController: UIViewController {
         }
         
         if b == out_V2 || b == out_H2 {
-            bigFontSize = bigFontSize * 1.05
-            smallFontSize = smallFontSize * 1.05
+            bigFontSize = bigFontSize * 1.1
+            smallFontSize = smallFontSize * 1.1
         }
         
         let string = first + second as NSString
@@ -134,8 +151,12 @@ class RideI_ViewController: UIViewController {
         case 6:
             let f = stringer1(myIn: geo.speed)
             let s = " MPH"
-            
             let t = "SPD(GEO) \n \(geo.pace) m/mi"
+            return(f, s, t)
+        case 7:
+            let f = geo.pace
+            let s = " Min/Mi"
+            let t = "PACE(GEO) \n \(stringer1(myIn: geo.speed)) MPH"
             return(f, s, t)
         default:
             let f = "00.0"
@@ -146,7 +167,7 @@ class RideI_ViewController: UIViewController {
         
     }
     
-    let maxCounterOptions = 6
+    let maxCounterOptions = 7
     var btnV1_counter: Int = 0
     @IBAction func btn_V1(_ sender: UIButton) {
         
@@ -397,7 +418,7 @@ class RideI_ViewController: UIViewController {
     
     @objc func update1a() {
         var n = 0
-        while n < 6 {
+        while n < 6 {  //number of labels or buttons needing an update
             
             let l = labels[n]
             let b = buttons[n]

@@ -67,9 +67,29 @@ func stringer2(myIn: Double) -> String {
     }
 }
 
+func calcMinPerMile(mph: Double) -> String {
+    let a = (60 / mph)
+    if a.isFinite == false {
+        return "00:00"
+    }
+    
+    let b = (a - Double(Int(a)))
+    let c = b * 60
+    
+    let d = Int(a)
+    let e = Int(c)
+    if (e < 10) {
+        return "\(d):0\(e)"
+    } else {
+        return "\(d):\(e)"
+    }
+}
 
+var settings_MAXHR: Double = 185.0
+var settings_Audio: Bool = false
+var gpsEnabled: Bool = false
 var wheelCircumference: Double = 2105
-var rtTimer_Interval: Double = 1.0
+//var rtTimer_Interval: Double = 1.0
 var name = "TIM"
 
 struct rt {
@@ -97,21 +117,21 @@ struct geo {
     static var total_distance: Double = 0
     static var total_moving_time_seconds: Double = 0  //in seconds
     static var total_moving_time_string: String = "00:00:00"
-    
-    static var total_time: Double = 0
-    static var string_elapsed_time: String = "00:00:00"
-    static var int_elapsed_time: Int = 0
+
 }
 
 struct interval {
-    static var counter: Double = 0
+    static var secondsInInterval: Int = 30
+    //static var counter: Double = 0
     //averages
     static var speed: Double = 0
     static var cadence: Double = 0
     static var hr: Double = 0
+    static var geoSpeed: Double = 0
     //data
     static var cadences = [Double]()
     static var distances = [Double]()
+    static var geoDistances = [Double]()
     static var heartrates = [Double]()
     
 }

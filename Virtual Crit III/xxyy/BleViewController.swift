@@ -58,7 +58,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     let HR_Service = "0x180D"
     let HR_Char =  "0x2A37"
-    
     let CSC_Service = "0x1816"
     let CSC_Char = "0x2A5B"
     
@@ -66,17 +65,13 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var roundStartTime: NSDate?
     var roundWheelRevs_atStart: Double = 0
     var roundCrankRevs_atStart: Double = 0
-    
+    var roundGeoDistance: Double = 0
     var inRoundSpeed: Double = 0
-    
     var inRoundCadence: Double = 0
-    
     var inRoundHR: Double = 0
     var totalAvgHR: Double = 0
-    
     var inRoundGeoDist: Double = 0
     var inRoundGeoSpeed: Double = 0
-    
     
     func newRoundActionSheet() {
         
@@ -94,6 +89,9 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let a3 = UIAlertAction(title: "CAD:  \(stringer1(myIn: round.cadences.last!))  RPM", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
+        let a4 = UIAlertAction(title: "GEO:  \(stringer1(myIn: round.geoSpeeds.last!))  MPH", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
         let percentofmax = stringer2(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
         let cancelAction = UIAlertAction(title: "SCORE:  \(percentofmax) %MAX HR", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
@@ -104,6 +102,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         optionMenu.addAction(a1)
         optionMenu.addAction(a2)
         optionMenu.addAction(a3)
+        optionMenu.addAction(a4)
         optionMenu.addAction(cancelAction)
         
         
@@ -124,10 +123,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         round.speeds.append(round.speed)
         round.cadences.append(round.cadence)
+        round.geoSpeeds.append(round.geoSpeed)
+        round.geoDistances.append(geo.total_distance)
+        round.heartrates.append(round.hr)
+        inRoundHR = 0
         
         roundStartTime = NSDate()
         roundWheelRevs_atStart = totalWheelRevs
         roundCrankRevs_atStart = totalCrankRevs
+        roundGeoDistance = geo.total_distance
         
         
         newRoundActionSheet()
@@ -139,30 +143,24 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     
     
-    func roundUpdate_each_second() {
+    func roundUpdate_each_second(xx: Int) -> Bool {
+        print("roundUpdate_each_second, xx:  \(xx)")
         let x = NSDate()
         let y = x.timeIntervalSince(roundStartTime! as Date!)
         let z = Int(y)
         
-        
-        if round.geoDistances.count > 0 {
-            inRoundGeoDist = geo.total_distance - round.geoDistances.last!
-        } else {
-            inRoundGeoDist = geo.total_distance
-        }
-        
+
+        inRoundGeoDist = geo.total_distance - roundGeoDistance
         if inRoundGeoDist > 0 {
-            inRoundGeoSpeed = inRoundGeoDist / Double((Double(z) / 60.0 / 60.0))
+            inRoundGeoSpeed = Double(inRoundGeoDist / Double((Double(z) / 60.0 / 60.0)))
         } else {
             inRoundGeoSpeed = 0
         }
         
         round.geoSpeed = inRoundGeoSpeed
         round.geoPace = calcMinPerMile(mph: round.geoSpeed)
-        
-        
-        
         inRoundHR += Double(rt.rt_hr)
+        
         var avgInRoundHR = inRoundHR / Double(z)
         if avgInRoundHR.isNaN == true || avgInRoundHR.isInfinite == true {
             avgInRoundHR = 0
@@ -172,7 +170,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let a = totalWheelRevs - roundWheelRevs_atStart
         let b = Double(Double(wheelCircumference) / Double(1000)) * 0.000621371
         let c = Double(z) / Double(60) / Double(60)
-        round.inRoundTimer = z
+        //round.inRoundTimer = z
         
         inRoundSpeed = Double(a) * Double(b) / Double(c)
         round.speed = inRoundSpeed
@@ -181,20 +179,21 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         inRoundCadence = (d / y) * 60.0
         round.cadence = inRoundCadence
         
+
+        
+        if z >= round.secondsPerRound {
+            print("new round")
+            newRound()
+        }
+        
+        update_Interval_Values()
         if z % 45 == 0
         {
             let h = rt.rt_hr
             if (h == veloH) {rt.rt_hr = 0}
             veloH = h
         }
-        
-        if z >= round.secondsPerRound { //set to sec per round
-            round.heartrates.append(round.hr)
-            round.geoSpeeds.append(inRoundGeoSpeed)
-            round.geoDistances.append(inRoundGeoDist)
-            inRoundHR = 0
-            newRound()
-        }
+        return true
     }
     
     
@@ -206,9 +205,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.string_elapsed_time = createTimeString(seconds: Int(z))
         rt.int_elapsed_time = Int(z)  //int for seconds
         
-        roundUpdate_each_second()
+        let ru = roundUpdate_each_second(xx: rt.int_elapsed_time)
+        print(ru)
         
         NotificationCenter.default.post(name: Notification.Name("update"), object: nil)
+        
         //END OF EACH SECOND UPDATE
     }
     
@@ -617,56 +618,32 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     var mainTimer = Timer()
     var rtTimer = Timer()
-    
-    //    var returnSpeed: Double = 0
-    //    var returnCadence: Double = 0
-    //    var returnHR: Double = 0
+
     
     @objc func update_Interval_Values() {
         
         interval.heartrates.append(rt.rt_hr)
         interval.distances.append(rt.total_distance)
         interval.cadences.append(rt.rt_cadence)
+        interval.geoDistances.append(geo.total_distance)
         
-        //        let x = Int(rt.rt_hr)
-        //        tabBarController?.tabBar.items?[1].badgeValue = String(x)
-        //        let y = Int(rt.rt_speed)
-        //        tabBarController?.tabBar.items?[2].badgeValue = String(y)
-        //        let z = Int(rt.rt_cadence)
-        //        tabBarController?.tabBar.items?[3].badgeValue = String(z)
-        
-        interval.hr = (interval.heartrates.reduce(0, +)) / 30
-        interval.cadence = (interval.cadences.reduce(0, +)) / 30
+        interval.hr = (interval.heartrates.reduce(0, +)) / Double(interval.secondsInInterval)
+        interval.cadence = (interval.cadences.reduce(0, +)) / Double(interval.secondsInInterval)
         interval.speed = (interval.distances.last! - interval.distances.first!) * (2 * 60)  //30 sec as an hour
-        
-        //        print("interval hr, spd, cad")
-        //        print(interval.hr, interval.speed, interval.cadence)
-        
+        interval.geoSpeed = (interval.geoDistances.last! - interval.geoDistances.first!) * (2 * 60)  //30 sec as an hour
+
         if interval.heartrates.count == 29 {
             interval.heartrates.removeFirst()
             interval.cadences.removeFirst()
             interval.distances.removeFirst();
+            interval.geoDistances.removeFirst()
         }
         
     }
     
-    func reset_rtTimer() {
-        print("reset rtTimer")
-        rtTimer.invalidate()
-        start_rtTimer()
-    }
-    
-    
-    //have to restart on settings change
-    func start_rtTimer() {
-        rtTimer = Timer()
-        rtTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(update_Interval_Values), userInfo: nil, repeats: true)
-        roundStartTime = NSDate()
-    }
     
     var firstLoad = 0
     @IBOutlet var ViewStartup: UIView!
-    
     @IBAction func action_CloseStartupView(_ sender: UIButton) {
         firstLoad = 1
         ViewStartup.removeFromSuperview()
@@ -683,11 +660,13 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         self.BLTE_TableViewOutlet.addSubview(refreshControl)
         
         if rt.int_elapsed_time == 0 {
+            startTime = NSDate()
+            roundStartTime = startTime
             mainTimer = Timer()
             mainTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(UpdateTimeDisplay), userInfo: nil, repeats: true)
-            startTime = NSDate()
+            
             print("Start Main Timer")
-            start_rtTimer()
+            //start_rtTimer()
         }
         
         

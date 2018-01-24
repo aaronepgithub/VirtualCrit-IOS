@@ -60,13 +60,13 @@ class TLViewController: UIViewController {
         }
         
         let x = 100
-        let y = 200
-        if ((rt.int_elapsed_time % x) == 0 || (rt.int_elapsed_time % y) == 0)  {
+        
+        if ((rt.int_elapsed_time % x) == 0)  {
             
             if gpsEnabled == true  && rt.int_elapsed_time > 5 && geo.avgSpeed > 0 && geo.avgSpeed.isNaN == false && geo.avgSpeed.isFinite == true {
                 
                 var tx = ""
-                tx =  "\(rt.int_elapsed_time) SEC/RND \n RT GPS:  \(stringer1(myIn:  geo.speed)) MPH  \(geo.pace) PACE \n"
+                tx =  "\(rt.int_elapsed_time) SEC UPDATE \n RT GPS:  \(stringer1(myIn:  geo.speed)) MPH  \(geo.pace) PACE \n"
                 tx += " RND GPS:  \(stringer1(myIn:  round.geoSpeed)) MPH  \(calcMinPerMile(mph: round.geoSpeed)) PACE \n"
                 tx += " TOTAL GPS:  \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \n \(geo.avgPace) MIN PER MILE"
                 
@@ -88,7 +88,7 @@ class TLViewController: UIViewController {
             
             let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
-                self.newHRpoint(titleString: "5 MINUTES COMPLETED")
+                //self.newHRpoint(titleString: "5 MINUTES COMPLETED")
                 
                 
                 if round.speeds.count > 0  {
@@ -98,7 +98,7 @@ class TLViewController: UIViewController {
                         return
                         
                     } else {
-                        let text1 = "  SPD   CAD   HRT (ROUND)  "
+                        let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO SPD "
                         var text2 = ""
                         while s > 0 && a < 10 {
                             text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
@@ -124,10 +124,10 @@ class TLViewController: UIViewController {
                         return
                         
                     } else {
-                        let text1 = "ROUND SPEEDS (GEO)"
+                        let text1 = "ROUND SPEEDS/PACE (GEO)"
                         var text2 = ""
                         while s > 0 && a < 10 {
-                            text2 += "\(stringer2(myIn: round.geoSpeeds[s-1])) "
+                            text2 += "\(stringer2(myIn: round.geoSpeeds[s-1]))  \(calcMinPerMile(mph: round.geoSpeeds[s-1])) "
                             text2 += "\n"
                             s = s - 1
                             a = a + 1

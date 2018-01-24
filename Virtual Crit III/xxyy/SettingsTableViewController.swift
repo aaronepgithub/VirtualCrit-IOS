@@ -9,30 +9,7 @@
 import UIKit
 import CoreLocation
 
-var settings_MAXHR: Double = 185.0
-var settings_Audio: Bool = false
-var gpsEnabled: Bool = false
 
-func calcMinPerMile(mph: Double) -> String {
-    
-    
-    let a = (60 / mph)
-    if a.isFinite == false {
-        return "00:00"
-    }
-    
-    let b = (a - Double(Int(a)))
-    let c = b * 60
-    
-    let d = Int(a)
-    let e = Int(c)
-    if (e < 10) {
-        return "\(d):0\(e)"
-    } else {
-        return "\(d):\(e)"
-    }
-    
-}
 
 extension Settings: CLLocationManagerDelegate {
     
@@ -42,49 +19,33 @@ extension Settings: CLLocationManagerDelegate {
         
         if locations.count > 3 {
             let x = NSDate()
-            let y = x.timeIntervalSince(startTime! as Date!)
+            let y = x.timeIntervalSince(geoStartTime as Date!)
             let z = Double(y)  //time in seconds
             
-            geo.string_elapsed_time = createTimeString(seconds: Int(z))
-            geo.int_elapsed_time = Int(z)  //int for seconds
-            
-            //seconds += z
-            //secondsQuantity += 1
-            
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.hour, .minute, .second]
-            formatter.unitsStyle = .positional
-            //let formattedString = formatter.string(from: TimeInterval(seconds))!
-            //lbl_Duration.text = formattedString
-            
-            miles = distance * 0.000621371 //Miles
-            geo.total_distance = miles
-            
-            geo.avgSpeed = geo.total_distance / ( z / 60.0 / 60.0)
+            geo.total_moving_time_string = createTimeString(seconds: Int(z))
+            geo.total_moving_time_seconds = z  //int for seconds
+            geo.avgSpeed = geo.total_distance / ( geo.total_moving_time_seconds / 60.0 / 60.0)
             geo.avgPace = calcMinPerMile(mph: geo.avgSpeed)
             
             
-            if geo.int_elapsed_time - oldSecondsQuantity == 60 {
+            if Int(geo.total_moving_time_seconds) - oldGeoTime == 60 {
                 //lbl_Moving_Speed.text = "1 Minute"
                 print("\n  60S Update:")
                 print("geo.total_distance:  \(geo.total_distance) Miles")
                 print("geo.avgSpeed:  \(geo.avgSpeed) Avg Mph")
-                print("geo.speed \(geo.speed) RT Mph")
-                print("geo.string_elapsed_time:  \(geo.string_elapsed_time)")
-                print("Avg Pace:  \(calcMinPerMile(mph: geo.avgSpeed)) Min/Mile")
+                print("geo.avgPace:  \(geo.avgPace) Min/Mile")
+                print("geo.total_moving_time_string:  \(geo.total_moving_time_string)")
                 print("\n")
-                oldSecondsQuantity = geo.int_elapsed_time
+                oldGeoTime = Int(geo.total_moving_time_seconds)
             }
-            
-            
-            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", geo.speed))MPH, \(calcMinPerMile(mph: geo.speed))PACE)"
+            lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", geo.speed))MPH, \(geo.pace) PACE)"
         }
         
     }
     
-    func stopTimer() {
-        timer.invalidate()
-    }
+//    func stopTimer() {
+//        //timer.invalidate()
+//    }
     
     func startLocationUpdates() {
         print("startLocationUpdates")
@@ -92,7 +53,7 @@ extension Settings: CLLocationManagerDelegate {
     }
     
     func stopWorkout() {
-        stopTimer()
+        //stopTimer()
         locationManager.stopUpdatingLocation()
         //lbl_btn_Start_Stop.setTitle("Restart", for: .normal)
     }
@@ -100,38 +61,25 @@ extension Settings: CLLocationManagerDelegate {
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //print("Did update location")
-        //print(locations)
         for location in locations {
             if location.horizontalAccuracy < 20 {
-                
                 if self.locations.count > 2 {
-                    
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
-                        
-                        distance += location.distance(from: self.locations.last!)  //meters
-                        
+                        distanceInMeters += location.distance(from: self.locations.last!)  //meters
+                        geo.total_distance = distanceInMeters * 0.000621371 //Miles
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)
                         coords.append(location.coordinate)
                         
-                        instantPace = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
-                        
-                        geo.speed = instantPace
+                        geo.speed = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         geo.pace = calcMinPerMile(mph: geo.speed)
-                        
-                        
                     }
-                    
-                    
-                    
                 } else {
                     print("Waiting for the 3rd update")
                     if (self.locations.count == 2) {
-                        startTime = NSDate()
-                        print("startTime:  \(String(describing: startTime))")
+                        geoStartTime = NSDate()
+                        print("startTime:  \(String(describing: geoStartTime))")
                     }
-                    
                 }
                 self.locations.append(location)
             }
@@ -140,25 +88,17 @@ extension Settings: CLLocationManagerDelegate {
     
     func startGeo() {
         print("Geo Started")
-        
-        
-        //seconds = 0.0
-        distance = 0.0
+        geo.total_distance = 0.0
         locations.removeAll(keepingCapacity: false)
         
         timer = Timer.scheduledTimer(timeInterval: 1,
-                                     target: self,
-                                     selector: #selector(self.eachSecond),
-                                     userInfo: nil,
-                                     repeats: true)
+         target: self,
+         selector: #selector(self.eachSecond),
+         userInfo: nil,
+         repeats: true)
         
         startLocationUpdates()
-        
-        
     }
-    
-    
-    
 }
 
 
@@ -169,29 +109,10 @@ class Settings: UITableViewController {
     @IBOutlet weak var lbl_MaxHR: UILabel!
     @IBOutlet weak var lbl_TireSizeCell: UILabel!
     
-    //var seconds     = 0.0
-    var distance    = 0.0
-    var instantPace = 0.0
-    var trainingHasBegun: Bool = false
-    
-    var startTime: NSDate?
-    var roundStartTime: NSDate?
-    var roundWheelRevs_atStart: Double = 0
-    
-    
-    //var secondsQuantity: Double = 0
-    var distanceQuantity: Double = 0
-    var paceUnit: Double = 0
-    var paceQuantity: Double = 0
-    var hours: Double = 0
-    var miles: Double = 0
-    
-    var oldSecondsQuantity: Int = 0
-    var oldMiles: Double = 0
-    var oldHours: Double = 0
-    var arr_RoundSpeeds = [Double]()
-    
-    
+
+    var distanceInMeters = 0.0
+    var geoStartTime: NSDate?
+    var oldGeoTime: Int = 0
     
     
     lazy var locationManager: CLLocationManager = {
@@ -313,7 +234,7 @@ class Settings: UITableViewController {
             if x == true {
                 lbl_GPS.text = "ENABLE GPS"
                 gpsEnabled = false
-                stopTimer()
+                //stopTimer()
                 locationManager.stopUpdatingLocation()
             }
             
