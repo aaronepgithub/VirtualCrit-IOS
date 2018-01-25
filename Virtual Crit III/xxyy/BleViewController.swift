@@ -116,6 +116,22 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
     }
     
+    func createNRArray() {
+        if round.speeds.count > 0  {
+            arrResults = []
+            var s = round.speeds.count
+            var a = 0
+            if s == 0 {
+                return
+            } else {
+                while s > 0 && a < 100 {
+                    arrResults.append("\(s-1):  \(stringer2(myIn: round.speeds[s-1])) MPH  \(stringer1(myIn: round.cadences[s-1])) RPM  \(stringer1(myIn: round.heartrates[s-1])) BPM  \(stringer1(myIn: round.geoSpeeds[s-1]))  GPS SPD")
+                    s = s - 1
+                    a = a + 1
+                }
+            }
+        }
+    }
     
     func newRound(xx: Int) -> Bool {  //every 300 sec
         
@@ -133,6 +149,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         roundCrankRevs_atStart = totalCrankRevs
         roundGeoDistance = geo.total_distance
         
+        createNRArray()
         newRoundActionSheet()
         return true
     }
@@ -143,7 +160,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     
     func roundUpdate_each_second(xx: Int) -> Bool {
-        print("roundUpdate_each_second, xx:  \(xx), \(NSDate())")
+        //print("roundUpdate_each_second, xx:  \(xx), \(NSDate())")
 
         inRoundGeoDist = geo.total_distance - roundGeoDistance
         if inRoundGeoDist > 0 {
@@ -197,7 +214,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         rt.string_elapsed_time = createTimeString(seconds: i)
         rt.int_elapsed_time = i  //int for seconds
         
-        print("Update Time Display time, seconds (x,i,IntRoundCounter):  \(x), \(i), \(IntRoundCounter)")
+        //print("Update Time Display time, seconds (x,i,IntRoundCounter):  \(x), \(i), \(IntRoundCounter)")
         
         if i > 1 {
             if i % round.secondsPerRound == 0 || IntRoundCounter >= (round.secondsPerRound) {

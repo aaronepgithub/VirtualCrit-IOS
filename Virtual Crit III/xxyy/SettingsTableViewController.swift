@@ -9,7 +9,8 @@
 import UIKit
 import CoreLocation
 
- var firstTime = 0
+var firstTime = 0
+
 
 extension Settings: CLLocationManagerDelegate {
     
@@ -18,12 +19,16 @@ extension Settings: CLLocationManagerDelegate {
     @objc func eachSecond(timer: Timer) {
         
         if locations.count > 3 {
-            let x = NSDate()
-            let y = x.timeIntervalSince(geoStartTime as Date!)
-            let z = Double(y)  //time in seconds
+//            let x = NSDate()
+//            let y = x.timeIntervalSince(geoStartTime as Date!)
+//            let z = Double(y)  //time in seconds
             
-            geo.total_moving_time_string = createTimeString(seconds: Int(z))
-            geo.total_moving_time_seconds = z  //int for seconds
+//            geo.total_moving_time_string = createTimeString(seconds: Int(z))
+//            geo.total_moving_time_seconds = z  //int for seconds
+            
+            geo.total_moving_time_string = createTimeString(seconds: Int(geoGPSMovingTime))
+            geo.total_moving_time_seconds = geoGPSMovingTime  //int for seconds
+            
             geo.avgSpeed = geo.total_distance / ( geo.total_moving_time_seconds / 60.0 / 60.0)
             geo.avgPace = calcMinPerMile(mph: geo.avgSpeed)
             
@@ -37,6 +42,7 @@ extension Settings: CLLocationManagerDelegate {
                 print("geo.total_moving_time_string:  \(geo.total_moving_time_string)")
                 print("\n")
                 oldGeoTime = Int(geo.total_moving_time_seconds)
+                
             }
             lbl_GPS.text = "DISABLE GPS: (\(String(format: "%.01f", geo.speed))MPH, \(geo.pace) PACE)"
         }
@@ -73,6 +79,13 @@ extension Settings: CLLocationManagerDelegate {
                         
                         geo.speed = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         geo.pace = calcMinPerMile(mph: geo.speed)
+                        
+                        let ts = ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
+                        if ts < 10 {
+                        geoGPSMovingTime += ts
+                        //print("geoGPSMovingTime:  \(geoGPSMovingTime)")
+                        }
+
                     }
                 } else {
                     print("Waiting for the 3rd update")
@@ -82,6 +95,7 @@ extension Settings: CLLocationManagerDelegate {
                     }
                 }
                 self.locations.append(location)
+                //oldGeoTimeStamp = self.locations.last!.timestamp as NSDate
             }
         }
     }
@@ -113,7 +127,9 @@ class Settings: UITableViewController {
     var distanceInMeters = 0.0
     var geoStartTime: NSDate?
     var oldGeoTime: Int = 0
+    var oldGeoTimeStamp: NSDate?
     
+    var geoGPSMovingTime: Double = 0
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()

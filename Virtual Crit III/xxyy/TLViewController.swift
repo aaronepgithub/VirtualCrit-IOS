@@ -8,6 +8,7 @@
 
 import UIKit
 
+var arrResults = [String]()
 class TLViewController: UIViewController {
     
     //    https://github.com/instant-solutions/ISTimeline
@@ -56,15 +57,19 @@ class TLViewController: UIViewController {
     
     @objc func updateR() {
         
+        
+        
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
             if round.speeds.count > 0  {
+                //arrResults = []
                 var s = round.speeds.count
                 var a = 0
                 if s == 0 {
                     return
                     
                 } else {
+                    //arrResults.append("ROUNDS COMPLETED")
                     let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO SPD "
                     var text2 = ""
                     while s > 0 && a < 50 {
@@ -73,8 +78,12 @@ class TLViewController: UIViewController {
                         text2 +=  "\(stringer1(myIn: round.heartrates[s-1]))  "
                         text2 +=  "\(stringer1(myIn: round.geoSpeeds[s-1]))  "
                         text2 += "\n"
+                        
+                        //arrResults.append("\(s-1):  \(stringer2(myIn: round.speeds[s-1])) MPH  \(stringer1(myIn: round.cadences[s-1])) RPM  \(stringer1(myIn: round.heartrates[s-1])) BPM  \(stringer1(myIn: round.geoSpeeds[s-1]))  GPS SPD")
                         s = s - 1
                         a = a + 1
+                        
+
                     }
                     self.self.new30point(titleString: "\(text1) \n\(text2)")
                 }
