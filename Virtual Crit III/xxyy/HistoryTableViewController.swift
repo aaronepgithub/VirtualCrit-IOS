@@ -18,6 +18,9 @@ class HistoryTableViewController: UITableViewController {
     
     @objc func update1() {
         //print("update")
+        
+
+        
         if round.speeds.count > 0  {
             var s = round.speeds.count
             var a = 0
@@ -37,6 +40,7 @@ class HistoryTableViewController: UITableViewController {
                     a = a + 1
                 }
                 //self.self.new30point(titleString: "\(text1) \n\(text2)")
+                
                 self.lbl_SPD.text = "\(text1) \n\(text2)"
                 
             }
@@ -56,7 +60,9 @@ class HistoryTableViewController: UITableViewController {
                     a = a + 1
                 }
                 //self.self.new30point(titleString: "\(text1) \n\(text2)")
+                
                 self.lbl_GEO.text = "\(text1) \n\(text2)"
+
             }
         }
     
@@ -83,6 +89,7 @@ class HistoryTableViewController: UITableViewController {
                         a = a + 1
                     }
                     //self.self.new30point(titleString: "\(text1) \n\(text2)")
+
                     self.lbl_SPD.text = "\(text1) \n\(text2)"
                     
                 }
@@ -111,10 +118,10 @@ class HistoryTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateR), name: Notification.Name("newRound"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateR), name: Notification.Name("newRound"), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
