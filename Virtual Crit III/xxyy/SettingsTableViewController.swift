@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-
+ var firstTime = 0
 
 extension Settings: CLLocationManagerDelegate {
     
@@ -216,7 +216,7 @@ class Settings: UITableViewController {
     
     
     @IBOutlet weak var lbl_GPS: UILabel!
-    
+   
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //Your action here
@@ -230,6 +230,11 @@ class Settings: UITableViewController {
                 lbl_GPS.text = "DISABLE GPS"
                 gpsEnabled = true
                 startGeo()
+                if firstTime == 0 {
+                    self.tabBarController?.selectedIndex = 1;
+                    firstTime = 1
+                }
+
             }
             if x == true {
                 lbl_GPS.text = "ENABLE GPS"
