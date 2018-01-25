@@ -18,6 +18,48 @@ class HistoryTableViewController: UITableViewController {
     
     @objc func update1() {
         //print("update")
+        if round.speeds.count > 0  {
+            var s = round.speeds.count
+            var a = 0
+            if s == 0 {
+                return
+                
+            } else {
+                let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO  SPD \n "
+                var text2 = ""
+                while s > 0 && a < 50 {
+                    text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
+                    text2 += " \(stringer1(myIn: round.cadences[s-1]))  "
+                    text2 +=  "\(stringer1(myIn: round.heartrates[s-1]))  "
+                    text2 +=  "\(stringer1(myIn: round.geoSpeeds[s-1]))  "
+                    text2 += "\n"
+                    s = s - 1
+                    a = a + 1
+                }
+                //self.self.new30point(titleString: "\(text1) \n\(text2)")
+                self.lbl_SPD.text = "\(text1) \n\(text2)"
+                
+            }
+        }
+        if gpsEnabled == true && round.geoSpeeds.count > 0 {
+            var s = round.geoSpeeds.count
+            var a = 0
+            if s == 0 {
+                return
+            } else {
+                let text1 = "ROUND SPEEDS/PACE (GEO) \n"
+                var text2 = ""
+                while s > 0 && a < 50 {
+                    text2 += "\(stringer2(myIn: round.geoSpeeds[s-1]))  \(calcMinPerMile(mph: round.geoSpeeds[s-1])) "
+                    text2 += "\n"
+                    s = s - 1
+                    a = a + 1
+                }
+                //self.self.new30point(titleString: "\(text1) \n\(text2)")
+                self.lbl_GEO.text = "\(text1) \n\(text2)"
+            }
+        }
+    
     }
     @objc func updateR() {
         let when = DispatchTime.now() + 5
