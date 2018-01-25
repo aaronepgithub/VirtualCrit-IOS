@@ -58,9 +58,6 @@ class TLViewController: UIViewController {
         
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
-            //self.newHRpoint(titleString: "5 MINUTES COMPLETED")
-            
-            
             if round.speeds.count > 0  {
                 var s = round.speeds.count
                 var a = 0
@@ -81,18 +78,12 @@ class TLViewController: UIViewController {
                     }
                     self.self.new30point(titleString: "\(text1) \n\(text2)")
                 }
-                
             }
-            
-            
-            
             if gpsEnabled == true && round.geoSpeeds.count > 0 {
-                
                 var s = round.geoSpeeds.count
                 var a = 0
                 if s == 0 {
                     return
-                    
                 } else {
                     let text1 = "ROUND SPEEDS/PACE (GEO)"
                     var text2 = ""
