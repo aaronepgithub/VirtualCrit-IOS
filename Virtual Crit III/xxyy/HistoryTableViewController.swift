@@ -29,7 +29,7 @@ class HistoryTableViewController: UITableViewController {
                     return
                     
                 } else {
-                    let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO SPD "
+                    let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO  SPD \n "
                     var text2 = ""
                     while s > 0 && a < 50 {
                         text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
@@ -51,7 +51,7 @@ class HistoryTableViewController: UITableViewController {
                 if s == 0 {
                     return
                 } else {
-                    let text1 = "ROUND SPEEDS/PACE (GEO)"
+                    let text1 = "ROUND SPEEDS/PACE (GEO) \n"
                     var text2 = ""
                     while s > 0 && a < 50 {
                         text2 += "\(stringer2(myIn: round.geoSpeeds[s-1]))  \(calcMinPerMile(mph: round.geoSpeeds[s-1])) "
