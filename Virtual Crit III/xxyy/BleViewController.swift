@@ -9,6 +9,8 @@
 import UIKit
 import CoreBluetooth
 
+var arrResults = [String]()
+var arrResultsDetails = [String]()
 
 
 extension UIAlertController {
@@ -108,7 +110,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         optionMenu.presentInOwnWindow(animated: true, completion: {
             print("completed")
-            let when = DispatchTime.now() + 10
+            let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
                 optionMenu.dismiss(animated: true, completion: nil)
             }
@@ -119,17 +121,24 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func createNRArray() {
         if round.speeds.count > 0  {
             arrResults = []
+            arrResultsDetails = []
             var s = round.speeds.count
             var a = 0
             if s == 0 {
                 return
             } else {
                 while s > 0 && a < 100 {
-                    arrResults.append("\(s-1):  \(stringer2(myIn: round.speeds[s-1])) MPH  \(stringer1(myIn: round.cadences[s-1])) RPM  \(stringer1(myIn: round.heartrates[s-1])) BPM  \(stringer1(myIn: round.geoSpeeds[s-1]))  GPS SPD")
+                    arrResults.append("ROUND#  \(s-1):    \(stringer1(myIn: round.heartrates[s-1])) BPM   \(stringer1(myIn: round.scores[s-1])) %")
+                        
+                    arrResultsDetails.append("   \(stringer2(myIn: round.speeds[s-1])) MPH   \(stringer1(myIn: round.cadences[s-1])) RPM   \(stringer1(myIn: round.geoSpeeds[s-1]))  MPH GPS")
+                        
                     s = s - 1
                     a = a + 1
                 }
             }
+            
+            
+            
         }
     }
     
@@ -142,6 +151,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         round.geoSpeeds.append(round.geoSpeed)
         round.geoDistances.append(geo.total_distance)
         round.heartrates.append(round.hr)
+        let percentofmax =  (Double(round.hr) / Double(settings_MAXHR)) * Double(100)
+        round.scores.append(percentofmax)
         inRoundHR = 0
         
         //roundStartTime = NSDate()
@@ -223,10 +234,10 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 print("new round processing complete at (x, i, IntRoundCounter):   \(x), \(i), \(IntRoundCounter):  \(nr)")
                 IntRoundCounter = 0
                 
-                if firstTime == 0 {
-                    self.tabBarController?.selectedIndex = 1;
-                    firstTime = 1
-                }
+//                if firstTime == 0 {
+//                    self.tabBarController?.selectedIndex = 1;
+//                    firstTime = 1
+//                }
                 
                 NotificationCenter.default.post(name: Notification.Name("newRound"), object: nil)
             }

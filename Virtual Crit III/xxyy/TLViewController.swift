@@ -8,7 +8,7 @@
 
 import UIKit
 
-var arrResults = [String]()
+
 class TLViewController: UIViewController {
     
     //    https://github.com/instant-solutions/ISTimeline
@@ -70,13 +70,14 @@ class TLViewController: UIViewController {
                     
                 } else {
                     //arrResults.append("ROUNDS COMPLETED")
-                    let text1 = "ROUND COMPLETE \n  SPD   CAD   HRT  GEO SPD "
+                    let text1 = "ROUND COMPLETE (LAST 5)\n"
                     var text2 = ""
-                    while s > 0 && a < 50 {
-                        text2 += " \(stringer2(myIn: round.speeds[s-1]))  "
-                        text2 += " \(stringer1(myIn: round.cadences[s-1]))  "
-                        text2 +=  "\(stringer1(myIn: round.heartrates[s-1]))  "
-                        text2 +=  "\(stringer1(myIn: round.geoSpeeds[s-1]))  "
+                    while s > 0 && a < 5 {
+                        text2 += "ROUND#  \(s-1) \n"
+                        text2 += " \(stringer2(myIn: round.speeds[s-1])) MPH (SPD)  \n"
+                        text2 += " \(stringer1(myIn: round.cadences[s-1])) RPM (CAD)  \n"
+                        text2 += " \(stringer1(myIn: round.heartrates[s-1])) BPM (HR) \n"
+                        text2 += " \(stringer1(myIn: round.geoSpeeds[s-1])) MPH (GPS SPD) \n"
                         text2 += "\n"
                         
                         //arrResults.append("\(s-1):  \(stringer2(myIn: round.speeds[s-1])) MPH  \(stringer1(myIn: round.cadences[s-1])) RPM  \(stringer1(myIn: round.heartrates[s-1])) BPM  \(stringer1(myIn: round.geoSpeeds[s-1]))  GPS SPD")
@@ -108,7 +109,30 @@ class TLViewController: UIViewController {
         }
     }
     
+    var maxHR = 100.0
+    var maxCAD = 80.0
+    var maxSPD = 15.0
+    
+    
     @objc func updateT() {
+        
+        if rt.rt_hr > maxHR {
+            maxHR = rt.rt_hr
+            newHRpoint(titleString: "NEW MAX HEARTRATE:  \(stringer1(myIn: maxHR))")
+        }
+        if rt.rt_cadence > maxCAD {
+            maxCAD = rt.rt_cadence
+            newHRpoint(titleString: "NEW MAX CADENCE:  \(stringer1(myIn: maxCAD))")
+        }
+        if rt.rt_speed > maxSPD {
+            maxSPD = rt.rt_speed
+            newHRpoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
+        }
+        if geo.speed > maxSPD {
+            maxSPD = geo.speed
+            newHRpoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
+        }
+        
         if rt.rt_hr > 0 && hrHasVal == 0 {
             newHRpoint(titleString: "HEARTRATE IS NOW BEING CAPTURED")
             hrHasVal = 1

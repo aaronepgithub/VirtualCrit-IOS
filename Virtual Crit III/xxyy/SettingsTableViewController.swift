@@ -354,7 +354,7 @@ class Settings: UITableViewController {
         
         if indexPath.section == 3 && indexPath.row == 0 {
             //launch history
-            self.performSegue(withIdentifier: "segue_History", sender: nil)
+            self.tabBarController?.selectedIndex = 43
         }
         
         if indexPath.section == 0 && indexPath.row == 4 {

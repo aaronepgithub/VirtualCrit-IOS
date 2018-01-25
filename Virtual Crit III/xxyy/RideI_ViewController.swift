@@ -155,7 +155,7 @@ class RideI_ViewController: UIViewController {
             return(f, s, t)
         case 7:
             let f = geo.pace
-            let s = " Min/Mi"
+            let s = " MIN"
             let t = "PACE(GEO) \n \(stringer1(myIn: geo.speed)) MPH"
             return(f, s, t)
         default:

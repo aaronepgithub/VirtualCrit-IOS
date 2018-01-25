@@ -11,6 +11,7 @@ import UIKit
 class HistoryTableViewController: UITableViewController {
     
     var arr = [String]()
+    var arrDetail = [String]()
     
     
     @IBOutlet var historyTableView: UITableView!
@@ -19,30 +20,38 @@ class HistoryTableViewController: UITableViewController {
     //        self.dismiss(animated: true, completion: nil)
     //    }
     
+    //((rt.int_elapsed_time % 10) == 0 && (rt.int_elapsed_time % 10) > 305)
+    
     @objc func updateT() {
-        
-    }
-    @objc func updateR() {
-        
-        let when = DispatchTime.now() + 5
-        DispatchQueue.main.asyncAfter(deadline: when){
+        if ((rt.int_elapsed_time % 10) == 0 && rt.int_elapsed_time > (round.secondsPerRound + 5)) {
             self.arr = arrResults
+            self.arrDetail = arrResultsDetails
             self.historyTableView.reloadData()
         }
         
-        
-        
+        if rt.int_elapsed_time < (round.secondsPerRound + 5) {
+         self.arr = ["WAITING...\(round.secondsPerRound - rt.int_elapsed_time)"]
+            self.arrDetail = ["..."]
+            self.historyTableView.reloadData()
+        }
+    }
+    @objc func updateR() {
         
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        arr = ["WAITING..."]
+
+        if ((rt.int_elapsed_time % 10) == 0 && rt.int_elapsed_time > 305) {
+            self.arr = arrResults
+            self.arrDetail = arrResultsDetails
+            self.historyTableView.reloadData()
+        }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateR), name: Notification.Name("newRound"), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(updateR), name: Notification.Name("newRound"), object: nil)
         
-        //        NotificationCenter.default.addObserver(self, selector: #selector(updateT), name: Notification.Name("update"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateT), name: Notification.Name("update"), object: nil)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -74,6 +83,8 @@ class HistoryTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ID1", for: indexPath)
         
         cell.textLabel?.text = "\(arr[indexPath.row])"
+        cell.detailTextLabel?.text = "\(arrDetail[indexPath.row])"
+        
         
         return cell
         
