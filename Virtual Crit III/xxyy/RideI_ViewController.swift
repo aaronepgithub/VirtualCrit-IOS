@@ -91,13 +91,13 @@ class RideI_ViewController: UIViewController {
         let string = first + second as NSString
         let result = NSMutableAttributedString(string: string as String)
         let attributesForFirstWord = [
-            NSAttributedStringKey.foregroundColor : UIColor.white,
+            NSAttributedStringKey.foregroundColor : UIColor.darkGray,
             NSAttributedStringKey.font:  UIFont(
                 name: "Yanone Kaffeesatz",
                 size: bigFontSize)!
         ]
         let attributesForSecondWord = [
-            NSAttributedStringKey.foregroundColor : UIColor.white,
+            NSAttributedStringKey.foregroundColor : UIColor.darkGray,
             NSAttributedStringKey.font:  UIFont(
                 name: "Yanone Kaffeesatz",
                 size: smallFontSize)!
@@ -158,6 +158,11 @@ class RideI_ViewController: UIViewController {
             let s = " MIN"
             let t = "PACE(GEO) \n \(stringer1(myIn: geo.speed)) MPH"
             return(f, s, t)
+        case 8:
+            let f = stringer0(myIn: rt.rt_score)
+            let s = " %MAX"
+            let t = "SCORE \n \(stringer0(myIn: rt.rt_hr)) BPM"
+            return(f, s, t)
         default:
             let f = "00.0"
             let s = " MPH"
@@ -167,7 +172,7 @@ class RideI_ViewController: UIViewController {
         
     }
     
-    let maxCounterOptions = 7
+    let maxCounterOptions = 8
     var btnV1_counter: Int = 0
     @IBAction func btn_V1(_ sender: UIButton) {
         
