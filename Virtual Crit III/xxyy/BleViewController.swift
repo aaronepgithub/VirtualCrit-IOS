@@ -107,7 +107,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let a4 = UIAlertAction(title: "GEO:  \(stringer1(myIn: round.geoSpeeds.last!))  MPH", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
         })
-        let percentofmax = stringer2(myIn: Double((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100)))
+        let percentofmax = stringer2(myIn: Double((Double(round.heartrates.last!) / Double(settings_MAXHR)) * Double(100)))
         let cancelAction = UIAlertAction(title: "SCORE:  \(percentofmax) %MAX HR", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
         })
@@ -134,8 +134,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if round.speeds.last! > roundMaxSpeed {
             roundMaxSpeed = round.speeds.last!
             maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))\n"
-        }
-        if round.cadences.last! > self.roundMaxCadence {
+        } //maybe add else and show the max anyway
+        if round.cadences.last! > roundMaxCadence {
             roundMaxCadence = round.cadences.last!
             maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))\n"
         }
@@ -143,6 +143,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             roundMaxHR = round.heartrates.last!
             maxString += "HR \(stringer1(myIn: roundMaxHR))"
         }
+        
+         print("maxString from BLE:  \(maxString)")
         
     }
     

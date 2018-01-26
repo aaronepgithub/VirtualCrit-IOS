@@ -76,7 +76,7 @@ class HistoryViewController: UIViewController {
         var y = 0
         while y < x {
             z += udArray[y]
-            z += "\n*********\n"
+            z += "\n\n******************\n\n"
             y += 1
         }
         textView.text = z

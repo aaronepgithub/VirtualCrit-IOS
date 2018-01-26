@@ -246,6 +246,7 @@ class Settings: UITableViewController {
             udArray.append(udString)
             let defaults = UserDefaults.standard
             defaults.set(udArray, forKey: "SavedStringArray")
+            stopWorkout()
         }
         
         if indexPath.section == 0 && indexPath.row == 6 {

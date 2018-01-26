@@ -32,7 +32,7 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
         if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
     }
     
@@ -49,7 +49,7 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
         if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
     }
     
@@ -65,7 +65,7 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
         if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
 
     }
@@ -82,7 +82,7 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
         if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
     }
     func newRedPoint(titleString: String) {
@@ -97,7 +97,7 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
         if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
     }
     
@@ -108,7 +108,7 @@ class TLViewController: UIViewController {
         
         
         
-        let when = DispatchTime.now() + 5
+        let when = DispatchTime.now() + 15
         DispatchQueue.main.asyncAfter(deadline: when){
             if round.speeds.count > 0  {
                 //arrResults = []
@@ -157,11 +157,10 @@ class TLViewController: UIViewController {
             }
         }
         
-        let when2 = DispatchTime.now() + 15
-        DispatchQueue.main.asyncAfter(deadline: when2){
-            if maxString != "" {
+        let when2 = DispatchTime.now() + 30
+        DispatchQueue.main.asyncAfter(deadline: when2) {
+            print("maxString from TL:  \(maxString)")
                 self.newRedPoint(titleString: maxString)
-            }
         }
         
         
