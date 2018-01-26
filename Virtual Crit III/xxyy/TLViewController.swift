@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 
 class TLViewController: UIViewController {
@@ -16,8 +17,8 @@ class TLViewController: UIViewController {
     @IBOutlet weak var timeline: ISTimeline!
     
     
-    func newHRpoint(titleString: String) {
-        print("newHRpoint")
+    func newPoint(titleString: String) {
+        print("newPoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -29,8 +30,8 @@ class TLViewController: UIViewController {
     }
     
     
-    func new30pointBlack(titleString: String) {
-        print("newHRpoint")
+    func newBlack(titleString: String) {
+        print("newBlack")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -41,8 +42,8 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
     }
     
-    func new30point(titleString: String) {
-        print("newHRpoint")
+    func newBluePoint(titleString: String) {
+        print("newBluePoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -52,6 +53,30 @@ class TLViewController: UIViewController {
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
     }
+    
+    func newGreenPoint(titleString: String) {
+        print("newGreenPoint")
+        let ti = getFormattedTime()
+        let nextPt = ISPoint(title: titleString)
+        nextPt.description = ti
+        nextPt.touchUpInside = nil
+        nextPt.pointColor = .green
+        nextPt.lineColor = .green
+        nextPt.fill = false
+        self.timeline.points.insert(nextPt, at: 0)
+    }
+    func newRedPoint(titleString: String) {
+        print("newRedPoint")
+        let ti = getFormattedTime()
+        let nextPt = ISPoint(title: titleString)
+        nextPt.description = ti
+        nextPt.touchUpInside = nil
+        nextPt.pointColor = .red
+        nextPt.lineColor = .red
+        nextPt.fill = false
+        self.timeline.points.insert(nextPt, at: 0)
+    }
+    
     
     var hrHasVal = 0
     
@@ -86,7 +111,7 @@ class TLViewController: UIViewController {
                         
 
                     }
-                    self.self.new30point(titleString: "\(text1) \n\(text2)")
+                    self.self.newBluePoint(titleString: "\(text1) \n\(text2)")
                 }
             }
             if gpsEnabled == true && round.geoSpeeds.count > 0 {
@@ -103,10 +128,19 @@ class TLViewController: UIViewController {
                         s = s - 1
                         a = a + 1
                     }
-                    self.self.new30point(titleString: "\(text1) \n\(text2)")
+                    self.self.newBluePoint(titleString: "\(text1) \n\(text2)")
                 }
             }
         }
+        
+        let when2 = DispatchTime.now() + 15
+        DispatchQueue.main.asyncAfter(deadline: when2){
+            if maxString != "" {
+                self.newRedPoint(titleString: maxString)
+            }
+        }
+        
+        
     }
     
     var maxHR = 100.0
@@ -118,23 +152,23 @@ class TLViewController: UIViewController {
         
         if rt.rt_hr > maxHR {
             maxHR = rt.rt_hr
-            newHRpoint(titleString: "NEW MAX HEARTRATE:  \(stringer1(myIn: maxHR))")
+            newPoint(titleString: "NEW MAX HEARTRATE:  \(stringer1(myIn: maxHR))")
         }
         if rt.rt_cadence > maxCAD {
             maxCAD = rt.rt_cadence
-            newHRpoint(titleString: "NEW MAX CADENCE:  \(stringer1(myIn: maxCAD))")
+            newPoint(titleString: "NEW MAX CADENCE:  \(stringer1(myIn: maxCAD))")
         }
         if rt.rt_speed > maxSPD {
             maxSPD = rt.rt_speed
-            newHRpoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
+            newPoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
         }
         if geo.speed > maxSPD {
             maxSPD = geo.speed
-            newHRpoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
+            newPoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
         }
         
         if rt.rt_hr > 0 && hrHasVal == 0 {
-            newHRpoint(titleString: "HEARTRATE IS NOW BEING CAPTURED")
+            newPoint(titleString: "HEARTRATE IS NOW BEING CAPTURED")
             hrHasVal = 1
         }
         
@@ -149,18 +183,34 @@ class TLViewController: UIViewController {
                 tx += " RND GPS:  \(stringer1(myIn:  round.geoSpeed)) MPH  \(calcMinPerMile(mph: round.geoSpeed)) PACE \n"
                 tx += " TOTAL GPS:  \(stringer2(myIn: geo.total_distance)) MILES  \(stringer1(myIn:  geo.avgSpeed)) AVG MPH \n \(geo.avgPace) MIN PER MILE"
                 
-                new30pointBlack(titleString: tx)
+                newBlack(titleString: tx)
             }
             
             if rt.rt_hr > 0 || rt.rt_speed > 0 || rt.rt_cadence > 0 {
                 
-                new30point(titleString: "\(x)s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) RT MPH ")
+                newBluePoint(titleString: "\(x)s \n \(stringer0(myIn: rt.rt_hr)) BPM     \(stringer0(myIn: rt.rt_cadence)) RPM      \(stringer1(myIn: rt.rt_speed)) RT MPH ")
             }
         }
 //        if (rt.int_elapsed_time % 300) == 0 {
 //        }
     }
     
+    
+    @objc func updateNM() {
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        if rt.total_distance > 0 && geo.total_distance > 0 {
+            newGreenPoint(titleString: "ANOTHER MILE COMPLETED \n TOTAL DISTANCE:  \(stringer0(myIn: rt.total_distance)) MILES \n \(geo.total_distance) GPS MILES \n \(previousMileSpeed)")
+        } else {
+            if rt.total_distance > 0 {
+                newGreenPoint(titleString: "ANOTHER MILE COMPLETED \n TOTAL DISTANCE:  \(stringer0(myIn: rt.total_distance)) MILES \n \(previousMileSpeed)")
+            }
+            if geo.total_distance > 0 {
+                newGreenPoint(titleString: "ANOTHER MILE COMPLETED \n TOTAL DISTANCE:  \(stringer0(myIn: geo.total_distance)) MILES \n \(previousMileSpeed)")
+            }
+        }
+
+        
+    }
     
     func getFormattedTime() -> String {
         let currentDateTime = Date()
@@ -179,6 +229,8 @@ class TLViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updateT), name: Notification.Name("update"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateR), name: Notification.Name("newRound"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateNM), name: Notification.Name("newMile"), object: nil)
         
         let black = UIColor.black
         let green = UIColor.init(red: 76/255, green: 175/255, blue: 80/255, alpha: 1)

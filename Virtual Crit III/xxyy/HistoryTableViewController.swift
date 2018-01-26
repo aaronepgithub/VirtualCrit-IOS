@@ -100,6 +100,18 @@ class HistoryTableViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
+    
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+        view.tintColor = UIColor.lightGray
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        header.backgroundColor = UIColor.lightGray
+        header.textLabel?.font = UIFont(
+            name: "Yanone Kaffeesatz",
+            size: 20)!
+    }
+    
     /*
      // Override to support conditional editing of the table view.
      override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

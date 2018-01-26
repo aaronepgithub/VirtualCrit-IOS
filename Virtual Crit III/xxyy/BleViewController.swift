@@ -11,6 +11,12 @@ import CoreBluetooth
 
 var arrResults = [String]()
 var arrResultsDetails = [String]()
+var previousMileSpeed: String = "0 MPH"
+
+var roundMaxSpeed: Double = 0
+var roundMaxCadence: Double = 0
+var roundMaxHR: Double = 0
+var maxString: String = "MAX"
 
 
 extension UIAlertController {
@@ -75,6 +81,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var inRoundGeoDist: Double = 0
     var inRoundGeoSpeed: Double = 0
     
+    
+    var roundMaxSpeed: Double = 0
+    var roundMaxCadence: Double = 0
+    var roundMaxHR: Double = 0
+    
     func newRoundActionSheet() {
         
         // 1
@@ -115,6 +126,21 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 optionMenu.dismiss(animated: true, completion: nil)
             }
         })
+        maxString = ""
+        maxString = "UPDATED MAX (ROUND) \n "
+        
+        if round.speeds.last! > roundMaxSpeed {
+            roundMaxSpeed = round.speeds.last!
+            maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))"
+        }
+        if round.cadences.last! > self.roundMaxCadence {
+            roundMaxCadence = round.cadences.last!
+            maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))"
+        }
+        if round.heartrates.last! > roundMaxHR {
+            roundMaxHR = round.heartrates.last!
+            maxString += "HR \(stringer1(myIn: roundMaxHR))"
+        }
         
     }
     
@@ -168,6 +194,10 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var veloH: Double = 0;
     
     
+    var oldMileChecker: Double = 1
+    var oldMileTime: Int = 0
+    var oldMileSpeed: Double = 0
+    var oldMileGeoSpeed: Double = 0
     
     
     func roundUpdate_each_second(xx: Int) -> Bool {
@@ -178,6 +208,15 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             inRoundGeoSpeed = Double(inRoundGeoDist / Double((Double(xx) / 60.0 / 60.0)))
         } else {
             inRoundGeoSpeed = 0
+        }
+        
+        if rt.total_distance >= oldMileChecker || geo.total_distance >= oldMileChecker {
+            oldMileChecker += 1
+            oldMileTime = rt.int_elapsed_time
+            oldMileSpeed = Double(1 / Double((Double(rt.int_elapsed_time - oldMileTime)) / 60.0 / 60.0))
+            previousMileSpeed = "\(stringer1(myIn: oldMileSpeed)) MPH (LAST MILE (\(oldMileChecker-1))"
+            oldMileTime = rt.int_elapsed_time
+            NotificationCenter.default.post(name: Notification.Name("newMile"), object: nil)
         }
         
         round.geoSpeed = inRoundGeoSpeed

@@ -60,9 +60,13 @@ class HistoryViewController: UIViewController {
         
     }
     
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         
         NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
         

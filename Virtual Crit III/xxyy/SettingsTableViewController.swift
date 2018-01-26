@@ -233,6 +233,7 @@ class Settings: UITableViewController {
     
     @IBOutlet weak var lbl_GPS: UILabel!
    
+
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //Your action here
@@ -365,6 +366,21 @@ class Settings: UITableViewController {
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
+    
+
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+        view.tintColor = UIColor.lightGray
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        header.backgroundColor = UIColor.lightGray
+        header.textLabel?.font = UIFont(
+            name: "Yanone Kaffeesatz",
+            size: 20)!
+    }
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -379,6 +395,11 @@ class Settings: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+
+
+
+        
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -396,7 +417,6 @@ class Settings: UITableViewController {
         locationManager.distanceFilter = 5.0
         locationManager.requestAlwaysAuthorization()
     }
-    
     
     
     override func didReceiveMemoryWarning() {
