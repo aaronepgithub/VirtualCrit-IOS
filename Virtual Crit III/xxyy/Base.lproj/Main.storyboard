@@ -121,12 +121,46 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="2" indentationWidth="15" reuseIdentifier="BLUETOOTH" textLabel="6BH-jQ-9Oo" style="IBUITableViewCellStyleDefault" id="ewd-85-h5D" userLabel="SAVE TIMELINE">
+                                        <rect key="frame" x="0.0" y="280" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ewd-85-h5D" id="r0l-au-lBg" userLabel="SAVE TIMELINE">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="STOP AND SAVE TIMELINE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6BH-jQ-9Oo">
+                                                    <rect key="frame" x="46" y="0.0" width="294" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="YanoneKaffeesatz-Regular" family="Yanone Kaffeesatz" pointSize="22"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="2" indentationWidth="15" reuseIdentifier="BLUETOOTH" textLabel="dco-gg-HnR" style="IBUITableViewCellStyleDefault" id="hGn-IL-fK8" userLabel="GET TIMELINES">
+                                        <rect key="frame" x="0.0" y="324" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hGn-IL-fK8" id="R3D-un-FUY" userLabel="GET TIMELINES">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="GET TIMELINE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dco-gg-HnR">
+                                                    <rect key="frame" x="46" y="0.0" width="294" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="YanoneKaffeesatz-Regular" family="Yanone Kaffeesatz" pointSize="22"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="BIKE" id="2LW-RI-5xJ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationLevel="2" indentationWidth="15" reuseIdentifier="TIRESIZE" textLabel="4E7-vH-V8w" style="IBUITableViewCellStyleDefault" id="avi-3n-HBX" userLabel="TIRESIZE">
-                                        <rect key="frame" x="0.0" y="340" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="428" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="avi-3n-HBX" id="yEp-2r-4kZ" userLabel="TIRE SIZE">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -150,7 +184,7 @@
                             <tableViewSection headerTitle="LINKS" id="39b-r3-xw6" userLabel="LINKS">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationLevel="2" indentationWidth="15" textLabel="rPZ-0Y-gs8" style="IBUITableViewCellStyleDefault" id="IIU-Mc-KIh" userLabel="ACTIVITY DETAILS">
-                                        <rect key="frame" x="0.0" y="504" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="592" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IIU-Mc-KIh" id="1Al-e6-KuT" userLabel="ACTIVITY DETAILS">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -181,6 +215,7 @@
                         <outlet property="lbl_MaxHR" destination="Stt-dv-Bao" id="wFO-qR-jI0"/>
                         <outlet property="lbl_NameCell" destination="tJf-56-bsa" id="WKN-sJ-L4Y"/>
                         <outlet property="lbl_TireSizeCell" destination="4E7-vH-V8w" id="wbM-lT-l1N"/>
+                        <segue destination="7gV-ud-VO6" kind="presentation" identifier="segModalHistory" id="RZu-dt-I61"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o02-G2-t4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -281,7 +316,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kz5-Ae-frW" userLabel="Stack View Buttons">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kz5-Ae-frW" userLabel="Stack View Buttons">
                                 <rect key="frame" x="16" y="103" width="343" height="20"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="headTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="opx-id-Clc">
@@ -758,33 +793,35 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CAD  SPD  HRT" textAlignment="center" lineBreakMode="clip" numberOfLines="100" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="QNn-o3-ofe" userLabel="Label1">
-                                <rect key="frame" x="8" y="86" width="359" height="573"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Regular" family="Yanone Kaffeesatz" pointSize="30"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="WV4-Rr-uj8">
+                                <rect key="frame" x="8" y="86" width="359" height="561"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" name="YanoneKaffeesatz-Regular" family="Yanone Kaffeesatz" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="bottom" secondItem="QNn-o3-ofe" secondAttribute="bottom" constant="8" id="7tz-WJ-PYp"/>
-                            <constraint firstItem="QNn-o3-ofe" firstAttribute="trailing" secondItem="VaW-uu-KuL" secondAttribute="trailing" id="KdX-FL-w9t"/>
-                            <constraint firstItem="QNn-o3-ofe" firstAttribute="leading" secondItem="VaW-uu-KuL" secondAttribute="leading" id="KmY-fp-OrL"/>
+                            <constraint firstItem="WV4-Rr-uj8" firstAttribute="leading" secondItem="Ndw-2o-UvF" secondAttribute="leading" constant="8" id="LS7-uN-9qC"/>
                             <constraint firstItem="VaW-uu-KuL" firstAttribute="leading" secondItem="Ndw-2o-UvF" secondAttribute="leading" constant="8" id="OMw-hy-XHQ"/>
+                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="bottom" secondItem="WV4-Rr-uj8" secondAttribute="bottom" constant="20" id="RUp-wt-d1b"/>
+                            <constraint firstItem="Ndw-2o-UvF" firstAttribute="trailing" secondItem="WV4-Rr-uj8" secondAttribute="trailing" constant="8" id="YME-6e-d4k"/>
+                            <constraint firstItem="WV4-Rr-uj8" firstAttribute="top" secondItem="VaW-uu-KuL" secondAttribute="bottom" constant="8" id="bWI-qK-lBs"/>
                             <constraint firstItem="VaW-uu-KuL" firstAttribute="top" secondItem="Ndw-2o-UvF" secondAttribute="top" constant="8" id="kwG-DT-hf5"/>
-                            <constraint firstItem="QNn-o3-ofe" firstAttribute="top" secondItem="VaW-uu-KuL" secondAttribute="bottom" constant="8" id="l3W-qB-E3B"/>
                             <constraint firstItem="Ndw-2o-UvF" firstAttribute="trailing" secondItem="VaW-uu-KuL" secondAttribute="trailing" constant="8" id="vpA-4h-3P0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ndw-2o-UvF"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="mb8-4q-Ozb"/>
                     <connections>
-                        <outlet property="lbl_1" destination="QNn-o3-ofe" id="5VJ-jx-Fg4"/>
+                        <outlet property="textView" destination="WV4-Rr-uj8" id="UI0-Qd-iWp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Tb-z8-MBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3532" y="-74"/>
+            <point key="canvasLocation" x="-3532" y="-74.212893553223395"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -1290,4 +1327,7 @@
         <image name="ic_settings" width="24" height="24"/>
         <image name="second" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="RZu-dt-I61"/>
+    </inferredMetricsTieBreakers>
 </document>

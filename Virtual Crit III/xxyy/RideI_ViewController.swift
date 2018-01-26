@@ -11,6 +11,8 @@ import UIKit
 class RideI_ViewController: UIViewController {
     
     
+    var lastOrientation:UIDeviceOrientation!
+    
     @IBOutlet weak var header: UILabel!
     @IBOutlet weak var footer: UILabel!
     
@@ -301,6 +303,8 @@ class RideI_ViewController: UIViewController {
         setButtonAndLabel(l: l!, b: b!, first: f, second: s, third: t)
     }
     
+    
+    
     var HeadL_Counter = 0
     @IBAction func btn_HeadL(_ sender: UIButton) {
         let x = HeadL_Counter
@@ -310,51 +314,39 @@ class RideI_ViewController: UIViewController {
             HeadL_Counter = 1
         }
         if x == 1 {
-            //out_V2.isHidden = true
             out_H2.isHidden = true
-            //out_L2V.isHidden = true
             out_L2H.isHidden = true
             HeadL_Counter = 2
         }
         if x == 2 {
-            //out_V3.isHidden = false
             out_H3.isHidden = false
-            //out_V2.isHidden = false
             out_H2.isHidden = false
-            //out_L2V.isHidden = false
             out_L2H.isHidden = false
-            //out_L3V.isHidden = false
             out_L3H.isHidden = false
             HeadL_Counter = 0
         }
     }
+    
+    
     
     var HeadR_Counter = 0
     @IBAction func btn_HeadR(_ sender: UIButton) {
         let x = HeadR_Counter
         if x == 0 {
             out_V3.isHidden = true
-            //out_H3.isHidden = true
             out_L3V.isHidden = true
-            //out_L1H.isHidden = true
             HeadR_Counter = 1
         }
         if x == 1 {
             out_V2.isHidden = true
-            //out_H2.isHidden = true
             out_L2V.isHidden = true
-            //out_L2H.isHidden = true
             HeadR_Counter = 2
         }
         if x == 2 {
             out_V3.isHidden = false
-            //out_H3.isHidden = false
             out_V2.isHidden = false
-            //out_H2.isHidden = false
             out_L2V.isHidden = false
-            //out_L1H.isHidden = false
             out_L3V.isHidden = false
-            //out_L2H.isHidden = false
             HeadR_Counter = 0
         }
         
@@ -438,8 +430,71 @@ class RideI_ViewController: UIViewController {
         getHeader()
     }
     
+    @objc func rotated(){
+        
+        let currentOrientation = UIDevice.current.orientation
+        
+        guard UIDeviceOrientationIsLandscape(currentOrientation) || UIDeviceOrientationIsPortrait(currentOrientation) else {   // we are only interested in Portrait and Landscape orientations
+            return
+        }
+        
+        guard currentOrientation != lastOrientation else { //remember the case of Portrait-FaceUp-Portrait? Here we make sure that in such cases we don't reload table view
+            return
+        }
+        
+        if UIDevice.current.orientation.isPortrait {
+            switch HeadR_Counter {
+            case 0:
+                out_V3.isHidden = false
+                out_V2.isHidden = false
+                out_L2V.isHidden = false
+                out_L3V.isHidden = false
+            case 1:
+                out_V3.isHidden = true
+                out_L3V.isHidden = true
+            case 2:
+                out_V2.isHidden = true
+                out_L2V.isHidden = true
+                out_V3.isHidden = true
+                out_L3V.isHidden = true
+            default:
+                out_V3.isHidden = false
+                out_V2.isHidden = false
+                out_L2V.isHidden = false
+                out_L3V.isHidden = false
+            }
+        }
+        
+        if UIDevice.current.orientation.isLandscape {
+            switch HeadL_Counter {
+            case 0:
+                out_H3.isHidden = false
+                out_H2.isHidden = false
+                out_L2H.isHidden = false
+                out_L3H.isHidden = false
+            case 1:
+                out_H3.isHidden = true
+                out_L3H.isHidden = true
+            case 2:
+                out_H2.isHidden = true
+                out_L2H.isHidden = true
+                out_H3.isHidden = true
+                out_L3H.isHidden = true
+            default:
+                out_H3.isHidden = false
+                out_H2.isHidden = false
+                out_L2H.isHidden = false
+                out_L3H.isHidden = false
+            }
+        }
+        lastOrientation = currentOrientation
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(RideI_ViewController.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        lastOrientation = UIDevice.current.orientation
         
         if UIDevice().userInterfaceIdiom == .phone
         {

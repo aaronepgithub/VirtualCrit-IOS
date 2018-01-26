@@ -10,6 +10,11 @@ import UIKit
 import CoreLocation
 
 var firstTime = 0
+var udString: String = ""
+var udArray = [String]()
+
+var la: Double = 0
+var lo: Double = 0
 
 
 extension Settings: CLLocationManagerDelegate {
@@ -19,12 +24,6 @@ extension Settings: CLLocationManagerDelegate {
     @objc func eachSecond(timer: Timer) {
         
         if locations.count > 3 {
-//            let x = NSDate()
-//            let y = x.timeIntervalSince(geoStartTime as Date!)
-//            let z = Double(y)  //time in seconds
-            
-//            geo.total_moving_time_string = createTimeString(seconds: Int(z))
-//            geo.total_moving_time_seconds = z  //int for seconds
             
             geo.total_moving_time_string = createTimeString(seconds: Int(geoGPSMovingTime))
             geo.total_moving_time_seconds = geoGPSMovingTime  //int for seconds
@@ -79,6 +78,9 @@ extension Settings: CLLocationManagerDelegate {
                         
                         geo.speed = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         geo.pace = calcMinPerMile(mph: geo.speed)
+                        
+                        la = (self.locations.last?.coordinate.latitude)!
+                        lo = (self.locations.last?.coordinate.longitude)!
                         
                         let ts = ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                         if ts < 10 {
@@ -236,9 +238,24 @@ class Settings: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //Your action here
         
         print(indexPath)
+        
+        if indexPath.section == 0 && indexPath.row == 5 {
+            //save
+            udArray.append(udString)
+            let defaults = UserDefaults.standard
+            defaults.set(udArray, forKey: "SavedStringArray")
+        }
+        
+        if indexPath.section == 0 && indexPath.row == 6 {
+            //get/display
+            dump(udArray)
+            //segModalHistory
+            performSegue(withIdentifier: "segModalHistory", sender: self)
+        }
+
+        
         
         if indexPath.section == 0 && indexPath.row == 3 {
             print("Pressed GPS Cell")
@@ -355,7 +372,7 @@ class Settings: UITableViewController {
         
         if indexPath.section == 3 && indexPath.row == 0 {
             //launch history
-            self.tabBarController?.selectedIndex = 43
+            self.tabBarController?.selectedIndex = 3
         }
         
         if indexPath.section == 0 && indexPath.row == 4 {
@@ -379,10 +396,23 @@ class Settings: UITableViewController {
             size: 20)!
     }
 
-    
+    func getFormattedTime() -> String {
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .medium
+        return formatter.string(from: currentDateTime)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+        
+        //get
+        let defaults = UserDefaults.standard
+        udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
+        udString = "NEW ACTIVITY, \(getFormattedTime())\n"
         
         
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)

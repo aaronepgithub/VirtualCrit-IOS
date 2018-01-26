@@ -10,11 +10,14 @@ import UIKit
 import AudioToolbox
 
 
+
 class TLViewController: UIViewController {
     
     //    https://github.com/instant-solutions/ISTimeline
     
+    
     @IBOutlet weak var timeline: ISTimeline!
+
     
     
     func newPoint(titleString: String) {
@@ -27,6 +30,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
+        udString += "\(ti)\n\(titleString)\n"
+        if gpsEnabled == true {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+        }
     }
     
     
@@ -40,6 +47,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
+        udString += "\(ti)\n\(titleString)\n"
+        if gpsEnabled == true {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+        }
     }
     
     func newBluePoint(titleString: String) {
@@ -52,6 +63,11 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .blue
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
+        udString += "\(ti)\n\(titleString)\n"
+        if gpsEnabled == true {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+        }
+
     }
     
     func newGreenPoint(titleString: String) {
@@ -64,6 +80,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .green
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
+        udString += "\(ti)\n\(titleString)\n"
+        if gpsEnabled == true {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+        }
     }
     func newRedPoint(titleString: String) {
         print("newRedPoint")
@@ -75,6 +95,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .red
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
+        udString += "\(ti)\n\(titleString)\n"
+        if gpsEnabled == true {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)"
+        }
     }
     
     
@@ -223,6 +247,9 @@ class TLViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+
         
         let st = getFormattedTime()
         

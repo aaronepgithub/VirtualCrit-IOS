@@ -10,6 +10,9 @@ import UIKit
 
 class HistoryViewController: UIViewController {
     
+    @IBOutlet weak var textView: UITextView!
+    
+    
     @objc func closeMe() {
         self.dismiss(animated: true, completion: nil)
     }
@@ -28,37 +31,37 @@ class HistoryViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var lbl_1: UILabel!
+    //@IBOutlet weak var lbl_1: UILabel!
     
     
     
     
-    @objc func update1() {
-        
-        var s = round.speeds.count
-        var a = 0
-        if s == 0 {return}
-        
-        let text1 = "SPD   CAD   HRT"
-        var text2 = ""
-        
-        while s > 0 && a < 25 {
-            text2 += "\(stringer2(myIn: round.speeds[s-1])) "
-            text2 += "\(stringer1(myIn: round.cadences[s-1])) "
-            text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
-            text2 += "\n"
-            s = s - 1
-            a = a + 1
-            //print(text2)
-        }
-        
-        lbl_1.text = "\(text1) \n\(text2)"
-        
-        
+//    @objc func update1() {
+//
+//        var s = round.speeds.count
+//        var a = 0
+//        if s == 0 {return}
+//
+//        let text1 = "SPD   CAD   HRT"
+//        var text2 = ""
+//
+//        while s > 0 && a < 25 {
+//            text2 += "\(stringer2(myIn: round.speeds[s-1])) "
+//            text2 += "\(stringer1(myIn: round.cadences[s-1])) "
+//            text2 += "\(stringer1(myIn: round.heartrates[s-1])) "
+//            text2 += "\n"
+//            s = s - 1
+//            a = a + 1
+//            //print(text2)
+//        }
+    
+        //lbl_1.text = "\(text1) \n\(text2)"
         
         
         
-    }
+        
+        
+    //}
     
 
     
@@ -66,9 +69,20 @@ class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        textView.text = ""
+        var z = ""
+        let x = udArray.count
+        if x == 0 {return}
+        var y = 0
+        while y < x {
+            z += udArray[y]
+            z += "\n*********\n"
+            y += 1
+        }
+        textView.text = z
 
         
-        NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(update1), name: Notification.Name("update"), object: nil)
         
     }
     

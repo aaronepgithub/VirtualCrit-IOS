@@ -342,6 +342,14 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     
     @IBAction func act_Btn1(_ sender: UIButton) {
+        
+        udString = "RESET ON: \(Date()) \n"
+        udArray = []
+        udArray.append(udString)
+        let defaults = UserDefaults.standard
+        defaults.set(udArray, forKey: "SavedStringArray")
+        
+        
     }
     
     @IBAction func act_Btn2(_ sender: UIButton) {
