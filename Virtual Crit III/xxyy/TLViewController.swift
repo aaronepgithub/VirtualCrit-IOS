@@ -152,11 +152,11 @@ class TLViewController: UIViewController {
         
         if rt.rt_hr > maxHR {
             maxHR = rt.rt_hr
-            newPoint(titleString: "NEW MAX HEARTRATE:  \(stringer1(myIn: maxHR))")
+            newPoint(titleString: "NEW MAX HEARTRATE:  \(stringer0(myIn: maxHR))")
         }
         if rt.rt_cadence > maxCAD {
             maxCAD = rt.rt_cadence
-            newPoint(titleString: "NEW MAX CADENCE:  \(stringer1(myIn: maxCAD))")
+            newPoint(titleString: "NEW MAX CADENCE:  \(stringer0(myIn: maxCAD))")
         }
         if rt.rt_speed > maxSPD {
             maxSPD = rt.rt_speed

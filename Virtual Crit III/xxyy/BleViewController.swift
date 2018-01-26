@@ -11,12 +11,14 @@ import CoreBluetooth
 
 var arrResults = [String]()
 var arrResultsDetails = [String]()
+
 var previousMileSpeed: String = "0 MPH"
 
 var roundMaxSpeed: Double = 0
 var roundMaxCadence: Double = 0
 var roundMaxHR: Double = 0
 var maxString: String = "MAX"
+
 
 
 extension UIAlertController {
@@ -131,11 +133,11 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         if round.speeds.last! > roundMaxSpeed {
             roundMaxSpeed = round.speeds.last!
-            maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))"
+            maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))\n"
         }
         if round.cadences.last! > self.roundMaxCadence {
             roundMaxCadence = round.cadences.last!
-            maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))"
+            maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))\n"
         }
         if round.heartrates.last! > roundMaxHR {
             roundMaxHR = round.heartrates.last!
@@ -212,9 +214,8 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         if rt.total_distance >= oldMileChecker || geo.total_distance >= oldMileChecker {
             oldMileChecker += 1
-            oldMileTime = rt.int_elapsed_time
-            oldMileSpeed = Double(1 / Double((Double(rt.int_elapsed_time - oldMileTime)) / 60.0 / 60.0))
-            previousMileSpeed = "\(stringer1(myIn: oldMileSpeed)) MPH (LAST MILE (\(oldMileChecker-1))"
+            oldMileSpeed = Double(1.0) / (Double(Double((Double(rt.int_elapsed_time) - Double(oldMileTime)) / Double(60.0) / Double(60.0))))
+            previousMileSpeed = "\(stringer1(myIn: oldMileSpeed)) MPH"
             oldMileTime = rt.int_elapsed_time
             NotificationCenter.default.post(name: Notification.Name("newMile"), object: nil)
         }
