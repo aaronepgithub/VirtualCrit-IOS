@@ -212,6 +212,12 @@ class TLViewController: UIViewController {
         
         let x = 100
         
+        if rt.int_elapsed_time >= 3600 {
+            maxHR = 100.0
+            maxCAD = 80.0
+            maxSPD = 5.0
+        }
+        
         if ((rt.int_elapsed_time % x) == 0)  {
             
             if gpsEnabled == true  && rt.int_elapsed_time > 5 && geo.avgSpeed > 0 && geo.avgSpeed.isNaN == false && geo.avgSpeed.isFinite == true {
