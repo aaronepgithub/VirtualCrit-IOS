@@ -103,12 +103,19 @@ class TLViewController: UIViewController {
     
     
     var hrHasVal = 0
+    var spHasVal = 0
+    var caHasVal = 0
+    var geospHasVal = 0
     
     @objc func updateR() {
         
+        let when2 = DispatchTime.now() + 15
+        DispatchQueue.main.asyncAfter(deadline: when2) {
+            print("maxString from TL:  \(maxString)")
+            self.newRedPoint(titleString: maxString)
+        }
         
-        
-        let when = DispatchTime.now() + 15
+        let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
             if round.speeds.count > 0  {
                 //arrResults = []
@@ -157,42 +164,50 @@ class TLViewController: UIViewController {
             }
         }
         
-        let when2 = DispatchTime.now() + 30
-        DispatchQueue.main.asyncAfter(deadline: when2) {
-            print("maxString from TL:  \(maxString)")
-                self.newRedPoint(titleString: maxString)
-        }
+
         
         
     }
     
     var maxHR = 100.0
     var maxCAD = 80.0
-    var maxSPD = 15.0
+    var maxSPD = 5.0
     
     
     @objc func updateT() {
         
         if rt.rt_hr > maxHR {
             maxHR = rt.rt_hr
-            newPoint(titleString: "NEW MAX HEARTRATE:  \(stringer0(myIn: maxHR))")
+            newPoint(titleString: "NEW MAX HEARTRATE:  \(stringer0(myIn: maxHR)) BPM")
         }
         if rt.rt_cadence > maxCAD {
             maxCAD = rt.rt_cadence
-            newPoint(titleString: "NEW MAX CADENCE:  \(stringer0(myIn: maxCAD))")
+            newPoint(titleString: "NEW MAX CADENCE:  \(stringer0(myIn: maxCAD)) RPM")
         }
         if rt.rt_speed > maxSPD {
             maxSPD = rt.rt_speed
-            newPoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
+            newPoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD)) MPH")
         }
         if geo.speed > maxSPD {
             maxSPD = geo.speed
-            newPoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD))")
+            newPoint(titleString: "NEW MAX SPD:  \(stringer2(myIn: maxSPD)) MPH")
         }
         
         if rt.rt_hr > 0 && hrHasVal == 0 {
             newPoint(titleString: "HEARTRATE IS NOW BEING CAPTURED")
             hrHasVal = 1
+        }
+        if rt.rt_speed > 0 && spHasVal == 0 {
+            newPoint(titleString: "BLUETOOTH SPEED IS NOW BEING CAPTURED")
+            spHasVal = 1
+        }
+        if rt.rt_cadence > 0 && caHasVal == 0 {
+            newPoint(titleString: "BLUETOOTH CADENCE IS NOW BEING CAPTURED")
+            caHasVal = 1
+        }
+        if geo.speed > 0 && geospHasVal == 0 {
+            newPoint(titleString: "GPS SPEED IS NOW BEING CAPTURED")
+            geospHasVal = 1
         }
         
         let x = 100
