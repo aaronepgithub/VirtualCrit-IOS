@@ -31,9 +31,9 @@ class TLViewController: UIViewController {
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-        if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        if gpsEnabled == true {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
     
     
@@ -48,9 +48,9 @@ class TLViewController: UIViewController {
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-        if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        if gpsEnabled == true {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
     
     func newBluePoint(titleString: String) {
@@ -81,9 +81,9 @@ class TLViewController: UIViewController {
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-        if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        if gpsEnabled == true {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
     func newRedPoint(titleString: String) {
         print("newRedPoint")
@@ -96,9 +96,9 @@ class TLViewController: UIViewController {
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-        if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        if gpsEnabled == true {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
     
     
