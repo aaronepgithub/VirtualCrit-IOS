@@ -108,12 +108,7 @@ class TLViewController: UIViewController {
     var geospHasVal = 0
     
     @objc func updateR() {
-        
-        let when2 = DispatchTime.now() + 15
-        DispatchQueue.main.asyncAfter(deadline: when2) {
-            print("maxString from TL:  \(maxString)")
-            self.newRedPoint(titleString: maxString)
-        }
+
         
         let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
@@ -125,6 +120,11 @@ class TLViewController: UIViewController {
                     return
                     
                 } else {
+                    
+                    print("maxString from TL:  \(maxString)")
+                    self.newRedPoint(titleString: maxString)
+                    
+                    
                     //arrResults.append("ROUNDS COMPLETED")
                     let text1 = "ROUND COMPLETE (LAST 5)\n"
                     var text2 = ""
