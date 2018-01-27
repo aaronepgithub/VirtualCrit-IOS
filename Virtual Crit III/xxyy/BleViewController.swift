@@ -84,10 +84,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var inRoundGeoSpeed: Double = 0
     
     
-    var roundMaxSpeed: Double = 0
-    var roundMaxCadence: Double = 0
-    var roundMaxHR: Double = 0
-    
     func newRoundActionSheet() {
         
         // 1
@@ -126,18 +122,7 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
 
-                if round.speeds.last! > self.roundMaxSpeed {
-                    self.roundMaxSpeed = round.speeds.last!
-                }
-                if round.geoSpeeds.last! > self.roundMaxSpeed {
-                    self.roundMaxSpeed = round.geoSpeeds.last!
-                }
-                if round.cadences.last! > self.roundMaxCadence {
-                    self.roundMaxCadence = round.cadences.last!
-                }
-                if round.heartrates.last! > self.roundMaxHR {
-                    self.roundMaxHR = round.heartrates.last!
-                }
+
                 optionMenu.dismiss(animated: true, completion: nil)
             }
         })
@@ -164,14 +149,25 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 }
             }
             
-            
+            if round.speeds.last! > roundMaxSpeed {
+                roundMaxSpeed = round.speeds.last!
+            }
+            if round.geoSpeeds.last! > roundMaxSpeed {
+                roundMaxSpeed = round.geoSpeeds.last!
+            }
+            if round.cadences.last! > roundMaxCadence {
+                roundMaxCadence = round.cadences.last!
+            }
+            if round.heartrates.last! > roundMaxHR {
+                roundMaxHR = round.heartrates.last!
+            }
             maxString = ""
             maxString = "UPDATED MAX (ROUND) \n "
-            maxString += "SPEED \(stringer1(myIn: self.roundMaxSpeed))\n"
-            maxString += "CADENCE \(stringer1(myIn: self.roundMaxCadence))\n"
-            maxString += "HR \(stringer1(myIn: self.roundMaxHR))"
+            maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))\n"
+            maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))\n"
+            maxString += "HR \(stringer1(myIn: roundMaxHR))"
             print("maxString from BLE:  \(maxString)")
-            print(round.geoSpeeds.last!,self.roundMaxSpeed)
+            print(round.geoSpeeds.last!,roundMaxSpeed)
             
             
         }
