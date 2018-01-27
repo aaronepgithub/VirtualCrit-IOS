@@ -235,7 +235,9 @@ class Settings: UITableViewController {
     
     @IBOutlet weak var lbl_GPS: UILabel!
    
-
+    @IBOutlet weak var lbl_StopAndSave: UILabel!
+    @IBOutlet weak var lbl_GetHistoricalTimeline: UILabel!
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -246,6 +248,11 @@ class Settings: UITableViewController {
             udArray.append(udString)
             let defaults = UserDefaults.standard
             defaults.set(udArray, forKey: "SavedStringArray")
+            lbl_StopAndSave.textColor = UIColor.black
+            let when = DispatchTime.now() + 1
+            DispatchQueue.main.asyncAfter(deadline: when){
+                self.lbl_StopAndSave.textColor = UIColor.blue
+            }
             stopWorkout()
         }
         

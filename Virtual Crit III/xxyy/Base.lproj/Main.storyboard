@@ -212,8 +212,10 @@
                     <connections>
                         <outlet property="lbl_AudioToggle" destination="BHr-Ko-zKy" id="2y6-Cw-rXb"/>
                         <outlet property="lbl_GPS" destination="21D-cz-J0q" id="HVO-Rs-OpZ"/>
+                        <outlet property="lbl_GetHistoricalTimeline" destination="dco-gg-HnR" id="usq-ec-Jht"/>
                         <outlet property="lbl_MaxHR" destination="Stt-dv-Bao" id="wFO-qR-jI0"/>
                         <outlet property="lbl_NameCell" destination="tJf-56-bsa" id="WKN-sJ-L4Y"/>
+                        <outlet property="lbl_StopAndSave" destination="6BH-jQ-9Oo" id="axj-xt-vBl"/>
                         <outlet property="lbl_TireSizeCell" destination="4E7-vH-V8w" id="wbM-lT-l1N"/>
                         <segue destination="7gV-ud-VO6" kind="presentation" identifier="segModalHistory" id="RZu-dt-I61"/>
                     </connections>
