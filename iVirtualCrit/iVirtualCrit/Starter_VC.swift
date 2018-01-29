@@ -50,19 +50,23 @@ class Starter_VC: UITableViewController {
     
     @objc func timerInterval() {
 
+        
         rounds.geoDistancesPerRound.append(inRoundGeoDistance)
-        rounds.btDistancesPerRound.append(inRoundBtDistance)
         
-        let roundHR = inRoundHR.average
-        let roundCadence = inRoundCadence.average
-        let roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
         
-        if Double(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == 20 {
-            print("In Round Values for HR, Spd, Cad")
-            print(roundHR, roundSpeed, roundCadence)
-            
-        }
-        
+//        rounds.btDistancesPerRound.append(inRoundBtDistance)
+//        let roundHR = inRoundHR.average
+//        let roundCadence = inRoundCadence.average
+//        var roundSpeed: Double = 0
+//        //let roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+//        if system.actualElapsedTime != nil {
+//            roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+//            if Double(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == 20 {
+//                print("In Round Values for HR, Spd, Cad")
+//                print(roundHR, roundSpeed, roundCadence)
+//                
+//            }
+//        }
         
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         totalTime.text = ("\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))   [ACTUAL ELAPSED TIME]")
@@ -71,16 +75,17 @@ class Starter_VC: UITableViewController {
             print("New Round")
             roundsCompleted += 1
 
-            print("\n")
-            print("End of Round for HR, Spd, Cad")
-            print(roundHR, roundSpeed, roundCadence)
-            print("\n")
+//            print("\n")
+//            print("End of Round for HR, Spd, Cad")
+//            print(roundHR, roundSpeed, roundCadence)
+//            print("\n")
             
             
             inRoundGeoDistance = 0
-            inRoundBtDistance = 0
-            inRoundCadence = []
-            inRoundHR = []
+            
+//            inRoundBtDistance = 0
+//            inRoundCadence = []
+//            inRoundHR = []
         }
         
         //print(system.actualElapsedTime! - Double(roundsCompleted * secondsPerRound))
@@ -96,7 +101,6 @@ class Starter_VC: UITableViewController {
             if let hrv = userInfo[AnyHashable("hr")] {
                 //print(String(describing: userInfo[AnyHashable("hr")]!))
                 btHR.text = "(\(hrv as! String))    HR"
-                inRoundHR.append(hrv as! Int)
             }
             if let scv = userInfo[AnyHashable("score")] {
                 //print(String(describing: userInfo[AnyHashable("score")]!))
@@ -109,7 +113,6 @@ class Starter_VC: UITableViewController {
             if let cav = userInfo[AnyHashable("cad")] {
                 //print(String(describing: userInfo[AnyHashable("cad")]!))
                 btMovingCadence.text = "(\(cav as! String))   CAD BT"
-                inRoundCadence.append(cav as! Int)
             }
             if let dsv = userInfo[AnyHashable("dist")] {
                 btDistance.text = "(\(dsv as! String))   DISTANCE BT"
