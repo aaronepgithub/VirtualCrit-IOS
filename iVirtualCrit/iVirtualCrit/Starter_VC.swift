@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 
-var inRoundBtDistance: Double = 0
+
 
 class Starter_VC: UITableViewController {
 
@@ -42,53 +42,68 @@ class Starter_VC: UITableViewController {
     var inRoundGeoDistance: Double = 0
     var roundsCompleted: Int = 0
     var secondsPerRound: Int = 60
-
+    var roundGeoSpeed: Double = 0
     
-    var inRoundHR = [Int]()
-    var inRoundCadence = [Int]()
+
     
     
     @objc func timerInterval() {
 
         
-        rounds.geoDistancesPerRound.append(inRoundGeoDistance)
-        
-        
-//        rounds.btDistancesPerRound.append(inRoundBtDistance)
-//        let roundHR = inRoundHR.average
-//        let roundCadence = inRoundCadence.average
-//        var roundSpeed: Double = 0
-//        //let roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
-//        if system.actualElapsedTime != nil {
-//            roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
-//            if Double(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == 20 {
-//                print("In Round Values for HR, Spd, Cad")
-//                print(roundHR, roundSpeed, roundCadence)
-//                
-//            }
-//        }
+        var roundSpeed: Double = 0
+        if system.actualElapsedTime != nil {
+            
+            if inRoundBtDistance > 0 {
+                roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+            }
+            
+        }
         
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         totalTime.text = ("\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))   [ACTUAL ELAPSED TIME]")
         
+        
         if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) {
             print("New Round")
             roundsCompleted += 1
+            
+            rounds.geoDistancesPerRound.append(inRoundGeoDistance)
+            rounds.btDistancesPerRound.append(inRoundBtDistance)
 
 //            print("\n")
-//            print("End of Round for HR, Spd, Cad")
-//            print(roundHR, roundSpeed, roundCadence)
+//            print("End of Round for HR, Spd, Cad, GeoSpd")
+//            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
 //            print("\n")
             
+            rounds.speeds.append(roundSpeed)
+            rounds.geoSpeeds.append(roundGeoSpeed)
+            rounds.heartrates.append(roundHR)
+            rounds.cadences.append(roundCadence)
+            
+            print("\n")
+            print("End of Round for HR, Spd, Cad, GeoSpd")
+            dump(rounds.speeds)
+            dump(rounds.heartrates)
+            dump(rounds.cadences)
+            dump(rounds.geoSpeeds)
+            print("\n")
+            print("btAvgSpeed:  \(stringer(dbl: btAverageSpeed, len: 2))")
+            print("\n")
             
             inRoundGeoDistance = 0
-            
-//            inRoundBtDistance = 0
-//            inRoundCadence = []
-//            inRoundHR = []
+            inRoundBtDistance = 0
+            inRoundCadence = []
+            inRoundHR = []
         }
         
         //print(system.actualElapsedTime! - Double(roundsCompleted * secondsPerRound))
+        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2) {
+
+            print("\n")
+            print("Mid Round for HR, Spd, Cad, GeoSpd")
+            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
+            print("\n")
+                }
         
     }
     
@@ -118,7 +133,7 @@ class Starter_VC: UITableViewController {
                 btDistance.text = "(\(dsv as! String))   DISTANCE BT"
             }
             if let mtv = userInfo[AnyHashable("mov")] {
-                btMovingTime.text = "(\(mtv as! String))   MOVEING TIME BT"
+                btMovingTime.text = "(\(mtv as! String))   MOVING TIME BT"
             }
 
         }
@@ -318,7 +333,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                         inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         
                         let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
-                        
+                        roundGeoSpeed = avgGeoSpeedThisRound
                         
                         
                         gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))     [ROUND SPEED]"

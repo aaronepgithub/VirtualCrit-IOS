@@ -30,4 +30,9 @@ struct geo {
 struct rounds {
     static var geoDistancesPerRound = [Double]()
     static var btDistancesPerRound = [Double]()
+    
+    static var speeds = [Double]()
+    static var geoSpeeds = [Double]()
+    static var heartrates = [Double]()
+    static var cadences = [Double]()
 }

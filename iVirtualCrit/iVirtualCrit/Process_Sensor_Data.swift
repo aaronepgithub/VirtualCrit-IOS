@@ -6,7 +6,20 @@
 //  Copyright © 2018 aaronep. All rights reserved.
 //
 
+var inRoundHR = [Int]()
+var inRoundCadence = [Int]()
+var inRoundBtDistance: Double = 0
+
+var btAverageSpeed: Double = 0
+
+
+var roundHR: Double = 0
+var roundSpeed: Double = 0
+var roundCadence: Double = 0
+
 import Foundation
+
+
 
 var total_distance: Double?
 var speed: String?
@@ -84,7 +97,9 @@ func processWheelData(withData data :Data) {
         rt_WheelTime += b
         totalWheelRevs += a
         total_distance = totalWheelRevs * (wheelCircumference / 1000) * 0.000621371
+        
         inRoundBtDistance += (a * (wheelCircumference / 1000) * 0.000621371)
+        
         
         
 //        if rt.rt_speed > 0 {
@@ -99,6 +114,8 @@ func processWheelData(withData data :Data) {
         
         //NotificationCenter.default.post(name: Notification.Name("speed"), object: nil)
         //print("rt.rt_speed, notify:  \(rt.rt_speed)")
+        
+        btAverageSpeed = total_distance! / (total_moving_time_seconds / 60 / 60)
         
         NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed ?? 0, "dist": stringer(dbl: total_distance ?? 0, len: 2), "mov": total_moving_time_string])
         oldWheelRevolution = wheelRevolution
@@ -166,6 +183,10 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         //rt.rt_cadence = Double(a) / Double(crankTimeSeconds / Double(60))
         cadence = stringer(dbl: Double(a) / Double(crankTimeSeconds / Double(60)), len: 0)
         NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence ?? 0])
+        
+        inRoundCadence.append(Int(Double(a) / Double(crankTimeSeconds / Double(60))))
+        roundCadence = inRoundCadence.average
+        
         rt_crank_revs += a
         rt_crank_time += b  //still in 1/1024 of a sec
         totalCrankRevs += a

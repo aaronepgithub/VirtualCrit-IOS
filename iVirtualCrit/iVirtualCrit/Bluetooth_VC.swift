@@ -160,6 +160,10 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
 //            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
             let score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
             out_Btn1.setTitle(String(bpmValue), for: .normal)
+            
+            inRoundHR.append(Int(bpmValue))
+            roundHR = inRoundHR.average
+            
             NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
         }
         
