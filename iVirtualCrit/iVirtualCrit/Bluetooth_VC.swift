@@ -131,6 +131,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     }
     
     
+    var hr: String?
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
@@ -148,14 +149,16 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             var bpmValue : Int = 0
             if ((array[0] & 0x01) == 0) {
                 bpmValue = Int(array[1])
+                hr = stringer(dbl: Double(bpmValue), len: 0)
             } else {
                 bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
+                hr = stringer(dbl: Double(bpmValue), len: 0)
             }
 //            rt.rt_hr = Double(bpmValue)
 //            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
-            let score = ((Double(bpmValue) / Double(185)) * Double(100))
+            let score = stringer(dbl: ((Double(bpmValue) / Double(185)) * Double(100)), len: 1)
             out_Btn1.setTitle(String(bpmValue), for: .normal)
-            NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": String(bpmValue), "score": String(score)])
+            NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
         }
         
         

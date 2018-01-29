@@ -28,6 +28,9 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var btMovingSpeed: UILabel!
     @IBOutlet weak var btMovingCadence: UILabel!
     @IBOutlet weak var btScore: UILabel!
+    @IBOutlet weak var btMovingTime: UILabel!
+    @IBOutlet weak var btDistance: UILabel!
+    
     
     
     
@@ -58,26 +61,32 @@ class Starter_VC: UITableViewController {
     }
     
     @objc func updateBT(not: Notification) {
-        print("updateBT")
-        print("not:  \(not)")
+//        print("updateBT")
+//        print("not:  \(not)")
         // userInfo is the payload send by sender of notification
         if let userInfo = not.userInfo {
             //print(userInfo[AnyHashable("hr")]!)
             if let hrv = userInfo[AnyHashable("hr")] {
-                print(String(describing: userInfo[AnyHashable("hr")]!))
+                //print(String(describing: userInfo[AnyHashable("hr")]!))
                 btHR.text = "(\(hrv as! String))    HR"
             }
             if let scv = userInfo[AnyHashable("score")] {
-                print(String(describing: userInfo[AnyHashable("score")]!))
+                //print(String(describing: userInfo[AnyHashable("score")]!))
                 btScore.text = "(\(scv as! String))    %MAX SCORE"
             }
             if let spv = userInfo[AnyHashable("spd")] {
-                print(String(describing: userInfo[AnyHashable("spd")]!))
-                btMovingSpeed.text = "(\(spv as! String))    SPD RAW"
+                //print(String(describing: userInfo[AnyHashable("spd")]!))
+                btMovingSpeed.text = "(\(spv as! String))    SPD BT"
             }
             if let cav = userInfo[AnyHashable("cad")] {
-                print(String(describing: userInfo[AnyHashable("cad")]!))
-                btMovingCadence.text = "(\(cav as! String))   CAD RAW"
+                //print(String(describing: userInfo[AnyHashable("cad")]!))
+                btMovingCadence.text = "(\(cav as! String))   CAD BT"
+            }
+            if let dsv = userInfo[AnyHashable("dist")] {
+                btDistance.text = "(\(dsv as! String))   DISTANCE BT"
+            }
+            if let mtv = userInfo[AnyHashable("mov")] {
+                btMovingTime.text = "(\(mtv as! String))   MOVEING TIME BT"
             }
 
         }
