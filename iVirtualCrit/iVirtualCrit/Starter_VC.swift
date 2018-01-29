@@ -24,13 +24,19 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var gpsDirection: UILabel!
     @IBOutlet weak var gpsRoundSpeed: UILabel!
     
+    @IBOutlet weak var btHR: UILabel!
+    @IBOutlet weak var btMovingSpeed: UILabel!
+    @IBOutlet weak var btMovingCadence: UILabel!
+    @IBOutlet weak var btScore: UILabel!
+    
+    
     
     var timer = Timer()
     var timerIntervalValue: Double = 1
  
     var inRoundGeoDistance: Double = 0
     var roundsCompleted: Int = 0
-    var secondsPerRound: Int = 30
+    var secondsPerRound: Int = 60
     
     
     @objc func timerInterval() {
@@ -49,6 +55,32 @@ class Starter_VC: UITableViewController {
         
         //print(system.actualElapsedTime! - Double(roundsCompleted * secondsPerRound))
         
+    }
+    
+    @objc func updateBT(not: Notification) {
+        print("updateBT")
+        print("not:  \(not)")
+        // userInfo is the payload send by sender of notification
+        if let userInfo = not.userInfo {
+            //print(userInfo[AnyHashable("hr")]!)
+            if let hrv = userInfo[AnyHashable("hr")] {
+                print(String(describing: userInfo[AnyHashable("hr")]!))
+                btHR.text = "(\(hrv as! String))    HR"
+            }
+            if let scv = userInfo[AnyHashable("score")] {
+                print(String(describing: userInfo[AnyHashable("score")]!))
+                btScore.text = "(\(scv as! String))    %MAX SCORE"
+            }
+            if let spv = userInfo[AnyHashable("spd")] {
+                print(String(describing: userInfo[AnyHashable("spd")]!))
+                btMovingSpeed.text = "(\(spv as! String))    SPD RAW"
+            }
+            if let cav = userInfo[AnyHashable("cad")] {
+                print(String(describing: userInfo[AnyHashable("cad")]!))
+                btMovingCadence.text = "(\(cav as! String))   CAD RAW"
+            }
+
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -70,6 +102,10 @@ class Starter_VC: UITableViewController {
                 print("Started")
                 print(getFormattedTime(d: system.startTime!))
                 print(getFormattedTimeAndDate(d: system.startTime!));print("\n");
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(updateBT(not:)), name: Notification.Name("bleUpdate"), object: nil)
+                
+                
             } else {
                 system.status = "STOPPED";statusValue.text = "STOPPED";
                 system.stopTime = Date()

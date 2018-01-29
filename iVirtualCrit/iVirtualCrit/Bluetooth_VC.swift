@@ -116,14 +116,15 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: CSC_Service), CBUUID.init(string: HR_Service)], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
         }
         
+        self.out_Btn1.setTitle("...", for: .normal)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
-            self.out_Btn1.setTitle("...", for: .normal)
+            
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.BLTE_tableViewOutlet.reloadData()
-                self.out_Btn1.setTitle("HR", for: .normal)
+                //self.out_Btn1.setTitle("HR", for: .normal)
             })
         })
         
@@ -152,8 +153,9 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             }
 //            rt.rt_hr = Double(bpmValue)
 //            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
+            let score = ((Double(bpmValue) / Double(185)) * Double(100))
             out_Btn1.setTitle(String(bpmValue), for: .normal)
-            //NotificationCenter.default.post(name: Notification.Name("heartrate"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": String(bpmValue), "score": String(score)])
         }
         
         
@@ -165,17 +167,22 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
                 //print("SPD value[1]");print(value[1])
                 out_Btn2.setTitle(String(value[1]), for: .normal)
-                //processWheelData(withData: data)
+                processWheelData(withData: data)
+                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": String(value[1])])
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
                     out_Btn3.setTitle(String(value[7]), for: .normal)
                     //print("CAD value[7]");print(value[7])
-                    //processCrankData(withData: data, andCrankRevolutionIndex: 7)
+                    processCrankData(withData: data, andCrankRevolutionIndex: 7)
+                    
+//                    NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": String(value[7])])
                 }
             } else {
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
                     out_Btn3.setTitle(String(value[1]), for: .normal)
                     //print("CAD value[1]");print(value[1])
-                    //processCrankData(withData: data, andCrankRevolutionIndex: 1)
+                    processCrankData(withData: data, andCrankRevolutionIndex: 1)
+                    
+                    //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": String(value[1])])
                 }
             }
         }
@@ -192,7 +199,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
                 return
             }
-            //decodeHRValue(withData: characteristic.value!)
+            decodeHRValue(withData: characteristic.value!)
         }
         
         if characteristic.uuid == CBUUID(string: CSC_Char) {

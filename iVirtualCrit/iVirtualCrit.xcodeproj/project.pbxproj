@@ -16,6 +16,7 @@
 		5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */; };
 		587B4B1C201E2A9B007D94BC /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B4B1B201E2A9B007D94BC /* DataModel.swift */; };
 		587B4B1E201E3047007D94BC /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B4B1D201E3047007D94BC /* Functions.swift */; };
+		588E6B36201F6C740089C3A7 /* Process_Sensor_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588E6B35201F6C740089C3A7 /* Process_Sensor_Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLTE_TableViewCell.swift; sourceTree = "<group>"; };
 		587B4B1B201E2A9B007D94BC /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		587B4B1D201E3047007D94BC /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		588E6B35201F6C740089C3A7 /* Process_Sensor_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process_Sensor_Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				58101F0E201E0F7900733F15 /* Main.storyboard */,
+				588E6B35201F6C740089C3A7 /* Process_Sensor_Data.swift */,
 				587B4B1B201E2A9B007D94BC /* DataModel.swift */,
 				587B4B1D201E3047007D94BC /* Functions.swift */,
 				58101F24201E14AC00733F15 /* Starter_VC.swift */,
@@ -156,6 +159,7 @@
 				58101F1F201E10DA00733F15 /* Bluetooth_VC.swift in Sources */,
 				587B4B1C201E2A9B007D94BC /* DataModel.swift in Sources */,
 				58101F25201E14AC00733F15 /* Starter_VC.swift in Sources */,
+				588E6B36201F6C740089C3A7 /* Process_Sensor_Data.swift in Sources */,
 				587B4B1E201E3047007D94BC /* Functions.swift in Sources */,
 				5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */,
 				58101F09201E0F7900733F15 /* AppDelegate.swift in Sources */,

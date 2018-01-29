@@ -536,6 +536,90 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rTT-CF-XTn" userLabel="R2">
+                                        <rect key="frame" x="0.0" y="908" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTT-CF-XTn" id="lBU-5e-N0I">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT HR" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4L-M6-db0" userLabel="BT HR">
+                                                    <rect key="frame" x="20" y="13" width="335" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="o4L-M6-db0" firstAttribute="centerY" secondItem="lBU-5e-N0I" secondAttribute="centerY" id="FrU-zR-Vvv"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="o4L-M6-db0" secondAttribute="trailing" constant="12" id="dnF-uz-b3h"/>
+                                                <constraint firstItem="o4L-M6-db0" firstAttribute="leading" secondItem="lBU-5e-N0I" secondAttribute="leadingMargin" constant="12" id="v66-d5-aCL"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="luu-yk-99s" userLabel="R2">
+                                        <rect key="frame" x="0.0" y="952" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="luu-yk-99s" id="7yM-KT-138">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3a0-Ct-dng" userLabel="BT SPD">
+                                                    <rect key="frame" x="20" y="13" width="335" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="3a0-Ct-dng" firstAttribute="leading" secondItem="7yM-KT-138" secondAttribute="leadingMargin" constant="12" id="50f-kb-9Vc"/>
+                                                <constraint firstItem="3a0-Ct-dng" firstAttribute="centerY" secondItem="7yM-KT-138" secondAttribute="centerY" id="BO0-VU-CiU"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="3a0-Ct-dng" secondAttribute="trailing" constant="12" id="wee-aV-C1Y"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="SPP-VR-fZN" userLabel="R2">
+                                        <rect key="frame" x="0.0" y="996" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SPP-VR-fZN" id="jmD-rg-ds5">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT CAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaQ-Bq-MJL" userLabel="BT CAD">
+                                                    <rect key="frame" x="20" y="13" width="335" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zaQ-Bq-MJL" firstAttribute="leading" secondItem="jmD-rg-ds5" secondAttribute="leadingMargin" constant="12" id="QSP-ME-BKl"/>
+                                                <constraint firstItem="zaQ-Bq-MJL" firstAttribute="centerY" secondItem="jmD-rg-ds5" secondAttribute="centerY" id="XiF-n1-4lu"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="zaQ-Bq-MJL" secondAttribute="trailing" constant="12" id="bQo-ug-j2b"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="06o-VE-n53" userLabel="R2">
+                                        <rect key="frame" x="0.0" y="1040" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="06o-VE-n53" id="eSZ-i9-6Z8">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT HR" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0R4-Vm-rwm" userLabel="BT SCORE">
+                                                    <rect key="frame" x="20" y="13" width="335" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="0R4-Vm-rwm" firstAttribute="leading" secondItem="eSZ-i9-6Z8" secondAttribute="leadingMargin" constant="12" id="ZRR-iV-oth"/>
+                                                <constraint firstItem="0R4-Vm-rwm" firstAttribute="centerY" secondItem="eSZ-i9-6Z8" secondAttribute="centerY" id="nCR-WS-sSU"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="0R4-Vm-rwm" secondAttribute="trailing" constant="12" id="r2S-s4-RaA"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -546,6 +630,10 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Start" image="first" id="mEB-LO-C5t"/>
                     <connections>
+                        <outlet property="btHR" destination="o4L-M6-db0" id="gFr-1A-3Zv"/>
+                        <outlet property="btMovingCadence" destination="zaQ-Bq-MJL" id="2lg-hI-BcW"/>
+                        <outlet property="btMovingSpeed" destination="3a0-Ct-dng" id="gRV-cz-cdD"/>
+                        <outlet property="btScore" destination="0R4-Vm-rwm" id="E07-33-5uR"/>
                         <outlet property="gpsAverageSpeed" destination="2zD-2r-znI" id="Kq1-b7-vFq"/>
                         <outlet property="gpsAvergagePace" destination="ZG3-mA-U7a" id="Nsh-lj-Wkv"/>
                         <outlet property="gpsDirection" destination="HI8-Ig-14K" id="AJn-tz-SLQ"/>
@@ -636,6 +724,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="8rJ-Kc-sve" id="Yam-nU-rB0"/>
+                                    <outlet property="delegate" destination="8rJ-Kc-sve" id="piB-UR-z5V"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
