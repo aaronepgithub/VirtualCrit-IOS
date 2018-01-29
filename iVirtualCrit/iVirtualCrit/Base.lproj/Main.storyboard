@@ -355,14 +355,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCY-8f-dFJ">
-                                                    <rect key="frame" x="28" y="13" width="319" height="18"/>
+                                                    <rect key="frame" x="20" y="13" width="327" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="FCY-8f-dFJ" firstAttribute="leading" secondItem="TJe-4T-CEb" secondAttribute="leadingMargin" constant="12" id="46S-yY-nO3"/>
+                                                <constraint firstItem="FCY-8f-dFJ" firstAttribute="leading" secondItem="TJe-4T-CEb" secondAttribute="leadingMargin" constant="4" id="46S-yY-nO3"/>
                                                 <constraint firstItem="FCY-8f-dFJ" firstAttribute="centerY" secondItem="TJe-4T-CEb" secondAttribute="centerY" id="ABq-hq-9pE"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="FCY-8f-dFJ" secondAttribute="trailing" constant="12" id="qdT-Nn-Dm8"/>
                                             </constraints>
@@ -376,7 +376,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPS MOVING TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1l-wR-0Aw">
-                                                    <rect key="frame" x="28" y="13" width="319" height="18"/>
+                                                    <rect key="frame" x="20" y="13" width="327" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -384,7 +384,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="m1l-wR-0Aw" firstAttribute="centerY" secondItem="qA5-NZ-1tF" secondAttribute="centerY" id="6TS-Zl-Ai5"/>
-                                                <constraint firstItem="m1l-wR-0Aw" firstAttribute="leading" secondItem="qA5-NZ-1tF" secondAttribute="leadingMargin" constant="12" id="jBB-zV-uGx"/>
+                                                <constraint firstItem="m1l-wR-0Aw" firstAttribute="leading" secondItem="qA5-NZ-1tF" secondAttribute="leadingMargin" constant="4" id="jBB-zV-uGx"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="m1l-wR-0Aw" secondAttribute="trailing" constant="12" id="t0V-3z-R5W"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -397,7 +397,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPS MOVING PACE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="teG-Tl-NtZ">
-                                                    <rect key="frame" x="28" y="13" width="319" height="18"/>
+                                                    <rect key="frame" x="20" y="13" width="327" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -405,7 +405,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="teG-Tl-NtZ" firstAttribute="centerY" secondItem="clJ-Qw-dAT" secondAttribute="centerY" id="Vgw-QU-KXO"/>
-                                                <constraint firstItem="teG-Tl-NtZ" firstAttribute="leading" secondItem="clJ-Qw-dAT" secondAttribute="leadingMargin" constant="12" id="Yp9-bP-PYH"/>
+                                                <constraint firstItem="teG-Tl-NtZ" firstAttribute="leading" secondItem="clJ-Qw-dAT" secondAttribute="leadingMargin" constant="4" id="Yp9-bP-PYH"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="teG-Tl-NtZ" secondAttribute="trailing" constant="12" id="tjq-r7-etF"/>
                                             </constraints>
                                         </tableViewCellContentView>
