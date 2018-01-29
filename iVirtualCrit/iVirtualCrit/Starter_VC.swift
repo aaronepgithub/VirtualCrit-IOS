@@ -10,6 +10,8 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 
+var inRoundBtDistance: Double = 0
+
 class Starter_VC: UITableViewController {
 
     @IBOutlet weak var statusValue: UILabel!
@@ -40,20 +42,45 @@ class Starter_VC: UITableViewController {
     var inRoundGeoDistance: Double = 0
     var roundsCompleted: Int = 0
     var secondsPerRound: Int = 60
+
+    
+    var inRoundHR = [Int]()
+    var inRoundCadence = [Int]()
     
     
     @objc func timerInterval() {
-        //check for 0's
-        //update system time
 
+        rounds.geoDistancesPerRound.append(inRoundGeoDistance)
+        rounds.btDistancesPerRound.append(inRoundBtDistance)
+        
+        let roundHR = inRoundHR.average
+        let roundCadence = inRoundCadence.average
+        let roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+        
+        if Double(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == 20 {
+            print("In Round Values for HR, Spd, Cad")
+            print(roundHR, roundSpeed, roundCadence)
+            
+        }
+        
+        
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         totalTime.text = ("\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))   [ACTUAL ELAPSED TIME]")
         
         if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) {
             print("New Round")
             roundsCompleted += 1
-            rounds.geoDistancesPerRound.append(inRoundGeoDistance)
+
+            print("\n")
+            print("End of Round for HR, Spd, Cad")
+            print(roundHR, roundSpeed, roundCadence)
+            print("\n")
+            
+            
             inRoundGeoDistance = 0
+            inRoundBtDistance = 0
+            inRoundCadence = []
+            inRoundHR = []
         }
         
         //print(system.actualElapsedTime! - Double(roundsCompleted * secondsPerRound))
@@ -69,6 +96,7 @@ class Starter_VC: UITableViewController {
             if let hrv = userInfo[AnyHashable("hr")] {
                 //print(String(describing: userInfo[AnyHashable("hr")]!))
                 btHR.text = "(\(hrv as! String))    HR"
+                inRoundHR.append(hrv as! Int)
             }
             if let scv = userInfo[AnyHashable("score")] {
                 //print(String(describing: userInfo[AnyHashable("score")]!))
@@ -81,6 +109,7 @@ class Starter_VC: UITableViewController {
             if let cav = userInfo[AnyHashable("cad")] {
                 //print(String(describing: userInfo[AnyHashable("cad")]!))
                 btMovingCadence.text = "(\(cav as! String))   CAD BT"
+                inRoundCadence.append(cav as! Int)
             }
             if let dsv = userInfo[AnyHashable("dist")] {
                 btDistance.text = "(\(dsv as! String))   DISTANCE BT"
@@ -91,6 +120,10 @@ class Starter_VC: UITableViewController {
 
         }
     }
+    
+    @IBOutlet weak var lblTireSize: UILabel!
+    @IBOutlet weak var lblMaxHeartrateValue: UILabel!
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath)
@@ -125,7 +158,20 @@ class Starter_VC: UITableViewController {
                 timer.invalidate()
                 stopLocationUpdates()
             }
+        case 8:
+            let hrz = maxHRvalue
+            if hrz == 185 {maxHRvalue = 190;lblMaxHeartrateValue.text = "190";}
+            if hrz == 190 {maxHRvalue = 195;lblMaxHeartrateValue.text = "195";}
+            if hrz == 195 {maxHRvalue = 200;lblMaxHeartrateValue.text = "200";}
+            if hrz == 200 {maxHRvalue = 185;lblMaxHeartrateValue.text = "185";}
+            print("Max HR:  \(maxHRvalue)")
             
+        case 9:
+            let tsz = wheelCircumference
+            if tsz == 2105 {lblTireSize.text = "700X26";wheelCircumference = 2115;}
+            if tsz == 2115 {lblTireSize.text = "700X32";wheelCircumference = 2155;}
+            if tsz == 2155 {lblTireSize.text = "700X25";wheelCircumference = 2105;}
+            print("WheelCir:  \(wheelCircumference)")
         default:
             print("DO NOTHING")
         }
@@ -254,6 +300,10 @@ extension Starter_VC: CLLocationManagerDelegate {
         print("stopLocationUpdates")
     }
     
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Loc did fail:  \(error)")
+        startLocationUpdates()
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
@@ -265,6 +315,8 @@ extension Starter_VC: CLLocationManagerDelegate {
                         inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         
                         let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+                        
+                        
                         
                         gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))     [ROUND SPEED]"
                         

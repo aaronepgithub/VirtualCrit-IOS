@@ -29,4 +29,5 @@ struct geo {
 
 struct rounds {
     static var geoDistancesPerRound = [Double]()
+    static var btDistancesPerRound = [Double]()
 }

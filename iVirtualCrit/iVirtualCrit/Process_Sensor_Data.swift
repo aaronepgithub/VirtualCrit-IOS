@@ -11,7 +11,7 @@ import Foundation
 var total_distance: Double?
 var speed: String?
 var cadence: String?
-var wheelCircumference: Double = 2110
+var wheelCircumference: Double = 2105
 var total_moving_time_seconds: Double = 0
 var total_moving_time_string: String = ""
 
@@ -84,6 +84,7 @@ func processWheelData(withData data :Data) {
         rt_WheelTime += b
         totalWheelRevs += a
         total_distance = totalWheelRevs * (wheelCircumference / 1000) * 0.000621371
+        inRoundBtDistance += (a * (wheelCircumference / 1000) * 0.000621371)
         
         
 //        if rt.rt_speed > 0 {

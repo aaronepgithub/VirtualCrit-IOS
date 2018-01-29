@@ -9,12 +9,14 @@
 import UIKit
 import CoreBluetooth
 
+var maxHRvalue: Int = 185
 
 class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var centralManager: CBCentralManager!
     var arrPeripheral = [CBPeripheral?]()
     var arr_connected_peripherals = [CBPeripheral?]()
+    
     
     let HR_Service = "0x180D"
     let HR_Char =  "0x2A37"
@@ -156,7 +158,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             }
 //            rt.rt_hr = Double(bpmValue)
 //            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
-            let score = stringer(dbl: ((Double(bpmValue) / Double(185)) * Double(100)), len: 1)
+            let score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
             out_Btn1.setTitle(String(bpmValue), for: .normal)
             NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
         }
