@@ -8,9 +8,6 @@
 
 import Foundation
 
-
-
-
 func getFormattedTime(d: Date) -> String {
     let currentDateTime = d
     let formatter = DateFormatter()

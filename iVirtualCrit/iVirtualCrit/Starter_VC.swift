@@ -22,8 +22,15 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var gpsAvergagePace: UILabel!
     @IBOutlet weak var gpsDistance: UILabel!
     @IBOutlet weak var gpsDirection: UILabel!
+    @IBOutlet weak var gpsRoundSpeed: UILabel!
+    
+    
     var timer = Timer()
-    var timerIntervalValue: Double = 5
+    var timerIntervalValue: Double = 1
+ 
+    var inRoundGeoDistance: Double = 0
+    var roundsCompleted: Int = 0
+    var secondsPerRound: Int = 30
     
     
     @objc func timerInterval() {
@@ -32,8 +39,15 @@ class Starter_VC: UITableViewController {
 
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         totalTime.text = ("\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))   [ACTUAL ELAPSED TIME]")
-//        print("timerInterval");print(system.actualElapsedTime!);print("\(createTimeString(seconds: Int(round(system.actualElapsedTime!))))");
-//        print("\n");
+        
+        if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) {
+            print("New Round")
+            roundsCompleted += 1
+            rounds.geoDistancesPerRound.append(inRoundGeoDistance)
+            inRoundGeoDistance = 0
+        }
+        
+        //print(system.actualElapsedTime! - Double(roundsCompleted * secondsPerRound))
         
     }
     
@@ -195,49 +209,65 @@ extension Starter_VC: CLLocationManagerDelegate {
         print("stopLocationUpdates")
     }
     
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
             if location.horizontalAccuracy < 20 {
                 if self.locations.count > 2 {
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
+                        
                         geo.distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
+                        inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
+                        
+                        let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+                        
+                        gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))     [ROUND SPEED]"
+                        
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)
                         coords.append(location.coordinate)
                         
-                        //geo.speed = ((location.distance(from: self.locations.last!)) * 0.000621371) / ((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)) / 60 / 60)
                         geo.speed = location.speed * 2.23694
                         gpsMovingSpeed.text = "\(stringer(dbl: geo.speed!,len: 1)) MPH [MOVING SPD]"
                         
                         geo.pace = calcMinPerMile(mph: geo.speed!)
                         gpsMovingPace.text = "\(String(describing: geo.pace)) MIN/MI [MOVING PACE]"
                         gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI  [GEO DISTANCE]"
+                        
+                        geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
+                        gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1)) AVG SPD"
+                        gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!)) AVG PACE"
 
                         let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                         if ts < 10 {
                             geo.elapsedTime += ts
                         }
                         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-                        totalTime.text = ("\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))   [ACTUAL ELAPSED TIME]")
+                        
+                        totalTime.text = "\(createTimeString(seconds: Int(  round((system.actualElapsedTime)!)  )  ))   [ACTUAL ELAPSED TIME]"
                         gpsMovingTime.text = "\(createTimeString(seconds: Int((geo.elapsedTime))))  [MOVING TIME]"
                         
-                        geo.direction = String(describing: location.course)
                         
-                        if location.course > 316 && location.course < 45 {
+                        if location.course > 315 || location.course <= 45 {
                             gpsDirection.text = "\(location.course)  [N]"
                             geo.direction = "\(location.course)  [N]"
                             
-                        } else {
-                            gpsDirection.text = "\(location.course)  [O]"
-                            geo.direction = "\(location.course)  [O]"
                         }
                         
-                        //  DO OTHERS
-                        //  LOGIC FOR STOP WHEN IN BACKGROUND
-                        
-                        
-                        
-                        
+                        if location.course > 45 && location.course <= 135 {
+                            gpsDirection.text = "\(location.course)  [E]"
+                            geo.direction = "\(location.course)  [E]"
+                            
+                        }
+                        if location.course > 135 && location.course <= 225 {
+                            gpsDirection.text = "\(location.course)  [S]"
+                            geo.direction = "\(location.course)  [S]"
+                        }
+                        if location.course > 225 && location.course <= 315 {
+                            gpsDirection.text = "\(location.course)  [W]"
+                            geo.direction = "\(location.course)  [W]"
+                        }
+
                         
                     }
                 } else {

@@ -23,4 +23,10 @@ struct geo {
     static var speed: Double?
     static var pace: String = "0"
     static var direction: String = "X"
+    static var avgSpeed: Double?
+    static var avgPace: String = "0"
+}
+
+struct rounds {
+    static var geoDistancesPerRound = [Double]()
 }
