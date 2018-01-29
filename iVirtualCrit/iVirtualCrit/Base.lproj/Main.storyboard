@@ -656,6 +656,9 @@
                     <tabBarItem key="tabBarItem" title="Bluetooth" image="second" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="BLTE_tableViewOutlet" destination="yJO-1m-Bee" id="qAS-GI-pWv"/>
+                        <outlet property="out_Btn1" destination="W3i-IZ-Pk4" id="H8b-I1-CVb"/>
+                        <outlet property="out_Btn2" destination="69x-Qz-HPB" id="cj4-7r-faQ"/>
+                        <outlet property="out_Btn3" destination="vmd-Jj-s4U" id="LAa-PW-tWh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>

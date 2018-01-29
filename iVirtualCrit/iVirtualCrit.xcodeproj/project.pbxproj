@@ -63,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				58101F0E201E0F7900733F15 /* Main.storyboard */,
-				5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */,
 				587B4B1B201E2A9B007D94BC /* DataModel.swift */,
 				587B4B1D201E3047007D94BC /* Functions.swift */,
 				58101F24201E14AC00733F15 /* Starter_VC.swift */,
@@ -71,6 +70,7 @@
 				58101F11201E0F7900733F15 /* Assets.xcassets */,
 				58101F13201E0F7900733F15 /* LaunchScreen.storyboard */,
 				58101F08201E0F7900733F15 /* AppDelegate.swift */,
+				5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */,
 				58101F16201E0F7900733F15 /* Info.plist */,
 			);
 			path = iVirtualCrit;

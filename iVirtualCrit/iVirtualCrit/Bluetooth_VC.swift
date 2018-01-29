@@ -22,10 +22,14 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     let CSC_Char = "0x2A5B"
     
     @IBOutlet weak var BLTE_tableViewOutlet: UITableView!
+    @IBOutlet weak var out_Btn1: UIButton!
+    @IBOutlet weak var out_Btn2: UIButton!
+    @IBOutlet weak var out_Btn3: UIButton!
+    
+    
     
     @IBAction func act_Btn1(_ sender: UIButton) {
-        //scan
-//        startScanning()
+        startScanning()
     }
     
     
@@ -41,25 +45,18 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Peripheral Connected!!!")
         arr_connected_peripherals.append(peripheral)
-        // IMPORTANT: Set the delegate property, otherwise we won't receive the discovery callbacks, like peripheral(_:didDiscoverServices)
         peripheral.delegate = self
-        // Now that we've successfully connected to the peripheral, let's discover the services.
-        // This time, we will search for the transfer service UUID
         print("Looking for Services for \(String(describing: peripheral.name))...")
         peripheral.discoverServices([CBUUID.init(string: HR_Service), CBUUID.init(string: CSC_Service)])
-        
         self.BLTE_tableViewOutlet.reloadData()
-        
     }
     
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         print("Discovered Services!!!")
-        // Core Bluetooth creates an array of CBService objects —- one for each service that is discovered on the peripheral.
         if let services = peripheral.services {
             for service in services {
                 print("Discovered service \(service)")
-                // If we found either the transfer service, discover the transfer characteristic
                 if (service.uuid == CBUUID(string: HR_Service)) {
                     let transferCharacteristicUUID = CBUUID.init(string: HR_Char)
                     peripheral.discoverCharacteristics([transferCharacteristicUUID], for: service)
@@ -82,16 +79,12 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
                 if characteristic.uuid == CBUUID(string: HR_Char) {
-                    // subscribe to dynamic changes
                     peripheral.setNotifyValue(true, for: characteristic)
                     print("didDiscoverChar HR for \(peripheral.name!)")
-                    //arr_hr_notifying_peripherals.append(peripheral)
                 }
                 if characteristic.uuid == CBUUID(string: CSC_Char) {
-                    // subscribe to dynamic changes
                     peripheral.setNotifyValue(true, for: characteristic)
                     print("didDiscoverChar CSC for \(peripheral.name!)")
-                    //arr_CSC_notifying_peripherals.append(peripheral)
                 }
             }
         }
@@ -104,7 +97,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         
         print("didDiscover peripheral \(String(describing: peripheral.name)) at \(RSSI)")
         // check to see if we've already saved a reference to this peripheral
-        
         if let firstSuchElement = arrPeripheral.first(where: { $0 == peripheral }) {
             print("\(String(describing: firstSuchElement?.name)) exists")
         } else {
@@ -117,7 +109,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     func startScanning() {
         print("Started Scanning")
         
-        
         if centralManager.isScanning {
             print("Central Manager is already scanning!!")
             return
@@ -128,10 +119,11 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
-            
+            self.out_Btn1.setTitle("...", for: .normal)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.BLTE_tableViewOutlet.reloadData()
+                self.out_Btn1.setTitle("HR", for: .normal)
             })
         })
         
@@ -149,51 +141,43 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         }
         
         func decodeHRValue(withData data: Data) {
-//            let count = data.count / MemoryLayout<UInt8>.size
-//            var array = [UInt8](repeating: 0, count: count)
-//            (data as NSData).getBytes(&array, length:count * MemoryLayout<UInt8>.size)
-//            //var bpmValue : Int = 0
-//
-//
-//            if ((array[0] & 0x01) == 0) {
-//                bpmValue = Int(array[1])
-//
-//            } else {
-//                //Convert Endianess from Little to Big
-//                bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
-//            }
+            let count = data.count / MemoryLayout<UInt8>.size
+            var array = [UInt8](repeating: 0, count: count)
+            (data as NSData).getBytes(&array, length:count * MemoryLayout<UInt8>.size)
+            var bpmValue : Int = 0
+            if ((array[0] & 0x01) == 0) {
+                bpmValue = Int(array[1])
+            } else {
+                bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
+            }
 //            rt.rt_hr = Double(bpmValue)
 //            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
-//            out_Top1.setTitle(String(bpmValue), for: .normal)
-//            NotificationCenter.default.post(name: Notification.Name("heartrate"), object: nil)
-//            out_Btn1.setTitle(String(bpmValue), for: .normal)
-
+            out_Btn1.setTitle(String(bpmValue), for: .normal)
+            //NotificationCenter.default.post(name: Notification.Name("heartrate"), object: nil)
         }
         
         
         func decodeCSC(withData data : Data) {
-//            let WHEEL_REVOLUTION_FLAG               : UInt8 = 0x01
-//            let CRANK_REVOLUTION_FLAG               : UInt8 = 0x02
-//            let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
-//            //dump(value)
-//            let flag = value[0]
-//
-//            if flag & WHEEL_REVOLUTION_FLAG == 1 {
-//                //print("SPD value[1]");print(value[1])
-//                //out_Top2.setTitle(String(value[1]), for: .normal)
-//                //processWheelData(withData: data)
-//                if flag & CRANK_REVOLUTION_FLAG == 2 {
-//                    out_Top3.setTitle(String(value[7]), for: .normal)
-//                    //print("CAD value[7]");print(value[7])
-//                    processCrankData(withData: data, andCrankRevolutionIndex: 7)
-//                }
-//            } else {
-//                if flag & CRANK_REVOLUTION_FLAG == 2 {
-//                    out_Top3.setTitle(String(value[1]), for: .normal)
-//                    //print("CAD value[1]");print(value[1])
-//                    processCrankData(withData: data, andCrankRevolutionIndex: 1)
-//                }
-//            }
+            let WHEEL_REVOLUTION_FLAG               : UInt8 = 0x01
+            let CRANK_REVOLUTION_FLAG               : UInt8 = 0x02
+            let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
+            let flag = value[0]
+            if flag & WHEEL_REVOLUTION_FLAG == 1 {
+                //print("SPD value[1]");print(value[1])
+                out_Btn2.setTitle(String(value[1]), for: .normal)
+                //processWheelData(withData: data)
+                if flag & CRANK_REVOLUTION_FLAG == 2 {
+                    out_Btn3.setTitle(String(value[7]), for: .normal)
+                    //print("CAD value[7]");print(value[7])
+                    //processCrankData(withData: data, andCrankRevolutionIndex: 7)
+                }
+            } else {
+                if flag & CRANK_REVOLUTION_FLAG == 2 {
+                    out_Btn3.setTitle(String(value[1]), for: .normal)
+                    //print("CAD value[1]");print(value[1])
+                    //processCrankData(withData: data, andCrankRevolutionIndex: 1)
+                }
+            }
         }
         
         
