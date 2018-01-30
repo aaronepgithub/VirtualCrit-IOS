@@ -64,9 +64,9 @@ class TLViewController: UIViewController {
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-        if gpsEnabled == true {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        if gpsEnabled == true {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
 
     }
     
@@ -252,8 +252,6 @@ class TLViewController: UIViewController {
                 newGreenPoint(titleString: "ANOTHER MILE COMPLETED \n TOTAL DISTANCE:  \(stringer0(myIn: geo.total_distance)) MILES \n \(previousMileSpeed)")
             }
         }
-
-        
     }
     
     func getFormattedTime() -> String {

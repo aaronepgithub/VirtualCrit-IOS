@@ -121,6 +121,7 @@ class Starter_VC: UITableViewController {
 //            print("End of Round for HR, Spd, Cad, GeoSpd")
 //            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
 //            print("\n")
+            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "ROUND COMPLETE \n", "color": "blue", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "cadence": stringer(dbl: roundCadence, len: 1), "speed": stringer(dbl: roundSpeed, len: 2)])
             
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
@@ -150,6 +151,9 @@ class Starter_VC: UITableViewController {
             print("Mid Round for HR, Spd, Cad, GeoSpd")
             print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
             print("\n")
+            
+            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "MID-ROUND UPDATE \n", "color": "blue", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "cadence": stringer(dbl: roundCadence, len: 1), "speed": stringer(dbl: roundSpeed, len: 2)])
+            
                 }
         
         updateViewer_VC()
