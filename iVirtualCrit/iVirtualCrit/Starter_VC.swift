@@ -10,7 +10,8 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 
-
+var arr = [String]()
+var arrSend = [String]()
 
 class Starter_VC: UITableViewController {
 
@@ -32,6 +33,9 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var btScore: UILabel!
     @IBOutlet weak var btMovingTime: UILabel!
     @IBOutlet weak var btDistance: UILabel!
+    @IBOutlet weak var btMovAvg: UILabel!
+    
+    @IBOutlet weak var gpsStatus: UILabel!
     
     
     
@@ -47,6 +51,49 @@ class Starter_VC: UITableViewController {
 
     
     
+    func updateViewer_VC() {
+        
+        if geo.status == "ON/USE" {
+            
+            //HDR
+            arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG")")
+            //3 VALS
+            if btHR.text == " " {arr.append("\(gpsAvergagePace.text ?? "00")")} else {arr.append("\(btHR.text ?? "00")")}
+            
+            arr.append("\(gpsMovingSpeed.text ?? "00.0")")
+            arr.append("\(gpsMovingPace.text ?? "00")")
+            //3 LBLS
+            if btHR.text == " " {arr.append("AVG/P")} else {arr.append("\(btScore.text ?? "00")")}
+            
+            arr.append("SPD")
+            arr.append("PACE")
+            //FOOTER
+            arr.append("\(totalTime.text ?? "00:00:00")  \(gpsDistance.text ?? "0.00 MILES")")
+            arrSend = arr
+            arr = []
+            
+        } else {
+           
+            //HDR
+            arr.append("\(btMovingTime.text ?? "00:00:00")  \(btMovAvg.text ?? "00.0 AVG")")
+            //3 VALS
+            arr.append("\(btHR.text ?? "00")")
+            arr.append("\(btMovingSpeed.text ?? "00.0")")
+            arr.append("\(btMovingCadence.text ?? "00")")
+            //3 LBLS
+            arr.append("\(btScore.text ?? "00")")
+            arr.append("SPD")
+            arr.append("CAD")
+            //FOOTER
+            arr.append("\(totalTime.text ?? "00:00:00")  \(btDistance.text ?? "0.00 MILES")")
+            arrSend = arr
+            arr = []
+            
+        }
+        
+        NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
+    }
+    
     @objc func timerInterval() {
 
         
@@ -60,9 +107,9 @@ class Starter_VC: UITableViewController {
         }
         
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-        totalTime.text = ("\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))   [ACTUAL ELAPSED TIME]")
+        totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))" //[ACTUAL ELAPSED TIME]
         
-        
+        //ROUND END
         if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) {
             print("New Round")
             roundsCompleted += 1
@@ -105,7 +152,10 @@ class Starter_VC: UITableViewController {
             print("\n")
                 }
         
-    }
+        updateViewer_VC()
+        
+    }  //END SECOND TIMER
+    
     
     @objc func updateBT(not: Notification) {
 //        print("updateBT")
@@ -115,25 +165,28 @@ class Starter_VC: UITableViewController {
             //print(userInfo[AnyHashable("hr")]!)
             if let hrv = userInfo[AnyHashable("hr")] {
                 //print(String(describing: userInfo[AnyHashable("hr")]!))
-                btHR.text = "(\(hrv as! String))    HR"
+                btHR.text = "\(hrv as! String)"  //HR
             }
             if let scv = userInfo[AnyHashable("score")] {
                 //print(String(describing: userInfo[AnyHashable("score")]!))
-                btScore.text = "(\(scv as! String))    %MAX SCORE"
+                btScore.text = "\(scv as! String) %"
             }
             if let spv = userInfo[AnyHashable("spd")] {
                 //print(String(describing: userInfo[AnyHashable("spd")]!))
-                btMovingSpeed.text = "(\(spv as! String))    SPD BT"
+                btMovingSpeed.text = "\(spv as! String)"//SPD BT
             }
             if let cav = userInfo[AnyHashable("cad")] {
                 //print(String(describing: userInfo[AnyHashable("cad")]!))
-                btMovingCadence.text = "(\(cav as! String))   CAD BT"
+                btMovingCadence.text = "\(cav as! String)"  //   CAD BT"
             }
             if let dsv = userInfo[AnyHashable("dist")] {
-                btDistance.text = "(\(dsv as! String))   DISTANCE BT"
+                btDistance.text = "\(dsv as! String) MILES"  //DISTANCE BT
             }
             if let mtv = userInfo[AnyHashable("mov")] {
-                btMovingTime.text = "(\(mtv as! String))   MOVING TIME BT"
+                btMovingTime.text = "\(mtv as! String)"   //MOVING TIME BT
+            }
+            if let mvavg = userInfo[AnyHashable("mov_avg")] {
+                btMovAvg.text = "\(mvavg as! String) AVG"  //MOV AVG
             }
 
         }
@@ -176,6 +229,11 @@ class Starter_VC: UITableViewController {
                 timer.invalidate()
                 stopLocationUpdates()
             }
+        case 2:
+            let gst = geo.status
+            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE"}
+            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF"}
+            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON"}
         case 8:
             let hrz = maxHRvalue
             if hrz == 185 {maxHRvalue = 190;lblMaxHeartrateValue.text = "190";}
@@ -199,7 +257,7 @@ class Starter_VC: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -224,72 +282,7 @@ class Starter_VC: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+   
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -336,22 +329,22 @@ extension Starter_VC: CLLocationManagerDelegate {
                         roundGeoSpeed = avgGeoSpeedThisRound
                         
                         
-                        gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))     [ROUND SPEED]"
+                        gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
                         
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)
                         coords.append(location.coordinate)
                         
                         geo.speed = location.speed * 2.23694
-                        gpsMovingSpeed.text = "\(stringer(dbl: geo.speed!,len: 1)) MPH [MOVING SPD]"
+                        gpsMovingSpeed.text = "\(stringer(dbl: geo.speed!,len: 1))"
                         
                         geo.pace = calcMinPerMile(mph: geo.speed!)
-                        gpsMovingPace.text = "\(String(describing: geo.pace)) MIN/MI [MOVING PACE]"
-                        gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI  [GEO DISTANCE]"
+                        gpsMovingPace.text = "\(String(describing: geo.pace))"
+                        gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI"
                         
                         geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
                         gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1)) AVG SPD"
-                        gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!)) AVG PACE"
+                        gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!))"
 
                         let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                         if ts < 10 {
@@ -359,8 +352,8 @@ extension Starter_VC: CLLocationManagerDelegate {
                         }
                         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
                         
-                        totalTime.text = "\(createTimeString(seconds: Int(  round((system.actualElapsedTime)!)  )  ))   [ACTUAL ELAPSED TIME]"
-                        gpsMovingTime.text = "\(createTimeString(seconds: Int((geo.elapsedTime))))  [MOVING TIME]"
+                        totalTime.text = "\(createTimeString(seconds: Int(  round((system.actualElapsedTime)!))))"
+                        gpsMovingTime.text = "\(createTimeString(seconds: Int((geo.elapsedTime))))"
                         
                         
                         if location.course > 315 || location.course <= 45 {
