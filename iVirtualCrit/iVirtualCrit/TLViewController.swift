@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class TLViewController: UIViewController {
     
@@ -69,6 +70,11 @@ class TLViewController: UIViewController {
             }
             
             self.newBluePoint(titleString: "\(str)")
+            let ti = getFormattedTime()
+            udString += "\(ti)\n\(str)\n"
+                    if la != 0 {
+                        udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+                    }
             
         }
         
@@ -110,6 +116,37 @@ class TLViewController: UIViewController {
         //        }
     }
     
+    
+//    let newDesc = "New Description"
+//    let newPoint =  ISPoint(title: "\(Date())", description: newDesc, pointColor: UIColor.black, lineColor: UIColor.black, touchUpInside: newTouchAction, fill: true)
+//
+//    self.timeline.points.insert(newPoint, at: 0)
+    
+    func blueTouch(point:ISPoint) {
+    
+        if la != 0 {
+            //let myLnk = "http://maps.apple.com/?ll=\(la),\(lo)\n"
+            
+            let latitude: CLLocationDegrees = la//37.2
+            let longitude: CLLocationDegrees = lo //22.9
+            
+            let regionDistance:CLLocationDistance = 10000
+            let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
+            let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
+            let options = [
+                MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+                MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+            ]
+            let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = point.description
+            mapItem.openInMaps(launchOptions: options)
+            
+        }
+        
+    }
+    
+    
     func newBluePoint(titleString: String) {
         print("newBluePoint")
         let ti = getFormattedTime()
@@ -119,11 +156,13 @@ class TLViewController: UIViewController {
         nextPt.pointColor = .blue
         nextPt.lineColor = .blue
         nextPt.fill = false
+        nextPt.touchUpInside = blueTouch
         self.timeline.points.insert(nextPt, at: 0)
+        //self.timeline.points.append(nextPt)
         udString += "\(ti)\n\(titleString)\n"
-        //        if gpsEnabled == true {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
+                if la != 0 {
+                    udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+                }
         
     }
     

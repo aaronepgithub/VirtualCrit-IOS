@@ -13,6 +13,10 @@ import CoreBluetooth
 var arr = [String]()
 var arrSend = [String]()
 
+var la: Double = 0
+var lo: Double = 0
+
+
 class Starter_VC: UITableViewController {
 
     @IBOutlet weak var statusValue: UILabel!
@@ -326,6 +330,8 @@ extension Starter_VC: CLLocationManagerDelegate {
                 if self.locations.count > 2 {
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
                         
+                        la = (self.locations.last?.coordinate.latitude)!
+                        lo = (self.locations.last?.coordinate.longitude)!
                         geo.distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         

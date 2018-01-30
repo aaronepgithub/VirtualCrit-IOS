@@ -28,7 +28,7 @@ class Viewer_VC: UIViewController {
     
     
     @objc func updateDisplay() {
-        print("...")
+        //print("...")
 //        print("arr send  \(arrSend[0])")
 //        dump(arrSend)
 //        print("\n")

@@ -42,9 +42,10 @@ class ISTimeline: UIScrollView {
         }
     }
     
-    open var bubbleColor:UIColor = .init(red: 0.75, green: 0.75, blue: 0.75, alpha: 1.0)
+    //open var bubbleColor:UIColor = .init(red: 0.75, green: 0.75, blue: 0.75, alpha: 1.0)
+    open var bubbleColor:UIColor = UIColor.red
     open var titleColor:UIColor = .white
-    open var descriptionColor:UIColor = .gray
+    open var descriptionColor:UIColor = .black
     
     open var points:[ISPoint] = [] {
         didSet {
@@ -163,8 +164,8 @@ class ISTimeline: UIScrollView {
     fileprivate func buildTitleLabel(_ index:Int) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.text = points[index].title
-        //        titleLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
-        titleLabel.font = UIFont(name: "YanoneKaffeesatz-Bold", size: 20)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
+        //titleLabel.font = UIFont(name: "YanoneKaffeesatz-Bold", size: 20)
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.numberOfLines = 0
         titleLabel.preferredMaxLayoutWidth = calcWidth()
@@ -176,7 +177,8 @@ class ISTimeline: UIScrollView {
         if (text != nil) {
             let descriptionLabel = UILabel()
             descriptionLabel.text = text
-            descriptionLabel.font = UIFont(name: "YanoneKaffeesatz-Regular", size: 15)
+            descriptionLabel.font = UIFont.boldSystemFont(ofSize: 10.0)
+            //descriptionLabel.font = UIFont(name: "YanoneKaffeesatz-Regular", size: 15)
             descriptionLabel.lineBreakMode = .byWordWrapping
             descriptionLabel.numberOfLines = 0
             descriptionLabel.preferredMaxLayoutWidth = calcWidth()
