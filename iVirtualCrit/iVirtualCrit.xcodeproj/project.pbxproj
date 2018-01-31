@@ -18,6 +18,8 @@
 		585E61172020F69700BFCD65 /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61152020F69700BFCD65 /* ISPoint.swift */; };
 		585E61192020F6F600BFCD65 /* TLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61182020F6F600BFCD65 /* TLViewController.swift */; };
 		5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */; };
+		587B04882021F353005A638C /* History_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B04872021F353005A638C /* History_VC.swift */; };
+		587B048A2022027D005A638C /* Results_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B04892022027D005A638C /* Results_VC.swift */; };
 		587B4B1C201E2A9B007D94BC /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B4B1B201E2A9B007D94BC /* DataModel.swift */; };
 		587B4B1E201E3047007D94BC /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B4B1D201E3047007D94BC /* Functions.swift */; };
 		588E6B36201F6C740089C3A7 /* Process_Sensor_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588E6B35201F6C740089C3A7 /* Process_Sensor_Data.swift */; };
@@ -37,6 +39,8 @@
 		585E61152020F69700BFCD65 /* ISPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ISPoint.swift; path = "../../Virtual Crit III/xxyy/ISPoint.swift"; sourceTree = "<group>"; };
 		585E61182020F6F600BFCD65 /* TLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLViewController.swift; sourceTree = "<group>"; };
 		5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLTE_TableViewCell.swift; sourceTree = "<group>"; };
+		587B04872021F353005A638C /* History_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History_VC.swift; sourceTree = "<group>"; };
+		587B04892022027D005A638C /* Results_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Results_VC.swift; sourceTree = "<group>"; };
 		587B4B1B201E2A9B007D94BC /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		587B4B1D201E3047007D94BC /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		588E6B35201F6C740089C3A7 /* Process_Sensor_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process_Sensor_Data.swift; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				58101F0E201E0F7900733F15 /* Main.storyboard */,
+				587B04892022027D005A638C /* Results_VC.swift */,
+				587B04872021F353005A638C /* History_VC.swift */,
 				585E61182020F6F600BFCD65 /* TLViewController.swift */,
 				585E61152020F69700BFCD65 /* ISPoint.swift */,
 				585E61142020F69700BFCD65 /* ISTimeline.swift */,
@@ -176,7 +182,9 @@
 				588E6B36201F6C740089C3A7 /* Process_Sensor_Data.swift in Sources */,
 				585E61132020D3C400BFCD65 /* Viewer_VC.swift in Sources */,
 				587B4B1E201E3047007D94BC /* Functions.swift in Sources */,
+				587B048A2022027D005A638C /* Results_VC.swift in Sources */,
 				585E61192020F6F600BFCD65 /* TLViewController.swift in Sources */,
+				587B04882021F353005A638C /* History_VC.swift in Sources */,
 				5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */,
 				58101F09201E0F7900733F15 /* AppDelegate.swift in Sources */,
 			);

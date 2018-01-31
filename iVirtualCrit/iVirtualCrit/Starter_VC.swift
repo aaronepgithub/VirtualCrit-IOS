@@ -17,6 +17,10 @@ var la: Double = 0
 var lo: Double = 0
 
 
+//USED FOR HISTORY TABLE VIEW
+var arrResults = [String]()
+var arrResultsDetails = [String]()
+
 class Starter_VC: UITableViewController {
 
     @IBOutlet weak var statusValue: UILabel!
@@ -53,7 +57,79 @@ class Starter_VC: UITableViewController {
     var roundGeoSpeed: Double = 0
     
 
+
+    func createNRArray() {
+        if roundsCompleted > 0  {
+//            arrResults = []
+//            arrResultsDetails = []
+            
+            let a = "ROUND # \(roundsCompleted)  "
+            let b = "\(stringer(dbl: roundHR, len: 1)) BPM/HR"
+            let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1)) %MAX  "
+            let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
+            let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM  "
+            let f = "  \(stringer(dbl: roundGeoSpeed, len: 1))  MPH/GEO"
+            arrResults.append("\(a)\(b)\(c)")
+            arrResultsDetails.append("\(d)\(e)\(f)")
+            
+            print("\n");
+            dump(arrResults)
+            dump(arrResultsDetails)
+            print("\n");
+            
+            //
+            //var s = roundsCompleted
+//            var a = 0
+//            if s == 0 {
+//                return
+//            } else {
+//                //while s > 0 && a < 100 {
+//                    //arrResults.append("ROUND#  \(s-1):    \(stringer1(myIn: round.heartrates[s-1])) BPM   \(stringer1(myIn: round.scores[s-1])) %")
+//
+//                    //arrResultsDetails.append("   \(stringer2(myIn: round.speeds[s-1])) MPH   \(stringer1(myIn: round.cadences[s-1])) RPM   \(stringer1(myIn: round.geoSpeeds[s-1]))  MPH GPS")
+////
+////                    s = s - 1
+////                    a = a + 1
+//                }
+//            }
+            
+//            if round.speeds.last! > roundMaxSpeed {
+//                roundMaxSpeed = round.speeds.last!
+//            }
+//            if round.geoSpeeds.last! > roundMaxSpeed {
+//                roundMaxSpeed = round.geoSpeeds.last!
+//            }
+//            if round.cadences.last! > roundMaxCadence {
+//                roundMaxCadence = round.cadences.last!
+//            }
+//            if round.heartrates.last! > roundMaxHR {
+//                roundMaxHR = round.heartrates.last!
+//            }
+//            maxString = ""
+//            maxString = "UPDATED MAX (ROUND) \n "
+//            maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))\n"
+//            maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))\n"
+//            maxString += "HR \(stringer1(myIn: roundMaxHR))"
+//            print("maxString from BLE:  \(maxString)")
+//            print(round.geoSpeeds.last!,roundMaxSpeed)
+            
+            
+        }
+    }  //end nrarray
     
+    func stopAndSave() {
+        //save
+        udArray.append(udString)
+        let defaults = UserDefaults.standard
+        defaults.set(udArray, forKey: "SavedStringArray")
+    }
+    
+    func presentHistory() {
+        //get and display
+        dump(udArray)
+        //segModalHistory
+        //performSegue(withIdentifier: "segModalHistory", sender: self)
+    }
     
     func updateViewer_VC() {
         
@@ -125,6 +201,7 @@ class Starter_VC: UITableViewController {
 //            print("End of Round for HR, Spd, Cad, GeoSpd")
 //            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
 //            print("\n")
+            createNRArray()
             NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "ROUND COMPLETE \n", "color": "blue", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "cadence": stringer(dbl: roundCadence, len: 1), "speed": stringer(dbl: roundSpeed, len: 2)])
             
             rounds.speeds.append(roundSpeed)
@@ -219,6 +296,11 @@ class Starter_VC: UITableViewController {
                     startLocationUpdates()
                 }
                 
+                if geo.status == "ON/USE" {
+                    geo.startTime = Date()
+                    startLocationUpdates()
+                }
+                
                 timer = Timer.scheduledTimer(timeInterval: timerIntervalValue,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
                 print("Started")
                 print(getFormattedTime(d: system.startTime!))
@@ -236,12 +318,13 @@ class Starter_VC: UITableViewController {
                 print(getTimeIntervalSince(d1: system.startTime!, d2: system.stopTime!));print("\n");
                 timer.invalidate()
                 stopLocationUpdates()
+                stopAndSave()
             }
         case 2:
             let gst = geo.status
             if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE"}
-            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF"}
-            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON"}
+            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";startLocationUpdates()}
+            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
         case 8:
             let hrz = maxHRvalue
             if hrz == 185 {maxHRvalue = 190;lblMaxHeartrateValue.text = "190";}
@@ -265,6 +348,11 @@ class Starter_VC: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let defaults = UserDefaults.standard
+        udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
+        udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

@@ -9,13 +9,16 @@
 import UIKit
 import MapKit
 
+var udString: String = "History \n"
+var udArray = [String]()
+
 class TLViewController: UIViewController {
     
      //    https://github.com/instant-solutions/ISTimeline
     
 
     @IBOutlet weak var timeline: ISTimeline!
-    var udString: String = "History \n"
+    
     
     func getFormattedTime() -> String {
         let currentDateTime = Date()

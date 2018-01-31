@@ -121,8 +121,6 @@ class SecondViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             print("completed")
             let when = DispatchTime.now() + 5
             DispatchQueue.main.asyncAfter(deadline: when){
-
-
                 optionMenu.dismiss(animated: true, completion: nil)
             }
         })
