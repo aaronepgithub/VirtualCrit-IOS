@@ -35,13 +35,11 @@ class TLViewController: UIViewController {
         var str = ""
         
         if let userInfo = not.userInfo {
-//            let txt = "MID-ROUND UPDATE\n"
-//            str += txt
             if let n1 = userInfo[AnyHashable("color")] {
-                //print(String(describing: userInfo[AnyHashable("n1")]!))
-                //btHR.text = "\(hrv as! String)"  //HR
                 print(n1)
                 colorToUse = UIColor.blue
+                if n1 as! String == "red" {colorToUse = UIColor.red}
+                if n1 as! String == "black" {colorToUse = UIColor.black}
             }
             if let nt = userInfo[AnyHashable("title")] {
                 let txt = "\(nt as! String)\n"
@@ -49,28 +47,38 @@ class TLViewController: UIViewController {
             }
             
             if let n2 = userInfo[AnyHashable("hr")] {
-                //print(String(describing: userInfo[AnyHashable("n2")]!))
-                //print(n2)
                 let txt = "\(n2 as! String)  BPM \n"
                 str += txt
-                
             }
             if let n3 = userInfo[AnyHashable("speed")] {
-                //print(String(describing: userInfo[AnyHashable("n3")]!))
-                //print(n2)
                 let txt = "\(n3 as! String)  MPH \n"
                 str += txt
             }
             if let n4 = userInfo[AnyHashable("cadence")] {
-                //print(String(describing: userInfo[AnyHashable("n3")]!))
-                //print(n4)
                 let txt = "\(n4 as! String)  RPM \n"
                 str += txt
             }
             if let n5 = userInfo[AnyHashable("geospeed")] {
-                let txt = "\(n5 as! String)  MPH (GPS) \n"
+                let txt = "\(n5 as! String)  MPH (GPS)\n"
                 str += txt
             }
+            if let n6 = userInfo[AnyHashable("pace")] {
+                let txt = "\(n6 as! String) MIN/MILE \n"
+                str += txt
+            }
+            if let n7 = userInfo[AnyHashable("score")] {
+                let txt = "\(n7 as! String)  %MAX \n"
+                str += txt
+            }
+            if let n8 = userInfo[AnyHashable("geodistance")] {
+                let txt = "\(n8 as! String)  MI(GEO) \n"
+                str += txt
+            }
+            if let n9 = userInfo[AnyHashable("btdistance")] {
+                let txt = "\(n9 as! String)  MILES\n"
+                str += txt
+            }
+
             
             self.newBluePoint(titleString: "\(str)")
             let ti = getFormattedTime()
@@ -91,15 +99,15 @@ class TLViewController: UIViewController {
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = nil
+        nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .black
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        //udString += "\(ti)\n\(titleString)\n"
-        //        if gpsEnabled == true {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
+        udString += "\(ti)\n\(titleString)\n"
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
     }
     
     
@@ -108,15 +116,15 @@ class TLViewController: UIViewController {
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = nil
+        nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .black
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        //udString += "\(ti)\n\(titleString)\n"
-        //        if gpsEnabled == true {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
+        udString += "\(ti)\n\(titleString)\n"
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
     }
     
     
@@ -128,8 +136,6 @@ class TLViewController: UIViewController {
     func blueTouch(point:ISPoint) {
     
         if la != 0 {
-            //let myLnk = "http://maps.apple.com/?ll=\(la),\(lo)\n"
-            
             let latitude: CLLocationDegrees = la//37.2
             let longitude: CLLocationDegrees = lo //22.9
             
@@ -155,17 +161,18 @@ class TLViewController: UIViewController {
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = nil
-        nextPt.pointColor = .blue
-        nextPt.lineColor = .blue
-        nextPt.fill = false
+//        nextPt.pointColor = .blue
+//        nextPt.lineColor = .blue
+        nextPt.pointColor = colorToUse
+        nextPt.lineColor = colorToUse
+        nextPt.fill = true
         nextPt.touchUpInside = blueTouch
         self.timeline.points.insert(nextPt, at: 0)
-        //self.timeline.points.append(nextPt)
         udString += "\(ti)\n\(titleString)\n"
                 if la != 0 {
                     udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
                 }
+        colorToUse = UIColor.blue
         
     }
     
@@ -174,30 +181,30 @@ class TLViewController: UIViewController {
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = nil
+        nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .green
         nextPt.lineColor = .green
-        nextPt.fill = false
+        nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-        //        if gpsEnabled == true {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
     }
     func newRedPoint(titleString: String) {
         print("newRedPoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = nil
+        nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .red
         nextPt.lineColor = .red
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
-        //udString += "\(ti)\n\(titleString)\n"
-        //        if gpsEnabled == true {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
+        udString += "\(ti)\n\(titleString)\n"
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
     }
     
     
@@ -234,7 +241,7 @@ class TLViewController: UIViewController {
          let st = getFormattedTime()
         let myPoints = [
             
-            ISPoint(title: "ACTIVITY TIMELINE HAS STARTED\nSELECT AN ACTIVITY, SET YOUR NOTIFICATION RULES AND BEGIN.", description: "\(st)", touchUpInside: touchAction)
+            ISPoint(title: "ACTIVITY TIMELINE HAS STARTED\nSELECT AN ACTIVITY,\nSET YOUR NOTIFICATION RULES,\nAND BEGIN.\n", description: "\(st)", touchUpInside: touchAction)
         ]
         
         timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)

@@ -33,7 +33,12 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     @IBAction func act_Btn1(_ sender: UIButton) {
         startScanning()
     }
-    
+    @IBAction func act_Btn2(_ sender: UIButton) {
+        startScanning()
+    }
+    @IBAction func act_Btn3(_ sender: UIButton) {
+        startScanning()
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -107,10 +112,10 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             self.BLTE_tableViewOutlet.reloadData()
         }
     }
-    
+    var scanInProgress: Bool = false
     func startScanning() {
         print("Started Scanning")
-        
+        scanInProgress = true
         if centralManager.isScanning {
             print("Central Manager is already scanning!!")
             return
@@ -126,7 +131,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.BLTE_tableViewOutlet.reloadData()
-                //self.out_Btn1.setTitle("HR", for: .normal)
+                self.scanInProgress = false
             })
         })
         

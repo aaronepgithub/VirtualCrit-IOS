@@ -112,15 +112,21 @@ class Starter_VC: UITableViewController {
         
         if geo.status == "ON/USE" {
             
-            //HDR
-            arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG")")
-            //3 VALS
+            //HEADER
+            if geo.distance < 0.1 {
+                arr.append("\(getFormattedTime(d: Date()))")
+            } else {
+             arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG")")
+            }
+            
+            
+            //3 VALUES
             if btHR.text == " " {arr.append("\(gpsAvergagePace.text ?? "00")")} else {arr.append("\(btHR.text ?? "00")")}
             
             arr.append("\(gpsMovingSpeed.text ?? "00.0")")
             arr.append("\(gpsMovingPace.text ?? "00")")
-            //3 LBLS
-            if btHR.text == " " {arr.append("AVG/P")} else {arr.append("\(btScore.text ?? "00")")}
+            //3 LABELS
+            if btHR.text == " " {arr.append("PACE(AVG)")} else {arr.append("\(btScore.text ?? "00")")}
             
             arr.append("SPD")
             arr.append("PACE")
@@ -186,7 +192,12 @@ class Starter_VC: UITableViewController {
 //            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
 //            print("\n")
             createNRArray()
-            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "ROUND COMPLETE \n", "color": "blue", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "cadence": stringer(dbl: roundCadence, len: 1), "speed": stringer(dbl: roundSpeed, len: 2)])
+            
+            let tle = "ROUND COMPLETE"
+            let clr = "blue"
+            
+            
+               NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
             
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
@@ -217,7 +228,10 @@ class Starter_VC: UITableViewController {
             print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
             print("\n")
             
-            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "MID-ROUND UPDATE \n", "color": "blue", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "cadence": stringer(dbl: roundCadence, len: 1), "speed": stringer(dbl: roundSpeed, len: 2)])
+            let tle = "MID-ROUND"
+            let clr = "red"
+            
+               NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
             
                 }
         
@@ -267,6 +281,7 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var lblTireSize: UILabel!
     @IBOutlet weak var lblMaxHeartrateValue: UILabel!
     @IBOutlet weak var lblAudio: UILabel!
+    @IBOutlet weak var lblSecPerRound: UILabel!
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -313,6 +328,8 @@ class Starter_VC: UITableViewController {
             if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
             if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
+        case 3:
+            self.tabBarController?.selectedIndex = 1
         case 7:
             if lblAudio.text == "OFF" {audioStatus = "ON";lblAudio.text = "ON"} else {audioStatus = "OFF";lblAudio.text = "OFF"}
         case 8:
@@ -329,6 +346,8 @@ class Starter_VC: UITableViewController {
             if tsz == 2115 {lblTireSize.text = "700X32";wheelCircumference = 2155;}
             if tsz == 2155 {lblTireSize.text = "700X25";wheelCircumference = 2105;}
             print("WheelCir:  \(wheelCircumference)")
+        case 12:
+            if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
         default:
             print("DO NOTHING")
         }
