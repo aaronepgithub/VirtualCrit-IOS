@@ -46,7 +46,7 @@ class Starter_VC: UITableViewController {
     
     @IBOutlet weak var gpsStatus: UILabel!
     
-    
+    var availableDataElementsToView = ["Total Elapsed Time", "GPS Moving Time", "GPS Speed", "GPS Average Speed", "GPS Average Pace", "GPS Direction", "GPS Speed - Round", "GPS Pace - Round", "GPS Distance", "Heartrate", "Speed", "Cadence", "%MAX Heartrate", "Pace", "Heartrate - Round", "Speed - Round", "Cadence - Round", "%MAX Heartrate - Round", "Pace - Round", "Distance", "Average Speed", "Average Pace", "Moving Time"]
     
     
     var timer = Timer()
@@ -362,7 +362,7 @@ class Starter_VC: UITableViewController {
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
         
-        
+        dump(availableDataElementsToView)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
