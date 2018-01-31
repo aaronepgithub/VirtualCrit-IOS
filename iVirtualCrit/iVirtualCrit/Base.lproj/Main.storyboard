@@ -724,7 +724,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="END" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNJ-15-Iz3" userLabel="END">
-                                                    <rect key="frame" x="20" y="13" width="627" height="18"/>
+                                                    <rect key="frame" x="20" y="13" width="335" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -914,7 +914,7 @@
             </objects>
             <point key="canvasLocation" x="1572" y="-447"/>
         </scene>
-        <!--View Controller-->
+        <!--Timeline-->
         <scene sceneID="hFC-P3-fSm">
             <objects>
                 <viewController id="Ynv-Y1-fmr" customClass="TLViewController" customModule="iVirtualCrit" customModuleProvider="target" sceneMemberID="viewController">
@@ -949,7 +949,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gwQ-Dg-lKh"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="mostRecent" id="trR-o5-7K6"/>
+                    <tabBarItem key="tabBarItem" title="Timeline" image="ic_timeline" id="trR-o5-7K6"/>
                     <connections>
                         <outlet property="timeline" destination="ggg-d2-BG8" id="JMF-1c-3XX"/>
                     </connections>
@@ -1103,6 +1103,7 @@
         <image name="ic_person_pin" width="24" height="24"/>
         <image name="ic_power_settings_new" width="24" height="24"/>
         <image name="ic_settings_bluetooth" width="24" height="24"/>
+        <image name="ic_timeline" width="24" height="24"/>
         <image name="ic_view_list" width="24" height="24"/>
         <image name="ic_volume_up" width="24" height="24"/>
     </resources>
