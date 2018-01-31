@@ -19,12 +19,13 @@ class Results_VC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let when = DispatchTime.now() + 10
-        DispatchQueue.main.asyncAfter(deadline: when){
-            //optionMenu.dismiss(animated: true, completion: nil)
-            
-            self.disMe()
+        if arrResults.count == 0 {
+            let when = DispatchTime.now() + 10
+            DispatchQueue.main.asyncAfter(deadline: when){
+                self.disMe()
+            }
         }
+
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -64,25 +65,27 @@ class Results_VC: UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "RESULTS"
-    }
-    
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        self.dismiss(animated: true, completion: nil)
-//
-//        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return "RESULTS"
 //    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.dismiss(animated: true, completion: nil)
+
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+    }
     
     
 //    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
-//        //view.tintColor = UIColor.lightGray
+//        view.tintColor = UIColor.red
 //        let header = view as! UITableViewHeaderFooterView
 //        header.textLabel?.textColor = UIColor.white
 //        header.backgroundColor = UIColor.red
-//        header.textLabel?.font = UIFont(
-//            name: "Yanone Kaffeesatz",
-//            size: 20)!
+//        //header.textLabel?.font = UIFont(
+//            //name: "Yanone Kaffeesatz",
+//            //size: 20)!
+//        header.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+//
 //    }
 
     /*

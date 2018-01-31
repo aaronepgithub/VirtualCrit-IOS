@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import CoreBluetooth
+import AudioToolbox
 
 var arr = [String]()
 var arrSend = [String]()
@@ -56,12 +57,27 @@ class Starter_VC: UITableViewController {
     var secondsPerRound: Int = 60
     var roundGeoSpeed: Double = 0
     
-
-
+    func newMilePoint(mileString: String) {
+        NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "ANOTHER MILE\n\(mileString)\n", "color": "blue"])
+    }
+    
+    var currentMile: Double = 1.0
+    func updateMile() {
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        if btDistanceForMileCalc > 0 && geo.distance > 0 {
+            newMilePoint(mileString: "\(stringer(dbl: btDistanceForMileCalc, len: 0)) MILES")
+        } else {
+            if btDistanceForMileCalc > 0 {
+            newMilePoint(mileString: "\(stringer(dbl: btDistanceForMileCalc, len: 0)) MILES")
+            }
+            if geo.distance > 0 {
+                newMilePoint(mileString: "\(stringer(dbl: geo.distance, len: 0)) MILES")
+            }
+        }
+    }
+    
     func createNRArray() {
         if roundsCompleted > 0  {
-//            arrResults = []
-//            arrResultsDetails = []
             
             let a = "ROUND # \(roundsCompleted)  "
             let b = "\(stringer(dbl: roundHR, len: 1)) BPM/HR"
@@ -76,45 +92,9 @@ class Starter_VC: UITableViewController {
             dump(arrResults)
             dump(arrResultsDetails)
             print("\n");
-            
-            //
-            //var s = roundsCompleted
-//            var a = 0
-//            if s == 0 {
-//                return
-//            } else {
-//                //while s > 0 && a < 100 {
-//                    //arrResults.append("ROUND#  \(s-1):    \(stringer1(myIn: round.heartrates[s-1])) BPM   \(stringer1(myIn: round.scores[s-1])) %")
-//
-//                    //arrResultsDetails.append("   \(stringer2(myIn: round.speeds[s-1])) MPH   \(stringer1(myIn: round.cadences[s-1])) RPM   \(stringer1(myIn: round.geoSpeeds[s-1]))  MPH GPS")
-////
-////                    s = s - 1
-////                    a = a + 1
-//                }
-//            }
-            
-//            if round.speeds.last! > roundMaxSpeed {
-//                roundMaxSpeed = round.speeds.last!
-//            }
-//            if round.geoSpeeds.last! > roundMaxSpeed {
-//                roundMaxSpeed = round.geoSpeeds.last!
-//            }
-//            if round.cadences.last! > roundMaxCadence {
-//                roundMaxCadence = round.cadences.last!
-//            }
-//            if round.heartrates.last! > roundMaxHR {
-//                roundMaxHR = round.heartrates.last!
-//            }
-//            maxString = ""
-//            maxString = "UPDATED MAX (ROUND) \n "
-//            maxString += "SPEED \(stringer1(myIn: roundMaxSpeed))\n"
-//            maxString += "CADENCE \(stringer1(myIn: roundMaxCadence))\n"
-//            maxString += "HR \(stringer1(myIn: roundMaxHR))"
-//            print("maxString from BLE:  \(maxString)")
-//            print(round.geoSpeeds.last!,roundMaxSpeed)
-            
-            
+  
         }
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }  //end nrarray
     
     func stopAndSave() {
@@ -125,10 +105,7 @@ class Starter_VC: UITableViewController {
     }
     
     func presentHistory() {
-        //get and display
         dump(udArray)
-        //segModalHistory
-        //performSegue(withIdentifier: "segModalHistory", sender: self)
     }
     
     func updateViewer_VC() {
@@ -174,6 +151,7 @@ class Starter_VC: UITableViewController {
         NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
     }
     
+    //EACH SECOND
     @objc func timerInterval() {
 
         
@@ -186,12 +164,18 @@ class Starter_VC: UITableViewController {
             
         }
         
+        if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
+            currentMile += 1.0
+            updateMile()
+        }
+        
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))" //[ACTUAL ELAPSED TIME]
         
         //ROUND END
         if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) {
             print("New Round")
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             roundsCompleted += 1
             
             rounds.geoDistancesPerRound.append(inRoundGeoDistance)
@@ -266,6 +250,7 @@ class Starter_VC: UITableViewController {
             }
             if let dsv = userInfo[AnyHashable("dist")] {
                 btDistance.text = "\(dsv as! String) MILES"  //DISTANCE BT
+                btDistanceForMileCalc = dsv as! Double
             }
             if let mtv = userInfo[AnyHashable("mov")] {
                 btMovingTime.text = "\(mtv as! String)"   //MOVING TIME BT
@@ -277,8 +262,11 @@ class Starter_VC: UITableViewController {
         }
     }
     
+    var btDistanceForMileCalc:Double = 0
+    var audioStatus: String = "OFF"
     @IBOutlet weak var lblTireSize: UILabel!
     @IBOutlet weak var lblMaxHeartrateValue: UILabel!
+    @IBOutlet weak var lblAudio: UILabel!
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -322,9 +310,11 @@ class Starter_VC: UITableViewController {
             }
         case 2:
             let gst = geo.status
-            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE"}
-            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";startLocationUpdates()}
+            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
+            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
+        case 7:
+            if lblAudio.text == "OFF" {audioStatus = "ON";lblAudio.text = "ON"} else {audioStatus = "OFF";lblAudio.text = "OFF"}
         case 8:
             let hrz = maxHRvalue
             if hrz == 185 {maxHRvalue = 190;lblMaxHeartrateValue.text = "190";}
