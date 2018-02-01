@@ -170,7 +170,7 @@ class Starter_VC: UITableViewController {
         if inRoundBtDistance > 0 {
             roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
         }
-        print("roundSpeed:  \(roundSpeed)")
+        //print("roundSpeed:  \(roundSpeed)")
         
 //        if system.actualElapsedTime != nil {
 //
@@ -476,7 +476,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                         gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI"
                         
                         geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
-                        gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1)) AVG SPD"
+                        gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1))"
                         gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!))"
 
                         let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
