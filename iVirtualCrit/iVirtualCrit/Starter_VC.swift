@@ -164,17 +164,17 @@ class Starter_VC: UITableViewController {
     }
     
     //EACH SECOND
+    var roundSpeed: Double = 0
     @objc func timerInterval() {
 
-        
-        var roundSpeed: Double = 0
-        if system.actualElapsedTime != nil {
-            
-            if inRoundBtDistance > 0 {
-                roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
-            }
-            
+        if inRoundBtDistance > 0 {
+            roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
         }
+        print("roundSpeed:  \(roundSpeed)")
+        
+//        if system.actualElapsedTime != nil {
+//
+//        }
         
         if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
             currentMile += 1.0
@@ -288,7 +288,7 @@ class Starter_VC: UITableViewController {
             }
             if let dsv = userInfo[AnyHashable("dist")] {
                 btDistance.text = "\(dsv as! String) MILES"  //DISTANCE BT
-                btDistanceForMileCalc = dsv as! Double
+                //btDistanceForMileCalc = dsv as! Double
             }
             if let mtv = userInfo[AnyHashable("mov")] {
                 btMovingTime.text = "\(mtv as! String)"   //MOVING TIME BT
@@ -300,7 +300,7 @@ class Starter_VC: UITableViewController {
         }
     }
     
-    var btDistanceForMileCalc:Double = 0
+    
     var audioStatus: String = "OFF"
     @IBOutlet weak var lblTireSize: UILabel!
     @IBOutlet weak var lblMaxHeartrateValue: UILabel!

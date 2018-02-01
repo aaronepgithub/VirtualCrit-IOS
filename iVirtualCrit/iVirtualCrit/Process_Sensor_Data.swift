@@ -9,7 +9,7 @@
 var inRoundHR = [Int]()
 var inRoundCadence = [Int]()
 var inRoundBtDistance: Double = 0
-
+var btDistanceForMileCalc:Double = 0
 var btAverageSpeed: Double = 0
 
 
@@ -97,6 +97,7 @@ func processWheelData(withData data :Data) {
         rt_WheelTime += b
         totalWheelRevs += a
         total_distance = totalWheelRevs * (wheelCircumference / 1000) * 0.000621371
+        btDistanceForMileCalc = total_distance!
         
         inRoundBtDistance += (a * (wheelCircumference / 1000) * 0.000621371)
         
