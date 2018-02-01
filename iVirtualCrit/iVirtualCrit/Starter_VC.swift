@@ -22,6 +22,8 @@ var lo: Double = 0
 var arrResults = [String]()
 var arrResultsDetails = [String]()
 
+
+
 class Starter_VC: UITableViewController {
 
     @IBOutlet weak var statusValue: UILabel!
@@ -45,6 +47,8 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var btMovAvg: UILabel!
     
     @IBOutlet weak var gpsStatus: UILabel!
+    
+    @IBOutlet weak var tDisplayVal: UILabel!
     
     var availableDataElementsToView = ["Total Elapsed Time", "GPS Moving Time", "GPS Speed", "GPS Average Speed", "GPS Average Pace", "GPS Direction", "GPS Speed - Round", "GPS Pace - Round", "GPS Distance", "Heartrate", "Speed", "Cadence", "%MAX Heartrate", "Pace", "Heartrate - Round", "Speed - Round", "Cadence - Round", "%MAX Heartrate - Round", "Pace - Round", "Distance", "Average Speed", "Average Pace", "Moving Time"]
     
@@ -348,6 +352,8 @@ class Starter_VC: UITableViewController {
             print("WheelCir:  \(wheelCircumference)")
         case 12:
             if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
+        case 13:
+            print("get val")
         default:
             print("DO NOTHING")
         }
