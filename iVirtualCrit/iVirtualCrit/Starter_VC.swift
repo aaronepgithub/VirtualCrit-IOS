@@ -241,9 +241,27 @@ class Starter_VC: UITableViewController {
             
                 }
         
+        if roundSpeed > 0 {
+            btSpdRnd.text = stringer(dbl: roundSpeed, len: 1)
+        }
+        if roundCadence > 0 {
+            btCadRnd.text = stringer(dbl: roundCadence, len: 0)
+        }
+        if roundHR > 0 {
+            btHrRnd.text = stringer(dbl: roundHR, len: 0)
+            btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)
+        }
+
+        
         updateViewer_VC()
         
     }  //END SECOND TIMER
+    
+    
+    @IBOutlet weak var btSpdRnd: UILabel!
+    @IBOutlet weak var btCadRnd: UILabel!
+    @IBOutlet weak var btHrRnd: UILabel!
+    @IBOutlet weak var btScoreRnd: UILabel!
     
     
     @objc func updateBT(not: Notification) {

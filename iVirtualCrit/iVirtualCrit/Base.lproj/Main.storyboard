@@ -1342,13 +1342,17 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Start" image="first" id="mEB-LO-C5t"/>
                     <connections>
+                        <outlet property="btCadRnd" destination="6O1-EY-BIE" id="pb0-bB-vMx"/>
                         <outlet property="btDistance" destination="MZ0-oE-ogw" id="qkb-2Q-Kt1"/>
                         <outlet property="btHR" destination="o4L-M6-db0" id="gFr-1A-3Zv"/>
+                        <outlet property="btHrRnd" destination="gE1-dW-MXg" id="0gU-Pp-m9o"/>
                         <outlet property="btMovAvg" destination="Y10-PW-Qp7" id="TUm-RW-sH6"/>
                         <outlet property="btMovingCadence" destination="zaQ-Bq-MJL" id="2lg-hI-BcW"/>
                         <outlet property="btMovingSpeed" destination="3a0-Ct-dng" id="gRV-cz-cdD"/>
                         <outlet property="btMovingTime" destination="rp4-VX-wMV" id="eUA-ec-Hnu"/>
                         <outlet property="btScore" destination="0R4-Vm-rwm" id="E07-33-5uR"/>
+                        <outlet property="btScoreRnd" destination="gjh-Lt-08t" id="1sm-kI-FOR"/>
+                        <outlet property="btSpdRnd" destination="kQW-Bv-6ay" id="Pf2-Fj-sdd"/>
                         <outlet property="gpsAverageSpeed" destination="2zD-2r-znI" id="Kq1-b7-vFq"/>
                         <outlet property="gpsAvergagePace" destination="ZG3-mA-U7a" id="Nsh-lj-Wkv"/>
                         <outlet property="gpsDirection" destination="HI8-Ig-14K" id="AJn-tz-SLQ"/>
