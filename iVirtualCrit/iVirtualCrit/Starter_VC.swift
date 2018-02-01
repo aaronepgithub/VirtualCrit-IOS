@@ -103,6 +103,8 @@ class Starter_VC: UITableViewController {
     
     func stopAndSave() {
         //save
+        //REMOVE OLD HISTORY
+        udArray = []
         udArray.append(udString)
         let defaults = UserDefaults.standard
         defaults.set(udArray, forKey: "SavedStringArray")
