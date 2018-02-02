@@ -41,67 +41,73 @@ class TLViewController: UIViewController {
                 if n1 as! String == "red" {colorToUse = UIColor.red}
                 if n1 as! String == "black" {colorToUse = UIColor.black}
             }
+            
             if let nt = userInfo[AnyHashable("title")] {
                 let txt = "\(nt as! String)\n"
                 str += txt
             }
             
+//            if colorToUse == UIColor.blue {
+//                //ROUND UPDATE
+//            }
+            
             if let n2 = userInfo[AnyHashable("hr")] {
                 let txt = "\(n2 as! String)  BPM \n"
-                str += txt
+                if n2 as! String != "0.0" {str += txt}
             }
             if let n7 = userInfo[AnyHashable("score")] {
                 let txt = "\(n7 as! String)  %MAX \n"
-                str += txt
-                str += "\n"
+                if n7 as! String != "0.0" {str += txt;str += "\n";}
+                
             }
             
             
             
             if let n3 = userInfo[AnyHashable("speed")] {
                 let txt = "\(n3 as! String)  MPH \n"
-                str += txt
+                if n3 as! String != "0.00" {str += txt}
             }
             if let n5 = userInfo[AnyHashable("geospeed")] {
                 let txt = "\(n5 as! String)  MPH (GPS)\n"
-                str += txt
+                if n5 as! String != "0.00" {str += txt}
             }
             if let n6 = userInfo[AnyHashable("pace")] {
                 let txt = "\(n6 as! String) MIN/MILE \n"
-                str += txt
-                str += "\n"
+                if txt != " " {str += txt;str += "\n";}
             }
             
             
             
             if let n4 = userInfo[AnyHashable("cadence")] {
                 let txt = "\(n4 as! String)  RPM \n"
-                str += txt
-                str += "\n"
+                if n4 as! String != "0.0" {str += txt;str += "\n";}
             }
             
             //MID ROUND DAILY UPDATE
             if let n10 = userInfo[AnyHashable("totaltime")] {
-                let txt = "\(n10 as! String)  TOTAL \n"
-                str += txt
-            }
-            if let n11 = userInfo[AnyHashable("btmovingtime")] {
-                let txt = "\(n11 as! String)  MOVING\n"
-                str += txt
-            }
-            if let n12 = userInfo[AnyHashable("gpsmovingtime")] {
-                let txt = "\(n12 as! String) MOVING(GPS)\n"
+                let txt = "\(n10 as! String) TOTAL\n"
                 str += txt
                 str += "\n"
+            }
+            if let n11 = userInfo[AnyHashable("btmovingtime")] {
+                let txt = "\(n11 as! String) MOVING\n"
+                print("n11:  \(n11)")
+                if n11 as! String != " " {str += txt}
+                
+            }
+            if let n12 = userInfo[AnyHashable("gpsmovingtime")] {
+                let txt = "\(n12 as! String) MOVING(G)\n"
+                if txt != " " {str += txt;str += "\n";}
             }
             
             if let n13 = userInfo[AnyHashable("avgspeed")] {
                 let txt = "\(n13 as! String)  AVG SPD\n"
-                str += txt
+                print("n13:  \(n13)")
+                if n13 as! String != " " {str += txt}
             }
-            if let n14 = userInfo[AnyHashable("btmovingtime")] {
-                let txt = "\(n14 as! String)  AVG SPD (GEO)\n"
-                str += txt
+            if let n14 = userInfo[AnyHashable("avgspeedgeo")] {
+                let txt = "\(n14 as! String)  AVG SPD(G)\n"
+                if txt != " " {str += txt}
             }
             // END MID ROUND DAILY UPDATE
             
@@ -109,11 +115,11 @@ class TLViewController: UIViewController {
             
             if let n9 = userInfo[AnyHashable("btdistance")] {
                 let txt = "\(n9 as! String)  MILES\n"
-                str += txt
+                if n9 as! String != "0.00" {str += txt}
             }
             if let n8 = userInfo[AnyHashable("geodistance")] {
-                let txt = "\(n8 as! String)  MILES(GEO) \n"
-                str += txt
+                let txt = "\(n8 as! String)  MILES(G) \n"
+                if n8 as! String != "0.00" {str += txt}
             }
 
 

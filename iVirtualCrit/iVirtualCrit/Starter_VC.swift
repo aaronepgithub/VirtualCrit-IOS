@@ -96,7 +96,7 @@ class Starter_VC: UITableViewController {
             print("\n");
   
         }
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }  //end nrarray
     
     func stopAndSave() {
@@ -120,7 +120,7 @@ class Starter_VC: UITableViewController {
             if geo.distance < 0.1 {
                 arr.append("\(getFormattedTime(d: Date()))")
             } else {
-             arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG")")
+             arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG") AVG MPH")
             }
             
             
@@ -130,10 +130,10 @@ class Starter_VC: UITableViewController {
             arr.append("\(gpsMovingSpeed.text ?? "00.0")")
             arr.append("\(gpsMovingPace.text ?? "00")")
             //3 LABELS
-            if btHR.text == " " {arr.append("PACE(AVG)")} else {arr.append("\(btScore.text ?? "00")")}
+            if btHR.text == " " {arr.append("PACE\n(AVG)")} else {arr.append("\(btScore.text ?? "00")")}
             
-            arr.append("SPD")
-            arr.append("PACE")
+            arr.append("SPD\nMPH")
+            arr.append("PACE\n(MOV)")
             //FOOTER
             arr.append("\(totalTime.text ?? "00:00:00")  \(gpsDistance.text ?? "0.00 MILES")")
             arrSend = arr
@@ -148,9 +148,9 @@ class Starter_VC: UITableViewController {
             arr.append("\(btMovingSpeed.text ?? "00.0")")
             arr.append("\(btMovingCadence.text ?? "00")")
             //3 LBLS
-            arr.append("\(btScore.text ?? "00")")
-            arr.append("SPD")
-            arr.append("CAD")
+            arr.append("\(btScore.text ?? "00")\nHR")
+            arr.append("SPD\nMPH")
+            arr.append("CAD\nRPM")
             //FOOTER
             arr.append("\(totalTime.text ?? "00:00:00")  \(btDistance.text ?? "0.00 MILES")")
             arrSend = arr
