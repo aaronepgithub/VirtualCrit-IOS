@@ -60,22 +60,28 @@ class Starter_VC: UITableViewController {
     var roundSpeed: Double = 0
     
     func newMilePoint(mileString: String) {
-        NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "ANOTHER MILE\n\(mileString)\n", "color": "blue"])
+        NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "green"])
     }
     
+    var actualTimeAtMileStart: Date?
+    var timeElapsedForLastMile: Double = 0
     var currentMile: Double = 1.0
+    var speedForLastMile: Double = 0
+    var paceForLastMile: Double = 0
+    
+    
     func updateMile() {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        if btDistanceForMileCalc > 0 && geo.distance > 0 {
-            newMilePoint(mileString: "\(stringer(dbl: btDistanceForMileCalc, len: 0)) MILES")
-        } else {
-            if btDistanceForMileCalc > 0 {
-            newMilePoint(mileString: "\(stringer(dbl: btDistanceForMileCalc, len: 0)) MILES")
-            }
-            if geo.distance > 0 {
-                newMilePoint(mileString: "\(stringer(dbl: geo.distance, len: 0)) MILES")
-            }
-        }
+
+        timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
+        speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
+        
+//        print("New Mile, Last Mile Stats")
+//        print("timeElapsedForLastMile:  \(createTimeString(seconds: Int(timeElapsedForLastMile)))")
+//        print("speedForLastMile:  \(stringer(dbl: speedForLastMile, len: 2))")
+        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE")
+        
+        actualTimeAtMileStart = Date()
     }
     
     func createNRArray() {
@@ -224,26 +230,16 @@ class Starter_VC: UITableViewController {
             inRoundHR = []
         }
         
-        //print(system.actualElapsedTime! - Double(roundsCompleted * secondsPerRound))
+        //MID ROUND - DAILY UPDATE
         if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2) {
 
-            print("\n")
-            print("Mid Round for HR, Spd, Cad, GeoSpd")
-            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
-            print("\n")
-            
             let tle = "DAILY UPDATE"
             let clr = "red"
             
             NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"),
                 object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)",
-//                    "geospeed": stringer(dbl: roundGeoSpeed, len: 2),
-//                    "hr": stringer(dbl: roundHR, len: 1),
-//                    "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),
-//                    "pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1),
                     "geodistance": stringer(dbl: geo.distance, len: 2),
                     "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2),
-//                    "speed": stringer(dbl: roundSpeed, len: 2),
                     "totaltime": totalTime.text as Any,
                     "btmovingtime": btMovingTime.text as Any,
                     "avgspeed": btMovAvg.text as Any,
@@ -352,7 +348,7 @@ class Starter_VC: UITableViewController {
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(updateBT(not:)), name: Notification.Name("bleUpdate"), object: nil)
                 
-                
+                actualTimeAtMileStart = system.startTime
             } else {
                 system.status = "STOPPED";statusValue.text = "STOPPED";
                 system.stopTime = Date()

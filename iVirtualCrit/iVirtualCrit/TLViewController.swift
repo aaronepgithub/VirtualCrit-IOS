@@ -40,6 +40,7 @@ class TLViewController: UIViewController {
                 colorToUse = UIColor.blue
                 if n1 as! String == "red" {colorToUse = UIColor.red}
                 if n1 as! String == "black" {colorToUse = UIColor.black}
+                if n1 as! String == "green" {colorToUse = UIColor.green}
             }
             
             if let nt = userInfo[AnyHashable("title")] {
