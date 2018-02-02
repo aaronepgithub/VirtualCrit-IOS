@@ -36,21 +36,17 @@ class TLViewController: UIViewController {
         
         if let userInfo = not.userInfo {
             if let n1 = userInfo[AnyHashable("color")] {
-                //print(n1)
                 colorToUse = UIColor.blue
                 if n1 as! String == "red" {colorToUse = UIColor.red}
                 if n1 as! String == "black" {colorToUse = UIColor.black}
                 if n1 as! String == "green" {colorToUse = UIColor.green}
+                if n1 as! String == "yellow" {colorToUse = UIColor.yellow}
             }
             
             if let nt = userInfo[AnyHashable("title")] {
                 let txt = "\(nt as! String)\n"
                 str += txt
             }
-            
-//            if colorToUse == UIColor.blue {
-//                //ROUND UPDATE
-//            }
             
             if let n2 = userInfo[AnyHashable("hr")] {
                 let txt = "\(n2 as! String)  BPM \n"

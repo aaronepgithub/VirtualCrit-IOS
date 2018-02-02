@@ -63,12 +63,18 @@ class Starter_VC: UITableViewController {
         NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "green"])
     }
     
+    func newRoundPoint(mileString: String) {
+        NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "yellow"])
+    }
+    
+    
+    
     var actualTimeAtMileStart: Date?
     var timeElapsedForLastMile: Double = 0
     var currentMile: Double = 1.0
     var speedForLastMile: Double = 0
     var paceForLastMile: Double = 0
-    
+    var fastestMile: Double = 0 //MPH
     
     func updateMile() {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -76,13 +82,21 @@ class Starter_VC: UITableViewController {
         timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
         speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
         
-//        print("New Mile, Last Mile Stats")
-//        print("timeElapsedForLastMile:  \(createTimeString(seconds: Int(timeElapsedForLastMile)))")
-//        print("speedForLastMile:  \(stringer(dbl: speedForLastMile, len: 2))")
-        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE")
+        if speedForLastMile > fastestMile {
+            fastestMile = speedForLastMile
+        }
+        
+        
+        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE")
         
         actualTimeAtMileStart = Date()
     }
+    
+    var bestRoundSpeed: Double = 0
+    var bestRoundHR: Double = 0
+    var bestRoundCadence: Double = 0
+    var bestRoundScore: Double = 0
+    var bestRoundPace: String = ""
     
     func createNRArray() {
         if roundsCompleted > 0  {
@@ -91,8 +105,19 @@ class Starter_VC: UITableViewController {
             let b = "\(stringer(dbl: roundHR, len: 1)) HR"
             let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
             let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
-            let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM  "
+            let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM"
             let f = "  \(stringer(dbl: roundGeoSpeed, len: 1))  MPH/GEO"
+            
+            if roundSpeed > bestRoundSpeed {bestRoundSpeed = roundSpeed}
+            if roundGeoSpeed > bestRoundSpeed {bestRoundSpeed = roundGeoSpeed}
+            if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
+            if roundHR > bestRoundHR {bestRoundHR = roundHR}
+            bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
+            bestRoundPace = calcMinPerMile(mph: bestRoundSpeed)
+            
+            //ROUND LEADERS POINT
+            newRoundPoint(mileString: "ROUND LEADERS\n\(stringer(dbl: bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: bestRoundHR, len: 1)) HR\n\(stringer(dbl: bestRoundScore, len: 1)) SCORE\n\(bestRoundPace) PACE\n")
+            
             arrResults.append("\(a)\(b)\(c)")
             arrResultsDetails.append("\(d)\(e)\(f)")
             
@@ -102,7 +127,7 @@ class Starter_VC: UITableViewController {
             print("\n");
   
         }
-        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
     }  //end nrarray
     
     func stopAndSave() {

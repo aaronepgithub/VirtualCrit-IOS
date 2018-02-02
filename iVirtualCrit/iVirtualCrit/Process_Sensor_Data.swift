@@ -102,19 +102,10 @@ func processWheelData(withData data :Data) {
         inRoundBtDistance += (a * (wheelCircumference / 1000) * 0.000621371)
         
         
-        
-//        if rt.rt_speed > 0 {
-//            rt.total_moving_time_seconds += (Double(b) / Double(1024))
-//            rt.total_moving_time_string = createTimeString(seconds: Int(rt.total_moving_time_seconds))
-//        }
-        
         if (Double(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour)) > 0.0  {
             total_moving_time_seconds += (Double(b) / Double(1024))
             total_moving_time_string = createTimeString(seconds: Int(total_moving_time_seconds))
         }
-        
-        //NotificationCenter.default.post(name: Notification.Name("speed"), object: nil)
-        //print("rt.rt_speed, notify:  \(rt.rt_speed)")
         
         btAverageSpeed = total_distance! / (total_moving_time_seconds / 60 / 60)
         
