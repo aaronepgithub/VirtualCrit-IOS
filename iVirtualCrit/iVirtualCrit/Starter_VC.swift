@@ -283,18 +283,22 @@ class Starter_VC: UITableViewController {
             if let hrv = userInfo[AnyHashable("hr")] {
                 //print(String(describing: userInfo[AnyHashable("hr")]!))
                 btHR.text = "\(hrv as! String)"  //HR
+                tabBarController?.tabBar.items?[0].badgeValue = "\(hrv as! String)"
             }
             if let scv = userInfo[AnyHashable("score")] {
                 //print(String(describing: userInfo[AnyHashable("score")]!))
                 btScore.text = "\(scv as! String) %"
+                tabBarController?.tabBar.items?[3].badgeValue = "\(scv as! String)%"
             }
             if let spv = userInfo[AnyHashable("spd")] {
                 //print(String(describing: userInfo[AnyHashable("spd")]!))
                 btMovingSpeed.text = "\(spv as! String)"//SPD BT
+                tabBarController?.tabBar.items?[1].badgeValue = "\(spv as! String)"
             }
             if let cav = userInfo[AnyHashable("cad")] {
                 //print(String(describing: userInfo[AnyHashable("cad")]!))
                 btMovingCadence.text = "\(cav as! String)"  //   CAD BT"
+                tabBarController?.tabBar.items?[2].badgeValue = "\(cav as! String)"
             }
             if let dsv = userInfo[AnyHashable("dist")] {
                 btDistance.text = "\(dsv as! String) MILES"  //DISTANCE BT
