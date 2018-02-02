@@ -10,6 +10,9 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import AudioToolbox
+import Firebase
+
+
 
 //USED FOR VIEWER_VC
 var arr = [String]()
@@ -24,6 +27,7 @@ var lo: Double = 0
 
 
 class Starter_VC: UITableViewController {
+    
 
     @IBOutlet weak var statusValue: UILabel!
     
@@ -432,12 +436,46 @@ class Starter_VC: UITableViewController {
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
         
-        dump(availableDataElementsToView)
+        //dump(availableDataElementsToView)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        var ref: FIRDatabaseReference!
+        ref = FIRDatabase.database().reference()
+
+        ref.child("totals").child("20170527").observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            let value = snapshot.value as? NSDictionary
+            
+            for (key, list) in (value)! {
+                print("key: \(key)")
+                print("list:  \(list)")
+                
+//                for e in list {
+//                     let riderName = e["fb_timeName"] as? String
+//                    print("riderName:  \(riderName)")
+//                }
+                
+               
+                
+                
+                //let riderName = value?["fb_timName"] as? String ?? ""
+                //print("riderName:  \(riderName)")
+            }
+            
+            
+            //print("riderName:  \(riderName)")
+            //dump(value)
+
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        
+//        let fire: FireModel
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
