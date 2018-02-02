@@ -11,17 +11,16 @@ import CoreLocation
 import CoreBluetooth
 import AudioToolbox
 
+//USED FOR VIEWER_VC
 var arr = [String]()
 var arrSend = [String]()
 
-var la: Double = 0
-var lo: Double = 0
-
-
-//USED FOR HISTORY TABLE VIEW
+//USED FOR HISTORY_VC
 var arrResults = [String]()
 var arrResultsDetails = [String]()
 
+var la: Double = 0
+var lo: Double = 0
 
 
 class Starter_VC: UITableViewController {
@@ -45,9 +44,7 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var btMovingTime: UILabel!
     @IBOutlet weak var btDistance: UILabel!
     @IBOutlet weak var btMovAvg: UILabel!
-    
     @IBOutlet weak var gpsStatus: UILabel!
-    
     @IBOutlet weak var tDisplayVal: UILabel!
     
     var availableDataElementsToView = ["Total Elapsed Time", "GPS Moving Time", "GPS Speed", "GPS Average Speed", "GPS Average Pace", "GPS Direction", "GPS Speed - Round", "GPS Pace - Round", "GPS Distance", "Heartrate", "Speed", "Cadence", "%MAX Heartrate", "Pace", "Heartrate - Round", "Speed - Round", "Cadence - Round", "%MAX Heartrate - Round", "Pace - Round", "Distance", "Average Speed", "Average Pace", "Moving Time"]
@@ -58,8 +55,9 @@ class Starter_VC: UITableViewController {
  
     var inRoundGeoDistance: Double = 0
     var roundsCompleted: Int = 0
-    var secondsPerRound: Int = 60
+    var secondsPerRound: Int = 300
     var roundGeoSpeed: Double = 0
+    var roundSpeed: Double = 0
     
     func newMilePoint(mileString: String) {
         NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "ANOTHER MILE\n\(mileString)\n", "color": "blue"])
@@ -164,7 +162,6 @@ class Starter_VC: UITableViewController {
     }
     
     //EACH SECOND
-    var roundSpeed: Double = 0
     @objc func timerInterval() {
 
         if inRoundBtDistance > 0 {
@@ -234,10 +231,23 @@ class Starter_VC: UITableViewController {
             print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
             print("\n")
             
-            let tle = "MID-ROUND"
+            let tle = "DAILY UPDATE"
             let clr = "red"
             
-               NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
+            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"),
+                object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)",
+//                    "geospeed": stringer(dbl: roundGeoSpeed, len: 2),
+//                    "hr": stringer(dbl: roundHR, len: 1),
+//                    "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),
+//                    "pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1),
+                    "geodistance": stringer(dbl: geo.distance, len: 2),
+                    "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2),
+//                    "speed": stringer(dbl: roundSpeed, len: 2),
+                    "totaltime": totalTime.text as Any,
+                    "btmovingtime": btMovingTime.text as Any,
+                    "avgspeed": btMovAvg.text as Any,
+                    "gpsmovingtime": gpsMovingTime.text as Any,
+                    "avgspeedgeo": gpsAverageSpeed.text as Any])
             
                 }
         
