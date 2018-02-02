@@ -91,7 +91,7 @@ class TLViewController: UIViewController {
             }
             if let n11 = userInfo[AnyHashable("btmovingtime")] {
                 let txt = "\(n11 as! String) MOVING\n"
-                if n11 as! String != "" {str += txt}
+                if n11 as! String != " " {str += txt}
                 
             }
             if let n12 = userInfo[AnyHashable("gpsmovingtime")] {

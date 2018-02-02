@@ -82,8 +82,8 @@ class Starter_VC: UITableViewController {
         if roundsCompleted > 0  {
             
             let a = "ROUND # \(roundsCompleted)  "
-            let b = "\(stringer(dbl: roundHR, len: 1)) BPM/HR"
-            let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1)) %MAX  "
+            let b = "\(stringer(dbl: roundHR, len: 1)) HR"
+            let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
             let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
             let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM  "
             let f = "  \(stringer(dbl: roundGeoSpeed, len: 1))  MPH/GEO"
@@ -205,6 +205,7 @@ class Starter_VC: UITableViewController {
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
             rounds.heartrates.append(roundHR)
+            rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))
             rounds.cadences.append(roundCadence)
             
             print("\n")
@@ -314,12 +315,14 @@ class Starter_VC: UITableViewController {
         }
     }
     
-    
+    var activityType: String = "BIKE"
     var audioStatus: String = "OFF"
     @IBOutlet weak var lblTireSize: UILabel!
     @IBOutlet weak var lblMaxHeartrateValue: UILabel!
     @IBOutlet weak var lblAudio: UILabel!
     @IBOutlet weak var lblSecPerRound: UILabel!
+    @IBOutlet weak var lblActivityType: UILabel!
+    
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -367,7 +370,13 @@ class Starter_VC: UITableViewController {
             if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
         case 3:
+            //ble
             self.tabBarController?.selectedIndex = 1
+        case 6:
+            let at = activityType
+            if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";}
+            if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";}
+            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";}
         case 7:
             if lblAudio.text == "OFF" {audioStatus = "ON";lblAudio.text = "ON"} else {audioStatus = "OFF";lblAudio.text = "OFF"}
         case 8:

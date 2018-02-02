@@ -20,6 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="0.092808040499999994" blue="0.066109851979999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                         <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RESULTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bFu-ms-kGx">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -39,7 +40,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="t89-mQ-bqx">
-                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -47,7 +48,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="msR-H5-DyH">
-                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -1362,6 +1363,7 @@
                         <outlet property="gpsMovingTime" destination="m1l-wR-0Aw" id="5lJ-0P-fAd"/>
                         <outlet property="gpsRoundSpeed" destination="TiY-i7-wHU" id="8Fy-R9-NVM"/>
                         <outlet property="gpsStatus" destination="15B-BH-gcO" id="Jaz-yt-QO8"/>
+                        <outlet property="lblActivityType" destination="pnU-f5-il5" id="6mT-aQ-IUt"/>
                         <outlet property="lblAudio" destination="Ote-9j-SQr" id="s6C-yq-kSN"/>
                         <outlet property="lblMaxHeartrateValue" destination="7E5-vh-2Xl" id="sH3-mH-eL7"/>
                         <outlet property="lblSecPerRound" destination="TpV-1W-zry" id="va8-ZV-zSD"/>
@@ -1501,9 +1503,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WyX-QS-UYw"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="View" image="ic_view_list" id="cJh-ky-x8e">
-                        <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="View" image="ic_view_list" id="cJh-ky-x8e"/>
                     <connections>
                         <outlet property="dat1" destination="jhK-PJ-IUl" id="LZI-bg-UY0"/>
                         <outlet property="dat2" destination="wyU-i3-kRq" id="iMq-fw-cH0"/>

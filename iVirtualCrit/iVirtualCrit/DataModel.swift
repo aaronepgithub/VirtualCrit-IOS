@@ -35,4 +35,5 @@ struct rounds {
     static var geoSpeeds = [Double]()
     static var heartrates = [Double]()
     static var cadences = [Double]()
+    static var scores = [Double]()
 }
