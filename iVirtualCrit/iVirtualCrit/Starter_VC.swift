@@ -214,7 +214,7 @@ class Starter_VC: UITableViewController {
             dump(rounds.cadences)
             dump(rounds.geoSpeeds)
             print("\n")
-            print("btAvgSpeed:  \(stringer(dbl: btAverageSpeed, len: 2))")
+            //print("btAvgSpeed:  \(stringer(dbl: btAverageSpeed, len: 2))")
             print("\n")
             
             inRoundGeoDistance = 0

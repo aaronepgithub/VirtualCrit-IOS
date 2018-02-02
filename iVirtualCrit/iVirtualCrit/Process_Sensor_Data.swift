@@ -65,7 +65,7 @@ func processWheelData(withData data :Data) {
             return
         }
         if (b < 500 && a == 0) { //ignore velo quick reads
-            print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
             veloSpeedCounter += 1
             if veloSpeedCounter > 2 {
                 veloSpeedCounter = 0

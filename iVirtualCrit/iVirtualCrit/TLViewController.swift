@@ -36,7 +36,7 @@ class TLViewController: UIViewController {
         
         if let userInfo = not.userInfo {
             if let n1 = userInfo[AnyHashable("color")] {
-                print(n1)
+                //print(n1)
                 colorToUse = UIColor.blue
                 if n1 as! String == "red" {colorToUse = UIColor.red}
                 if n1 as! String == "black" {colorToUse = UIColor.black}
@@ -73,7 +73,7 @@ class TLViewController: UIViewController {
             }
             if let n6 = userInfo[AnyHashable("pace")] {
                 let txt = "\(n6 as! String) MIN/MILE \n"
-                if txt != " " {str += txt;str += "\n";}
+                if n6 as! String != "00:00" {str += txt;str += "\n";}
             }
             
             
@@ -91,23 +91,21 @@ class TLViewController: UIViewController {
             }
             if let n11 = userInfo[AnyHashable("btmovingtime")] {
                 let txt = "\(n11 as! String) MOVING\n"
-                print("n11:  \(n11)")
-                if n11 as! String != " " {str += txt}
+                if n11 as! String != "" {str += txt}
                 
             }
             if let n12 = userInfo[AnyHashable("gpsmovingtime")] {
                 let txt = "\(n12 as! String) MOVING(G)\n"
-                if txt != " " {str += txt;str += "\n";}
+                if n12 as! String != " " {str += txt;str += "\n";}
             }
             
             if let n13 = userInfo[AnyHashable("avgspeed")] {
                 let txt = "\(n13 as! String)  AVG SPD\n"
-                print("n13:  \(n13)")
                 if n13 as! String != " " {str += txt}
             }
             if let n14 = userInfo[AnyHashable("avgspeedgeo")] {
                 let txt = "\(n14 as! String)  AVG SPD(G)\n"
-                if txt != " " {str += txt}
+                if n14 as! String != " " {str += txt}
             }
             // END MID ROUND DAILY UPDATE
             
@@ -202,7 +200,7 @@ class TLViewController: UIViewController {
     
     
     func newBluePoint(titleString: String) {
-        print("newBluePoint")
+        //print("newBluePoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -222,7 +220,7 @@ class TLViewController: UIViewController {
     }
     
     func newGreenPoint(titleString: String) {
-        print("newGreenPoint")
+        //print("newGreenPoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -237,7 +235,7 @@ class TLViewController: UIViewController {
         }
     }
     func newRedPoint(titleString: String) {
-        print("newRedPoint")
+        //print("newRedPoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
