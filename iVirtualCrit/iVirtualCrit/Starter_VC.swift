@@ -421,7 +421,9 @@ class Starter_VC: UITableViewController {
         case 12:
             if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
         case 13:
-            print("get val")
+            print("get fb, score leaders name")
+            let x = fb1()
+            print("x: \(x)")
         default:
             print("DO NOTHING")
         }
@@ -443,38 +445,6 @@ class Starter_VC: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        var ref: FIRDatabaseReference!
-        ref = FIRDatabase.database().reference()
-
-        ref.child("totals").child("20170527").observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            let value = snapshot.value as? NSDictionary
-            
-            for (key, list) in (value)! {
-                print("key: \(key)")
-                print("list:  \(list)")
-                
-//                for e in list {
-//                     let riderName = e["fb_timeName"] as? String
-//                    print("riderName:  \(riderName)")
-//                }
-                
-               
-                
-                
-                //let riderName = value?["fb_timName"] as? String ?? ""
-                //print("riderName:  \(riderName)")
-            }
-            
-            
-            //print("riderName:  \(riderName)")
-            //dump(value)
-
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-        
-//        let fire: FireModel
         
     }
     
@@ -495,6 +465,126 @@ class Starter_VC: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+
+    //FB PUTS, AT ROUND COMPLETE
+    
+    
+    //FB GETS (1,2,3,4)
+    func fb1() -> String {
+        print("start fb1")
+        var arrLeaderNamesByScore: String = ""
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+        //let result = "20170527"
+        let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+        let ref = refDB.child(result)
+        _ = ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
+            if ( snapshot.value is NSNull ) {
+                print("not found")
+            } else {
+                for child in (snapshot.children) {
+                    let snap = child as! FIRDataSnapshot //each child is a snapshot
+                    let dict = snap.value as! NSDictionary // the value is a dict
+                    let fbRND = dict["fb_RND"]!
+                    let fbNAME = dict["fb_timName"]!
+                    let fbSPD = dict["fb_SPD"]!
+                    print("\(fbNAME) score :  \(fbRND) :  \(fbSPD)")
+                    arrLeaderNamesByScore = "\(fbRND)%  \(fbNAME)  \(fbSPD) MPH\n" + arrLeaderNamesByScore
+                }
+                print(arrLeaderNamesByScore)
+                print("Completed:  (Round) Get 5 leaders, ordered by score")
+                //WHEN FINISHED...CHAIN SOMETHING ELSE HERE
+                let _ = self.fb2()
+            }
+            return
+        })
+        { (error) in
+            print(error.localizedDescription)}
+        return "fb1 completed"
+    }
+    
+    func fb2() -> String {
+        print("\nstart fb2")
+        var arrLeaderNamesBySpeed: String = ""
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+        let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+        let ref = refDB.child(result)
+        _ = ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
+            if ( snapshot.value is NSNull ) {
+                print("not found")
+            } else {
+                for child in (snapshot.children) {
+                    let snap = child as! FIRDataSnapshot //each child is a snapshot
+                    let dict = snap.value as! NSDictionary // the value is a dict
+                    let fbRND = dict["fb_RND"] as! Double!
+                    let fbNAME = dict["fb_timName"]!
+                    let fbSPD = dict["fb_SPD"] as! Double!
+                    print("\(fbNAME) speed :  \(stringer(dbl: fbSPD!, len: 2)) :  \(stringer(dbl: fbRND!, len: 2)) ")
+                    arrLeaderNamesBySpeed = "\(stringer(dbl: fbSPD!, len: 2)) MPH  \(fbNAME)  \(stringer(dbl: fbRND!, len: 2))%\n" + arrLeaderNamesBySpeed
+                }
+                print(arrLeaderNamesBySpeed)
+                print("Completed:  (Round) Get 5 leaders, ordered by speed")
+                //WHEN FINISHED...CHAIN SOMETHING ELSE HERE
+                let _ = self.fb3()
+            }
+            return
+        })
+        { (error) in
+            print(error.localizedDescription)}
+        return "fb2 completed"
+    }
+    
+    func fb3() -> String { //get Totals from fb, ordered by score
+        print("\nstart fb3")
+        var leaderNamesByScoreTotals: String = ""
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+
+        let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
+        ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
+            if ( snapshot.value is NSNull ) {
+                print("not found")
+            } else {
+                for child in (snapshot.children) {
+                    let snap = child as! FIRDataSnapshot //each child is a snapshot
+                    let dict = snap.value as! NSDictionary // the value is a dict
+                    let fbNAME = dict["fb_timName"]!
+                    let fbSCORE = dict["a_scoreHRTotal"]! as! Double
+                    let fbSPEED = dict["a_speedTotal"]! as! Double
+
+                    leaderNamesByScoreTotals = "\(stringer(dbl: fbSCORE, len: 2))%  \(fbNAME)  \((stringer(dbl: fbSPEED, len: 2))) MPH\n" + leaderNamesByScoreTotals
+                    print("leaderNamesByScoreTotals  : \(leaderNamesByScoreTotals)")
+                }
+                print("Complete fb3")
+                let _ = self.fb4()
+            }
+        })
+        return "Complete fb3"
+    }  //fb3 complete
+    
+    func fb4() -> String { //get Totals from fb, ordered by speed
+        print("\nstart fb4")
+        var leaderNamesBySpeedTotals: String = ""
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+        
+        let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
+        ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
+            if ( snapshot.value is NSNull ) {
+                print("not found")
+            } else {
+                for child in (snapshot.children) {
+                    let snap = child as! FIRDataSnapshot //each child is a snapshot
+                    let dict = snap.value as! NSDictionary // the value is a dict
+                    let fbNAME = dict["fb_timName"]!
+                    let fbSCORE = dict["a_scoreHRTotal"]! as! Double
+                    let fbSPEED = dict["a_speedTotal"]! as! Double
+                    
+                    leaderNamesBySpeedTotals = "\((stringer(dbl: fbSPEED, len: 2))) MPH  \(fbNAME)  \(stringer(dbl: fbSCORE, len: 2))%\n" + leaderNamesBySpeedTotals
+                    print("leaderNamesBySpeedTotals  : \(leaderNamesBySpeedTotals)")
+                }
+                print("Complete fb4")
+            }
+        })
+        return "Complete fb4"
+    }  //fb4 complete
    
     
     lazy var locationManager: CLLocationManager = {
