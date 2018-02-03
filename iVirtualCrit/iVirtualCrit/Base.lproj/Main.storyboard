@@ -1364,7 +1364,7 @@
                         <outlet property="gpsRoundSpeed" destination="TiY-i7-wHU" id="8Fy-R9-NVM"/>
                         <outlet property="gpsStatus" destination="15B-BH-gcO" id="Jaz-yt-QO8"/>
                         <outlet property="lblActivityType" destination="pnU-f5-il5" id="6mT-aQ-IUt"/>
-                        <outlet property="lblAudio" destination="Ote-9j-SQr" id="s6C-yq-kSN"/>
+                        <outlet property="lblAudioStatus" destination="1ZN-HT-AX7" id="Vku-b2-xHP"/>
                         <outlet property="lblMaxHeartrateValue" destination="7E5-vh-2Xl" id="sH3-mH-eL7"/>
                         <outlet property="lblRiderName" destination="ywP-gn-ldk" id="BT2-XF-yvA"/>
                         <outlet property="lblSecPerRound" destination="TpV-1W-zry" id="va8-ZV-zSD"/>

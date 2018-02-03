@@ -92,6 +92,11 @@ class Starter_VC: UITableViewController {
         
         if speedForLastMile > fastestMile {
             fastestMile = speedForLastMile
+            
+            if audioStatus == "ON" {
+                Utils.shared.say(sentence: "Fastest Mile is now.  \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.")
+            }
+            
         }
         
         
@@ -128,7 +133,7 @@ class Starter_VC: UITableViewController {
             bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
             bestRoundPace = calcMinPerMile(mph: bestRoundSpeed)
             
-            //ROUND LEADERS POINT
+            //MY BEST ROUNDS POINT
             newRoundPoint(mileString: "MY BEST ROUNDS\n\(stringer(dbl: bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: bestRoundHR, len: 1)) HR\n\(stringer(dbl: bestRoundScore, len: 1)) SCORE\n\(bestRoundPace) PACE\n")
             
             arrResults.append("\(a)\(b)\(c)")
@@ -138,7 +143,12 @@ class Starter_VC: UITableViewController {
             dump(arrResults)
             dump(arrResultsDetails)
             print("\n");
-  
+            
+            if audioStatus == "ON" {
+                Utils.shared.say(sentence: "Round Complete, \(stringer(dbl: spdToUse, len: 1)) Miles Per Hour.  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 0)) PERCENT OF MAX.  ")
+            }
+            
+            
         }
 
     }  //end nrarray
@@ -399,10 +409,11 @@ class Starter_VC: UITableViewController {
     var audioStatus: String = "OFF"
     @IBOutlet weak var lblTireSize: UILabel!
     @IBOutlet weak var lblMaxHeartrateValue: UILabel!
-    @IBOutlet weak var lblAudio: UILabel!
+    
     @IBOutlet weak var lblSecPerRound: UILabel!
     @IBOutlet weak var lblActivityType: UILabel!
     
+    @IBOutlet weak var lblAudioStatus: UILabel!
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -460,7 +471,7 @@ class Starter_VC: UITableViewController {
             if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";}
             if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";}
         case 7:
-            if lblAudio.text == "OFF" {audioStatus = "ON";lblAudio.text = "ON"} else {audioStatus = "OFF";lblAudio.text = "OFF"}
+            if lblAudioStatus.text == "OFF" {audioStatus = "ON";lblAudioStatus.text = "ON"} else {audioStatus = "OFF";lblAudioStatus.text = "OFF"}
         case 8:
             let hrz = maxHRvalue
             if hrz == 185 {maxHRvalue = 190;lblMaxHeartrateValue.text = "190";}
@@ -479,6 +490,8 @@ class Starter_VC: UITableViewController {
             if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
         case 13:
             print("13")
+            if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
+            
         default:
             print("DO NOTHING")
         }
@@ -625,13 +638,21 @@ class Starter_VC: UITableViewController {
                 print("not found")
             } else {
                 for child in (snapshot.children) {
+                    var sRND: String = "0"
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
-                    let fbSPD = dict["fb_SPD"]!
                     
-                    arrLeaderNamesByScore = "\(fbRND) %  \(fbNAME)  \(fbSPD) MPH\n" + arrLeaderNamesByScore
+                    if let dRND = fbRND as? Double {
+                        sRND = stringer(dbl: dRND, len: 1)
+                    } else {
+                        sRND = "0"
+                    }
+//                    print("fbRND    :\(fbRND)")
+//                    print("sRND    :\(sRND)")
+//                    arrLeaderNamesByScore = "\(fbRND) %  \(fbNAME)\n" + arrLeaderNamesByScore
+                    arrLeaderNamesByScore = "\(sRND) %  \(fbNAME)\n" + arrLeaderNamesByScore
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by score")
                 print(arrLeaderNamesByScore)
@@ -660,10 +681,10 @@ class Starter_VC: UITableViewController {
                 for child in (snapshot.children) {
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
-                    let fbRND = dict["fb_RND"]!
+                    //let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
                     let fbSPD = dict["fb_SPD"]!
-                    arrLeaderNamesBySpeed = "\(fbSPD) MPH  \(fbNAME)  \(fbRND)%\n" + arrLeaderNamesBySpeed
+                    arrLeaderNamesBySpeed = "\(fbSPD) MPH  \(fbNAME)\n" + arrLeaderNamesBySpeed
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by speed")
                 print(arrLeaderNamesBySpeed)
@@ -682,7 +703,7 @@ class Starter_VC: UITableViewController {
         print("\nstart fb3")
         var leaderNamesByScoreTotals: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
-
+        var sSCORE: String = "0"
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
         ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
@@ -693,9 +714,15 @@ class Starter_VC: UITableViewController {
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbNAME = dict["fb_timName"]!
                     let fbSCORE = dict["a_scoreHRTotal"]!
-                    let fbSPEED = dict["a_speedTotal"]!
-
-                    leaderNamesByScoreTotals = "\(fbSCORE)%  \(fbNAME)  \(fbSPEED) MPH\n" + leaderNamesByScoreTotals
+                    //let fbSPEED = dict["a_speedTotal"]!
+                    
+                    if let dSCORE = fbSCORE as? Double {
+                        sSCORE = stringer(dbl: dSCORE, len: 1)
+                    } else {
+                        sSCORE = "0"
+                    }
+                    
+                    leaderNamesByScoreTotals = "\(sSCORE)%  \(fbNAME)\n" + leaderNamesByScoreTotals
                     
                 }
                 print("leaderNamesByScoreTotals\n\(leaderNamesByScoreTotals)")
@@ -721,10 +748,10 @@ class Starter_VC: UITableViewController {
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbNAME = dict["fb_timName"]!
-                    let fbSCORE = dict["a_scoreHRTotal"]!
+                    //let fbSCORE = dict["a_scoreHRTotal"]!
                     let fbSPEED = dict["a_speedTotal"]!
                     
-                    leaderNamesBySpeedTotals = "\(fbSPEED) MPH  \(fbNAME)  \(fbSCORE)%\n" + leaderNamesBySpeedTotals
+                    leaderNamesBySpeedTotals = "\(fbSPEED) MPH  \(fbNAME)\n" + leaderNamesBySpeedTotals
                     
                 }
                 print("Complete fb4")
