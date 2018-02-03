@@ -1366,6 +1366,7 @@
                         <outlet property="lblActivityType" destination="pnU-f5-il5" id="6mT-aQ-IUt"/>
                         <outlet property="lblAudio" destination="Ote-9j-SQr" id="s6C-yq-kSN"/>
                         <outlet property="lblMaxHeartrateValue" destination="7E5-vh-2Xl" id="sH3-mH-eL7"/>
+                        <outlet property="lblRiderName" destination="ywP-gn-ldk" id="BT2-XF-yvA"/>
                         <outlet property="lblSecPerRound" destination="TpV-1W-zry" id="va8-ZV-zSD"/>
                         <outlet property="lblTireSize" destination="rn2-3E-BkG" id="dis-TR-w8a"/>
                         <outlet property="statusValue" destination="lf3-oL-LBZ" id="XmA-Hs-MgB"/>

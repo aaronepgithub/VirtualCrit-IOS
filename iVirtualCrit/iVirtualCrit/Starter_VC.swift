@@ -362,6 +362,38 @@ class Starter_VC: UITableViewController {
         }
     }
     
+    
+    @IBOutlet weak var lblRiderName: UILabel!
+    
+    func showInputDialog() {
+        
+        let alertController = UIAlertController(title: "Rider Name", message: "", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+            
+            let name = alertController.textFields?[0].text
+            self.lblRiderName.text = name!.uppercased()
+            self.riderName = name!.uppercased()
+            print("riderName:  \(self.riderName)")
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = self.riderName
+        }
+
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    
+    
     var riderName: String = "TIM"
     var activityType: String = "BIKE"
     var audioStatus: String = "OFF"
@@ -420,6 +452,8 @@ class Starter_VC: UITableViewController {
         case 3:
             //ble
             self.tabBarController?.selectedIndex = 1
+        case 5:
+            showInputDialog()
         case 6:
             let at = activityType
             if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";}
@@ -445,7 +479,6 @@ class Starter_VC: UITableViewController {
             if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
         case 13:
             print("13")
-            let _ = fb1()
         default:
             print("DO NOTHING")
         }
