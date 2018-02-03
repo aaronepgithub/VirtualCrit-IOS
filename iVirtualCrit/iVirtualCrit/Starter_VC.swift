@@ -714,7 +714,7 @@ class Starter_VC: UITableViewController {
         
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
         ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
-            if ( snapshot.value is NSNull ) {
+                if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
                 for child in (snapshot.children) {
