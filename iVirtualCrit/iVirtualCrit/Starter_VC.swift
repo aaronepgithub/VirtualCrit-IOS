@@ -112,6 +112,11 @@ class Starter_VC: UITableViewController {
             let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM"
             let f = "  \(stringer(dbl: roundGeoSpeed, len: 1))  MPH/GEO"
             
+            var spdToUse = roundSpeed
+            if roundSpeed < roundGeoSpeed {spdToUse = roundGeoSpeed}
+            
+            fbPush(rSpeed: "\(stringer(dbl: spdToUse, len: 2))", rHeartrate: "\(stringer(dbl: roundHR, len: 2))", rScore: "\(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 2))", rCadence: "\(stringer(dbl: roundCadence, len: 2))")
+            
             if roundSpeed > bestRoundSpeed {bestRoundSpeed = roundSpeed}
             if roundGeoSpeed > bestRoundSpeed {bestRoundSpeed = roundGeoSpeed}
             if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
@@ -259,6 +264,19 @@ class Starter_VC: UITableViewController {
             inRoundHR = []
         }
         
+        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.2))) {
+            let _ = fb1()
+        }
+        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.4))) {
+            let _ = fb2()
+        }
+        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.6))) {
+            let _ = fb3()
+        }
+        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.8))) {
+            let _ = fb4()
+        }
+        
         //MID ROUND - DAILY UPDATE
         if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2) {
 
@@ -340,6 +358,7 @@ class Starter_VC: UITableViewController {
         }
     }
     
+    var riderName: String = "TIM"
     var activityType: String = "BIKE"
     var audioStatus: String = "OFF"
     @IBOutlet weak var lblTireSize: UILabel!
@@ -421,9 +440,7 @@ class Starter_VC: UITableViewController {
         case 12:
             if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
         case 13:
-            print("get fb, score leaders name")
-            let x = fb1()
-            print("x: \(x)")
+            print("13")
         default:
             print("DO NOTHING")
         }
@@ -466,8 +483,87 @@ class Starter_VC: UITableViewController {
     }
 
 
-    //FB PUTS, AT ROUND COMPLETE
+    //FB PUSH, AT ROUND COMPLETE
+    func fbPush(rSpeed: String, rHeartrate: String, rScore: String, rCadence: String) {
+        //send round data to fb
+        print("Start fbPush")
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+        
+        if roundsCompleted > 0 {
+            // FIREBASE PUSH  - START
+            let round_post = [
+                "a_calcDurationPost" : roundsCompleted * 5,
+                "a_scoreRoundLast" : rScore,
+                "a_speedRoundLast" : rSpeed,
+                "fb_CAD" : rCadence,
+                "fb_Date" : result,
+                "fb_DateNow" : result,
+                "fb_HR" : rHeartrate,
+                "fb_RND" : rScore,
+                "fb_SPD" : rSpeed,
+                "fb_maxHRTotal" : maxHRvalue,
+                "fb_scoreHRRound" : rScore,
+                "fb_scoreHRRoundLast" : rScore,
+                "fb_scoreHRTotal" : rScore,
+                "fb_timAvgCADtotal" : rCadence,
+                "fb_timAvgHRtotal" : rScore,
+                "fb_timAvgSPDtotal" : rSpeed,
+                "fb_timDistanceTraveled" : total_distance ?? 0,
+                "fb_timGroup" : "iOS",
+                "fb_timName" : riderName,
+                "fb_timTeam" : "Square Pizza"
+                ] as [String : Any]
+            
+            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(result)")
+            refDB.childByAutoId().setValue(round_post)
+            print("Complete pushFBRound")
+        }
+        print("Complete pushFBRound II")
+        let _ = fbPost()
+    }
     
+    //FB POST, AT ROUND COMPLETE
+    func fbPost() {
+        var tSpeed = "\(stringer(dbl: btAverageSpeed, len: 2))"
+        if geo.avgSpeed! > btAverageSpeed {tSpeed = stringer(dbl: geo.avgSpeed!, len: 2)}
+        
+        let tScore = stringer(dbl: (rounds.heartrates.average / Double(maxHRvalue)) * 100, len: 2)
+        let tCadence = stringer(dbl: rounds.cadences.average, len: 2)
+        
+        print("Start fbPost for Totals")
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+        
+        if roundsCompleted > 0 {
+            // FIREBASE TOTALS POST
+            let totals_post = [
+                "a_calcDurationPost" : roundsCompleted * 5,
+                "a_scoreHRRoundLast" : tScore,
+                "a_scoreHRTotal" : tScore,
+                "a_speedLast" : tSpeed,
+                "a_speedTotal" : tSpeed,
+                "fb_CAD" : tCadence,
+                "fb_Date" : result,
+                "fb_DateNow" : result,
+                "fb_maxHRTotal" : maxHRvalue,
+                "fb_scoreHRRound" : tScore,
+                "fb_scoreHRRoundLast" : tScore,
+                "fb_scoreHRTotal" : tScore,
+                "fb_timAvgCADtotal" : tCadence,
+                "fb_timAvgHRtotal" : tScore,
+                "fb_timAvgSPDtotal" : tSpeed,
+                "fb_timDistanceTraveled" : total_distance ?? 0,
+                "fb_timGroup" : "iOS",
+                "fb_timName" : riderName,
+                "fb_timTeam" : "Square Pizza"
+                ] as [String : Any]
+            
+            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(riderName)")
+            refDB.setValue(totals_post)
+            print("Complete postFBTotals")
+        }
+        print("Complete postFBTotals II")
+        //let _ = fb1()
+    }
     
     //FB GETS (1,2,3,4)
     func fb1() -> String {
@@ -487,13 +583,14 @@ class Starter_VC: UITableViewController {
                     let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
                     let fbSPD = dict["fb_SPD"]!
-                    print("\(fbNAME) score :  \(fbRND) :  \(fbSPD)")
                     arrLeaderNamesByScore = "\(fbRND)%  \(fbNAME)  \(fbSPD) MPH\n" + arrLeaderNamesByScore
                 }
-                print(arrLeaderNamesByScore)
                 print("Completed:  (Round) Get 5 leaders, ordered by score")
+                print(arrLeaderNamesByScore)
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
+                
                 //WHEN FINISHED...CHAIN SOMETHING ELSE HERE
-                let _ = self.fb2()
+                //let _ = self.fb2()
             }
             return
         })
@@ -515,16 +612,16 @@ class Starter_VC: UITableViewController {
                 for child in (snapshot.children) {
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
-                    let fbRND = dict["fb_RND"] as! Double!
+                    let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
-                    let fbSPD = dict["fb_SPD"] as! Double!
-                    print("\(fbNAME) speed :  \(stringer(dbl: fbSPD!, len: 2)) :  \(stringer(dbl: fbRND!, len: 2)) ")
-                    arrLeaderNamesBySpeed = "\(stringer(dbl: fbSPD!, len: 2)) MPH  \(fbNAME)  \(stringer(dbl: fbRND!, len: 2))%\n" + arrLeaderNamesBySpeed
+                    let fbSPD = dict["fb_SPD"]!
+                    arrLeaderNamesBySpeed = "\(fbSPD) MPH  \(fbNAME)  \(fbRND)%\n" + arrLeaderNamesBySpeed
                 }
-                print(arrLeaderNamesBySpeed)
                 print("Completed:  (Round) Get 5 leaders, ordered by speed")
-                //WHEN FINISHED...CHAIN SOMETHING ELSE HERE
-                let _ = self.fb3()
+                print(arrLeaderNamesBySpeed)
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
+
+                //let _ = self.fb3()
             }
             return
         })
@@ -547,14 +644,17 @@ class Starter_VC: UITableViewController {
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbNAME = dict["fb_timName"]!
-                    let fbSCORE = dict["a_scoreHRTotal"]! as! Double
-                    let fbSPEED = dict["a_speedTotal"]! as! Double
+                    let fbSCORE = dict["a_scoreHRTotal"]!
+                    let fbSPEED = dict["a_speedTotal"]!
 
-                    leaderNamesByScoreTotals = "\(stringer(dbl: fbSCORE, len: 2))%  \(fbNAME)  \((stringer(dbl: fbSPEED, len: 2))) MPH\n" + leaderNamesByScoreTotals
-                    print("leaderNamesByScoreTotals  : \(leaderNamesByScoreTotals)")
+                    leaderNamesByScoreTotals = "\(fbSCORE)%  \(fbNAME)  \(fbSPEED) MPH\n" + leaderNamesByScoreTotals
+                    
+                    //leaderNamesByScoreTotals = "\(stringer(dbl: fbSCORE, len: 2))%  \(fbNAME)  \((stringer(dbl: fbSPEED, len: 2))) MPH\n" + leaderNamesByScoreTotals
+                    print("leaderNamesByScoreTotals\n\(leaderNamesByScoreTotals)")
+                    NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "BEST DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
                 }
                 print("Complete fb3")
-                let _ = self.fb4()
+                //let _ = self.fb4()
             }
         })
         return "Complete fb3"
@@ -574,13 +674,15 @@ class Starter_VC: UITableViewController {
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbNAME = dict["fb_timName"]!
-                    let fbSCORE = dict["a_scoreHRTotal"]! as! Double
-                    let fbSPEED = dict["a_speedTotal"]! as! Double
+                    let fbSCORE = dict["a_scoreHRTotal"]!
+                    let fbSPEED = dict["a_speedTotal"]!
                     
-                    leaderNamesBySpeedTotals = "\((stringer(dbl: fbSPEED, len: 2))) MPH  \(fbNAME)  \(stringer(dbl: fbSCORE, len: 2))%\n" + leaderNamesBySpeedTotals
-                    print("leaderNamesBySpeedTotals  : \(leaderNamesBySpeedTotals)")
+                    leaderNamesBySpeedTotals = "\(fbSPEED) MPH  \(fbNAME)  \(fbSCORE)%\n" + leaderNamesBySpeedTotals
+                    
                 }
                 print("Complete fb4")
+                print("leaderNamesBySpeedTotals\n\(leaderNamesBySpeedTotals)")
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "FASTEST AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
             }
         })
         return "Complete fb4"
