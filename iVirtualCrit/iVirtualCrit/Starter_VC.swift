@@ -717,7 +717,6 @@ class Starter_VC: UITableViewController {
 
 }
 
-
 extension Starter_VC: CLLocationManagerDelegate {
     
     func startLocationUpdates() {
