@@ -126,8 +126,19 @@ class Starter_VC: UITableViewController {
             
             fbPush(rSpeed: "\(stringer(dbl: spdToUse, len: 2))", rHeartrate: "\(stringer(dbl: roundHR, len: 1))", rScore: "\(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))", rCadence: "\(stringer(dbl: roundCadence, len: 1))")
             
-            if roundSpeed > bestRoundSpeed {bestRoundSpeed = roundSpeed}
-            if roundGeoSpeed > bestRoundSpeed {bestRoundSpeed = roundGeoSpeed}
+//            if roundSpeed > bestRoundSpeed {bestRoundSpeed = roundSpeed}
+//            if roundGeoSpeed > bestRoundSpeed {bestRoundSpeed = roundGeoSpeed}
+            if spdToUse > bestRoundSpeed {bestRoundSpeed = roundSpeed;
+                if audioStatus == "ON" {
+                    if roundHR > bestRoundHR {
+                        Utils.shared.say(sentence: "That was your fastest round and your highest score")
+                    } else {
+                        Utils.shared.say(sentence: "That was your fastest round")
+                    }
+
+                    
+                }
+            }
             if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
             if roundHR > bestRoundHR {bestRoundHR = roundHR}
             bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
@@ -144,9 +155,10 @@ class Starter_VC: UITableViewController {
             dump(arrResultsDetails)
             print("\n");
             
-            if audioStatus == "ON" {
-                Utils.shared.say(sentence: "Round Complete, \(stringer(dbl: spdToUse, len: 1)) Miles Per Hour.  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 0)) PERCENT OF MAX.  ")
-            }
+//            if audioStatus == "ON" {
+//                Utils.shared.say(sentence: "Round Complete, \(stringer(dbl: spdToUse, len: 1)) Miles Per Hour.  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 0)) PERCENT OF MAX.  ")
+//            }
+
             
             
         }
@@ -491,8 +503,8 @@ class Starter_VC: UITableViewController {
         case 13:
             print("13")
             if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
-            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
-            refDB.removeValue()
+//            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
+//            refDB.removeValue()
             
         default:
             print("DO NOTHING")
@@ -622,6 +634,8 @@ class Starter_VC: UITableViewController {
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(riderName)")
             refDB.setValue(totals_post)
             print("Complete postFBTotals")
+        } else {
+                self.tabBarController?.selectedIndex = 3
         }
         print("Complete postFBTotals II")
         //let _ = fb1()
@@ -667,9 +681,12 @@ class Starter_VC: UITableViewController {
         })
         { (error) in
             print(error.localizedDescription)}
+        
         return "fb1 completed"
     }
     
+    
+    var previousSpeedLeader = ""
     func fb2() -> String {
         print("\nstart fb2")
         var arrLeaderNamesBySpeed: String = ""
@@ -693,8 +710,12 @@ class Starter_VC: UITableViewController {
                 print("Completed:  (Round) Get 5 leaders, ordered by speed")
                 print(arrLeaderNamesBySpeed)
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
-                if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), has the fastest round.")}
+                
+                if readMe != self.previousSpeedLeader {
+                    if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), is the fastest.")}
+                }
                 //let _ = self.fb3()
+                self.previousSpeedLeader = readMe
             }
             return
         })
