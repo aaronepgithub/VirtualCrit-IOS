@@ -673,6 +673,7 @@ class Starter_VC: UITableViewController {
     func fb2() -> String {
         print("\nstart fb2")
         var arrLeaderNamesBySpeed: String = ""
+        var readMe: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         let ref = refDB.child(result)
@@ -687,11 +688,12 @@ class Starter_VC: UITableViewController {
                     let fbNAME = dict["fb_timName"]!
                     let fbSPD = dict["fb_SPD"]!
                     arrLeaderNamesBySpeed = "\(fbSPD) MPH  \(fbNAME)\n" + arrLeaderNamesBySpeed
+                    if let x = fbNAME as? String {readMe = x}
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by speed")
                 print(arrLeaderNamesBySpeed)
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
-
+                if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), has the fastest round.")}
                 //let _ = self.fb3()
             }
             return
