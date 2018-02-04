@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/aaronep/AndroidStudioProjects/BLE-Heart-rate-variability/app/src/main/assets"/><source path="/Users/aaronep/AndroidStudioProjects/BLE-Heart-rate-variability/app/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/aaronep/AndroidStudioProjects/BLE-Heart-rate-variability/app/src/debug/assets"/></dataSet></merger>
