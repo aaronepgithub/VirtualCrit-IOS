@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/res/merged/debug/color/common_google_signin_btn_tint.xml",
+        "source": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/color/common_google_signin_btn_tint.xml"
+    },
+    {
+        "merged": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/res/merged/debug/color/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/color/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/res/merged/debug/color/common_google_signin_btn_text_light.xml",
+        "source": "/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/11.8.0/res/color/common_google_signin_btn_text_light.xml"
+    }
+]

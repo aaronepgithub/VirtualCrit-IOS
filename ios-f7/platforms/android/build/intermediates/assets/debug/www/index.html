@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui height">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>Virtual Crit II</title>
+  <!-- Path to Framework7 Library CSS-->
+  <link rel="stylesheet" href="dist/css/framework7.ios.min.css">
+  <link rel="stylesheet" href="dist/css/framework7.ios.colors.min.css">
+  <!--     <link rel="stylesheet" href="dist/css/framework7.material.min.css">
+    <link rel="stylesheet" href="dist/css/framework7.material.colors.min.css"> -->
+
+  <!-- Path to your custom app styles-->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Krona+One" rel="stylesheet"> -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900" rel="stylesheet"> -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300,400,700" rel="stylesheet"> -->
+  <link rel="stylesheet" href="css/my-app.css">
+</head>
+
+<body>
+  <!-- Status bar overlay for fullscreen mode-->
+  <div class="statusbar-overlay"></div>
+  <!-- Panels overlay-->
+  <div class="panel-overlay"></div>
+
+
+  <!-- Left panel with reveal effect-->
+  <div class="panel panel-left panel-reveal">
+
+    <div class="content-block">
+      <div class="content-block-title listBlockFontSize">ALL ELEMENTS</div>
+      <p id="leftPcontent"></p>
+
+
+<div class="list-block listBlockFontSize">
+      <div class="list inset">
+        <ul>
+
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RT SPEED</div>
+                <div class="e1 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RT CADENCE</div>
+                <div class="e2 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RT HR</div>
+                <div class="e3 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RT GEOSPEED</div>
+                <div class="e4 item-after">00</div>
+              </div>
+            </a>
+          </li>
+
+          <br>
+
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">INT SPEED</div>
+                <div class="e5 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">INT CADENCE</div>
+                <div class="e6 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">INT HR</div>
+                <div class="e7 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">INT GEOSPEED</div>
+                <div class="e8 item-after">00</div>
+              </div>
+            </a>
+          </li>
+
+          <br>
+
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RND SPEED</div>
+                <div class="e9 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RND CADENCE</div>
+                <div class="e10 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RND HR</div>
+                <div class="e11 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RND GEOSPEED</div>
+                <div class="e12 item-after">00</div>
+              </div>
+            </a>
+          </li>
+
+          <br>
+
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">MILES</div>
+                <div class="e13 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">GEO MILES</div>
+                <div class="e14 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">GEO AVG PACE</div>
+                <div class="e15 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">GEO PACE</div>
+                <div class="e15b item-after">00</div>
+              </div>
+            </a>
+          </li>
+
+          <br>
+
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">SPD AVG MPH</div>
+                <div class="e16 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">GEO AVG MPH</div>
+                <div class="e17 item-after">00</div>
+              </div>
+            </a>
+          </li>
+
+          <br>
+
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RT SCORE</div>
+                <div class="e18 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">INT SCORE</div>
+                <div class="e19 item-after">00</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item item-content">
+              <div class="item-media"></div>
+              <div class="item-inner">
+                <div class="item-title">RND SCORE</div>
+                <div class="e20 item-after">00</div>
+              </div>
+            </a>
+          </li>
+
+
+        </ul>
+
+        <div class="block-footer">
+          <p>END</p>
+        </div>
+      </div>
+
+      </div>
+
+
+
+    </div>
+    <!-- CONTENT BLOCK END -->
+  </div>
+
+
+  <!-- Right panel with cover effect-->
+  <div class="panel panel-right panel-cover">
+    <div class="content-block">
+      <div class="content-block-title">ROUND SPEEDS (MPH)</div>
+      <p id="rightPcontent"></p>
+    </div>
+  </div>
+  <!-- Views, and they are tabs-->
+  <!-- We need to set "toolbar-through" class on it to keep space for our tab bar-->
+  <div class="views tabs toolbar-through">
+    <!-- Your first view, it is also a .tab and should have "active" class to make it visible by default-->
+    <div id="view-1" class="view view-main tab active">
+
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center sliding">SETTINGS</div>
+        </div>
+      </div>
+
+
+      <div class="pages navbar-through">
+
+        <!-- Pages-->
+        <div class="pages">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index-1" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <!-- <div class="content-block-title">SETTINGS</div> -->
+              <div class="content-block">
+
+
+                <div class="list-block listBlockFontSize">
+                  <ul>
+                    <li id="NAME" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">person</i></div>
+                      <div class="item-inner">
+                        <div class="item-title"><a href="#" class="prompt-ok">NAME</a></div>
+                        <div class="item-after">TIM</div>
+                      </div>
+                    </li>
+
+                    <li id="MAXHR" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">heart_fill</i></div>
+                      <div class="item-inner">
+                        <div class="item-title">MAX HEARTRATE</div>
+                        <div class="item-after">185</div>
+                      </div>
+                    </li>
+
+
+
+                    <li id="AUDIO" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">volume_fill</i></div>
+                      <div class="item-inner active">
+                        <div class="item-title">AUDIO</div>
+                        <div class="item-after">OFF</div>
+                      </div>
+                    </li>
+
+                    <li id="ACTIVITY" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">bolt_round_fill</i></div>
+                      <div class="item-inner active">
+                        <div class="item-title">ACTIVITY</div>
+                        <div class="item-after">BIKE</div>
+                      </div>
+                    </li>
+
+
+                    <!-- Divider -->
+                   <!--  <li class="item-divider">BIKE SETTINGS</li> -->
+
+                    <li id="TIRESIZE" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">settings_fill</i></div>
+                      <div class="item-inner">
+                        <div class="item-title">TIRE SIZE</div>
+                        <div class="item-after">700X25</div>
+                      </div>
+                    </li>
+                    <li id="REFRESH" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">timer_fill</i></div>
+                      <div class="item-inner">
+                        <div class="item-title">REFRESH INTERVAL</div>
+                        <div class="item-after">30</div>
+                      </div>
+                    </li>
+
+                    <li id="GEO" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">navigation_fill</i></div>
+                      <div class="item-inner">
+                        <div class="item-title">PHONE GPS</div>
+                        <div class="item-after">NO</div>
+                      </div>
+                    </li>
+
+                    <li id="RESTART" class="item-content">
+                      <div class="item-media"><i class="f7-icons color-red">reload</i></div>
+                      <div class="item-inner">
+                        <div class="item-title">RESTART</div>
+                        <!-- <div class="item-after">0</div> -->
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- <div class="list-block-label">Panels are here: <a href="#" class="open-panel">left</a> and <a href="#" data-panel="right" class="open-panel">right</a></div> -->
+                  <br>
+                  <div class="row">
+                    <div class="col-50 SpeedScoreCol" style="text-align:center"><a id="timeLineLoad" href="#" class="open-panel SpeedScoreLink">CURRENT</a></div>
+                    <div class="col-50 SpeedScoreCol" style="text-align:center"><a href="#" data-panel="right" class="open-panel SpeedScoreLink">RESULTS</a></div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-33" style="text-align:center"><a id="btn1" href="#"">1</a></div>
+                    <div class="col-33" style="text-align:center"><a id="btn2" href="#"">2</a></div>
+                    <div class="col-33" style="text-align:center"><a id="btn3" href="#"">3</a></div>
+                    <!-- <div class="col-25" style="text-align:center"><a id="btn4" href="#"">4</a></div> -->
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Second view (for second wrap)-->
+    <div id="view-2" class="view tab">
+      <!-- We can make with view with navigation, let's add Top Navbar-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center sliding">BLUETOOTH SENSORS</div>
+        </div>
+      </div>
+      <div class="pages navbar-through">
+        <div data-page="index-2" class="page">
+          <div class="page-content pull-to-refresh-content">
+
+            <div class="pull-to-refresh-layer">
+              <div class="preloader"></div>
+              <div class="pull-to-refresh-arrow"></div>
+            </div>
+            <div class="content-block">
+              <h3 id="blinker">Pull to Refresh</h3>
+            </div>
+            <div class="content-block blelist">
+
+              <div id="blechip" class="chip chip-extended blechip">
+                <div class="chip-media bg-red">0</div>
+                <div class="chip-label">HR/CSC</div>
+                <div class="chip-uuid"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- VIEW 3 START -->
+
+    <div id="view-3" class="view tab">
+
+      <div id="view3nav" class="navbar">
+        <div class="navbar-inner">
+          <div class="center">
+            <span class="rtMOVING">00:00:00</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="rtAVGSPD">00.0</span> &nbsp; AVG </div>
+        </div>
+      </div>
+
+      <div class="pages navbar-through">
+        <div class="pages">
+          <div data-page="index-3" class="page">
+
+            <div id="view3pagecontent" class="page-content v3pagecontent">
+
+                <!-- CONTENT BLOCK -->
+                <div class="myContentBlock content-block vertride">
+                  <div class="row">
+                    <div class="col-100 headerRow HeaderFooter">
+                      <span class="ACTUAL_TIME">00:00:00</span>
+                    </div>
+                  </div>
+                  <div id="centerRows" class="centerRows lh16">
+
+                    <div class="row firstRow allRows">
+                      <div class="col-10 rt labHR">HR<br></div>
+                      <div class="col-90 rtHR smallFont"></div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="row secondRow allRows">
+                      <div class="col-10 rt speedRow labSPD">SPD<br>MPH<br><span class="rndSec"></span></div>
+                      <div class="col-90 rtSPD speedRow bigFont"></div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="row thirdRow allRows">
+                      <div class="col-10 rt labCAD">CAD<br>RPM</div>
+                      <div class="col-90 rtCAD smallFont"></div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="row forthRow allRows">
+                      <div class="col-10 rt labSCORE">SCORE<br>%MAX</div>
+                      <div class="col-90 rtSCORE bigFont"></div>
+                    </div>
+
+                    <div class="row landRow allRows">
+                      <div class="col-30 smallerFont rtHR">000</div>
+                      <div class="col-40 smallerFont4 rtSPD">00.0</div>
+                      <div class="col-30 smallerFont rtCAD">00</div>
+                    </div>
+
+                    <div class="row landRowHR allRows">
+                      <div class="col-45 smallerFont6 rtHR">000</div>
+                      <div class="col-45 smallerFont6 rtSCORE">00</div>
+                    </div>
+                    <div class="row landRowSPD allRows">
+                      <div class="col-45 smallerFont6 rtSPD">000</div>
+                      <div class="col-45 smallerFont6 rtCAD">00</div>
+                    </div>
+                    <div class="row landRowGEO allRows">
+                      <div class="col-45 smallerFont6 geoSPD">000</div>
+                      <div class="col-45 smallerFont6 rtHR">00o</div>
+                    </div>
+
+
+                    <div class="landscapeLabels row verySmallFont">
+                      <div class="col-30 verySmallFont">HR</div>
+                      <div class="col-40 verySmallFont"></div>
+                      <div class="col-30 verySmallFont labCAD">CAD</div>
+                    </div>
+                    <div class="landscapeLabelsHR row verySmallFont">
+                      <div class="col-30 verySmallFont">HR</div>
+                      <div class="col-40 verySmallFont"></div>
+                      <div class="col-30 verySmallFont">SCORE</div>
+                    </div>
+                    <div class="landscapeLabelsSPD row verySmallFont">
+                      <div class="col-30 verySmallFont">SPD</div>
+                      <div class="col-40 verySmallFont"></div>
+                      <div class="col-30 verySmallFont labCAD">CAD</div>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- CONTENT BLOCK -->
+
+
+            </div>
+                <div class="row"><div id="footerRow" class="col-100 footerRow HeaderFooter"><span class="rtMILES">00.00 MILES</span></div>
+              </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+
+
+    <!-- VIEW 4 START -->
+
+    <!-- <div id="view-4" class="view tab popup popup4"> -->
+        <div id="view-4" class="view tab">
+
+
+      <div id="view4nav" class="navbar">
+        <div class="navbar-inner">
+          <div class="center">ACTIVITY TRACKER &darr;</div>
+        </div>
+      </div>
+      <div class="pages navbar-through">
+        <div data-page="index-4" class="page">
+
+          <!-- <div class="navbar">
+            <div class="navbar-inner">
+              <div class="center"><span class="rtMOVING">00:00:00</span> &nbsp; MOVING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="rtAVGSPD">00.0</span> &nbsp; AVG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="TIME">12:00:00 PM</span></div>
+            </div>
+          </div> -->
+          <div id="view4pagecontent" class="page-content" style="margin-top: 0px;padding-top: 0px;">
+          <!-- <section class="intro">
+           <div class="container">
+             <h1>Activity Timeline &darr;</h1>
+           </div>
+         </section> -->
+
+         <section class="timeline">
+           <ul id="timelineUL">
+
+             <li>
+               <div>
+                 <time>WELCOME TO YOUR ACTIVITY TRACKER</time> LET'S GET STARTED
+               </div>
+             </li>
+           </ul>
+         </section>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <!-- Bottom Tabbar-->
+    <div class="toolbar tabbar tabbar-labels">
+      <div class="toolbar-inner"><a href="#view-1" class="tab-link active"><i class="f7-icons color-red">settings_fill</i><span class="tabbar-label">Settings</span></a><a href="#view-2" class="tab-link"><i class="f7-icons color-red">radio</i><span class="tabbar-label">BLE</span></a>
+        <a href="#view-3" class="tab-link"> <i class="f7-icons color-red">play_round_fill</i><span class="tabbar-label">Ride</span></a><a href="#view-4" class="tab-link"> <i class="f7-icons color-red">more_vertical_round_fill</i><span class="tabbar-label">TL</span></a>
+      </div>
+    </div>
+    <!-- Bottom Tabbar-->
+
+
+  </div>
+  <script type="text/javascript" src="cordova.js"></script>
+  <!-- Path to Framework7 Library JS-->
+  <script type="text/javascript" src="dist/js/framework7.min.js"></script>
+  <!-- Path to your app js-->
+  <script type="text/javascript" src="js/onData.js"></script>
+  <!-- <script type="text/javascript" src="js/translateBle.js"></script> -->
+  <script type="text/javascript" src="js/my-app.js"></script>
+  <script type="text/javascript" src="js/geo.js"></script>
+
+</body>
+
+</html>

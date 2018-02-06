@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Virtual Crit II.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>4B35145885897670B66759845C57B81573406DFA</string>
+				<key>dateExpires</key>
+				<string>12/21/18</string>
+				<key>type</key>
+				<string>iOS Development</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>9483S2UTDX.com.virtualcrit</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>9483S2UTDX</string>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>Virtual Crit II.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>d34630b3-96c9-4a1a-a579-0e208ba85dae</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: *</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>9483S2UTDX</string>
+				<key>name</key>
+				<string>Aaron Epstein</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
