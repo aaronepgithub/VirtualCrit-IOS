@@ -1,4 +1,0 @@
-#Mon Jan 22 14:55:24 EST 2018
-base.0=/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/transforms/dex/debug/folders/1000/1f/main
-renamed.0=classes.dex
-file.0=/Users/aaronep/Desktop/Dev/VirtualCrit-IOS/ios-f7/platforms/android/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex

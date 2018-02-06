@@ -1,1 +1,0 @@
-/Users/aaronep/Library/Developer/Xcode/DerivedData/Virtual_Crit_II-cqgqranihjcclpfhttljwudfplcs/Build/Intermediates.noindex/ArchiveIntermediates/Virtual Crit II/InstallationBuildProductsLocation/Applications/Virtual Crit II.app
