@@ -14,9 +14,9 @@
 		58101F1F201E10DA00733F15 /* Bluetooth_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */; };
 		58101F25201E14AC00733F15 /* Starter_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58101F24201E14AC00733F15 /* Starter_VC.swift */; };
 		58216CF120250B8F00DDE028 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 58216CF020250B8F00DDE028 /* GoogleService-Info.plist */; };
+		583BFADB2031FDCD00D1F18C /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BFADA2031FDCD00D1F18C /* ISPoint.swift */; };
+		583BFADD2031FDF600D1F18C /* ISTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BFADC2031FDF600D1F18C /* ISTimeline.swift */; };
 		585E61132020D3C400BFCD65 /* Viewer_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61122020D3C400BFCD65 /* Viewer_VC.swift */; };
-		585E61162020F69700BFCD65 /* ISTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61142020F69700BFCD65 /* ISTimeline.swift */; };
-		585E61172020F69700BFCD65 /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61152020F69700BFCD65 /* ISPoint.swift */; };
 		585E61192020F6F600BFCD65 /* TLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61182020F6F600BFCD65 /* TLViewController.swift */; };
 		5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */; };
 		587B04882021F353005A638C /* History_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B04872021F353005A638C /* History_VC.swift */; };
@@ -38,9 +38,9 @@
 		58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth_VC.swift; sourceTree = "<group>"; };
 		58101F24201E14AC00733F15 /* Starter_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Starter_VC.swift; sourceTree = "<group>"; };
 		58216CF020250B8F00DDE028 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		583BFADA2031FDCD00D1F18C /* ISPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPoint.swift; sourceTree = "<group>"; };
+		583BFADC2031FDF600D1F18C /* ISTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISTimeline.swift; sourceTree = "<group>"; };
 		585E61122020D3C400BFCD65 /* Viewer_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Viewer_VC.swift; sourceTree = "<group>"; };
-		585E61142020F69700BFCD65 /* ISTimeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ISTimeline.swift; path = "../../Virtual Crit III/xxyy/ISTimeline.swift"; sourceTree = "<group>"; };
-		585E61152020F69700BFCD65 /* ISPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ISPoint.swift; path = "../../Virtual Crit III/xxyy/ISPoint.swift"; sourceTree = "<group>"; };
 		585E61182020F6F600BFCD65 /* TLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLViewController.swift; sourceTree = "<group>"; };
 		5879C8A2201F46820019A1A8 /* BLTE_TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLTE_TableViewCell.swift; sourceTree = "<group>"; };
 		587B04872021F353005A638C /* History_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History_VC.swift; sourceTree = "<group>"; };
@@ -90,9 +90,9 @@
 				58101F0E201E0F7900733F15 /* Main.storyboard */,
 				587B04892022027D005A638C /* Results_VC.swift */,
 				587B04872021F353005A638C /* History_VC.swift */,
+				583BFADA2031FDCD00D1F18C /* ISPoint.swift */,
+				583BFADC2031FDF600D1F18C /* ISTimeline.swift */,
 				585E61182020F6F600BFCD65 /* TLViewController.swift */,
-				585E61152020F69700BFCD65 /* ISPoint.swift */,
-				585E61142020F69700BFCD65 /* ISTimeline.swift */,
 				585E61122020D3C400BFCD65 /* Viewer_VC.swift */,
 				588E6B35201F6C740089C3A7 /* Process_Sensor_Data.swift */,
 				587B4B1B201E2A9B007D94BC /* DataModel.swift */,
@@ -256,9 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				585E61172020F69700BFCD65 /* ISPoint.swift in Sources */,
 				58F51FF02025104F000A12F6 /* FireModel.swift in Sources */,
-				585E61162020F69700BFCD65 /* ISTimeline.swift in Sources */,
 				58101F1F201E10DA00733F15 /* Bluetooth_VC.swift in Sources */,
 				587B4B1C201E2A9B007D94BC /* DataModel.swift in Sources */,
 				58101F25201E14AC00733F15 /* Starter_VC.swift in Sources */,
@@ -266,9 +264,11 @@
 				585E61132020D3C400BFCD65 /* Viewer_VC.swift in Sources */,
 				587B4B1E201E3047007D94BC /* Functions.swift in Sources */,
 				587B048A2022027D005A638C /* Results_VC.swift in Sources */,
+				583BFADD2031FDF600D1F18C /* ISTimeline.swift in Sources */,
 				585E61192020F6F600BFCD65 /* TLViewController.swift in Sources */,
 				587B04882021F353005A638C /* History_VC.swift in Sources */,
 				5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */,
+				583BFADB2031FDCD00D1F18C /* ISPoint.swift in Sources */,
 				58101F09201E0F7900733F15 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
