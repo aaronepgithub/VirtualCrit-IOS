@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.ParcelUuid;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -43,10 +44,14 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -66,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
     private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
     private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
 
+    private UUID CSC_SERVICE_UUID = convertFromInteger(0x1816);
+//    private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
+//    private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
+
+
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
 
     public MainActivity() {
@@ -78,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
         return new UUID(MSB | (value << 32), LSB);
     }
 
-
+    public void mLog(String t, String s) {
+        Log.i(t, s);
+    }
 
 
     //private BluetoothAdapter mBluetoothAdapter;
@@ -246,34 +258,60 @@ public class MainActivity extends AppCompatActivity {
             Log.i("mScanCallback", "onScanResult");
 
             Log.i("callbackType", String.valueOf(callbackType));
+
+            if (result.getScanRecord().getServiceUuids() != null) {
+                Log.i("SvcData", "UUID " + result.getScanRecord().getServiceUuids().toString());
+                List<String> svcs = new ArrayList<String>();
+                svcs.add(result.getScanRecord().getServiceUuids().toString());
+
+                for (String svc : svcs) {
+                    Log.i("Svc", "Services: " + svc);
+                    mLog("UUIDs to String", "HR:  " + HEART_RATE_SERVICE_UUID.toString());
+                    String x = "[" + HEART_RATE_SERVICE_UUID.toString() + "]";
+                    String y = "[" + CSC_SERVICE_UUID.toString() + "]";
+                    if (Objects.equals(svc, x)) {
+                        mLog(" is HR", "Yes");
+                        BluetoothDevice btDevice = result.getDevice();
+                        Log.i("btDevice", "Device.getName: "+ btDevice.getName());
+                        Log.i("btDevice", "ConnectToDevice...");
+                        connectToDevice(btDevice);
+                    }
+                    if (Objects.equals(svc, y)) {
+                        mLog(" is CSC", "Yes");
+                    }
+                }
+
+            }
+
+
             String devicename = result.getDevice().getName();
 
-
-//NOW HAVE TO DETERMINE IF IT IS AN HR OR CSC
-
-
             if (devicename != null){
+
+                Log.i("result", "name  " + result.getDevice().getName());
+                Log.i("result", "ID  " + result.getDevice().getAddress());
+                Log.i("result", "getDevice.toString  " + result.getDevice().toString());
+                Log.i("result", "getDevice.ScanRecord  " + result.getScanRecord().getServiceData().toString());
+
                 if(arrayListFoundDevices.contains(result)) {
                  Log.d("ArrayList", "Duplicate");
                 } else {
-                    Log.d("ArrayList", "Add Result");
+                    Log.i("ArrayList", "Add Result");
                     arrayListFoundDevices.add(result);
                 }
+                //Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
+                mLog("mLog ArrayList", result.toString());
 
-                Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
 
-
-
-                if (devicename.startsWith("Bl")){
-                    Log.i("mScanCallback", "Device name: "+devicename);
-                    Log.i("result", result.toString());
-//GET UUIDS (ALREADY IN RESULT.STRING) TO DETERMINE IF HR OR CSC)
-                    BluetoothDevice btDevice = result.getDevice();
-                    Log.i("btDevice", "Device.getName: "+ btDevice.getName());
-
-                    Log.i("btDevice", "ConnectToDevice...");
-                    connectToDevice(btDevice);
-                }
+//                if (devicename.startsWith("Bl")){
+//                    Log.i("mScanCallback", "Device name: "+devicename);
+//                    Log.i("result", result.toString());
+//                    //GET UUIDS (ALREADY IN RESULT.STRING) TO DETERMINE IF HR OR CSC)
+//                    BluetoothDevice btDevice = result.getDevice();
+//                    Log.i("btDevice", "Device.getName: "+ btDevice.getName());
+//                    Log.i("btDevice", "ConnectToDevice...");
+//                    connectToDevice(btDevice);
+//                }
             }
 
         }
@@ -556,4 +594,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+
 }
