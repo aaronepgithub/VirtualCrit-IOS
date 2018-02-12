@@ -516,6 +516,14 @@ class Starter_VC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.activityType = .fitness
+        locationManager.distanceFilter = 5.0
+        locationManager.requestAlwaysAuthorization()
+        
         let defaults = UserDefaults.standard
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
@@ -532,14 +540,14 @@ class Starter_VC: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewDidAppear")
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.activityType = .fitness
-        locationManager.distanceFilter = 5.0
-        locationManager.requestAlwaysAuthorization()
+//        print("viewDidAppear")
+//        locationManager = CLLocationManager()
+//        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        locationManager.allowsBackgroundLocationUpdates = true
+//        locationManager.activityType = .fitness
+//        locationManager.distanceFilter = 5.0
+//        locationManager.requestAlwaysAuthorization()
     }
 
     override func didReceiveMemoryWarning() {
@@ -791,7 +799,7 @@ class Starter_VC: UITableViewController {
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
         _locationManager.delegate = self
-        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        _locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         _locationManager.activityType = .fitness
         _locationManager.distanceFilter = 5.0
 
@@ -816,7 +824,7 @@ extension Starter_VC: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")
-        startLocationUpdates()
+        //startLocationUpdates()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
