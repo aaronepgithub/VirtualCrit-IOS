@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -251,56 +252,69 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private ScanCallback mScanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            Log.i("onScanResult", "onScanResult");
-            Log.i("mScanCallback", "onScanResult");
+    private ScanCallback mScanCallback;
 
-            Log.i("callbackType", String.valueOf(callbackType));
+    {
+        mScanCallback = new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
 
-            if (result.getScanRecord().getServiceUuids() != null) {
-                Log.i("SvcData", "UUID " + result.getScanRecord().getServiceUuids().toString());
-                List<String> svcs = new ArrayList<String>();
-                svcs.add(result.getScanRecord().getServiceUuids().toString());
+                Log.i("mScanCallback", "Name:  " + result.getDevice().getName());
+                Log.i("onScanResult", "onScanResult");
+                Log.i("mScanCallback", "onScanResult");
+                Log.i("callbackType", String.valueOf(callbackType));
 
-                for (String svc : svcs) {
-                    Log.i("Svc", "Services: " + svc);
-                    mLog("UUIDs to String", "HR:  " + HEART_RATE_SERVICE_UUID.toString());
-                    String x = "[" + HEART_RATE_SERVICE_UUID.toString() + "]";
-                    String y = "[" + CSC_SERVICE_UUID.toString() + "]";
-                    if (Objects.equals(svc, x)) {
-                        mLog(" is HR", "Yes");
-                        BluetoothDevice btDevice = result.getDevice();
-                        Log.i("btDevice", "Device.getName: "+ btDevice.getName());
-                        Log.i("btDevice", "ConnectToDevice...");
-                        connectToDevice(btDevice);
+                if (result.getScanRecord().getServiceUuids() != null) {
+                    Log.i("SvcData - All", "UUID " + result.getScanRecord().getServiceUuids().toString());
+                    List<String> svcs = new ArrayList<String>();
+                    svcs.add(result.getScanRecord().getServiceUuids().toString());
+
+
+                    for (String svc : svcs) {
+//                        need 1 at a time
+                        List<String> indivServices = new ArrayList<String>();
+                        Log.i("Svc", "svc: " + svc);
+                        //mLog("UUIDs to String", "HR:  " + HEART_RATE_SERVICE_UUID.toString());
+                        String x = "[" + HEART_RATE_SERVICE_UUID.toString() + "]";
+                        String y = "[" + CSC_SERVICE_UUID.toString() + "]";
+                        if (Objects.equals(svc, x)) {
+                            mLog(" is HR", "Yes");
+                            BluetoothDevice btDevice = result.getDevice();
+                            Log.i("btDevice", "Device.getName: " + btDevice.getName());
+                            Log.i("btDevice", "ConnectToDevice...");
+                            connectToDevice(btDevice);
+                        }
+                        if (Objects.equals(svc, y)) {
+                            mLog(" is CSC", "Yes");
+                        }
                     }
-                    if (Objects.equals(svc, y)) {
-                        mLog(" is CSC", "Yes");
-                    }
+
+
+
+
+
+
+
                 }
 
-            }
 
+                String devicename = result.getDevice().getName();
 
-            String devicename = result.getDevice().getName();
+                if (devicename != null) {
 
-            if (devicename != null){
+                    Log.i("result", "name  " + result.getDevice().getName());
+                    Log.i("result", "ID  " + result.getDevice().getAddress());
+                    Log.i("result", "getDevice.toString  " + result.getDevice().toString());
+                    Log.i("result", "getDevice.ScanRecord  " + result.getScanRecord().getServiceData().toString());
 
-                Log.i("result", "name  " + result.getDevice().getName());
-                Log.i("result", "ID  " + result.getDevice().getAddress());
-                Log.i("result", "getDevice.toString  " + result.getDevice().toString());
-                Log.i("result", "getDevice.ScanRecord  " + result.getScanRecord().getServiceData().toString());
-
-                if(arrayListFoundDevices.contains(result)) {
-                 Log.d("ArrayList", "Duplicate");
-                } else {
-                    Log.i("ArrayList", "Add Result");
-                    arrayListFoundDevices.add(result);
-                }
-                //Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
-                mLog("mLog ArrayList", result.toString());
+                    if (arrayListFoundDevices.contains(result)) {
+                        Log.d("ArrayList", "Duplicate");
+                    } else {
+                        Log.i("ArrayList", "Add Result");
+                        arrayListFoundDevices.add(result);
+                    }
+                    //Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
+                    mLog("mLog ArrayList", result.toString());
 
 
 //                if (devicename.startsWith("Bl")){
@@ -312,22 +326,23 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.i("btDevice", "ConnectToDevice...");
 //                    connectToDevice(btDevice);
 //                }
+                }
+
             }
 
-        }
-
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            for (ScanResult sr : results) {
-                Log.i("ScanResult - Results", sr.toString());
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                for (ScanResult sr : results) {
+                    Log.i("ScanResult - Results", sr.toString());
+                }
             }
-        }
 
-        @Override
-        public void onScanFailed(int errorCode) {
-            Log.e("Scan Failed", "Error Code: " + errorCode);
-        }
-    };
+            @Override
+            public void onScanFailed(int errorCode) {
+                Log.e("Scan Failed", "Error Code: " + errorCode);
+            }
+        };
+    }
 
 //    private BluetoothAdapter.LeScanCallback mLeScanCallback =
 //            new BluetoothAdapter.LeScanCallback() {
@@ -514,6 +529,37 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("BlueSvcChar", "service.getChar Properties:  " + characteristic.getProperties());
                 }
             }
+
+            //New Loop and Log
+            // Loops through available GATT Services.
+            for (BluetoothGattService gattService : services) {
+
+                final String uuid = gattService.getUuid().toString();
+                System.out.println("Service discovered: " + uuid);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        //peripheralTextView.append("Service Discovered: "+uuid+"\n");
+                    }
+                });
+                new ArrayList<HashMap<String, String>>();
+                List<BluetoothGattCharacteristic> gattCharacteristics =
+                        gattService.getCharacteristics();
+
+                // Loops through available Characteristics.
+                for (BluetoothGattCharacteristic gattCharacteristic :
+                        gattCharacteristics) {
+
+                    final String charUuid = gattCharacteristic.getUuid().toString();
+                    System.out.println("Characteristic discovered for service: " + charUuid);
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            //peripheralTextView.append("Characteristic discovered for service: "+charUuid+"\n");
+                        }
+                    });
+
+                }
+            }
+
 
 
 
