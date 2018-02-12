@@ -56,13 +56,20 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
 
+    private ArrayList arrayListFoundDevices = new ArrayList();
+
+
     private Button btn1;
     private TextView txtView1;
 
     private UUID HEART_RATE_SERVICE_UUID = convertFromInteger(0x180D);
     private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
     private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
+
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
+
+    public MainActivity() {
+    }
 
     public UUID convertFromInteger(int i) {
         final long MSB = 0x0000000000001000L;
@@ -210,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (Build.VERSION.SDK_INT < 21) {
-                        mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                        //mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     } else {
                         mLEScanner.stopScan(mScanCallback);
 
@@ -218,13 +225,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, SCAN_PERIOD);
             if (Build.VERSION.SDK_INT < 21) {
-                mBluetoothAdapter.startLeScan(mLeScanCallback);
+                //mBluetoothAdapter.startLeScan(mLeScanCallback);
             } else {
                 mLEScanner.startScan(filters, settings, mScanCallback);
             }
         } else {
             if (Build.VERSION.SDK_INT < 21) {
-                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                //mBluetoothAdapter.stopLeScan(mLeScanCallback);
             } else {
                 mLEScanner.stopScan(mScanCallback);
             }
@@ -244,7 +251,19 @@ public class MainActivity extends AppCompatActivity {
 
 //NOW HAVE TO DETERMINE IF IT IS AN HR OR CSC
 
+
             if (devicename != null){
+                if(arrayListFoundDevices.contains(result)) {
+                 Log.d("ArrayList", "Duplicate");
+                } else {
+                    Log.d("ArrayList", "Add Result");
+                    arrayListFoundDevices.add(result);
+                }
+
+                Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
+
+
+
                 if (devicename.startsWith("Bl")){
                     Log.i("mScanCallback", "Device name: "+devicename);
                     Log.i("result", result.toString());
@@ -272,25 +291,25 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private BluetoothAdapter.LeScanCallback mLeScanCallback =
-            new BluetoothAdapter.LeScanCallback() {
-
-                @Override
-                public void onLeScan(final BluetoothDevice device, int rssi,
-                                     byte[] scanRecord) {
-
-                    Log.i("mLeScanCallback", "onLeScan");
-
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i("onLeScan", device.toString());
-                            connectToDevice(device);
-                        }
-                    });
-                }
-            };
+//    private BluetoothAdapter.LeScanCallback mLeScanCallback =
+//            new BluetoothAdapter.LeScanCallback() {
+//
+//                @Override
+//                public void onLeScan(final BluetoothDevice device, int rssi,
+//                                     byte[] scanRecord) {
+//
+//                    Log.i("mLeScanCallback", "onLeScan");
+//
+//
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Log.i("onLeScan", device.toString());
+//                            connectToDevice(device);
+//                        }
+//                    });
+//                }
+//            };
 
     public void connectToDevice(BluetoothDevice device) {
         Log.i("connectToDevice", "Device: " + device.getName());
