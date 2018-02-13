@@ -1,10 +1,13 @@
 package com.aaronep.andy3.andy3;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
@@ -68,13 +71,16 @@ public class MainActivity extends AppCompatActivity {
     private Button btn1;
     private TextView txtView1;
 
+
+
+
     private UUID HEART_RATE_SERVICE_UUID = convertFromInteger(0x180D);
     private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
     private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
 
     private UUID CSC_SERVICE_UUID = convertFromInteger(0x1816);
-//    private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
-//    private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
+//    private UUID CSC_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
+//    private UUID CSC_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
 
 
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
@@ -96,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     //private BluetoothAdapter mBluetoothAdapter;
     private int REQUEST_ENABLE_BT = 1;
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private Handler mHandler;
     private static final long SCAN_PERIOD = 5000;
     private BluetoothLeScanner mLEScanner;
@@ -120,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void updateDevice(String devName){
-        TextView t=(TextView)findViewById(R.id.dev_type);
+        TextView t= findViewById(R.id.dev_type);
         t.setText(devName);
     }
 
     private void updateValue(String value){
-        TextView t=(TextView)findViewById(R.id.value_read);
+        TextView t= findViewById(R.id.value_read);
         t.setText(value);
     }
 
@@ -138,9 +145,31 @@ public class MainActivity extends AppCompatActivity {
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
+        if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        }
+
+        // Make sure we have access coarse location enabled, if not, prompt the user to enable it
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("This app needs location access");
+            builder.setMessage("Please grant location access so this app can detect peripherals.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                }
+            });
+            builder.show();
+        }
 
 
-        Button btn1 = (Button) findViewById(R.id.btn1);
+
+
+
+        Button btn1 = findViewById(R.id.btn1);
 
 
         setContentView(R.layout.activity_main);
@@ -251,7 +280,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    private Boolean isAutoConnected = false;
+    ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<BluetoothDevice>();
     private ScanCallback mScanCallback;
 
     {
@@ -268,10 +298,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("SvcData - All", "UUID " + result.getScanRecord().getServiceUuids().toString());
                     List<String> svcs = new ArrayList<String>();
                     svcs.add(result.getScanRecord().getServiceUuids().toString());
-
-
                     for (String svc : svcs) {
-//                        need 1 at a time
+// MAY NEED TO FIND 1 AT A TIME OR JUST DECIDE AFTER CONNECTION
+
                         List<String> indivServices = new ArrayList<String>();
                         Log.i("Svc", "svc: " + svc);
                         //mLog("UUIDs to String", "HR:  " + HEART_RATE_SERVICE_UUID.toString());
@@ -282,25 +311,29 @@ public class MainActivity extends AppCompatActivity {
                             BluetoothDevice btDevice = result.getDevice();
                             Log.i("btDevice", "Device.getName: " + btDevice.getName());
                             Log.i("btDevice", "ConnectToDevice...");
-                            connectToDevice(btDevice);
+
+                            if (isAutoConnected == false) {
+                                connectToDevice(btDevice);
+                                isAutoConnected = true;
+                            }
+//testing - auto connect to hr device
+//only 1 at a time
+
                         }
                         if (Objects.equals(svc, y)) {
                             mLog(" is CSC", "Yes");
                         }
                     }
-
-
-
-
-
-
-
                 }
 
 
                 String devicename = result.getDevice().getName();
 
                 if (devicename != null) {
+                    if (!devicesDiscovered.isEmpty() && devicesDiscovered.contains(result.getDevice())) {
+                        devicesDiscovered.add(result.getDevice());
+                    }
+
 
                     Log.i("result", "name  " + result.getDevice().getName());
                     Log.i("result", "ID  " + result.getDevice().getAddress());
@@ -316,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                     //Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
                     mLog("mLog ArrayList", result.toString());
 
-
+//testing filter / auto connect
 //                if (devicename.startsWith("Bl")){
 //                    Log.i("mScanCallback", "Device name: "+devicename);
 //                    Log.i("result", result.toString());
