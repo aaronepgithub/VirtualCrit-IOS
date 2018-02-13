@@ -67,12 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList arrayListFoundDevices = new ArrayList();
 
-
     private Button btn1;
+    private Button btn2;
+    private Button btn3;
     private TextView txtView1;
-
-
-
 
     private UUID HEART_RATE_SERVICE_UUID = convertFromInteger(0x180D);
     private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
@@ -85,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
 
-    public MainActivity() {
-    }
 
     public UUID convertFromInteger(int i) {
         final long MSB = 0x0000000000001000L;
@@ -114,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     // setup UI handler
     private final static int UPDATE_DEVICE = 0;
     private final static int UPDATE_VALUE = 1;
+
     @SuppressLint("HandlerLeak")
     private final Handler uiHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -165,11 +162,10 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
 
+        btn1 = findViewById(R.id.btn1);
+        btn2 = findViewById(R.id.btn2);
+        btn3 = findViewById(R.id.btn3);
 
-
-
-
-        Button btn1 = findViewById(R.id.btn1);
 
 
         setContentView(R.layout.activity_main);
@@ -179,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,9 +193,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             finish();
         }
-
-
-
 
     }
     //end onCreate
@@ -219,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
                         .build();
                 filters = new ArrayList<ScanFilter>();
             }
-            //scanLeDevice(true);
         }
     }
 
@@ -231,15 +223,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        if (mGatt == null) {
-            return;
-        }
-        mGatt.close();
-        mGatt = null;
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        if (mGatt == null) {
+//            return;
+//        }
+//        mGatt.close();
+//        mGatt = null;
+//        super.onDestroy();
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
