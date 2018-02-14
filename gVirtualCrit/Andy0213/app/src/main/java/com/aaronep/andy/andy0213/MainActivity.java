@@ -88,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    // Stops scanning after 5 seconds.
+    private Handler mHandler = new Handler();
+    private static final long SCAN_PERIOD = 5000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +122,13 @@ public class MainActivity extends AppCompatActivity {
 //            startScanning();
 //        }
 //    });
+
+        btn1 = findViewById(R.id.btn1);
+        public void btn1_click(View view) {
+            startScanning();
+        }
+
+
 
 //    stopScanningButton = (Button) findViewById(R.id.StopScanButton);
 //        stopScanningButton.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
     private ScanCallback leScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
+            Log.i("ON SCAN RESULT", "Index: " + deviceIndex + ", Device Name: " + result.getDevice().getName() + " rssi: " + result.getRssi());
 //                peripheralTextView.append("Index: " + deviceIndex + ", Device Name: " + result.getDevice().getName() + " rssi: " + result.getRssi() + "\n");
             devicesDiscovered.add(result.getDevice());
             deviceIndex++;
@@ -309,10 +321,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void stopScanning() {
         System.out.println("stopping scanning");
-        peripheralTextView.append("Stopped Scanning\n");
+//        peripheralTextView.append("Stopped Scanning\n");
+        Log.i("STOP SCANNING", "STOPPED SCANNING");
         btScanning = false;
-        startScanningButton.setVisibility(View.VISIBLE);
-        stopScanningButton.setVisibility(View.INVISIBLE);
+//        startScanningButton.setVisibility(View.VISIBLE);
+//        stopScanningButton.setVisibility(View.INVISIBLE);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -322,13 +335,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void connectToDeviceSelected() {
-        peripheralTextView.append("Trying to connect to device at index: " + deviceIndexInput.getText() + "\n");
+//        peripheralTextView.append("Trying to connect to device at index: " + deviceIndexInput.getText() + "\n");
+        Log.i("CONNECT TO SEL DEVICE", "TRYING TO CONNECT TO A SPECIFIC DEVICE BASED ON INDEX NUMBER");
         int deviceSelected = Integer.parseInt(deviceIndexInput.getText().toString());
         bluetoothGatt = devicesDiscovered.get(deviceSelected).connectGatt(this, false, btleGattCallback);
     }
 
     public void disconnectDeviceSelected() {
-        peripheralTextView.append("Disconnecting from device\n");
+//        peripheralTextView.append("Disconnecting from device\n");
+        Log.i("DISCONNECT SEL DEVICE", "TRY TO DISCONNECT FROM THE DEVICE");
         bluetoothGatt.disconnect();
     }
 
@@ -343,7 +358,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Service discovered: " + uuid);
             MainActivity.this.runOnUiThread(new Runnable() {
                 public void run() {
-                    peripheralTextView.append("Service disovered: "+uuid+"\n");
+//                    peripheralTextView.append("Service disovered: "+uuid+"\n");
+                    Log.i("DISP GATT SVCS","SERVICES DISCOVERED  " + uuid);
+
                 }
             });
             new ArrayList<HashMap<String, String>>();
@@ -403,10 +420,6 @@ public class MainActivity extends AppCompatActivity {
 //        client.disconnect();
 //        AppIndex.AppIndexApi.end(client, viewAction);
     }
-
-
-
-
 
 
 
