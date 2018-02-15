@@ -140,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        mBluetoothAdapter = bluetoothManager.getAdapter();
+        if (bluetoothManager != null) {
+            mBluetoothAdapter = bluetoothManager.getAdapter();
+        }
 
         if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -169,11 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -205,13 +204,11 @@ public class MainActivity extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            if (Build.VERSION.SDK_INT >= 21) {
-                mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-                settings = new ScanSettings.Builder()
-                        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                        .build();
-                filters = new ArrayList<ScanFilter>();
-            }
+            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
+            settings = new ScanSettings.Builder()
+                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                    .build();
+            filters = new ArrayList<>();
         }
     }
 
@@ -223,15 +220,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        if (mGatt == null) {
-//            return;
-//        }
-//        mGatt.close();
-//        mGatt = null;
-//        super.onDestroy();
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -250,31 +238,22 @@ public class MainActivity extends AppCompatActivity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (Build.VERSION.SDK_INT < 21) {
-                        //mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                    } else {
-                        mLEScanner.stopScan(mScanCallback);
+                    mLEScanner.stopScan(mScanCallback);
 
-                    }
                 }
             }, SCAN_PERIOD);
-            if (Build.VERSION.SDK_INT < 21) {
-                //mBluetoothAdapter.startLeScan(mLeScanCallback);
-            } else {
-                mLEScanner.startScan(filters, settings, mScanCallback);
-            }
+            mLEScanner.startScan(filters, settings, mScanCallback);
         } else {
-            if (Build.VERSION.SDK_INT < 21) {
-                //mBluetoothAdapter.stopLeScan(mLeScanCallback);
-            } else {
-                mLEScanner.stopScan(mScanCallback);
-            }
+            mLEScanner.stopScan(mScanCallback);
         }
     }
 
     private Boolean isAutoConnected = false;
-    ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<BluetoothDevice>();
+    private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
+    private ArrayList<String> namesDiscovered = new ArrayList<>();
+    private ArrayList<String> addressesDiscovered = new ArrayList<>();
     private ScanCallback mScanCallback;
+    private Integer deviceIndexVal = 0;
 
     {
         mScanCallback = new ScanCallback() {
@@ -282,64 +261,89 @@ public class MainActivity extends AppCompatActivity {
             public void onScanResult(int callbackType, ScanResult result) {
 
                 Log.i("mScanCallback", "Name:  " + result.getDevice().getName());
+                Log.i("mScanCallback", "Address:  " + result.getDevice().getAddress());
                 Log.i("onScanResult", "onScanResult");
                 Log.i("mScanCallback", "onScanResult");
                 Log.i("callbackType", String.valueOf(callbackType));
 
-                if (result.getScanRecord().getServiceUuids() != null) {
-                    Log.i("SvcData - All", "UUID " + result.getScanRecord().getServiceUuids().toString());
-                    List<String> svcs = new ArrayList<String>();
-                    svcs.add(result.getScanRecord().getServiceUuids().toString());
-                    for (String svc : svcs) {
-// MAY NEED TO FIND 1 AT A TIME OR JUST DECIDE AFTER CONNECTION
+//                if (result.getScanRecord().getServiceUuids() != null) {
+//                    Log.i("SvcData - All", "UUID " + result.getScanRecord().getServiceUuids().toString());
+//                    List<String> svcs = new ArrayList<>();
+//                    svcs.add(result.getScanRecord().getServiceUuids().toString());
+//                    for (String svc : svcs) {
+//                        List<String> indivServices = new ArrayList<String>();
+//                        Log.i("Svc", "svc: " + svc);
+//                        //mLog("UUIDs to String", "HR:  " + HEART_RATE_SERVICE_UUID.toString());
+//                        String x = "[" + HEART_RATE_SERVICE_UUID.toString() + "]";
+//                        String y = "[" + CSC_SERVICE_UUID.toString() + "]";
+//                        if (Objects.equals(svc, x)) {
+//                            mLog(" is HR", "Yes");
+//                            BluetoothDevice btDevice = result.getDevice();
+//                            Log.i("btDevice", "Device.getName: " + btDevice.getName());
+//                            Log.i("btDevice", "ConnectToDevice...");
+//
+//                            if (isAutoConnected == false) {
+//                                connectToDevice(btDevice);
+//                                isAutoConnected = true;
+//                            }
+//                            //testing - auto connect to hr device
+//                            //only 1 at a time
+//
+//                        }
+//                        if (Objects.equals(svc, y)) {
+//                            mLog(" is CSC", "Yes");
+//                        }
+//                    }
+//                }
 
-                        List<String> indivServices = new ArrayList<String>();
-                        Log.i("Svc", "svc: " + svc);
-                        //mLog("UUIDs to String", "HR:  " + HEART_RATE_SERVICE_UUID.toString());
-                        String x = "[" + HEART_RATE_SERVICE_UUID.toString() + "]";
-                        String y = "[" + CSC_SERVICE_UUID.toString() + "]";
-                        if (Objects.equals(svc, x)) {
-                            mLog(" is HR", "Yes");
-                            BluetoothDevice btDevice = result.getDevice();
-                            Log.i("btDevice", "Device.getName: " + btDevice.getName());
-                            Log.i("btDevice", "ConnectToDevice...");
+                //MOVE connectToDevice somewhwere...
+                BluetoothDevice deviceDiscovered = result.getDevice();
+                String deviceName = result.getDevice().getName();
+                String deviceAddress = result.getDevice().getAddress();
 
-                            if (isAutoConnected == false) {
-                                connectToDevice(btDevice);
-                                isAutoConnected = true;
-                            }
-//testing - auto connect to hr device
-//only 1 at a time
 
+                if (deviceName != null) {
+
+
+                    if (!addressesDiscovered.contains(deviceAddress)) {
+
+                        devicesDiscovered.add(deviceDiscovered);
+                        addressesDiscovered.add(deviceAddress);
+                        namesDiscovered.add(deviceName);
+                        deviceIndexVal += 1;
+
+                        Log.i("result", "NAME  " + result.getDevice().getName());
+                        Log.i("result", "ADDRESS  " + result.getDevice().getAddress());
+                        Log.i("result", "getDevice.toString  " + result.getDevice().toString());
+                        //Log.i("result", String.format("getDevice.ScanRecord  %s", result.getScanRecord().getServiceData().toString()));
+                        if (deviceIndexVal == 1) {
+                            btn1.setText(deviceName);
                         }
-                        if (Objects.equals(svc, y)) {
-                            mLog(" is CSC", "Yes");
+                        if (deviceIndexVal == 2) {
+                            btn2.setText(deviceName);
                         }
-                    }
-                }
+                        if (deviceIndexVal == 3) {
+                            btn3.setText(deviceName);
+                        }
 
 
-                String devicename = result.getDevice().getName();
-
-                if (devicename != null) {
-                    if (!devicesDiscovered.isEmpty() && devicesDiscovered.contains(result.getDevice())) {
-                        devicesDiscovered.add(result.getDevice());
                     }
 
+                }  //NO NAME
 
-                    Log.i("result", "name  " + result.getDevice().getName());
-                    Log.i("result", "ID  " + result.getDevice().getAddress());
-                    Log.i("result", "getDevice.toString  " + result.getDevice().toString());
-                    Log.i("result", "getDevice.ScanRecord  " + result.getScanRecord().getServiceData().toString());
+            }
 
-                    if (arrayListFoundDevices.contains(result)) {
-                        Log.d("ArrayList", "Duplicate");
-                    } else {
-                        Log.i("ArrayList", "Add Result");
-                        arrayListFoundDevices.add(result);
-                    }
-                    //Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
-                    mLog("mLog ArrayList", result.toString());
+            //TODO.  CONNECT TO DEVICE BASED ON BTN PRESSED (1-3), PASS DEVICE TO CONNECT TO DEVICE
+
+
+//                    if (!arrayListFoundDevices.contains(result)) {
+//                        Log.i("ArrayList", "Add Result");
+//                        arrayListFoundDevices.add(result);
+//                    } else {
+//                        Log.i("ArrayList", "Duplicate");
+//                    }
+//                    //Log.d("arrList", "arrListFoundDevices:  " + arrayListFoundDevices);
+//                    mLog("mLog ArrayList", result.toString());
 
 //testing filter / auto connect
 //                if (devicename.startsWith("Bl")){
@@ -351,9 +355,9 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.i("btDevice", "ConnectToDevice...");
 //                    connectToDevice(btDevice);
 //                }
-                }
 
-            }
+
+
 
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
