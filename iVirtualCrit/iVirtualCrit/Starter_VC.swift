@@ -290,18 +290,18 @@ class Starter_VC: UITableViewController {
             inRoundHR = []
         }
         
-        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.2))) {
-            let _ = fb1()
-        }
-        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.4))) {
-            let _ = fb2()
-        }
-        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.6))) {
-            let _ = fb3()
-        }
-        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.8))) {
-            let _ = fb4()
-        }
+//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.2))) {
+//            let _ = fb1()
+//        }
+//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.4))) {
+//            let _ = fb2()
+//        }
+//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.6))) {
+//            let _ = fb3()
+//        }
+//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.8))) {
+//            let _ = fb4()
+//        }
         
         //MID ROUND - DAILY UPDATE
         if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2) {
@@ -445,7 +445,7 @@ class Starter_VC: UITableViewController {
                 
                 if geo.status == "ON/USE" {
                     geo.startTime = Date()
-                    startLocationUpdates()
+//                    startLocationUpdates()
                 }
                 
                 timer = Timer.scheduledTimer(timeInterval: timerIntervalValue,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
@@ -469,7 +469,8 @@ class Starter_VC: UITableViewController {
             }
         case 2:
             let gst = geo.status
-            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
+//            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
+                if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
             if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
         case 3:
@@ -518,8 +519,9 @@ class Starter_VC: UITableViewController {
         print("viewDidLoad")
         locationManager = CLLocationManager()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.activityType = .fitness
         locationManager.distanceFilter = 5.0
         locationManager.requestAlwaysAuthorization()
@@ -612,6 +614,7 @@ class Starter_VC: UITableViewController {
             print("Complete pushFBRound")
         }
         print("Complete pushFBRound II")
+        print("Start fbPost for Totals")
         let _ = fbPost()
     }
     
@@ -665,7 +668,8 @@ class Starter_VC: UITableViewController {
                 self.tabBarController?.selectedIndex = 3
         }
         print("Complete postFBTotals II")
-        //let _ = fb1()
+        print("start fb1")
+        let _ = fb1()
     }
     
     //FB GETS (1,2,3,4)
@@ -702,7 +706,8 @@ class Starter_VC: UITableViewController {
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
                 
                 //WHEN FINISHED...CHAIN SOMETHING ELSE HERE
-                //let _ = self.fb2()
+                print("start fb2")
+                let _ = self.fb2()
             }
             return
         })
@@ -715,7 +720,7 @@ class Starter_VC: UITableViewController {
     
     var previousSpeedLeader = ""
     func fb2() -> String {
-        print("\nstart fb2")
+        print("start fb2")
         var arrLeaderNamesBySpeed: String = ""
         var readMe: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
@@ -741,7 +746,8 @@ class Starter_VC: UITableViewController {
                 if readMe != self.previousSpeedLeader {
                     if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), is the fastest.")}
                 }
-                //let _ = self.fb3()
+                print("start fb3")
+                let _ = self.fb3()
                 self.previousSpeedLeader = readMe
             }
             return
@@ -752,7 +758,7 @@ class Starter_VC: UITableViewController {
     }
     
     func fb3() -> String { //get Totals from fb, ordered by score
-        print("\nstart fb3")
+        print("start fb3")
         var leaderNamesByScoreTotals: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         var sSCORE: String = "0"
@@ -780,14 +786,15 @@ class Starter_VC: UITableViewController {
                 print("leaderNamesByScoreTotals\n\(leaderNamesByScoreTotals)")
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "BEST DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
                 print("Complete fb3")
-                //let _ = self.fb4()
+                print("start fb4")
+                let _ = self.fb4()
             }
         })
         return "Complete fb3"
     }  //fb3 complete
     
     func fb4() -> String { //get Totals from fb, ordered by speed
-        print("\nstart fb4")
+        print("start fb4")
         var leaderNamesBySpeedTotals: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
