@@ -668,8 +668,15 @@ class Starter_VC: UITableViewController {
                 self.tabBarController?.selectedIndex = 3
         }
         print("Complete postFBTotals II")
-        print("start fb1")
-        let _ = fb1()
+        
+        
+        let when = DispatchTime.now() + 15
+        DispatchQueue.main.asyncAfter(deadline: when){
+            print("start fb1")
+            let _ = self.fb1()
+        }
+        
+        
     }
     
     //FB GETS (1,2,3,4)
@@ -706,8 +713,13 @@ class Starter_VC: UITableViewController {
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
                 
                 //WHEN FINISHED...CHAIN SOMETHING ELSE HERE
-                print("start fb2")
-                let _ = self.fb2()
+                
+//                let _ = self.fb2()
+                let when = DispatchTime.now() + 15
+                DispatchQueue.main.asyncAfter(deadline: when){
+                    print("start fb2")
+                    let _ = self.fb2()
+                }
             }
             return
         })
@@ -746,9 +758,16 @@ class Starter_VC: UITableViewController {
                 if readMe != self.previousSpeedLeader {
                     if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), is the fastest.")}
                 }
-                print("start fb3")
-                let _ = self.fb3()
-                self.previousSpeedLeader = readMe
+//                print("start fb3")
+//                let _ = self.fb3()
+//                self.previousSpeedLeader = readMe
+                let when = DispatchTime.now() + 15
+                DispatchQueue.main.asyncAfter(deadline: when){
+                    print("start fb3")
+                    let _ = self.fb3()
+                    self.previousSpeedLeader = readMe
+                }
+                
             }
             return
         })
@@ -786,8 +805,17 @@ class Starter_VC: UITableViewController {
                 print("leaderNamesByScoreTotals\n\(leaderNamesByScoreTotals)")
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "BEST DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
                 print("Complete fb3")
-                print("start fb4")
-                let _ = self.fb4()
+//                print("start fb4")
+//                let _ = self.fb4()
+                
+                let when = DispatchTime.now() + 15
+                DispatchQueue.main.asyncAfter(deadline: when){
+                    print("start fb4")
+                    let _ = self.fb4()
+                    
+                }
+                
+                
             }
         })
         return "Complete fb3"
@@ -822,12 +850,24 @@ class Starter_VC: UITableViewController {
     }  //fb4 complete
    
     
+//    locationManager = CLLocationManager()
+//    locationManager.delegate = self
+//    locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+//    locationManager.allowsBackgroundLocationUpdates = true
+//    locationManager.pausesLocationUpdatesAutomatically = false
+//    locationManager.activityType = .fitness
+//    locationManager.distanceFilter = 5.0
+//    locationManager.requestAlwaysAuthorization()
+    
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
         _locationManager.delegate = self
         _locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         _locationManager.activityType = .fitness
         _locationManager.distanceFilter = 5.0
+        _locationManager.allowsBackgroundLocationUpdates = true
+        _locationManager.pausesLocationUpdatesAutomatically = false
+        _locationManager.requestAlwaysAuthorization()
 
         return _locationManager
     }()
