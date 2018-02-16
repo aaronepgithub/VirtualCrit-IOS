@@ -698,6 +698,12 @@ class Starter_VC: UITableViewController {
                     let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
                     
+                    // better get/convert from fb
+                    let val = snap.value as? NSDictionary
+                    let valSpd = val?["fb_RND"] as? Double ?? 0.0
+                    let valSpdString = stringer(dbl: valSpd, len: 1)
+                    print("\n \(valSpdString) \n")
+                    
                     if let dRND = fbRND as? Double {
                         sRND = stringer(dbl: dRND, len: 1)
                     } else {
@@ -747,7 +753,15 @@ class Starter_VC: UITableViewController {
                     let dict = snap.value as! NSDictionary // the value is a dict
                     //let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
-                    let fbSPD = dict["fb_SPD"]!
+                    //let fbSPD = dict["fb_SPD"]!
+                    
+                    // better get/convert from fb
+                    let val = snap.value as? NSDictionary
+                    let valSpd = val?["fb_SPD"] as? Double ?? 0.0
+                    let fbSPD = stringer(dbl: valSpd, len: 2)
+                    //print("\n \(valSpdString) \n")
+                    
+                    
                     arrLeaderNamesBySpeed = "\(fbSPD) MPH  \(fbNAME)\n" + arrLeaderNamesBySpeed
                     if let x = fbNAME as? String {readMe = x}
                 }
@@ -791,7 +805,12 @@ class Starter_VC: UITableViewController {
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbNAME = dict["fb_timName"]!
                     let fbSCORE = dict["a_scoreHRTotal"]!
-                    //let fbSPEED = dict["a_speedTotal"]!
+                    
+                    // better get/convert from fb
+//                    let val = snap.value as? NSDictionary
+//                    let valSpd = val?["a_scoreHRTotal"] as? Double ?? 0.0
+//                    let valSpdString = stringer(dbl: valSpd, len: 1)
+//                    print("\n \(valSpdString) \n")
                     
                     if let dSCORE = fbSCORE as? Double {
                         sSCORE = stringer(dbl: dSCORE, len: 1)
@@ -835,8 +854,13 @@ class Starter_VC: UITableViewController {
                     let snap = child as! FIRDataSnapshot //each child is a snapshot
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let fbNAME = dict["fb_timName"]!
-                    //let fbSCORE = dict["a_scoreHRTotal"]!
-                    let fbSPEED = dict["a_speedTotal"]!
+                    //let fbSPEED = dict["a_speedTotal"]!
+                    
+                    // better get/convert from fb
+                    let val = snap.value as? NSDictionary
+                    let valSpd = val?["a_speedTotal"] as? Double ?? 0.0
+                    let fbSPEED = stringer(dbl: valSpd, len: 2)
+                    
                     
                     
                     leaderNamesBySpeedTotals = "\(fbSPEED) MPH  \(fbNAME)\n" + leaderNamesBySpeedTotals
