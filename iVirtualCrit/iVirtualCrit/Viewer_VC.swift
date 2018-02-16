@@ -60,14 +60,21 @@ class Viewer_VC: UIViewController {
         lab3.text = "\(arrSend[6])"
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
-
-        
-
-        
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
+ 
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver((Any).self)
+    }
+    
     override func viewDidAppear(_ animated: Bool)  {
         super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
+        
         
         var i: Int = 0
         while i < 8 {

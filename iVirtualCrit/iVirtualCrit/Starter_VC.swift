@@ -515,7 +515,7 @@ class Starter_VC: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("viewDidLoad")
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -540,7 +540,7 @@ class Starter_VC: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        print("viewDidAppear")
+        print("viewDidAppear")
 //        locationManager = CLLocationManager()
 //        locationManager.delegate = self
 //        locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -554,6 +554,25 @@ class Starter_VC: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+//    var functions : Array<() -> ()>
+//    
+//    func runSequenceOneTime () -> Void {
+//        for function in functions {
+//            function ()
+//        }
+//    }
+//    
+//    func stopSequence () -> Void {
+//        // uninstall alarm
+//    }
+//    
+//    func startSequence (delay: Double) -> Void {
+//        // install alarm w/ runSequenceOneTime
+//    }
+    
+
 
 
     
