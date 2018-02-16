@@ -838,6 +838,7 @@ class Starter_VC: UITableViewController {
                     //let fbSCORE = dict["a_scoreHRTotal"]!
                     let fbSPEED = dict["a_speedTotal"]!
                     
+                    
                     leaderNamesBySpeedTotals = "\(fbSPEED) MPH  \(fbNAME)\n" + leaderNamesBySpeedTotals
                     
                 }
