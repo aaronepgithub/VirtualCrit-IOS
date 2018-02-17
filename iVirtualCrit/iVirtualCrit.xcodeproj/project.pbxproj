@@ -14,6 +14,7 @@
 		58101F1F201E10DA00733F15 /* Bluetooth_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */; };
 		58101F25201E14AC00733F15 /* Starter_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58101F24201E14AC00733F15 /* Starter_VC.swift */; };
 		58216CF120250B8F00DDE028 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 58216CF020250B8F00DDE028 /* GoogleService-Info.plist */; };
+		582401772038B0FB006E87E9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582401762038B0FB006E87E9 /* LocationManager.swift */; };
 		583BFADB2031FDCD00D1F18C /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BFADA2031FDCD00D1F18C /* ISPoint.swift */; };
 		583BFADD2031FDF600D1F18C /* ISTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BFADC2031FDF600D1F18C /* ISTimeline.swift */; };
 		585E61132020D3C400BFCD65 /* Viewer_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585E61122020D3C400BFCD65 /* Viewer_VC.swift */; };
@@ -38,6 +39,7 @@
 		58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth_VC.swift; sourceTree = "<group>"; };
 		58101F24201E14AC00733F15 /* Starter_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Starter_VC.swift; sourceTree = "<group>"; };
 		58216CF020250B8F00DDE028 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		582401762038B0FB006E87E9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		583BFADA2031FDCD00D1F18C /* ISPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPoint.swift; sourceTree = "<group>"; };
 		583BFADC2031FDF600D1F18C /* ISTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISTimeline.swift; sourceTree = "<group>"; };
 		585E61122020D3C400BFCD65 /* Viewer_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Viewer_VC.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				587B4B1B201E2A9B007D94BC /* DataModel.swift */,
 				587B4B1D201E3047007D94BC /* Functions.swift */,
 				58101F24201E14AC00733F15 /* Starter_VC.swift */,
+				582401762038B0FB006E87E9 /* LocationManager.swift */,
 				58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */,
 				58101F11201E0F7900733F15 /* Assets.xcassets */,
 				58101F13201E0F7900733F15 /* LaunchScreen.storyboard */,
@@ -258,6 +261,7 @@
 			files = (
 				58F51FF02025104F000A12F6 /* FireModel.swift in Sources */,
 				58101F1F201E10DA00733F15 /* Bluetooth_VC.swift in Sources */,
+				582401772038B0FB006E87E9 /* LocationManager.swift in Sources */,
 				587B4B1C201E2A9B007D94BC /* DataModel.swift in Sources */,
 				58101F25201E14AC00733F15 /* Starter_VC.swift in Sources */,
 				588E6B36201F6C740089C3A7 /* Process_Sensor_Data.swift in Sources */,

@@ -274,15 +274,15 @@ class Starter_VC: UITableViewController {
             rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))
             rounds.cadences.append(roundCadence)
             
-            print("\n")
-            print("End of Round for HR, Spd, Cad, GeoSpd")
-            dump(rounds.speeds)
-            dump(rounds.heartrates)
-            dump(rounds.cadences)
-            dump(rounds.geoSpeeds)
-            print("\n")
-            //print("btAvgSpeed:  \(stringer(dbl: btAverageSpeed, len: 2))")
-            print("\n")
+//            print("\n")
+//            print("End of Round for HR, Spd, Cad, GeoSpd")
+//            dump(rounds.speeds)
+//            dump(rounds.heartrates)
+//            dump(rounds.cadences)
+//            dump(rounds.geoSpeeds)
+//            print("\n")
+//            print("btAvgSpeed:  \(stringer(dbl: btAverageSpeed, len: 2))")
+//            print("\n")
             
             inRoundGeoDistance = 0
             inRoundBtDistance = 0
@@ -517,14 +517,14 @@ class Starter_VC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.activityType = .fitness
-        locationManager.distanceFilter = 5.0
-        locationManager.requestAlwaysAuthorization()
+//        locationManager = CLLocationManager()
+//        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        locationManager.allowsBackgroundLocationUpdates = true
+//        locationManager.pausesLocationUpdatesAutomatically = false
+//        locationManager.activityType = .fitness
+//        locationManager.distanceFilter = 5.0
+//        locationManager.requestAlwaysAuthorization()
         
         let defaults = UserDefaults.standard
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
@@ -543,13 +543,7 @@ class Starter_VC: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewDidAppear")
-//        locationManager = CLLocationManager()
-//        locationManager.delegate = self
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.allowsBackgroundLocationUpdates = true
-//        locationManager.activityType = .fitness
-//        locationManager.distanceFilter = 5.0
-//        locationManager.requestAlwaysAuthorization()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -557,26 +551,6 @@ class Starter_VC: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-//    var functions : Array<() -> ()>
-//    
-//    func runSequenceOneTime () -> Void {
-//        for function in functions {
-//            function ()
-//        }
-//    }
-//    
-//    func stopSequence () -> Void {
-//        // uninstall alarm
-//    }
-//    
-//    func startSequence (delay: Double) -> Void {
-//        // install alarm w/ runSequenceOneTime
-//    }
-    
-
-
-
     
     //FB PUSH, AT ROUND COMPLETE
     func fbPush(rSpeed: String, rHeartrate: String, rScore: String, rCadence: String) {
@@ -667,8 +641,6 @@ class Starter_VC: UITableViewController {
         } else {
                 self.tabBarController?.selectedIndex = 3
         }
-        print("Complete postFBTotals II")
-        
         
         let when = DispatchTime.now() + 15
         DispatchQueue.main.asyncAfter(deadline: when){
@@ -698,20 +670,16 @@ class Starter_VC: UITableViewController {
                     let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
                     
-                    // better get/convert from fb
-                    let val = snap.value as? NSDictionary
-                    let valSpd = val?["fb_RND"] as? Double ?? 0.0
-                    let valSpdString = stringer(dbl: valSpd, len: 1)
-                    print("\n \(valSpdString) \n")
+//                    let val = snap.value as? NSDictionary
+//                    let valSpd = val?["fb_RND"] as? Double ?? 0.0
+//                    let valSpdString = stringer(dbl: valSpd, len: 1)
                     
                     if let dRND = fbRND as? Double {
                         sRND = stringer(dbl: dRND, len: 1)
                     } else {
                         sRND = "0"
                     }
-//                    print("fbRND    :\(fbRND)")
-//                    print("sRND    :\(sRND)")
-//                    arrLeaderNamesByScore = "\(fbRND) %  \(fbNAME)\n" + arrLeaderNamesByScore
+
                     arrLeaderNamesByScore = "\(sRND) %  \(fbNAME)\n" + arrLeaderNamesByScore
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by score")
@@ -875,27 +843,10 @@ class Starter_VC: UITableViewController {
     }  //fb4 complete
    
     
-    lazy var locationManager: CLLocationManager = {
-        var _locationManager = CLLocationManager()
-        _locationManager.delegate = self
-        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        _locationManager.activityType = .fitness
-        _locationManager.distanceFilter = 5.0
-        _locationManager.allowsBackgroundLocationUpdates = true
-        _locationManager.pausesLocationUpdatesAutomatically = false
-        _locationManager.requestAlwaysAuthorization()
-
-        return _locationManager
-    }()
-    
-    lazy var locations = [CLLocation]()
-
-}
-
-extension Starter_VC: CLLocationManagerDelegate {
-    
-    func startLocationUpdates() {
-        print("startLocationUpdates")
+    private func startLocationUpdates() {
+        locationManager.delegate = self
+        locationManager.activityType = .fitness
+        locationManager.distanceFilter = 10
         locationManager.startUpdatingLocation()
     }
     
@@ -904,14 +855,57 @@ extension Starter_VC: CLLocationManagerDelegate {
         print("stopLocationUpdates")
     }
     
+    
+    
+    private let locationManager = LocationManager.shared
+//    private var seconds = 0
+//    private var timer: Timer?
+//    private var distance = Measurement(value: 0, unit: UnitLength.meters)
+    //private var locationList: [CLLocation] = []
+    private var locations: [CLLocation] = []
+    
+    
+    
+//    lazy var locationManager: CLLocationManager = {
+//        var _locationManager = CLLocationManager()
+//        _locationManager.delegate = self
+//        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        _locationManager.activityType = .fitness
+//        _locationManager.distanceFilter = 5.0
+//        _locationManager.allowsBackgroundLocationUpdates = true
+//        _locationManager.pausesLocationUpdatesAutomatically = false
+//        _locationManager.requestAlwaysAuthorization()
+//
+//        return _locationManager
+//    }()
+    
+    //lazy var locations = [CLLocation]()
+
+}
+
+extension Starter_VC: CLLocationManagerDelegate {
+    
+//    func startLocationUpdates() {
+//        print("startLocationUpdates")
+//        locationManager.startUpdatingLocation()
+//    }
+    
+//    func stopLocationUpdates() {
+//        locationManager.stopUpdatingLocation()
+//        print("stopLocationUpdates")
+//    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")
-        //startLocationUpdates()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
             //if location.horizontalAccuracy < 20 {
+            
+            let howRecent = location.timestamp.timeIntervalSinceNow
+            guard location.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
+            
                 if self.locations.count > 2 {
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
                         
