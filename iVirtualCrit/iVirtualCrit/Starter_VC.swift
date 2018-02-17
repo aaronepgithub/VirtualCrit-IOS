@@ -519,7 +519,7 @@ class Starter_VC: UITableViewController {
         print("viewDidLoad")
         locationManager = CLLocationManager()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.activityType = .fitness
@@ -875,19 +875,10 @@ class Starter_VC: UITableViewController {
     }  //fb4 complete
    
     
-//    locationManager = CLLocationManager()
-//    locationManager.delegate = self
-//    locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-//    locationManager.allowsBackgroundLocationUpdates = true
-//    locationManager.pausesLocationUpdatesAutomatically = false
-//    locationManager.activityType = .fitness
-//    locationManager.distanceFilter = 5.0
-//    locationManager.requestAlwaysAuthorization()
-    
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
         _locationManager.delegate = self
-        _locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
         _locationManager.activityType = .fitness
         _locationManager.distanceFilter = 5.0
         _locationManager.allowsBackgroundLocationUpdates = true
@@ -920,7 +911,7 @@ extension Starter_VC: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
-            if location.horizontalAccuracy < 20 {
+            //if location.horizontalAccuracy < 20 {
                 if self.locations.count > 2 {
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
                         
@@ -931,10 +922,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                         
                         let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
                         roundGeoSpeed = avgGeoSpeedThisRound
-                        
-                        
                         gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
-                        
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)
                         coords.append(location.coordinate)
@@ -958,18 +946,14 @@ extension Starter_VC: CLLocationManagerDelegate {
                         
                         totalTime.text = "\(createTimeString(seconds: Int(  round((system.actualElapsedTime)!))))"
                         gpsMovingTime.text = "\(createTimeString(seconds: Int((geo.elapsedTime))))"
-                        
-                        
+
                         if location.course > 315 || location.course <= 45 {
                             gpsDirection.text = "\(location.course)  [N]"
                             geo.direction = "\(location.course)  [N]"
-                            
                         }
-                        
                         if location.course > 45 && location.course <= 135 {
                             gpsDirection.text = "\(location.course)  [E]"
                             geo.direction = "\(location.course)  [E]"
-                            
                         }
                         if location.course > 135 && location.course <= 225 {
                             gpsDirection.text = "\(location.course)  [S]"
@@ -979,8 +963,6 @@ extension Starter_VC: CLLocationManagerDelegate {
                             gpsDirection.text = "\(location.course)  [W]"
                             geo.direction = "\(location.course)  [W]"
                         }
-
-                        
                     }
                 } else {
                     print("Waiting for the 3rd update  \(self.locations.count)")
@@ -989,7 +971,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                     }
                 }
                 self.locations.append(location)
-            }
+            
         }
     }
     
