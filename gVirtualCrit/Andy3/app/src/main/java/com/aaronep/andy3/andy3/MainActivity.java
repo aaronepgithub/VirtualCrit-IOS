@@ -70,15 +70,18 @@ public class MainActivity extends AppCompatActivity {
     private Button btn1;
     private Button btn2;
     private Button btn3;
-    private TextView txtView1;
+    public TextView tView1;
+    public TextView tView2;
+    public TextView tView3;
+
 
     private UUID HEART_RATE_SERVICE_UUID = convertFromInteger(0x180D);
     private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
-    private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
+    //private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
 
     private UUID CSC_SERVICE_UUID = convertFromInteger(0x1816);
-//    private UUID CSC_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
-//    private UUID CSC_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
+    private UUID CSC_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A5B);
+    //private UUID CSC_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
 
 
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     // setup UI handler
     private final static int UPDATE_DEVICE = 0;
     private final static int UPDATE_VALUE = 1;
+    private final static int UPDATE_CSC = 2;
 
     @SuppressLint("HandlerLeak")
     private final Handler uiHandler = new Handler() {
@@ -117,19 +121,24 @@ public class MainActivity extends AppCompatActivity {
             final int what = msg.what;
             final String value = (String) msg.obj;
             switch(what) {
-                case UPDATE_DEVICE: updateDevice(value); break;
+//                case UPDATE_DEVICE: updateDevice(value); break;
                 case UPDATE_VALUE: updateValue(value); break;
+                case UPDATE_CSC: updateValueCSC(value); break;
             }
         }
     };
 
-    private void updateDevice(String devName){
-        TextView t= findViewById(R.id.dev_type);
-        t.setText(devName);
-    }
+//    private void updateDevice(String devName){
+//        TextView t= findViewById(R.id.dev_type);
+//        t.setText(devName);
+//    }
 
     private void updateValue(String value){
-        TextView t= findViewById(R.id.value_read);
+        TextView t= findViewById(R.id.tView1);
+        t.setText(value);
+    }
+    private void updateValueCSC(String value){
+        TextView t= findViewById(R.id.tView2);
         t.setText(value);
     }
 
@@ -137,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -163,10 +174,6 @@ public class MainActivity extends AppCompatActivity {
             });
             builder.show();
         }
-
-        btn1 = findViewById(R.id.btn1);
-        btn2 = findViewById(R.id.btn2);
-        btn3 = findViewById(R.id.btn3);
 
 
 
@@ -260,11 +267,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
 
-                Log.i("mScanCallback", "Name:  " + result.getDevice().getName());
-                Log.i("mScanCallback", "Address:  " + result.getDevice().getAddress());
-                Log.i("onScanResult", "onScanResult");
-                Log.i("mScanCallback", "onScanResult");
-                Log.i("callbackType", String.valueOf(callbackType));
+//                Log.i("mScanCallback", "Name:  " + result.getDevice().getName());
+//                Log.i("mScanCallback", "Address:  " + result.getDevice().getAddress());
+//                Log.i("onScanResult", "onScanResult");
+//                Log.i("mScanCallback", "onScanResult");
+//                Log.i("callbackType", String.valueOf(callbackType));
 
 //                if (result.getScanRecord().getServiceUuids() != null) {
 //                    Log.i("SvcData - All", "UUID " + result.getScanRecord().getServiceUuids().toString());
@@ -296,44 +303,54 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                }
 
-                //MOVE connectToDevice somewhwere...
-                BluetoothDevice deviceDiscovered = result.getDevice();
-                String deviceName = result.getDevice().getName();
-                String deviceAddress = result.getDevice().getAddress();
 
 
-                if (deviceName != null) {
 
+                if (result.getDevice().getName() != null) {
+
+                    BluetoothDevice deviceDiscovered = result.getDevice();
+                    String deviceName = result.getDevice().getName();
+                    String deviceAddress = result.getDevice().getAddress();
 
                     if (!addressesDiscovered.contains(deviceAddress)) {
 
                         devicesDiscovered.add(deviceDiscovered);
                         addressesDiscovered.add(deviceAddress);
                         namesDiscovered.add(deviceName);
-                        deviceIndexVal += 1;
 
+                        Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
                         Log.i("result", "NAME  " + result.getDevice().getName());
                         Log.i("result", "ADDRESS  " + result.getDevice().getAddress());
                         Log.i("result", "getDevice.toString  " + result.getDevice().toString());
                         //Log.i("result", String.format("getDevice.ScanRecord  %s", result.getScanRecord().getServiceData().toString()));
-                        if (deviceIndexVal == 1) {
+
+                        btn1 = findViewById(R.id.btn1);
+                        btn2 = findViewById(R.id.btn2);
+                        btn3 = findViewById(R.id.btn3);
+
+                        if (deviceIndexVal == 0) {
                             btn1.setText(deviceName);
+                            Log.i("btn1", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
+                        }
+                        if (deviceIndexVal == 1) {
+                            btn2.setText(deviceName);
+                            Log.i("btn2", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 2) {
-                            btn2.setText(deviceName);
-                        }
-                        if (deviceIndexVal == 3) {
                             btn3.setText(deviceName);
+                            Log.i("btn3", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
 
+                        deviceIndexVal += 1;
 
-                    }
 
-                }  //NO NAME
+                    }  //DUPLICATE, DON'T ADD
+
+                }  //NO NAME, DON'T, ADD
 
             }
 
-            //TODO.  CONNECT TO DEVICE BASED ON BTN PRESSED (1-3), PASS DEVICE TO CONNECT TO DEVICE
+
 
 
 //                    if (!arrayListFoundDevices.contains(result)) {
@@ -399,7 +416,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("connectToDevice", "connecting to device: "+device.toString());
             this.mDevice = device;
             mGatt = device.connectGatt(this, false, gattCallback);
-            scanLeDevice(false);// will stop after first device detection
         }
     }
 
@@ -417,38 +433,38 @@ public class MainActivity extends AppCompatActivity {
             switch (newState) {
                 case BluetoothProfile.STATE_CONNECTED:
                     Log.i("gattCallback", "STATE_CONNECTED");
+                    Log.i("gattCallback", "CONNECTED TO:  " + mGatt.getDevice().getName());
 
                     //update UI
-                    Message msg = Message.obtain();
+//                    Message msg = Message.obtain();
+//                    String deviceName = mGatt.getDevice().getName();
+//                    msg.obj = deviceName;
+//                    msg.what = 0;
+//                    msg.setTarget(uiHandler);
+//                    msg.sendToTarget();
 
-                    String deviceName = mGatt.getDevice().getName();
-
-                    msg.obj = deviceName;
-                    msg.what = 0;
-                    msg.setTarget(uiHandler);
-                    msg.sendToTarget();
-                    Log.i("discoverServices", "discoverServices");
+                    Log.i("discoverServices", "discoverServices:  " + mGatt.getDevice().getName());
                     mGatt.discoverServices();
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
-                    Log.e("gattCallback", "STATE_DISCONNECTED");
+                    Log.i("gattCallback", "STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     Log.i("gattCallback", "reconnecting...");
-                    BluetoothDevice mDevice = mGatt.getDevice();
+                    //BluetoothDevice mDevice = mGatt.getDevice();
                     mGatt = null;
                     //connectToDevice(mDevice);
                     break;
                 default:
-                    Log.e("gattCallback", "STATE_OTHER");
+                    Log.i("gattCallback", "STATE_OTHER");
             }
 
         }
 
-        private boolean enabled;
+        //private boolean enabled;
 
         private BluetoothGattCharacteristic findNotifyCharacteristic(BluetoothGattService service, UUID characteristicUUID) {
             BluetoothGattCharacteristic characteristic = null;
 
-            Log.i("3", "findNotifyCharacteristic");
+            Log.i("GATT3", "CALLED  findNotifyCharacteristic");
             // Check for Notify first
             List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
             for (BluetoothGattCharacteristic c : characteristics) {
@@ -479,11 +495,11 @@ public class MainActivity extends AppCompatActivity {
 
         // This seems way too complicated
         private void registerNotifyCallback(UUID serviceUUID, UUID characteristicUUID) {
-            Log.i("2", "registerNotifyCallback UUID serviceUUID, UUID characteristicUUID: " + serviceUUID + characteristicUUID);
+            Log.i("GATT1", "CALLED  registerNotifyCallback, UUID serviceUUID, UUID characteristicUUID: " + serviceUUID + "  -  " + characteristicUUID);
             boolean success = false;
 
             BluetoothGattService service = mGatt.getService(serviceUUID);
-            Log.i("3", "findNotifyCharacteristic, passing (service aka mGatt.getService(serviceUUID),charUUID)");
+            Log.i("GATT2", "CALLING  findNotifyCharacteristic, passing (service aka mGatt.getService(serviceUUID),charUUID)");
             BluetoothGattCharacteristic characteristic = findNotifyCharacteristic(service, characteristicUUID);
 
 
@@ -497,31 +513,32 @@ public class MainActivity extends AppCompatActivity {
 
                         // prefer notify over indicate
                         if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            Log.i("4", "descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
+                            Log.i("4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
                             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                         } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            Log.i("4", "descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
+                            Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
                             descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
                         } else {
-                            Log.d("Tag", "Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
+                            Log.i("Tag", "OTHER NOTIFY ATTEMPT  Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
                         }
 
                         if (mGatt.writeDescriptor(descriptor)) {
                             success = true;
+                            Log.i("Write Success", "Able to set client characteristic notification1");
                         } else {
-                            Log.d("Write Err", "Failed to set client characteristic notification1");
+                            Log.i("Write Err", "Failed to set client characteristic notification1");
                         }
 
                     } else {
-                        Log.d("Write Err", "Failed to set client characteristic notification2");
+                        Log.i("Write Err", "Failed to set client characteristic notification2");
                     }
 
                 } else {
-                    Log.d("Write Err", "Failed to set client characteristic notification3");
+                    Log.i("Write Err", "Failed to set client characteristic notification3");
                 }
 
             } else {
-                Log.d("Write Err", "Failed to set client characteristic notification4");
+                Log.i("Write Err", "Failed to set client characteristic notification4");
             }
 
             if (!success) {
@@ -538,56 +555,73 @@ public class MainActivity extends AppCompatActivity {
             Log.i("onServicesDiscovered", services.toString());
 
             if (services == null) return;
-            //determine if HR, then register notify callback
 
 
 
-            Log.i("1", "registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
-            registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
-            mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
-
+            //determine if HR, then register notify callback AFTER!!!
+//            Log.i("ONDISCOVERED1", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
+//            registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
+//            mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
 
 
             //read all services
             Log.i("Read Services", "Loop through and read services and chars");
             for (BluetoothGattService service : services) {
-                Log.i("BluGattService", "uuid = gattService.getUuid().toString(): " + service.getUuid().toString());
-                List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
-                for (BluetoothGattCharacteristic characteristic : characteristics) {
-                    Log.i("BlueSvcChar", "service.getChar UUID:  " + characteristic.getUuid());
-                    Log.i("BlueSvcChar", "service.getChar Properties:  " + characteristic.getProperties());
+                Log.i("BluGattService", "for each uuid = gattService.getUuid().toString(): " + service.getUuid().toString());
+
+                Log.i("onServicesDiscovered: ", "HR?  " + service.getUuid().equals(HEART_RATE_SERVICE_UUID));
+                Log.i("onServicesDiscovered: ", "CSC?  " + service.getUuid().equals(CSC_SERVICE_UUID));
+
+                if (service.getUuid().equals(HEART_RATE_SERVICE_UUID)) {
+                    Log.i("DISCOVERED HR", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
+                    registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
+                    mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
                 }
+
+                if (service.getUuid().equals(CSC_SERVICE_UUID)) {
+                    Log.i("DISCOVERED CSC", "CALLING  registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID)");
+                    registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
+                    mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
+                }
+
+
+//                List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
+//                for (BluetoothGattCharacteristic characteristic : characteristics) {
+//                    Log.i("BlueSvcChar", "service.getChar UUID:  " + characteristic.getUuid());
+//                    Log.i("BlueSvcChar", "service.getChar Properties:  " + characteristic.getProperties());
+//                }
             }
 
             //New Loop and Log
             // Loops through available GATT Services.
-            for (BluetoothGattService gattService : services) {
-
-                final String uuid = gattService.getUuid().toString();
-                System.out.println("Service discovered: " + uuid);
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        //peripheralTextView.append("Service Discovered: "+uuid+"\n");
-                    }
-                });
-                new ArrayList<HashMap<String, String>>();
-                List<BluetoothGattCharacteristic> gattCharacteristics =
-                        gattService.getCharacteristics();
-
-                // Loops through available Characteristics.
-                for (BluetoothGattCharacteristic gattCharacteristic :
-                        gattCharacteristics) {
-
-                    final String charUuid = gattCharacteristic.getUuid().toString();
-                    System.out.println("Characteristic discovered for service: " + charUuid);
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            //peripheralTextView.append("Characteristic discovered for service: "+charUuid+"\n");
-                        }
-                    });
-
-                }
-            }
+//            for (BluetoothGattService gattService : services) {
+//
+//                final String uuid = gattService.getUuid().toString();
+//                System.out.println("Service discovered: " + uuid);
+////                MainActivity.this.runOnUiThread(new Runnable() {
+////                    public void run() {
+////                        //peripheralTextView.append("Service Discovered: "+uuid+"\n");
+////                        //System.out.println("Service discovered: " + uuid);
+////                    }
+////                });
+//                new ArrayList<HashMap<String, String>>();
+//                List<BluetoothGattCharacteristic> gattCharacteristics =
+//                        gattService.getCharacteristics();
+//
+//                // Loops through available Characteristics.
+//                for (BluetoothGattCharacteristic gattCharacteristic :
+//                        gattCharacteristics) {
+//
+//                    final String charUuid = gattCharacteristic.getUuid().toString();
+//                    System.out.println("Characteristic discovered for service: " + charUuid);
+////                    MainActivity.this.runOnUiThread(new Runnable() {
+////                        public void run() {
+////                            //peripheralTextView.append("Characteristic discovered for service: "+charUuid+"\n");
+////                        }
+////                    });
+//
+//                }
+//            }
 
 
 
@@ -600,38 +634,343 @@ public class MainActivity extends AppCompatActivity {
                                          BluetoothGattCharacteristic
                                                  characteristic, int status) {
             Log.i("onCharacteristicRead", characteristic.toString());
+            Log.i("onCharacteristicRead", characteristic.getUuid().toString());
         }
 
+        @SuppressLint("DefaultLocale")
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic
                                                     characteristic) {
-            Log.i("onCharacteristicChanged", "onCharacteristic Changed");
 
-            int flag = characteristic.getProperties();
-            int format = -1;
-            if ((flag & 0x01) != 0) {
-                format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                //Log.i("HR Format 16", "Heart rate format UINT16.");
-            } else {
-                format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                //Log.i("HR Format 8", "Heart rate format UINT8.");
+
+
+            Log.i("onCharacteristicChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
+            Log.i("onCharacteristicChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
+
+            if (characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID)) {
+                //IF HR...AFTER SETTING NOTIFY ON ALL
+                int flag = characteristic.getProperties();
+                int format = -1;
+                if ((flag & 0x01) != 0) {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                } else {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                }
+                final int heartRate = characteristic.getIntValue(format, 1);
+                final Integer hrValue = characteristic.getIntValue(format, 1);
+
+                Log.i("HR", String.format("HR: %d", hrValue));
+//                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+//            String value = String.valueOf(heartRate);
+//            Log.i("hrValue.toString", hrValue.toString());
+                String value = String.valueOf(String.format("HR: %d", hrValue));
+                Message msg = Message.obtain();
+                msg.obj = value;
+                msg.what = 1;
+                msg.setTarget(uiHandler);
+                msg.sendToTarget();
             }
-            final int heartRate = characteristic.getIntValue(format, 1);
-            final Integer hrValue = characteristic.getIntValue(format, 1);
 
-            Log.i("HR-FINALLY", String.format("HR: %d", hrValue));
-            //intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+            if (characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID)) {
+                //IF CSC...AFTER SETTING NOTIFY ON ALL
+                int flag = characteristic.getProperties();
+                int format = -1;
+                if ((flag & 0x01) != 0) {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                } else {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                }
+                final int csc1 = characteristic.getIntValue(format, 1);
+                final Integer csc1value = characteristic.getIntValue(format, 1);
+                final int csc5 = characteristic.getIntValue(format, 5);
+                final Integer csc5value = characteristic.getIntValue(format, 5);
+                final int csc7 = characteristic.getIntValue(format, 7);
+                final Integer csc7value = characteristic.getIntValue(format, 7);
+                final int csc9 = characteristic.getIntValue(format, 9);
+                final Integer csc9value = characteristic.getIntValue(format, 9);
 
-            String value = String.valueOf(heartRate);
-            Log.i("hrValue.toString", hrValue.toString());
+                Log.i("CSC1", String.format("CSC1: %d", csc1value));
+                Log.i("CSC5", String.format("CSC5: %d", csc5value));
+                Log.i("CSC7", String.format("CSC7: %d", csc7value));
+                Log.i("CSC9", String.format("CSC9: %d", csc9value));
 
-            //update UI
-            Message msg = Message.obtain();
-            msg.obj = value;
-            msg.what = 1;
-            msg.setTarget(uiHandler);
-            msg.sendToTarget();
+
+//                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+
+//            String value = String.valueOf(heartRate);
+//            Log.i("hrValue.toString", hrValue.toString());
+
+
+
+                String value = String.valueOf(String.format("CSC1: %d", csc1value));
+                Message msg = Message.obtain();
+                msg.obj = value;
+                msg.what = 2;
+                msg.setTarget(uiHandler);
+                msg.sendToTarget();
+
+
+            }
+
+            //gatt.disconnect();
+        }
+
+    };
+
+
+
+
+
+    //TRY #2
+
+    private final BluetoothGattCallback gattCallback2 = new BluetoothGattCallback() {
+
+
+        @Override
+        public void onConnectionStateChange(BluetoothGatt mGatt, int status, int newState) {
+            Log.i("gattCallback", "gattCallback: " + status);
+            Log.i("onConnectionStateChange", "Status: " + status);
+            switch (newState) {
+                case BluetoothProfile.STATE_CONNECTED:
+                    Log.i("gattCallback", "STATE_CONNECTED");
+                    Log.i("gattCallback", "CONNECTED TO:  " + mGatt.getDevice().getName());
+
+                    //update UI
+//                    Message msg = Message.obtain();
+//                    String deviceName = mGatt.getDevice().getName();
+//                    msg.obj = deviceName;
+//                    msg.what = 0;
+//                    msg.setTarget(uiHandler);
+//                    msg.sendToTarget();
+
+                    Log.i("discoverServices", "discoverServices:  " + mGatt.getDevice().getName());
+                    mGatt.discoverServices();
+                    break;
+                case BluetoothProfile.STATE_DISCONNECTED:
+                    Log.i("gattCallback", "STATE_DISCONNECTED " + mGatt.getDevice().getName());
+                    Log.i("gattCallback", "reconnecting...");
+                    //BluetoothDevice mDevice = mGatt.getDevice();
+                    mGatt = null;
+                    //connectToDevice(mDevice);
+                    break;
+                default:
+                    Log.i("gattCallback", "STATE_OTHER");
+            }
+
+        }
+
+        //private boolean enabled;
+
+        private BluetoothGattCharacteristic findNotifyCharacteristic(BluetoothGattService service, UUID characteristicUUID) {
+            BluetoothGattCharacteristic characteristic = null;
+
+            Log.i("GATT3", "CALLED  findNotifyCharacteristic");
+            // Check for Notify first
+            List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
+            for (BluetoothGattCharacteristic c : characteristics) {
+                if ((c.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0 && characteristicUUID.equals(c.getUuid())) {
+                    characteristic = c;
+                    break;
+                }
+            }
+
+            if (characteristic != null) return characteristic;
+
+            // If there wasn't Notify Characteristic, check for Indicate
+            for (BluetoothGattCharacteristic c : characteristics) {
+                if ((c.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0 && characteristicUUID.equals(c.getUuid())) {
+                    characteristic = c;
+                    break;
+                }
+            }
+
+            // As a last resort, try and find ANY characteristic with this UUID, even if it doesn't have the correct properties
+            if (characteristic == null) {
+                characteristic = service.getCharacteristic(characteristicUUID);
+            }
+
+            return characteristic;
+        }
+
+
+        // This seems way too complicated
+        private void registerNotifyCallback(UUID serviceUUID, UUID characteristicUUID) {
+            Log.i("GATT1", "CALLED  registerNotifyCallback, UUID serviceUUID, UUID characteristicUUID: " + serviceUUID + "  -  " + characteristicUUID);
+            boolean success = false;
+
+            BluetoothGattService service = mGatt.getService(serviceUUID);
+            Log.i("GATT2", "CALLING  findNotifyCharacteristic, passing (service aka mGatt.getService(serviceUUID),charUUID)");
+            BluetoothGattCharacteristic characteristic = findNotifyCharacteristic(service, characteristicUUID);
+
+
+            if (characteristic != null) {
+
+                if (mGatt.setCharacteristicNotification(characteristic, true)) {
+
+                    // Why doesn't setCharacteristicNotification write the descriptor?
+                    BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_UUID);
+                    if (descriptor != null) {
+
+                        // prefer notify over indicate
+                        if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                            Log.i("4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
+                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                        } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                            Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
+                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+                        } else {
+                            Log.i("Tag", "OTHER NOTIFY ATTEMPT  Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
+                        }
+
+                        if (mGatt.writeDescriptor(descriptor)) {
+                            success = true;
+                            Log.i("Write Success", "Able to set client characteristic notification1");
+                        } else {
+                            Log.i("Write Err", "Failed to set client characteristic notification1");
+                        }
+
+                    } else {
+                        Log.i("Write Err", "Failed to set client characteristic notification2");
+                    }
+
+                } else {
+                    Log.i("Write Err", "Failed to set client characteristic notification3");
+                }
+
+            } else {
+                Log.i("Write Err", "Failed to set client characteristic notification4");
+            }
+
+            if (!success) {
+                //commandCompleted();
+                Log.i("Notify", "Finished Set Notification");
+            }
+        }
+
+
+        @Override
+        public void onServicesDiscovered(final BluetoothGatt mGatt, int status) {
+            //mGatt = gatt;
+            List<BluetoothGattService> services = mGatt.getServices();
+            Log.i("onServicesDiscovered", services.toString());
+
+            if (services == null) return;
+
+
+
+            //determine if HR, then register notify callback AFTER!!!
+//            Log.i("ONDISCOVERED1", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
+//            registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
+//            mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
+
+
+            //read all services
+            Log.i("Read Services", "Loop through and read services and chars");
+            for (BluetoothGattService service : services) {
+                Log.i("BluGattService", "for each uuid = gattService.getUuid().toString(): " + service.getUuid().toString());
+
+                Log.i("onServicesDiscovered: ", "HR?  " + service.getUuid().equals(HEART_RATE_SERVICE_UUID));
+                Log.i("onServicesDiscovered: ", "CSC?  " + service.getUuid().equals(CSC_SERVICE_UUID));
+
+                if (service.getUuid().equals(HEART_RATE_SERVICE_UUID)) {
+                    Log.i("DISCOVERED HR", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
+                    registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
+                    mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
+                }
+
+                if (service.getUuid().equals(CSC_SERVICE_UUID)) {
+                    Log.i("DISCOVERED CSC", "CALLING  registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID)");
+                    registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
+                    mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
+                }
+
+        }
+
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt,
+                                         BluetoothGattCharacteristic
+                                                 characteristic, int status) {
+            Log.i("onCharacteristicRead", characteristic.toString());
+            Log.i("onCharacteristicRead", characteristic.getUuid().toString());
+        }
+
+        @SuppressLint("DefaultLocale")
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt,
+                                            BluetoothGattCharacteristic
+                                                    characteristic) {
+
+
+
+            Log.i("onCharacteristicChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
+            Log.i("onCharacteristicChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
+
+            if (characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID)) {
+                //IF HR...AFTER SETTING NOTIFY ON ALL
+                int flag = characteristic.getProperties();
+                int format = -1;
+                if ((flag & 0x01) != 0) {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                } else {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                }
+                final int heartRate = characteristic.getIntValue(format, 1);
+                final Integer hrValue = characteristic.getIntValue(format, 1);
+
+                Log.i("HR", String.format("HR: %d", hrValue));
+//                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+//            String value = String.valueOf(heartRate);
+//            Log.i("hrValue.toString", hrValue.toString());
+                String value = String.valueOf(String.format("HR: %d", hrValue));
+                Message msg = Message.obtain();
+                msg.obj = value;
+                msg.what = 1;
+                msg.setTarget(uiHandler);
+                msg.sendToTarget();
+            }
+
+            if (characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID)) {
+                //IF CSC...AFTER SETTING NOTIFY ON ALL
+                int flag = characteristic.getProperties();
+                int format = -1;
+                if ((flag & 0x01) != 0) {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                } else {
+                    format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                }
+                final int csc1 = characteristic.getIntValue(format, 1);
+                final Integer csc1value = characteristic.getIntValue(format, 1);
+                final int csc5 = characteristic.getIntValue(format, 5);
+                final Integer csc5value = characteristic.getIntValue(format, 5);
+                final int csc7 = characteristic.getIntValue(format, 7);
+                final Integer csc7value = characteristic.getIntValue(format, 7);
+                final int csc9 = characteristic.getIntValue(format, 9);
+                final Integer csc9value = characteristic.getIntValue(format, 9);
+
+                Log.i("CSC1", String.format("CSC1: %d", csc1value));
+                Log.i("CSC5", String.format("CSC5: %d", csc5value));
+                Log.i("CSC7", String.format("CSC7: %d", csc7value));
+                Log.i("CSC9", String.format("CSC9: %d", csc9value));
+
+
+//                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+
+//            String value = String.valueOf(heartRate);
+//            Log.i("hrValue.toString", hrValue.toString());
+
+
+
+                String value = String.valueOf(String.format("CSC1: %d", csc1value));
+                Message msg = Message.obtain();
+                msg.obj = value;
+                msg.what = 2;
+                msg.setTarget(uiHandler);
+                msg.sendToTarget();
+
+
+            }
 
             //gatt.disconnect();
         }
@@ -660,14 +999,25 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onYes(View view) {
-        Log.i("myTag","myMsg");
-        Toast.makeText(this,"my Toast", LENGTH_SHORT).show();
-        txtView1 = (TextView) findViewById(R.id.txtView1);
-        txtView1.setText("Setting txtView1");
+    public void onBtn1(View view) {
+        Log.i("onBtn1","onBtn1");
+        //Toast.makeText(this,"my Toast", LENGTH_SHORT).show();
+        //txtView1 = (TextView) findViewById(R.id.txtView1);
+        //txtView1.setText("Setting txtView1");
+        BluetoothDevice device1 = devicesDiscovered.get(0);
+        connectToDevice(device1);
+    }
 
+    public void onBtn2(View view) {
+        Log.i("onBtn1","onBtn2");
+        BluetoothDevice device1 = devicesDiscovered.get(1);
+        connectToDevice(device1);
+    }
 
-
+    public void onBtn3(View view) {
+        Log.i("onBtn3","onBtn3");
+        BluetoothDevice device1 = devicesDiscovered.get(2);
+        connectToDevice(device1);
     }
 
 

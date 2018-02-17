@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="onYes"
+                android:onClick="onBtn1"
                 android:text="btn1"
                 tools:layout_editor_absoluteY="10dp" />
 
@@ -33,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="onBtn2"
                 android:text="btn2" />
 
             <Button
@@ -40,32 +41,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="onBtn3"
                 android:text="btn3" />
         </LinearLayout>
 
 
             <TextView
-                android:id="@+id/dev_type"
+                android:id="@+id/tView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:text="TextView"
+                android:text="tView1"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
 
             <TextView
-                android:id="@+id/value_read"
+                android:id="@+id/tView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:text="TextView"
+                android:text="tView2"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="144dp" />
 
             <TextView
-                android:id="@+id/txtView1"
+                android:id="@+id/tView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
