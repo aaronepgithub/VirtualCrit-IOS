@@ -238,10 +238,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //end onCreate
 
-    public void onSettingsScan_click(MenuItem item) {
-        mPrinter("onSettingsScan_click");
-        scanLeDevice(true);
-    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -365,17 +362,14 @@ public class MainActivity extends AppCompatActivity {
 
                         if (deviceIndexVal == 0) {
                             btn1.setText(deviceName);
-                            mDevice = result.getDevice();
                             Log.i("btn1", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 1) {
                             btn2.setText(deviceName);
-                            mDevice = result.getDevice();
                             Log.i("btn2", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 2) {
                             btn3.setText(deviceName);
-                            mDevice = result.getDevice();
                             Log.i("btn3", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         deviceIndexVal += 1;
@@ -443,7 +437,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("connectToDevice", "connecting to device: "+device.toString());
             this.mDevice = device;
             mGatt = device.connectGatt(this, false, gattCallback);
-            mGattCSC = mGatt;
 
             arrayListConnectedDevices.add(device);
             for (BluetoothDevice d : arrayListConnectedDevices) {
@@ -479,7 +472,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
                     Log.i("gattCallback", "STATE_DISCONNECTED " + mGatt.getDevice().getName());
-
                     mGatt = null;
                     break;
                 default:
@@ -527,12 +519,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i("GATT1", "CALLED  registerNotifyCallback, UUID serviceUUID, UUID characteristicUUID: " + serviceUUID + "  -  " + characteristicUUID);
             boolean success = false;
 
-            if (mGatt == null) {
-                mPrinter("mGatt is null, trying new mGatt");
-                mGatt = mGattCSC;
-
-            }
-
             BluetoothGattService service = mGatt.getService(serviceUUID);
             Log.i("GATT2", "CALLING  findNotifyCharacteristic, passing (service aka mGatt.getService(serviceUUID),charUUID)");
             BluetoothGattCharacteristic characteristic = findNotifyCharacteristic(service, characteristicUUID);
@@ -544,23 +530,18 @@ public class MainActivity extends AppCompatActivity {
                     if (descriptor != null) {
                         // prefer notify over indicate
                         if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            Log.i("GATT4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
                             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                         } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            Log.i("GATT4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
                             descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
                         } else {
                             Log.i("Tag", "OTHER NOTIFY ATTEMPT  Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
                         }
 
                         if (mGatt.writeDescriptor(descriptor)) {
-                            //TODO VELO FAILS HERE
                             success = true;
                             Log.i("Write Success", "Able to set client characteristic notification1");
 
-                            mGatt = null;
                         } else {
-                            //TODO VELO FAILS HERE
                             Log.i("Write Err", "Failed to set client characteristic notification1");
                         }
                     } else {
@@ -597,23 +578,14 @@ public class MainActivity extends AppCompatActivity {
                 if (service.getUuid().equals(HEART_RATE_SERVICE_UUID)) {
                     Log.i("DISCOVERED HR", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
                     registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
-                    mPrinter("AFTER REGISTER");
                     mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
-                    registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
-                    mPrinter("ATTEMPT REGISTER");
-                    mPrinter("ATTEMPT READ");
-                    mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } else if (service.getUuid().equals(CSC_SERVICE_UUID)) {
                     Log.i("DISCOVERED CSC", "CALLING  registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID)");
-                    Log.i("DISCOVERED CSC", "CALLING  registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID) AFTER WAIT");
                     registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
-                    mPrinter("ATTEMPT REGISTER");
-                    mPrinter("ATTEMPT READ");
                     mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
                     try {
                         Thread.sleep(500);
@@ -621,13 +593,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                } else {
-                    mPrinter("Neither");
                 }
-
-
-
-
 
 
 //                List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
@@ -809,7 +775,6 @@ public class MainActivity extends AppCompatActivity {
         BluetoothDevice device3 = devicesDiscovered.get(2);
         connectToDevice(device3);
     }
-
 
 
 }
