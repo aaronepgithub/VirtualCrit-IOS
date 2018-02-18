@@ -819,6 +819,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            scanLeDevice(true);
             return true;
         }
 
@@ -847,5 +848,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    public void onSettingsScan_click(MenuItem item) {
+        mPrinter("onSettingsScan_click");
+//        scanLeDevice(true);
+    }
 }
