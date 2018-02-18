@@ -150,10 +150,10 @@ class Starter_VC: UITableViewController {
             arrResults.append("\(a)\(b)\(c)")
             arrResultsDetails.append("\(d)\(e)\(f)")
             
-            print("\n");
-            dump(arrResults)
-            dump(arrResultsDetails)
-            print("\n");
+//            print("\n");
+//            dump(arrResults)
+//            dump(arrResultsDetails)
+//            print("\n");
             
 //            if audioStatus == "ON" {
 //                Utils.shared.say(sentence: "Round Complete, \(stringer(dbl: spdToUse, len: 1)) Miles Per Hour.  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 0)) PERCENT OF MAX.  ")
@@ -835,7 +835,7 @@ class Starter_VC: UITableViewController {
                     
                 }
                 print("Complete fb4")
-                print("leaderNamesBySpeedTotals\n\(leaderNamesBySpeedTotals)")
+                //print("leaderNamesBySpeedTotals\n\(leaderNamesBySpeedTotals)")
                 NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "FASTEST AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
             }
         })
