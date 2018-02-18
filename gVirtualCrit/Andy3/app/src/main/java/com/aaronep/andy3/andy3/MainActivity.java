@@ -65,14 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
 
-    private ArrayList arrayListFoundDevices = new ArrayList();
+    private ArrayList<BluetoothDevice> arrayListConnectedDevices = new ArrayList();
 
     private Button btn1;
     private Button btn2;
     private Button btn3;
-    public TextView tView1;
-    public TextView tView2;
-    public TextView tView3;
+//    public TextView tView1;
+//    public TextView tView2;
+//    public TextView tView3;
 
 
     private UUID HEART_RATE_SERVICE_UUID = convertFromInteger(0x180D);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     private UUID CSC_SERVICE_UUID = convertFromInteger(0x1816);
     private UUID CSC_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A5B);
-    //private UUID CSC_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
+
 
 
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
@@ -96,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void mLog(String t, String s) {
         Log.i(t, s);
+    }
+
+    public void mPrinter(String p) {
+        System.out.println("mPrinter: " + p);
     }
 
 
@@ -114,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
     private final static int UPDATE_DEVICE = 0;
     private final static int UPDATE_VALUE = 1;
     private final static int UPDATE_CSC = 2;
+    private final static int UPDATE_HR = 3;
+    private final static int UPDATE_SPEED = 4;
+    private final static int UPDATE_CADENCE = 5;
 
     @SuppressLint("HandlerLeak")
     private final Handler uiHandler = new Handler() {
@@ -124,6 +131,15 @@ public class MainActivity extends AppCompatActivity {
 //                case UPDATE_DEVICE: updateDevice(value); break;
                 case UPDATE_VALUE: updateValue(value); break;
                 case UPDATE_CSC: updateValueCSC(value); break;
+                case UPDATE_HR:
+                    updateValueHR(value);
+                    break;
+                case UPDATE_CADENCE:
+                    updateValueCADENCE(value);
+                    break;
+                case UPDATE_SPEED:
+                    updateValueSPEED(value);
+                    break;
             }
         }
     };
@@ -139,6 +155,21 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateValueCSC(String value){
         TextView t= findViewById(R.id.tView2);
+        t.setText(value);
+    }
+
+    private void updateValueHR(String value) {
+        TextView t = findViewById(R.id.tView1);
+        t.setText(value);
+    }
+
+    private void updateValueCADENCE(String value) {
+        TextView t = findViewById(R.id.tView2);
+        t.setText(value);
+    }
+
+    private void updateValueSPEED(String value) {
+        TextView t = findViewById(R.id.tView2);
         t.setText(value);
     }
 
@@ -303,9 +334,6 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                }
 
-
-
-
                 if (result.getDevice().getName() != null) {
 
                     BluetoothDevice deviceDiscovered = result.getDevice();
@@ -340,18 +368,10 @@ public class MainActivity extends AppCompatActivity {
                             btn3.setText(deviceName);
                             Log.i("btn3", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
-
                         deviceIndexVal += 1;
-
-
                     }  //DUPLICATE, DON'T ADD
-
                 }  //NO NAME, DON'T, ADD
-
             }
-
-
-
 
 //                    if (!arrayListFoundDevices.contains(result)) {
 //                        Log.i("ArrayList", "Add Result");
@@ -372,9 +392,6 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.i("btDevice", "ConnectToDevice...");
 //                    connectToDevice(btDevice);
 //                }
-
-
-
 
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
@@ -416,6 +433,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d("connectToDevice", "connecting to device: "+device.toString());
             this.mDevice = device;
             mGatt = device.connectGatt(this, false, gattCallback);
+
+            arrayListConnectedDevices.add(device);
+            for (BluetoothDevice d : arrayListConnectedDevices) {
+                String d2 = String.valueOf(arrayListConnectedDevices.indexOf(d)) + ".  " + d.getName();
+                mPrinter(d2);
+            }
+
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -425,11 +450,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //same for all char
-    protected static final UUID CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-
-
+//    protected static final UUID CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
-
 
         @Override
         public void onConnectionStateChange(BluetoothGatt mGatt, int status, int newState) {
@@ -440,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("gattCallback", "STATE_CONNECTED");
                     Log.i("gattCallback", "CONNECTED TO:  " + mGatt.getDevice().getName());
 
-                    //update UI
+                    //update UI WITH DEVICE - NOT USED
 //                    Message msg = Message.obtain();
 //                    String deviceName = mGatt.getDevice().getName();
 //                    msg.obj = deviceName;
@@ -460,9 +482,7 @@ public class MainActivity extends AppCompatActivity {
                 case BluetoothProfile.STATE_DISCONNECTED:
                     Log.i("gattCallback", "STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     Log.i("gattCallback", "reconnecting...");
-                    //BluetoothDevice mDevice = mGatt.getDevice();
                     mGatt = null;
-                    //connectToDevice(mDevice);
                     break;
                 default:
                     Log.i("gattCallback", "STATE_OTHER");
@@ -564,7 +584,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.i("Write Success", "Able to set client characteristic notification1");
                             mGatt = null;
 
-                            //TODO DOES THIS WORK?  GET A NEW INSTANCE OF MGATT?
 
                         } else {
                             Log.i("Write Err", "Failed to set client characteristic notification1");
@@ -703,9 +722,8 @@ public class MainActivity extends AppCompatActivity {
                                                     characteristic) {
 
 
-
-            Log.i("onCharacteristicChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
-            Log.i("onCharacteristicChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
+            Log.i("onChChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
+            Log.i("onChChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
 
             if (characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID)) {
                 //IF HR...AFTER SETTING NOTIFY ON ALL
@@ -723,10 +741,12 @@ public class MainActivity extends AppCompatActivity {
 //                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
 //            String value = String.valueOf(heartRate);
 //            Log.i("hrValue.toString", hrValue.toString());
+
+                //update UI - HR
                 String value = String.valueOf(String.format("HR: %d", hrValue));
                 Message msg = Message.obtain();
                 msg.obj = value;
-                msg.what = 1;
+                msg.what = 3;
                 msg.setTarget(uiHandler);
                 msg.sendToTarget();
             }
@@ -756,16 +776,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 //                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
-
 //            String value = String.valueOf(heartRate);
 //            Log.i("hrValue.toString", hrValue.toString());
 
+                String spd_cad = csc1 + " - " + csc7;
 
 
-                String value = String.valueOf(String.format("CSC1: %d", csc1value));
+                //update UI SPEED & CADENCE
+//                String value = String.valueOf(String.format("CSC1: %d", csc1value));
+                String value = spd_cad;
                 Message msg = Message.obtain();
                 msg.obj = value;
-                msg.what = 2;
+                msg.what = 4;
                 msg.setTarget(uiHandler);
                 msg.sendToTarget();
 
