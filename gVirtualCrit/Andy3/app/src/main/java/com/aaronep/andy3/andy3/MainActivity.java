@@ -449,8 +449,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //same for all char
-//    protected static final UUID CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
+
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
         @Override
@@ -608,20 +607,62 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         @Override
         public void onServicesDiscovered(final BluetoothGatt mGatt, int status) {
-            //mGatt = gatt;
+
+            Boolean hasHR = false;
+            Boolean hasCSC = false;
+
             List<BluetoothGattService> services = mGatt.getServices();
             Log.i("onServicesDiscovered", services.toString());
 
             if (services == null) return;
 
+            //START VELO TEST
+            Log.i("VELO", "VELO, DETERMINE IF BOTH SERVICES EXIST");
+            for (BluetoothGattService service : services) {
+                if (service.getUuid().equals(HEART_RATE_SERVICE_UUID)) {
+                    hasHR = true;
+                }
+                if (service.getUuid().equals(CSC_SERVICE_UUID)) {
+                    hasCSC = true;
+                }
 
+            }
 
-            //determine if HR, then register notify callback AFTER!!!
-//            Log.i("ONDISCOVERED1", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
-//            registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
-//            mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
+            if (hasHR == true && hasCSC == true) {
+                mPrinter("VELO, BOTH ARE TRUE");
+                registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //END VELO ON SERVICES DISCOVERED
+
 
 
             //read all services
@@ -632,7 +673,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("onServicesDiscovered: ", "HR?  " + service.getUuid().equals(HEART_RATE_SERVICE_UUID));
                 Log.i("onServicesDiscovered: ", "CSC?  " + service.getUuid().equals(CSC_SERVICE_UUID));
 
+
+
+
                 if (service.getUuid().equals(HEART_RATE_SERVICE_UUID)) {
+                    if (hasHR == true && hasCSC == true) {return;}
                     Log.i("DISCOVERED HR", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
                     registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
                     try {
@@ -651,8 +696,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (service.getUuid().equals(CSC_SERVICE_UUID)) {
+                    if (hasHR == true && hasCSC == true) {return;}
                     Log.i("DISCOVERED CSC", "CALLING  registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID)");
                     registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
                     try {
                         Thread.sleep(500);
@@ -851,5 +902,17 @@ public class MainActivity extends AppCompatActivity {
     public void onSettingsScan_click(MenuItem item) {
         mPrinter("onSettingsScan_click");
 //        scanLeDevice(true);
+    }
+
+    public void onBtn4(View view) {
+        mPrinter("onBtn4");
+    }
+
+    public void onBtn5(View view) {
+        mPrinter("onBtn5");
+    }
+
+    public void onBtn6(View view) {
+        mPrinter("onBtn6");
     }
 }
