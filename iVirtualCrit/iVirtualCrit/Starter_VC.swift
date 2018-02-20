@@ -446,7 +446,6 @@ class Starter_VC: UITableViewController {
                 
                 if geo.status == "ON/USE" {
                     geo.startTime = Date()
-//                    startLocationUpdates()
                 }
                 
                 timer = Timer.scheduledTimer(timeInterval: timerIntervalValue,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
@@ -472,8 +471,10 @@ class Starter_VC: UITableViewController {
             let gst = geo.status
 //            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
                 if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
-            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
-            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
+//            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
+            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";}
+//            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
+            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";}
         case 3:
             //ble
             self.tabBarController?.selectedIndex = 1
@@ -846,10 +847,16 @@ class Starter_VC: UITableViewController {
    
     
     private func startLocationUpdates() {
+        print("startLocationUpdates")
         locationManager.delegate = self
         locationManager.activityType = .fitness
         locationManager.distanceFilter = 10
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
+        
         locationManager.startUpdatingLocation()
+        
     }
     
     func stopLocationUpdates() {
@@ -887,15 +894,6 @@ class Starter_VC: UITableViewController {
 
 extension Starter_VC: CLLocationManagerDelegate {
     
-//    func startLocationUpdates() {
-//        print("startLocationUpdates")
-//        locationManager.startUpdatingLocation()
-//    }
-    
-//    func stopLocationUpdates() {
-//        locationManager.stopUpdatingLocation()
-//        print("stopLocationUpdates")
-//    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")

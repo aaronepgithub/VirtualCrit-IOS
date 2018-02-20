@@ -19,8 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         let locationManager = LocationManager.shared
-        locationManager.requestWhenInUseAuthorization()
-        
+//        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization()
+        locationManager.activityType = .fitness
+        locationManager.distanceFilter = 10
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
         
         FIRApp.configure()
         FIRDatabase.database().persistenceEnabled = true
