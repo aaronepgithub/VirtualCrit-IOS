@@ -98,6 +98,10 @@ class Starter_VC: UITableViewController {
                 Utils.shared.say(sentence: "Fastest Mile is now.  \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.")
             }
             
+        } else {
+            if audioStatus == "ON" {
+                Utils.shared.say(sentence: "Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.")
+            }
         }
         
         
@@ -124,21 +128,27 @@ class Starter_VC: UITableViewController {
             
             var spdToUse = roundSpeed
             if roundSpeed < roundGeoSpeed {spdToUse = roundGeoSpeed}
+            if activityType == "RUN" {
+                spdToUse = roundGeoSpeed
+            }
             
-            fbPush(rSpeed: "\(stringer(dbl: spdToUse, len: 2))", rHeartrate: "\(stringer(dbl: roundHR, len: 1))", rScore: "\(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))", rCadence: "\(stringer(dbl: roundCadence, len: 1))")
+
             
-//            if roundSpeed > bestRoundSpeed {bestRoundSpeed = roundSpeed}
-//            if roundGeoSpeed > bestRoundSpeed {bestRoundSpeed = roundGeoSpeed}
-            if spdToUse > bestRoundSpeed {bestRoundSpeed = roundSpeed;
+            if roundSpeed > bestRoundSpeed {bestRoundSpeed = roundSpeed}
+            if roundGeoSpeed > bestRoundSpeed {bestRoundSpeed = roundGeoSpeed}
+            if spdToUse > bestRoundSpeed {
+                bestRoundSpeed = roundSpeed;
                 if audioStatus == "ON" {
                     if roundHR > bestRoundHR {
-                        Utils.shared.say(sentence: "That was your fastest round and your highest score")
+                        Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: spdToUse, len: 1)) MPH")
                     } else {
-                        Utils.shared.say(sentence: "That was your fastest round")
+                        Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: spdToUse, len: 1)) MPH")
                     }
 
                     
                 }
+            } else {
+                Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: spdToUse, len: 1)) MPH")
             }
             if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
             if roundHR > bestRoundHR {bestRoundHR = roundHR}
@@ -291,18 +301,6 @@ class Starter_VC: UITableViewController {
             inRoundHR = []
         }
         
-//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.2))) {
-//            let _ = fb1()
-//        }
-//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.4))) {
-//            let _ = fb2()
-//        }
-//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.6))) {
-//            let _ = fb3()
-//        }
-//        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == Int((Double(secondsPerRound) * (0.8))) {
-//            let _ = fb4()
-//        }
         
         //MID ROUND - DAILY UPDATE
         if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2) {
@@ -519,26 +517,11 @@ class Starter_VC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
-//        FIRDatabase.database().persistenceEnabled = true
-//        locationManager = CLLocationManager()
-//        locationManager.delegate = self
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.allowsBackgroundLocationUpdates = true
-//        locationManager.pausesLocationUpdatesAutomatically = false
-//        locationManager.activityType = .fitness
-//        locationManager.distanceFilter = 5.0
-//        locationManager.requestAlwaysAuthorization()
         
         let defaults = UserDefaults.standard
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
         
-        //dump(availableDataElementsToView)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         
     }
@@ -867,28 +850,7 @@ class Starter_VC: UITableViewController {
     
     
     private let locationManager = LocationManager.shared
-//    private var seconds = 0
-//    private var timer: Timer?
-//    private var distance = Measurement(value: 0, unit: UnitLength.meters)
-    //private var locationList: [CLLocation] = []
     private var locations: [CLLocation] = []
-    
-    
-    
-//    lazy var locationManager: CLLocationManager = {
-//        var _locationManager = CLLocationManager()
-//        _locationManager.delegate = self
-//        _locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        _locationManager.activityType = .fitness
-//        _locationManager.distanceFilter = 5.0
-//        _locationManager.allowsBackgroundLocationUpdates = true
-//        _locationManager.pausesLocationUpdatesAutomatically = false
-//        _locationManager.requestAlwaysAuthorization()
-//
-//        return _locationManager
-//    }()
-    
-    //lazy var locations = [CLLocation]()
 
 }
 
@@ -898,9 +860,7 @@ extension Starter_VC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")
     }
-    
-    
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
             //if location.horizontalAccuracy < 20 {

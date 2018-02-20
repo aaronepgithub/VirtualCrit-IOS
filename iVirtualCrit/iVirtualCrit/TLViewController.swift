@@ -166,12 +166,7 @@ class TLViewController: UIViewController {
             udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
     }
-    
-    
-//    let newDesc = "New Description"
-//    let newPoint =  ISPoint(title: "\(Date())", description: newDesc, pointColor: UIColor.black, lineColor: UIColor.black, touchUpInside: newTouchAction, fill: true)
-//
-//    self.timeline.points.insert(newPoint, at: 0)
+
     
     func blueTouch(point:ISPoint) {
     
@@ -248,18 +243,15 @@ class TLViewController: UIViewController {
     }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver((Any).self)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
-        
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//
+//    }
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -298,8 +290,7 @@ class TLViewController: UIViewController {
         timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
         timeline.points = myPoints
         
-        
-//         NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
         
     }
 
