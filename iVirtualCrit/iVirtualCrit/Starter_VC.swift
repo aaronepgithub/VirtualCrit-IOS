@@ -30,9 +30,10 @@ var la: Double = 0
 var lo: Double = 0
 
 
+
 class Starter_VC: UITableViewController {
     
-
+    var lastLocationTimeStamp: Date!
     @IBOutlet weak var statusValue: UILabel!
     
     @IBOutlet weak var totalTime: UILabel!
@@ -517,6 +518,7 @@ class Starter_VC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
+//        FIRDatabase.database().persistenceEnabled = true
 //        locationManager = CLLocationManager()
 //        locationManager.delegate = self
 //        locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -899,6 +901,8 @@ extension Starter_VC: CLLocationManagerDelegate {
         print("Loc did fail:  \(error)")
     }
     
+    
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
             //if location.horizontalAccuracy < 20 {
@@ -913,6 +917,9 @@ extension Starter_VC: CLLocationManagerDelegate {
                         lo = (self.locations.last?.coordinate.longitude)!
                         geo.distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
+                        
+                        print("Last Geo Update:  \(location.timestamp)")
+                        lastLocationTimeStamp = location.timestamp
                         
                         let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
                         roundGeoSpeed = avgGeoSpeedThisRound
