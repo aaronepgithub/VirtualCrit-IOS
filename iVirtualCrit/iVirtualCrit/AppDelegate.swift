@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.pausesLocationUpdatesAutomatically = false
         
         FIRApp.configure()
-        FIRDatabase.database().persistenceEnabled = true
+//        FIRDatabase.database().persistenceEnabled = true
         
         
         return true

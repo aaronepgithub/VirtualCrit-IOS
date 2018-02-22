@@ -495,9 +495,10 @@ class Starter_VC: UITableViewController {
         case 13:
             print("13")
             if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
-//            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
-//            refDB.removeValue()
-            fb1()
+  // clear db
+            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
+            refDB.removeValue()
+//            fb1()
             
         default:
             print("DO NOTHING")

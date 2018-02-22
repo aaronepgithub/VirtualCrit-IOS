@@ -23,10 +23,6 @@ class Viewer_VC: UIViewController {
     @IBOutlet weak var dat3: UILabel!
     
     
-    
-    
-    
-    
     @objc func updateDisplay() {
 
         header.text = "\(arrSend[0])"
@@ -56,8 +52,6 @@ class Viewer_VC: UIViewController {
         lab2.text = "\(arrSend[5])"
         lab3.text = "\(arrSend[6])"
         
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
  
     }
     

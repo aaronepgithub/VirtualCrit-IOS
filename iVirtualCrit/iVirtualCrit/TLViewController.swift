@@ -241,17 +241,7 @@ class TLViewController: UIViewController {
             udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
         }
     }
-    
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//    }
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//    }
+
     
     override func viewWillDisappear(_ animated: Bool) {
         print("TL will Disappear")
@@ -267,40 +257,33 @@ class TLViewController: UIViewController {
         super.viewDidLoad()
 
         
-        func newTouchAction(point:ISPoint) {
-            print("again, \(ISPoint.self)")
-            
-            let nextPt = ISPoint(title: "Next Pt Title")
-            nextPt.description = "Really long text, Really long text, Really long text, Really long text, Really long text, Really long text"
-            nextPt.touchUpInside = nil
-            nextPt.pointColor = UIColor.red
-            nextPt.lineColor = UIColor.red
-            nextPt.fill = true
-            self.timeline.points.insert(nextPt, at: 0)
-            
-            
-        }
+        //func newTouchAction(point:ISPoint) {
+            //print("again, \(ISPoint.self)")
+//            let nextPt = ISPoint(title: "Next Pt Title")
+//            nextPt.description = "Really long text, Really long text, Really long text, Really long text, Really long text, Really long text"
+//            nextPt.touchUpInside = nil
+//            nextPt.pointColor = UIColor.red
+//            nextPt.lineColor = UIColor.red
+//            nextPt.fill = true
+//            self.timeline.points.insert(nextPt, at: 0)
+        //}
         
-        let touchAction = { (point:ISPoint) in
-            print("point \(point.title)")
-            
-            let newDesc = "New Description"
-            let newPoint =  ISPoint(title: "\(Date())", description: newDesc, pointColor: UIColor.black, lineColor: UIColor.black, touchUpInside: newTouchAction, fill: true)
-            
-            self.timeline.points.insert(newPoint, at: 0)
-        }
+        //let touchAction = { (point:ISPoint) in
+//            print("point \(point.title)")
+//            let newDesc = "New Description"
+//            let newPoint =  ISPoint(title: "\(Date())", description: newDesc, pointColor: UIColor.black, lineColor: UIColor.black, touchUpInside: newTouchAction, fill: true)
+//            self.timeline.points.insert(newPoint, at: 0)
+        //}
         
         
          let st = getFormattedTime()
         let myPoints = [
             
-            ISPoint(title: "ACTIVITY TIMELINE HAS STARTED\nSELECT AN ACTIVITY,\nSET YOUR NOTIFICATION RULES,\nAND BEGIN.\n", description: "\(st)", touchUpInside: touchAction)
+            ISPoint(title: "ACTIVITY TIMELINE HAS STARTED\n", description: "\(st)", touchUpInside: nil)
         ]
         
         timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
         timeline.points = myPoints
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
         
     }
 
