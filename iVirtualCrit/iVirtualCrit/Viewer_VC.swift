@@ -57,19 +57,17 @@ class Viewer_VC: UIViewController {
         lab3.text = "\(arrSend[6])"
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
  
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
+        print("View will Disappear")
+        NotificationCenter.default.removeObserver(self)
     }
     
-    override func viewDidAppear(_ animated: Bool)  {
-        super.viewWillAppear(animated)
-        
-        
+    override func viewWillAppear(_ animated: Bool) {
+        print("View will Appear")
         
         var i: Int = 0
         while i < 8 {
@@ -85,7 +83,28 @@ class Viewer_VC: UIViewController {
         lab2.text = "\(arrSend[5])"
         lab3.text = "\(arrSend[6])"
         
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateDisplay), name: Notification.Name("viewUpdate"), object: nil)
     }
+    
+//    override func viewDidAppear(_ animated: Bool)  {
+//        super.viewWillAppear(animated)
+
+//        var i: Int = 0
+//        while i < 8 {
+//            arrSend.append("0")
+//            i += 1
+//        }
+//        header.text = "\(arrSend[0])"
+//        footer.text = "\(arrSend[7])"
+//        dat1.text = "\(arrSend[1])"
+//        dat2.text = "\(arrSend[2])"
+//        dat3.text = "\(arrSend[3])"
+//        lab1.text = "\(arrSend[4])"
+//        lab2.text = "\(arrSend[5])"
+//        lab3.text = "\(arrSend[6])"
+        
+//    }
     
     
 

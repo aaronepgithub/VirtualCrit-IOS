@@ -518,11 +518,6 @@ class Starter_VC: UITableViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("viewDidAppear")
-
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -674,7 +669,7 @@ class Starter_VC: UITableViewController {
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by score")
                 print(arrLeaderNamesByScore)
-                //NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
             }
         })
         { (error) in
