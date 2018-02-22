@@ -4,6 +4,8 @@
 <dict>
 	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
 	<string>YES</string>
+	<key>NSHumanReadableCopyright</key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
