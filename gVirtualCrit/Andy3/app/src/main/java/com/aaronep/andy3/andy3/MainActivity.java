@@ -529,85 +529,174 @@ public class MainActivity extends AppCompatActivity {
             Log.i("GATT1", "CALLED  registerNotifyCallback, UUID serviceUUID, UUID characteristicUUID: " + serviceUUID + "  -  " + characteristicUUID);
             boolean success = false;
 
-            BluetoothGattService service = mGatt.getService(serviceUUID);
-            Log.i("GATT2", "CALLING  findNotifyCharacteristic, passing (service aka mGatt.getService(serviceUUID),charUUID)");
-            BluetoothGattCharacteristic characteristic = findNotifyCharacteristic(service, characteristicUUID);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            if (isVeloTransmittingHR == true) {
+
+                mPrinter("REGISTER NOTIFY, isVeloTransmittingHR IS TRUE");
+
+                mGatt = veloGatt;
+                BluetoothGattService service = mGatt.getService(serviceUUID);
+                BluetoothGattCharacteristic characteristic = findNotifyCharacteristic(service, characteristicUUID);
 
 
+                if (characteristic != null) {
 
-            if (characteristic != null) {
+                    if (mGatt.setCharacteristicNotification(characteristic, true)) {
 
-                if (mGatt.setCharacteristicNotification(characteristic, true)) {
-
-                    // Why doesn't setCharacteristicNotification write the descriptor?
-                    BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_UUID);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (descriptor != null) {
-
-                        // prefer notify over indicate
-                        if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            Log.i("4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
-                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
-                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Log.i("Tag", "OTHER NOTIFY ATTEMPT  Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
+                        // Why doesn't setCharacteristicNotification write the descriptor?
+                        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_UUID);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
+                        if (descriptor != null) {
 
-                        if (mGatt.writeDescriptor(descriptor)) {
-                            success = true;
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                            // prefer notify over indicate
+                            if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                                Log.i("4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
+                                descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                                Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
+                                descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                Log.i("Tag", "OTHER NOTIFY ATTEMPT  Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
                             }
-                            Log.i("Write Success", "Able to set client characteristic notification1");
-                            mGatt = null;
 
+                            if (mGatt.writeDescriptor(descriptor)) {
+                                success = true;
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i("Write Success", "Able to set client characteristic notification1");
+                                mGatt = null;
+
+
+                            } else {
+                                Log.i("Write Err", "Failed to set client characteristic notification1");
+                            }
 
                         } else {
-                            Log.i("Write Err", "Failed to set client characteristic notification1");
+                            Log.i("Write Err", "Failed to set client characteristic notification2");
                         }
 
                     } else {
-                        Log.i("Write Err", "Failed to set client characteristic notification2");
+                        Log.i("Write Err", "Failed to set client characteristic notification3");
                     }
 
                 } else {
-                    Log.i("Write Err", "Failed to set client characteristic notification3");
+                    Log.i("Write Err", "Failed to set client characteristic notification4");
                 }
 
+                //isVelo = false;
+
+
             } else {
-                Log.i("Write Err", "Failed to set client characteristic notification4");
+
+                BluetoothGattService service = mGatt.getService(serviceUUID);
+                Log.i("GATT2", "CALLING  findNotifyCharacteristic, passing (service aka mGatt.getService(serviceUUID),charUUID)");
+                BluetoothGattCharacteristic characteristic = findNotifyCharacteristic(service, characteristicUUID);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                if (characteristic != null) {
+
+                    if (mGatt.setCharacteristicNotification(characteristic, true)) {
+
+                        // Why doesn't setCharacteristicNotification write the descriptor?
+                        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_UUID);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if (descriptor != null) {
+
+                            // prefer notify over indicate
+                            if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                                Log.i("4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
+                                descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                                Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
+                                descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                Log.i("Tag", "OTHER NOTIFY ATTEMPT  Characteristic " + characteristicUUID + " does not have NOTIFY or INDICATE property set");
+                            }
+
+                            if (mGatt.writeDescriptor(descriptor)) {
+                                success = true;
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i("Write Success", "Able to set client characteristic notification1");
+                                mGatt = null;
+
+
+                            } else {
+                                Log.i("Write Err", "Failed to set client characteristic notification1");
+                            }
+
+                        } else {
+                            Log.i("Write Err", "Failed to set client characteristic notification2");
+                        }
+
+                    } else {
+                        Log.i("Write Err", "Failed to set client characteristic notification3");
+                    }
+
+                } else {
+                    Log.i("Write Err", "Failed to set client characteristic notification4");
+                }
+
+                if (!success) {
+                    //commandCompleted();
+                    Log.i("Notify", "Finished Set Notification");
+                }
+
             }
 
-            if (!success) {
-                //commandCompleted();
-                Log.i("Notify", "Finished Set Notification");
-            }
+
         }
 
 
+        public Boolean isVelo = false;
+        public Boolean isVeloTransmittingHR = false;
+        private String veloAddress = "";
+        private BluetoothGatt veloGatt;
+
+        private void tryVeloConnect() {
+            mPrinter("CALLED FCTN:  TRY VELO CONNECT, AFTER HR STARTS");
+            registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
+            mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
+        }
 
         @Override
         public void onServicesDiscovered(final BluetoothGatt mGatt, int status) {
@@ -635,24 +724,17 @@ public class MainActivity extends AppCompatActivity {
             if (hasHR == true && hasCSC == true) {
                 mPrinter("VELO, BOTH ARE TRUE");
 
+                isVelo = true;
+                veloAddress = mGatt.getDevice().getAddress();
+                veloGatt = mGatt;
+
                 //1.  Register for HR
                 registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
-
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //2.  Wait 5 before trying CSC
-                        registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
-                    }
-                }, 5000);
-
-
                 mGatt.readCharacteristic(mGatt.getService(HEART_RATE_SERVICE_UUID).getCharacteristic(HEART_RATE_MEASUREMENT_CHAR_UUID));
 
-
+                //2.  Wait before trying CSC
 //                registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
-
-                mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
+//                mGatt.readCharacteristic(mGatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_MEASUREMENT_CHAR_UUID));
 
             }
 
@@ -788,6 +870,15 @@ public class MainActivity extends AppCompatActivity {
 //            String value = String.valueOf(heartRate);
 //            Log.i("hrValue.toString", hrValue.toString());
 
+                if (isVelo == true) {
+                    mPrinter("IS VELO, TRYVELOCONNECT NOW");
+                    isVelo = false;
+                    isVeloTransmittingHR = true;
+                    tryVeloConnect();
+
+
+                }
+
                 //update UI - HR
                 String value = String.valueOf(String.format("HR: %d", hrValue));
                 Message msg = Message.obtain();
@@ -799,6 +890,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID)) {
                 //IF CSC...AFTER SETTING NOTIFY ON ALL
+                mPrinter("ON CSC CHAR CHANGED");
+                isVelo = false;
                 int flag = characteristic.getProperties();
                 int format = -1;
                 if ((flag & 0x01) != 0) {
