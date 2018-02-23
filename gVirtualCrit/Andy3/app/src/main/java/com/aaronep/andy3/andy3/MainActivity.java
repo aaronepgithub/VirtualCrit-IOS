@@ -60,6 +60,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 
+import static android.widget.Toast.*;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,19 +72,14 @@ public class MainActivity extends AppCompatActivity {
     private Button btn1;
     private Button btn2;
     private Button btn3;
-//    public TextView tView1;
-//    public TextView tView2;
-//    public TextView tView3;
+
 
 
     private UUID HEART_RATE_SERVICE_UUID = convertFromInteger(0x180D);
     private UUID HEART_RATE_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A37);
-    //private UUID HEART_RATE_CONTROL_POINT_CHAR_UUID = convertFromInteger(0x2A39);
 
     private UUID CSC_SERVICE_UUID = convertFromInteger(0x1816);
     private UUID CSC_MEASUREMENT_CHAR_UUID = convertFromInteger(0x2A5B);
-
-
 
     private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = convertFromInteger(0x2902);
 
@@ -192,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         }
 
+
+        //TODO:  DISABLE TO LAUNCH ON EMULATOR
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
         if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -220,12 +218,15 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "SCANNING...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
+                //TODO:  DISABLE FOR EMULATOR
                 scanLeDevice(true);
 
             }
         });
 
         mHandler = new Handler();
+
+        //TODO:  DISABLE TO LAUNCH ON EMULATOR
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, "BLE Not Supported",
                     Toast.LENGTH_SHORT).show();
@@ -239,6 +240,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //TODO:  TO LAUNCH WITH EMULATOR
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -287,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Boolean isAutoConnected = false;
     private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
     private ArrayList<String> namesDiscovered = new ArrayList<>();
     private ArrayList<String> addressesDiscovered = new ArrayList<>();
@@ -958,7 +960,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            scanLeDevice(true);
             return true;
         }
 
@@ -989,18 +990,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSettingsScan_click(MenuItem item) {
         mPrinter("onSettingsScan_click");
-//        scanLeDevice(true);
+        mLog("SCAN","SCAN FROM MENU");
+//TODO  COMMENT TO RUN IN EMULATOR
+                scanLeDevice(true);
+        makeText(this, "SCANNING...", LENGTH_SHORT).show();
+
+
     }
 
-    public void onBtn4(View view) {
-        mPrinter("onBtn4");
-    }
-
-    public void onBtn5(View view) {
-        mPrinter("onBtn5");
-    }
-
-    public void onBtn6(View view) {
-        mPrinter("onBtn6");
-    }
+//    public void onBtn4(View view) {
+//        mPrinter("onBtn4");
+//    }
+//
+//    public void onBtn5(View view) {
+//        mPrinter("onBtn5");
+//    }
+//
+//    public void onBtn6(View view) {
+//        mPrinter("onBtn6");
+//    }
 }

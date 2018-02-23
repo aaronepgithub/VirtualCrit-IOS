@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onBtn1"
@@ -30,7 +30,7 @@
 
             <Button
                 android:id="@+id/btn2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onBtn2"
@@ -38,13 +38,18 @@
 
             <Button
                 android:id="@+id/btn3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onBtn3"
                 android:text="btn3" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tView1"
@@ -66,48 +71,43 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="144dp" />
 
-            <TextView
-                android:id="@+id/tView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:contextClickable="false"
-                android:padding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onBtn4"
-                android:text="HR"
-                tools:layout_editor_absoluteY="10dp" />
-
-            <Button
-                android:id="@+id/btn5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onBtn5"
-                android:text="CSC" />
-
-            <Button
-                android:id="@+id/btn6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onBtn6"
-                android:text="btn6" />
         </LinearLayout>
+
+
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="3dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<Button-->
+                <!--android:id="@+id/btn4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="onBtn4"-->
+                <!--android:text="HR"-->
+                <!--tools:layout_editor_absoluteY="10dp" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/btn5"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="onBtn5"-->
+                <!--android:text="CSC" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/btn6"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="onBtn6"-->
+                <!--android:text="btn6" />-->
+        <!--</LinearLayout>-->
 
 
 
