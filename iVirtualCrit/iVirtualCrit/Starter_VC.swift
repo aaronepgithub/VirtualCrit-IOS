@@ -86,7 +86,7 @@ class Starter_VC: UITableViewController {
     var fastestMile: Double = 0 //MPH
     
     func updateMile() {
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 
         timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
         speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
@@ -461,7 +461,7 @@ class Starter_VC: UITableViewController {
 //            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
                 if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
 //            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
-            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";}
+            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates();}
 //            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";}
         case 3:
