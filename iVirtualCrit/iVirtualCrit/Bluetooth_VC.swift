@@ -106,6 +106,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     func centralManager(_ central: CBCentralManager, didDiscover peripheral:
         CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
+        print("Discovered Peripheral")
         print("didDiscover peripheral \(String(describing: peripheral.name)) at \(RSSI)")
         // check to see if we've already saved a reference to this peripheral
         if let firstSuchElement = arrPeripheral.first(where: { $0 == peripheral }) {
@@ -128,7 +129,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         }
         
         self.out_Btn1.setTitle("...", for: .normal)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
             
@@ -362,10 +363,34 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("Central Manager State Updated: \(central.state)")
         // if Bluetooth is on, proceed...
-        if central.state != .poweredOn {
+//        if central.state != .poweredOn {
+//            found_peripheral = nil
+//            return
+//        }
+        
+        switch (central.state) {
+        case .unknown:
+            print("state: unknown")
+            break;
+        case .resetting:
+            print("state: resetting")
+            break;
+        case .unsupported:
+            print("state: unsupported")
+            break;
+        case .unauthorized:
+            print("state: unauthorized")
+            break;
+        case .poweredOff:
+            print("state: power off")
+            break;
+        case .poweredOn:
+            print("state: power on")
             found_peripheral = nil
-            return
+            break;
         }
+        
+        
         self.BLTE_tableViewOutlet.reloadData()
     }
     
