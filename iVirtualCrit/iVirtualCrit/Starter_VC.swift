@@ -511,6 +511,8 @@ class Starter_VC: UITableViewController {
         super.viewDidLoad()
         print("viewDidLoad")
         
+        system.startTime = Date()
+        
         let defaults = UserDefaults.standard
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
@@ -874,6 +876,8 @@ extension Starter_VC: CLLocationManagerDelegate {
                         inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         
                         lastLocationTimeStamp = location.timestamp
+                        
+                        
                         
                         let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
                         roundGeoSpeed = avgGeoSpeedThisRound
