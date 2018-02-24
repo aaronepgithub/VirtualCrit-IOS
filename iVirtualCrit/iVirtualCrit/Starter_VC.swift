@@ -11,6 +11,7 @@ import CoreLocation
 import CoreBluetooth
 import AudioToolbox
 import Firebase
+import SystemConfiguration
 
 extension String {
     var toDouble: Double {
@@ -441,6 +442,14 @@ class Starter_VC: UITableViewController {
         switch indexPath.row {
         case 1:
             print("Start/Stop/Reset")
+            
+            if ConnectionCheck.isConnectedToNetwork() {
+                print("Connected to Internet")
+            }
+            else{
+                print("disConnected")
+            }
+            
             if system.status == "STOPPED" {
                 system.status = "STARTED";statusValue.text = "STARTED";
                 system.startTime = Date()
@@ -483,6 +492,12 @@ class Starter_VC: UITableViewController {
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";}
         case 3:
             //ble
+            if ConnectionCheck.isConnectedToNetwork() {
+                print("Connected to Internet")
+            }
+            else{
+                print("disConnected")
+            }
             self.tabBarController?.selectedIndex = 1
         case 5:
             showInputDialog()
@@ -643,11 +658,16 @@ class Starter_VC: UITableViewController {
         
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
-            print("calling fb1")
-            self.fb1()
+            
+            if ConnectionCheck.isConnectedToNetwork() {
+                print("Connected to Internet")
+                print("calling fb1")
+                self.fb1()
+            }
+            else{
+                print("disConnected")
+            }
         }
-        
-        
     }
     
     //FB GETS (1,2,3,4)

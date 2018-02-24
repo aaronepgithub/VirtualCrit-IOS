@@ -14,6 +14,7 @@
 		58101F1F201E10DA00733F15 /* Bluetooth_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */; };
 		58101F25201E14AC00733F15 /* Starter_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58101F24201E14AC00733F15 /* Starter_VC.swift */; };
 		58216CF120250B8F00DDE028 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 58216CF020250B8F00DDE028 /* GoogleService-Info.plist */; };
+		5823A8832042204800E1BC37 /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5823A8822042204800E1BC37 /* ConnectionCheck.swift */; };
 		582401772038B0FB006E87E9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582401762038B0FB006E87E9 /* LocationManager.swift */; };
 		583BFADB2031FDCD00D1F18C /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BFADA2031FDCD00D1F18C /* ISPoint.swift */; };
 		583BFADD2031FDF600D1F18C /* ISTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BFADC2031FDF600D1F18C /* ISTimeline.swift */; };
@@ -39,6 +40,7 @@
 		58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth_VC.swift; sourceTree = "<group>"; };
 		58101F24201E14AC00733F15 /* Starter_VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Starter_VC.swift; sourceTree = "<group>"; };
 		58216CF020250B8F00DDE028 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5823A8822042204800E1BC37 /* ConnectionCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
 		582401762038B0FB006E87E9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		583BFADA2031FDCD00D1F18C /* ISPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPoint.swift; sourceTree = "<group>"; };
 		583BFADC2031FDF600D1F18C /* ISTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISTimeline.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				587B4B1B201E2A9B007D94BC /* DataModel.swift */,
 				587B4B1D201E3047007D94BC /* Functions.swift */,
 				58101F24201E14AC00733F15 /* Starter_VC.swift */,
+				5823A8822042204800E1BC37 /* ConnectionCheck.swift */,
 				582401762038B0FB006E87E9 /* LocationManager.swift */,
 				58101F1E201E10DA00733F15 /* Bluetooth_VC.swift */,
 				58101F11201E0F7900733F15 /* Assets.xcassets */,
@@ -273,6 +276,7 @@
 				587B04882021F353005A638C /* History_VC.swift in Sources */,
 				5879C8A3201F46820019A1A8 /* BLTE_TableViewCell.swift in Sources */,
 				583BFADB2031FDCD00D1F18C /* ISPoint.swift in Sources */,
+				5823A8832042204800E1BC37 /* ConnectionCheck.swift in Sources */,
 				58101F09201E0F7900733F15 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
