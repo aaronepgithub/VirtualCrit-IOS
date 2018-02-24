@@ -121,7 +121,13 @@ class Starter_VC: UITableViewController {
             
             let a = "ROUND # \(roundsCompleted)  "
             let b = "\(stringer(dbl: roundHR, len: 1)) HR"
-            let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
+            
+            var roundScore = " 0%"
+            if roundHR > 10 {
+                roundScore = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
+            }
+            //let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
+            let c = roundScore
             let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
             let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM"
             let f = "  \(stringer(dbl: roundGeoSpeed, len: 1))  MPH/GEO"
@@ -151,8 +157,15 @@ class Starter_VC: UITableViewController {
             }
             if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
             if roundHR > bestRoundHR {bestRoundHR = roundHR}
-            bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
-            bestRoundPace = calcMinPerMile(mph: bestRoundSpeed)
+            
+            if roundHR > 10 {
+                bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
+                bestRoundPace = calcMinPerMile(mph: bestRoundSpeed)
+            } else {
+                bestRoundScore = 0
+                bestRoundPace = "0"
+            }
+
             
             //MY BEST ROUNDS POINT
             newRoundPoint(mileString: "MY BEST ROUNDS\n\(stringer(dbl: bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: bestRoundHR, len: 1)) HR\n\(stringer(dbl: bestRoundScore, len: 1)) SCORE\n\(bestRoundPace) PACE\n")
@@ -231,25 +244,29 @@ class Starter_VC: UITableViewController {
     //EACH SECOND
     @objc func timerInterval() {
 
-        if inRoundBtDistance > 0 {
+        if inRoundBtDistance > 0.1 && secondsPerRound > 1 {
             roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
         }
-        //print("roundSpeed:  \(roundSpeed)")
-        
-//        if system.actualElapsedTime != nil {
-//
-//        }
-        
-        if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
-            currentMile += 1.0
-            updateMile()
+
+        if secondsPerRound > 1 {
+            
+            if btDistanceForMileCalc > 0.1 || geo.distance > 0.1 {
+                if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
+                    currentMile += 1.0
+                    updateMile()
+                }
+            }
+            
+            system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
+            totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))" //[ACTUAL ELAPSED TIME]
+            
+            
         }
         
-        system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-        totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))" //[ACTUAL ELAPSED TIME]
+
         
         //ROUND END
-        if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) {
+        if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) && secondsPerRound > 1 {
             print("New Round")
             //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             roundsCompleted += 1
