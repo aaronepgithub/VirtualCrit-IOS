@@ -166,13 +166,17 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
                 hr = stringer(dbl: Double(bpmValue), len: 0)
             }
-//            rt.rt_hr = Double(bpmValue)
-//            rt.rt_score = ((Double(rt.rt_hr) / Double(settings_MAXHR)) * Double(100))
-            let score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
-            out_Btn1.setTitle(String(bpmValue), for: .normal)
+
             
-            inRoundHR.append(Int(bpmValue))
-            roundHR = inRoundHR.average
+            var score = "0"
+            out_Btn1.setTitle(String(bpmValue), for: .normal)
+            if bpmValue > 10 {
+                score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
+                inRoundHR.append(Int(bpmValue))
+                roundHR = inRoundHR.average
+            }
+
+
             
             NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
         }
@@ -185,23 +189,24 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             let flag = value[0]
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
                 //print("SPD value[1]");print(value[1])
-                out_Btn2.setTitle(String(value[1]), for: .normal)
+                if value[1] > 0 {
+                  out_Btn2.setTitle(String(value[1]), for: .normal)
+                }
                 processWheelData(withData: data)
-                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": String(value[1])])
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    out_Btn3.setTitle(String(value[7]), for: .normal)
+                    if value[7] > 0 {
+                        out_Btn3.setTitle(String(value[7]), for: .normal)
+                    }
                     //print("CAD value[7]");print(value[7])
                     processCrankData(withData: data, andCrankRevolutionIndex: 7)
-                    
-//                    NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": String(value[7])])
                 }
             } else {
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
-                    out_Btn3.setTitle(String(value[1]), for: .normal)
+                    if value[1] > 0 {
+                        out_Btn3.setTitle(String(value[1]), for: .normal)
+                    }
                     //print("CAD value[1]");print(value[1])
                     processCrankData(withData: data, andCrankRevolutionIndex: 1)
-                    
-                    //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": String(value[1])])
                 }
             }
         }
@@ -231,10 +236,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
                 return
             }
-            
             decodeCSC(withData: characteristic.value!)
-            //print("didUpdateValue for:  \(peripheral.name!).\nService is:  \(characteristic.service.uuid).\nCharacteristic is:  \(characteristic.uuid).")
-            
         }
         
         

@@ -126,7 +126,6 @@ class Starter_VC: UITableViewController {
             if roundHR > 10 {
                 roundScore = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
             }
-            //let c = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
             let c = roundScore
             let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
             let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM"
@@ -266,7 +265,7 @@ class Starter_VC: UITableViewController {
 
         
         //ROUND END
-        if  system.actualElapsedTime! >= Double((roundsCompleted + 1) * secondsPerRound) && secondsPerRound > 1 {
+        if  system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound)) {
             print("New Round")
             //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             roundsCompleted += 1
@@ -290,7 +289,7 @@ class Starter_VC: UITableViewController {
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
             rounds.heartrates.append(roundHR)
-            rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))
+            if roundHR > 10 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
             rounds.cadences.append(roundCadence)
             
 //            print("\n")
@@ -336,7 +335,8 @@ class Starter_VC: UITableViewController {
         }
         if roundHR > 0 {
             btHrRnd.text = stringer(dbl: roundHR, len: 0)
-            btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)
+            if roundHR > 10 {btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)} else {btScoreRnd.text = "0"}
+            
         }
 
         
@@ -894,25 +894,31 @@ extension Starter_VC: CLLocationManagerDelegate {
                         
                         lastLocationTimeStamp = location.timestamp
                         
-                        
-                        
-                        let avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
-                        roundGeoSpeed = avgGeoSpeedThisRound
-                        gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
+                        var avgGeoSpeedThisRound = 0.0
+                        if secondsPerRound > 1 {
+                            avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+                            roundGeoSpeed = avgGeoSpeedThisRound
+                            gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
+                        }
+
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)
                         coords.append(location.coordinate)
                         
-                        geo.speed = location.speed * 2.23694
-                        gpsMovingSpeed.text = "\(stringer(dbl: geo.speed!,len: 1))"
-                        
-                        geo.pace = calcMinPerMile(mph: geo.speed!)
-                        gpsMovingPace.text = "\(String(describing: geo.pace))"
-                        gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI"
-                        
-                        geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
-                        gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1))"
-                        gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!))"
+                        if location.speed > 1 {
+                            geo.speed = location.speed * 2.23694
+                            gpsMovingSpeed.text = "\(stringer(dbl: geo.speed!,len: 1))"
+                            
+                            
+                            geo.pace = calcMinPerMile(mph: geo.speed!)
+                            gpsMovingPace.text = "\(String(describing: geo.pace))"
+                            gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI"
+                            
+                            geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
+                            gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1))"
+                            gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!))"
+                        }
+
 
                         let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                         if ts < 10 {
