@@ -366,9 +366,24 @@ class Starter_VC: UITableViewController {
     @objc func updateBT(not: Notification) {
 //        print("updateBT")
 //        print("not:  \(not)")
+        
+//        // userInfo is the payload send by sender of notification
+//        if let userInfo = not.userInfo {
+//            // Safely unwrap the name sent out by the notification sender
+//            if let userName = userInfo["name"] as? String {
+//                print(userName)
+//            }
+//        }
+        
         // userInfo is the payload send by sender of notification
         if let userInfo = not.userInfo {
             //print(userInfo[AnyHashable("hr")]!)
+            
+            //better way
+//            if let hrv2 = userInfo["hr"] as? Double {
+//                print("hrv2 as string \(stringer(dbl: hrv2, len: 0))")
+//            }
+            
             if let hrv = userInfo[AnyHashable("hr")] {
                 //print(String(describing: userInfo[AnyHashable("hr")]!))
                 btHR.text = "\(hrv as! String)"  //HR
