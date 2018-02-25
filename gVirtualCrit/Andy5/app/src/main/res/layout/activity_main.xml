@@ -137,6 +137,64 @@
                     android:textAlignment="textEnd" />
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button100"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:enabled="true"
+                    android:onClick="onClick_100"
+                    android:text="100"
+                    android:textAlignment="textEnd"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/button101"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="onClick_101"
+                    android:text="100"
+                    android:textAlignment="textEnd"
+                    android:visibility="invisible"/>
+
+                <Button
+                    android:id="@+id/button102"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="onClick_102"
+                    android:text="100"
+                    android:textAlignment="textEnd"
+                    android:visibility="invisible"/>
+                <Button
+                    android:id="@+id/button103"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="onClick_103"
+                    android:text="100"
+                    android:textAlignment="textEnd"
+                    android:visibility="invisible"/>
+                <Button
+                    android:id="@+id/button104"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="onClick_104"
+                    android:text="100"
+                    android:textAlignment="textEnd"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
