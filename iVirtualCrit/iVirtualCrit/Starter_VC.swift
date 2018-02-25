@@ -90,6 +90,10 @@ class Starter_VC: UITableViewController {
         //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 
         timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
+        
+        if Double(timeElapsedForLastMile) < 10 {
+            return
+        }
         speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
         
         if speedForLastMile > fastestMile {
@@ -124,7 +128,7 @@ class Starter_VC: UITableViewController {
             let b = "\(stringer(dbl: roundHR, len: 1)) HR"
             
             var roundScore = " 0%"
-            if roundHR > 10 {
+            if roundHR > 50 {
                 roundScore = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
             }
             let c = roundScore
@@ -134,9 +138,11 @@ class Starter_VC: UITableViewController {
             
             print("roundSpeed:  \(roundSpeed)")
             print("roundGeoSpeed:  \(roundGeoSpeed)")
-            var spdToUse = roundSpeed
+            var spdToUse = 0.1
+            if roundSpeed > spdToUse {spdToUse = roundSpeed}
             if roundSpeed < roundGeoSpeed {spdToUse = roundGeoSpeed}
-            if activityType == "RUN" {
+            
+            if activityType == "RUN" && roundGeoSpeed > 0.1 {
                 spdToUse = roundGeoSpeed
             }
             print("spdToUse:  \(spdToUse)")
@@ -147,18 +153,18 @@ class Starter_VC: UITableViewController {
                 bestRoundSpeed = spdToUse;
                 if audioStatus == "ON" {
                     if roundHR > bestRoundHR {
-                        Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace is \(calcMinPerMile(mph: spdToUse)) PER MILE")
+                        Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")
                     } else {
-                        Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace is \(calcMinPerMile(mph: spdToUse)) PER MILE")
+                        Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")
                     }
                 }
             } else {
-                if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace is \(calcMinPerMile(mph: spdToUse)) PER MILE")}
+                if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")}
             }
             if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
             if roundHR > bestRoundHR {bestRoundHR = roundHR}
             
-            if roundHR > 10 {
+            if roundHR > 50 {
                 bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
                 bestRoundPace = calcMinPerMile(mph: bestRoundSpeed)
             } else {
@@ -193,15 +199,6 @@ class Starter_VC: UITableViewController {
     }
     
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        
-//        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "updateHR"), object: nil, queue: nil) {_ in
-//            print("UDPATE HR ON BTN3 FROM BT 100")
-//            self.btHR.text = stringer(dbl: 100, len: 0)
-//        }
-//        
-//    }
-    
 
     func updateViewer_VC() {
         
@@ -221,7 +218,13 @@ class Starter_VC: UITableViewController {
             arr.append("\(gpsMovingSpeed.text ?? "00.0")")
             arr.append("\(gpsMovingPace.text ?? "00")")
             //3 LABELS
-            if btHR.text == " " {arr.append("PACE\n(AVG)")} else {arr.append("\(btScore.text ?? "00")")}
+            if (btHR.text == " " || btHR.text == "") {
+                arr.append("PACE\n(AVG)")
+                
+            } else {
+                arr.append("\(btScore.text ?? "00")")
+                
+            }
             
             arr.append("SPD\nMPH")
             arr.append("PACE\n(MOV)")
@@ -256,7 +259,10 @@ class Starter_VC: UITableViewController {
     @objc func timerInterval() {
 
         if inRoundBtDistance > 0.1 && secondsPerRound > 1 {
-            roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+            if ((system.actualElapsedTime) != nil) {
+                roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+            }
+
         }
 
         if secondsPerRound > 1 {
@@ -268,16 +274,18 @@ class Starter_VC: UITableViewController {
                 }
             }
             
-            system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-            totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))" //[ACTUAL ELAPSED TIME]
-            
-            
+            if ((system.actualElapsedTime) != nil) {
+                system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
+                totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))"
+                //[ACTUAL ELAPSED TIME]
+            }
         }
         
 
         
         //ROUND END
-        if  system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound)) {
+        
+        if  (((system.actualElapsedTime) != nil) && system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound))) {
             print("New Round")
             //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             roundsCompleted += 1
@@ -336,6 +344,18 @@ class Starter_VC: UITableViewController {
                     "avgspeed": btMovAvg.text as Any,
                     "gpsmovingtime": gpsMovingTime.text as Any,
                     "avgspeedgeo": gpsAverageSpeed.text as Any])
+            
+            if freshFB == true {
+                freshFB = false
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
+                
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
+                
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
+                
+                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
+
+            }
             
                 }
         
@@ -553,10 +573,11 @@ class Starter_VC: UITableViewController {
         case 13:
             print("13")
             if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
-  // clear db
+
+//CLEAR DB
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
             refDB.removeValue()
-//            fb1()
+
             
         default:
             print("DO NOTHING")
@@ -696,10 +717,12 @@ class Starter_VC: UITableViewController {
         }
     }
     
+    var freshFB = false
+    var arrLeaderNamesByScore: String = ""
     //FB GETS (1,2,3,4)
     func fb1() {
         print("start fb1")
-        var arrLeaderNamesByScore: String = ""
+        arrLeaderNamesByScore = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         //let result = "20170527"
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
@@ -717,25 +740,18 @@ class Starter_VC: UITableViewController {
                     let fbRND = dict["fb_RND"]!
                     let fbNAME = dict["fb_timName"]!
 
-                    
-//                    let val = snap.value as? NSDictionary
-//                    let valSpd = val?["fb_RND"] as? Double ?? 0.0
-//                    let valSpdString = stringer(dbl: valSpd, len: 1)
-//                    print("valSpdString  \(valSpdString)")
-//                    sRND = valSpdString
-//
                     if let dRND = fbRND as? Double {
                         sRND = stringer(dbl: dRND, len: 1)
                     } else {
                         sRND = "0"
                     }
 
-                    arrLeaderNamesByScore = "\(sRND) %  \(fbNAME)\n" + arrLeaderNamesByScore
+                    self.self.arrLeaderNamesByScore = "\(sRND) %  \(fbNAME)\n" + self.arrLeaderNamesByScore
                     //print("arrLeaderNamesByScore  \(arrLeaderNamesByScore)")
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by score")
-                print(arrLeaderNamesByScore)
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
+                print(self.arrLeaderNamesByScore)
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(self.arrLeaderNamesByScore)", "color": "black"])
             }
         })
         { (error) in
@@ -750,14 +766,15 @@ class Starter_VC: UITableViewController {
     
     
     var previousSpeedLeader = ""
+    var arrLeaderNamesBySpeed: String = ""
     func fb2() {
         print("start fb2")
-        var arrLeaderNamesBySpeed: String = ""
+        arrLeaderNamesBySpeed = ""
         //var readMe: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         let ref = refDB.child(result)
-        _ = ref.queryLimited(toLast: 6).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
+        _ = ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -775,22 +792,12 @@ class Starter_VC: UITableViewController {
                     } else {
                         sSPD = "0"
                     }
-
-                    
-                    // better get/convert from fb
-//                    let val = snap.value as? NSDictionary
-//                    let valSpd = val?["fb_SPD"] as? Double ?? 0.0
-//                    let fbSPD = stringer(dbl: valSpd, len: 2)
-                    //print("\n \(valSpdString) \n")
-                    
-                    
-                    arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + arrLeaderNamesBySpeed
+                    self.arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + self.arrLeaderNamesBySpeed
                     //print("arrLeaderNamesBySpeed:   \(arrLeaderNamesBySpeed)")
-                    //if let x = fbNAME as? String {readMe = x}
                 }
                 print("Completed:  (Round) Get 5 leaders, ordered by speed")
-                print(arrLeaderNamesBySpeed)
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
+                print(self.arrLeaderNamesBySpeed)
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(self.arrLeaderNamesBySpeed)", "color": "blue"])
                 
 //                if readMe != self.previousSpeedLeader {
 //                    if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), is the fastest.")}
@@ -808,17 +815,17 @@ class Starter_VC: UITableViewController {
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb3")
             self.fb3()
-            //self.previousSpeedLeader = readMe
         }
     }
     
+    var leaderNamesByScoreTotals: String = ""
     func fb3() { //get Totals from fb, ordered by score
         print("start fb3")
-        var leaderNamesByScoreTotals: String = ""
+        leaderNamesByScoreTotals = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         var sSCORE: String = "0"
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
-        ref.queryLimited(toLast: 5).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
+        ref.queryLimited(toLast: 10).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -835,11 +842,11 @@ class Starter_VC: UITableViewController {
                         sSCORE = "0"
                     }
                     
-                    leaderNamesByScoreTotals = "\(sSCORE)%  \(fbNAME)\n" + leaderNamesByScoreTotals
+                    self.leaderNamesByScoreTotals = "\(sSCORE)%  \(fbNAME)\n" + self.leaderNamesByScoreTotals
                     
                 }
-                print("leaderNamesByScoreTotals\n\(leaderNamesByScoreTotals)")
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "BEST DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
+                print("leaderNamesByScoreTotals\n\(self.leaderNamesByScoreTotals)")
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "BEST DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
                 print("Complete fb3")
 
             }
@@ -854,13 +861,14 @@ class Starter_VC: UITableViewController {
         }
     }  //fb3 complete
     
+    var leaderNamesBySpeedTotals: String = ""
     func fb4() { //get Totals from fb, ordered by speed
         print("start fb4")
-        var leaderNamesBySpeedTotals: String = ""
+        leaderNamesBySpeedTotals = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
-        ref.queryLimited(toLast: 6).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
+        ref.queryLimited(toLast: 10).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
                 if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -877,12 +885,14 @@ class Starter_VC: UITableViewController {
                         sSPD = "0"
                     }
 
-                    leaderNamesBySpeedTotals = "\(sSPD) MPH  \(fbNAME)\n" + leaderNamesBySpeedTotals
+                    self.leaderNamesBySpeedTotals = "\(sSPD) MPH  \(fbNAME)\n" + self.leaderNamesBySpeedTotals
                     
                 }
                 print("Complete fb4")
-                print("leaderNamesBySpeedTotals\n\(leaderNamesBySpeedTotals)")
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "FASTEST AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
+                    print("leaderNamesBySpeedTotals\n\(self.leaderNamesBySpeedTotals)")
+                    
+                self.freshFB = true
+                //NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "FASTEST AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
             }
         })
         { (error) in
