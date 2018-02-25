@@ -38,10 +38,10 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         startScanning()
     }
     @IBAction func act_Btn2(_ sender: UIButton) {
-        startScanning()
+        //startScanning()
     }
     @IBAction func act_Btn3(_ sender: UIButton) {
-        startScanning()
+        //startScanning()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -174,11 +174,14 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
                 inRoundHR.append(Int(bpmValue))
                 roundHR = inRoundHR.average
+                
+                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
+                //NotificationCenter.default.post(name: Notification.Name("updateHR"), object: nil)
             }
 
 
             
-            NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
+            
         }
         
         

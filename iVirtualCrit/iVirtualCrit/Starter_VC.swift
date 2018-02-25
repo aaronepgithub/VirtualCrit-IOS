@@ -192,6 +192,17 @@ class Starter_VC: UITableViewController {
         dump(udArray)
     }
     
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        
+//        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "updateHR"), object: nil, queue: nil) {_ in
+//            print("UDPATE HR ON BTN3 FROM BT 100")
+//            self.btHR.text = stringer(dbl: 100, len: 0)
+//        }
+//        
+//    }
+    
+
     func updateViewer_VC() {
         
         if geo.status == "ON/USE" {
@@ -374,13 +385,13 @@ class Starter_VC: UITableViewController {
                 tabBarController?.tabBar.items?[1].badgeValue = "\(spv as! String)"
             }
             if let cav = userInfo[AnyHashable("cad")] {
-                //print(String(describing: userInfo[AnyHashable("cad")]!))
+                //let d_cav = cav as? Double
+                //print(d_cav ?? 0.0)
                 btMovingCadence.text = "\(cav as! String)"  //   CAD BT"
                 tabBarController?.tabBar.items?[2].badgeValue = "\(cav as! String)"
             }
             if let dsv = userInfo[AnyHashable("dist")] {
                 btDistance.text = "\(dsv as! String) MILES"  //DISTANCE BT
-                //btDistanceForMileCalc = dsv as! Double
             }
             if let mtv = userInfo[AnyHashable("mov")] {
                 btMovingTime.text = "\(mtv as! String)"   //MOVING TIME BT
