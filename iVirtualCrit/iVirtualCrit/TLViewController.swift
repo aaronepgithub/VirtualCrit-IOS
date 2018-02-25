@@ -104,6 +104,10 @@ class TLViewController: UIViewController {
                 let txt = "\(n14 as! String)  AVG SPD(G)\n"
                 if n14 as! String != " " {str += txt}
             }
+            if let n14b = userInfo[AnyHashable("avgpacegeo")] {
+                let txt = "\(n14b as! String)  AVG PACE(G)\n"
+                if n14b as! String != " " {str += txt}
+            }
             // END MID ROUND DAILY UPDATE
             
             

@@ -86,6 +86,8 @@ class Starter_VC: UITableViewController {
     var paceForLastMile: Double = 0
     var fastestMile: Double = 0 //MPH
     
+    var arrMileSpeeds = [Double]()
+    
     func updateMile() {
         //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 
@@ -95,22 +97,37 @@ class Starter_VC: UITableViewController {
             return
         }
         speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
+        arrMileSpeeds.append(speedForLastMile)
+        //arrMileSpeeds, fastest to slowest
+        arrMileSpeeds = arrMileSpeeds.sorted { $0 > $1 }
+        let ix = arrMileSpeeds.index(of: speedForLastMile)
+        var indexOfLastMileSpeed = 0
+        if ix != nil {
+            indexOfLastMileSpeed = (ix ?? 100) + 1
+        }
+        print("indexOfLastMileSpeed  \(indexOfLastMileSpeed)")
         
         if speedForLastMile > fastestMile {
             fastestMile = speedForLastMile
             
             if audioStatus == "ON" {
                 Utils.shared.say(sentence: "Fastest Mile is now  \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE")
+                
+                print("Fastest Mile is now  \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE")
             }
             
         } else {
             if audioStatus == "ON" {
-                Utils.shared.say(sentence: "Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE")
+                Utils.shared.say(sentence: "Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
+                
+                print("Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
             }
         }
         
         
-        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE")
+        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
+        
+        print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
         actualTimeAtMileStart = Date()
     }
@@ -151,6 +168,7 @@ class Starter_VC: UITableViewController {
             if spdToUse > bestRoundSpeed {
                 print("spdToUse is > than bestRoundSpeed")
                 bestRoundSpeed = spdToUse;
+                bestRoundPace = calcMinPerMile(mph: spdToUse)
                 if audioStatus == "ON" {
                     if roundHR > bestRoundHR {
                         Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")
@@ -166,10 +184,8 @@ class Starter_VC: UITableViewController {
             
             if roundHR > 50 {
                 bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
-                bestRoundPace = calcMinPerMile(mph: bestRoundSpeed)
             } else {
                 bestRoundScore = 0
-                bestRoundPace = "0"
             }
 
             
@@ -330,7 +346,7 @@ class Starter_VC: UITableViewController {
         
         
         //MID ROUND - DAILY UPDATE
-        if Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2) {
+        if (((system.actualElapsedTime) != nil) && Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2)) {
 
             let tle = "DAILY UPDATE"
             let clr = "red"
@@ -343,6 +359,7 @@ class Starter_VC: UITableViewController {
                     "btmovingtime": btMovingTime.text as Any,
                     "avgspeed": btMovAvg.text as Any,
                     "gpsmovingtime": gpsMovingTime.text as Any,
+                    "avgpacegeo": gpsAvergagePace.text as Any,
                     "avgspeedgeo": gpsAverageSpeed.text as Any])
             
             if freshFB == true {
@@ -412,12 +429,12 @@ class Starter_VC: UITableViewController {
             if let scv = userInfo[AnyHashable("score")] {
                 //print(String(describing: userInfo[AnyHashable("score")]!))
                 btScore.text = "\(scv as! String) %"
-                tabBarController?.tabBar.items?[3].badgeValue = "\(scv as! String)%"
+                tabBarController?.tabBar.items?[1].badgeValue = "\(scv as! String)%"
             }
             if let spv = userInfo[AnyHashable("spd")] {
                 //print(String(describing: userInfo[AnyHashable("spd")]!))
                 btMovingSpeed.text = "\(spv as! String)"//SPD BT
-                tabBarController?.tabBar.items?[1].badgeValue = "\(spv as! String)"
+                tabBarController?.tabBar.items?[3].badgeValue = "\(spv as! String)"
             }
             if let cav = userInfo[AnyHashable("cad")] {
                 //let d_cav = cav as? Double
@@ -498,7 +515,8 @@ class Starter_VC: UITableViewController {
             
             if system.status == "STOPPED" {
                 system.status = "STARTED";statusValue.text = "STARTED";
-                system.startTime = Date()
+                //system.startTime = Date()
+                system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
                 
                 if geo.status == "ON" {
                     geo.startTime = Date()
@@ -591,6 +609,7 @@ class Starter_VC: UITableViewController {
         print("viewDidLoad")
         
         system.startTime = Date()
+        system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         
         let defaults = UserDefaults.standard
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
@@ -973,6 +992,12 @@ extension Starter_VC: CLLocationManagerDelegate {
                             geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
                             gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed!, len: 1))"
                             gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed!))"
+                            
+                            if activityType == "RUN" {
+                            tabBarController?.tabBar.items?[3].badgeValue = "\(String(describing: geo.pace))"
+                            tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: geo.distance, len: 2)) MI"
+                            }
+                            
                         }
 
 
