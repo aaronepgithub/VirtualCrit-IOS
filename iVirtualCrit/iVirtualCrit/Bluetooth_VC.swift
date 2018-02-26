@@ -17,7 +17,7 @@ var maxHRvalue: Int = 185
 
 class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDataSource, UITableViewDelegate {
     
-    var centralManager: CBCentralManager!
+    var centralManager: CBCentralManager?
     var arrPeripheral = [CBPeripheral?]()
     var arr_connected_peripherals = [CBPeripheral?]()
     
@@ -121,16 +121,16 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     func startScanning() {
         print("Started Scanning")
         scanInProgress = true
-        if centralManager.isScanning {
+        if (centralManager?.isScanning)! {
             print("Central Manager is already scanning!!")
             return
         } else {
-            self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: CSC_Service), CBUUID.init(string: HR_Service)], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
+            self.centralManager?.scanForPeripherals(withServices: [CBUUID.init(string: CSC_Service), CBUUID.init(string: HR_Service)], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
         }
         
         self.out_Btn1.setTitle("...", for: .normal)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
-            self.centralManager.stopScan()
+            self.centralManager?.stopScan()
             print("Stop Scanning")
             
             
@@ -260,7 +260,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             }
             guard let services = p?.services else {
                 print("Cancel Peripheral Connection")
-                centralManager.cancelPeripheralConnection(p!)  //no services
+                centralManager?.cancelPeripheralConnection(p!)  //no services
                 return
             }
             for service in services {
@@ -282,7 +282,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 }
             }
             // disconnect from the peripheral
-            centralManager.cancelPeripheralConnection(p!)
+            centralManager?.cancelPeripheralConnection(p!)
         }
         arr_connected_peripherals = []
     }
@@ -295,14 +295,14 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         if peripheral.state != .connected {
             print("Peripheral exists but is not connected.")
             //put rescan code here
-            centralManager.connect(peripheral, options: nil)
+            centralManager?.connect(peripheral, options: nil)
             self.BLTE_tableViewOutlet.reloadData()
             return
         }
         
         guard let services = peripheral.services else {
             // disconnect directly
-            centralManager.cancelPeripheralConnection(peripheral)
+            centralManager?.cancelPeripheralConnection(peripheral)
             print("Cancel Peripheral Connection")
             self.BLTE_tableViewOutlet.reloadData()
             return
@@ -327,7 +327,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 }
             }
         }
-        centralManager.cancelPeripheralConnection(peripheral)
+        centralManager?.cancelPeripheralConnection(peripheral)
         print("Cancel Connection")
         self.BLTE_tableViewOutlet.reloadData()
     }
