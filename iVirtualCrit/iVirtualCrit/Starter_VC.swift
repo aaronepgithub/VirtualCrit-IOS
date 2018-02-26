@@ -272,9 +272,12 @@ class Starter_VC: UITableViewController {
     }
     
     //EACH SECOND
+    var roundActualSeconds = 1
+    var totalActualSeconds = 1
     @objc func timerInterval() {
-
-        if inRoundBtDistance > 0.1 && secondsPerRound > 1 {
+        roundActualSeconds += 1
+        totalActualSeconds += 1
+        if inRoundBtDistance > 0 && secondsPerRound > 1 {
             if ((system.actualElapsedTime) != nil) {
                 roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
             }
@@ -304,6 +307,7 @@ class Starter_VC: UITableViewController {
         if  (((system.actualElapsedTime) != nil) && system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound))) {
             print("New Round")
             //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            roundActualSeconds = 1
             roundsCompleted += 1
             
             rounds.geoDistancesPerRound.append(inRoundGeoDistance)
