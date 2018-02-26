@@ -1,6 +1,7 @@
 package com.aaronep.andy5;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -96,15 +98,71 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothLeScanner mLEScanner;
     private ScanSettings settings;
     private List<ScanFilter> filters;
-    private BluetoothGatt mGatt;
-    private BluetoothDevice mDevice;
+    public BluetoothGatt mGatt;
+    public BluetoothDevice mDevice;
 
     private void mLog(String t, String s) {
         Log.i(t, s);
     }
-
     private void mPrinter(String p) {
         System.out.println("mPrinter: " + p);
+    }
+
+    // setup UI handler
+    private final static int UPDATE_DEVICE = 0;
+    private final static int UPDATE_VALUE = 1;
+    private final static int UPDATE_CSC = 2;
+    private final static int UPDATE_HR = 3;
+    private final static int UPDATE_SPEED = 4;
+    private final static int UPDATE_CADENCE = 5;
+
+    @SuppressLint("HandlerLeak")
+    private final Handler uiHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            final int what = msg.what;
+            final String value = (String) msg.obj;
+            switch(what) {
+                //case UPDATE_DEVICE: updateDevice(value); break;
+                //case UPDATE_VALUE: updateValue(value); break;
+//                case UPDATE_CSC:
+//                    updateValueCSC(value);
+//                    break;
+                case UPDATE_HR:
+                    updateValueHR(value);
+                    break;
+                case UPDATE_CADENCE:
+                    updateValueCADENCE(value);
+                    break;
+                case UPDATE_SPEED:
+                    updateValueSPEED(value);
+                    break;
+            }
+        }
+    };
+
+
+//    private void updateValue(String value){
+//        TextView t= findViewById(R.id.tView1);
+//        t.setText(value);
+//    }
+//    private void updateValueCSC(String value){
+//        TextView t= findViewById(R.id.tView2);
+//        t.setText(value);
+//    }
+
+    private void updateValueHR(String value) {
+        TextView t = findViewById(R.id.textView100);
+        t.setText(value);
+    }
+
+    private void updateValueCADENCE(String value) {
+        TextView t = findViewById(R.id.textView102);
+        t.setText(value);
+    }
+
+    private void updateValueSPEED(String value) {
+        TextView t = findViewById(R.id.textView101);
+        t.setText(value);
     }
 
 
@@ -161,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //TODO:  TO LAUNCH WITH EMULATOR
+        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -217,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
                         addressesDiscovered.add(deviceAddress);
                         namesDiscovered.add(deviceName);
 
-                        deviceIndexVal = deviceIndexVal + 1;
 
                         Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
                         Log.i("result", "NAME  " + result.getDevice().getName());
@@ -235,37 +292,37 @@ public class MainActivity extends AppCompatActivity {
                         Button btn103 = findViewById(R.id.button103);
                         Button btn104 = findViewById(R.id.button104);
 
-                        if (deviceIndexVal == 1) {
+                        if (deviceIndexVal == 0) {
                             //btn1.setText(deviceName);
                             btn100.setVisibility(View.VISIBLE);
                             btn100.setText(deviceName);
                             Log.i("btn100", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
-                        if (deviceIndexVal == 2) {
+                        if (deviceIndexVal == 1) {
                             //btn2.setText(deviceName);
                             btn101.setVisibility(View.VISIBLE);
                             btn101.setText(deviceName);
                             Log.i("btn101", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
-                        if (deviceIndexVal == 3) {
+                        if (deviceIndexVal == 2) {
                             //btn3.setText(deviceName);
                             btn102.setVisibility(View.VISIBLE);
                             btn102.setText(deviceName);
                             Log.i("btn102", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
-                        if (deviceIndexVal == 4) {
+                        if (deviceIndexVal == 3) {
                             //btn3.setText(deviceName);
                             btn103.setVisibility(View.VISIBLE);
                             btn103.setText(deviceName);
                             Log.i("btn103", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
-                        if (deviceIndexVal == 5) {
+                        if (deviceIndexVal == 4) {
                             //btn3.setText(deviceName);
                             btn104.setVisibility(View.VISIBLE);
                             btn104.setText(deviceName);
                             Log.i("btn104", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
-                        //deviceIndexVal += 1;
+                        deviceIndexVal = deviceIndexVal + 1;
                     }  //DUPLICATE, DON'T ADD
                 }  //NO NAME, DON'T, ADD
 
@@ -290,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean isScanning = false;
     private Boolean isConnecting = false;
-    private BluetoothDevice mDeviceToConnect;
+    //private BluetoothDevice mDevice;
 
 
     private void requestDeviceConnection() {
@@ -312,8 +369,8 @@ public class MainActivity extends AppCompatActivity {
                             // The 'which' argument contains the index position
                             // of the selected item
                             mLog("WHICH", "WHICH, DEV NAME CLICKED:  " + which + ",  " + namesDiscovered.get(which));
-                            mDeviceToConnect = devicesDiscovered.get(which);
-                            connectToDevice(mDeviceToConnect);
+                            mDevice = devicesDiscovered.get(which);
+                            connectToDevice(mDevice);
                         }
                     });
 
@@ -353,14 +410,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<BluetoothDevice> arrayListConnectedDevices = new ArrayList();
 
-    public void connectToDevice(BluetoothDevice device) {
-        Log.i("connectToDevice", "Device: " + device.getName());
+    public void connectToDevice(BluetoothDevice mDevice) {
+        Log.i("connectToDevice", "Device: " + mDevice.getName());
+        Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
         if (mGatt == null) {
-            Log.i("connectToDevice", "connecting to device: "+device.toString());
-            this.mDevice = device;
-            mGatt = device.connectGatt(this, false, gattCallback);
+            Log.i("connectToDevice", "connecting to device: "+mDevice.toString());
+            mGatt = mDevice.connectGatt(this, false, gattCallback);
 
-            arrayListConnectedDevices.add(device);
+            arrayListConnectedDevices.add(mDevice);
             for (BluetoothDevice d : arrayListConnectedDevices) {
                 String d2 = String.valueOf(arrayListConnectedDevices.indexOf(d)) + ".  " + d.getName();
                 mPrinter(d2);
@@ -376,6 +433,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private Boolean onCharChangedHR = false;
+    private Boolean onCharChangedCAD = false;
 
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
@@ -606,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onServicesDiscovered(final BluetoothGatt mGatt, int status) {
+        public void onServicesDiscovered(BluetoothGatt mGatt, int status) {
 
             Boolean hasHR = false;
             Boolean hasCSC = false;
@@ -684,17 +743,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         @Override
-        public void onCharacteristicRead(BluetoothGatt gatt,
+        public void onCharacteristicRead(BluetoothGatt mGatt,
                                          BluetoothGattCharacteristic
                                                  characteristic, int status) {
             Log.i("onCharacteristicRead", characteristic.toString());
             Log.i("onCharacteristicRead", characteristic.getUuid().toString());
         }
 
+        @SuppressLint("NewApi")
         @Override
-        public void onCharacteristicChanged(BluetoothGatt gatt,
+        public void onCharacteristicChanged(BluetoothGatt mGatt,
                                             BluetoothGattCharacteristic
                                                     characteristic) {
+
+            boolean hasWheel, hasCrank;
+            long wheelRotations;
+            int crankRotations;
+            int time;
 
 
             Log.i("onChChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
@@ -702,6 +767,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID)) {
                 //IF HR...AFTER SETTING NOTIFY ON ALL
+                onCharChangedHR = true;
                 int flag = characteristic.getProperties();
                 int format = -1;
                 if ((flag & 0x01) != 0) {
@@ -709,7 +775,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     format = BluetoothGattCharacteristic.FORMAT_UINT8;
                 }
-                final int heartRate = characteristic.getIntValue(format, 1);
+                //final int heartRate = characteristic.getIntValue(format, 1);
                 final Integer hrValue = characteristic.getIntValue(format, 1);
 
                 Log.i("HR", String.format("HR: %d", hrValue));
@@ -724,16 +790,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //update UI - HR
-//                String value = String.valueOf(String.format("HR: %d", hrValue));
-//                Message msg = Message.obtain();
-//                msg.obj = value;
-//                msg.what = 3;
-//                msg.setTarget(uiHandler);
-//                msg.sendToTarget();
+                String value = String.valueOf(String.format("HR: %d", hrValue));
+                Message msg = Message.obtain();
+                msg.obj = value;
+                msg.what = 3;
+                msg.setTarget(uiHandler);
+                msg.sendToTarget();
             }
 
             if (characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID)) {
                 //IF CSC...AFTER SETTING NOTIFY ON ALL
+                onCharChangedCAD = true;
                 mPrinter("ON CSC CHAR CHANGED");
                 isVelo = false;
                 int flag = characteristic.getProperties();
@@ -743,6 +810,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     format = BluetoothGattCharacteristic.FORMAT_UINT8;
                 }
+
+                //byte[] value = parent.mMeasurementChar.getValue();
+                byte[] value = characteristic.getValue();
+                hasWheel = (value[0] & 0x1) != 0;
+                hasCrank = (value[0] & 0x2) != 0;
+
+
                 final int csc1 = characteristic.getIntValue(format, 1);
                 final Integer csc1value = characteristic.getIntValue(format, 1);
                 final int csc5 = characteristic.getIntValue(format, 5);
@@ -756,24 +830,159 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("CSC5", String.format("CSC5: %d", csc5value));
                 Log.i("CSC7", String.format("CSC7: %d", csc7value));
                 Log.i("CSC9", String.format("CSC9: %d", csc9value));
+                String spd_cad = csc1 + " - " + csc7;
+                Log.i("SPD-CSC","SPD-CSC - " + spd_cad);
 
 
 //                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
 //            String value = String.valueOf(heartRate);
 //            Log.i("hrValue.toString", hrValue.toString());
 
-                String spd_cad = csc1 + " - " + csc7;
-                Log.i("SPD-CSC","SPD-CSC - " + spd_cad);
+
+//                if (csc1 >= 0) {
+//                    //String value = String.format("CSC1: %d", csc1value);
+//                    Message msg = Message.obtain();
+//                    msg.obj = String.format("CSC1: %d", csc1value);
+//                    msg.what = 4;
+//                    msg.setTarget(uiHandler);
+//                    msg.sendToTarget();
+//                }
+//
+//                if (csc7 >= 0) {
+//                    //String value = String.format("CSC1: %d", csc7value);
+//                    Message msg = Message.obtain();
+//                    msg.obj = String.format("CSC1: %d", csc7value);
+//                    msg.what = 5;
+//                    msg.setTarget(uiHandler);
+//                    msg.sendToTarget();
+//                }
 
 
-                //update UI SPEED & CADENCE
-//                String value = String.valueOf(String.format("CSC1: %d", csc1value));
-//                String value = spd_cad;
-//                Message msg = Message.obtain();
-//                msg.obj = value;
-//                msg.what = 4;
-//                msg.setTarget(uiHandler);
-//                msg.sendToTarget();
+                int i = 1;
+
+                // Note: We only send out a delta update when we have a meaningful
+                // delta. If the user was coasting or stopped, the last update will
+                // be from a long ago, making the delta meaningless for both
+                // instantaneous and average calculations.
+
+                if (hasWheel) {
+                    wheelRotations = readU32(value, i);
+                    time = readU16(value, i + 4);
+
+                    if (wheelRotations == 0) {
+                        // We've stopped moving
+                        mWheelStopped = true;
+
+                    } else if (mWheelStopped) {
+                        // Wheel's started again
+                        mWheelStopped = false;
+                        mLastWheelReading = wheelRotations;
+                        mLastWheelTime = time;
+
+                        //parent.mCallback.onSpeedUpdate(parent, 0, 0.0);
+
+                    } else {
+                        // Delta over last update
+                        int timeDiff;
+
+                        if (wheelRotations < mLastWheelReading) {
+                            // Can happen if bicycle reverses
+                            wheelRotations = 0;
+                        }
+
+
+
+                        timeDiff = do16BitDiff(time, mLastWheelTime);
+                        double dTimeDiff = timeDiff;
+                        double wheelCircumference = 2105;
+                        double wheelTimeSeconds = dTimeDiff / 1024;
+                        double wheelCircumferenceCM = wheelCircumference / 10;
+                        double wheelRot = wheelRotations - mLastWheelReading;
+                        double wheelRPM = wheelRot / (wheelTimeSeconds / 60);
+                        double cmPerMi = 0.00001 * 0.621371;
+                        double minsPerHour = 60.0;
+                        double speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
+
+
+                        //parent.mCallback.onSpeedUpdate(parent, (wheelRotations - mLastWheelReading) * mCircumference, (timeDiff * 1000000.0) / 1024.0);
+                        mPrinter("CURRENT SPEED:  " + String.format("%.2f", speed));
+                        //mPrinter("SPEED FORMATTED:  " + speed);
+
+                        if (speed >= 0 && !Double.isNaN(speed)) {
+                            //String value = String.format("CSC1: %d", csc1value);
+                            Message msg = Message.obtain();
+                            msg.obj = String.format("MPH: %.2f", speed);
+                            msg.what = 4;
+                            msg.setTarget(uiHandler);
+                            msg.sendToTarget();
+                        } else {
+                            Message msg = Message.obtain();
+                            msg.obj = "MPH: 0";
+                            msg.what = 4;
+                            msg.setTarget(uiHandler);
+                            msg.sendToTarget();
+                        }
+
+
+
+                        mLastWheelReading = wheelRotations;
+                        mLastWheelTime = time;
+                    }
+
+                    i += 6;
+                }
+
+                if (hasCrank) {
+                    crankRotations = readU16(value, i);
+                    time = readU16(value, i + 2);
+
+                    if (crankRotations == 0) {
+                        // Coasting or stopped
+                        mCrankStopped = true;
+
+                    } else if (mCrankStopped) {
+                        // Crank's started up again
+
+                        mCrankStopped = false;
+                        mLastCrankReading = crankRotations;
+                        mLastCrankTime = time;
+
+                        //parent.mCallback.onCadenceUpdate(parent, 0, 0.0);
+
+                    } else {
+                        // Delta over last update
+                        int rotDiff, timeDiff;
+
+                        rotDiff = do16BitDiff(crankRotations, mLastCrankReading);
+                        timeDiff = do16BitDiff(time, mLastCrankTime);
+
+                        //parent.mCallback.onCadenceUpdate(parent, rotDiff, (timeDiff * 1000000.0) / 1024.0);
+                        currentCadence = rotDiff / (((timeDiff) / 1024.0) / 60);
+                        mPrinter("CURRENT CADENCE:  " + String.format("%.1f", currentCadence));
+
+                        if (currentCadence >= 0 && !Double.isNaN(currentCadence)) {
+                            //String value = String.format("CSC1: %d", csc7value);
+                            Message msg = Message.obtain();
+                            msg.obj = String.format("RPM: %.1f", currentCadence);
+                            msg.what = 5;
+                            msg.setTarget(uiHandler);
+                            msg.sendToTarget();
+                        } else {
+                            Message msg = Message.obtain();
+                            msg.obj = "RPM: 0";
+                            msg.what = 5;
+                            msg.setTarget(uiHandler);
+                            msg.sendToTarget();
+                        }
+
+
+                        mLastCrankReading = crankRotations;
+                        mLastCrankTime = time;
+                    }
+                }
+
+
+
 
 
             }
@@ -785,6 +994,42 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    private boolean mWheelStopped, mCrankStopped;
+    private long mLastWheelReading;
+    private int mLastCrankReading;
+    private int mLastWheelTime, mLastCrankTime;
+    private double currentSpeed;
+    private double currentCadence;
+    private double mCircumference = 2105;
+
+
+
+
+
+    private int do16BitDiff(int a, int b)
+    {
+        if (a >= b)
+            return a - b;
+        else
+            return (a + 65536) - b;
+    }
+
+    private int readU32(byte[] bytes, int offset)
+    {
+        // Does not perform bounds checking
+        return ((bytes[offset + 3] << 24) & 0xff000000) +
+                ((bytes[offset + 2] << 16) & 0xff0000) +
+                ((bytes[offset + 1] << 8) & 0xff00) +
+                (bytes[offset] & 0xff);
+    }
+
+    private int readU16(byte[] bytes, int offset)
+    {
+        return ((bytes[offset + 1] << 8) & 0xff00) + (bytes[offset] & 0xff);
+    }
+
+
+
     public void onClick_Bluetooth(View view) {
 
         //TODO:  DISABLE FOR EMULATOR
@@ -794,32 +1039,32 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClick_104(View view) {
-        BluetoothDevice device4 = devicesDiscovered.get(4);
-        connectToDevice(device4);
+        mDevice = devicesDiscovered.get(4);
+        isConnecting = true;
+        connectToDevice(mDevice);
     }
 
     public void onClick_103(View view) {
-        BluetoothDevice device3 = devicesDiscovered.get(3);
-        connectToDevice(device3);
+        mDevice = devicesDiscovered.get(3);
+        isConnecting = true;
+        connectToDevice(mDevice);
     }
 
     public void onClick_102(View view) {
-        BluetoothDevice device2 = devicesDiscovered.get(2);
-        connectToDevice(device2);
+        mDevice = devicesDiscovered.get(2);
+        isConnecting = true;
+        connectToDevice(mDevice);
     }
 
     public void onClick_101(View view) {
-        BluetoothDevice device1 = devicesDiscovered.get(1);
-        connectToDevice(device1);
+        mDevice = devicesDiscovered.get(1);
+        isConnecting = true;
+        connectToDevice(mDevice);
     }
 
     public void onClick_100(View view) {
-//        mDeviceToConnect = devicesDiscovered.get(0);
-//        connectToDevice(mDeviceToConnect);
-
-        BluetoothDevice device0 = devicesDiscovered.get(0);
-        connectToDevice(device0);
-
-
+        mDevice = devicesDiscovered.get(0);
+        isConnecting = true;
+        connectToDevice(mDevice);
     }
 }
