@@ -286,6 +286,7 @@ class Starter_VC: UITableViewController {
 
         if secondsPerRound > 1 {
             
+            
             if btDistanceForMileCalc > 0.1 || geo.distance > 0.1 {
                 if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
                     currentMile += 1.0
@@ -963,6 +964,10 @@ extension Starter_VC: CLLocationManagerDelegate {
             let howRecent = location.timestamp.timeIntervalSinceNow
             guard location.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
             
+            if self.locations.last == nil {
+                return
+            }
+            
                 if self.locations.count > 2 {
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
                         
@@ -975,6 +980,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                         
                         var avgGeoSpeedThisRound = 0.0
                         if secondsPerRound > 1 {
+                            system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
                             avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
                             roundGeoSpeed = avgGeoSpeedThisRound
                             gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
