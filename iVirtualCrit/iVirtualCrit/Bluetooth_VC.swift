@@ -426,4 +426,3 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     */
 
 }
-
