@@ -170,10 +170,8 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             
             var score = "0"
             out_Btn1.setTitle(String(bpmValue), for: .normal)
-            if bpmValue > 50 {
-                currentHR = Double(bpmValue)
-                currentScore = Double((currentHR / Double(maxHRvalue)) * Double(100.0))
-                score = stringer(dbl: ((currentHR / Double(maxHRvalue)) * Double(100.0)), len: 1)
+            if bpmValue > 10 {
+                score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
                 inRoundHR.append(Int(bpmValue))
                 roundHR = inRoundHR.average
                 
