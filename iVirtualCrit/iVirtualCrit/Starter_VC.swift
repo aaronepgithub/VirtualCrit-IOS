@@ -314,10 +314,7 @@ class Starter_VC: UITableViewController {
             
         }
         
-        udString = "NEW SEND VIEW UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
-        udArray.append(udString)
-        let defaults = UserDefaults.standard
-        defaults.set(udArray, forKey: "SavedStringArray")
+  
         
         NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
     }
@@ -1008,6 +1005,10 @@ extension Starter_VC: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")
+                udString = "NEW LOCATION DID FAIL, \(getFormattedTimeAndDate(d: Date()))\n"
+                udArray.append(udString)
+                let defaults = UserDefaults.standard
+                defaults.set(udArray, forKey: "SavedStringArray")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -1060,7 +1061,7 @@ extension Starter_VC: CLLocationManagerDelegate {
 
 
                         let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
-                        if ts < 10 {
+                        if ts < 20 {
                             geo.elapsedTime += ts
                         }
                         //system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
