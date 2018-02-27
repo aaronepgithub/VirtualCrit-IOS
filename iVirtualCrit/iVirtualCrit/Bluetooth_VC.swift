@@ -143,7 +143,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     }
     
     
-    var hr: String?
+    var hr: String = "0"
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
@@ -173,9 +173,11 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             if bpmValue > 10 {
                 score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
                 inRoundHR.append(Int(bpmValue))
-                roundHR = inRoundHR.average
                 
-                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr ?? 0, "score": score])
+                roundHR = inRoundHR.average
+                currentHR = Double(bpmValue)
+                
+                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr, "score": score])
                 //NotificationCenter.default.post(name: Notification.Name("updateHR"), object: nil)
             }
 
@@ -241,11 +243,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             }
             decodeCSC(withData: characteristic.value!)
         }
-        
-        
-        
-        
-        
     }
     
     func disconnectAllPeripherals() {
@@ -367,11 +364,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     var found_peripheral: CBPeripheral?
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("Central Manager State Updated: \(central.state)")
-        // if Bluetooth is on, proceed...
-//        if central.state != .poweredOn {
-//            found_peripheral = nil
-//            return
-//        }
         
         switch (central.state) {
         case .unknown:

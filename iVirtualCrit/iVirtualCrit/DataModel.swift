@@ -12,7 +12,7 @@ struct system {
     static var status: String = "STOPPED"
     static var startTime: Date?
     static var stopTime: Date?
-    static var actualElapsedTime: Double?
+    static var actualElapsedTime: Double = 0
 }
 
 struct geo {

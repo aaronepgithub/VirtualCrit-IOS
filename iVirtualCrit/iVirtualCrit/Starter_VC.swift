@@ -32,8 +32,24 @@ var lo: Double = 0
 
 
 
+
+
 class Starter_VC: UITableViewController {
     
+    //NEW
+    var secondsSinceStart = Double(0)
+    
+    var secondsInRound = Double(0)
+    var secondsInCurrentMile = Double(0)
+    //MAKE ZERO AT ROUND END/MILE END
+
+    var distanceAtStartOfRoundBT = Double(0)
+    var distanceAtStartOfRoundGEO = Double(0)
+    var distanceAtStartOfMile = Double(0)
+    
+
+    
+    //END NEW
     var lastLocationTimeStamp: Date!
     @IBOutlet weak var statusValue: UILabel!
     
@@ -67,7 +83,9 @@ class Starter_VC: UITableViewController {
     var roundsCompleted: Int = 0
     var secondsPerRound: Int = 300
     var roundGeoSpeed: Double = 0
-    var roundSpeed: Double = 0
+    
+    
+
     
     func newMilePoint(mileString: String) {
         NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "green"])
@@ -79,8 +97,8 @@ class Starter_VC: UITableViewController {
     
     
     
-    var actualTimeAtMileStart: Date?
-    var timeElapsedForLastMile: Double = 0
+    //var actualTimeAtMileStart: Date?
+    //var timeElapsedForLastMile: Double = 0
     var currentMile: Double = 1.0
     var speedForLastMile: Double = 0
     var paceForLastMile: Double = 0
@@ -89,14 +107,22 @@ class Starter_VC: UITableViewController {
     var arrMileSpeeds = [Double]()
     
     func updateMile() {
-        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-
-        timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
+        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))\
+        //timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
+        //timeElapsedForLastMile = secondsInCurrentMile
         
-        if Double(timeElapsedForLastMile) < 10 {
-            return
-        }
-        speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
+        //replace with secondsInCurrentMile
+        if secondsInCurrentMile == 0 {return}
+        
+//        if Double(timeElapsedForLastMile) < 10 {
+//            return
+//        }
+        
+        //speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
+        
+        speedForLastMile = 1.0 / (secondsInCurrentMile / 60 / 60)
+        secondsInCurrentMile = 0
+        
         arrMileSpeeds.append(speedForLastMile)
         //arrMileSpeeds, fastest to slowest
         arrMileSpeeds = arrMileSpeeds.sorted { $0 > $1 }
@@ -129,7 +155,8 @@ class Starter_VC: UITableViewController {
         
         print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
-        actualTimeAtMileStart = Date()
+        //actualTimeAtMileStart = Date()
+        
     }
     
     var bestRoundSpeed: Double = 0
@@ -155,7 +182,7 @@ class Starter_VC: UITableViewController {
             
             print("roundSpeed:  \(roundSpeed)")
             print("roundGeoSpeed:  \(roundGeoSpeed)")
-            var spdToUse = 0.1
+            var spdToUse = Double(0)
             if roundSpeed > spdToUse {spdToUse = roundSpeed}
             if roundSpeed < roundGeoSpeed {spdToUse = roundGeoSpeed}
             
@@ -273,38 +300,32 @@ class Starter_VC: UITableViewController {
     
     //EACH SECOND
     @objc func timerInterval() {
-
-        if inRoundBtDistance > 0.1 && secondsPerRound > 1 {
-            if ((system.actualElapsedTime) != nil) {
-                roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
-            }
-
-        }
-
-        if secondsPerRound > 1 {
-            
-            if btDistanceForMileCalc > 0.1 || geo.distance > 0.1 {
-                if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
-                    currentMile += 1.0
-                    updateMile()
-                }
-            }
-            
-            if ((system.actualElapsedTime) != nil) {
-                system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-                totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))"
-                //[ACTUAL ELAPSED TIME]
-            }
+        
+        secondsSinceStart += 1
+        secondsInRound += 1
+        secondsInCurrentMile += 1
+        
+        system.actualElapsedTime = secondsSinceStart
+        totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime))))"
+        
+        //TEST FOR MILE
+        if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
+            currentMile += 1.0
+            updateMile()
         }
         
-
-        
+        //CALC ROUND SPEEDS BEFORE ROUND ENDS
+        if inRoundBtDistance > 0 && secondsInRound > 0 {
+            roundSpeed = inRoundBtDistance / (secondsInRound / 60.0 / 60.0)
+        }
         //ROUND END
+        if secondsInRound >= Double(secondsPerRound) {
         
-        if  (((system.actualElapsedTime) != nil) && system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound))) {
+        //if  (((system.actualElapsedTime) != nil) && system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound))) {
             print("New Round")
             //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             roundsCompleted += 1
+            secondsInRound = 0
             
             rounds.geoDistancesPerRound.append(inRoundGeoDistance)
             rounds.btDistancesPerRound.append(inRoundBtDistance)
@@ -312,6 +333,9 @@ class Starter_VC: UITableViewController {
             print("\n")
             print("End of Round for HR, Spd, Cad, GeoSpd")
             print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
+            
+            print("secondsInRound, secondsSinceStart")
+            print(secondsInRound, secondsSinceStart)
             print("\n")
             
             createNRArray()
@@ -325,7 +349,7 @@ class Starter_VC: UITableViewController {
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
             rounds.heartrates.append(roundHR)
-            if roundHR > 10 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
+            if roundHR > 50 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
             rounds.cadences.append(roundCadence)
             
 //            print("\n")
@@ -346,7 +370,7 @@ class Starter_VC: UITableViewController {
         
         
         //MID ROUND - DAILY UPDATE
-        if (((system.actualElapsedTime) != nil) && Int(system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) == (secondsPerRound / 2)) {
+        if ( Int(secondsInRound) == (secondsPerRound / 2) ) {
 
             let tle = "DAILY UPDATE"
             let clr = "red"
@@ -374,7 +398,7 @@ class Starter_VC: UITableViewController {
 
             }
             
-                }
+        }  //end mid round
         
         if roundSpeed > 0 {
             btSpdRnd.text = stringer(dbl: roundSpeed, len: 1)
@@ -384,8 +408,7 @@ class Starter_VC: UITableViewController {
         }
         if roundHR > 0 {
             btHrRnd.text = stringer(dbl: roundHR, len: 0)
-            if roundHR > 10 {btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)} else {btScoreRnd.text = "0"}
-            
+            if roundHR > 50 {btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)} else {btScoreRnd.text = "0"}
         }
 
         
@@ -534,7 +557,6 @@ class Starter_VC: UITableViewController {
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(updateBT(not:)), name: Notification.Name("bleUpdate"), object: nil)
                 
-                actualTimeAtMileStart = system.startTime
             } else {
                 system.status = "STOPPED";statusValue.text = "STOPPED";
                 system.stopTime = Date()
@@ -651,7 +673,7 @@ class Starter_VC: UITableViewController {
                 "fb_timAvgCADtotal" : rCadence.toDouble,
                 "fb_timAvgHRtotal" : rScore.toDouble,
                 "fb_timAvgSPDtotal" : rSpeed.toDouble,
-                "fb_timDistanceTraveled" : total_distance ?? 0,
+                "fb_timDistanceTraveled" : total_distance,
                 "fb_timGroup" : "iOS",
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
@@ -709,7 +731,7 @@ class Starter_VC: UITableViewController {
                 "fb_timAvgCADtotal" : tCadence.toDouble,
                 "fb_timAvgHRtotal" : tScore.toDouble,
                 "fb_timAvgSPDtotal" : tSpeed.toDouble,
-                "fb_timDistanceTraveled" : total_distance ?? 0,
+                "fb_timDistanceTraveled" : total_distance,
                 "fb_timGroup" : "iOS",
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
@@ -970,8 +992,8 @@ extension Starter_VC: CLLocationManagerDelegate {
                         lastLocationTimeStamp = location.timestamp
                         
                         var avgGeoSpeedThisRound = 0.0
-                        if secondsPerRound > 1 {
-                            avgGeoSpeedThisRound =  inRoundGeoDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
+                        if secondsInRound > 1 && inRoundGeoDistance > 0 {
+                            avgGeoSpeedThisRound =  inRoundGeoDistance / (secondsInRound / 60.0 / 60.0)
                             roundGeoSpeed = avgGeoSpeedThisRound
                             gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
                         }
@@ -1005,9 +1027,9 @@ extension Starter_VC: CLLocationManagerDelegate {
                         if ts < 10 {
                             geo.elapsedTime += ts
                         }
-                        system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
+                        //system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
                         
-                        totalTime.text = "\(createTimeString(seconds: Int(  round((system.actualElapsedTime)!))))"
+                        totalTime.text = "\(createTimeString(seconds: Int((secondsSinceStart))))"
                         gpsMovingTime.text = "\(createTimeString(seconds: Int((geo.elapsedTime))))"
 
                         if location.course > 315 || location.course <= 45 {

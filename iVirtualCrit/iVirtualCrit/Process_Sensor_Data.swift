@@ -17,13 +17,19 @@ var roundHR: Double = 0
 var roundSpeed: Double = 0
 var roundCadence: Double = 0
 
+var currentHR: Double = 0
+var currentCadence: Double = 0
+var currentSpeed: Double = 0
+var currentScore: Double = 0
+
+
 import Foundation
 
 
 
-var total_distance: Double?
-var speed: String?
-var cadence: String?
+var total_distance: Double = 0
+var speed: String = "0"
+var cadence: String = "0"
 var wheelCircumference: Double = 2105
 var total_moving_time_seconds: Double = 0
 var total_moving_time_string: String = ""
@@ -71,7 +77,7 @@ func processWheelData(withData data :Data) {
                 veloSpeedCounter = 0
                 //print("spd, 0's in a row, set rt_spd to 0")
                 speed = stringer(dbl: 0, len: 1)
-                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed ?? 0])
+                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed])
             }
             return;
         }
@@ -97,7 +103,7 @@ func processWheelData(withData data :Data) {
         rt_WheelTime += b
         totalWheelRevs += a
         total_distance = totalWheelRevs * (wheelCircumference / 1000) * 0.000621371
-        btDistanceForMileCalc = total_distance!
+        btDistanceForMileCalc = total_distance
         
         inRoundBtDistance += (a * (wheelCircumference / 1000) * 0.000621371)
         
@@ -107,9 +113,9 @@ func processWheelData(withData data :Data) {
             total_moving_time_string = createTimeString(seconds: Int(total_moving_time_seconds))
         }
         
-        btAverageSpeed = total_distance! / (total_moving_time_seconds / 60 / 60)
+        btAverageSpeed = total_distance / (total_moving_time_seconds / 60 / 60)
         
-        NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed ?? 0, "dist": stringer(dbl: total_distance ?? 0, len: 2), "mov": total_moving_time_string, "mov_avg": stringer(dbl: btAverageSpeed, len: 1) ])
+        NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed, "dist": stringer(dbl: total_distance, len: 2), "mov": total_moving_time_string, "mov_avg": stringer(dbl: btAverageSpeed, len: 1) ])
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
         veloSpeedCounter = 0
@@ -159,7 +165,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
                 //print("0's in a row, rt.rt_cad is set to 0")
                 //rt.rt_cadence = Double(0)
                 cadence = stringer(dbl: 0, len: 0)
-                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence ?? 0])
+                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence])
             }
             return
         }
@@ -173,8 +179,11 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         
         let crankTimeSeconds = Double(b) / Double(1024)
         //rt.rt_cadence = Double(a) / Double(crankTimeSeconds / Double(60))
-        cadence = stringer(dbl: Double(a) / Double(crankTimeSeconds / Double(60)), len: 0)
-        NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence ?? 0])
+        
+        currentCadence = Double(a) / Double(crankTimeSeconds / Double(60))
+        //string for cadence
+        cadence = stringer(dbl: currentCadence, len: 0)
+        NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence])
         
         inRoundCadence.append(Int(Double(a) / Double(crankTimeSeconds / Double(60))))
         roundCadence = inRoundCadence.average
