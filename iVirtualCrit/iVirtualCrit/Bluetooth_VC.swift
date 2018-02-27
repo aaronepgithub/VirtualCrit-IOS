@@ -148,6 +148,13 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
             print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
+            
+            udString = "Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription)) \(String(describing: peripheral.name))  ERROR \(String(describing: error?.localizedDescription))  \(getFormattedTimeAndDate(d: Date()))\n"
+            udArray.append(udString)
+            let defaults = UserDefaults.standard
+            defaults.set(udArray, forKey: "SavedStringArray")
+            
+            
             return
         }
         guard characteristic.value != nil else {

@@ -645,11 +645,15 @@ class Starter_VC: UITableViewController {
             print("13")
             if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
 
-//CLEAR DB
+            //CLEAR HISTORY
+            udArray = []
+            udArray.append("CLEAR")
+            let defaults = UserDefaults.standard
+            defaults.set(udArray, forKey: "SavedStringArray")
+            //CLEAR DB
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
             refDB.removeValue()
-//CLEAR HISTORY
-            udArray = []
+
 
             
         default:
