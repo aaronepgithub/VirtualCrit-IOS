@@ -146,7 +146,7 @@ class Starter_VC: UITableViewController {
             
             var roundScore = " 0%"
             if roundHR > 50 {
-                roundScore = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
+                roundScore = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100.0), len: 1))%"
             }
             let c = roundScore
             let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
@@ -155,11 +155,11 @@ class Starter_VC: UITableViewController {
             
             print("roundSpeed:  \(roundSpeed)")
             print("roundGeoSpeed:  \(roundGeoSpeed)")
-            var spdToUse = 0.1
+            var spdToUse: Double = 0
             if roundSpeed > spdToUse {spdToUse = roundSpeed}
             if roundSpeed < roundGeoSpeed {spdToUse = roundGeoSpeed}
             
-            if activityType == "RUN" && roundGeoSpeed > 0.1 {
+            if activityType == "RUN" && roundGeoSpeed > Double(0) {
                 spdToUse = roundGeoSpeed
             }
             print("spdToUse:  \(spdToUse)")
@@ -183,7 +183,7 @@ class Starter_VC: UITableViewController {
             if roundHR > bestRoundHR {bestRoundHR = roundHR}
             
             if roundHR > 50 {
-                bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
+                bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100.0
             } else {
                 bestRoundScore = 0
             }
@@ -195,7 +195,7 @@ class Starter_VC: UITableViewController {
             arrResults.append("\(a)\(b)\(c)")
             arrResultsDetails.append("\(d)\(e)\(f)")
             
-            fbPush(rSpeed: stringer(dbl: spdToUse, len: 2), rHeartrate: stringer(dbl: roundHR, len: 2), rScore: stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100), len: 2), rCadence: stringer(dbl: roundCadence, len: 2))
+            fbPush(rSpeed: stringer(dbl: spdToUse, len: 2), rHeartrate: stringer(dbl: roundHR, len: 2), rScore: stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 2), rCadence: stringer(dbl: roundCadence, len: 2))
             
         }
 
@@ -277,6 +277,7 @@ class Starter_VC: UITableViewController {
     @objc func timerInterval() {
         roundActualSeconds += 1
         totalActualSeconds += 1
+        system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         if inRoundBtDistance > 0 && secondsPerRound > 1 {
             if ((system.actualElapsedTime) != nil) {
                 roundSpeed = inRoundBtDistance / Double((system.actualElapsedTime! - (Double(roundsCompleted) * Double(secondsPerRound))) / 60.0 / 60.0)
@@ -296,7 +297,7 @@ class Starter_VC: UITableViewController {
             
             if ((system.actualElapsedTime) != nil) {
                 system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-                totalTime.text = "\(  createTimeString(seconds: Int(round(system.actualElapsedTime!))))"
+                totalTime.text = "\(createTimeString(seconds: Int(round(system.actualElapsedTime!))))"
                 //[ACTUAL ELAPSED TIME]
             }
         }
@@ -330,7 +331,7 @@ class Starter_VC: UITableViewController {
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
             rounds.heartrates.append(roundHR)
-            if roundHR > 10 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
+            if roundHR > 50 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100.0))} else {rounds.scores.append(0)}
             rounds.cadences.append(roundCadence)
             
 //            print("\n")
@@ -389,7 +390,7 @@ class Starter_VC: UITableViewController {
         }
         if roundHR > 0 {
             btHrRnd.text = stringer(dbl: roundHR, len: 0)
-            if roundHR > 10 {btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)} else {btScoreRnd.text = "0"}
+            if roundHR > 50 {btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100.0, len: 1)} else {btScoreRnd.text = "0"}
             
         }
 
@@ -656,7 +657,7 @@ class Starter_VC: UITableViewController {
                 "fb_timAvgCADtotal" : rCadence.toDouble,
                 "fb_timAvgHRtotal" : rScore.toDouble,
                 "fb_timAvgSPDtotal" : rSpeed.toDouble,
-                "fb_timDistanceTraveled" : total_distance ?? 0,
+                "fb_timDistanceTraveled" : total_distance ,
                 "fb_timGroup" : "iOS",
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
@@ -688,8 +689,7 @@ class Starter_VC: UITableViewController {
             }
         }
         
-        let tScore = stringer(dbl: (rounds.heartrates.average / Double(maxHRvalue)) * 100, len: 1)
-        //let tScore = round(((rounds.heartrates.average / Double(maxHRvalue)) * 100) * 100) / 100
+        let tScore = stringer(dbl: (rounds.heartrates.average / Double(maxHRvalue)) * 100.0, len: 1)
         
         let tCadence = stringer(dbl: rounds.cadences.average, len: 1)
         
@@ -714,7 +714,7 @@ class Starter_VC: UITableViewController {
                 "fb_timAvgCADtotal" : tCadence.toDouble,
                 "fb_timAvgHRtotal" : tScore.toDouble,
                 "fb_timAvgSPDtotal" : tSpeed.toDouble,
-                "fb_timDistanceTraveled" : total_distance ?? 0,
+                "fb_timDistanceTraveled" : total_distance,
                 "fb_timGroup" : "iOS",
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
