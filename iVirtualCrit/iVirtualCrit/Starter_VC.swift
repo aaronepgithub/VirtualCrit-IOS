@@ -248,7 +248,7 @@ class Starter_VC: UITableViewController {
     func stopAndSave() {
         //save
         //REMOVE OLD HISTORY
-        udArray = []
+//        udArray = []
         udArray.append(udString)
         let defaults = UserDefaults.standard
         defaults.set(udArray, forKey: "SavedStringArray")
@@ -651,6 +651,8 @@ class Starter_VC: UITableViewController {
 //CLEAR DB
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
             refDB.removeValue()
+//CLEAR HISTORY
+            udArray = []
 
             
         default:

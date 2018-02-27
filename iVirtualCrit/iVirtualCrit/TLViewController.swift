@@ -32,6 +32,13 @@ class TLViewController: UIViewController {
     
     @objc func updateTL(not: Notification) {
         
+        udString = "NEW RECEIVED TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
+        udArray.append(udString)
+        let defaults = UserDefaults.standard
+        defaults.set(udArray, forKey: "SavedStringArray")
+        
+        
+        
         var str = ""
         
         if let userInfo = not.userInfo {
