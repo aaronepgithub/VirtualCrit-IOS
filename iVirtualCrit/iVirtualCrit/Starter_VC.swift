@@ -239,7 +239,16 @@ class Starter_VC: UITableViewController {
             arrResults.append("\(a)\(b)\(c)")
             arrResultsDetails.append("\(d)\(e)\(f)")
             
-            fbPush(rSpeed: stringer(dbl: spdToUse, len: 2), rHeartrate: stringer(dbl: roundHR, len: 2), rScore: stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100), len: 2), rCadence: stringer(dbl: roundCadence, len: 2))
+            if ConnectionCheck.isConnectedToNetwork() {
+                print("Connected to Internet")
+                print("calling fbPush")
+                fbPush(rSpeed: stringer(dbl: spdToUse, len: 2), rHeartrate: stringer(dbl: roundHR, len: 2), rScore: stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100), len: 2), rCadence: stringer(dbl: roundCadence, len: 2))
+            }
+            else{
+                print("disConnected")
+            }
+            
+            
             
         }
 
