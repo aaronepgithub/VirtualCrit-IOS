@@ -107,6 +107,14 @@ class Starter_VC: UITableViewController {
     var arrMileSpeeds = [Double]()
     
     func updateMile() {
+        
+        
+        udString = "NEW MILE, \(getFormattedTimeAndDate(d: Date()))\n"
+        udArray.append(udString)
+        let defaults = UserDefaults.standard
+        defaults.set(udArray, forKey: "SavedStringArray")
+        
+        
         //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))\
         //timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
         //timeElapsedForLastMile = secondsInCurrentMile
@@ -166,7 +174,16 @@ class Starter_VC: UITableViewController {
     var bestRoundPace: String = ""
     
     func createNRArray() {
+        
+        udString = "NEW createNRArray, \(getFormattedTimeAndDate(d: Date()))\n"
+        udArray.append(udString)
+        let defaults = UserDefaults.standard
+        defaults.set(udArray, forKey: "SavedStringArray")
+        
+        
         if roundsCompleted > 0  {
+            
+
             
             let a = "ROUND # \(roundsCompleted)  "
             let b = "\(stringer(dbl: roundHR, len: 1)) HR"
@@ -245,6 +262,8 @@ class Starter_VC: UITableViewController {
 
     func updateViewer_VC() {
         
+        
+        
         if geo.status == "ON/USE" {
             
             //HEADER
@@ -295,6 +314,11 @@ class Starter_VC: UITableViewController {
             
         }
         
+        udString = "NEW SEND VIEW UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
+        udArray.append(udString)
+        let defaults = UserDefaults.standard
+        defaults.set(udArray, forKey: "SavedStringArray")
+        
         NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
     }
     
@@ -343,6 +367,11 @@ class Starter_VC: UITableViewController {
             let tle = "ROUND COMPLETE"
             let clr = "blue"
             
+            udString = "NEW SEND END ROUND TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
+            udArray.append(udString)
+            let defaults = UserDefaults.standard
+            defaults.set(udArray, forKey: "SavedStringArray")
+            
             
                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
             
@@ -374,6 +403,11 @@ class Starter_VC: UITableViewController {
 
             let tle = "DAILY UPDATE"
             let clr = "red"
+            
+            udString = "NEW SEND MID ROUND TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
+            udArray.append(udString)
+            let defaults = UserDefaults.standard
+            defaults.set(udArray, forKey: "SavedStringArray")
             
             NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"),
                 object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)",
@@ -637,7 +671,7 @@ class Starter_VC: UITableViewController {
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
         
-        
+
         
     }
     
