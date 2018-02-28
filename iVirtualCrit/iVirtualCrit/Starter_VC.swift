@@ -370,8 +370,8 @@ class Starter_VC: UITableViewController {
             
             createNRArray()
             
-            let tle = "ROUND COMPLETE"
-            let clr = "blue"
+            //let tle = "ROUND COMPLETE"
+            //let clr = "blue"
             
             udString = "NEW SEND END ROUND TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
             udArray.append(udString)
@@ -379,7 +379,7 @@ class Starter_VC: UITableViewController {
             defaults.set(udArray, forKey: "SavedStringArray")
             
             
-               NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
+               //NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
             
             rounds.speeds.append(roundSpeed)
             rounds.geoSpeeds.append(roundGeoSpeed)
@@ -407,36 +407,35 @@ class Starter_VC: UITableViewController {
         //MID ROUND - DAILY UPDATE
         if ( Int(secondsInRound) == (secondsPerRound / 2) ) {
 
-            let tle = "DAILY UPDATE"
-            let clr = "red"
+            //let tle = "DAILY UPDATE"
+            //let clr = "red"
             
             udString = "NEW SEND MID ROUND TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
             udArray.append(udString)
             let defaults = UserDefaults.standard
             defaults.set(udArray, forKey: "SavedStringArray")
             
-            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"),
-                object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)",
-                    "geodistance": stringer(dbl: geo.distance, len: 2),
-                    "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2),
-                    "totaltime": totalTime.text as Any,
-                    "btmovingtime": btMovingTime.text as Any,
-                    "avgspeed": btMovAvg.text as Any,
-                    "gpsmovingtime": gpsMovingTime.text as Any,
-                    "avgpacegeo": gpsAvergagePace.text as Any,
-                    "avgspeedgeo": gpsAverageSpeed.text as Any])
+//            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"),
+//                object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)",
+//                    "geodistance": stringer(dbl: geo.distance, len: 2),
+//                    "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2),
+//                    "totaltime": totalTime.text as Any,
+//                    "btmovingtime": btMovingTime.text as Any,
+//                    "avgspeed": btMovAvg.text as Any,
+//                    "gpsmovingtime": gpsMovingTime.text as Any,
+//                    "avgpacegeo": gpsAvergagePace.text as Any,
+//                    "avgspeedgeo": gpsAverageSpeed.text as Any])
             
-            if freshFB == true {
-                freshFB = false
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
-                
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
-                
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
-                
-                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
-
-            }
+//            if freshFB == true {
+//                freshFB = false
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
+//
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
+//
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
+//
+//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
+//            }
             
         }  //end mid round
         

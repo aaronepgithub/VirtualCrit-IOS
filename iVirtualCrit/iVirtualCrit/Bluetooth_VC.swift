@@ -178,9 +178,9 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             if bpmValue > 10 {
                 score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
                 inRoundHR.append(Int(bpmValue))
-                
                 roundHR = inRoundHR.average
                 currentHR = Double(bpmValue)
+                currentScore = currentHR / (Double(maxHRvalue) * 100.0)
                 
                 NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr, "score": score])
                 //NotificationCenter.default.post(name: Notification.Name("updateHR"), object: nil)

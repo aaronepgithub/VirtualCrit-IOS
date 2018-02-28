@@ -113,9 +113,10 @@ func processWheelData(withData data :Data) {
             total_moving_time_string = createTimeString(seconds: Int(total_moving_time_seconds))
         }
         
-        btAverageSpeed = total_distance / (total_moving_time_seconds / 60 / 60)
+        btAverageSpeed = total_distance / (total_moving_time_seconds / 60.0 / 60.0)
         
         NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed, "dist": stringer(dbl: total_distance, len: 2), "mov": total_moving_time_string, "mov_avg": stringer(dbl: btAverageSpeed, len: 1) ])
+        
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
         veloSpeedCounter = 0
