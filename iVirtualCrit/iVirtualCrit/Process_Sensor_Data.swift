@@ -105,7 +105,7 @@ func processWheelData(withData data :Data) {
         total_distance = totalWheelRevs * (wheelCircumference / 1000) * 0.000621371
         btDistanceForMileCalc = total_distance
         
-        inRoundBtDistance += (a * (wheelCircumference / 1000) * 0.000621371)
+        inRoundBtDistance += (a * (wheelCircumference / Double(1000.0)) * 0.000621371)
         
         
         if (Double(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour)) > 0.0  {

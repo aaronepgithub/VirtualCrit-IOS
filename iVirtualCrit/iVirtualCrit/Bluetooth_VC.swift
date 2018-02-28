@@ -153,8 +153,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             udArray.append(udString)
             let defaults = UserDefaults.standard
             defaults.set(udArray, forKey: "SavedStringArray")
-            
-            
             return
         }
         guard characteristic.value != nil else {
@@ -187,10 +185,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr, "score": score])
                 //NotificationCenter.default.post(name: Notification.Name("updateHR"), object: nil)
             }
-
-
-            
-            
         }
         
         
@@ -230,10 +224,8 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 print("Characteristic Value is nil on this go-round")
                 return
             }
-            
             if error != nil {
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
-                
         udString = "Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))  \(getFormattedTimeAndDate(d: Date()))\n"
         udArray.append(udString)
         let defaults = UserDefaults.standard
@@ -256,10 +248,9 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 udArray.append(udString)
                 let defaults = UserDefaults.standard
                 defaults.set(udArray, forKey: "SavedStringArray")
-                
-                
                 return
             }
+            
             decodeCSC(withData: characteristic.value!)
         }
     }

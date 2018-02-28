@@ -480,15 +480,18 @@ class Starter_VC: UITableViewController {
             //print(userInfo[AnyHashable("hr")]!)
             
             //better way
-//            if let hrv2 = userInfo["hr"] as? Double {
-//                print("hrv2 as string \(stringer(dbl: hrv2, len: 0))")
-//            }
-            
-            if let hrv = userInfo[AnyHashable("hr")] {
-                //print(String(describing: userInfo[AnyHashable("hr")]!))
-                btHR.text = "\(hrv as! String)"  //HR
-                tabBarController?.tabBar.items?[0].badgeValue = "\(hrv as! String)"
+            if let hrv2 = userInfo["hr"] as? Double {
+                //print("hrv2 as string \(stringer(dbl: hrv2, len: 0))")
+                let hrv3 = Double(hrv2)
+                btHR.text = stringer(dbl: hrv3, len: 0)
+                 tabBarController?.tabBar.items?[0].badgeValue = "\(stringer(dbl: hrv3, len: 0))"
             }
+            
+//            if let hrv = userInfo[AnyHashable("hr")] {
+//                //print(String(describing: userInfo[AnyHashable("hr")]!))
+//                btHR.text = "\(hrv as! String)"  //HR
+//                tabBarController?.tabBar.items?[0].badgeValue = "\(hrv as! String)"
+//            }
             if let scv = userInfo[AnyHashable("score")] {
                 //print(String(describing: userInfo[AnyHashable("score")]!))
                 btScore.text = "\(scv as! String) %"
