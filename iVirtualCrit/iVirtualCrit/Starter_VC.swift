@@ -179,7 +179,7 @@ class Starter_VC: UITableViewController {
             inRoundHR.append(Int(current.currentHR))
             if inRoundHR.count > 1 {
                 roundHR = inRoundHR.average
-                roundScore = roundHR / (Double(maxHRvalue) * 100.0)
+                roundScore = (roundHR / (Double(maxHRvalue))) * 100.0
                 print("roundHR:   \(roundHR)")
                 print("roundScore:   \(roundScore)")
                 btHrRnd.text = "\(stringer(dbl: roundHR, len: 1)) RND HR"
@@ -240,7 +240,8 @@ class Starter_VC: UITableViewController {
         rounds.btSpeeds.append(inRoundBtSpeed)
         rounds.geoSpeeds.append(inRoundGeoSpeed)
         rounds.heartrates.append(roundHR)
-        if roundHR > 50 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
+        let rs = (roundHR/Double(maxHRvalue)) * 100
+        if roundHR > 50 {rounds.scores.append(rs)} else {rounds.scores.append(0)}
         rounds.cadences.append(roundCadence)
         
         roundSpeed = rounds.btSpeeds.last!
@@ -254,7 +255,7 @@ class Starter_VC: UITableViewController {
         let c = "\(stringer(dbl: rounds.scores.last!, len: 1)) % MAX"
         let d = "\(stringer(dbl: rounds.speeds.last!, len: 2))  MPH/BT"
         let e = "\(stringer(dbl: rounds.cadences.last!, len: 1)) RPM"
-        let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 1))  MPH/GEO"
+        let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 2))  MPH/GEO"
 
         arrResults.append("\(a)\(b)\(c)")
         arrResultsDetails.append("\(d)\(e)\(f)")
@@ -613,10 +614,11 @@ class Starter_VC: UITableViewController {
         
         //FOOTER
         if geo.distance > current.totalDistance {
-            arr.append("\(createTimeString(seconds: Int(system.actualElapsedTime)))  \(stringer(dbl: longestDistance, len: 2)) MILES")
+            arr.append("\(createTimeString(seconds: Int(system.actualElapsedTime)))  \(stringer(dbl: geo.distance, len: 2)) MILES")
+            tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: longestDistance, len: 1)) MI"
         } else {
             arr.append("\(createTimeString(seconds: Int(system.actualElapsedTime)))  \(stringer(dbl: current.totalDistance, len: 2)) MILES")
-            tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: longestDistance, len: 2)) MI"
+            tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: longestDistance, len: 1)) MI"
         }
         
         arrSend = arr
@@ -1118,7 +1120,7 @@ class Starter_VC: UITableViewController {
         //var tScore = stringer(dbl: (rounds.heartrates.average / Double(maxHRvalue)) * 100, len: 1)
         //let tScore = round(((rounds.heartrates.average / Double(maxHRvalue)) * 100) * 100) / 100
         
-        var tScore = rounds.heartrates.average / (Double(maxHRvalue) * 100)
+        var tScore = (rounds.heartrates.average / Double(maxHRvalue)) * 100
         tScore = tScore * 100
         tScore = round(tScore)
         tScore = tScore / 100

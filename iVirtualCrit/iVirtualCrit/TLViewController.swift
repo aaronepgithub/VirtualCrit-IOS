@@ -48,11 +48,11 @@ class TLViewController: UIViewController {
             }
             str += "\n"
             self.newBluePoint(titleString: "\(str)")
-            let ti = getFormattedTime()
-            udString += "\(ti)\n\(str)\n"
-            if la != 0 {
-                udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-            }
+//            let ti = getFormattedTime()
+//            udString += "\(ti)\n\(str)\n"
+//            if la != 0 {
+//                udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//            }
         }
     }
     
@@ -66,11 +66,10 @@ class TLViewController: UIViewController {
         nextPt.fill = true
         nextPt.touchUpInside = blueTouch
         self.timeline.points.insert(nextPt, at: 0)
-        udString += "\(ti)\n\(titleString)\n"
-        //TODO:  MAKE SURE THIS ISN'T CAUSING FAILURE
-        if la != 0 {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        udString += "\(ti)\n\(titleString)\n"
+//        if la != 0 {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
         colorToUse = UIColor.blue
         
     }
@@ -88,10 +87,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        udString += "\(ti)\n\(titleString)\n"
-        if la != 0 {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        udString += "\(ti)\n\(titleString)\n"
+//        if la != 0 {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
     
     
@@ -105,10 +104,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        udString += "\(ti)\n\(titleString)\n"
-        if la != 0 {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        udString += "\(ti)\n\(titleString)\n"
+//        if la != 0 {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
 
     
@@ -147,10 +146,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .green
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        udString += "\(ti)\n\(titleString)\n"
-        if la != 0 {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        udString += "\(ti)\n\(titleString)\n"
+//        if la != 0 {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
     func newRedPoint(titleString: String) {
         //print("newRedPoint")
@@ -162,10 +161,10 @@ class TLViewController: UIViewController {
         nextPt.lineColor = .red
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
-        udString += "\(ti)\n\(titleString)\n"
-        if la != 0 {
-            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        }
+//        udString += "\(ti)\n\(titleString)\n"
+//        if la != 0 {
+//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+//        }
     }
 
     
