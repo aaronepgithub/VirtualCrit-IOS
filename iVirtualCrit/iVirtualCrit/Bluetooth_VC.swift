@@ -225,10 +225,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             }
             if error != nil {
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
-        udString = "Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))  \(getFormattedTimeAndDate(d: Date()))\n"
-        udArray.append(udString)
-        let defaults = UserDefaults.standard
-        defaults.set(udArray, forKey: "SavedStringArray")
                 return
             }
             decodeHRValue(withData: characteristic.value!)
@@ -242,11 +238,6 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             
             if error != nil {
                 print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
-                
-                udString = "Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription)) \(getFormattedTimeAndDate(d: Date()))\n"
-                udArray.append(udString)
-                let defaults = UserDefaults.standard
-                defaults.set(udArray, forKey: "SavedStringArray")
                 return
             }
             
@@ -294,15 +285,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?){
-        print("Did Disconnect Peripheral")
-        
-        udString = "DID DISCONNECT PERIPHERAL \(String(describing: peripheral.name))  ERROR \(String(describing: error?.localizedDescription))  \(getFormattedTimeAndDate(d: Date()))\n"
-    udArray.append(udString)
-    let defaults = UserDefaults.standard
-    defaults.set(udArray, forKey: "SavedStringArray")
-        
-        
-        
+        print("Did Disconnect Peripheral")        
         // check to see if the peripheral is connected
         print("did disconnect peripheral:  \(String(describing: peripheral.name))")
         if peripheral.state != .connected {

@@ -68,9 +68,9 @@ class TLViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
         //TODO:  MAKE SURE THIS ISN'T CAUSING FAILURE
-        //                if la != 0 {
-        //                    udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //                }
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
         colorToUse = UIColor.blue
         
     }
@@ -148,9 +148,9 @@ class TLViewController: UIViewController {
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-//        if la != 0 {
-//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-//        }
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
     }
     func newRedPoint(titleString: String) {
         //print("newRedPoint")
@@ -163,9 +163,9 @@ class TLViewController: UIViewController {
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
         udString += "\(ti)\n\(titleString)\n"
-//        if la != 0 {
-//            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-//        }
+        if la != 0 {
+            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        }
     }
 
     
