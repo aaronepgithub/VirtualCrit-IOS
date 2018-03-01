@@ -129,7 +129,7 @@ class Starter_VC: UITableViewController {
         print("current.totalMovingTime: \(current.totalMovingTime)")
         print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
         print("current.currentCadence: \(current.currentCadence)")
-        let str: String = "\(current.currentHR):\(current.currentScore)"
+        let str: String = "\(current.currentHR),\(current.currentScore)"
         print("HR/Score:  \(str)")
         print("geo.speed \(geo.speed)")
         print("geo.elapsedTime \(geo.elapsedTime)")
@@ -177,9 +177,9 @@ class Starter_VC: UITableViewController {
         //CALC ROUND HR/SCORE BEFORE ROUND ENDS
         if current.currentHR > 0 {
             inRoundHR.append(Int(current.currentHR))
-            if inRoundHR.count > 1 {
+            if inRoundHR.count > 2 {
                 roundHR = inRoundHR.average
-                roundScore = (roundHR / (Double(maxHRvalue))) * 100.0
+                roundScore = getScoreFromHR(x: roundHR)
                 print("roundHR:   \(roundHR)")
                 print("roundScore:   \(roundScore)")
                 btHrRnd.text = "\(stringer(dbl: roundHR, len: 1)) RND HR"
@@ -190,7 +190,7 @@ class Starter_VC: UITableViewController {
         //CALC ROUND CAD BEFORE ROUND ENDS
         if current.currentCadence > 0 {
             inRoundCadence.append(Int(current.currentCadence))
-            if inRoundCadence.count > 1 {
+            if inRoundCadence.count > 2 {
                 roundCadence = inRoundCadence.average
                 btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"
                 print("roundCadence:   \(roundCadence)")
@@ -240,8 +240,7 @@ class Starter_VC: UITableViewController {
         rounds.btSpeeds.append(inRoundBtSpeed)
         rounds.geoSpeeds.append(inRoundGeoSpeed)
         rounds.heartrates.append(roundHR)
-        let rs = (roundHR/Double(maxHRvalue)) * 100
-        if roundHR > 50 {rounds.scores.append(rs)} else {rounds.scores.append(0)}
+        rounds.scores.append(getScoreFromHR(x: roundHR))
         rounds.cadences.append(roundCadence)
         
         roundSpeed = rounds.btSpeeds.last!
@@ -317,14 +316,11 @@ class Starter_VC: UITableViewController {
             if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")}
         }
         if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
-        if roundHR > bestRoundHR {bestRoundHR = roundHR}
-        
-        if roundHR > 50 {
-            bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
-        } else {
-            bestRoundScore = 0
+        if roundHR > bestRoundHR {
+            bestRoundHR = roundHR
+            bestRoundScore = getScoreFromHR(x: bestRoundHR)
         }
-        
+
         print("roundSpeed:  \(roundSpeed)")
         print("after...bestRoundSpeed:  \(bestRoundSpeed)")
         
@@ -1120,11 +1116,7 @@ class Starter_VC: UITableViewController {
         //var tScore = stringer(dbl: (rounds.heartrates.average / Double(maxHRvalue)) * 100, len: 1)
         //let tScore = round(((rounds.heartrates.average / Double(maxHRvalue)) * 100) * 100) / 100
         
-        var tScore = (rounds.heartrates.average / Double(maxHRvalue)) * 100
-        tScore = tScore * 100
-        tScore = round(tScore)
-        tScore = tScore / 100
-        
+        let tScore = getScoreFromHR(x: rounds.heartrates.average)
         
         //let tCadence = stringer(dbl: rounds.cadences.average, len: 1)
         let tCadence = rounds.cadences.average
