@@ -169,7 +169,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             
             current.currentHR = bpmValue
             current.currentScore = getScoreFromHR(x: Double(current.currentHR))
-            let str: String = "\(current.currentHR):\(current.currentScore)"
+            let str: String = "\(current.currentHR):\(stringer(dbl: current.currentScore, len: 0))"
             out_Btn1.setTitle(str, for: .normal)
             
             

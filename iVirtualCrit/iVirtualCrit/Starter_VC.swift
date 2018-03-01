@@ -50,12 +50,32 @@ class Starter_VC: UITableViewController {
     var timerIntervalValue: Double = 1
     
     var inRoundGeoDistance: Double = 0
+    var inRoundBtDistance: Double = 0
+    var inRoundGeoSpeed: Double = 0
+    var inRoundBtSpeed: Double = 0
+    var roundSpeed: Double = 0 //best between bt and geo
+
+    var inRoundHR = [Int]()
+    var inRoundCadence = [Int]()
+    var roundHR: Double = 0
+    var roundScore: Double = 0
+    var roundCadence: Double = 0
+    
+    
     var secondsPerRound: Int = 300
     var roundGeoSpeed: Double = 0
     
     var roundsCompleted: Double = 0
     var currentRound: Double = 1.0
     var currentMile: Double = 1.0
+    
+    var bestRoundSpeed: Double = 0
+    var bestRoundHR: Double = 0
+    var bestRoundCadence: Double = 0
+    var bestRoundScore: Double = 0
+    var bestRoundPace: String = ""
+    
+    
     var speedForLastMile: Double = 0
     var paceForLastMile: Double = 0
     var fastestMile: Double = 0 //MPH
@@ -89,12 +109,10 @@ class Starter_VC: UITableViewController {
         
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         
-       
         secondsInCurrentMile += 1
         secondsSinceStart = round(system.actualElapsedTime)
-        
-        
-        //system.actualElapsedTime = secondsSinceStart
+        secondsInRound = (secondsSinceStart - (Double(secondsPerRound) * roundsCompleted)) - 1
+
         totalTime.text = "\(createTimeString(seconds: Int(round(system.actualElapsedTime))))"
         
         print("each second:  \(createTimeString(seconds: Int(round(system.actualElapsedTime))))")
@@ -119,15 +137,61 @@ class Starter_VC: UITableViewController {
         print("secondsInRound:  \(secondsInRound)")
         print("currentRound:  \(currentRound)")
         
-        if secondsSinceStart > currentRound * Double(secondsPerRound) {
-            print("NEW ROUND, ROUND \(roundsCompleted) COMPLETE")
+        //CALC ROUND SPEEDS BEFORE ROUND ENDS
+        if current.totalDistance > 0 {
+            inRoundBtDistance = current.totalDistance - distanceAtStartOfRoundBT
+            if inRoundBtDistance > 0 {
+                inRoundBtSpeed = inRoundBtDistance / (secondsInRound / 60.0 / 60.0)
+                print("inRoundBtSpeed:   \(inRoundBtSpeed)")
+                btSpdRnd.text = "\(stringer(dbl: inRoundBtSpeed, len: 1))"
+            } else {inRoundBtSpeed = 0}
+        }
+        
+        if geo.distance > 0 {
+            inRoundGeoDistance = geo.distance - distanceAtStartOfRoundGEO
+            if inRoundGeoDistance > 0 {
+                inRoundGeoSpeed = inRoundGeoDistance / (secondsInRound / 60.0 / 60.0)
+                print("inRoundGeoSpeed:   \(inRoundGeoSpeed)")
+                gpsRoundSpeed.text = "\(stringer(dbl: inRoundGeoSpeed, len: 1))"
+            } else {inRoundGeoSpeed = 0}
+        }
+        
+
+        
+        //CALC ROUND HR/SCORE BEFORE ROUND ENDS
+        if current.currentHR > 0 {
+            inRoundHR.append(Int(current.currentHR))
+            if inRoundHR.count > 1 {
+                roundHR = inRoundHR.average
+                roundScore = roundHR / (Double(maxHRvalue) * 100.0)
+                print("roundHR:   \(roundHR)")
+                print("roundScore:   \(roundScore)")
+            }
+        }
+        
+        //CALC ROUND CAD BEFORE ROUND ENDS
+        if current.currentCadence > 0 {
+            inRoundCadence.append(Int(current.currentCadence))
+            if inRoundCadence.count > 1 {
+                roundCadence = inRoundCadence.average
+                print("roundCadence:   \(roundCadence)")
+            }
+        }
+        
+
+        
+        //NEW ROUND IDENTIFIED
+        if secondsSinceStart >= currentRound * Double(secondsPerRound) {
+            print("\nNEW ROUND, ROUND \(roundsCompleted) COMPLETE")
             print("SEC IN ROUND:  \(secondsInRound)")
             print("secondsSinceStart:  \(secondsSinceStart)")
             
-            //CALC THIS
-            //secondsInRound = xxyy
+            updateRound()
             roundsCompleted += 1
             currentRound += 1
+            
+            distanceAtStartOfRoundBT = current.totalDistance
+            distanceAtStartOfRoundGEO = geo.distance
         }
         
         //TEST FOR NEW MILE
@@ -137,8 +201,96 @@ class Starter_VC: UITableViewController {
             updateMile()
         }
         
-    }  //END SECOND TIMER
+        //CREATE DATA FOR VIEWER_VC
+        createViewerArray()
+
+    }
+    //END SECOND TIMER
     
+
+    //MARK:  UPDATEROUND at ROUND COMPLETE
+    func updateRound() {
+        
+        print("UPDATE ROUND")
+        rounds.btSpeeds.append(inRoundBtSpeed)
+        rounds.geoSpeeds.append(inRoundGeoSpeed)
+        rounds.heartrates.append(roundHR)
+        if roundHR > 50 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
+        rounds.cadences.append(roundCadence)
+        
+        roundSpeed = rounds.btSpeeds.last!
+        if rounds.geoSpeeds.last! > roundSpeed {roundSpeed = rounds.geoSpeeds.last!}
+        
+        let roundPace = calcMinPerMile(mph: roundSpeed)
+        
+        
+        rounds.speeds.append(roundSpeed)
+        
+        //ROUNDCOMPLETE POINT
+        newRoundPoint(mileString: "ROUND COMPLETE\n\(stringer(dbl: inRoundBtSpeed, len: 1)) SPEED(BT)\n\(stringer(dbl: inRoundGeoSpeed, len: 1)) SPEED(GEO)\n\(stringer(dbl: roundHR, len: 1)) HR\n\(stringer(dbl: rounds.scores.last!, len: 1))% SCORE\n\(roundPace) PACE")
+        
+        calcBestRoundMetrics()
+        
+        print("\n")
+        print("End of Round for HR, Spd, Cad, GeoSpd")
+        dump(rounds.speeds)
+        dump(rounds.heartrates)
+        dump(rounds.scores)
+        dump(rounds.cadences)
+        dump(rounds.btSpeeds)
+        dump(rounds.geoSpeeds)
+        print("\n")
+
+        inRoundCadence = []
+        inRoundHR = []
+    }
+    
+    
+    // CALC BESTROUND METRICS
+    func calcBestRoundMetrics() {
+        print("CALCBESTROUND METRICS")
+        print("roundSpeed:  \(roundSpeed)")
+        print("bestRoundSpeed:  \(bestRoundSpeed)")
+        
+        if roundSpeed > bestRoundSpeed {
+            
+            bestRoundSpeed = roundSpeed
+            bestRoundPace = calcMinPerMile(mph: roundSpeed)
+            if bestRoundSpeed == 0 {bestRoundPace = "00:00"}
+            
+            if audioStatus == "ON" {
+                if roundHR > bestRoundHR {
+                    Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
+                } else {
+                    Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
+                }
+            }
+        } else {
+            if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")}
+        }
+        if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
+        if roundHR > bestRoundHR {bestRoundHR = roundHR}
+        
+        if roundHR > 50 {
+            bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
+        } else {
+            bestRoundScore = 0
+        }
+        
+        print("roundSpeed:  \(roundSpeed)")
+        print("after...bestRoundSpeed:  \(bestRoundSpeed)")
+        
+        //MY BEST ROUNDS POINT
+        newBestRoundPoint(mileString: "MY BEST ROUNDS\n\(stringer(dbl: bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: bestRoundHR, len: 1)) HR\n\(stringer(dbl: bestRoundScore, len: 1)) SCORE\n\(bestRoundPace) PACE")
+        
+        print("\nMY BEST ROUNDS\n\(stringer(dbl: bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: bestRoundHR, len: 1)) HR\n\(stringer(dbl: bestRoundScore, len: 1)) SCORE\n\(bestRoundPace) PACE\n")
+        
+    }
+    
+    
+    
+    
+    //MARK:  UPDATEMILE
     func updateMile() {
         
         speedForLastMile = 1.0 / (secondsInCurrentMile / 60.0 / 60.0)
@@ -173,15 +325,10 @@ class Starter_VC: UITableViewController {
         newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
         print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
+        
+        distanceAtStartOfMile = 0
     }
-    
-    //var availableDataElementsToView = ["Total Elapsed Time", "GPS Moving Time", "GPS Speed", "GPS Average Speed", "GPS Average Pace", "GPS Direction", "GPS Speed - Round", "GPS Pace - Round", "GPS Distance", "Heartrate", "Speed", "Cadence", "%MAX Heartrate", "Pace", "Heartrate - Round", "Speed - Round", "Cadence - Round", "%MAX Heartrate - Round", "Pace - Round", "Distance", "Average Speed", "Average Pace", "Moving Time"]
-    
-    
-
-    
-    
-
+    //END UPDATEMILE
     
     func newMilePoint(mileString: String) {
         NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "green"])
@@ -191,8 +338,17 @@ class Starter_VC: UITableViewController {
         NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "yellow"])
     }
     
+    func newBestRoundPoint(mileString: String) {
+        NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "blue"])
+    }
     
     
+
+    
+    
+    
+    //var availableDataElementsToView = ["Total Elapsed Time", "GPS Moving Time", "GPS Speed", "GPS Average Speed", "GPS Average Pace", "GPS Direction", "GPS Speed - Round", "GPS Pace - Round", "GPS Distance", "Heartrate", "Speed", "Cadence", "%MAX Heartrate", "Pace", "Heartrate - Round", "Speed - Round", "Cadence - Round", "%MAX Heartrate - Round", "Pace - Round", "Distance", "Average Speed", "Average Pace", "Moving Time"]
+
     //var actualTimeAtMileStart: Date?
     //var timeElapsedForLastMile: Double = 0
 
@@ -258,11 +414,7 @@ class Starter_VC: UITableViewController {
 //
 //    }
     
-    var bestRoundSpeed: Double = 0
-    var bestRoundHR: Double = 0
-    var bestRoundCadence: Double = 0
-    var bestRoundScore: Double = 0
-    var bestRoundPace: String = ""
+   
     
 //    func createNRArray() {
 //
@@ -358,64 +510,116 @@ class Starter_VC: UITableViewController {
         dump(udArray)
     }
     
-    
-
-    func updateViewer_VC() {
-
-        if geo.status == "ON/USE" {
-            
-            //HEADER
-            if geo.distance < 0.1 {
-                arr.append("\(getFormattedTime(d: Date()))")
-            } else {
-             arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG") AVG MPH")
-            }
-            
-            
-            //3 VALUES
-            if btHR.text == " " {arr.append("\(gpsAvergagePace.text ?? "00")")} else {arr.append("\(btHR.text ?? "00")")}
-            
-            arr.append("\(gpsMovingSpeed.text ?? "00.0")")
-            arr.append("\(gpsMovingPace.text ?? "00")")
-            //3 LABELS
-            if (btHR.text == " " || btHR.text == "") {
-                arr.append("PACE\n(AVG)")
-                
-            } else {
-                arr.append("\(btScore.text ?? "00")")
-                
-            }
-            
-            arr.append("SPD\nMPH")
-            arr.append("PACE\n(MOV)")
-            //FOOTER
-            arr.append("\(totalTime.text ?? "00:00:00")  \(gpsDistance.text ?? "0.00 MILES")")
-            arrSend = arr
-            arr = []
-            
+    func createViewerArray() {
+        
+        //ADD SUBS WHEN USING GEO...
+        
+        //HDR
+        if geo.status == "ON/USE" || current.totalMovingTime == 0 {
+            arr.append("\(createTimeString(seconds: Int(geo.elapsedTime)))  \(stringer(dbl: geo.avgSpeed, len: 1)) AVG")
         } else {
-           
-            //HDR
-            arr.append("\(btMovingTime.text ?? "00:00:00")  \(btMovAvg.text ?? "00.0 AVG")")
-            //3 VALS
-            arr.append("\(btHR.text ?? "00")")
-            arr.append("\(btMovingSpeed.text ?? "00.0")")
-            arr.append("\(btMovingCadence.text ?? "00")")
-            //3 LBLS
-            arr.append("\(btScore.text ?? "00")\nHR")
-            arr.append("SPD\nMPH")
-            arr.append("CAD\nRPM")
-            //FOOTER
-            arr.append("\(totalTime.text ?? "00:00:00")  \(btDistance.text ?? "0.00 MILES")")
-            arrSend = arr
-            arr = []
-            
+            arr.append("\(createTimeString(seconds: Int(current.totalMovingTime)))  \(stringer(dbl: current.totalAverageSpeed, len: 1)) AVG")
         }
         
-  
+        //3 VALS
+        arr.append("\(stringer(dbl: Double(current.currentHR), len: 0))")
+        tabBarController?.tabBar.items?[0].badgeValue = "\(stringer(dbl: Double(current.currentHR), len: 0))"
         
-        //NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
+        if geo.status == "ON/USE" || current.totalMovingTime == 0 {
+            arr.append("\(stringer(dbl: geo.speed, len: 1))")
+            tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: geo.speed, len: 1))"
+        } else {
+            arr.append("\(stringer(dbl: current.currentSpeed, len: 1))")
+            tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: current.currentSpeed, len: 1))"
+        }
+        
+        if activityType == "RUN" {
+            arr.append("\(geo.pace)")
+        } else {
+            arr.append("\(stringer(dbl: current.currentCadence, len: 0))")
+            tabBarController?.tabBar.items?[3].badgeValue = "\(stringer(dbl: current.currentCadence, len: 0))"
+        }
+        
+        //3 LBLS
+        arr.append("\(stringer(dbl: current.currentScore, len: 0))%\nHR")
+        arr.append("SPD\nMPH")
+        
+        if activityType == "RUN" {
+            arr.append("PACE")
+        } else {
+            arr.append("CAD\nRPM")
+        }
+        
+        //FOOTER
+        if geo.distance > current.totalDistance {
+            arr.append("\(createTimeString(seconds: Int(system.actualElapsedTime)))  \(stringer(dbl: geo.distance, len: 2)) MILES")
+        } else {
+            arr.append("\(createTimeString(seconds: Int(system.actualElapsedTime)))  \(stringer(dbl: current.totalDistance, len: 2)) MILES")
+            tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: current.totalDistance, len: 2)) MI"
+        }
+        
+        arrSend = arr
+        arr = []
     }
+
+    
+    //NO LONGER USED
+//    func updateViewer_VC() {
+//
+//        if geo.status == "ON/USE" {
+//
+//            //HEADER
+//            if geo.distance < 0.1 {
+//                arr.append("\(getFormattedTime(d: Date()))")
+//            } else {
+//             arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG") AVG MPH")
+//            }
+//
+//
+//            //3 VALUES
+//            if btHR.text == " " {arr.append("\(gpsAvergagePace.text ?? "00")")} else {arr.append("\(btHR.text ?? "00")")}
+//
+//            arr.append("\(gpsMovingSpeed.text ?? "00.0")")
+//            arr.append("\(gpsMovingPace.text ?? "00")")
+//            //3 LABELS
+//            if (btHR.text == " " || btHR.text == "") {
+//                arr.append("PACE\n(AVG)")
+//
+//            } else {
+//                arr.append("\(btScore.text ?? "00")")
+//
+//            }
+//
+//            arr.append("SPD\nMPH")
+//            arr.append("PACE\n(MOV)")
+//            //FOOTER
+//            arr.append("\(totalTime.text ?? "00:00:00")  \(gpsDistance.text ?? "0.00 MILES")")
+//            arrSend = arr
+//            arr = []
+//
+//        } else {
+//
+//            //HDR
+//            arr.append("\(btMovingTime.text ?? "00:00:00")  \(btMovAvg.text ?? "00.0 AVG")")
+//            //3 VALS
+//            arr.append("\(btHR.text ?? "00")")
+//            arr.append("\(btMovingSpeed.text ?? "00.0")")
+//            arr.append("\(btMovingCadence.text ?? "00")")
+//            //3 LBLS
+//            arr.append("\(btScore.text ?? "00")\nHR")
+//            arr.append("SPD\nMPH")
+//            arr.append("CAD\nRPM")
+//            //FOOTER
+//            arr.append("\(totalTime.text ?? "00:00:00")  \(btDistance.text ?? "0.00 MILES")")
+//            arrSend = arr
+//            arr = []
+//
+//        }
+//
+//
+//
+//        //NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
+//    }
     
     
     
@@ -1128,16 +1332,11 @@ extension Starter_VC: CLLocationManagerDelegate {
                         la = (self.locations.last?.coordinate.latitude)!
                         lo = (self.locations.last?.coordinate.longitude)!
                         geo.distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
-                        inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
+                        //inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         
                         lastLocationTimeStamp = location.timestamp
                         
-                        var avgGeoSpeedThisRound = 0.0
-                        if secondsInRound > 1 && inRoundGeoDistance > 0 {
-                            avgGeoSpeedThisRound =  inRoundGeoDistance / (secondsInRound / 60.0 / 60.0)
-                            roundGeoSpeed = avgGeoSpeedThisRound
-                            gpsRoundSpeed.text = "\(stringer(dbl: avgGeoSpeedThisRound, len: 1))"
-                        }
+
 
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)

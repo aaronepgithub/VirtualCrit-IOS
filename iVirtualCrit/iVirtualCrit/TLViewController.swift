@@ -171,17 +171,17 @@ class TLViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         print("TL will Disappear")
-        NotificationCenter.default.removeObserver(self)
+        //NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("TL will Appear")
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
         
         //func newTouchAction(point:ISPoint) {
             //print("again, \(ISPoint.self)")

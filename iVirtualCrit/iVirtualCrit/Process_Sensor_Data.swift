@@ -6,14 +6,18 @@
 //  Copyright © 2018 aaronep. All rights reserved.
 //
 
-//var inRoundHR = [Int]()
-//var inRoundCadence = [Int]()
+
 //var inRoundBtDistance: Double = 0
 //var btDistanceForMileCalc:Double = 0
 //var btAverageSpeed: Double = 0
 //
 //
+//var inRoundHR = [Int]()
+//var inRoundCadence = [Int]()
 //var roundHR: Double = 0
+//var roundCadence: Double = 0
+
+
 //var roundSpeed: Double = 0
 //var roundCadence: Double = 0
 //

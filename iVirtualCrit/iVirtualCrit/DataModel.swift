@@ -23,7 +23,6 @@ struct current {
 
 struct geo {
     static var status: String = "ON"
-    //static var startTime: Date?
     static var elapsedTime: Double = 0
     static var distance: Double = 0
     static var speed: Double = 0
@@ -32,11 +31,6 @@ struct geo {
     static var avgSpeed: Double = 0
     static var avgPace: String = "0"
 }
-
-
-
-
-
 
 
 struct system {
@@ -49,11 +43,12 @@ struct system {
 
 
 struct rounds {
-    static var geoDistancesPerRound = [Double]()
-    static var btDistancesPerRound = [Double]()
-    
+    //static var geoDistancesPerRound = [Double]()
+    //static var btDistancesPerRound = [Double]()
+
     static var speeds = [Double]()
     static var geoSpeeds = [Double]()
+    static var btSpeeds = [Double]()
     static var heartrates = [Double]()
     static var cadences = [Double]()
     static var scores = [Double]()
