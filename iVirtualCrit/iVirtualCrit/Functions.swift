@@ -66,6 +66,26 @@ func getScoreFromHR(x: Double) -> Double {
     }
 }
 
+//TODO  USE THIS
+func getScoreFromHR_int(xx: Int) -> Double {
+    if xx == 0 {
+        return 0
+    } else {
+        let y = Double(maxHRvalue)
+        let z = Double(100)
+        return Double(Double(xx) / y) * z
+    }
+}
+func getScoreFromHR_dbl(x: Double) -> Double {
+    if x == 0 {
+        return 0
+    } else {
+        let y = Double(maxHRvalue)
+        let z = Double(100)
+        return (x / y) * z
+    }
+}
+
 
 func stringer(dbl: Double, len: Int) -> String {
     if dbl.isNaN == true || dbl.isInfinite == true  {
