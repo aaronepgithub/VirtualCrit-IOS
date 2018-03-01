@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-var udString: String = "History \n"
+var udString: String = "\n\nSESSION TIMELINE \n"
 var udArray = [String]()
 
 class TLViewController: UIViewController {
