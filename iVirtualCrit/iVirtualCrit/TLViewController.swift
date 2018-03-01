@@ -31,14 +31,6 @@ class TLViewController: UIViewController {
     var colorToUse: UIColor = UIColor.blue
     
     @objc func updateTL(not: Notification) {
-        
-        udString = "NEW RECEIVED TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
-        udArray.append(udString)
-        let defaults = UserDefaults.standard
-        defaults.set(udArray, forKey: "SavedStringArray")
-        
-        
-        
         var str = ""
         
         if let userInfo = not.userInfo {
@@ -54,91 +46,32 @@ class TLViewController: UIViewController {
                 let txt = "\(nt as! String)\n"
                 str += txt
             }
-            
-            if let n2 = userInfo[AnyHashable("hr")] {
-                let txt = "\(n2 as! String)  BPM \n"
-                if n2 as! String != "0.0" {str += txt}
-            }
-            if let n7 = userInfo[AnyHashable("score")] {
-                let txt = "\(n7 as! String)  %MAX \n"
-                if n7 as! String != "0.0" {str += txt;str += "\n";}
-                
-            }
-            
-            
-            
-            if let n3 = userInfo[AnyHashable("speed")] {
-                let txt = "\(n3 as! String)  MPH \n"
-                if n3 as! String != "0.00" {str += txt}
-            }
-            if let n5 = userInfo[AnyHashable("geospeed")] {
-                let txt = "\(n5 as! String)  MPH (GPS)\n"
-                if n5 as! String != "0.00" {str += txt}
-            }
-            if let n6 = userInfo[AnyHashable("pace")] {
-                let txt = "\(n6 as! String) MIN/MILE \n"
-                if n6 as! String != "00:00" {str += txt;str += "\n";}
-            }
-            
-            
-            
-            if let n4 = userInfo[AnyHashable("cadence")] {
-                let txt = "\(n4 as! String)  RPM \n"
-                if n4 as! String != "0.0" {str += txt;str += "\n";}
-            }
-            
-            //MID ROUND DAILY UPDATE
-            if let n10 = userInfo[AnyHashable("totaltime")] {
-                let txt = "\(n10 as! String) TOTAL\n"
-                str += txt
-                str += "\n"
-            }
-            if let n11 = userInfo[AnyHashable("btmovingtime")] {
-                let txt = "\(n11 as! String) MOVING\n"
-                if n11 as! String != " " {str += txt}
-                
-            }
-            if let n12 = userInfo[AnyHashable("gpsmovingtime")] {
-                let txt = "\(n12 as! String) MOVING(G)\n"
-                if n12 as! String != " " {str += txt;str += "\n";}
-            }
-            
-            if let n13 = userInfo[AnyHashable("avgspeed")] {
-                let txt = "\(n13 as! String)  AVG SPD\n"
-                if n13 as! String != " " {str += txt}
-            }
-            if let n14 = userInfo[AnyHashable("avgspeedgeo")] {
-                let txt = "\(n14 as! String)  AVG SPD(G)\n"
-                if n14 as! String != " " {str += txt}
-            }
-            if let n14b = userInfo[AnyHashable("avgpacegeo")] {
-                let txt = "\(n14b as! String)  AVG PACE(G)\n"
-                if n14b as! String != " " {str += txt}
-            }
-            // END MID ROUND DAILY UPDATE
-            
-            
-            
-            if let n9 = userInfo[AnyHashable("btdistance")] {
-                let txt = "\(n9 as! String)  MILES\n"
-                if n9 as! String != "0.00" {str += txt}
-            }
-            if let n8 = userInfo[AnyHashable("geodistance")] {
-                let txt = "\(n8 as! String)  MILES(G) \n"
-                if n8 as! String != "0.00" {str += txt}
-            }
-
-
             str += "\n"
-            
             self.newBluePoint(titleString: "\(str)")
             let ti = getFormattedTime()
             udString += "\(ti)\n\(str)\n"
-                    if la != 0 {
-                        udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-                    }
-            
+            if la != 0 {
+                udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+            }
         }
+    }
+    
+    func newBluePoint(titleString: String) {
+        //print("newBluePoint")
+        let ti = getFormattedTime()
+        let nextPt = ISPoint(title: titleString)
+        nextPt.description = ti
+        nextPt.pointColor = colorToUse
+        nextPt.lineColor = colorToUse
+        nextPt.fill = true
+        nextPt.touchUpInside = blueTouch
+        self.timeline.points.insert(nextPt, at: 0)
+        udString += "\(ti)\n\(titleString)\n"
+        //TODO:  MAKE SURE THIS ISN'T CAUSING FAILURE
+        //                if la != 0 {
+        //                    udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
+        //                }
+        colorToUse = UIColor.blue
         
     }
     
@@ -202,26 +135,7 @@ class TLViewController: UIViewController {
     }
     
     
-    func newBluePoint(titleString: String) {
-        //print("newBluePoint")
-        let ti = getFormattedTime()
-        let nextPt = ISPoint(title: titleString)
-        nextPt.description = ti
-//        nextPt.pointColor = .blue
-//        nextPt.lineColor = .blue
-        nextPt.pointColor = colorToUse
-        nextPt.lineColor = colorToUse
-        nextPt.fill = true
-        nextPt.touchUpInside = blueTouch
-        self.timeline.points.insert(nextPt, at: 0)
-        udString += "\(ti)\n\(titleString)\n"
-        //TODO:  MAKE SURE THIS ISN'T CAUSING FAILURE
-//                if la != 0 {
-//                    udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-//                }
-        colorToUse = UIColor.blue
-        
-    }
+
     
     func newGreenPoint(titleString: String) {
         //print("newGreenPoint")

@@ -143,16 +143,11 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
     }
     
     
-    var hr: String = "0"
+    //var hr: String = "0"
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
             print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
-            
-            udString = "Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription)) \(String(describing: peripheral.name))  ERROR \(String(describing: error?.localizedDescription))  \(getFormattedTimeAndDate(d: Date()))\n"
-            udArray.append(udString)
-            let defaults = UserDefaults.standard
-            defaults.set(udArray, forKey: "SavedStringArray")
             return
         }
         guard characteristic.value != nil else {
@@ -166,25 +161,29 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             var bpmValue : Int = 0
             if ((array[0] & 0x01) == 0) {
                 bpmValue = Int(array[1])
-                hr = stringer(dbl: Double(bpmValue), len: 0)
+                //hr = stringer(dbl: Double(bpmValue), len: 0)
             } else {
                 bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
-                hr = stringer(dbl: Double(bpmValue), len: 0)
+                //hr = stringer(dbl: Double(bpmValue), len: 0)
             }
-
             
-            var score = "0"
-            out_Btn1.setTitle(String(bpmValue), for: .normal)
-            if bpmValue > 10 {
-                score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
-                inRoundHR.append(Int(bpmValue))
-                roundHR = inRoundHR.average
-                currentHR = Double(bpmValue)
-                currentScore = currentHR / (Double(maxHRvalue) * 100.0)
-                
-                NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr, "score": score])
-                //NotificationCenter.default.post(name: Notification.Name("updateHR"), object: nil)
-            }
+            current.currentHR = bpmValue
+            current.currentScore = getScoreFromHR(x: Double(current.currentHR))
+            let str: String = "\(current.currentHR):\(current.currentScore)"
+            out_Btn1.setTitle(str, for: .normal)
+            
+            
+
+//            if bpmValue > 50 {
+//                //score = stringer(dbl: ((Double(bpmValue) / Double(maxHRvalue)) * Double(100)), len: 1)
+//                inRoundHR.append(Int(bpmValue))
+//                roundHR = inRoundHR.average
+//                currentHR = Double(bpmValue)
+//                currentScore = currentHR / (Double(maxHRvalue) * 100.0)
+//
+//                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["hr": hr, "score": score])
+//                //NotificationCenter.default.post(name: Notification.Name("updateHR"), object: nil)
+//            }
         }
         
         

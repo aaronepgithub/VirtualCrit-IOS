@@ -56,6 +56,16 @@ func getTimeIntervalSince(d1: Date, d2: Date) -> Double {
     return d2.timeIntervalSince(d1 as Date!)
 }
 
+func getScoreFromHR(x: Double) -> Double {
+    if x == 0 {
+        return 0
+    } else {
+        let y = Double(maxHRvalue)
+        let z = Double(100)
+        return (x / y) * z
+    }
+}
+
 
 func stringer(dbl: Double, len: Int) -> String {
     if dbl.isNaN == true || dbl.isInfinite == true  {

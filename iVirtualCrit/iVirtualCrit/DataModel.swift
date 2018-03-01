@@ -8,6 +8,37 @@
 
 import Foundation
 
+
+struct current {
+    static var currentHR: Int = 0
+    static var currentScore: Double = 0
+    static var currentSpeed: Double = 0
+    static var currentCadence: Double = 0
+    
+    static var totalDistance: Double = 0
+    static var segmentDistance: Double = 0
+    static var totalMovingTime: Double = 0
+    static var totalAverageSpeed: Double = 0
+}
+
+struct geo {
+    static var status: String = "ON"
+    //static var startTime: Date?
+    static var elapsedTime: Double = 0
+    static var distance: Double = 0
+    static var speed: Double = 0
+    static var pace: String = "0"
+    static var direction: String = "X"
+    static var avgSpeed: Double = 0
+    static var avgPace: String = "0"
+}
+
+
+
+
+
+
+
 struct system {
     static var status: String = "STOPPED"
     static var startTime: Date?
@@ -15,17 +46,7 @@ struct system {
     static var actualElapsedTime: Double = 0
 }
 
-struct geo {
-    static var status: String = "ON"
-    static var startTime: Date?
-    static var elapsedTime: Double = 0
-    static var distance: Double = 0
-    static var speed: Double?
-    static var pace: String = "0"
-    static var direction: String = "X"
-    static var avgSpeed: Double?
-    static var avgPace: String = "0"
-}
+
 
 struct rounds {
     static var geoDistancesPerRound = [Double]()
