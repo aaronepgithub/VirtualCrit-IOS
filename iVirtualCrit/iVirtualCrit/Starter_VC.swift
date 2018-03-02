@@ -197,15 +197,17 @@ class Starter_VC: UITableViewController {
         
         //CALC ROUND CAD BEFORE ROUND ENDS
         processUD(st: "CALC ROUND CAD BEFORE ROUND ENDS")
-        if current.currentCadence > 0 {
+        if current.currentCadence > 0 && current.currentCadence.isNaN == false {
             inRoundCadence.append(Int(current.currentCadence))
             if inRoundCadence.count > 2 {
                 //roundCadence = inRoundCadence.average
                 
                 if inRoundCadence.average > 1 {
                     roundCadence = inRoundCadence.average
+                    print("round cadence:  \(roundCadence)")
                 } else {
                     roundCadence = 1
+                    print("round cadence:  \(roundCadence)")
                 }
                 
                 btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"

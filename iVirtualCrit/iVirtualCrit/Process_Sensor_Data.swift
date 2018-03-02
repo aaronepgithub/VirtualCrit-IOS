@@ -137,10 +137,12 @@ func processWheelData(withData data :Data) {
         //btAverageSpeed = total_distance / (total_moving_time_seconds / 60.0 / 60.0)
         
         //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed, "dist": stringer(dbl: total_distance, len: 2), "mov": total_moving_time_string, "mov_avg": stringer(dbl: btAverageSpeed, len: 1) ])
-        
+        if current.currentSpeed.isNaN == true {
+            current.currentSpeed = 0
+        }
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
-        //veloSpeedCounter = 0
+        veloSpeedCounter = 0
     }
     
 }
@@ -219,6 +221,9 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         //NotificationCenter.default.post(name: Notification.Name("cadence"), object: nil)
         //print("rt.rt_cadence - notify, revs, time:  \(rt.rt_cadence), \(a) \(b)");
         
+        if current.currentCadence.isNaN == true {
+            current.currentCadence = 0
+        }
         oldCrankRevolution = crankRevolution
         oldCrankEventTime = crankEventTime
         veloCadCounter = 0
