@@ -126,16 +126,20 @@ class Starter_VC: UITableViewController {
         let s2 = currentRound * secondsPerRound
         secondsInCurrentRound = s1 - s2
         
+        print("secondsInCurrentRound:  \(secondsInCurrentRound)")
+        print("secondsSinceStart:  \(secondsSinceStart)")
+        
         //NEW ROUND IDENTIFIER
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
         if secondsInCurrentRound == secondsPerRound {
             print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
-            print("SEC IN ROUND:  \(secondsInCurrentRound)")
-            print("secondsSinceStart:  \(secondsSinceStart)")
             roundsCompleted += 1
             currentRound += 1
             distanceAtStartOfRoundBT = current.totalDistance
             distanceAtStartOfRoundGEO = geo.distance
+            inRoundCadence = []
+            inRoundHR = []
+            
             updateRound()
             return
         }
@@ -167,12 +171,12 @@ class Starter_VC: UITableViewController {
         btMovingTime.text = "\(createTimeString(seconds: Int(current.totalMovingTime))) MOVING(BT)"
         btMovAvg.text = "\(stringer(dbl: current.totalAverageSpeed, len: 1)) AVG SPD(BT)"
         
-        //TEST FOR NEW ROUND
+
         print("seconds since start:  \(secondsSinceStart)")
         print("secondsInRound:  \(secondsInCurrentRound)")
         print("currentRound:  \(currentRound)")
         
-        //CALC ROUND SPEEDS BEFORE ROUND ENDS
+        //CALC ROUND SPEEDS
         processUD(st: "CALC ROUND SPEEDS")
         if current.totalDistance > 0 {
             inRoundBtDistance = current.totalDistance - distanceAtStartOfRoundBT
@@ -297,9 +301,6 @@ class Starter_VC: UITableViewController {
         dump(rounds.btSpeeds)
         dump(rounds.geoSpeeds)
         print("\n")
-
-        inRoundCadence = []
-        inRoundHR = []
         
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected to Internet")
