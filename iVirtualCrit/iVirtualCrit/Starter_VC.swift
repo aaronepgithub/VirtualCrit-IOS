@@ -113,7 +113,9 @@ class Starter_VC: UITableViewController {
     
     func processUD(st: String) {
         udString = "\(secondsSinceStart):  \(st) \n"
-        udArray = []
+        if currentRound == 1 {
+         udArray = []
+        }
         udArray.append(udString)
         let defaults = UserDefaults.standard
         defaults.set(udArray, forKey: "SavedStringArray")
@@ -129,8 +131,8 @@ class Starter_VC: UITableViewController {
         let s2 = currentRound * secondsPerRound
         secondsInCurrentRound = s1 - s2
         
-        print("secondsInCurrentRound:  \(secondsInCurrentRound)")
-        print("secondsSinceStart:  \(secondsSinceStart)")
+//        print("secondsInCurrentRound:  \(secondsInCurrentRound)")
+//        print("secondsSinceStart:  \(secondsSinceStart)")
         
         //NEW ROUND IDENTIFIER
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
@@ -150,21 +152,21 @@ class Starter_VC: UITableViewController {
         
         totalTime.text = "\(createTimeString(seconds: Int(round(system.actualElapsedTime)))) TOTAL TIME"
         
-        print("each second:  \(createTimeString(seconds: Int(round(system.actualElapsedTime))))")
-        print("each second:  \(system.actualElapsedTime)")
-        print("current.currentSpeed: \(current.currentSpeed)")
-        print("current.totalDistance: \(current.totalDistance)")
-        print("current.totalMovingTime: \(current.totalMovingTime)")
-        print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
-        print("current.currentCadence: \(current.currentCadence)")
-        let str: String = "\(current.currentHR),\(current.currentScore)"
-        print("HR/Score:  \(str)")
-        print("geo.speed \(geo.speed)")
-        print("geo.elapsedTime \(geo.elapsedTime)")
-        print("geo.distance \(geo.distance)")
-        print("geo.pace \(geo.pace)")
-        print("geo.avgSpeed \(geo.avgSpeed)")
-        print("\n")
+//        print("each second:  \(createTimeString(seconds: Int(round(system.actualElapsedTime))))")
+//        print("each second:  \(system.actualElapsedTime)")
+//        print("current.currentSpeed: \(current.currentSpeed)")
+//        print("current.totalDistance: \(current.totalDistance)")
+//        print("current.totalMovingTime: \(current.totalMovingTime)")
+//        print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
+//        print("current.currentCadence: \(current.currentCadence)")
+//        let str: String = "\(current.currentHR),\(current.currentScore)"
+//        print("HR/Score:  \(str)")
+//        print("geo.speed \(geo.speed)")
+//        print("geo.elapsedTime \(geo.elapsedTime)")
+//        print("geo.distance \(geo.distance)")
+//        print("geo.pace \(geo.pace)")
+//        print("geo.avgSpeed \(geo.avgSpeed)")
+//        print("\n")
         
         btHR.text = "\(current.currentHR) BPM (HR)"
         btMovingSpeed.text = "\(stringer(dbl: current.currentSpeed, len: 1)) MPH(BT)"
@@ -174,20 +176,15 @@ class Starter_VC: UITableViewController {
         btMovingTime.text = "\(createTimeString(seconds: Int(current.totalMovingTime))) MOVING(BT)"
         btMovAvg.text = "\(stringer(dbl: current.totalAverageSpeed, len: 1)) AVG SPD(BT)"
         
-
-        print("seconds since start:  \(secondsSinceStart)")
-        print("secondsInRound:  \(secondsInCurrentRound)")
-        print("currentRound:  \(currentRound)")
+//        print("seconds since start:  \(secondsSinceStart)")
+//        print("secondsInRound:  \(secondsInCurrentRound)")
+//        print("currentRound:  \(currentRound)")
         
         //CALC ROUND SPEEDS
-        processUD(st: "CALC ROUND SPEEDS")
-        
         if current.totalDistance > 0 {
             inRoundBtDistance = current.totalDistance - distanceAtStartOfRoundBT
             if inRoundBtDistance > 0.01 && secondsInCurrentRound > 5 {
-                //inRoundBtSpeed = inRoundBtDistance / ((Double(secondsInCurrentRound) / 60.0 / 60.0))
                 inRoundBtSpeed = rndSpdBT
-                print("inRoundBtSpeed:   \(inRoundBtSpeed)")
                 btSpdRnd.text = "\(stringer(dbl: inRoundBtSpeed, len: 1)) RND SPD"
             } else {inRoundBtSpeed = 0}
         }
@@ -196,65 +193,35 @@ class Starter_VC: UITableViewController {
             inRoundGeoDistance = geo.distance - distanceAtStartOfRoundGEO
             if inRoundGeoDistance > 0.1 && Double(secondsInCurrentRound) > 10 {
                 inRoundGeoSpeed = inRoundGeoDistance / (Double(secondsInCurrentRound) / 60.0 / 60.0)
-                print("inRoundGeoSpeed:   \(inRoundGeoSpeed)")
                 gpsRoundSpeed.text = "\(stringer(dbl: inRoundGeoSpeed, len: 1)) RND SPD(G)"
             } else {inRoundGeoSpeed = 0}
         }
 
         //CALC ROUND HR/SCORE BEFORE ROUND ENDS
-        processUD(st: "CALC ROUND HR/SCORE")
         if current.currentHR > 0 {
             inRoundHR.append(Int(current.currentHR))
             if inRoundHR.count > 2 {
                 roundHR = inRoundHR.average
                 roundScore = getScoreFromHR(x: roundHR)
-                print("roundHR:   \(roundHR)")
-                print("roundScore:   \(roundScore)")
                 btHrRnd.text = "\(stringer(dbl: roundHR, len: 1)) RND HR"
                 btScoreRnd.text = "\(stringer(dbl: roundScore, len: 1)) % RND SCORE"
             }
         }
         
         //CALC ROUND CAD BEFORE ROUND ENDS
-        processUD(st: "CALC ROUND CAD BEFORE ROUND ENDS")
-        print("current.currentCadence:   \(current.currentCadence)")
-//        if current.currentCadence > 0 && current.currentCadence.isNaN == false {
-//            inRoundCadence.append(Int(current.currentCadence))
-//            if inRoundCadence.count > 2 {
-//                if inRoundCadence.average > 1 {
-//                    roundCadence = inRoundCadence.average
-//                    print("inRoundCadence.average > 1")
-//                } else {
-//                    print("inRoundCadence.average < 1")
-//                }
-//            }
-//        } else {
-//            print("FAILED THIS...current.currentCadence > 0 && current.currentCadence.isNaN == false")
-//            roundCadence = 1
-//        }
         roundCadence = rndCadBT
         if roundCadence > 0 && roundCadence.isNaN == false {
             btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"
-            print("roundCadence:   \(roundCadence)")
         } else {
             roundCadence = 0
-            print("roundCadence:   \(roundCadence)")
         }
 
-        
-
-        
-
-        
         //TEST FOR NEW MILE
-        processUD(st: "TEST FOR NEW MILE")
         if current.totalDistance > currentMile || geo.distance > currentMile {
             print("NEW MILE, MILE \(currentMile) COMPLETED")
             currentMile += 1
             updateMile()
         }
-        
-        processUD(st: "SET LONGEST DISTANCE")
         if current.totalDistance > geo.distance {
             longestDistance = current.totalDistance
         } else {
@@ -262,17 +229,14 @@ class Starter_VC: UITableViewController {
         }
         
         //CREATE DATA FOR VIEWER_VC
-        processUD(st: "CREATE VIEWER ARRAY")
         createViewerArray()
-
     }
     //END SECOND TIMER
     
 
     //MARK:  UPDATEROUND at ROUND COMPLETE
     func updateRound() {
-        processUD(st: "UPDATE ROUND")
-        print("UPDATE ROUND")
+        //print("UPDATE ROUND")
         rounds.btSpeeds.append(inRoundBtSpeed)
         rounds.geoSpeeds.append(inRoundGeoSpeed)
         rounds.heartrates.append(roundHR)
@@ -285,7 +249,6 @@ class Starter_VC: UITableViewController {
         rounds.speeds.append(roundSpeed)
         
         //RESULTS DATA
-        processUD(st: "RESULTS DATA")
         let a = "ROUND \(stringer(dbl: roundsCompleted, len: 0)) "
         let b = "\(stringer(dbl: rounds.heartrates.last!, len: 1)) HR"
         let c = "\(stringer(dbl: rounds.scores.last!, len: 1)) % MAX"
@@ -295,33 +258,25 @@ class Starter_VC: UITableViewController {
 
         arrResults.append("\(a)\(b)\(c)")
         arrResultsDetails.append("\(d)\(e)\(f)")
-        
-        
+
         //ROUNDCOMPLETE POINT
-         processUD(st: "ROUNDCOMPLETE POINT")
         newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(f)\n\(b)\n\(roundPace) PACE\n\(e)")
-        
-        
         calcBestRoundMetrics()
         
-        print("\n")
-        print("End of Round for HR, Spd, Cad, GeoSpd")
-        dump(rounds.speeds)
-        dump(rounds.heartrates)
-        dump(rounds.scores)
-        dump(rounds.cadences)
-        dump(rounds.btSpeeds)
-        dump(rounds.geoSpeeds)
-        print("\n")
+//        print("\n")
+//        print("End of Round for HR, Spd, Cad, GeoSpd")
+//        dump(rounds.speeds)
+//        dump(rounds.heartrates)
+//        dump(rounds.scores)
+//        dump(rounds.cadences)
+//        dump(rounds.btSpeeds)
+//        dump(rounds.geoSpeeds)
+//        print("\n")
         
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected to Internet")
             print("calling fbPushII")
-            //fbPush(rSpeed: stringer(dbl: spdToUse, len: 2), rHeartrate: stringer(dbl: roundHR, len: 2), rScore: stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100), len: 2), rCadence: stringer(dbl: roundCadence, len: 2))
-            
             fbPushII()
-            
-            
         }
         else{
             print("disConnected")
@@ -331,14 +286,8 @@ class Starter_VC: UITableViewController {
     
     // CALC BESTROUND METRICS
     func calcBestRoundMetrics() {
-        processUD(st: "CALC BEST ROUND METRICS")
         print("CALCBESTROUND METRICS")
-        print("roundSpeed:  \(roundSpeed)")
-        print("bestRoundSpeed:  \(bestRoundSpeed)")
-        
         if roundSpeed > bestRoundSpeed {
-            processUD(st: "roundSpeed > bestRoundSpeed")
-            
             bestRoundSpeed = roundSpeed
             bestRoundPace = calcMinPerMile(mph: roundSpeed)
             if bestRoundSpeed == 0 {bestRoundPace = "00:00"}
@@ -358,36 +307,24 @@ class Starter_VC: UITableViewController {
             bestRoundHR = roundHR
             bestRoundScore = getScoreFromHR(x: bestRoundHR)
         }
-
-        print("roundSpeed:  \(roundSpeed)")
-        print("after...bestRoundSpeed:  \(bestRoundSpeed)")
-        
         //MY BEST ROUNDS POINT
-        
         let when = DispatchTime.now() + 25
         DispatchQueue.main.asyncAfter(deadline: when){
-            self.processUD(st: "MY BEST ROUNDS POINT")
             self.newBestRoundPoint(mileString: "MY BEST ROUNDS\n\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE")
             
-            print("\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
+            //print("\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
             
             udArray.append("\(getFormattedTimeAndDate(d: Date()))\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
-            
-            
         }
     }
     
-    
-    
-    
     //MARK:  UPDATEMILE
     func updateMile() {
-        processUD(st: "UPDATE MILE")
         speedForLastMile = 1.0 / (secondsInCurrentMile / 60.0 / 60.0)
         secondsInCurrentMile = 0
         
-        print("SPD FOR LAST MILE: \(speedForLastMile)")
-        print("PACE FOR LAST MILE:  \(calcMinPerMile(mph: speedForLastMile))")
+        //print("SPD FOR LAST MILE: \(speedForLastMile)")
+        //print("PACE FOR LAST MILE:  \(calcMinPerMile(mph: speedForLastMile))")
         
         arrMileSpeeds.append(speedForLastMile)
         //arrMileSpeeds, fastest to slowest
@@ -412,7 +349,7 @@ class Starter_VC: UITableViewController {
                 print("Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
             }
         }
-        processUD(st: "NEW MILEPOINT")
+
         newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
         print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
@@ -442,8 +379,8 @@ class Starter_VC: UITableViewController {
     func stopAndSave() {
         //save
         //REMOVE OLD HISTORY
-        udArray = []
-        udArray.append(udString)
+        //udArray = []
+        //udArray.append(udString)
         let defaults = UserDefaults.standard
         defaults.set(udArray, forKey: "SavedStringArray")
     }
@@ -453,10 +390,6 @@ class Starter_VC: UITableViewController {
     }
     
     func createViewerArray() {
-        
-        processUD(st: "NEW createViewerArray")
-        //ADD SUBS WHEN USING GEO...
-        
         //HDR
         if geo.status == "ON/USE" || current.totalMovingTime == 0 {
             arr.append("\(createTimeString(seconds: Int(geo.elapsedTime)))  \(stringer(dbl: geo.avgSpeed, len: 1)) AVG")
@@ -604,11 +537,8 @@ class Starter_VC: UITableViewController {
             }
         case 2:
             let gst = geo.status
-//            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";startLocationUpdates();}
-                if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
-//            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates()}
+            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
             if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates();}
-//            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates()}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";}
         case 3:
             //ble
@@ -693,7 +623,6 @@ class Starter_VC: UITableViewController {
 //    func fbPush(rSpeed: String, rHeartrate: String, rScore: String, rCadence: String) {
         //send round data to fb
         print("Start fbPush")
-        processUD(st: "Start fbPush")
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
         if roundsCompleted > 0 {
@@ -720,35 +649,11 @@ class Starter_VC: UITableViewController {
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
                 ] as [String : Any]
-            
-            
-//            let round_post = [
-//                "a_calcDurationPost" : roundsCompleted * 5,
-//                "a_scoreRoundLast" : rScore.toDouble,
-//                "a_speedRoundLast" : rSpeed.toDouble,
-//                "fb_CAD" : rCadence.toDouble,
-//                "fb_Date" : result,
-//                "fb_DateNow" : result,
-//                "fb_HR" : rHeartrate.toDouble,
-//                "fb_RND" : rScore.toDouble,
-//                "fb_SPD" : rSpeed.toDouble,
-//                "fb_maxHRTotal" : maxHRvalue,
-//                "fb_scoreHRRound" : rScore.toDouble,
-//                "fb_scoreHRRoundLast" : rScore.toDouble,
-//                "fb_scoreHRTotal" : rScore.toDouble,
-//                "fb_timAvgCADtotal" : rCadence.toDouble,
-//                "fb_timAvgHRtotal" : rScore.toDouble,
-//                "fb_timAvgSPDtotal" : rSpeed.toDouble,
-//                "fb_timDistanceTraveled" : current.totalDistance,
-//                "fb_timGroup" : "iOS",
-//                "fb_timName" : riderName,
-//                "fb_timTeam" : "Square Pizza"
-//                ] as [String : Any]
+
             
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(result)")
             refDB.childByAutoId().setValue(round_post)
             print("Complete pushFBRound")
-            processUD(st: "Complete pushFBRound")
         }
         
         let when = DispatchTime.now() + 5
@@ -763,7 +668,6 @@ class Starter_VC: UITableViewController {
     
     //FB POST, AT ROUND COMPLETE
     func fbPost() {
-        processUD(st: "fbPost")
         var tSpeed = geo.avgSpeed
         if current.totalAverageSpeed > geo.avgSpeed {
             tSpeed = current.totalAverageSpeed
@@ -771,14 +675,8 @@ class Starter_VC: UITableViewController {
         tSpeed = tSpeed * 100
         tSpeed = round(tSpeed)
         tSpeed = tSpeed / 100
-        
-        
-        //var tScore = stringer(dbl: (rounds.heartrates.average / Double(maxHRvalue)) * 100, len: 1)
-        //let tScore = round(((rounds.heartrates.average / Double(maxHRvalue)) * 100) * 100) / 100
-        
+
         let tScore = getScoreFromHR(x: rounds.heartrates.average)
-        
-        //let tCadence = stringer(dbl: rounds.cadences.average, len: 1)
         let tCadence = rounds.cadences.average
         
         print("Start fbPost for Totals")
@@ -811,7 +709,6 @@ class Starter_VC: UITableViewController {
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(riderName)")
             refDB.setValue(totals_post)
             print("Complete postFBTotals")
-            processUD(st: "Complete fbPost")
         } else {
                 self.tabBarController?.selectedIndex = 3
         }
@@ -835,7 +732,6 @@ class Starter_VC: UITableViewController {
     //FB GETS (1,2,3,4)
     func fb1() {
         print("start fb1")
-        processUD(st: "start fb1")
         arrLeaderNamesByScore = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         //let result = "20170527"
@@ -866,13 +762,11 @@ class Starter_VC: UITableViewController {
                 print(self.arrLeaderNamesByScore)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SCORE)\n\(self.arrLeaderNamesByScore)")
                 print("\n")
-//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(self.arrLeaderNamesByScore)", "color": "black"])
             }
         })
         { (error) in
             print(error.localizedDescription);print("error fb1");}
         print("fb1 complete")
-        processUD(st: "fb1 complete")
         let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb2")
@@ -885,7 +779,6 @@ class Starter_VC: UITableViewController {
     var arrLeaderNamesBySpeed: String = ""
     func fb2() {
         print("start fb2")
-        processUD(st: "start fb2")
         arrLeaderNamesBySpeed = ""
         //var readMe: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
@@ -915,23 +808,12 @@ class Starter_VC: UITableViewController {
                 print(self.arrLeaderNamesBySpeed)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SPEED)\n\(self.arrLeaderNamesBySpeed)")
                 print("\n")
-                //NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(self.arrLeaderNamesBySpeed)", "color": "blue"])
-                
                 self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
-                
-//                if readMe != self.previousSpeedLeader {
-//                    if self.audioStatus == "ON" {Utils.shared.say(sentence: "\(readMe), is the fastest.")}
-//                }
-//                print("start fb3")
-//                let _ = self.fb3()
-//                self.previousSpeedLeader = readMe
-
             }
         })
         { (error) in
             print(error.localizedDescription);print("error fb2");}
         print("fb2 complete")
-        processUD(st: "fb2 complete")
         let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb3")
@@ -942,7 +824,6 @@ class Starter_VC: UITableViewController {
     var leaderNamesByScoreTotals: String = ""
     func fb3() { //get Totals from fb, ordered by score
         print("start fb3")
-        processUD(st: "start fb3")
         leaderNamesByScoreTotals = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         var sSCORE: String = "0"
@@ -963,23 +844,16 @@ class Starter_VC: UITableViewController {
                     } else {
                         sSCORE = "0"
                     }
-                    
                     self.leaderNamesByScoreTotals = "\(sSCORE)%  \(fbNAME)\n" + self.leaderNamesByScoreTotals
-                    
                 }
                 print("leaderNamesByScoreTotals\n\(self.leaderNamesByScoreTotals) \n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSCORE LEADERS (TOTAL)\n\(self.leaderNamesByScoreTotals)")
-                
-//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "BEST DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
                 print("Complete fb3")
-               
-
             }
         })
         { (error) in
             print(error.localizedDescription);print("error fb3");}
         print("fb3 complete")
-         processUD(st: "complete fb3")
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb4")
@@ -990,7 +864,6 @@ class Starter_VC: UITableViewController {
     var leaderNamesBySpeedTotals: String = ""
     func fb4() { //get Totals from fb, ordered by speed
         print("start fb4")
-         processUD(st: "start fb4")
         leaderNamesBySpeedTotals = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
@@ -1011,22 +884,17 @@ class Starter_VC: UITableViewController {
                     } else {
                         sSPD = "0"
                     }
-
                     self.leaderNamesBySpeedTotals = "\(sSPD) MPH  \(fbNAME)\n" + self.leaderNamesBySpeedTotals
-                    
                 }
                 print("Complete fb4")
                 print("leaderNamesBySpeedTotals\n\(self.leaderNamesBySpeedTotals)\n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSPEED LEADERS (TOTAL)\n\(self.leaderNamesBySpeedTotals)")
-                    
                 self.freshFB = true
-                //NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "FASTEST AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
             }
         })
         { (error) in
             print(error.localizedDescription);print("error fb4");}
         print("fb4 complete")
-        processUD(st: "complete fb4")
     }  //fb4 complete
    
     
@@ -1047,25 +915,17 @@ class Starter_VC: UITableViewController {
         locationManager.stopUpdatingLocation()
         print("stopLocationUpdates")
     }
-    
-    
-    
     private let locationManager = LocationManager.shared
     private var locations: [CLLocation] = []
-
 }
 
 extension Starter_VC: CLLocationManagerDelegate {
-    
-    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
-
-            
             let howRecent = location.timestamp.timeIntervalSinceNow
             guard location.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
             
@@ -1073,25 +933,16 @@ extension Starter_VC: CLLocationManagerDelegate {
                 let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                 if ts < 20 {
                     geo.elapsedTime += ts
-                    //totalTime.text = "\(createTimeString(seconds: Int((secondsSinceStart)))) TOTAL TIME"
                     gpsMovingTime.text = "\(createTimeString(seconds: Int((geo.elapsedTime)))) MOVING(G)"
                 }
             }
-
-            
                 if self.locations.count > 2 {
                     if location.distance(from: self.locations.last!) < 161 {  // 1/10th of a mile
-                        processUD(st: "calc location data")
-                        
                         la = (self.locations.last?.coordinate.latitude)!
                         lo = (self.locations.last?.coordinate.longitude)!
                         geo.distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
-                        //inRoundGeoDistance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                         
                         lastLocationTimeStamp = location.timestamp
-                        
-
-
                         var coords = [CLLocationCoordinate2D]()
                         coords.append(self.locations.last!.coordinate)
                         coords.append(location.coordinate)
@@ -1099,8 +950,6 @@ extension Starter_VC: CLLocationManagerDelegate {
                         if location.speed > 0 {
                             geo.speed = location.speed * 2.23694
                             gpsMovingSpeed.text = "\(stringer(dbl: geo.speed,len: 1)) MPH(G)"
-                            
-                            
                             geo.pace = calcMinPerMile(mph: geo.speed)
                             gpsMovingPace.text = "\(String(describing: geo.pace)) PACE(G)"
                             gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI(G)"
@@ -1113,12 +962,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                             tabBarController?.tabBar.items?[3].badgeValue = "\(String(describing: geo.pace))"
                             tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: geo.distance, len: 2)) MI"
                             }
-                            
                         }
-
-
-
-
 
                         if location.course > 315 || location.course <= 45 {
                             gpsDirection.text = "\(location.course)  [N]"
@@ -1144,7 +988,6 @@ extension Starter_VC: CLLocationManagerDelegate {
                     }
                 }
                 self.locations.append(location)
-            
         }
     }
     

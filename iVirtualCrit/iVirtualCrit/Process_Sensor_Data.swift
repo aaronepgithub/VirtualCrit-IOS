@@ -60,7 +60,7 @@ func processWheelData(withData data :Data) {
             //print("After a break, too much time or too much wheel revs (a > 15 || b > 10000):  \(a), \(b)")
             oldWheelRevolution = wheelRevolution
             oldWheelEventTime = wheelEventTime
-            //veloSpeedCounter = 0
+            veloSpeedCounter = 0
             return
         }
         
@@ -89,12 +89,11 @@ func processWheelData(withData data :Data) {
             rndSpdBT = rndSpdBT_test
         }
         
-        print("rndSpdBT:  \(rndSpdBT)")
-        
-        print("current.currentSpeed: \(current.currentSpeed)")
-        print("current.totalDistance: \(current.totalDistance)")
-        print("current.totalMovingTime: \(current.totalMovingTime)")
-        print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
+//        print("rndSpdBT:  \(rndSpdBT)")
+//        print("current.currentSpeed: \(current.currentSpeed)")
+//        print("current.totalDistance: \(current.totalDistance)")
+//        print("current.totalMovingTime: \(current.totalMovingTime)")
+//        print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
         
         if current.currentSpeed.isNaN == true {
             print("current.currentSpeed.isNaN")
@@ -104,11 +103,7 @@ func processWheelData(withData data :Data) {
         oldWheelEventTime = wheelEventTime
         veloSpeedCounter = 0
     }
-    
 }
-
-
-
 var rt_crank_revs: Double = 0
 var rt_crank_time: Double = 0
 var oldCrankRevolution: Double = 999999
@@ -170,19 +165,13 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             current.currentCadence = 0
         }
         
-        let endOf300RoundCadence = crankRotationsDuringRound / (300.0 / 60.0)
-        let endOf60RoundCadence = crankRotationsDuringRound / (60.0 / 60.0)
-        print("60 Round Cadence:  \(endOf60RoundCadence)")
-        print("300 Round Cadence:  \(endOf300RoundCadence)")
         let currentRoundCadence = crankRotationsDuringRound / (Double(secondsInCurrentRound) / 60.0)
-        print("currentRoundCadence:  \(currentRoundCadence)")
+        //print("currentRoundCadence:  \(currentRoundCadence)")
         
         if currentRoundCadence > 0 && currentRoundCadence.isNaN == false {
         rndCadBT = currentRoundCadence
         }
 
-        
-        
         oldCrankRevolution = crankRevolution
         oldCrankEventTime = crankEventTime
         veloCadCounter = 0
