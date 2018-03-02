@@ -131,7 +131,7 @@ class Starter_VC: UITableViewController {
         secondsInRound = (secondsSinceStart - (Double(secondsPerRound) * roundsCompleted)) - 1
         
         //NEW ROUND IDENTIFIED
-        if secondsSinceStart >= currentRound * Double(secondsPerRound) {
+        if secondsSinceStart >= (currentRound * Double(secondsPerRound)) + 1 {
             print("\nNEW ROUND, ROUND \(roundsCompleted) COMPLETE")
             print("SEC IN ROUND:  \(secondsInRound)")
             print("secondsSinceStart:  \(secondsSinceStart)")
