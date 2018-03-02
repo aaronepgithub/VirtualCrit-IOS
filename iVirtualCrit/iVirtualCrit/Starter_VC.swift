@@ -212,23 +212,23 @@ class Starter_VC: UITableViewController {
         
         //CALC ROUND CAD BEFORE ROUND ENDS
         processUD(st: "CALC ROUND CAD BEFORE ROUND ENDS")
+        print("current.currentCadence:   \(current.currentCadence)")
         if current.currentCadence > 0 && current.currentCadence.isNaN == false {
             inRoundCadence.append(Int(current.currentCadence))
             if inRoundCadence.count > 2 {
                 if inRoundCadence.average > 1 {
                     roundCadence = inRoundCadence.average
-                    print("round cadence:  \(roundCadence)")
+                    print("inRoundCadence.average > 1")
                 } else {
-                    roundCadence = 1
-                    print("round cadence:  \(roundCadence)")
+                    print("inRoundCadence.average < 1")
                 }
-                
-                btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"
-                print("roundCadence:   \(roundCadence)")
             }
         } else {
+            print("FAILED THIS...current.currentCadence > 0 && current.currentCadence.isNaN == false")
             roundCadence = 1
         }
+        btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"
+        print("roundCadence:   \(roundCadence)")
         
 
         
@@ -426,162 +426,6 @@ class Starter_VC: UITableViewController {
     func newBestSpeedsPoint(mileString: String) {
         NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(mileString)", "color": "blue"])
     }
-
-    
-    
-    
-    //var availableDataElementsToView = ["Total Elapsed Time", "GPS Moving Time", "GPS Speed", "GPS Average Speed", "GPS Average Pace", "GPS Direction", "GPS Speed - Round", "GPS Pace - Round", "GPS Distance", "Heartrate", "Speed", "Cadence", "%MAX Heartrate", "Pace", "Heartrate - Round", "Speed - Round", "Cadence - Round", "%MAX Heartrate - Round", "Pace - Round", "Distance", "Average Speed", "Average Pace", "Moving Time"]
-
-    //var actualTimeAtMileStart: Date?
-    //var timeElapsedForLastMile: Double = 0
-
-    
-//    func updateMile() {
-//
-//
-//        udString = "NEW MILE, \(getFormattedTimeAndDate(d: Date()))\n"
-//        udArray.append(udString)
-//        let defaults = UserDefaults.standard
-//        defaults.set(udArray, forKey: "SavedStringArray")
-//
-//
-//        //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))\
-//        //timeElapsedForLastMile = getTimeIntervalSince(d1: actualTimeAtMileStart!, d2: Date())
-//        //timeElapsedForLastMile = secondsInCurrentMile
-//
-//        //replace with secondsInCurrentMile
-//        if secondsInCurrentMile == 0 {return}
-//
-////        if Double(timeElapsedForLastMile) < 10 {
-////            return
-////        }
-//
-//        //speedForLastMile = 1.0 / (Double(timeElapsedForLastMile) / 60 / 60)
-//
-//        speedForLastMile = 1.0 / (secondsInCurrentMile / 60 / 60)
-//        secondsInCurrentMile = 0
-//
-//        arrMileSpeeds.append(speedForLastMile)
-//        //arrMileSpeeds, fastest to slowest
-//        arrMileSpeeds = arrMileSpeeds.sorted { $0 > $1 }
-//        let ix = arrMileSpeeds.index(of: speedForLastMile)
-//        var indexOfLastMileSpeed = 0
-//        if ix != nil {
-//            indexOfLastMileSpeed = (ix ?? 100) + 1
-//        }
-//        print("indexOfLastMileSpeed  \(indexOfLastMileSpeed)")
-//
-//        if speedForLastMile > fastestMile {
-//            fastestMile = speedForLastMile
-//
-//            if audioStatus == "ON" {
-//                Utils.shared.say(sentence: "Fastest Mile is now  \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE")
-//
-//                print("Fastest Mile is now  \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE")
-//            }
-//
-//        } else {
-//            if audioStatus == "ON" {
-//                Utils.shared.say(sentence: "Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
-//
-//                print("Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
-//            }
-//        }
-//
-//
-//        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
-//
-//        print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
-//
-//        //actualTimeAtMileStart = Date()
-//
-//    }
-    
-   
-    
-//    func createNRArray() {
-//
-//        udString = "NEW createNRArray, \(getFormattedTimeAndDate(d: Date()))\n"
-//        udArray.append(udString)
-//        let defaults = UserDefaults.standard
-//        defaults.set(udArray, forKey: "SavedStringArray")
-//
-//
-//        if roundsCompleted > 0  {
-//
-//
-//
-//            let a = "ROUND # \(roundsCompleted)  "
-//            let b = "\(stringer(dbl: roundHR, len: 1)) HR"
-//
-//            var roundScore = " 0%"
-//            if roundHR > 50 {
-//                roundScore = "  \(stringer(dbl: (roundHR / Double(maxHRvalue) * 100), len: 1))%"
-//            }
-//            let c = roundScore
-//            let d = "  \(stringer(dbl: roundSpeed, len: 1))  MPH/BT"
-//            let e = "  \(stringer(dbl: roundCadence, len: 1)) RPM"
-//            let f = "  \(stringer(dbl: roundGeoSpeed, len: 1))  MPH/GEO"
-    
-    //            arrResults.append("\(a)\(b)\(c)")
-    //            arrResultsDetails.append("\(d)\(e)\(f)")
-//
-//            print("roundSpeed:  \(roundSpeed)")
-//            print("roundGeoSpeed:  \(roundGeoSpeed)")
-//            var spdToUse = Double(0)
-//            if roundSpeed > spdToUse {spdToUse = roundSpeed}
-//            if roundSpeed < roundGeoSpeed {spdToUse = roundGeoSpeed}
-//
-//            if activityType == "RUN" && roundGeoSpeed > 0.1 {
-//                spdToUse = roundGeoSpeed
-//            }
-//            print("spdToUse:  \(spdToUse)")
-//            print("bestRoundSpeed:  \(bestRoundSpeed)")
-//
-//            if spdToUse > bestRoundSpeed {
-//                print("spdToUse is > than bestRoundSpeed")
-//                bestRoundSpeed = spdToUse;
-//                bestRoundPace = calcMinPerMile(mph: spdToUse)
-//                if audioStatus == "ON" {
-//                    if roundHR > bestRoundHR {
-//                        Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")
-//                    } else {
-//                        Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")
-//                    }
-//                }
-//            } else {
-//                if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: spdToUse, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: spdToUse)) PER MILE")}
-//            }
-//            if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
-//            if roundHR > bestRoundHR {bestRoundHR = roundHR}
-//
-//            if roundHR > 50 {
-//                bestRoundScore = (bestRoundHR / Double(maxHRvalue)) * 100
-//            } else {
-//                bestRoundScore = 0
-//            }
-//
-//
-//            //MY BEST ROUNDS POINT
-//            newRoundPoint(mileString: "MY BEST ROUNDS\n\(stringer(dbl: bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: bestRoundHR, len: 1)) HR\n\(stringer(dbl: bestRoundScore, len: 1)) SCORE\n\(bestRoundPace) PACE\n")
-//
-//            arrResults.append("\(a)\(b)\(c)")
-//            arrResultsDetails.append("\(d)\(e)\(f)")
-//
-//            if ConnectionCheck.isConnectedToNetwork() {
-//                print("Connected to Internet")
-//                print("calling fbPush")
-//                fbPush(rSpeed: stringer(dbl: spdToUse, len: 2), rHeartrate: stringer(dbl: roundHR, len: 2), rScore: stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100), len: 2), rCadence: stringer(dbl: roundCadence, len: 2))
-//            }
-//            else{
-//                print("disConnected")
-//            }
-//
-//
-//
-//        }
-//
-//    }  //end nrarray
     
     func stopAndSave() {
         //save
@@ -650,244 +494,6 @@ class Starter_VC: UITableViewController {
         arr = []
     }
 
-    
-    //NO LONGER USED
-//    func updateViewer_VC() {
-//
-//        if geo.status == "ON/USE" {
-//
-//            //HEADER
-//            if geo.distance < 0.1 {
-//                arr.append("\(getFormattedTime(d: Date()))")
-//            } else {
-//             arr.append("\(gpsMovingTime.text ?? "00:00:00")  \(gpsAverageSpeed.text ?? "00.0 AVG") AVG MPH")
-//            }
-//
-//
-//            //3 VALUES
-//            if btHR.text == " " {arr.append("\(gpsAvergagePace.text ?? "00")")} else {arr.append("\(btHR.text ?? "00")")}
-//
-//            arr.append("\(gpsMovingSpeed.text ?? "00.0")")
-//            arr.append("\(gpsMovingPace.text ?? "00")")
-//            //3 LABELS
-//            if (btHR.text == " " || btHR.text == "") {
-//                arr.append("PACE\n(AVG)")
-//
-//            } else {
-//                arr.append("\(btScore.text ?? "00")")
-//
-//            }
-//
-//            arr.append("SPD\nMPH")
-//            arr.append("PACE\n(MOV)")
-//            //FOOTER
-//            arr.append("\(totalTime.text ?? "00:00:00")  \(gpsDistance.text ?? "0.00 MILES")")
-//            arrSend = arr
-//            arr = []
-//
-//        } else {
-//
-//            //HDR
-//            arr.append("\(btMovingTime.text ?? "00:00:00")  \(btMovAvg.text ?? "00.0 AVG")")
-//            //3 VALS
-//            arr.append("\(btHR.text ?? "00")")
-//            arr.append("\(btMovingSpeed.text ?? "00.0")")
-//            arr.append("\(btMovingCadence.text ?? "00")")
-//            //3 LBLS
-//            arr.append("\(btScore.text ?? "00")\nHR")
-//            arr.append("SPD\nMPH")
-//            arr.append("CAD\nRPM")
-//            //FOOTER
-//            arr.append("\(totalTime.text ?? "00:00:00")  \(btDistance.text ?? "0.00 MILES")")
-//            arrSend = arr
-//            arr = []
-//
-//        }
-//
-//
-//
-//        //NotificationCenter.default.post(name: NSNotification.Name("viewUpdate"), object: nil)
-//    }
-    
-    
-    
-    
-        //TEST FOR MILE
-//        if btDistanceForMileCalc > currentMile || geo.distance > currentMile {
-//            currentMile += 1.0
-//            updateMile()
-//        }
-        
-        //CALC ROUND SPEEDS BEFORE ROUND ENDS
-//        if inRoundBtDistance > 0 && secondsInRound > 0 {
-//            roundSpeed = inRoundBtDistance / (secondsInRound / 60.0 / 60.0)
-//        }
-        //ROUND END
-//        if secondsInRound >= Double(secondsPerRound) {
-//
-//        //if  (((system.actualElapsedTime) != nil) && system.actualElapsedTime! >= Double(Double((roundsCompleted + 1)) * Double(secondsPerRound))) {
-//            print("New Round")
-//            //AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-//            roundsCompleted += 1
-//            secondsInRound = 0
-//
-//            rounds.geoDistancesPerRound.append(inRoundGeoDistance)
-//            rounds.btDistancesPerRound.append(inRoundBtDistance)
-
-//            print("\n")
-//            print("End of Round for HR, Spd, Cad, GeoSpd")
-//            print(roundHR, roundSpeed, roundCadence, roundGeoSpeed)
-//
-//            print("secondsInRound, secondsSinceStart")
-//            print(secondsInRound, secondsSinceStart)
-//            print("\n")
-            
-            //createNRArray()
-            
-            //let tle = "ROUND COMPLETE"
-            //let clr = "blue"
-            
-//            udString = "NEW SEND END ROUND TLUPDATE UPDATE NOTIFICATION, \(getFormattedTimeAndDate(d: Date()))\n"
-//            udArray.append(udString)
-//            let defaults = UserDefaults.standard
-//            defaults.set(udArray, forKey: "SavedStringArray")
-            
-            
-               //NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)", "geospeed": stringer(dbl: roundGeoSpeed, len: 2),"hr": stringer(dbl: roundHR, len: 1), "score": stringer(dbl: (roundHR / (Double(maxHRvalue)) * 100.0), len: 1),"pace": (calcMinPerMile(mph: roundGeoSpeed)),"cadence": stringer(dbl: roundCadence, len: 1), "geodistance": stringer(dbl: geo.distance, len: 2), "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2), "speed": stringer(dbl: roundSpeed, len: 2)])
-            
-//            rounds.speeds.append(roundSpeed)
-//            rounds.geoSpeeds.append(roundGeoSpeed)
-//            rounds.heartrates.append(roundHR)
-//            if roundHR > 50 {rounds.scores.append(Double(roundHR/Double(maxHRvalue)*100))} else {rounds.scores.append(0)}
-//            rounds.cadences.append(roundCadence)
-            
-//            print("\n")
-//            print("End of Round for HR, Spd, Cad, GeoSpd")
-//            dump(rounds.speeds)
-//            dump(rounds.heartrates)
-//            dump(rounds.cadences)
-//            dump(rounds.geoSpeeds)
-//            print("\n")
-//            print("btAvgSpeed:  \(stringer(dbl: btAverageSpeed, len: 2))")
-//            print("\n")
-            
-//            inRoundGeoDistance = 0
-//            inRoundBtDistance = 0
-//            inRoundCadence = []
-//            inRoundHR = []
-//        }
-        
-        
-        //MID ROUND - DAILY UPDATE
-        //if ( Int(secondsInRound) == (secondsPerRound / 2) ) {
-
-            //let tle = "DAILY UPDATE"
-            //let clr = "red"
-            
-            
-//            NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"),
-//                object: nil, userInfo: ["title": "\(tle) \n", "color": "\(clr)",
-//                    "geodistance": stringer(dbl: geo.distance, len: 2),
-//                    "btdistance": stringer(dbl: btDistanceForMileCalc, len: 2),
-//                    "totaltime": totalTime.text as Any,
-//                    "btmovingtime": btMovingTime.text as Any,
-//                    "avgspeed": btMovAvg.text as Any,
-//                    "gpsmovingtime": gpsMovingTime.text as Any,
-//                    "avgpacegeo": gpsAvergagePace.text as Any,
-//                    "avgspeedgeo": gpsAverageSpeed.text as Any])
-            
-//            if freshFB == true {
-//                freshFB = false
-//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SPEEDS\n\n\(leaderNamesBySpeedTotals)", "color": "green"])
-//
-//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "DAILY AVG SCORES\n\n\(leaderNamesByScoreTotals)", "color": "red"])
-//
-//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SPEEDS\n\n\(arrLeaderNamesBySpeed)", "color": "blue"])
-//
-//                NotificationCenter.default.post(name: NSNotification.Name("tlUpdate"), object: nil, userInfo: ["title": "TOP 5 SCORES\n\n\(arrLeaderNamesByScore)", "color": "black"])
-//            }
-            
-        //}
-        //end mid round
-        
-//        if roundSpeed > 0 {
-//            btSpdRnd.text = stringer(dbl: roundSpeed, len: 1)
-//        }
-//        if roundCadence > 0 {
-//            btCadRnd.text = stringer(dbl: roundCadence, len: 0)
-//        }
-//        if roundHR > 0 {
-//            btHrRnd.text = stringer(dbl: roundHR, len: 0)
-//            if roundHR > 50 {btScoreRnd.text = stringer(dbl: roundHR/Double(maxHRvalue)*100, len: 1)} else {btScoreRnd.text = "0"}
-//        }
-//
-//
-//        updateViewer_VC()
-        
-//    }  //END SECOND TIMER
-    
-    
-
-    
-    
-    //@objc func updateBT(not: Notification) {
-//        print("updateBT")
-//        print("not:  \(not)")
-        
-//        // userInfo is the payload send by sender of notification
-//        if let userInfo = not.userInfo {
-//            // Safely unwrap the name sent out by the notification sender
-//            if let userName = userInfo["name"] as? String {
-//                print(userName)
-//            }
-//        }
-        
-        // userInfo is the payload send by sender of notification
-        //if let userInfo = not.userInfo {
-            //print(userInfo[AnyHashable("hr")]!)
-            
-            //better way, doesn't work
-//            if let hrv2 = userInfo["hr"] as? Double {
-//                //print("hrv2 as string \(stringer(dbl: hrv2, len: 0))")
-//                let hrv3 = Double(hrv2)
-//                btHR.text = stringer(dbl: hrv3, len: 0)
-//                 tabBarController?.tabBar.items?[0].badgeValue = "\(stringer(dbl: hrv3, len: 0))"
-//            }
-            
-            //if let hrv = userInfo[AnyHashable("hr")] {
-                //print(String(describing: userInfo[AnyHashable("hr")]!))
-//                btHR.text = "\(hrv as! String)"  //HR
-//                tabBarController?.tabBar.items?[0].badgeValue = "\(hrv as! String)"
-//            }
-//            if let scv = userInfo[AnyHashable("score")] {
-//                //print(String(describing: userInfo[AnyHashable("score")]!))
-//                btScore.text = "\(scv as! String) %"
-//                tabBarController?.tabBar.items?[1].badgeValue = "\(scv as! String)%"
-//            }
-//            if let spv = userInfo[AnyHashable("spd")] {
-//                //print(String(describing: userInfo[AnyHashable("spd")]!))
-//                btMovingSpeed.text = "\(spv as! String)"//SPD BT
-//                tabBarController?.tabBar.items?[3].badgeValue = "\(spv as! String)"
-//            }
-//            if let cav = userInfo[AnyHashable("cad")] {
-//                //let d_cav = cav as? Double
-//                //print(d_cav ?? 0.0)
-//                btMovingCadence.text = "\(cav as! String)"  //   CAD BT"
-//                tabBarController?.tabBar.items?[2].badgeValue = "\(cav as! String)"
-//            }
-//            if let dsv = userInfo[AnyHashable("dist")] {
-//                btDistance.text = "\(dsv as! String) MILES"  //DISTANCE BT
-//            }
-//            if let mtv = userInfo[AnyHashable("mov")] {
-//                btMovingTime.text = "\(mtv as! String)"   //MOVING TIME BT
-//            }
-//            if let mvavg = userInfo[AnyHashable("mov_avg")] {
-//                btMovAvg.text = "\(mvavg as! String) AVG"  //MOV AVG
-//            }
-//
-//        }
-//    }
-    
     
     @IBOutlet weak var lblRiderName: UILabel!
     
@@ -1020,11 +626,13 @@ class Starter_VC: UITableViewController {
             print("WheelCir:  \(wheelCircumference)")
         case 12:
             let spr = secondsPerRound
-            //if lblSecPerRound.text == "60"{secondsPerRound = 300;lblSecPerRound.text = "300";} else {secondsPerRound = 60;lblSecPerRound.text = "60";}
-            if spr == 60 {secondsPerRound = 300;lblSecPerRound.text = "300"}
-            if spr == 300 {secondsPerRound = 1800;lblSecPerRound.text = "1800"}
-            if spr == 1800 {secondsPerRound = 60;lblSecPerRound.text = "60"}
-            
+            if spr > 30 {
+                print("already started")
+            } else {
+                if spr == 60 {secondsPerRound = 300;lblSecPerRound.text = "300"}
+                if spr == 300 {secondsPerRound = 1800;lblSecPerRound.text = "1800"}
+                if spr == 1800 {secondsPerRound = 60;lblSecPerRound.text = "60"}
+            }
         case 13:
             print("13")
             if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}

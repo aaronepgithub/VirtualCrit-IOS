@@ -70,7 +70,6 @@ func processWheelData(withData data :Data) {
             //print("no wheel inc, but time did inc, this is 0")
             oldWheelRevolution = wheelRevolution
             oldWheelEventTime = wheelEventTime
-            //speed = stringer(dbl: 0, len: 1)
             rt_WheelTime += b
             current.currentSpeed = 0
             return
@@ -110,16 +109,18 @@ func processWheelData(withData data :Data) {
         current.totalMovingTime += Double(b / 1024.0)
         current.totalAverageSpeed = current.totalDistance / (current.totalMovingTime / 60.0 / 60.0)
         
-//        let roundDistance = current.totalDistance - distanceAtStartOfRoundBT
-//        let roundTimeInSeconds = secondsInCurrentRound
-//        let roundSpd = roundDistance / (Double(roundTimeInSeconds) / 60.0 / 60.0)
-//        print("roundSpd:  \(roundSpd)")
+        let roundDistance = current.totalDistance - distanceAtStartOfRoundBT
+        let roundTimeInSeconds = secondsInCurrentRound
+        let roundSpd = roundDistance / (Double(roundTimeInSeconds) / 60.0 / 60.0)
+        print("roundSpd(not used):  \(roundSpd)")
         
-//        print("current.currentSpeed: \(current.currentSpeed)")
-//        print("current.totalDistance: \(current.totalDistance)")
-//         print("current.totalMovingTime: \(current.totalMovingTime)")
-//         print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
+        print("current.currentSpeed: \(current.currentSpeed)")
+        print("current.totalDistance: \(current.totalDistance)")
+        print("current.totalMovingTime: \(current.totalMovingTime)")
+        print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
+        
         if current.currentSpeed.isNaN == true {
+            print("current.currentSpeed.isNaN")
             current.currentSpeed = 0
         }
         oldWheelRevolution = wheelRevolution
@@ -158,7 +159,6 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         
         if (a == 0 && b > 1500) {  //no crank increase but time did, this is a zero cadence
             //print("(a == 0 && b > 1500), this should be a zero:  \(a), \(b)")
-            //rt.rt_cadence = Double(0)
             rt_crank_time += b  //still in 1/1024 of a sec
             oldCrankRevolution = crankRevolution
             oldCrankEventTime = crankEventTime
@@ -188,6 +188,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         totalCrankRevs += a
 
         if current.currentCadence.isNaN == true {
+            print("current.currentCadence.isNaN == true")
             current.currentCadence = 0
         }
         oldCrankRevolution = crankRevolution
