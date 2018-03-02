@@ -19,6 +19,9 @@ extension String {
     }
 }
 
+var secondsInCurrentRound: Int = 0
+var distanceAtStartOfRoundBT = Double(0)
+
 //USED FOR VIEWER_VC
 var arr = [String]()
 var arrSend = [String]()
@@ -30,20 +33,13 @@ var arrResultsDetails = [String]()
 var la: Double = 0
 var lo: Double = 0
 
-
-
-
-
 class Starter_VC: UITableViewController {
     
-    var secondsCounter: Int = 1
-    
     var secondsSinceStart = Double(0)
-    var secondsInRound = Double(0)
     var secondsInCurrentMile = Double(0)
     //MAKE ZERO AT ROUND END/MILE END
 
-    var distanceAtStartOfRoundBT = Double(0)
+    
     var distanceAtStartOfRoundGEO = Double(0)
     var distanceAtStartOfMile = Double(0)
     var lastLocationTimeStamp: Date!
@@ -68,7 +64,7 @@ class Starter_VC: UITableViewController {
     var roundGeoSpeed: Double = 0
     
     var roundsCompleted: Double = 0
-    var currentRound: Double = 1.0
+    var currentRound: Int = 0
     var currentMile: Double = 1.0
     
     var bestRoundSpeed: Double = 0
@@ -113,7 +109,7 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var btScoreRnd: UILabel!
     
     func processUD(st: String) {
-        udString = "\(secondsCounter):  \(st) \n"
+        udString = "\(secondsSinceStart):  \(st) \n"
         udArray = []
         udArray.append(udString)
         let defaults = UserDefaults.standard
@@ -123,29 +119,28 @@ class Starter_VC: UITableViewController {
     
     //EACH SECOND
     @objc func timerInterval() {
-        secondsCounter += 1
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-        
         secondsInCurrentMile += 1
         secondsSinceStart = round(system.actualElapsedTime)
-        secondsInRound = (secondsSinceStart - (Double(secondsPerRound) * roundsCompleted)) - 1
+        let s1 = Int(secondsSinceStart)
+        let s2 = currentRound * secondsPerRound
+        secondsInCurrentRound = s1 - s2
         
-        //NEW ROUND IDENTIFIED
-        if secondsSinceStart >= (currentRound * Double(secondsPerRound)) + 1 {
-            print("\nNEW ROUND, ROUND \(roundsCompleted) COMPLETE")
-            print("SEC IN ROUND:  \(secondsInRound)")
+        //NEW ROUND IDENTIFIER
+        //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
+        if secondsInCurrentRound == secondsPerRound {
+            print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
+            print("SEC IN ROUND:  \(secondsInCurrentRound)")
             print("secondsSinceStart:  \(secondsSinceStart)")
             roundsCompleted += 1
             currentRound += 1
-            processUD(st: "NEW ROUND IDENTIFIED")
-
-            
-            updateRound()
-
             distanceAtStartOfRoundBT = current.totalDistance
             distanceAtStartOfRoundGEO = geo.distance
+            updateRound()
+            return
         }
-
+        
+        
         totalTime.text = "\(createTimeString(seconds: Int(round(system.actualElapsedTime)))) TOTAL TIME"
         
         print("each second:  \(createTimeString(seconds: Int(round(system.actualElapsedTime))))")
@@ -174,15 +169,15 @@ class Starter_VC: UITableViewController {
         
         //TEST FOR NEW ROUND
         print("seconds since start:  \(secondsSinceStart)")
-        print("secondsInRound:  \(secondsInRound)")
+        print("secondsInRound:  \(secondsInCurrentRound)")
         print("currentRound:  \(currentRound)")
         
         //CALC ROUND SPEEDS BEFORE ROUND ENDS
         processUD(st: "CALC ROUND SPEEDS")
         if current.totalDistance > 0 {
             inRoundBtDistance = current.totalDistance - distanceAtStartOfRoundBT
-            if inRoundBtDistance > 0.1 && secondsInRound > 10 {
-                inRoundBtSpeed = inRoundBtDistance / (secondsInRound / 60.0 / 60.0)
+            if inRoundBtDistance > 0.1 && secondsInCurrentRound > 10 {
+                inRoundBtSpeed = inRoundBtDistance / ((Double(secondsInCurrentRound) / 60.0 / 60.0))
                 print("inRoundBtSpeed:   \(inRoundBtSpeed)")
                 btSpdRnd.text = "\(stringer(dbl: inRoundBtSpeed, len: 1)) RND SPD"
             } else {inRoundBtSpeed = 0}
@@ -190,8 +185,8 @@ class Starter_VC: UITableViewController {
         
         if geo.distance > 0 {
             inRoundGeoDistance = geo.distance - distanceAtStartOfRoundGEO
-            if inRoundGeoDistance > 0.1 && secondsInRound > 10 {
-                inRoundGeoSpeed = inRoundGeoDistance / (secondsInRound / 60.0 / 60.0)
+            if inRoundGeoDistance > 0.1 && Double(secondsInCurrentRound) > 10 {
+                inRoundGeoSpeed = inRoundGeoDistance / (Double(secondsInCurrentRound) / 60.0 / 60.0)
                 print("inRoundGeoSpeed:   \(inRoundGeoSpeed)")
                 gpsRoundSpeed.text = "\(stringer(dbl: inRoundGeoSpeed, len: 1)) RND SPD(G)"
             } else {inRoundGeoSpeed = 0}
@@ -216,8 +211,6 @@ class Starter_VC: UITableViewController {
         if current.currentCadence > 0 && current.currentCadence.isNaN == false {
             inRoundCadence.append(Int(current.currentCadence))
             if inRoundCadence.count > 2 {
-                //roundCadence = inRoundCadence.average
-                
                 if inRoundCadence.average > 1 {
                     roundCadence = inRoundCadence.average
                     print("round cadence:  \(roundCadence)")

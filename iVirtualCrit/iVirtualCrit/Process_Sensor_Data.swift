@@ -75,19 +75,15 @@ func processWheelData(withData data :Data) {
             current.currentSpeed = 0
             return
         }
-//        if (b < 500 && a == 0) { //ignore velo quick reads
-//            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
-//            veloSpeedCounter += 1
-//            if veloSpeedCounter > 2 {
-//                veloSpeedCounter = 0
-//                //print("spd, 0's in a row, set rt_spd to 0")
-//                //speed = stringer(dbl: 0, len: 1)
-//                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed])
-//
-//                current.currentSpeed = 0
-//            }
-//            return
-//        }
+        if (b < 500 && a == 0) { //ignore velo quick reads
+            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+            veloSpeedCounter += 1
+            if veloSpeedCounter > 2 {
+                veloSpeedCounter = 0
+                current.currentSpeed = 0
+            }
+            return
+        }
         if (a > 15 || b > 10000) {  //catch after breaks
             //print("After a break, too much time or too much wheel revs (a > 15 || b > 10000):  \(a), \(b)")
             oldWheelRevolution = wheelRevolution
@@ -104,8 +100,6 @@ func processWheelData(withData data :Data) {
         let minsPerHour = 60.0
         
         current.currentSpeed =  Double(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour)
-        //speed =  stringer(dbl: Double(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour), len: 1)
-        
         
         rt_WheelRevs += a
         rt_WheelTime += b
@@ -113,30 +107,18 @@ func processWheelData(withData data :Data) {
         
         current.segmentDistance = (Double(a * wheelCircumference) / 1000.0) * 0.000621371
         current.totalDistance = totalWheelRevs * (wheelCircumference / 1000.0) * 0.000621371
-        
-        
-        
-        //total_distance = totalWheelRevs * (wheelCircumference / 1000.0) * 0.000621371
-        //btDistanceForMileCalc = total_distance
-        //inRoundBtDistance += (a * (wheelCircumference / Double(1000.0)) * 0.000621371)
-        
-        
-//        if (Double(wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour)) > 0.0  {
-//            total_moving_time_seconds += (Double(b) / Double(1024))
-//            total_moving_time_string = createTimeString(seconds: Int(total_moving_time_seconds))
-//        }
-        
         current.totalMovingTime += Double(b / 1024.0)
         current.totalAverageSpeed = current.totalDistance / (current.totalMovingTime / 60.0 / 60.0)
+        
+//        let roundDistance = current.totalDistance - distanceAtStartOfRoundBT
+//        let roundTimeInSeconds = secondsInCurrentRound
+//        let roundSpd = roundDistance / (Double(roundTimeInSeconds) / 60.0 / 60.0)
+//        print("roundSpd:  \(roundSpd)")
         
 //        print("current.currentSpeed: \(current.currentSpeed)")
 //        print("current.totalDistance: \(current.totalDistance)")
 //         print("current.totalMovingTime: \(current.totalMovingTime)")
 //         print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
-        
-        //btAverageSpeed = total_distance / (total_moving_time_seconds / 60.0 / 60.0)
-        
-        //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed, "dist": stringer(dbl: total_distance, len: 2), "mov": total_moving_time_string, "mov_avg": stringer(dbl: btAverageSpeed, len: 1) ])
         if current.currentSpeed.isNaN == true {
             current.currentSpeed = 0
         }
@@ -182,18 +164,15 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             oldCrankEventTime = crankEventTime
             return
         }
-//        if (b < 500 && a == 0) {  //ignore velo quick reads
-//            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
-//            veloCadCounter += 1
-//            if veloCadCounter > 2 {  //cad really is 0
-//                veloCadCounter = 0
-//                //print("0's in a row, rt.rt_cad is set to 0")
-//                //rt.rt_cadence = Double(0)
-//                //cadence = stringer(dbl: 0, len: 0)
-//                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence])
-//            }
-//            return
-//        }
+        if (b < 500 && a == 0) {  //ignore velo quick reads
+            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+            veloCadCounter += 1
+            if veloCadCounter > 2 {  //cad really is 0
+                veloCadCounter = 0
+                current.currentCadence = 0
+            }
+            return
+        }
         if (a > 15 || b > 10000) {  //catch after breaks
             //print("After a break, too much time or too much crank revs (a > 15 || b > 10000):  \(a), \(b)")
             oldCrankRevolution = crankRevolution
@@ -204,23 +183,10 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         
         let crankTimeSeconds = Double(b / Double(1024.0))
         current.currentCadence = a / (crankTimeSeconds / Double(60.0))
-//        print("current.currentCadence: \(current.currentCadence)")
-        
-        //currentCadence = Double(a) / Double(crankTimeSeconds / Double(60))
-        //string for cadence
-        //cadence = stringer(dbl: currentCadence, len: 0)
-        //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence])
-        
-        //inRoundCadence.append(Int(Double(a) / Double(crankTimeSeconds / Double(60))))
-        //roundCadence = inRoundCadence.average
-        
         rt_crank_revs += a
         rt_crank_time += b  //still in 1/1024 of a sec
         totalCrankRevs += a
-        
-        //NotificationCenter.default.post(name: Notification.Name("cadence"), object: nil)
-        //print("rt.rt_cadence - notify, revs, time:  \(rt.rt_cadence), \(a) \(b)");
-        
+
         if current.currentCadence.isNaN == true {
             current.currentCadence = 0
         }
