@@ -129,6 +129,22 @@ class Starter_VC: UITableViewController {
         secondsInCurrentMile += 1
         secondsSinceStart = round(system.actualElapsedTime)
         secondsInRound = (secondsSinceStart - (Double(secondsPerRound) * roundsCompleted)) - 1
+        
+        //NEW ROUND IDENTIFIED
+        if secondsSinceStart >= currentRound * Double(secondsPerRound) {
+            print("\nNEW ROUND, ROUND \(roundsCompleted) COMPLETE")
+            print("SEC IN ROUND:  \(secondsInRound)")
+            print("secondsSinceStart:  \(secondsSinceStart)")
+            roundsCompleted += 1
+            currentRound += 1
+            processUD(st: "NEW ROUND IDENTIFIED")
+
+            
+            updateRound()
+
+            distanceAtStartOfRoundBT = current.totalDistance
+            distanceAtStartOfRoundGEO = geo.distance
+        }
 
         totalTime.text = "\(createTimeString(seconds: Int(round(system.actualElapsedTime)))) TOTAL TIME"
         
@@ -219,22 +235,7 @@ class Starter_VC: UITableViewController {
         
 
         
-        //NEW ROUND IDENTIFIED
-//        if secondsSinceStart >= currentRound * Double(secondsPerRound) {
-        if secondsCounter == secondsPerRound + 1 {
-            processUD(st: "NEW ROUND IDENTIFIED")
-            secondsCounter = 1
-            print("\nNEW ROUND, ROUND \(roundsCompleted) COMPLETE")
-            print("SEC IN ROUND:  \(secondsInRound)")
-            print("secondsSinceStart:  \(secondsSinceStart)")
-            
-            updateRound()
-            roundsCompleted += 1
-            currentRound += 1
-            
-            distanceAtStartOfRoundBT = current.totalDistance
-            distanceAtStartOfRoundGEO = geo.distance
-        }
+
         
         //TEST FOR NEW MILE
         processUD(st: "TEST FOR NEW MILE")
