@@ -282,10 +282,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("result", "getDevice.toString  " + result.getDevice().toString());
                         //Log.i("result", String.format("getDevice.ScanRecord  %s", result.getScanRecord().getServiceData().toString()));
 
-//                        btn1 = findViewById(R.id.btn1);
-//                        btn2 = findViewById(R.id.btn2);
-//                        btn3 = findViewById(R.id.btn3);
-
                         Button btn100 = findViewById(R.id.button100);
                         Button btn101 = findViewById(R.id.button101);
                         Button btn102 = findViewById(R.id.button102);
@@ -956,7 +952,6 @@ public class MainActivity extends AppCompatActivity {
                         rotDiff = do16BitDiff(crankRotations, mLastCrankReading);
                         timeDiff = do16BitDiff(time, mLastCrankTime);
 
-                        //parent.mCallback.onCadenceUpdate(parent, rotDiff, (timeDiff * 1000000.0) / 1024.0);
                         currentCadence = rotDiff / (((timeDiff) / 1024.0) / 60);
                         mPrinter("CURRENT CADENCE:  " + String.format("%.1f", currentCadence));
 
@@ -1029,9 +1024,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public String displayOrRemove(String displayName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("CONNECT OR REMOVE?")
+                .setItems(["CONNECT", "REMOVE"]), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        mLog("WHICH", "WHICH WAS CLICKED:  " + which);
+                        mDevice = devicesDiscovered.get(which);
+                        connectToDevice(mDevice);
+                    }
+                };
+
+        builder.create().show();
+        return "a_String";
+    }
+
 
     public void onClick_Bluetooth(View view) {
-
         //TODO:  DISABLE FOR EMULATOR
         mLog("onCLICK","ONCLICK BLUETOOTH");
         scanLeDevice(true);
@@ -1041,7 +1052,16 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_104(View view) {
         mDevice = devicesDiscovered.get(4);
         isConnecting = true;
+//        String disOrRem = displayOrRemove(mDevice.getName());
+//        if (disOrRem == "CONNECT") {
+//            mPrinter("connect here");
+//        }
+        //MOVE THE CONNECT INSIDE BLOCK ABOVE
+
         connectToDevice(mDevice);
+        if (disOrRem == "REMOVE") {
+            //hide button 104
+        }
     }
 
     public void onClick_103(View view) {
