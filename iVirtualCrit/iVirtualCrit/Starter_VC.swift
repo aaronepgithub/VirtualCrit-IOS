@@ -36,6 +36,8 @@ var lo: Double = 0
 
 class Starter_VC: UITableViewController {
     
+    var secondsCounter: Int = 1
+    
     var secondsSinceStart = Double(0)
     var secondsInRound = Double(0)
     var secondsInCurrentMile = Double(0)
@@ -113,7 +115,7 @@ class Starter_VC: UITableViewController {
     
     //EACH SECOND
     @objc func timerInterval() {
-        
+        secondsCounter += 1
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         
         secondsInCurrentMile += 1
@@ -154,7 +156,7 @@ class Starter_VC: UITableViewController {
         //CALC ROUND SPEEDS BEFORE ROUND ENDS
         if current.totalDistance > 0 {
             inRoundBtDistance = current.totalDistance - distanceAtStartOfRoundBT
-            if inRoundBtDistance > 0 {
+            if inRoundBtDistance > 0.1 && secondsInRound > 10 {
                 inRoundBtSpeed = inRoundBtDistance / (secondsInRound / 60.0 / 60.0)
                 print("inRoundBtSpeed:   \(inRoundBtSpeed)")
                 btSpdRnd.text = "\(stringer(dbl: inRoundBtSpeed, len: 1)) RND SPD"
@@ -163,17 +165,13 @@ class Starter_VC: UITableViewController {
         
         if geo.distance > 0 {
             inRoundGeoDistance = geo.distance - distanceAtStartOfRoundGEO
-            if inRoundGeoDistance > 0 {
+            if inRoundGeoDistance > 0.1 && secondsInRound > 10 {
                 inRoundGeoSpeed = inRoundGeoDistance / (secondsInRound / 60.0 / 60.0)
                 print("inRoundGeoSpeed:   \(inRoundGeoSpeed)")
                 gpsRoundSpeed.text = "\(stringer(dbl: inRoundGeoSpeed, len: 1)) RND SPD(G)"
             } else {inRoundGeoSpeed = 0}
         }
-        
-        
-        
 
-        
         //CALC ROUND HR/SCORE BEFORE ROUND ENDS
         if current.currentHR > 0 {
             inRoundHR.append(Int(current.currentHR))
@@ -200,7 +198,9 @@ class Starter_VC: UITableViewController {
 
         
         //NEW ROUND IDENTIFIED
-        if secondsSinceStart >= currentRound * Double(secondsPerRound) {
+//        if secondsSinceStart >= currentRound * Double(secondsPerRound) {
+        if secondsCounter == secondsPerRound + 1 {
+            secondsCounter = 1
             print("\nNEW ROUND, ROUND \(roundsCompleted) COMPLETE")
             print("SEC IN ROUND:  \(secondsInRound)")
             print("secondsSinceStart:  \(secondsSinceStart)")

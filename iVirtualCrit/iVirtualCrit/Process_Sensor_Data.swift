@@ -75,24 +75,24 @@ func processWheelData(withData data :Data) {
             current.currentSpeed = 0
             return
         }
-        if (b < 500 && a == 0) { //ignore velo quick reads
-            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
-            veloSpeedCounter += 1
-            if veloSpeedCounter > 2 {
-                veloSpeedCounter = 0
-                //print("spd, 0's in a row, set rt_spd to 0")
-                //speed = stringer(dbl: 0, len: 1)
-                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed])
-                
-                current.currentSpeed = 0
-            }
-            return;
-        }
+//        if (b < 500 && a == 0) { //ignore velo quick reads
+//            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+//            veloSpeedCounter += 1
+//            if veloSpeedCounter > 2 {
+//                veloSpeedCounter = 0
+//                //print("spd, 0's in a row, set rt_spd to 0")
+//                //speed = stringer(dbl: 0, len: 1)
+//                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["spd": speed])
+//
+//                current.currentSpeed = 0
+//            }
+//            return
+//        }
         if (a > 15 || b > 10000) {  //catch after breaks
             //print("After a break, too much time or too much wheel revs (a > 15 || b > 10000):  \(a), \(b)")
             oldWheelRevolution = wheelRevolution
             oldWheelEventTime = wheelEventTime
-            veloSpeedCounter = 0
+            //veloSpeedCounter = 0
             return
         }
         
@@ -140,7 +140,7 @@ func processWheelData(withData data :Data) {
         
         oldWheelRevolution = wheelRevolution
         oldWheelEventTime = wheelEventTime
-        veloSpeedCounter = 0
+        //veloSpeedCounter = 0
     }
     
 }
@@ -180,18 +180,18 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
             oldCrankEventTime = crankEventTime
             return
         }
-        if (b < 500 && a == 0) {  //ignore velo quick reads
-            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
-            veloCadCounter += 1
-            if veloCadCounter > 2 {  //cad really is 0
-                veloCadCounter = 0
-                //print("0's in a row, rt.rt_cad is set to 0")
-                //rt.rt_cadence = Double(0)
-                //cadence = stringer(dbl: 0, len: 0)
-                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence])
-            }
-            return
-        }
+//        if (b < 500 && a == 0) {  //ignore velo quick reads
+//            //print("velo check only (b < 500 && a == 0):  \(a), \(b)")
+//            veloCadCounter += 1
+//            if veloCadCounter > 2 {  //cad really is 0
+//                veloCadCounter = 0
+//                //print("0's in a row, rt.rt_cad is set to 0")
+//                //rt.rt_cadence = Double(0)
+//                //cadence = stringer(dbl: 0, len: 0)
+//                //NotificationCenter.default.post(name: NSNotification.Name("bleUpdate"), object: nil, userInfo: ["cad": cadence])
+//            }
+//            return
+//        }
         if (a > 15 || b > 10000) {  //catch after breaks
             //print("After a break, too much time or too much crank revs (a > 15 || b > 10000):  \(a), \(b)")
             oldCrankRevolution = crankRevolution
