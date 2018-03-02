@@ -21,6 +21,7 @@ extension String {
 
 var secondsInCurrentRound: Int = 0
 var distanceAtStartOfRoundBT = Double(0)
+var crankRotationsDuringRound: Double = 0
 
 //USED FOR VIEWER_VC
 var arr = [String]()
@@ -29,6 +30,8 @@ var arrSend = [String]()
 //USED FOR HISTORY_VC
 var arrResults = [String]()
 var arrResultsDetails = [String]()
+
+var roundCadence: Double = 0
 
 var la: Double = 0
 var lo: Double = 0
@@ -54,10 +57,10 @@ class Starter_VC: UITableViewController {
     var roundSpeed: Double = 0 //best between bt and geo
 
     var inRoundHR = [Int]()
-    var inRoundCadence = [Int]()
+//    var inRoundCadence = [Int]()
     var roundHR: Double = 0
     var roundScore: Double = 0
-    var roundCadence: Double = 0
+//    var roundCadence: Double = 0
     
     
     var secondsPerRound: Int = 300
@@ -137,7 +140,7 @@ class Starter_VC: UITableViewController {
             currentRound += 1
             distanceAtStartOfRoundBT = current.totalDistance
             distanceAtStartOfRoundGEO = geo.distance
-            inRoundCadence = []
+            crankRotationsDuringRound = 0
             inRoundHR = []
             
             updateRound()
@@ -178,10 +181,12 @@ class Starter_VC: UITableViewController {
         
         //CALC ROUND SPEEDS
         processUD(st: "CALC ROUND SPEEDS")
+        
         if current.totalDistance > 0 {
             inRoundBtDistance = current.totalDistance - distanceAtStartOfRoundBT
-            if inRoundBtDistance > 0.1 && secondsInCurrentRound > 10 {
-                inRoundBtSpeed = inRoundBtDistance / ((Double(secondsInCurrentRound) / 60.0 / 60.0))
+            if inRoundBtDistance > 0.01 && secondsInCurrentRound > 5 {
+                //inRoundBtSpeed = inRoundBtDistance / ((Double(secondsInCurrentRound) / 60.0 / 60.0))
+                inRoundBtSpeed = rndSpdBT
                 print("inRoundBtSpeed:   \(inRoundBtSpeed)")
                 btSpdRnd.text = "\(stringer(dbl: inRoundBtSpeed, len: 1)) RND SPD"
             } else {inRoundBtSpeed = 0}
@@ -213,22 +218,29 @@ class Starter_VC: UITableViewController {
         //CALC ROUND CAD BEFORE ROUND ENDS
         processUD(st: "CALC ROUND CAD BEFORE ROUND ENDS")
         print("current.currentCadence:   \(current.currentCadence)")
-        if current.currentCadence > 0 && current.currentCadence.isNaN == false {
-            inRoundCadence.append(Int(current.currentCadence))
-            if inRoundCadence.count > 2 {
-                if inRoundCadence.average > 1 {
-                    roundCadence = inRoundCadence.average
-                    print("inRoundCadence.average > 1")
-                } else {
-                    print("inRoundCadence.average < 1")
-                }
-            }
+//        if current.currentCadence > 0 && current.currentCadence.isNaN == false {
+//            inRoundCadence.append(Int(current.currentCadence))
+//            if inRoundCadence.count > 2 {
+//                if inRoundCadence.average > 1 {
+//                    roundCadence = inRoundCadence.average
+//                    print("inRoundCadence.average > 1")
+//                } else {
+//                    print("inRoundCadence.average < 1")
+//                }
+//            }
+//        } else {
+//            print("FAILED THIS...current.currentCadence > 0 && current.currentCadence.isNaN == false")
+//            roundCadence = 1
+//        }
+        roundCadence = rndCadBT
+        if roundCadence > 0 && roundCadence.isNaN == false {
+            btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"
+            print("roundCadence:   \(roundCadence)")
         } else {
-            print("FAILED THIS...current.currentCadence > 0 && current.currentCadence.isNaN == false")
-            roundCadence = 1
+            roundCadence = 0
+            print("roundCadence:   \(roundCadence)")
         }
-        btCadRnd.text = "\(stringer(dbl: roundCadence, len: 1)) RND CAD"
-        print("roundCadence:   \(roundCadence)")
+
         
 
         
@@ -626,12 +638,12 @@ class Starter_VC: UITableViewController {
             print("WheelCir:  \(wheelCircumference)")
         case 12:
             let spr = secondsPerRound
-            if spr > 30 {
-                print("already started")
-            } else {
+            if system.status == "STOPPED" {
                 if spr == 60 {secondsPerRound = 300;lblSecPerRound.text = "300"}
                 if spr == 300 {secondsPerRound = 1800;lblSecPerRound.text = "1800"}
                 if spr == 1800 {secondsPerRound = 60;lblSecPerRound.text = "60"}
+            } else {
+                print("already started")
             }
         case 13:
             print("13")

@@ -7,38 +7,11 @@
 //
 
 
-//var inRoundBtDistance: Double = 0
-//var btDistanceForMileCalc:Double = 0
-//var btAverageSpeed: Double = 0
-//
-//
-//var inRoundHR = [Int]()
-//var inRoundCadence = [Int]()
-//var roundHR: Double = 0
-//var roundCadence: Double = 0
-
-
-//var roundSpeed: Double = 0
-//var roundCadence: Double = 0
-//
-//var currentHR: Double = 0
-//var currentCadence: Double = 0
-//var currentSpeed: Double = 0
-//var currentScore: Double = 0
-
-
 import Foundation
 
-
-
-//var total_distance: Double = 0
-//var speed: String = "0"
-//var cadence: String = "0"
+var rndSpdBT: Double = 0
+var rndCadBT: Double = 0
 var wheelCircumference: Double = 2105
-//var total_moving_time_seconds: Double = 0
-//var total_moving_time_string: String = ""
-
-
 var totalWheelRevs: Double = 0
 var totalCrankRevs: Double = 0
 
@@ -111,8 +84,12 @@ func processWheelData(withData data :Data) {
         
         let roundDistance = current.totalDistance - distanceAtStartOfRoundBT
         let roundTimeInSeconds = secondsInCurrentRound
-        let roundSpd = roundDistance / (Double(roundTimeInSeconds) / 60.0 / 60.0)
-        print("roundSpd(not used):  \(roundSpd)")
+        let rndSpdBT_test = roundDistance / (Double(roundTimeInSeconds) / 60.0 / 60.0)
+        if rndSpdBT_test > 0 && rndSpdBT_test.isNaN == false {
+            rndSpdBT = rndSpdBT_test
+        }
+        
+        print("rndSpdBT:  \(rndSpdBT)")
         
         print("current.currentSpeed: \(current.currentSpeed)")
         print("current.totalDistance: \(current.totalDistance)")
@@ -186,11 +163,26 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         rt_crank_revs += a
         rt_crank_time += b  //still in 1/1024 of a sec
         totalCrankRevs += a
+        crankRotationsDuringRound += a
 
         if current.currentCadence.isNaN == true {
             print("current.currentCadence.isNaN == true")
             current.currentCadence = 0
         }
+        
+        let endOf300RoundCadence = crankRotationsDuringRound / (300.0 / 60.0)
+        let endOf60RoundCadence = crankRotationsDuringRound / (60.0 / 60.0)
+        print("60 Round Cadence:  \(endOf60RoundCadence)")
+        print("300 Round Cadence:  \(endOf300RoundCadence)")
+        let currentRoundCadence = crankRotationsDuringRound / (Double(secondsInCurrentRound) / 60.0)
+        print("currentRoundCadence:  \(currentRoundCadence)")
+        
+        if currentRoundCadence > 0 && currentRoundCadence.isNaN == false {
+        rndCadBT = currentRoundCadence
+        }
+
+        
+        
         oldCrankRevolution = crankRevolution
         oldCrankEventTime = crankEventTime
         veloCadCounter = 0
