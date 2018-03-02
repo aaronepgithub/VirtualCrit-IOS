@@ -937,6 +937,13 @@ class Starter_VC: UITableViewController {
     
     @IBOutlet weak var lblAudioStatus: UILabel!
     
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: timerIntervalValue,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
+        print("Started")
+        print(getFormattedTime(d: system.startTime!))
+        print(getFormattedTimeAndDate(d: system.startTime!));print("\n");
+    }
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath)
@@ -966,10 +973,9 @@ class Starter_VC: UITableViewController {
                     //geo.startTime = Date()
                 }
                 
-                timer = Timer.scheduledTimer(timeInterval: timerIntervalValue,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
-                print("Started")
-                print(getFormattedTime(d: system.startTime!))
-                print(getFormattedTimeAndDate(d: system.startTime!));print("\n");
+                startTimer()
+                
+
                 
                 //NotificationCenter.default.addObserver(self, selector: #selector(updateBT(not:)), name: Notification.Name("bleUpdate"), object: nil)
                 
