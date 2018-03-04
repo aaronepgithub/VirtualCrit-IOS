@@ -1,8 +1,11 @@
 package com.aaronep.andy.myplayground;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -33,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 localBroadcastReceiver,
                 new IntentFilter("OTHER_ACTION"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastReceiver,
+                new IntentFilter("B1_ACTION"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastReceiver,
+                new IntentFilter("B2_ACTION"));
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -91,27 +100,59 @@ public class MainActivity extends AppCompatActivity {
 
             if (intent.getAction().equals("SOME_ACTION")) {
                 //doSomeAction();
-                Log.i("TAG", "SOME ACTION");
+                Log.i("TAG", "SOME ACTION onReceive");
             }
-
             if (intent.getAction().equals("OTHER_ACTION")) {
                 //doSomeAction();
-                Log.i("TAG", "OTHER_ACTION");
+                Log.i("TAG", "OTHER_ACTION onReceive");
+            }
+            if (intent.getAction().equals("B1_ACTION")) {
+                //doSomeAction();
+                Log.i("TAG", "B1_ACTION onReceive");
+            }
+            if (intent.getAction().equals("B2_ACTION")) {
+                //doSomeAction();
+                Log.i("TAG", "B2_ACTION onReceive");
             }
         }
     }
-
-
-
-
 
 
     private BroadcastReceiver localBroadcastReceiver;
 
     public void onButton1_Click(View view) {
 
-        DialogFragment myFragment = new MyDialogFragment();
-        myFragment.show(getFragmentManager(), "theDialog");
+//        DialogFragment myFragment = new MyDialogFragment();
+//        myFragment.show(getFragmentManager(), "theDialog");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("2 Button Dialog")
+                .setCancelable(false)
+                .setPositiveButton("B1", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B1","B1 Clicked");
+
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("B1_ACTION"));
+
+                        dialog.cancel();
+
+                    }
+                })
+                .setNegativeButton("B2", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B2","B2 Clicked");
+
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("B2_ACTION"));
+
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
 
     }
+
 }
