@@ -136,7 +136,7 @@ class Starter_VC: UITableViewController {
         
         //NEW ROUND IDENTIFIER
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
-        if secondsInCurrentRound == secondsPerRound {
+        if secondsInCurrentRound >= secondsPerRound {
             print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
             roundsCompleted += 1
             currentRound += 1
@@ -562,7 +562,7 @@ class Starter_VC: UITableViewController {
             
         case 9:
             let tsz = wheelCircumference
-            if tsz == 2105 {lblTireSize.text = "700X26";wheelCircumference = 2115;}
+            if tsz == 2105 {lblTireSize.text = "700X28";wheelCircumference = 2136;}
             if tsz == 2115 {lblTireSize.text = "700X32";wheelCircumference = 2155;}
             if tsz == 2155 {lblTireSize.text = "700X25";wheelCircumference = 2105;}
             print("WheelCir:  \(wheelCircumference)")
@@ -727,6 +727,7 @@ class Starter_VC: UITableViewController {
         }
     }
     
+    
     var freshFB = false
     var arrLeaderNamesByScore: String = ""
     //FB GETS (1,2,3,4)
@@ -774,13 +775,14 @@ class Starter_VC: UITableViewController {
         }
     }
     
-    
-    var previousSpeedLeader = ""
+    var currentSpeedLeaderName = ""
+    var currentSpeedLeaderSpeed: Double = 0
+    var newSpeedLeader: Bool = false
     var arrLeaderNamesBySpeed: String = ""
     func fb2() {
         print("start fb2")
         arrLeaderNamesBySpeed = ""
-        //var readMe: String = ""
+        var n1: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         let ref = refDB.child(result)
@@ -796,8 +798,20 @@ class Starter_VC: UITableViewController {
                     let fbNAME = dict["fb_timName"]!
                     let fbSPD = dict["fb_SPD"]!
                     
+                    if let n2 = fbNAME as? String {
+                        n1 = n2
+                    } else {
+                        print("Can't get the name as a string")
+                    }
                     
                     if let dSPD = fbSPD as? Double {
+                        if dSPD > self.currentSpeedLeaderSpeed {
+                            self.currentSpeedLeaderSpeed = dSPD
+                            self.currentSpeedLeaderName = n1
+                            self.newSpeedLeader = true
+                            print("New Speed Leader:  \(self.currentSpeedLeaderName)")
+                            print("New Fastest Speed:  \(self.currentSpeedLeaderSpeed)")
+                        }
                         sSPD = stringer(dbl: dSPD, len: 1)
                     } else {
                         sSPD = "0"
