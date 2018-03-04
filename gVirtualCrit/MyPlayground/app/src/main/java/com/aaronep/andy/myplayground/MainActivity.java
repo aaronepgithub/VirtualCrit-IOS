@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onScan_Click(MenuItem item) {
+
+    }
+
     private class LocalBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -113,12 +118,20 @@ public class MainActivity extends AppCompatActivity {
             if (intent.getAction().equals("B2_ACTION")) {
                 //doSomeAction();
                 Log.i("TAG", "B2_ACTION onReceive");
+                sendToaster("B2 onReceive" + ", " + myString + ", " + myDouble);
             }
         }
     }
 
+    private void sendToaster(String toasterText) {
+        Toast.makeText(this,toasterText,Toast.LENGTH_SHORT).show();
+    }
 
     private BroadcastReceiver localBroadcastReceiver;
+    private Double myDouble = 0.0;
+    private String myString = "My String";
+
+
 
     public void onButton1_Click(View view) {
 
@@ -142,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("B2", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B2","B2 Clicked");
+                        myDouble = 10.0;
+                        myString = "A String";
 
                         LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
                                 new Intent("B2_ACTION"));

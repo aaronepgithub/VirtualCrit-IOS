@@ -3,17 +3,21 @@ package com.aaronep.andy5;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +40,8 @@ import android.bluetooth.le.ScanSettings;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // setup UI handler
-    private final static int UPDATE_DEVICE = 0;
-    private final static int UPDATE_VALUE = 1;
-    private final static int UPDATE_CSC = 2;
+//    private final static int UPDATE_DEVICE = 0;
+//    private final static int UPDATE_VALUE = 1;
+//    private final static int UPDATE_CSC = 2;
     private final static int UPDATE_HR = 3;
     private final static int UPDATE_SPEED = 4;
     private final static int UPDATE_CADENCE = 5;
@@ -141,35 +147,95 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-//    private void updateValue(String value){
-//        TextView t= findViewById(R.id.tView1);
-//        t.setText(value);
-//    }
-//    private void updateValueCSC(String value){
-//        TextView t= findViewById(R.id.tView2);
-//        t.setText(value);
-//    }
-
     private void updateValueHR(String value) {
         TextView t = findViewById(R.id.textView100);
+        veloHrNew = value;
         t.setText(value);
     }
 
     private void updateValueCADENCE(String value) {
         TextView t = findViewById(R.id.textView102);
+        veloCadNew = value;
         t.setText(value);
     }
 
     private void updateValueSPEED(String value) {
         TextView t = findViewById(R.id.textView101);
         t.setText(value);
+        veloSpdNew = value;
+        updateTotals();
     }
 
+    private String veloSpdOld = "Old";
+    private String veloSpdNew = "New";
+    private String veloCadOld = "Old";
+    private String veloCadNew = "New";
+    private String veloHrOld = "Old";
+    private String veloHrNew = "New";
+
+    private void myVeloTester() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPrinter("VELO TEST");
+                if (veloSpdNew == veloSpdOld) {
+                    updateValueSPEED("MPH: 0.0");
+                }
+                veloSpdOld = veloSpdNew;
+
+
+                if (veloCadNew == veloCadOld) {
+                    updateValueCADENCE("RPM: 0");
+                }
+                veloCadOld = veloCadNew;
+
+
+                if (veloHrNew == veloHrOld) {
+                    updateValueHR("HR: 0");
+                }
+                veloHrOld = veloHrNew;
+
+                myVeloTester();
+
+
+            }
+        }, 15000);
+    }
+
+
+    @SuppressLint("DefaultLocale")
+    private void updateTotals() {
+//    mPrinter("UPDATING TOTALS");
+        String nString = DateUtils.formatElapsedTime((long) totalWheelTimeSeconds);
+
+        TextView t2 = findViewById(R.id.textView112);
+        t2.setText(nString);
+
+        TextView t1 = findViewById(R.id.textView111);
+        t1.setText(String.format("MPH: %.1f", totalAverageMovingSpeed));
+
+        TextView t0 = findViewById(R.id.textView110);
+        t0.setText(String.format("MI: %.2f", totalDistance));
+    }
+
+//    Date todayDate = new Date();
+//    todayDate.getDay();
+//    todayDate.getHours();
+//    todayDate.getMinutes();
+//    todayDate.getMonth();
+//    todayDate.getTime();
+
+    private Calendar startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startTime = Calendar.getInstance();
+        mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
+        mPrinter("Starttime in Milli: " + startTime.getTimeInMillis());
+
 
         mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -211,8 +277,43 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         //END BT SETUP
-    }
+
+        //START BROADCAST REC
+        //NOT USED YET
+        localBroadcastReceiver = new LocalBroadcastReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastReceiver,
+                new IntentFilter("B1_ACTION"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastReceiver,
+                new IntentFilter("B2_ACTION"));
+        //END BROADCAST REC
+
+        myVeloTester();
+
+        }
     //END ON CREATE
+
+    //NOT USED YET
+    private BroadcastReceiver localBroadcastReceiver;
+    private class LocalBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // safety check
+            if (intent == null || intent.getAction() == null) {
+                return;
+            }
+            if (intent.getAction().equals("CONNECT")) {
+                //doSomeAction();
+                Log.i("TAG", "CONNECT onReceive");
+            }
+            if (intent.getAction().equals("REMOVE")) {
+                //doSomeAction();
+                Log.i("TAG", "REMOVE onReceive");
+            }
+        }
+    }
 
 
     @Override
@@ -238,6 +339,8 @@ public class MainActivity extends AppCompatActivity {
         if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
             scanLeDevice(false);
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+                localBroadcastReceiver);
     }
 
     @Override
@@ -346,6 +449,8 @@ public class MainActivity extends AppCompatActivity {
     //private BluetoothDevice mDevice;
 
 
+
+    //NOT USING
     private void requestDeviceConnection() {
         mLog("REQ", "REQUEST DEVICE CONNECTION");
 
@@ -377,6 +482,10 @@ public class MainActivity extends AppCompatActivity {
         //x = x + 1;
     }
 
+    private void sendToaster(String toasterText) {
+        Toast.makeText(this,toasterText,Toast.LENGTH_SHORT).show();
+    }
+
     private void scanLeDevice(final boolean enable) {
         if (enable) {
             mHandler.postDelayed(new Runnable() {
@@ -385,6 +494,7 @@ public class MainActivity extends AppCompatActivity {
                     mLEScanner.stopScan(mScanCallback);
                     mLog("SCAN","STOP SCAN");
                     isScanning = false;
+                    sendToaster("SCAN COMPLETE");
                 //requestDeviceConnection();
                 }
             }, SCAN_PERIOD);
@@ -392,6 +502,8 @@ public class MainActivity extends AppCompatActivity {
             if (isScanning == false) {
                 mLEScanner.startScan(filters, settings, mScanCallback);
                 isScanning = true;
+//                sendToaster("SCANNING...");
+                Toast.makeText(this,"SCANNING...",Toast.LENGTH_LONG);
                 mLog("SCAN","START SCAN");
             }
         } else {
@@ -412,6 +524,8 @@ public class MainActivity extends AppCompatActivity {
         if (mGatt == null) {
             Log.i("connectToDevice", "connecting to device: "+mDevice.toString());
             mGatt = mDevice.connectGatt(this, false, gattCallback);
+
+            Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
 
             arrayListConnectedDevices.add(mDevice);
             for (BluetoothDevice d : arrayListConnectedDevices) {
@@ -746,7 +860,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("onCharacteristicRead", characteristic.getUuid().toString());
         }
 
-        @SuppressLint("NewApi")
+        @SuppressLint({"NewApi", "DefaultLocale"})
         @Override
         public void onCharacteristicChanged(BluetoothGatt mGatt,
                                             BluetoothGattCharacteristic
@@ -899,26 +1013,29 @@ public class MainActivity extends AppCompatActivity {
                         double minsPerHour = 60.0;
                         double speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
 
-
                         //parent.mCallback.onSpeedUpdate(parent, (wheelRotations - mLastWheelReading) * mCircumference, (timeDiff * 1000000.0) / 1024.0);
                         mPrinter("CURRENT SPEED:  " + String.format("%.2f", speed));
-                        //mPrinter("SPEED FORMATTED:  " + speed);
 
-                        if (speed >= 0 && !Double.isNaN(speed)) {
+                        if (speed > 0 && speed < 40 && wheelTimeSeconds < 15 && !Double.isNaN(speed)) {
+
+                            totalWheelRotations += wheelRot;
+                            totalWheelTimeSeconds += wheelTimeSeconds;
+                            totalDistance = totalWheelRotations * wheelCircumferenceCM * cmPerMi;
+                            totalAverageMovingSpeed = (totalWheelRotations / (totalWheelTimeSeconds / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+
+
+                            if (totalDistance >= nextMileMarker) {
+                                nextMileMarker += 1;
+                                sendToaster("MILE " + (nextMileMarker - 1) + "COMPLETED");
+                            }
+
                             //String value = String.format("CSC1: %d", csc1value);
                             Message msg = Message.obtain();
                             msg.obj = String.format("MPH: %.2f", speed);
                             msg.what = 4;
                             msg.setTarget(uiHandler);
                             msg.sendToTarget();
-                        } else {
-                            Message msg = Message.obtain();
-                            msg.obj = "MPH: 0";
-                            msg.what = 4;
-                            msg.setTarget(uiHandler);
-                            msg.sendToTarget();
                         }
-
 
 
                         mLastWheelReading = wheelRotations;
@@ -955,16 +1072,10 @@ public class MainActivity extends AppCompatActivity {
                         currentCadence = rotDiff / (((timeDiff) / 1024.0) / 60);
                         mPrinter("CURRENT CADENCE:  " + String.format("%.1f", currentCadence));
 
-                        if (currentCadence >= 0 && !Double.isNaN(currentCadence)) {
+                        if (currentCadence > 0 && timeDiff < 10000 && !Double.isNaN(currentCadence)) {
                             //String value = String.format("CSC1: %d", csc7value);
                             Message msg = Message.obtain();
-                            msg.obj = String.format("RPM: %.1f", currentCadence);
-                            msg.what = 5;
-                            msg.setTarget(uiHandler);
-                            msg.sendToTarget();
-                        } else {
-                            Message msg = Message.obtain();
-                            msg.obj = "RPM: 0";
+                            msg.obj = String.format("RPM: %.0f", currentCadence);
                             msg.what = 5;
                             msg.setTarget(uiHandler);
                             msg.sendToTarget();
@@ -997,7 +1108,11 @@ public class MainActivity extends AppCompatActivity {
     private double currentCadence;
     private double mCircumference = 2105;
 
-
+    private double totalDistance = 0.0;
+    private double totalWheelRotations = 0.0;
+    private double totalWheelTimeSeconds = 0.0;
+    private double totalAverageMovingSpeed = 0.0;
+    private double nextMileMarker = 1.0;
 
 
 
@@ -1024,27 +1139,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String displayOrRemove(String displayName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("CONNECT OR REMOVE?")
-                .setItems(["CONNECT", "REMOVE"]), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
-                        mLog("WHICH", "WHICH WAS CLICKED:  " + which);
-                        mDevice = devicesDiscovered.get(which);
-                        connectToDevice(mDevice);
-                    }
-                };
-
-        builder.create().show();
-        return "a_String";
-    }
+//    public String displayOrRemove(String displayName) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("CONNECT OR REMOVE?")
+//                .setItems(["CONNECT", "REMOVE"]), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // The 'which' argument contains the index position
+//                        // of the selected item
+//                        mLog("WHICH", "WHICH WAS CLICKED:  " + which);
+//                        mDevice = devicesDiscovered.get(which);
+//                        connectToDevice(mDevice);
+//                    }
+//                };
+//
+//        builder.create().show();
+//        return "a_String";
+//    }
 
 
     public void onClick_Bluetooth(View view) {
         //TODO:  DISABLE FOR EMULATOR
         mLog("onCLICK","ONCLICK BLUETOOTH");
+//        Toast.makeText(this,"SCANNING...", Toast.LENGTH_LONG).show();
         scanLeDevice(true);
     }
 
@@ -1052,39 +1168,205 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_104(View view) {
         mDevice = devicesDiscovered.get(4);
         isConnecting = true;
-//        String disOrRem = displayOrRemove(mDevice.getName());
-//        if (disOrRem == "CONNECT") {
-//            mPrinter("connect here");
-//        }
-        //MOVE THE CONNECT INSIDE BLOCK ABOVE
+        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
+        //connectToDevice(mDevice);
 
-        connectToDevice(mDevice);
-        if (disOrRem == "REMOVE") {
-            //hide button 104
-        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CONNECT TO:  " + mDevice.getName())
+                .setCancelable(false)
+                .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B1","CONNECT");
+                        connectToDevice(mDevice);
+                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("CONNECT"));
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("REMOVE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B2","REMOVE");
+
+                        //TODO:  CHANGE FOR EACH BUTTON
+                        Button btn104 = findViewById(R.id.button104);
+                        btn104.setVisibility(View.GONE);
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("REMOVE"));
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
+
+    //private Button buttonToHide;
 
     public void onClick_103(View view) {
         mDevice = devicesDiscovered.get(3);
         isConnecting = true;
-        connectToDevice(mDevice);
+        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
+//        connectToDevice(mDevice);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CONNECT TO:  " + mDevice.getName())
+                .setCancelable(false)
+                .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B1","CONNECT");
+                        connectToDevice(mDevice);
+                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("CONNECT"));
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("REMOVE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B2","REMOVE");
+
+                        //TODO:  CHANGE FOR EACH BUTTON
+                        Button btn103 = findViewById(R.id.button103);
+                        btn103.setVisibility(View.GONE);
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("REMOVE"));
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
     public void onClick_102(View view) {
         mDevice = devicesDiscovered.get(2);
         isConnecting = true;
-        connectToDevice(mDevice);
+        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
+//        connectToDevice(mDevice);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CONNECT TO:  " + mDevice.getName())
+                .setCancelable(false)
+                .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B1","CONNECT");
+                        connectToDevice(mDevice);
+                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("CONNECT"));
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("REMOVE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B2","REMOVE");
+
+                        //TODO:  CHANGE FOR EACH BUTTON
+                        Button btn102 = findViewById(R.id.button102);
+                        btn102.setVisibility(View.GONE);
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("REMOVE"));
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
     }
 
     public void onClick_101(View view) {
         mDevice = devicesDiscovered.get(1);
         isConnecting = true;
-        connectToDevice(mDevice);
+        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
+//        connectToDevice(mDevice);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CONNECT TO:  " + mDevice.getName())
+                .setCancelable(false)
+                .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B1","CONNECT");
+                        connectToDevice(mDevice);
+                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("CONNECT"));
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("REMOVE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B2","REMOVE");
+
+                        //TODO:  CHANGE FOR EACH BUTTON
+                        Button btn101 = findViewById(R.id.button101);
+                        btn101.setVisibility(View.GONE);
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("REMOVE"));
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
     public void onClick_100(View view) {
         mDevice = devicesDiscovered.get(0);
         isConnecting = true;
-        connectToDevice(mDevice);
+        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
+//        connectToDevice(mDevice);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CONNECT TO:  " + mDevice.getName())
+                .setCancelable(false)
+                .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B1","CONNECT");
+                        connectToDevice(mDevice);
+                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("CONNECT"));
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("REMOVE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("B2","REMOVE");
+
+                        //TODO:  CHANGE FOR EACH BUTTON
+                        Button btn100 = findViewById(R.id.button100);
+                        btn100.setVisibility(View.GONE);
+
+                        //NOT USED
+                        LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                new Intent("REMOVE"));
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

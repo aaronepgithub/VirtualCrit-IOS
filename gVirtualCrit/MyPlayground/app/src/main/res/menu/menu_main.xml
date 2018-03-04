@@ -2,6 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aaronep.andy.myplayground.MainActivity">
+
+    <item
+        android:id="@+id/action_bleScan"
+        android:onClick="onScan_Click"
+        android:orderInCategory="90"
+        android:title="SCAN"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_bleConnect"
+        android:onClick="onConnect_Click"
+        android:orderInCategory="91"
+        android:title="CONNECT"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="101"
@@ -15,6 +28,6 @@
     <item
         android:id="@+id/action_nothing"
         android:orderInCategory="103"
-        android:title="Nothing Yet"
+        android:title="Nothing"
         app:showAsAction="never" />
 </menu>
