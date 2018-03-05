@@ -111,6 +111,9 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var btHrRnd: UILabel!
     @IBOutlet weak var btScoreRnd: UILabel!
     
+    @IBOutlet weak var lbl_timeInRound: UILabel!
+    @IBOutlet weak var fb_SpeedLeader: UILabel!
+    
     func processUD(st: String) {
         udString = "\(secondsSinceStart):  \(st) \n"
         if currentRound == 1 {
@@ -138,6 +141,8 @@ class Starter_VC: UITableViewController {
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
         if secondsInCurrentRound >= secondsPerRound {
             print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
+            arr.insert("ROUND COMPLETE", at: 0)
+            arrSend.insert("ROUND COMPLETE", at: 0)
             roundsCompleted += 1
             currentRound += 1
             distanceAtStartOfRoundBT = current.totalDistance
@@ -151,6 +156,8 @@ class Starter_VC: UITableViewController {
         
         
         totalTime.text = "\(createTimeString(seconds: Int(round(system.actualElapsedTime)))) TOTAL TIME"
+        
+        lbl_timeInRound.text = "(\(secondsInCurrentRound)):  RND# \(currentRound) MILE# \(stringer(dbl: currentMile, len: 0))"
         
 //        print("each second:  \(createTimeString(seconds: Int(round(system.actualElapsedTime))))")
 //        print("each second:  \(system.actualElapsedTime)")
@@ -276,7 +283,9 @@ class Starter_VC: UITableViewController {
         if ConnectionCheck.isConnectedToNetwork() {
             print("Connected to Internet")
             print("calling fbPushII")
-            fbPushII()
+            if rounds.speeds.last! > 0.1 {
+                fbPushII()
+            }
         }
         else{
             print("disConnected")
@@ -310,7 +319,7 @@ class Starter_VC: UITableViewController {
         //MY BEST ROUNDS POINT
         let when = DispatchTime.now() + 25
         DispatchQueue.main.asyncAfter(deadline: when){
-            self.newBestRoundPoint(mileString: "MY BEST ROUNDS\n\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE")
+            self.newBestRoundPoint(mileString: "MY BEST ROUNDS\n\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE.\n\n LEADER IS \(self.currentSpeedLeaderName).\n\(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))")
             
             //print("\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
             
@@ -418,7 +427,8 @@ class Starter_VC: UITableViewController {
         
         //3 LBLS
         arr.append("\(stringer(dbl: current.currentScore, len: 0))%\nHR")
-        arr.append("SPD\nMPH")
+        
+        arr.append("SPD\nMPH\n\(stringer(dbl: Double(secondsInCurrentRound), len: 0))")
         
         if activityType == "RUN" {
             arr.append("PACE")
@@ -470,10 +480,10 @@ class Starter_VC: UITableViewController {
     
     
     
-    
+    //get random
     var riderName: String = "TIM"
     var activityType: String = "BIKE"
-    var audioStatus: String = "OFF"
+    var audioStatus: String = "ON"
     @IBOutlet weak var lblTireSize: UILabel!
     @IBOutlet weak var lblMaxHeartrateValue: UILabel!
     
@@ -603,6 +613,10 @@ class Starter_VC: UITableViewController {
         
         system.startTime = Date()
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
+        
+        let rn = Int(arc4random_uniform(1000))
+        riderName = "TIM" + String(rn)
+        lblRiderName.text = riderName
         
         let defaults = UserDefaults.standard
         udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
@@ -811,6 +825,7 @@ class Starter_VC: UITableViewController {
                             self.newSpeedLeader = true
                             print("New Speed Leader:  \(self.currentSpeedLeaderName)")
                             print("New Fastest Speed:  \(self.currentSpeedLeaderSpeed)")
+                            self.self.fb_SpeedLeader.text = "\(self.currentSpeedLeaderName):  \(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))"
                         }
                         sSPD = stringer(dbl: dSPD, len: 1)
                     } else {
@@ -862,6 +877,7 @@ class Starter_VC: UITableViewController {
                 }
                 print("leaderNamesByScoreTotals\n\(self.leaderNamesByScoreTotals) \n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSCORE LEADERS (TOTAL)\n\(self.leaderNamesByScoreTotals)")
+                
                 print("Complete fb3")
             }
         })

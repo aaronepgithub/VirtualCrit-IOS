@@ -404,13 +404,13 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="54" height="24"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AUDIO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ote-9j-SQr">
-                                                            <rect key="frame" x="59" y="0.0" width="148.5" height="24"/>
+                                                            <rect key="frame" x="59" y="0.0" width="157.5" height="24"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OFF" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ZN-HT-AX7">
-                                                            <rect key="frame" x="212.5" y="0.0" width="116.5" height="24"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ON" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ZN-HT-AX7">
+                                                            <rect key="frame" x="221.5" y="0.0" width="107.5" height="24"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                             <color key="textColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -674,8 +674,30 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="hq5-Os-Ujx" userLabel="GPS TIME">
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="mfT-5d-fJK" userLabel="TIMEINROUND">
                                         <rect key="frame" x="0.0" y="840" width="375" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mfT-5d-fJK" id="bBg-rx-daM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9Y-R6-m3Z" userLabel="TIMEINROUND">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="V9Y-R6-m3Z" firstAttribute="leading" secondItem="bBg-rx-daM" secondAttribute="leading" constant="10" id="Rai-61-g6A"/>
+                                                <constraint firstAttribute="trailing" secondItem="V9Y-R6-m3Z" secondAttribute="trailing" constant="10" id="UD1-TD-IAi"/>
+                                                <constraint firstAttribute="bottom" secondItem="V9Y-R6-m3Z" secondAttribute="bottom" id="Vut-Cy-nje"/>
+                                                <constraint firstItem="V9Y-R6-m3Z" firstAttribute="top" secondItem="bBg-rx-daM" secondAttribute="top" id="o0L-6u-0Eg"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="hq5-Os-Ujx" userLabel="GPS TIME">
+                                        <rect key="frame" x="0.0" y="880" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hq5-Os-Ujx" id="qA5-NZ-1tF">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -697,7 +719,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="2v6-O0-v2U" userLabel="GPS MOVING PACE">
-                                        <rect key="frame" x="0.0" y="880" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="920" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2v6-O0-v2U" id="clJ-Qw-dAT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -719,7 +741,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="LhP-sH-rFl" userLabel="GPS MOVING SPEED">
-                                        <rect key="frame" x="0.0" y="920" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="960" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LhP-sH-rFl" id="0Yq-ZY-eIV">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -741,7 +763,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="gbN-gp-jpF" userLabel="GPS AVG SPEED">
-                                        <rect key="frame" x="0.0" y="960" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1000" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gbN-gp-jpF" id="Upb-XM-nQ6">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -763,7 +785,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="aTK-dg-Sq0" userLabel="GPS AVG PACE">
-                                        <rect key="frame" x="0.0" y="1000" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1040" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aTK-dg-Sq0" id="VAc-rZ-CQm">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -785,7 +807,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="WJs-fU-j3P" userLabel="GPS DIRECTION">
-                                        <rect key="frame" x="0.0" y="1040" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1080" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WJs-fU-j3P" id="vnC-IA-hVI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -807,7 +829,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="XLc-99-eO2" userLabel="GPS SPEED RND">
-                                        <rect key="frame" x="0.0" y="1080" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1120" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XLc-99-eO2" id="76y-gj-3NF">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -829,7 +851,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="MN6-kR-b8c" userLabel="GPS DISTANCE">
-                                        <rect key="frame" x="0.0" y="1120" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1160" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MN6-kR-b8c" id="5Jz-ke-m7I">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -851,7 +873,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="Pr9-Uw-rBG" userLabel="BT DISTANCE">
-                                        <rect key="frame" x="0.0" y="1160" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1200" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pr9-Uw-rBG" id="aeE-BG-6AT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -873,7 +895,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="rTT-CF-XTn" userLabel="BT HR">
-                                        <rect key="frame" x="0.0" y="1200" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1240" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTT-CF-XTn" id="lBU-5e-N0I">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -895,7 +917,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="luu-yk-99s" userLabel="BT SPEED">
-                                        <rect key="frame" x="0.0" y="1240" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1280" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="luu-yk-99s" id="7yM-KT-138">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -917,7 +939,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="SPP-VR-fZN" userLabel="BT CAD">
-                                        <rect key="frame" x="0.0" y="1280" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1320" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SPP-VR-fZN" id="jmD-rg-ds5">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -939,7 +961,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="06o-VE-n53" userLabel="BT SCORE">
-                                        <rect key="frame" x="0.0" y="1320" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1360" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="06o-VE-n53" id="eSZ-i9-6Z8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -961,7 +983,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="gUz-5m-7ad" userLabel="BT MOVING TIME">
-                                        <rect key="frame" x="0.0" y="1360" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1400" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gUz-5m-7ad" id="moz-am-UHf">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -983,7 +1005,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="ROg-gv-mFs" userLabel="BT AVG">
-                                        <rect key="frame" x="0.0" y="1400" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1440" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ROg-gv-mFs" id="zjj-bU-rWO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -1005,7 +1027,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="1hs-bd-HR5" userLabel="BT SPD RND">
-                                        <rect key="frame" x="0.0" y="1440" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1480" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1hs-bd-HR5" id="0re-Bw-ZoS">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -1027,7 +1049,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="8v4-ip-kGJ" userLabel="BT CAD RND">
-                                        <rect key="frame" x="0.0" y="1480" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1520" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8v4-ip-kGJ" id="wdL-xX-Vxu">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -1049,7 +1071,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="b3d-0D-fgn" userLabel="BT HR RND">
-                                        <rect key="frame" x="0.0" y="1520" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1560" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="b3d-0D-fgn" id="SaI-EB-swq">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -1071,7 +1093,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="geU-yG-uba" userLabel="BT SCORE RND">
-                                        <rect key="frame" x="0.0" y="1560" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="1600" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="geU-yG-uba" id="jJ9-QI-SpP">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
@@ -1092,8 +1114,30 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="hCg-bd-8C8" userLabel="FB LEADER">
+                                        <rect key="frame" x="0.0" y="1640" width="375" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hCg-bd-8C8" id="o1b-av-wRW">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uY0-iN-fRb" userLabel="FB LEADER">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="uY0-iN-fRb" firstAttribute="top" secondItem="o1b-av-wRW" secondAttribute="top" id="KuM-GF-gh9"/>
+                                                <constraint firstAttribute="trailing" secondItem="uY0-iN-fRb" secondAttribute="trailing" constant="10" id="VTw-Ih-ulb"/>
+                                                <constraint firstItem="uY0-iN-fRb" firstAttribute="leading" secondItem="o1b-av-wRW" secondAttribute="leading" constant="10" id="Z6u-0c-exS"/>
+                                                <constraint firstAttribute="bottom" secondItem="uY0-iN-fRb" secondAttribute="bottom" id="n9A-Jy-ab9"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dDB-St-Pk0" userLabel="R2">
-                                        <rect key="frame" x="0.0" y="1600" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="1680" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dDB-St-Pk0" id="sxR-8g-NJ8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
@@ -1134,6 +1178,7 @@
                         <outlet property="btScore" destination="0R4-Vm-rwm" id="E07-33-5uR"/>
                         <outlet property="btScoreRnd" destination="gjh-Lt-08t" id="1sm-kI-FOR"/>
                         <outlet property="btSpdRnd" destination="kQW-Bv-6ay" id="Pf2-Fj-sdd"/>
+                        <outlet property="fb_SpeedLeader" destination="uY0-iN-fRb" id="Fh7-ZM-OTD"/>
                         <outlet property="gpsAverageSpeed" destination="2zD-2r-znI" id="Kq1-b7-vFq"/>
                         <outlet property="gpsAvergagePace" destination="ZG3-mA-U7a" id="Nsh-lj-Wkv"/>
                         <outlet property="gpsDirection" destination="HI8-Ig-14K" id="AJn-tz-SLQ"/>
@@ -1149,6 +1194,7 @@
                         <outlet property="lblRiderName" destination="ywP-gn-ldk" id="BT2-XF-yvA"/>
                         <outlet property="lblSecPerRound" destination="TpV-1W-zry" id="va8-ZV-zSD"/>
                         <outlet property="lblTireSize" destination="rn2-3E-BkG" id="dis-TR-w8a"/>
+                        <outlet property="lbl_timeInRound" destination="V9Y-R6-m3Z" id="8Io-k8-49P"/>
                         <outlet property="statusValue" destination="lf3-oL-LBZ" id="XmA-Hs-MgB"/>
                         <outlet property="tDisplayVal" destination="9Qh-lL-IEQ" id="gSc-aQ-MH6"/>
                         <outlet property="totalTime" destination="FCY-8f-dFJ" id="eBc-4f-y7m"/>
