@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,12 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.widget.Toast;
 
+import com.akhgupta.easylocation.EasyLocationAppCompatActivity;
+import com.akhgupta.easylocation.EasyLocationRequest;
+import com.akhgupta.easylocation.EasyLocationRequestBuilder;
+import com.google.android.gms.location.LocationRequest;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -48,7 +55,7 @@ import java.util.concurrent.TimeUnit;
 
 import static android.text.format.DateUtils.formatElapsedTime;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends EasyLocationAppCompatActivity {
 
     private TextView mTextMessage;
 
@@ -90,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
+                    LocationRequest locationRequest = new LocationRequest()
+                            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                            .setInterval(5000)
+                            .setFastestInterval(5000);
+                    EasyLocationRequest easyLocationRequest = new EasyLocationRequestBuilder()
+                            .setLocationRequest(locationRequest)
+                            .setFallBackToLastLocationTime(3000)
+                            .build();
+                    requestLocationUpdates(easyLocationRequest);
                     return true;
             }
             return false;
@@ -214,17 +230,28 @@ public class MainActivity extends AppCompatActivity {
         String nString = formatElapsedTime((long) totalWheelTimeSeconds);
 
         TextView t2 = findViewById(R.id.textView112);
-        t2.setText(nString);
+        t2.setText(nString + " MOV");
 
         TextView t1 = findViewById(R.id.textView111);
         String st1 = String.format("%.1f", totalAverageMovingSpeed);
 //        t1.setText(String.format("AVG.MPH: %.1f", totalAverageMovingSpeed));
-        t1.setText(st1 + " AVG.MPH");
+        t1.setText(st1 + " AVG");
 
         TextView t0 = findViewById(R.id.textView110);
         String st2 = String.format("%.2f", totalDistance);
-        t0.setText(st2 + " TOTAL.MI");
+        t0.setText(st2 + " MI");
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateGeoButtons() {
+        TextView t0 = findViewById(R.id.textView210);
+        @SuppressLint("DefaultLocale") String st0 = String.format("%.2f", geoDistance);
+        t0.setText(st0 + "   MI.GEO");
+
+        TextView t1 = findViewById(R.id.textView211);
+        @SuppressLint("DefaultLocale") String st1 =  String.format("%.1f", geoSpeed);
+        t1.setText(st1 + "MPH.GEO");
     }
 
     private void getActualTime() {
@@ -312,8 +339,79 @@ public class MainActivity extends AppCompatActivity {
 
         myVeloTester();
 
+
+
         }
     //END ON CREATE
+
+
+
+
+
+    @Override
+    public void onLocationPermissionGranted() {
+
+    }
+
+    @Override
+    public void onLocationPermissionDenied() {
+
+    }
+
+    private ArrayList<Double> arrLats = new ArrayList<>();
+    private ArrayList<Double> arrLons = new ArrayList<>();
+    private Double oldLat = 0.0;
+    private Double oldLon = 0.0;
+    private Double geoDistance = 0.0;
+    private Double geoSpeed = 0.0;
+    private float[] results = new float[2];
+
+
+    @Override
+    public void onLocationReceived(Location location) {
+        //sendToaster(location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
+        mPrinter(location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
+        arrLats.add(location.getLatitude());
+        arrLons.add(location.getLongitude());
+
+        geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec
+        //2.23694 MPH
+        mPrinter("GEO SPEED: " + geoSpeed);
+//        sendToaster("GEOSPEED:  " + geoSpeed + "  MPH");
+
+        Long timeBetweenReadings = location.getTime();
+        mPrinter("TIME BETWEEN READINGS:  " + timeBetweenReadings.toString());
+
+
+        if (arrLats.size() <= 1) {
+            oldLat = location.getLatitude();
+            oldLon = location.getLongitude();
+        } else {
+            Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
+            if (results.length > 0 && results != null) {
+                mPrinter("RESULTS[0]  " + results[0] * 2.23694 +  "  MILES"); //AS MILES
+                geoDistance += results[0] * 2.23694;
+                //sendToaster("GEOSPEED:  " + geoSpeed + "  MPH");
+                sendToaster("geoDistance:  " + geoDistance + " SPD: " + geoSpeed);
+                updateGeoButtons();
+            }
+
+            oldLat = location.getLatitude();
+            oldLon = location.getLongitude();
+        }
+
+
+    }
+
+    @Override
+    public void onLocationProviderEnabled() {
+
+    }
+
+    @Override
+    public void onLocationProviderDisabled() {
+
+    }
 
     //NOT USED YET
     private BroadcastReceiver localBroadcastReceiver;
@@ -1394,3 +1492,4 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 }
+

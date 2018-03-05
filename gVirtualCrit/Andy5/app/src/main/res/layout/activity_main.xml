@@ -112,7 +112,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/imageView3i"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -120,7 +120,7 @@
                     app:srcCompat="@drawable/ic_home_black_24dp" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textView3t"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -205,6 +205,31 @@
                     android:text="TIME"
                     android:textAlignment="textStart"
                     android:visibility="visible"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/textView210"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="GEO DISTANCE"
+                    android:textAlignment="textStart"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/textView211"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="GEOSPEED"
+                    android:textAlignment="textStart"
+                    android:visibility="visible"/>
 
 
             </LinearLayout>
@@ -214,9 +239,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-
-
                 <TextView
                     android:id="@+id/textView23"
                     android:layout_width="0px"
@@ -225,7 +247,6 @@
                     android:layout_marginStart="8dp"
                     android:text="ACTUAL TIME"
                     android:textAlignment="viewStart" />
-
             </LinearLayout>
 
 
@@ -332,7 +353,7 @@
                     android:textAlignment="viewStart" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/button3name"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
