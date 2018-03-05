@@ -97,15 +97,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
-                    LocationRequest locationRequest = new LocationRequest()
-                            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                            .setInterval(5000)
-                            .setFastestInterval(5000);
-                    EasyLocationRequest easyLocationRequest = new EasyLocationRequestBuilder()
-                            .setLocationRequest(locationRequest)
-                            .setFallBackToLastLocationTime(3000)
-                            .build();
-                    requestLocationUpdates(easyLocationRequest);
                     return true;
             }
             return false;
@@ -210,10 +201,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 veloCadOld = veloCadNew;
 
 
-                if (veloHrNew == veloHrOld) {
-                    updateValueHR("HR: 0");
-                }
-                veloHrOld = veloHrNew;
+//                if (veloHrNew == veloHrOld) {
+//                    updateValueHR("HR: 0");
+//                }
+//                veloHrOld = veloHrNew;
 
                 myVeloTester();
                 getActualTime();
@@ -247,11 +238,11 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private void updateGeoButtons() {
         TextView t0 = findViewById(R.id.textView210);
         @SuppressLint("DefaultLocale") String st0 = String.format("%.2f", geoDistance);
-        t0.setText(st0 + "   MI.GEO");
+        t0.setText(st0 + "  MI.GEO");
 
         TextView t1 = findViewById(R.id.textView211);
         @SuppressLint("DefaultLocale") String st1 =  String.format("%.1f", geoSpeed);
-        t1.setText(st1 + "MPH.GEO");
+        t1.setText(st1 + "  MPH.GEO");
     }
 
     private void getActualTime() {
@@ -269,7 +260,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         actualTimeElapsed = hms;
         mPrinter("ELAPSED TIME: " + actualTimeElapsed);
         TextView t = findViewById(R.id.textView23);
-        t.setText(actualTimeElapsed);
+        t.setText(actualTimeElapsed + "  (ACTUAL)");
     }
 
 
@@ -350,12 +341,12 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
     @Override
     public void onLocationPermissionGranted() {
-
+    mLog("LOC", "ONLOCATIONPERMISSIONGRANTED");
     }
 
     @Override
     public void onLocationPermissionDenied() {
-
+        mLog("LOC", "ONLOCATIONPERMISSIONDENIED");
     }
 
     private ArrayList<Double> arrLats = new ArrayList<>();
@@ -365,39 +356,55 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private Double geoDistance = 0.0;
     private Double geoSpeed = 0.0;
     private float[] results = new float[2];
+    private long oldTime = 0;
+    private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
 
 
     @Override
     public void onLocationReceived(Location location) {
-        //sendToaster(location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
-        mPrinter(location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
+        mPrinter("ON LOCATION RECEIVED:  " + location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
 
         geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec
-        //2.23694 MPH
+        //CONVERT TO MPH * 2.23694
         mPrinter("GEO SPEED: " + geoSpeed);
-//        sendToaster("GEOSPEED:  " + geoSpeed + "  MPH");
 
-        Long timeBetweenReadings = location.getTime();
-        mPrinter("TIME BETWEEN READINGS:  " + timeBetweenReadings.toString());
+
 
 
         if (arrLats.size() <= 1) {
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
+            oldTime = location.getTime();
         } else {
             Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
-            if (results.length > 0 && results != null) {
-                mPrinter("RESULTS[0]  " + results[0] * 2.23694 +  "  MILES"); //AS MILES
-                geoDistance += results[0] * 2.23694;
-                //sendToaster("GEOSPEED:  " + geoSpeed + "  MPH");
-                sendToaster("geoDistance:  " + geoDistance + " SPD: " + geoSpeed);
+            if (results.length > 0) {
+                mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
+                geoDistance += results[0] * 0.000621371;
                 updateGeoButtons();
+
+                mPrinter("OLDTIME " + oldTime);
+                mPrinter("NEWTIME " + location.getTime());
+                mPrinter("totalTimeGeo " + totalTimeGeo);
+                totalTimeGeo += (location.getTime() - oldTime);  //MILLI
+
+                long millis = totalTimeGeo;
+                @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+
+                mPrinter("ELAPSED TIME (GEO): " + hms);
+                TextView t = findViewById(R.id.textView2311);
+                t.setText(hms + "  (GEO)");
+
+
             }
 
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
+            oldTime = location.getTime();
         }
 
 
@@ -405,16 +412,32 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
     @Override
     public void onLocationProviderEnabled() {
-
+        mLog("LOC", "ONLOCATIONPROVIDERENABLED");
     }
 
     @Override
     public void onLocationProviderDisabled() {
-
+        mLog("LOC", "ONLOCATIONPROVIDERDISABLED");
     }
 
     //NOT USED YET
     private BroadcastReceiver localBroadcastReceiver;
+
+    public void onClick_GPS(View view) {
+        //ON CLICK GPS
+        mPrinter("STARTING GPS");
+        LocationRequest locationRequest = new LocationRequest()
+//                            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(5000)
+                .setFastestInterval(5000);
+        EasyLocationRequest easyLocationRequest = new EasyLocationRequestBuilder()
+                .setLocationRequest(locationRequest)
+                .setFallBackToLastLocationTime(3000)
+                .build();
+        requestLocationUpdates(easyLocationRequest);
+    }
+
     private class LocalBroadcastReceiver extends BroadcastReceiver {
 
         @Override
