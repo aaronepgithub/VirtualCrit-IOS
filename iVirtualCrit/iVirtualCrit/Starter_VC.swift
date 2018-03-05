@@ -141,7 +141,7 @@ class Starter_VC: UITableViewController {
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
         if secondsInCurrentRound >= secondsPerRound {
             print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
-            arr.insert("ROUND COMPLETE", at: 0)
+            //arr.insert("ROUND COMPLETE", at: 0)
             arrSend.insert("ROUND COMPLETE", at: 0)
             roundsCompleted += 1
             currentRound += 1
@@ -316,6 +316,9 @@ class Starter_VC: UITableViewController {
             bestRoundHR = roundHR
             bestRoundScore = getScoreFromHR(x: bestRoundHR)
         }
+        
+        arrSend.insert("ROUND COMPLETE", at: 0)
+        
         //MY BEST ROUNDS POINT
         let when = DispatchTime.now() + 25
         DispatchQueue.main.asyncAfter(deadline: when){
