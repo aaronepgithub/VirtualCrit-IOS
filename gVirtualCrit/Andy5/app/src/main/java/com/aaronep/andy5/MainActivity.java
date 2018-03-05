@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +18,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,9 +41,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static android.text.format.DateUtils.formatElapsedTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -177,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 mPrinter("VELO TEST");
                 if (veloSpdNew == veloSpdOld) {
                     updateValueSPEED("MPH: 0.0");
@@ -196,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 veloHrOld = veloHrNew;
 
                 myVeloTester();
+                getActualTime();
 
 
             }
@@ -203,39 +208,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateTotals() {
 //    mPrinter("UPDATING TOTALS");
-        String nString = DateUtils.formatElapsedTime((long) totalWheelTimeSeconds);
+        String nString = formatElapsedTime((long) totalWheelTimeSeconds);
 
         TextView t2 = findViewById(R.id.textView112);
         t2.setText(nString);
 
         TextView t1 = findViewById(R.id.textView111);
-        t1.setText(String.format("MPH: %.1f", totalAverageMovingSpeed));
+        String st1 = String.format("%.1f", totalAverageMovingSpeed);
+//        t1.setText(String.format("AVG.MPH: %.1f", totalAverageMovingSpeed));
+        t1.setText(st1 + " AVG.MPH");
 
         TextView t0 = findViewById(R.id.textView110);
-        t0.setText(String.format("MI: %.2f", totalDistance));
+        String st2 = String.format("%.2f", totalDistance);
+        t0.setText(st2 + " TOTAL.MI");
+
     }
 
-//    Date todayDate = new Date();
-//    todayDate.getDay();
-//    todayDate.getHours();
-//    todayDate.getMinutes();
-//    todayDate.getMonth();
-//    todayDate.getTime();
+    private void getActualTime() {
+
+        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
+
+        Long st = startTime.getTimeInMillis();
+        Long nt = nowTime.getTimeInMillis();
+
+        long millis = nt - st;
+        @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+        actualTimeElapsed = hms;
+        mPrinter("ELAPSED TIME: " + actualTimeElapsed);
+        TextView t = findViewById(R.id.textView23);
+        t.setText(actualTimeElapsed);
+    }
+
 
     private Calendar startTime;
+    private String actualTimeElapsed = "00:00:00";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startTime = Calendar.getInstance();
+        startTime = Calendar.getInstance(Locale.ENGLISH);
         mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
-        mPrinter("Starttime in Milli: " + startTime.getTimeInMillis());
-
+        //mPrinter("Starttime in Milli: " + startTime.getTimeInMillis());
 
         mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -373,11 +394,13 @@ public class MainActivity extends AppCompatActivity {
                     String deviceName = result.getDevice().getName();
                     String deviceAddress = result.getDevice().getAddress();
 
+
                     if (!addressesDiscovered.contains(deviceAddress)) {
                         devicesDiscovered.add(deviceDiscovered);
                         addressesDiscovered.add(deviceAddress);
                         namesDiscovered.add(deviceName);
 
+                        sendToaster("FOUND:  " + deviceName);
 
                         Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
                         Log.i("result", "NAME  " + result.getDevice().getName());
@@ -1160,7 +1183,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_Bluetooth(View view) {
         //TODO:  DISABLE FOR EMULATOR
         mLog("onCLICK","ONCLICK BLUETOOTH");
-//        Toast.makeText(this,"SCANNING...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"SCANNING...", Toast.LENGTH_LONG).show();
         scanLeDevice(true);
     }
 
@@ -1179,7 +1202,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B1","CONNECT");
                         connectToDevice(mDevice);
-                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+                        Button btn104 = findViewById(R.id.button104);
+                        btn104.setTextColor(Color.RED);
 
                         //NOT USED
                         LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
@@ -1221,7 +1245,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B1","CONNECT");
                         connectToDevice(mDevice);
-                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+                        Button btn103 = findViewById(R.id.button103);
+                        btn103.setTextColor(Color.RED);
 
                         //NOT USED
                         LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
@@ -1262,7 +1287,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B1","CONNECT");
                         connectToDevice(mDevice);
-                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+                        Button btn102 = findViewById(R.id.button102);
+                        btn102.setTextColor(Color.RED);
 
                         //NOT USED
                         LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
@@ -1293,8 +1319,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_101(View view) {
         mDevice = devicesDiscovered.get(1);
         isConnecting = true;
-        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-//        connectToDevice(mDevice);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CONNECT TO:  " + mDevice.getName())
@@ -1303,7 +1327,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B1","CONNECT");
                         connectToDevice(mDevice);
-                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+                        Button btn101 = findViewById(R.id.button101);
+                        btn101.setTextColor(Color.RED);
 
                         //NOT USED
                         LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
@@ -1333,9 +1358,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_100(View view) {
         mDevice = devicesDiscovered.get(0);
         isConnecting = true;
-        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-//        connectToDevice(mDevice);
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CONNECT TO:  " + mDevice.getName())
@@ -1344,7 +1366,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B1","CONNECT");
                         connectToDevice(mDevice);
-                        //sendToaster("CONNECTING TO:  " + mDevice.getName());
+                        Button btn100 = findViewById(R.id.button100);
+                        btn100.setTextColor(Color.RED);
+
 
                         //NOT USED
                         LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
