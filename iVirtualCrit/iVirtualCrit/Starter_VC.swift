@@ -576,8 +576,9 @@ class Starter_VC: UITableViewController {
         case 9:
             let tsz = wheelCircumference
             if tsz == 2105 {lblTireSize.text = "700X28";wheelCircumference = 2136;}
-            if tsz == 2115 {lblTireSize.text = "700X32";wheelCircumference = 2155;}
+            if tsz == 2136 {lblTireSize.text = "700X32";wheelCircumference = 2155;}
             if tsz == 2155 {lblTireSize.text = "700X25";wheelCircumference = 2105;}
+            
             print("WheelCir:  \(wheelCircumference)")
         case 12:
             let spr = secondsPerRound
