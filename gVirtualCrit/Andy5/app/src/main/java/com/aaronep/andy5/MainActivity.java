@@ -218,10 +218,18 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateTotals() {
 //    mPrinter("UPDATING TOTALS");
-        String nString = formatElapsedTime((long) totalWheelTimeSeconds);
+//        String nString = formatElapsedTime((long) totalWheelTimeSeconds);
+//        TextView t2 = findViewById(R.id.textView112);
+//        t2.setText(nString + " MOV");
 
+        long millis = (long) totalWheelTimeMilli;
+        @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+        //actualTimeElapsedBT = hms;
         TextView t2 = findViewById(R.id.textView112);
-        t2.setText(nString + " MOV");
+        t2.setText(hms + "  (BT)");
+
 
         TextView t1 = findViewById(R.id.textView111);
         String st1 = String.format("%.1f", totalAverageMovingSpeed);
@@ -366,21 +374,27 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
 
-        geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec
-        //CONVERT TO MPH * 2.23694
-        mPrinter("GEO SPEED: " + geoSpeed);
-
-
-
-
         if (arrLats.size() <= 1) {
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
             oldTime = location.getTime();
         } else {
+
             Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
             if (results.length > 0) {
+
+                geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                mPrinter("GEO SPEED: " + geoSpeed);
+
+
                 mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
+                if (results[0] == 0) {
+                    return;
+                }
+                if (results[0] * 0.000621371 <= 0) {
+                    return;
+                }
+
                 geoDistance += results[0] * 0.000621371;
                 updateGeoButtons();
 
@@ -429,8 +443,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         LocationRequest locationRequest = new LocationRequest()
 //                            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(5000)
-                .setFastestInterval(5000);
+                .setInterval(3000)
+                .setFastestInterval(1000);
         EasyLocationRequest easyLocationRequest = new EasyLocationRequestBuilder()
                 .setLocationRequest(locationRequest)
                 .setFallBackToLastLocationTime(3000)
@@ -1166,7 +1180,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                             totalWheelTimeSeconds += wheelTimeSeconds;
                             totalDistance = totalWheelRotations * wheelCircumferenceCM * cmPerMi;
                             totalAverageMovingSpeed = (totalWheelRotations / (totalWheelTimeSeconds / 60)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
-
+                            totalWheelTimeMilli += dTimeDiff;
 
                             if (totalDistance >= nextMileMarker) {
                                 nextMileMarker += 1;
@@ -1255,6 +1269,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private double totalDistance = 0.0;
     private double totalWheelRotations = 0.0;
     private double totalWheelTimeSeconds = 0.0;
+    private double totalWheelTimeMilli = 0.0;
     private double totalAverageMovingSpeed = 0.0;
     private double nextMileMarker = 1.0;
 
