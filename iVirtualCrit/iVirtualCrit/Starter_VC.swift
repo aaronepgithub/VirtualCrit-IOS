@@ -609,8 +609,8 @@ class Starter_VC: UITableViewController {
             let defaults = UserDefaults.standard
             defaults.set(udArray, forKey: "SavedStringArray")
             //CLEAR DB
-            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
-            refDB.removeValue()
+//            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
+//            refDB.removeValue()
 
 
             
