@@ -302,14 +302,24 @@ class Starter_VC: UITableViewController {
             if bestRoundSpeed == 0 {bestRoundPace = "00:00"}
             
             if audioStatus == "ON" {
+                
                 if roundHR > bestRoundHR {
-                    Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
+                    
+                    if (currentRound < 5 || currentRound % 5 == 0) {
+                        Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
+                    }
+                    
+
                 } else {
-                    Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
+                    if (currentRound < 5 || currentRound % 5 == 0) {
+                        Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
+                    }
                 }
             }
         } else {
-            if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")}
+            if (currentRound < 5 || currentRound % 5 == 0) {
+                if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")}
+            }
         }
         if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
         if roundHR > bestRoundHR {
