@@ -190,13 +190,13 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                 mPrinter("VELO TEST");
                 if (veloSpdNew == veloSpdOld) {
-                    updateValueSPEED("MPH: 0.0");
+                    updateValueSPEED("00.00\nMPH(B)");
                 }
                 veloSpdOld = veloSpdNew;
 
 
                 if (veloCadNew == veloCadOld) {
-                    updateValueCADENCE("RPM: 0");
+                    updateValueCADENCE("0\nRPM");
                 }
                 veloCadOld = veloCadNew;
 
@@ -250,6 +250,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
         TextView t1 = findViewById(R.id.textView211);
         @SuppressLint("DefaultLocale") String st1 =  String.format("%.1f", geoSpeed);
+        t1.setText(st1 + "  MPH.GEO");
+
+        TextView t2 = findViewById(R.id.textView2111);
+        @SuppressLint("DefaultLocale") String st2 =  String.format("%.1f", geoAvgSpeed);
         t1.setText(st1 + "  MPH.GEO");
     }
 
@@ -318,11 +322,11 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
         mHandler = new Handler();
         //TODO:  DISABLE TO LAUNCH ON EMULATOR
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this, "BLE Not Supported",
-                    Toast.LENGTH_SHORT).show();
-            finish();
-        }
+//        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+//            Toast.makeText(this, "BLE Not Supported",
+//                    Toast.LENGTH_SHORT).show();
+//            finish();
+//        }
         //END BT SETUP
 
         //START BROADCAST REC
@@ -363,6 +367,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private Double oldLon = 0.0;
     private Double geoDistance = 0.0;
     private Double geoSpeed = 0.0;
+    private Double geoAvgSpeed = 0.0;
     private float[] results = new float[2];
     private long oldTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
@@ -374,34 +379,33 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
 
-        if (arrLats.size() <= 1) {
+        if (arrLats.size() > 2) {
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
             oldTime = location.getTime();
         } else {
 
             Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
-            if (results.length > 0) {
 
+            if (results.length > 0) {
                 geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 mPrinter("GEO SPEED: " + geoSpeed);
-
-
                 mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
                 if (results[0] == 0) {
+                    mPrinter("NOTHING AT RESULTS[0] - RETURN");
                     return;
                 }
                 if (results[0] * 0.000621371 <= 0) {
+                    mPrinter("NO DISTANCE TRAVELED - RETURN");
                     return;
                 }
 
                 geoDistance += results[0] * 0.000621371;
-                updateGeoButtons();
-
                 mPrinter("OLDTIME " + oldTime);
                 mPrinter("NEWTIME " + location.getTime());
                 mPrinter("totalTimeGeo " + totalTimeGeo);
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
+                geoAvgSpeed = geoDistance / (totalTimeGeo / 1000 / 60 / 60);
 
                 long millis = totalTimeGeo;
                 @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
@@ -413,6 +417,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 TextView t = findViewById(R.id.textView2311);
                 t.setText(hms + "  (GEO)");
 
+                updateGeoButtons();
 
             }
 
@@ -477,16 +482,16 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         super.onResume();
 
         //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
-        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        } else {
-            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-            settings = new ScanSettings.Builder()
-                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                    .build();
-            filters = new ArrayList<>();
-        }
+//        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+//        } else {
+//            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
+//            settings = new ScanSettings.Builder()
+//                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+//                    .build();
+//            filters = new ArrayList<>();
+//        }
     }
 
     @Override
@@ -1058,7 +1063,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 }
 
                 //update UI - HR
-                String value = String.valueOf(String.format("HR: %d", hrValue));
+//                String value = String.valueOf(String.format("HR: %d", hrValue));
+                String value = String.valueOf(String.format("%d", hrValue));
+                value = value + "\nBPM";
                 Message msg = Message.obtain();
                 msg.obj = value;
                 msg.what = 3;
@@ -1189,7 +1196,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                             //String value = String.format("CSC1: %d", csc1value);
                             Message msg = Message.obtain();
-                            msg.obj = String.format("MPH: %.2f", speed);
+                            String vs = String.format("%.2f", speed);
+                            vs = vs + "\nMPH(B)";
+                            msg.obj = vs;
+//                            msg.obj = String.format("MPH: %.2f", speed);
                             msg.what = 4;
                             msg.setTarget(uiHandler);
                             msg.sendToTarget();
@@ -1233,7 +1243,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                         if (currentCadence > 0 && timeDiff < 10000 && !Double.isNaN(currentCadence)) {
                             //String value = String.format("CSC1: %d", csc7value);
                             Message msg = Message.obtain();
-                            msg.obj = String.format("RPM: %.0f", currentCadence);
+                            String vc = String.format("%.0f", currentCadence);
+                            vc = vc + "\nRPM";
+                            msg.obj = vc;
+//                            msg.obj = String.format("RPM: %.0f", currentCadence);
                             msg.what = 5;
                             msg.setTarget(uiHandler);
                             msg.sendToTarget();
