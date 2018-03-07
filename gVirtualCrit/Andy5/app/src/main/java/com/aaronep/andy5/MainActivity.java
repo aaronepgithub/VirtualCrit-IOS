@@ -388,8 +388,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
 
             if (results.length > 0) {
-                geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                mPrinter("GEO SPEED: " + geoSpeed);
+
                 mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
                 if (results[0] == 0) {
                     mPrinter("NOTHING AT RESULTS[0] - RETURN");
@@ -400,10 +399,23 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     return;
                 }
 
+                //OPT 1.  QUICKREAD GEO SPEED
+                //geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                //mPrinter("GEO SPEED: " + geoSpeed);
+
+                //OPT 2.  GEO SPEED, LONG VERSION
+                Double gd = results[0] * 0.000621371;
+                long gt = (location.getTime() - oldTime);  //MILLI
+                double gtd = gt;
+                geoSpeed = gd / (gtd / 1000 / 60 / 60);
+                mPrinter("GEO SPEED: " + geoSpeed);
+                //END GEO SPEED CALC
+
+
                 geoDistance += results[0] * 0.000621371;
                 mPrinter("OLDTIME " + oldTime);
                 mPrinter("NEWTIME " + location.getTime());
-                mPrinter("totalTimeGeo " + totalTimeGeo);
+//                mPrinter("totalTimeGeo " + totalTimeGeo);
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
                 mPrinter("GEODISTANCE: " + geoDistance);
                 mPrinter("TOTALTIMEGEO: " + totalTimeGeo);
@@ -489,7 +501,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
+//        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
