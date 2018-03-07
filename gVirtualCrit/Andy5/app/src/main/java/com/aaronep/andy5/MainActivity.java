@@ -733,8 +733,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
         @Override
         public void onConnectionStateChange(BluetoothGatt mGatt, int status, int newState) {
-            Log.i("gattCallback", "gattCallback: " + status);
-            Log.i("onConnectionStateChange", "Status: " + status);
+//            Log.i("gattCallback", "gattCallback: " + status);
+//            Log.i("onConnectionStateChange", "Status: " + status);
             switch (newState) {
                 case BluetoothProfile.STATE_CONNECTED:
                     Log.i("gattCallback", "STATE_CONNECTED");
@@ -749,8 +749,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
-                    Log.i("gattCallback", "STATE_DISCONNECTED " + mGatt.getDevice().getName());
-                    Log.i("gattCallback", "reconnecting...");
+                    Log.i("gattCallback", "****  STATE_DISCONNECTED " + mGatt.getDevice().getName());
+                    sendToaster("STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     mGatt = null;
                     break;
                 default:
@@ -1055,8 +1055,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             int time;
 
 
-            Log.i("onChChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
-            Log.i("onChChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
+//            Log.i("onChChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
+//            Log.i("onChChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
 
             if (characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID)) {
                 //IF HR...AFTER SETTING NOTIFY ON ALL
@@ -1071,15 +1071,13 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 //final int heartRate = characteristic.getIntValue(format, 1);
                 final Integer hrValue = characteristic.getIntValue(format, 1);
 
-                Log.i("HR", String.format("HR: %d", hrValue));
+                //Log.i("HR", String.format("HR: %d", hrValue));
 
                 if (isVelo == true) {
                     mPrinter("IS VELO, TRYVELOCONNECT NOW");
                     isVelo = false;
                     isVeloTransmittingHR = true;
                     tryVeloConnect();
-
-
                 }
 
                 //update UI - HR
@@ -1096,7 +1094,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             if (characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID)) {
                 //IF CSC...AFTER SETTING NOTIFY ON ALL
                 onCharChangedCAD = true;
-                mPrinter("ON CSC CHAR CHANGED");
+                //mPrinter("ON CSC CHAR CHANGED");
                 isVelo = false;
                 int flag = characteristic.getProperties();
                 int format = -1;
@@ -1121,37 +1119,17 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 final int csc9 = characteristic.getIntValue(format, 9);
                 final Integer csc9value = characteristic.getIntValue(format, 9);
 
-                Log.i("CSC1", String.format("CSC1: %d", csc1value));
-                Log.i("CSC5", String.format("CSC5: %d", csc5value));
-                Log.i("CSC7", String.format("CSC7: %d", csc7value));
-                Log.i("CSC9", String.format("CSC9: %d", csc9value));
+//                Log.i("CSC1", String.format("CSC1: %d", csc1value));
+//                Log.i("CSC5", String.format("CSC5: %d", csc5value));
+//                Log.i("CSC7", String.format("CSC7: %d", csc7value));
+//                Log.i("CSC9", String.format("CSC9: %d", csc9value));
                 String spd_cad = csc1 + " - " + csc7;
-                Log.i("SPD-CSC","SPD-CSC - " + spd_cad);
+//                Log.i("SPD-CSC","SPD-CSC - " + spd_cad);
 
 
 //                intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
 //            String value = String.valueOf(heartRate);
 //            Log.i("hrValue.toString", hrValue.toString());
-
-
-//                if (csc1 >= 0) {
-//                    //String value = String.format("CSC1: %d", csc1value);
-//                    Message msg = Message.obtain();
-//                    msg.obj = String.format("CSC1: %d", csc1value);
-//                    msg.what = 4;
-//                    msg.setTarget(uiHandler);
-//                    msg.sendToTarget();
-//                }
-//
-//                if (csc7 >= 0) {
-//                    //String value = String.format("CSC1: %d", csc7value);
-//                    Message msg = Message.obtain();
-//                    msg.obj = String.format("CSC1: %d", csc7value);
-//                    msg.what = 5;
-//                    msg.setTarget(uiHandler);
-//                    msg.sendToTarget();
-//                }
-
 
                 int i = 1;
 
@@ -1199,7 +1177,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                         double speed =  wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;
 
                         //parent.mCallback.onSpeedUpdate(parent, (wheelRotations - mLastWheelReading) * mCircumference, (timeDiff * 1000000.0) / 1024.0);
-                        mPrinter("CURRENT SPEED:  " + String.format("%.2f", speed));
+                        //mPrinter("CURRENT SPEED:  " + String.format("%.2f", speed));
 
                         if (speed > 0 && speed < 40 && wheelTimeSeconds < 15 && !Double.isNaN(speed)) {
 
@@ -1211,7 +1189,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                             if (totalDistance >= nextMileMarker) {
                                 nextMileMarker += 1;
-                                sendToaster("MILE " + (nextMileMarker - 1) + "COMPLETED");
+                                //sendToaster("MILE " + (nextMileMarker - 1) + "COMPLETED");
                             }
 
                             //String value = String.format("CSC1: %d", csc1value);
@@ -1258,7 +1236,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                         timeDiff = do16BitDiff(time, mLastCrankTime);
 
                         currentCadence = rotDiff / (((timeDiff) / 1024.0) / 60);
-                        mPrinter("CURRENT CADENCE:  " + String.format("%.1f", currentCadence));
+                        //mPrinter("CURRENT CADENCE:  " + String.format("%.1f", currentCadence));
 
                         if (currentCadence > 0 && timeDiff < 10000 && !Double.isNaN(currentCadence)) {
                             //String value = String.format("CSC1: %d", csc7value);
