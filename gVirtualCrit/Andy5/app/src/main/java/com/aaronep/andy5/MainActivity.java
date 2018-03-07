@@ -188,7 +188,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             @Override
             public void run() {
 
-                mPrinter("VELO TEST");
+                //mPrinter("VELO TEST");
                 if (veloSpdNew == veloSpdOld) {
                     updateValueSPEED("00.00\nMPH(B)");
                 }
@@ -234,7 +234,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         TextView t1 = findViewById(R.id.textView111);
         String st1 = String.format("%.1f", totalAverageMovingSpeed);
 //        t1.setText(String.format("AVG.MPH: %.1f", totalAverageMovingSpeed));
-        t1.setText(st1 + " AVG");
+        t1.setText(st1 + " MPH");
 
         TextView t0 = findViewById(R.id.textView110);
         String st2 = String.format("%.2f", totalDistance);
@@ -246,15 +246,15 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private void updateGeoButtons() {
         TextView t0 = findViewById(R.id.textView210);
         @SuppressLint("DefaultLocale") String st0 = String.format("%.2f", geoDistance);
-        t0.setText(st0 + "  MI.GEO");
+        t0.setText(st0 + "  MI");
 
         TextView t1 = findViewById(R.id.textView211);
         @SuppressLint("DefaultLocale") String st1 =  String.format("%.1f", geoSpeed);
-        t1.setText(st1 + "  MPH.GEO");
+        t1.setText(st1 + "\nMPH(G)");
 
         TextView t2 = findViewById(R.id.textView2111);
         @SuppressLint("DefaultLocale") String st2 =  String.format("%.1f", geoAvgSpeed);
-        t1.setText(st1 + "  MPH.GEO");
+        t2.setText(st2 + "  MPH");
     }
 
     private void getActualTime() {
@@ -270,7 +270,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
         actualTimeElapsed = hms;
-        mPrinter("ELAPSED TIME: " + actualTimeElapsed);
+        //mPrinter("ELAPSED TIME: " + actualTimeElapsed);
         TextView t = findViewById(R.id.textView23);
         t.setText(actualTimeElapsed + "  (ACTUAL)");
     }
@@ -378,13 +378,13 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         mPrinter("ON LOCATION RECEIVED:  " + location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
+        mPrinter("ARRLATS.SIZE: " + arrLats.size());
 
-        if (arrLats.size() > 2) {
+        if (arrLats.size() < 2) {
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
             oldTime = location.getTime();
         } else {
-
             Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
 
             if (results.length > 0) {
@@ -405,7 +405,12 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 mPrinter("NEWTIME " + location.getTime());
                 mPrinter("totalTimeGeo " + totalTimeGeo);
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
-                geoAvgSpeed = geoDistance / (totalTimeGeo / 1000 / 60 / 60);
+                mPrinter("GEODISTANCE: " + geoDistance);
+                mPrinter("TOTALTIMEGEO: " + totalTimeGeo);
+
+                double ttg = totalTimeGeo;
+                geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+                mPrinter("geoAvgSpeed: " + geoAvgSpeed);
 
                 long millis = totalTimeGeo;
                 @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
@@ -416,6 +421,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 mPrinter("ELAPSED TIME (GEO): " + hms);
                 TextView t = findViewById(R.id.textView2311);
                 t.setText(hms + "  (GEO)");
+
+                getActualTime();
 
                 updateGeoButtons();
 
@@ -428,6 +435,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
 
     }
+
 
     @Override
     public void onLocationProviderEnabled() {
