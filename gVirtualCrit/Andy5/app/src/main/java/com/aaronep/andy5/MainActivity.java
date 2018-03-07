@@ -490,16 +490,16 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         super.onResume();
 
         //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
-//        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//        } else {
-//            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-//            settings = new ScanSettings.Builder()
-//                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-//                    .build();
-//            filters = new ArrayList<>();
-//        }
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
+            settings = new ScanSettings.Builder()
+                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                    .build();
+            filters = new ArrayList<>();
+        }
     }
 
     @Override
