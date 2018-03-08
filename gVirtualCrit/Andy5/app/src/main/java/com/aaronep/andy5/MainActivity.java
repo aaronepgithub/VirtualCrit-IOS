@@ -45,6 +45,8 @@ import com.akhgupta.easylocation.EasyLocationRequest;
 import com.akhgupta.easylocation.EasyLocationRequestBuilder;
 import com.google.android.gms.location.LocationRequest;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -200,7 +202,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 }
                 veloCadOld = veloCadNew;
 
-
+                if (disconnectedBTdevice != "") {
+                    TextView t = findViewById(R.id.textView1);
+                    t.setText(disconnectedBTdevice);
+                }
 //                if (veloHrNew == veloHrOld) {
 //                    updateValueHR("HR: 0");
 //                }
@@ -728,6 +733,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
     private Boolean onCharChangedHR = false;
     private Boolean onCharChangedCAD = false;
+    private String disconnectedBTdevice = "";
 
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
@@ -750,7 +756,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
                     Log.i("gattCallback", "****  STATE_DISCONNECTED " + mGatt.getDevice().getName());
-                    sendToaster("STATE_DISCONNECTED " + mGatt.getDevice().getName());
+                    //sendToaster("STATE_DISCONNECTED " + mGatt.getDevice().getName());
+                    disconnectedBTdevice = "STATE_DISCONNECTED " + mGatt.getDevice().getName();
                     BluetoothDevice device = mGatt.getDevice();
                     mGatt = null;
                     connectToDevice(device);
