@@ -505,7 +505,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        mLog("RESUME", "super.onPesume()");
 //        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -522,6 +522,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        mLog("onPause", "super.onPause()");
         if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
             scanLeDevice(false);
         }
@@ -1091,7 +1092,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 //final int heartRate = characteristic.getIntValue(format, 1);
                 final Integer hrValue = characteristic.getIntValue(format, 1);
 
-                //Log.i("HR", String.format("HR: %d", hrValue));
+                Log.i("HR", String.format("HR: %d", hrValue));
 
                 if (isVelo == true) {
                     mPrinter("IS VELO, TRYVELOCONNECT NOW");
@@ -1139,8 +1140,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 final int csc9 = characteristic.getIntValue(format, 9);
                 final Integer csc9value = characteristic.getIntValue(format, 9);
 
-//                Log.i("CSC1", String.format("CSC1: %d", csc1value));
-//                Log.i("CSC5", String.format("CSC5: %d", csc5value));
+                Log.i("CSC1", String.format("CSC1: %d", csc1value));
+                Log.i("CSC5", String.format("CSC5: %d", csc5value));
 //                Log.i("CSC7", String.format("CSC7: %d", csc7value));
 //                Log.i("CSC9", String.format("CSC9: %d", csc9value));
                 String spd_cad = csc1 + " - " + csc7;
