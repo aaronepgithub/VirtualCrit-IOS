@@ -13,12 +13,10 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,17 +43,12 @@ import com.akhgupta.easylocation.EasyLocationRequest;
 import com.akhgupta.easylocation.EasyLocationRequestBuilder;
 import com.google.android.gms.location.LocationRequest;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static android.text.format.DateUtils.formatElapsedTime;
 
 public class MainActivity extends EasyLocationAppCompatActivity {
 
@@ -130,104 +123,96 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 //    private final static int UPDATE_DEVICE = 0;
 //    private final static int UPDATE_VALUE = 1;
 //    private final static int UPDATE_CSC = 2;
-    private final static int UPDATE_HR = 3;
-    private final static int UPDATE_SPEED = 4;
-    private final static int UPDATE_CADENCE = 5;
+//    private final static int UPDATE_HR = 3;
+//    private final static int UPDATE_SPEED = 4;
+//    private final static int UPDATE_CADENCE = 5;
 
-    @SuppressLint("HandlerLeak")
-    private final Handler uiHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            final int what = msg.what;
-            final String value = (String) msg.obj;
-            switch(what) {
-                //case UPDATE_DEVICE: updateDevice(value); break;
-                //case UPDATE_VALUE: updateValue(value); break;
-//                case UPDATE_CSC:
-//                    updateValueCSC(value);
+//    @SuppressLint("HandlerLeak")
+//    private final Handler uiHandler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            final int what = msg.what;
+//            final String value = (String) msg.obj;
+//            switch(what) {
+//                //case UPDATE_DEVICE: updateDevice(value); break;
+//                //case UPDATE_VALUE: updateValue(value); break;
+////                case UPDATE_CSC:
+////                    updateValueCSC(value);
+////                    break;
+//                case UPDATE_HR:
+//                    updateValueHR(value);
 //                    break;
-                case UPDATE_HR:
-                    updateValueHR(value);
-                    break;
-                case UPDATE_CADENCE:
-                    updateValueCADENCE(value);
-                    break;
-                case UPDATE_SPEED:
-                    updateValueSPEED(value);
-                    break;
-            }
-        }
-    };
+//                case UPDATE_CADENCE:
+//                    updateValueCADENCE(value);
+//                    break;
+//                case UPDATE_SPEED:
+//                    updateValueSPEED(value);
+//                    break;
+//            }
+//        }
+//    };
 
 
-    private void updateValueHR(String value) {
-        TextView t = findViewById(R.id.textView100);
-        veloHrNew = value;
-        t.setText(value);
-        getActualTime();
-    }
+//    private void updateValueHR() {
+//        TextView t = findViewById(R.id.textView100);
+//        veloHrNew = value;
+//        t.setText(value);
+//        getActualTime();
+//    }
 
-    private void updateValueCADENCE(String value) {
-        TextView t = findViewById(R.id.textView102);
-        veloCadNew = value;
-        t.setText(value);
-    }
+//    private void updateValueCADENCE(String value) {
+//        TextView t = findViewById(R.id.textView102);
+//        veloCadNew = value;
+//        t.setText(value);
+//    }
 
-    private void updateValueSPEED(String value) {
-        TextView t = findViewById(R.id.textView101);
-        t.setText(value);
-        veloSpdNew = value;
-        updateTotals();
-    }
+//    private void updateValueSPEED(String value) {
+//        TextView t = findViewById(R.id.textView101);
+//        t.setText(value);
+//        veloSpdNew = value;
+//        updateTotals();
+//    }
 
-    private String veloSpdOld = "Old";
-    private String veloSpdNew = "New";
-    private String veloCadOld = "Old";
-    private String veloCadNew = "New";
-    private String veloHrOld = "Old";
-    private String veloHrNew = "New";
+//    private String veloSpdOld = "Old";
+//    private String veloSpdNew = "New";
+//    private String veloCadOld = "Old";
+//    private String veloCadNew = "New";
+//    private String veloHrOld = "Old";
+//    private String veloHrNew = "New";
 
-    private void myVeloTester() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                //mPrinter("VELO TEST");
-                if (veloSpdNew == veloSpdOld) {
-                    updateValueSPEED("00.00\nMPH(B)");
-                }
-                veloSpdOld = veloSpdNew;
-
-
-                if (veloCadNew == veloCadOld) {
-                    updateValueCADENCE("0\nRPM");
-                }
-                veloCadOld = veloCadNew;
-
-                if (disconnectedBTdevice != "") {
-                    TextView t = findViewById(R.id.textView1);
-                    t.setText(disconnectedBTdevice);
-                }
-//                if (veloHrNew == veloHrOld) {
-//                    updateValueHR("HR: 0");
+//    private void myVeloTester() {
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                //mPrinter("VELO TEST");
+//                if (veloSpdNew == veloSpdOld) {
+//                    updateValueSPEED("00.00\nMPH(B)");
 //                }
-//                veloHrOld = veloHrNew;
-
-                myVeloTester();
-                getActualTime();
-
-
-            }
-        }, 15000);
-    }
+//                veloSpdOld = veloSpdNew;
+//
+//
+//                if (veloCadNew == veloCadOld) {
+//                    updateValueCADENCE("0\nRPM");
+//                }
+//                veloCadOld = veloCadNew;
+//
+//                if (disconnectedBTdevice != "") {
+//                    TextView t = findViewById(R.id.textView1);
+//                    t.setText(disconnectedBTdevice);
+//                }
+////                if (veloHrNew == veloHrOld) {
+////                    updateValueHR("HR: 0");
+////                }
+////                veloHrOld = veloHrNew;
+////                myVeloTester();
+//                //getActualTime();
+//            }
+//        }, 15000);
+//    }
 
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void updateTotals() {
-//    mPrinter("UPDATING TOTALS");
-//        String nString = formatElapsedTime((long) totalWheelTimeSeconds);
-//        TextView t2 = findViewById(R.id.textView112);
-//        t2.setText(nString + " MOV");
-
         long millis = (long) totalWheelTimeMilli;
         @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
@@ -275,15 +260,13 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
-        actualTimeElapsed = hms;
         //mPrinter("ELAPSED TIME: " + actualTimeElapsed);
         TextView t = findViewById(R.id.textView23);
-        t.setText(actualTimeElapsed + "  (ACTUAL)");
+        t.setText(String.format("%s  (ACTUAL)", hms));
     }
 
 
     private Calendar startTime;
-    private String actualTimeElapsed = "00:00:00";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,6 +280,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        Button b1 = findViewById(R.id.button1);
+        b1.setText("ON");
 
 //START BT SETUP
         final BluetoothManager bluetoothManager =
@@ -326,6 +312,18 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             builder.show();
         }
 
+        //        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
+            settings = new ScanSettings.Builder()
+                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                    .build();
+            filters = new ArrayList<>();
+        }
+
         mHandler = new Handler();
         //TODO:  DISABLE TO LAUNCH ON EMULATOR
 //        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -340,15 +338,20 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         localBroadcastReceiver = new LocalBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 localBroadcastReceiver,
-                new IntentFilter("B1_ACTION"));
+                new IntentFilter("UPDATE_HR")
+        );
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastReceiver,
+                new IntentFilter("UPDATE_SPD")
+        );
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                localBroadcastReceiver,
+                new IntentFilter("UPDATE_CAD")
+        );
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 localBroadcastReceiver,
                 new IntentFilter("B2_ACTION"));
         //END BROADCAST REC
-
-        myVeloTester();
-
-
 
         }
     //END ON CREATE
@@ -490,9 +493,23 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             if (intent == null || intent.getAction() == null) {
                 return;
             }
-            if (intent.getAction().equals("CONNECT")) {
-                //doSomeAction();
-                Log.i("TAG", "CONNECT onReceive");
+            if (intent.getAction().equals("UPDATE_HR")) {
+                TextView t = findViewById(R.id.textView100);
+                //veloHrNew = value;
+                t.setText(currentHR_String);
+                getActualTime();
+                Log.i("TAG", "UPDATE_HR");
+            }
+            if (intent.getAction().equals("UPDATE_SPD")) {
+                TextView t1 = findViewById(R.id.textView101);
+                t1.setText(currentSPD_String);
+                updateTotals();
+                Log.i("TAG", "UPDATE_SPD");
+            }
+            if (intent.getAction().equals("UPDATE_CAD")) {
+                TextView t2 = findViewById(R.id.textView102);
+                t2.setText(currentCAD_String);
+                Log.i("TAG", "UPDATE_CAD");
             }
             if (intent.getAction().equals("REMOVE")) {
                 //doSomeAction();
@@ -506,28 +523,27 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     protected void onResume() {
         super.onResume();
         mLog("RESUME", "super.onPesume()");
-//        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
-        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        } else {
-            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-            settings = new ScanSettings.Builder()
-                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                    .build();
-            filters = new ArrayList<>();
-        }
+////        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
+//        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+//        } else {
+//            mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
+//            settings = new ScanSettings.Builder()
+//                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+//                    .build();
+//            filters = new ArrayList<>();
+//        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mLog("onPause", "super.onPause()");
-        if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
-            scanLeDevice(false);
-        }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(
-                localBroadcastReceiver);
+//        if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
+//            scanLeDevice(false);
+//        }
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(localBroadcastReceiver);
     }
 
     @Override
@@ -712,7 +728,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     }
 
 
-    private ArrayList<BluetoothDevice> arrayListConnectedDevices = new ArrayList();
+
+    //private ArrayList<BluetoothDevice> arrayListConnectedDevices = new ArrayList();
+    private ArrayList<BluetoothDevice> arrayListConnectedDevices = new ArrayList<>();
 
     public void connectToDevice(BluetoothDevice mDevice) {
         Log.i("connectToDevice", "Device: " + mDevice.getName());
@@ -739,12 +757,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     }
 
 
-    private Boolean onCharChangedHR = false;
-    private Boolean onCharChangedCAD = false;
     private String disconnectedBTdevice = "";
     private Boolean anyDevicesDisconnected = false;
 
-    private ArrayList<BluetoothDevice> arrayListDisconnectedDevices = new ArrayList();
+    private ArrayList<BluetoothDevice> arrayListDisconnectedDevices = new ArrayList<>();
 
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
@@ -987,7 +1003,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             List<BluetoothGattService> services = mGatt.getServices();
             Log.i("onServicesDiscovered", services.toString());
 
-            if (services == null) return;
+//            if (services == null) {
+//                return;
+//            }
 
             //START VELO TEST
             Log.i("VELO", "VELO, DETERMINE IF BOTH SERVICES EXIST");
@@ -1000,7 +1018,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 }
 
             }
-            if (hasHR == true && hasCSC == true) {
+            if (hasHR && hasCSC) {
                 mPrinter("VELO, BOTH ARE TRUE");
                 isVelo = true;
                 veloAddress = mGatt.getDevice().getAddress();
@@ -1017,7 +1035,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 Log.i("onServicesDiscovered: ", "HR?  " + service.getUuid().equals(HEART_RATE_SERVICE_UUID));
                 Log.i("onServicesDiscovered: ", "CSC?  " + service.getUuid().equals(CSC_SERVICE_UUID));
                 if (service.getUuid().equals(HEART_RATE_SERVICE_UUID)) {
-                    if (hasHR == true && hasCSC == true) {return;}
+                    if (hasHR && hasCSC) {return;}
                     Log.i("DISCOVERED HR", "CALLING  registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID)");
                     registerNotifyCallback(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHAR_UUID);
                     try {
@@ -1036,7 +1054,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 }
 
                 if (service.getUuid().equals(CSC_SERVICE_UUID)) {
-                    if (hasHR == true && hasCSC == true) {return;}
+                    if (hasHR && hasCSC) {return;}
                     Log.i("DISCOVERED CSC", "CALLING  registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID)");
                     registerNotifyCallback(CSC_SERVICE_UUID, CSC_MEASUREMENT_CHAR_UUID);
                     try {
@@ -1081,7 +1099,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
             if (characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID)) {
                 //IF HR...AFTER SETTING NOTIFY ON ALL
-                onCharChangedHR = true;
+                Boolean onCharChangedHR = true;
                 int flag = characteristic.getProperties();
                 int format = -1;
                 if ((flag & 0x01) != 0) {
@@ -1094,7 +1112,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                 Log.i("HR", String.format("HR: %d", hrValue));
 
-                if (isVelo == true) {
+                if (isVelo) {
                     mPrinter("IS VELO, TRYVELOCONNECT NOW");
                     isVelo = false;
                     isVeloTransmittingHR = true;
@@ -1105,16 +1123,23 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 //                String value = String.valueOf(String.format("HR: %d", hrValue));
                 String value = String.valueOf(String.format("%d", hrValue));
                 value = value + "\nBPM";
-                Message msg = Message.obtain();
-                msg.obj = value;
-                msg.what = 3;
-                msg.setTarget(uiHandler);
-                msg.sendToTarget();
+                //updateValueHR(value);
+                currentHR_String = value;
+
+                LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                        new Intent("UPDATE_HR"));
+
+
+//                Message msg = Message.obtain();
+//                msg.obj = value;
+//                msg.what = 3;
+//                msg.setTarget(uiHandler);
+//                msg.sendToTarget();
             }
 
             if (characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID)) {
                 //IF CSC...AFTER SETTING NOTIFY ON ALL
-                onCharChangedCAD = true;
+                Boolean onCharChangedCAD = true;
                 //mPrinter("ON CSC CHAR CHANGED");
                 isVelo = false;
                 int flag = characteristic.getProperties();
@@ -1172,9 +1197,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                         mWheelStopped = false;
                         mLastWheelReading = wheelRotations;
                         mLastWheelTime = time;
-
-                        //parent.mCallback.onSpeedUpdate(parent, 0, 0.0);
-
                     } else {
                         // Delta over last update
                         int timeDiff;
@@ -1211,17 +1233,23 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                             if (totalDistance >= nextMileMarker) {
                                 nextMileMarker += 1;
                                 //sendToaster("MILE " + (nextMileMarker - 1) + "COMPLETED");
+                                mLog("MILE", "NEXT MILE MARKER: " + nextMileMarker);
                             }
 
                             //String value = String.format("CSC1: %d", csc1value);
-                            Message msg = Message.obtain();
+//                            Message msg = Message.obtain();
                             String vs = String.format("%.2f", speed);
                             vs = vs + "\nMPH(B)";
-                            msg.obj = vs;
-//                            msg.obj = String.format("MPH: %.2f", speed);
-                            msg.what = 4;
-                            msg.setTarget(uiHandler);
-                            msg.sendToTarget();
+                            //updateValueSPEED(vs);
+                            currentSPD_String = vs;
+                            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                    new Intent("UPDATE_SPD"));
+
+
+//                            msg.obj = vs;
+//                            msg.what = 4;
+//                            msg.setTarget(uiHandler);
+//                            msg.sendToTarget();
                         }
 
 
@@ -1261,14 +1289,19 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                         if (currentCadence > 0 && timeDiff < 10000 && !Double.isNaN(currentCadence)) {
                             //String value = String.format("CSC1: %d", csc7value);
-                            Message msg = Message.obtain();
+//                            Message msg = Message.obtain();
                             String vc = String.format("%.0f", currentCadence);
                             vc = vc + "\nRPM";
-                            msg.obj = vc;
-//                            msg.obj = String.format("RPM: %.0f", currentCadence);
-                            msg.what = 5;
-                            msg.setTarget(uiHandler);
-                            msg.sendToTarget();
+                            //updateValueCADENCE(vc);
+
+                            currentCAD_String = vc;
+                            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                                    new Intent("UPDATE_CAD"));
+
+//                            msg.obj = vc;
+//                            msg.what = 5;
+//                            msg.setTarget(uiHandler);
+//                            msg.sendToTarget();
                         }
 
 
@@ -1320,6 +1353,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private double totalWheelTimeMilli = 0.0;
     private double totalAverageMovingSpeed = 0.0;
     private double nextMileMarker = 1.0;
+
+    private String currentHR_String = "0/nBPM";
+    private String currentSPD_String = "0/nMPH";
+    private String currentCAD_String = "0/nMPH";
 
 
 

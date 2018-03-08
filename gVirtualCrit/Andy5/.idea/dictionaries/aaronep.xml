@@ -3,6 +3,7 @@
     <words>
       <w>avgspeed</w>
       <w>mins</w>
+      <w>starttime</w>
       <w>velo</w>
     </words>
   </dictionary>
