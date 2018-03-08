@@ -163,6 +163,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         TextView t = findViewById(R.id.textView100);
         veloHrNew = value;
         t.setText(value);
+        getActualTime();
     }
 
     private void updateValueCADENCE(String value) {
@@ -440,7 +441,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 t.setText(hms + "  (GEO)");
 
                 getActualTime();
-
                 updateGeoButtons();
 
             }
@@ -848,7 +848,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                                     e.printStackTrace();
                                 }
                             } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                                Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
+                                Log.i("GATT4B", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
                                 descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
                                 try {
                                     Thread.sleep(500);
@@ -910,7 +910,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                             // prefer notify over indicate
                             if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                                Log.i("4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
+                                Log.i("GATT4", "SET NOTIFY  descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)");
                                 descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                                 try {
                                     Thread.sleep(500);
@@ -918,7 +918,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                                     e.printStackTrace();
                                 }
                             } else if ((characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                                Log.i("4", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
+                                Log.i("GATT4B", "SET INDICATE  descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)");
                                 descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
                                 try {
                                     Thread.sleep(500);

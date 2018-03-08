@@ -72,7 +72,7 @@
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="OFF"
+                    android:text="ON"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -541,7 +541,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="TIM"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -572,7 +572,7 @@
                     android:layout_weight="3"
                     android:elevation="0dp"
                     android:text="ON"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -602,7 +602,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="700X25"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -633,7 +633,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="BIKE"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="center" />
             </LinearLayout>
 
 
