@@ -565,6 +565,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                         addressesDiscovered.add(deviceAddress);
                         namesDiscovered.add(deviceName);
 
+
                         sendToaster("FOUND:  " + deviceName);
 
                         Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
@@ -688,6 +689,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             }, SCAN_PERIOD);
 
             if (isScanning == false) {
+                addressesDiscovered = new ArrayList<>();
+                devicesDiscovered = new ArrayList<>();
+                namesDiscovered = new ArrayList<>();
                 mLEScanner.startScan(filters, settings, mScanCallback);
                 isScanning = true;
 //                sendToaster("SCANNING...");
@@ -740,7 +744,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         @Override
         public void onConnectionStateChange(BluetoothGatt mGatt, int status, int newState) {
 //            Log.i("gattCallback", "gattCallback: " + status);
-//            Log.i("onConnectionStateChange", "Status: " + status);
+            Log.i("onConnectionStateChange", "Status: " + status);
             switch (newState) {
                 case BluetoothProfile.STATE_CONNECTED:
                     Log.i("gattCallback", "STATE_CONNECTED");
