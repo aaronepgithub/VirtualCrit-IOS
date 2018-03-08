@@ -581,31 +581,26 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                         Button btn104 = findViewById(R.id.button104);
 
                         if (deviceIndexVal == 0) {
-                            //btn1.setText(deviceName);
                             btn100.setVisibility(View.VISIBLE);
                             btn100.setText(deviceName);
                             Log.i("btn100", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 1) {
-                            //btn2.setText(deviceName);
                             btn101.setVisibility(View.VISIBLE);
                             btn101.setText(deviceName);
                             Log.i("btn101", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 2) {
-                            //btn3.setText(deviceName);
                             btn102.setVisibility(View.VISIBLE);
                             btn102.setText(deviceName);
                             Log.i("btn102", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 3) {
-                            //btn3.setText(deviceName);
                             btn103.setVisibility(View.VISIBLE);
                             btn103.setText(deviceName);
                             Log.i("btn103", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 4) {
-                            //btn3.setText(deviceName);
                             btn104.setVisibility(View.VISIBLE);
                             btn104.setText(deviceName);
                             Log.i("btn104", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
@@ -640,36 +635,34 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
 
     //NOT USING
-    private void requestDeviceConnection() {
-        mLog("REQ", "REQUEST DEVICE CONNECTION");
-
-        if (deviceIndexVal == 0) {
-            return;
-        } else {
-            if (isConnecting == true) {
-                return;
-            }
-            //TODO SET TO TRUE UNIL COMPLETED, THEN FALSE TO AWAIT THE NEXT CONNECTION
-            isConnecting = true;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("PICK")
-                    .setItems(namesDiscovered.toArray(new CharSequence[namesDiscovered.size()]), new DialogInterface.OnClickListener() {
-//                    .setItems(R.array.colors_array, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // The 'which' argument contains the index position
-                            // of the selected item
-                            mLog("WHICH", "WHICH, DEV NAME CLICKED:  " + which + ",  " + namesDiscovered.get(which));
-                            mDevice = devicesDiscovered.get(which);
-                            connectToDevice(mDevice);
-                        }
-                    });
-
-            builder.create().show();
-
-        }
-        mLog("REQ DONE", "NO MORE DEVICES TO CONSIDER");
-        //x = x + 1;
-    }
+//    private void requestDeviceConnection() {
+//        mLog("REQ", "REQUEST DEVICE CONNECTION");
+//
+//        if (deviceIndexVal == 0) {
+//            return;
+//        } else {
+//            if (isConnecting == true) {
+//                return;
+//            }
+//            isConnecting = true;
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("PICK")
+//                    .setItems(namesDiscovered.toArray(new CharSequence[namesDiscovered.size()]), new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            // The 'which' argument contains the index position
+//                            // of the selected item
+//                            mLog("WHICH", "WHICH, DEV NAME CLICKED:  " + which + ",  " + namesDiscovered.get(which));
+//                            mDevice = devicesDiscovered.get(which);
+//                            connectToDevice(mDevice);
+//                        }
+//                    });
+//
+//            builder.create().show();
+//
+//        }
+//        mLog("REQ DONE", "NO MORE DEVICES TO CONSIDER");
+//        //x = x + 1;
+//    }
 
     private void sendToaster(String toasterText) {
         Toast.makeText(this,toasterText,Toast.LENGTH_SHORT).show();
@@ -684,7 +677,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     mLog("SCAN","STOP SCAN");
                     isScanning = false;
                     sendToaster("SCAN COMPLETE");
-                //requestDeviceConnection();
                 }
             }, SCAN_PERIOD);
 
@@ -692,6 +684,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 addressesDiscovered = new ArrayList<>();
                 devicesDiscovered = new ArrayList<>();
                 namesDiscovered = new ArrayList<>();
+                arrayListConnectedDevices = new ArrayList<>();
                 deviceIndexVal = 0;
 
                 Button btn100 = findViewById(R.id.button100);
@@ -708,7 +701,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                 mLEScanner.startScan(filters, settings, mScanCallback);
                 isScanning = true;
-//                sendToaster("SCANNING...");
                 Toast.makeText(this,"SCANNING...",Toast.LENGTH_LONG);
                 mLog("SCAN","START SCAN");
             }
@@ -717,9 +709,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             mLEScanner.stopScan(mScanCallback);
         }
     }
-
-
-
 
 
     private ArrayList<BluetoothDevice> arrayListConnectedDevices = new ArrayList();
@@ -752,6 +741,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private Boolean onCharChangedHR = false;
     private Boolean onCharChangedCAD = false;
     private String disconnectedBTdevice = "";
+    private Boolean anyDevicesDisconnected = false;
+
+    private ArrayList<BluetoothDevice> arrayListDisconnectedDevices = new ArrayList();
 
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
@@ -776,9 +768,10 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     Log.i("gattCallback", "****  STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     //sendToaster("STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     disconnectedBTdevice = "STATE_DISCONNECTED " + mGatt.getDevice().getName();
-                    BluetoothDevice device = mGatt.getDevice();
+                    arrayListDisconnectedDevices.add(mGatt.getDevice());
+                    anyDevicesDisconnected = true;
+                    //TODO - TRY TO CONNECT TO THE DEVICE LATER?  USE REMOTE DEVICE AND THE ADDRESS ONLY?
                     mGatt = null;
-                    connectToDevice(device);
                     break;
                 default:
                     Log.i("gattCallback", "STATE_OTHER");
@@ -1381,9 +1374,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     public void onClick_104(View view) {
         mDevice = devicesDiscovered.get(4);
         isConnecting = true;
-        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-        //connectToDevice(mDevice);
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CONNECT TO:  " + mDevice.getName())
@@ -1405,7 +1395,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B2","REMOVE");
 
-                        //TODO:  CHANGE FOR EACH BUTTON
                         Button btn104 = findViewById(R.id.button104);
                         btn104.setVisibility(View.GONE);
 
@@ -1424,9 +1413,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     public void onClick_103(View view) {
         mDevice = devicesDiscovered.get(3);
         isConnecting = true;
-        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-//        connectToDevice(mDevice);
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CONNECT TO:  " + mDevice.getName())
@@ -1448,7 +1434,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B2","REMOVE");
 
-                        //TODO:  CHANGE FOR EACH BUTTON
                         Button btn103 = findViewById(R.id.button103);
                         btn103.setVisibility(View.GONE);
 
@@ -1466,9 +1451,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     public void onClick_102(View view) {
         mDevice = devicesDiscovered.get(2);
         isConnecting = true;
-        //Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-//        connectToDevice(mDevice);
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CONNECT TO:  " + mDevice.getName())
@@ -1490,7 +1472,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B2","REMOVE");
 
-                        //TODO:  CHANGE FOR EACH BUTTON
                         Button btn102 = findViewById(R.id.button102);
                         btn102.setVisibility(View.GONE);
 
@@ -1530,7 +1511,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("B2","REMOVE");
 
-                        //TODO:  CHANGE FOR EACH BUTTON
                         Button btn101 = findViewById(R.id.button101);
                         btn101.setVisibility(View.GONE);
 
