@@ -751,7 +751,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 case BluetoothProfile.STATE_DISCONNECTED:
                     Log.i("gattCallback", "****  STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     sendToaster("STATE_DISCONNECTED " + mGatt.getDevice().getName());
+                    BluetoothDevice device = mGatt.getDevice();
                     mGatt = null;
+                    connectToDevice(device);
                     break;
                 default:
                     Log.i("gattCallback", "STATE_OTHER");
@@ -1267,6 +1269,22 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         }
 
     };
+
+    @Override
+    protected void onDestroy() {
+        mPrinter("ONDESTROY");
+        if (mGatt == null) {
+            mPrinter("MGATT == NULL");
+            return;
+        }
+        mGatt.close();
+        mPrinter("ONDESTROY - MGATT.CLOSE");
+        mGatt = null;
+        mPrinter("MGATT IS NULL");
+        super.onDestroy();
+    }
+
+
 
 
     private boolean mWheelStopped, mCrankStopped;
