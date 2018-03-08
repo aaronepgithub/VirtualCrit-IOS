@@ -692,6 +692,20 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 addressesDiscovered = new ArrayList<>();
                 devicesDiscovered = new ArrayList<>();
                 namesDiscovered = new ArrayList<>();
+                deviceIndexVal = 0;
+
+                Button btn100 = findViewById(R.id.button100);
+                Button btn101 = findViewById(R.id.button101);
+                Button btn102 = findViewById(R.id.button102);
+                Button btn103 = findViewById(R.id.button103);
+                Button btn104 = findViewById(R.id.button104);
+
+                btn100.setVisibility(View.GONE);
+                btn101.setVisibility(View.GONE);
+                btn102.setVisibility(View.GONE);
+                btn103.setVisibility(View.GONE);
+                btn104.setVisibility(View.GONE);
+
                 mLEScanner.startScan(filters, settings, mScanCallback);
                 isScanning = true;
 //                sendToaster("SCANNING...");
