@@ -1277,7 +1277,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                             //String value = String.format("CSC1: %d", csc1value);
 //                            Message msg = Message.obtain();
-                            String vs = String.format("%.2f", speed);
+                            String vs = String.format("%.1f", speed);
                             vs = vs + "\nMPH(B)";
                             //updateValueSPEED(vs);
                             currentSPD_String = vs;
