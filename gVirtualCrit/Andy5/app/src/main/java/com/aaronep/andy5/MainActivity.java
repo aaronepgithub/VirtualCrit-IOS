@@ -75,8 +75,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 //    private static final UUID CSC_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("00002A5B-0000-1000-8000-00805f9b34fb");
 //    private UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
-    private static final byte WHEEL_REVOLUTIONS_DATA_PRESENT = 0x01; // 1 bit
-    private static final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
+//    private static final byte WHEEL_REVOLUTIONS_DATA_PRESENT = 0x01; // 1 bit
+//    private static final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -281,7 +281,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Button b1 = findViewById(R.id.button1);
-        b1.setText("ON");
+        b1.setText(R.string.value_ON);
 
 //START BT SETUP
         final BluetoothManager bluetoothManager =
@@ -390,7 +390,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         mPrinter("ON LOCATION RECEIVED:  " + location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
-        mPrinter("ARRLATS.SIZE: " + arrLats.size());
+        //mPrinter("ARRLATS.SIZE: " + arrLats.size());
 
         if (arrLats.size() < 2) {
             oldLat = location.getLatitude();
@@ -418,8 +418,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 //OPT 2.  GEO SPEED, LONG VERSION
                 Double gd = results[0] * 0.000621371;
                 long gt = (location.getTime() - oldTime);  //MILLI
-                double gtd = gt;
-                geoSpeed = gd / (gtd / 1000 / 60 / 60);
+                geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
                 mPrinter("GEO SPEED: " + geoSpeed);
                 //END GEO SPEED CALC
 
@@ -444,7 +443,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                 mPrinter("ELAPSED TIME (GEO): " + hms);
                 TextView t = findViewById(R.id.textView2311);
-                t.setText(hms + "  (GEO)");
+                t.setText(String.format("%s  (GEO)", hms));
 
                 getActualTime();
                 updateGeoButtons();
@@ -462,16 +461,16 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
     @Override
     public void onLocationProviderEnabled() {
-        mLog("LOC", "ONLOCATIONPROVIDERENABLED");
+        mLog("LOC", "ONL OCATION PROVIDER ENABLED");
     }
 
     @Override
     public void onLocationProviderDisabled() {
-        mLog("LOC", "ONLOCATIONPROVIDERDISABLED");
+        mLog("LOC", "ON LOCATION PROVIDER DISABLED");
     }
 
-    //NOT USED YET
-    private BroadcastReceiver localBroadcastReceiver;
+
+
 
     public void onClick_GPS(View view) {
         //ON CLICK GPS
@@ -488,6 +487,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         requestLocationUpdates(easyLocationRequest);
     }
 
+    private BroadcastReceiver localBroadcastReceiver;
     private class LocalBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -497,6 +497,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 return;
             }
             if (intent.getAction().equals("UPDATE_BT")) {
+
+
                 TextView t = findViewById(R.id.textView100);
                 t.setText(currentHR_String);
                 getActualTime();
@@ -755,7 +757,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                 mLEScanner.startScan(filters, settings, mScanCallback);
                 isScanning = true;
-                Toast.makeText(this,"SCANNING...",Toast.LENGTH_LONG);
                 mLog("SCAN","START SCAN");
             }
         } else {
@@ -794,9 +795,6 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     }
 
 
-    private String disconnectedBTdevice = "";
-    private Boolean anyDevicesDisconnected = false;
-
     private ArrayList<BluetoothDevice> arrayListDisconnectedDevices = new ArrayList<>();
 
     private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
@@ -821,9 +819,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 case BluetoothProfile.STATE_DISCONNECTED:
                     Log.i("gattCallback", "****  STATE_DISCONNECTED " + mGatt.getDevice().getName());
                     //sendToaster("STATE_DISCONNECTED " + mGatt.getDevice().getName());
-                    disconnectedBTdevice = "STATE_DISCONNECTED " + mGatt.getDevice().getName();
+                    String disconnectedBTdevice = "STATE_DISCONNECTED " + mGatt.getDevice().getName();
                     arrayListDisconnectedDevices.add(mGatt.getDevice());
-                    anyDevicesDisconnected = true;
+                    Boolean anyDevicesDisconnected = true;
                     //TODO - TRY TO CONNECT TO THE DEVICE LATER?  USE REMOTE DEVICE AND THE ADDRESS ONLY?
                     mGatt = null;
                     break;
@@ -870,7 +868,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             Log.i("GATT1", "CALLED  registerNotifyCallback, UUID serviceUUID, UUID characteristicUUID: " + serviceUUID + "  -  " + characteristicUUID);
             boolean success = false;
 
-            if (isVeloTransmittingHR == true) {
+            if (isVeloTransmittingHR) {
 
                 mPrinter("REGISTER NOTIFY, isVeloTransmittingHR IS TRUE");
 
@@ -1208,7 +1206,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 Log.i("CSC5", String.format("CSC5: %d", csc5value));
 //                Log.i("CSC7", String.format("CSC7: %d", csc7value));
 //                Log.i("CSC9", String.format("CSC9: %d", csc9value));
-                String spd_cad = csc1 + " - " + csc7;
+//                String spd_cad = csc1 + " - " + csc7;
 //                Log.i("SPD-CSC","SPD-CSC - " + spd_cad);
 
 
@@ -1263,6 +1261,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 
                         if (speed > 0 && speed < 40 && wheelTimeSeconds < 15 && !Double.isNaN(speed)) {
 
+                            currentSpeed = speed;
                             totalWheelRotations += wheelRot;
                             totalWheelTimeSeconds += wheelTimeSeconds;
                             totalDistance = totalWheelRotations * wheelCircumferenceCM * cmPerMi;
