@@ -12,13 +12,13 @@
 #import "HeartRateDevice.h"
 #import <Foundation/NSNotification.h>
 
-//#define HEART_RATE_SERVICE_UUID                      @"180D"
-//#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A37"
-//#define BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID     @"2A38"
-
-#define HEART_RATE_SERVICE_UUID                      @"1816"
-#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A5B"
+#define HEART_RATE_SERVICE_UUID                      @"180D"
+#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A37"
 #define BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID     @"2A38"
+
+//#define HEART_RATE_SERVICE_UUID                      @"1816"
+//#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A5B"
+//#define BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID     @"2A38"
 
 
 //let HR_Service = "0x180D"

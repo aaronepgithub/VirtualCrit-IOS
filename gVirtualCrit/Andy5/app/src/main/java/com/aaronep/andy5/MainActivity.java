@@ -211,27 +211,26 @@ public class MainActivity extends EasyLocationAppCompatActivity {
 //    }
 
 
-    @SuppressLint({"DefaultLocale", "SetTextI18n"})
-    private void updateTotals() {
-        long millis = (long) totalWheelTimeMilli;
-        @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-        //actualTimeElapsedBT = hms;
-        TextView t2 = findViewById(R.id.textView112);
-        t2.setText(hms + "  (BT)");
-
-
-        TextView t1 = findViewById(R.id.textView111);
-        String st1 = String.format("%.1f", totalAverageMovingSpeed);
-//        t1.setText(String.format("AVG.MPH: %.1f", totalAverageMovingSpeed));
-        t1.setText(st1 + " MPH");
-
-        TextView t0 = findViewById(R.id.textView110);
-        String st2 = String.format("%.2f", totalDistance);
-        t0.setText(st2 + " MI");
-
-    }
+//    @SuppressLint({"DefaultLocale", "SetTextI18n"})
+//    private void updateTotals() {
+//        long millis = (long) totalWheelTimeMilli;
+//        @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+//                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+//                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+//        //actualTimeElapsedBT = hms;
+//        TextView t200 = findViewById(R.id.textView112);
+//        t200.setText(hms + "  (BT)");
+//
+//
+//        TextView t100 = findViewById(R.id.textView111);
+//        String st100 = String.format("%.1f", totalAverageMovingSpeed);
+//        t100.setText(st100 + " MPH");
+//
+//        TextView t00 = findViewById(R.id.textView110);
+//        String st200 = String.format("%.2f", totalDistance);
+//        t00.setText(st200 + " MI");
+//
+//    }
 
     @SuppressLint("SetTextI18n")
     private void updateGeoButtons() {
@@ -338,19 +337,23 @@ public class MainActivity extends EasyLocationAppCompatActivity {
         localBroadcastReceiver = new LocalBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 localBroadcastReceiver,
-                new IntentFilter("UPDATE_HR")
+                new IntentFilter("UPDATE_BT")
         );
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                localBroadcastReceiver,
-                new IntentFilter("UPDATE_SPD")
-        );
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                localBroadcastReceiver,
-                new IntentFilter("UPDATE_CAD")
-        );
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                localBroadcastReceiver,
-                new IntentFilter("B2_ACTION"));
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                localBroadcastReceiver,
+//                new IntentFilter("UPDATE_HR")
+//        );
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                localBroadcastReceiver,
+//                new IntentFilter("UPDATE_SPD")
+//        );
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                localBroadcastReceiver,
+//                new IntentFilter("UPDATE_CAD")
+//        );
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                localBroadcastReceiver,
+//                new IntentFilter("B2_ACTION"));
         //END BROADCAST REC
 
         }
@@ -493,24 +496,58 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             if (intent == null || intent.getAction() == null) {
                 return;
             }
-            if (intent.getAction().equals("UPDATE_HR")) {
+            if (intent.getAction().equals("UPDATE_BT")) {
                 TextView t = findViewById(R.id.textView100);
-                //veloHrNew = value;
                 t.setText(currentHR_String);
                 getActualTime();
                 Log.i("TAG", "UPDATE_HR");
-            }
-            if (intent.getAction().equals("UPDATE_SPD")) {
+
                 TextView t1 = findViewById(R.id.textView101);
                 t1.setText(currentSPD_String);
-                updateTotals();
                 Log.i("TAG", "UPDATE_SPD");
-            }
-            if (intent.getAction().equals("UPDATE_CAD")) {
+
                 TextView t2 = findViewById(R.id.textView102);
                 t2.setText(currentCAD_String);
                 Log.i("TAG", "UPDATE_CAD");
+
+                long millis = (long) totalWheelTimeMilli;
+                @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                //actualTimeElapsedBT = hms;
+                TextView t200 = findViewById(R.id.textView112);
+                t200.setText(String.format("%s  (BT)", hms));
+
+
+                TextView t100 = findViewById(R.id.textView111);
+                @SuppressLint("DefaultLocale") String st100 = String.format("%.1f", totalAverageMovingSpeed);
+                t100.setText(String.format("%s MPH", st100));
+
+                TextView t00 = findViewById(R.id.textView110);
+                @SuppressLint("DefaultLocale") String st200 = String.format("%.2f", totalDistance);
+                t00.setText(String.format("%s MI", st200));
+
+
             }
+
+//            if (intent.getAction().equals("UPDATE_HR")) {
+//                TextView t = findViewById(R.id.textView100);
+//                //veloHrNew = value;
+//                t.setText(currentHR_String);
+//                getActualTime();
+//                Log.i("TAG", "UPDATE_HR");
+//            }
+//            if (intent.getAction().equals("UPDATE_SPD")) {
+//                TextView t1 = findViewById(R.id.textView101);
+//                t1.setText(currentSPD_String);
+//                updateTotals();
+//                Log.i("TAG", "UPDATE_SPD");
+//            }
+//            if (intent.getAction().equals("UPDATE_CAD")) {
+//                TextView t2 = findViewById(R.id.textView102);
+//                t2.setText(currentCAD_String);
+//                Log.i("TAG", "UPDATE_CAD");
+//            }
             if (intent.getAction().equals("REMOVE")) {
                 //doSomeAction();
                 Log.i("TAG", "REMOVE onReceive");
@@ -1094,6 +1131,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             int time;
 
 
+
+
 //            Log.i("onChChanged: ", "HR?  " + characteristic.getUuid().equals(HEART_RATE_MEASUREMENT_CHAR_UUID));
 //            Log.i("onChChanged: ", "CSC?  " + characteristic.getUuid().equals(CSC_MEASUREMENT_CHAR_UUID));
 
@@ -1126,8 +1165,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 //updateValueHR(value);
                 currentHR_String = value;
 
-                LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
-                        new Intent("UPDATE_HR"));
+//                LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+//                        new Intent("UPDATE_BT"));
 
 
 //                Message msg = Message.obtain();
@@ -1242,8 +1281,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                             vs = vs + "\nMPH(B)";
                             //updateValueSPEED(vs);
                             currentSPD_String = vs;
-                            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
-                                    new Intent("UPDATE_SPD"));
+//                            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+//                                    new Intent("UPDATE_SPD"));
 
 
 //                            msg.obj = vs;
@@ -1295,8 +1334,8 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                             //updateValueCADENCE(vc);
 
                             currentCAD_String = vc;
-                            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
-                                    new Intent("UPDATE_CAD"));
+//                            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+//                                    new Intent("UPDATE_CAD"));
 
 //                            msg.obj = vc;
 //                            msg.what = 5;
@@ -1317,6 +1356,11 @@ public class MainActivity extends EasyLocationAppCompatActivity {
             }
 
             //gatt.disconnect();
+
+            //Update UI
+            mLog("LOG", "SEND BROADCAST");
+            LocalBroadcastManager.getInstance(getParent()).sendBroadcast(
+                    new Intent("UPDATE_BT"));
 
         }
 
@@ -1354,9 +1398,9 @@ public class MainActivity extends EasyLocationAppCompatActivity {
     private double totalAverageMovingSpeed = 0.0;
     private double nextMileMarker = 1.0;
 
-    private String currentHR_String = "0/nBPM";
-    private String currentSPD_String = "0/nMPH";
-    private String currentCAD_String = "0/nMPH";
+    private String currentHR_String =  "0\nBPM";
+    private String currentSPD_String = "0\nMPH";
+    private String currentCAD_String = "0\nMPH";
 
 
 
