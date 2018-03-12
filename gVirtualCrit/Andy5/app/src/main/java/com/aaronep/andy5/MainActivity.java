@@ -579,6 +579,7 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 .setFallBackToLastLocationTime(3000)
                 .build();
         requestLocationUpdates(easyLocationRequest);
+
     }
 
 //    private BroadcastReceiver localBroadcastReceiver;
@@ -1798,6 +1799,11 @@ public class MainActivity extends EasyLocationAppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void onClick_Power(View view) {
+        Log.i("POWER", "onClick_Power: STOP LOC UPDATES");
+        stopLocationUpdates();
     }
 }
 
