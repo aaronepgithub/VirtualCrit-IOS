@@ -58,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_power_settings_new_black_24px" />
 
             <TextView
                 android:id="@+id/textView0"
@@ -73,8 +73,8 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:onClick="onClick_1"
-                android:checked="true"
+                android:onClick="onClick_0"
+                android:checked="false"
                 android:layout_marginRight="8dp"
                 android:textAlignment="center" />
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_settings_bluetooth_black_24px" />
 
             <TextView
                 android:id="@+id/textView1x"
@@ -124,7 +124,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_location_on_black_24px" />
 
             <TextView
                 android:id="@+id/textView2x"
@@ -188,6 +188,7 @@
                 android:layout_weight="1"
                 android:text="TIME(TOTAL)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="center" />
 
             <TextView
@@ -197,6 +198,7 @@
                 android:layout_weight="1"
                 android:text="TIME(BT)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="center" />
 
             <TextView
@@ -205,9 +207,31 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TIME(G)"
+                android:textStyle="bold"
                 android:layout_margin="8dp"
                 android:textAlignment="center" />
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rtStatus"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="STATUS"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textStyle="bold"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -220,7 +244,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_grade_black_24px" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -229,6 +253,7 @@
                 android:layout_weight="2"
                 android:text="SPEED(BT)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -238,6 +263,7 @@
                 android:layout_weight="2"
                 android:text="SPEED(G)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
 
@@ -252,7 +278,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_timelapse_black_24px" />
 
             <TextView
                 android:id="@+id/rtText3a"
@@ -284,7 +310,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_grade_black_24px" />
 
             <TextView
                 android:id="@+id/rtText8a"
@@ -316,7 +342,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_timelapse_black_24px" />
 
             <TextView
                 android:id="@+id/rtText9a"
@@ -348,7 +374,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_explore_black_24px" />
 
             <TextView
                 android:id="@+id/rtText4a"
@@ -357,6 +383,7 @@
                 android:layout_weight="2"
                 android:text="DISTANCE(BT)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -366,6 +393,7 @@
                 android:layout_weight="2"
                 android:text="DISTANCE(G)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
 
@@ -380,7 +408,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_favorite_black_24px" />
 
             <!--HR-->
             <TextView
@@ -390,6 +418,7 @@
                 android:layout_weight="2"
                 android:text="HR"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
 
@@ -400,6 +429,7 @@
                 android:layout_weight="2"
                 android:text="CADENCE"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
 
@@ -460,6 +490,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView5r"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="ROUND STATS"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:orientation="horizontal">
@@ -469,7 +516,7 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="HR"
+                android:text="SPEED"
                 android:layout_margin="8dp"
                 android:textAlignment="viewStart" />
 
@@ -584,7 +631,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_accessibility_black_24px" />
 
 
             <TextView
@@ -604,6 +651,7 @@
                 android:layout_weight="3"
                 android:text="TIM"
                 android:layout_margin="8dp"
+                android:onClick="onClick_setName"
                 android:textAlignment="viewStart" />
 
 
@@ -620,7 +668,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_directions_bike_black_24px" />
 
 
             <TextView
@@ -639,6 +687,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:text="BIKE"
+                android:onClick="onClick_setActivity"
                 android:layout_margin="8dp"
                 android:textAlignment="viewStart" />
 
@@ -657,7 +706,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_all_out_black_24px" />
 
 
             <TextView
@@ -677,6 +726,7 @@
                 android:layout_weight="3"
                 android:text="700X25"
                 android:layout_margin="8dp"
+                android:onClick="onClick_setTireSize"
                 android:textAlignment="viewStart" />
 
 
@@ -694,7 +744,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_home_black_24dp" />
+                app:srcCompat="@drawable/ic_volume_up_black_24px" />
 
 
             <TextView
@@ -714,6 +764,44 @@
                 android:layout_weight="3"
                 android:text="ON"
                 android:layout_margin="8dp"
+                android:onClick="onClick_setAudio"
+                android:textAlignment="viewStart" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/rtImage54"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_alarm_on_black_24px" />
+
+
+            <TextView
+                android:id="@+id/textView54t"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="DURATION(RND)"
+                android:layout_margin="8dp"
+                android:textAlignment="viewStart" />
+
+
+            <Button
+                android:id="@+id/button54b"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="60"
+                android:layout_margin="8dp"
+                android:onClick="onClick_setSecondsPerRound"
                 android:textAlignment="viewStart" />
 
 

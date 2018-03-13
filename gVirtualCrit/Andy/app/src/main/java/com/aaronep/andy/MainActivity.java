@@ -36,10 +36,13 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +62,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -179,8 +186,251 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
 
+
+
+
     }
     //END ON_CREATE
+
+    public Timer timer = new Timer();
+    private Integer timerSecondsCounter = 0;
+    private Integer currentMile = 1;
+    private Integer previousMile = 1;
+    private Integer secondsAtEndOfMile = 0;
+    private double bestMileMPH = 0;
+    private double currentMileSpeedBT = 0;
+    private double currentMileSpeedGEO = 0;
+
+    private Integer secondsPerRound = 60;
+    private Integer currentRound = 1;
+    private Integer previousRound = 1;
+
+    private double bestRoundMPH = 0;
+    private double currentRoundSpeedBT = 0;
+    private double currentRoundSpeedGEO = 0;
+
+    private Boolean newRoundFlagGEO = false;
+    private Boolean newRoundFlagBT = false;
+
+    public void onClick_0(View view) {
+        Button b0 = findViewById(R.id.button0);
+        String on1 = "ON";
+        b0.setText(on1);
+        //Set the schedule function
+        timer.scheduleAtFixedRate(new TimerTask() {
+              @Override
+              public void run() {
+                  //Log.i(TAG, "timer: " + timerSecondsCounter);
+
+                  updateActualTime();
+                  timerSecondsCounter += 1;
+
+
+                  if (timerSecondsCounter > 31) {
+                      if (timerSecondsCounter % 10 == 0) {veloTester1();}
+                      if (timerSecondsCounter % 25 == 0) {veloTester2();}
+                  }
+
+
+                  //START END OF ROUND LOGIC
+
+
+                  //FOR IN ROUND DISPLAY
+                  double calcCurrentRoundSpd = currentRoundSpeedBT;
+                  if (currentRoundSpeedGEO > calcCurrentRoundSpd) {
+                      calcCurrentRoundSpd = currentRoundSpeedGEO;
+                  }
+                  final double currentRoundSpeed = calcCurrentRoundSpd;
+                  //display this at 7a
+                  Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
+
+
+                  //END OF ROUND
+                  if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
+
+                      Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
+                      currentRound += 1;
+
+                      //DETERMINE BEST AND LAST
+                      final double lastRoundSpeed = currentRoundSpeed;
+                      //display at 7b
+
+                      double calcBestRoundSpd = bestRoundMPH;
+                      if (lastRoundSpeed > bestRoundMPH) {
+                          bestRoundMPH = lastRoundSpeed;
+                      }
+                      final double bestRoundSpeed = bestRoundMPH;
+
+
+                      newRoundFlagBT = true;
+                      newRoundFlagGEO = true;
+                      runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              TextView tr = findViewById(R.id.rtStatus);
+                              tr.setText(String.format("ROUND COMPLETED: %d", previousRound));
+
+                              TextView t7b = findViewById(R.id.rtText7b);
+                              t7b.setText(String.format("%.1f MPH", lastRoundSpeed));
+
+                              TextView t7c = findViewById(R.id.rtText7c);
+                              t7c.setText(String.format("%.1f MPH", bestRoundSpeed));
+                          }
+                      });
+                  }
+
+                  //END ROUND LOGIC
+
+
+
+                  //START MILE LOGIC
+
+                  if (previousMile != currentMile) {
+                      Log.i(TAG, "NEW MILE");
+                      previousMile = currentMile;
+
+                      double speedForLastMile = currentMileSpeedBT;
+                      if (currentMileSpeedGEO > currentMileSpeedBT) {
+                          speedForLastMile = currentMileSpeedGEO;
+                      }
+
+                      if (speedForLastMile > bestMileMPH) {bestMileMPH = speedForLastMile;}
+                      final double finalSpeedForLastMile = speedForLastMile;
+                      runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              TextView t = findViewById(R.id.rtStatus);
+                              t.setText(String.format("MILE COMPLETED: %d", previousMile));
+
+                              TextView t1 = findViewById(R.id.rtText6b);
+                              t1.setText(String.format("%.1f MPH", finalSpeedForLastMile));
+
+                              TextView t2 = findViewById(R.id.rtText6c);
+                              t2.setText(String.format("%.1f MPH", bestMileMPH));
+                          }
+                      });
+                      secondsAtEndOfMile = timerSecondsCounter;
+                  }
+
+                  //RT SPEED FOR DURING THE MILE...
+                  if (timerSecondsCounter - secondsAtEndOfMile > 5) {
+                      double currentMileSpeedMPH = currentMileSpeedBT;
+                      if (currentMileSpeedGEO > currentMileSpeedBT) {
+                          currentMileSpeedMPH = currentMileSpeedGEO;
+                      }
+                      final double finalCurrentMileSpeedMPH = currentMileSpeedMPH;
+                      Log.i(TAG, "CURRENT MILE SPEED: " + finalCurrentMileSpeedMPH);
+                      runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              TextView t3 = findViewById(R.id.rtText6a);
+                              t3.setText(String.format("%.1f MPH", finalCurrentMileSpeedMPH));
+
+                              TextView t37 = findViewById(R.id.rtText7a);
+                              t37.setText(String.format("%.1f MPH", currentRoundSpeed));
+                          }
+                      });
+                  }
+
+                  //END MILE LOGIC
+
+
+
+
+
+
+//                  if (previousRound != currentRound) {
+//                      //Log.i(TAG, "NEW ROUND");
+//                      runOnUiThread(new Runnable() {
+//                          @Override
+//                          public void run() {
+//                              TextView t = findViewById(R.id.rtStatus);
+//                              t.setText(String.format("ROUND COMPLETED: %d", previousRound));
+//
+//                              TextView rtText7b = findViewById(R.id.rtText7b);
+//                            rtText7b.setText(String.format("%.1f MPH (BT)", finallastRoundMPH));
+//                            TextView rtText7c = findViewById(R.id.rtText7c);
+//                            rtText7c.setText(String.format("%.1f MPH (BT)", finalBestRoundMPH));
+//
+//                          }
+//                      });
+//                      previousRound = currentRound;
+//
+//                  }
+
+
+              }
+          },
+        1000, 1000);
+        //END TIMER
+    }
+
+
+
+    private String oldHR = "START", oldSPD = "START", oldCAD = "START";
+    private void veloTester1() {
+        //TEST FOR 0, SPD/CAD
+        //SET TEXTVIEW TO "0", VELO
+        //Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
+        TextView t2 = findViewById(R.id.textView2);
+        String s2 = t2.getText().toString();
+        if (Objects.equals(s2, oldSPD)) {
+            resetSPD0();
+        }
+        oldSPD = s2;
+
+        TextView t3 = findViewById(R.id.textView3);
+        String s3 = t3.getText().toString();
+        if (Objects.equals(s3, oldCAD)) {
+            resetCAD0();
+        }
+        oldCAD = s3;
+    }
+    private void veloTester2() {
+        //TEST FOR 0, HR
+        //SET TEXTVIEW TO "0", VELO
+        //Log.i("TIMER", "TEST FOR 0 VAL HR");
+        TextView t1 = findViewById(R.id.textView1);
+        String s1 = t1.getText().toString();
+        if (Objects.equals(s1, oldHR)) {
+            resetHR0();
+        }
+        oldHR = s1;
+    }
+
+    private void resetSPD0() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //Log.i("SPD", "RESET SPD");
+                TextView t1 = findViewById(R.id.textView2);
+                String s1x = "0.0 MPH";
+                t1.setText(s1x);
+            }
+        });
+    }
+    private void resetHR0() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //Log.i("HR", "RESET HR");
+                TextView t1 = findViewById(R.id.textView1);
+                String s1x = "0 BPM";
+                t1.setText(s1x);
+            }
+        });
+    }
+    private void resetCAD0() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //Log.i("CAD", "RESET CAD");
+                TextView t1 = findViewById(R.id.textView3);
+                String s1x = "0 RPM";
+                t1.setText(s1x);
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -323,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
                 final Integer hrValue = characteristic.getIntValue(format, 1);
                 final String hr = String.valueOf(hrValue) + " BPM";
 
-                updateActualTime();
+//                updateActualTime();
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -408,9 +658,12 @@ public class MainActivity extends AppCompatActivity {
     private int mFirstCrankRevolutions = -1;
     private int mLastCrankRevolutions = -1;
     private int mLastCrankEventTime = -1;
-    final int circumference = 2105;
+
     private double totalWheelRevolutions = 0;
     private double totalTimeInSeconds = 0;
+
+    private double distanceAtStartOfPreviousRound = 0;
+    private double secondsAtStartOfPreviousRound = 0;
 
     //CSC ADVANCED CALC
     private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
@@ -451,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
         totalTimeInSeconds += (double) timeDiff / 1024.0;
 
         final double wheelTimeInSeconds = timeDiff / 1024.0;
-        final double wheelCircumference = 2105;
+        final double wheelCircumference = wheelSizeMM;
         final double wheelCircumferenceCM = wheelCircumference / 10;
 
 
@@ -461,7 +714,14 @@ public class MainActivity extends AppCompatActivity {
         final double speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;  //MPH CURRENT
 
         final double totalDistance = totalWheelRevolutions * wheelCircumferenceCM * cmPerMi;
-        final double totalAverageMovingSpeed = (totalWheelRevolutions / (totalTimeInSeconds / 60.0)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+        //final double totalAverageMovingSpeed = (totalWheelRevolutions / (totalTimeInSeconds / 60.0)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+
+        currentMileSpeedBT = (totalDistance - ((double) currentMile - 1)) / (((double) timerSecondsCounter - (double) secondsAtEndOfMile) / 60.0 / 60.0);
+        if (totalDistance > (double) currentMile && totalDistance > 0.5) {
+            currentMile += 1;
+            secondsAtEndOfMile = timerSecondsCounter;
+        }
+
 
 //        Log.i(TAG, "onWheelMeasurementReceived: DISTANCE = " + String.valueOf(totalDistance));
 //        Log.i(TAG, "onWheelMeasurementReceived: SPEED = " + String.valueOf(speed));
@@ -477,7 +737,27 @@ public class MainActivity extends AppCompatActivity {
         final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
 
 
+        //ROUND CALC
+        //USES TIMERCOUNTER, NOT BT.TOTALTIME IN SECONDS
+        double distanceDuringCurrentRound = totalDistance - distanceAtStartOfPreviousRound;
+        double elapsedSecondsInCurrentRound = (double) timerSecondsCounter - (double) secondsAtStartOfPreviousRound;
+        double currentRoundSpeedMPH = 0;
+        if (elapsedSecondsInCurrentRound > 5) {
+            currentRoundSpeedMPH = distanceDuringCurrentRound / (elapsedSecondsInCurrentRound / 60.0 / 60.0);
+        }
+        currentRoundSpeedBT = currentRoundSpeedMPH;
 
+//        Log.i(TAG, "distanceDuringCurrentRound: " + distanceDuringCurrentRound);
+//        Log.i(TAG, "elapsedSecondsInCurrentRound: " + elapsedSecondsInCurrentRound);
+//        Log.i(TAG, "currentRoundSpeedMPH: " + currentRoundSpeedMPH);
+
+        if (newRoundFlagBT && totalDistance > distanceAtStartOfPreviousRound) {
+            Log.i(TAG, "BT NEW ROUND");
+
+            distanceAtStartOfPreviousRound = totalDistance;
+            secondsAtStartOfPreviousRound = timerSecondsCounter;
+            newRoundFlagBT = false;
+        }
 
 
         runOnUiThread(new Runnable() {
@@ -492,14 +772,12 @@ public class MainActivity extends AppCompatActivity {
                 td.setText(String.format("%.2f MI (BT)", totalDistance));
                 TextView rtText8a = findViewById(R.id.rtText8a);
                 rtText8a.setText(String.format("%.1f AVG (BT)", btAvgSpeed));
-                //Log.i(TAG, "btAvgSpd: " + btAvgSpeed);
 
                 TextView rtText3a = findViewById(R.id.rtText3a);
                 rtText3a.setText(String.format("%s (BT)", calcPace(speed)));
 
                 TextView rtText9a = findViewById(R.id.rtText9a);
                 rtText9a.setText(String.format("%s (BT)", calcPace(btAvgSpeed)));
-                //Log.i(TAG, "btAvgPace: " + calcPace(btAvgSpeed));
 
             }
         });
@@ -598,7 +876,12 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onClick_4: clicked");
 
         //remove GPS
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        try {
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        } catch (Exception e){
+            Log.i(TAG, "onClick_4: DIDN'T STOP LOCATION");
+        }
+        //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
 
         if (connectedGatt != null) {
@@ -658,6 +941,9 @@ public class MainActivity extends AppCompatActivity {
     private long oldTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
 
+    Double distanceAtStartOfPreviousRoundGeo = 0.0;
+    Integer secondsAtStartOfPreviousRoundGeo = 0;
+
 
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(Location location) {
@@ -686,7 +972,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //OPT 1.  QUICKREAD GEO SPEED
-                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 mPrinter("GEO SPEED Q: " + geoSpeedQuick);
 
                 //OPT 2.  GEO SPEED, LONG VERSION
@@ -696,15 +982,15 @@ public class MainActivity extends AppCompatActivity {
                 mPrinter("GEO SPEED: " + geoSpeed);
                 //END GEO SPEED CALC
 
-                TextView rtText2b = findViewById(R.id.rtText2b);
-                rtText2b.setText(String.format("%.1f MPH (G)", geoSpeedQuick));
-
-                TextView rtText3b = findViewById(R.id.rtText3b);
-                rtText3b.setText(String.format("%s (G)", calcPace(geoSpeedQuick)));
 
 
 
+                currentMileSpeedGEO = (geoDistance - ((double) currentMile - 1)) / (((double) timerSecondsCounter - (double) secondsAtEndOfMile) / 60.0 / 60.0);
                 geoDistance += results[0] * 0.000621371;
+                if (geoDistance > (double) currentMile && geoDistance > 0.5) {
+                    currentMile += 1;
+                    secondsAtEndOfMile = timerSecondsCounter;
+                }
 //                mPrinter("OLDTIME " + oldTime);
 //                mPrinter("NEWTIME " + location.getTime());
 //                mPrinter("totalTimeGeo " + totalTimeGeo);
@@ -714,42 +1000,59 @@ public class MainActivity extends AppCompatActivity {
 
                 double ttg = totalTimeGeo;  //IN MILLI
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
-//                mPrinter("geoAvgSpeed: " + geoAvgSpeed);
-                TextView rtText8b = findViewById(R.id.rtText8b);
-                rtText8b.setText(String.format("%.1f AVG (G)", geoAvgSpeed));
-
-                TextView rtText9b = findViewById(R.id.rtText9b);
-                rtText9b.setText(String.format("%s (G)", calcPace(geoAvgSpeed)));
-
-
 
                 long millis = totalTimeGeo;
-                @SuppressLint("DefaultLocale") String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                @SuppressLint("DefaultLocale") final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
                         TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                         TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
 
                 mPrinter("ELAPSED TIME (GEO): " + hms);
-                TextView t = findViewById(R.id.rtText1b);
-                t.setText(String.format("%s  (G)", hms));
 
-                TextView rtText4b = findViewById(R.id.rtText4b);
-                rtText4b.setText(String.format("%.2f MI (G)", geoDistance));
+                //START ROUND CALC
+                double distanceDuringCurrentRoundGeo = geoDistance - distanceAtStartOfPreviousRoundGeo;
+                double elapsedSecondsInCurrentRoundGeo = (double) timerSecondsCounter - (double) secondsAtStartOfPreviousRoundGeo;
+
+                double currentRoundSpeedMPHGeo = 0;
+                if (elapsedSecondsInCurrentRoundGeo > 5) {
+                    currentRoundSpeedMPHGeo = distanceDuringCurrentRoundGeo / (elapsedSecondsInCurrentRoundGeo / 60.0 / 60.0);
+                }
+                currentRoundSpeedGEO = currentRoundSpeedMPHGeo;
+                Log.i(TAG, "CURRENT ROUND SPEED GEO: " + currentRoundSpeedMPHGeo);
+                if (newRoundFlagGEO && geoDistance > distanceAtStartOfPreviousRoundGeo) {
+                    Log.i(TAG, "GEO NEW ROUND");
+
+                    distanceAtStartOfPreviousRoundGeo = geoDistance;
+                    secondsAtStartOfPreviousRoundGeo = timerSecondsCounter;
+                    newRoundFlagGEO = false;
+                }
+                //END ROUND CALC
 
 
-                updateActualTime();
-                //update actual time
-//                Log.i("TIME", "getActualTime");
-//                Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
-//                Long st = startTime.getTimeInMillis();
-//                Long nt = nowTime.getTimeInMillis();
-//                long millis_act = nt - st;
-//                @SuppressLint("DefaultLocale") String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
-//                        TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
-//                        TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
-//                TextView at = findViewById(R.id.rtText1);
-//                at.setText(String.format("%s  ", hms_act));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView rtText2b = findViewById(R.id.rtText2b);
+                        rtText2b.setText(String.format("%.1f MPH (G)", geoSpeedQuick));
 
+                        TextView rtText3b = findViewById(R.id.rtText3b);
+                        rtText3b.setText(String.format("%s (G)", calcPace(geoSpeedQuick)));
+
+                        TextView rtText8b = findViewById(R.id.rtText8b);
+                        rtText8b.setText(String.format("%.1f AVG (G)", geoAvgSpeed));
+
+                        TextView rtText9b = findViewById(R.id.rtText9b);
+                        rtText9b.setText(String.format("%s (G)", calcPace(geoAvgSpeed)));
+
+                        TextView t = findViewById(R.id.rtText1b);
+                        t.setText(String.format("%s  (G)", hms));
+
+                        TextView rtText4b = findViewById(R.id.rtText4b);
+                        rtText4b.setText(String.format("%.2f MI (G)", geoDistance));
+                    }
+                });
+
+//                mPrinter("geoAvgSpeed: " + geoAvgSpeed);
 
             }
 
@@ -1109,9 +1412,7 @@ private String calcPace(double mph) {
 
 
     private void updateActualTime(){
-
         //update actual time
-        Log.i("TIME", "getActualTime");
         Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
         long st = startTime.getTimeInMillis();
         long nt = nowTime.getTimeInMillis();
@@ -1130,6 +1431,7 @@ private String calcPace(double mph) {
                 at.setText(String.format("%s  (ACT)", hms_act));
             }
         });
+
     }
 
     private BluetoothDevice mDevice;
@@ -1216,4 +1518,134 @@ private String calcPace(double mph) {
     public void onClick_3(View view) {
         //RESET??
     }
+
+
+    public void onClick_setSecondsPerRound(View view) {
+        Button b = findViewById(R.id.button54b);
+        switch (secondsPerRound) {
+            case 60:
+                secondsPerRound = 300;
+                b.setText("300 Seconds");
+                break;
+            case 300:
+                secondsPerRound = 1800;
+                b.setText("30 Minutes");
+                break;
+            case 1800:
+                secondsPerRound = 60;
+                b.setText("1 Minute");
+        }
+    }
+
+    public Boolean audioValue = true;
+    public void onClick_setAudio(View view) {
+        Button b = findViewById(R.id.button53b);
+        if (audioValue) {
+            audioValue = false;
+            b.setText("OFF");
+        } else {
+            audioValue = true;
+            b.setText("ON");
+        }
+    }
+
+    public double wheelSizeMM = 2105.0;
+    public void onClick_setTireSize(View view) {
+        Button b = findViewById(R.id.button52b);
+        String bVal = b.getText().toString();
+        switch (bVal) {
+            case "700X25": {
+                wheelSizeMM = 2136.0;
+                b.setText("700X28");
+                break;
+            }
+            case "700X28": {
+                wheelSizeMM = 2155.0;
+                b.setText("700X32");
+                break;
+            }
+            case "700X32": {
+                wheelSizeMM = 2105.0;
+                b.setText("700X25");
+                break;
+            }
+        }
+
+    }
+
+    public String activityValue = "BIKE";
+    public void onClick_setActivity(View view) {
+        Button b = findViewById(R.id.button51b);
+        switch (activityValue) {
+            case "BIKE":
+                b.setText("RUN");
+                activityValue = "RUN";
+                break;
+            case "RUN":
+                b.setText("ROW");
+                activityValue = "ROW";
+                break;
+            case "ROW":
+                activityValue = "BIKE";
+                b.setText("BIKE");
+                break;
+        }
+    }
+
+    public String userName = "TIM";
+    public void onClick_setName(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog dialog;
+        builder.setTitle("NAME");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                userName = input.getText().toString().toUpperCase();
+                Button b = findViewById(R.id.button50b);
+                b.setText(userName);
+
+                try {
+                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + userName + ")");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        builder.setNegativeButton("RANDOM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Random r = new Random();
+                int i1 = r.nextInt(9999 - 1001);
+                userName = userName + i1;
+                Button b = findViewById(R.id.button50b);
+                b.setText(userName);
+
+                try {
+                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + userName + ")");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+
+
+
 }
