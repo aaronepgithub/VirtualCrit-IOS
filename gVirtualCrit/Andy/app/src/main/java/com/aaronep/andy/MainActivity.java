@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
                           @Override
                           public void run() {
                               TextView tr = findViewById(R.id.rtStatus);
-                              tr.setText(String.format("ROUND COMPLETED: %d", previousRound));
+                              tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
 
                               TextView t7b = findViewById(R.id.rtText7b);
                               t7b.setText(String.format("%.1f MPH", lastRoundSpeed));
@@ -883,6 +883,17 @@ public class MainActivity extends AppCompatActivity {
         }
         //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
+        //TODO, CYCLE THROUGH gattsConnected arrList, disconnect all nonNull
+        for (BluetoothGatt btGatt : bluetoothGatts) {
+            if (btGatt != null) {
+                Log.i(TAG, "bluetoothGatts to disconnect, Name: " + btGatt.getDevice().getName());
+                btGatt.disconnect();
+                btGatt.close();
+                setConnectedGatt(null);
+            }
+
+        }
+
 
         if (connectedGatt != null) {
             Log.i(TAG, "onClick_4: connectedGatt name:  " + connectedGatt.getDevice().getName());
@@ -1099,10 +1110,22 @@ private String calcPace(double mph) {
 
 
     //GPS BUTTON...
+    private Boolean isGpsActive = false;
     public void onClick_2(View view) {
         Log.i(TAG, "onClick_2: clicked");
-
         Button b2 = findViewById(R.id.button2);
+
+        if (isGpsActive) {
+            b2.setText("OFF");
+            try {
+                mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+            } catch (Exception e){
+                Log.i(TAG, "onClick_2 Error,  DIDN'T STOP LOCATION");
+            }
+        }
+
+
+        isGpsActive = true;
         b2.setText("ON");
 
         LocationRequest mLocationRequest = new LocationRequest();
@@ -1123,7 +1146,6 @@ private String calcPace(double mph) {
 
             private void onNewLocation(Location lastLocation) {
                 //Log.i(TAG, "onNewLocation: " + lastLocation.getSpeed());
-                //TODO...DO SOMETHING WITH THE LOCATIONS
                 onLocationReceived(lastLocation);
             }
         };
@@ -1318,6 +1340,7 @@ private String calcPace(double mph) {
         connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
         Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
         devicesConnected.add(mDevice);
+        bluetoothGatts.add(connectedGatt);
 
 
 //        if (connectedGatt == null) {
@@ -1335,6 +1358,7 @@ private String calcPace(double mph) {
 
     private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
     private ArrayList<BluetoothDevice> devicesConnected = new ArrayList<>();
+    private ArrayList<BluetoothGatt> bluetoothGatts = new ArrayList<>();
     private Integer deviceIndexVal = 0;
     private Boolean isScanning = false;
 
