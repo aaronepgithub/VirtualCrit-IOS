@@ -187,8 +187,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-
     }
     //END ON_CREATE
 

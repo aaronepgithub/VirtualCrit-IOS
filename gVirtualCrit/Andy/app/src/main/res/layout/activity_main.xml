@@ -287,6 +287,7 @@
                 android:layout_weight="2"
                 android:text="PACE(BT)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -296,6 +297,7 @@
                 android:layout_weight="2"
                 android:text="PACE(G)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
 
@@ -319,6 +321,7 @@
                 android:layout_weight="2"
                 android:text="AVG.SPD(BT)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -328,6 +331,7 @@
                 android:layout_weight="2"
                 android:text="AVG.SPD(G)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
 
@@ -351,6 +355,7 @@
                 android:layout_weight="2"
                 android:text="AVG PACE(BT)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -360,6 +365,7 @@
                 android:layout_weight="2"
                 android:text="AVG PACE(G)"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
 
@@ -466,6 +472,7 @@
                 android:layout_weight="2"
                 android:text="SPEED"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -475,6 +482,7 @@
                 android:layout_weight="2"
                 android:text="LAST"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -484,6 +492,7 @@
                 android:layout_weight="2"
                 android:text="BEST"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
 
@@ -518,6 +527,7 @@
                 android:layout_weight="2"
                 android:text="SPEED"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -527,6 +537,7 @@
                 android:layout_weight="2"
                 android:text="LAST"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
 
             <TextView
@@ -536,10 +547,9 @@
                 android:layout_weight="2"
                 android:text="BEST"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
-
-
 
 
 
