@@ -829,7 +829,7 @@ public class MainActivity extends AppCompatActivity {
 
         //END OF MILE CALC
         if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
-            if (totalDistance > currentMileBT + 1) {
+            if (totalDistance > currentMileBT) {
                   endMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
                   currentMileBT += 1;
                   secondsAtEndOfMileBT = timerSecondsCounter;
@@ -1118,7 +1118,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //END OF MILE CALC
                 if (timerSecondsCounter - secondsAtEndOfMileGeo > 10) {
-                    if (geoDistance > currentMileGEO + 1) {
+                    if (geoDistance > currentMileGEO) {
                         endMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
                         currentMileGEO += 1;
                         secondsAtEndOfMileGeo = timerSecondsCounter;
