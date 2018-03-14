@@ -37,12 +37,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,12 +98,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            ScrollView sv = findViewById(R.id.svSettings);
+            LinearLayout ll = findViewById(R.id.llView);
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
+                    ll.setVisibility(View.GONE);
+                    sv.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
+                    sv.setVisibility(View.GONE);
+                    ll.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
@@ -240,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                   }
                   final double currentRoundSpeed = calcCurrentRoundSpd;
                   //display this at 7a
-                  Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
+                  //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
 
 
                   //END OF ROUND
@@ -317,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                           currentMileSpeedMPH = currentMileSpeedGEO;
                       }
                       final double finalCurrentMileSpeedMPH = currentMileSpeedMPH;
-                      Log.i(TAG, "CURRENT MILE SPEED: " + finalCurrentMileSpeedMPH);
+                      //Log.i(TAG, "CURRENT MILE SPEED: " + finalCurrentMileSpeedMPH);
                       runOnUiThread(new Runnable() {
                           @Override
                           public void run() {
@@ -355,6 +365,14 @@ public class MainActivity extends AppCompatActivity {
 //                      previousRound = currentRound;
 //
 //                  }
+                  //UPDATE TAB2 DISPLAY
+                      runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              updateView();
+                          }
+                      });
+
 
 
               }
@@ -364,6 +382,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void updateView() {
+        TextView fHeader1 = findViewById(R.id.rtText1a);
+        TextView fHeader2 = findViewById(R.id.rtText8a);
+        TextView tHeader = findViewById(R.id.tvHeader);
+        tHeader.setText(String.format("%s    %s", fHeader1.getText().toString(), fHeader2.getText().toString()));
+
+        TextView fTop1 = findViewById(R.id.textView1);
+        TextView tTop1 = findViewById(R.id.tvTop);
+        tTop1.setText(String.format("%s", fTop1.getText().toString()));
+
+        TextView fMid = findViewById(R.id.textView2);
+        TextView tMid = findViewById(R.id.tvMiddle);
+        tMid.setText(String.format("%s", fMid.getText().toString()));
+
+        TextView fBot = findViewById(R.id.textView3);
+        TextView tBot = findViewById(R.id.tvBottom);
+        tBot.setText(String.format("%s", fBot.getText().toString()));
+
+        TextView fFooter1 = findViewById(R.id.rtText1);
+        TextView fFooter2 = findViewById(R.id.rtText4a);
+        TextView tFooter = findViewById(R.id.tvFooter);
+        tFooter.setText(String.format("%s    %s", fFooter1.getText().toString(), fFooter2.getText().toString()));
+
+
+
+    }
 
     private String oldHR = "START", oldSPD = "START", oldCAD = "START";
     private void veloTester1() {
@@ -1027,7 +1071,7 @@ public class MainActivity extends AppCompatActivity {
                     currentRoundSpeedMPHGeo = distanceDuringCurrentRoundGeo / (elapsedSecondsInCurrentRoundGeo / 60.0 / 60.0);
                 }
                 currentRoundSpeedGEO = currentRoundSpeedMPHGeo;
-                Log.i(TAG, "CURRENT ROUND SPEED GEO: " + currentRoundSpeedMPHGeo);
+                //Log.i(TAG, "CURRENT ROUND SPEED GEO: " + currentRoundSpeedMPHGeo);
                 if (newRoundFlagGEO && geoDistance > distanceAtStartOfPreviousRoundGeo) {
                     Log.i(TAG, "GEO NEW ROUND");
 

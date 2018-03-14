@@ -31,6 +31,7 @@
         app:menu="@menu/navigation" />
 
     <ScrollView
+        android:id="@+id/svSettings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -38,6 +39,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/message">
 
     <LinearLayout
@@ -848,6 +850,66 @@
 
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/llView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="8dp"
+        android:visibility="gone"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="1dp"
+            android:text="00:00:00   00.0 AVG" />
+
+        <TextView
+            android:id="@+id/tvTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="50sp"
+            android:layout_marginEnd="1dp"
+            android:text="00 BPM" />
+
+        <TextView
+            android:id="@+id/tvMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="60sp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="00.0 MPH" />
+
+        <TextView
+            android:id="@+id/tvBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="50sp"
+            android:layout_marginEnd="1dp"
+            android:text="00 CAD" />
+
+        <TextView
+            android:id="@+id/tvFooter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="16dp"
+            android:text="00:00:00    00.00 MILES" />
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>
