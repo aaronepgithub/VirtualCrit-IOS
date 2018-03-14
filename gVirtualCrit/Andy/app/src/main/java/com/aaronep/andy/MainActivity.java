@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 //                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
 //                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
 
+        onPowerOn();
 
         //START BT SETUP
         //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
@@ -202,12 +203,18 @@ public class MainActivity extends AppCompatActivity {
 
     public Timer timer = new Timer();
     private Integer timerSecondsCounter = 0;
-    private Integer currentMile = 1;
-    private Integer previousMile = 1;
-    private Integer secondsAtEndOfMile = 0;
+    private Integer currentMileBT = 1;
+    private Integer previousMileBT = 1;
+    private Integer currentMileGEO = 1;
+    private Integer previousMileGEO = 1;
+    private Integer secondsAtEndOfMileGeo = 0;
+    private Integer secondsAtEndOfMileBT = 0;
     private double bestMileMPH = 0;
+    private double lastMileMPH = 0;
     private double currentMileSpeedBT = 0;
     private double currentMileSpeedGEO = 0;
+    private double endMileSpeedBT = 0;
+    private double endMileSpeedGEO = 0;
 
     private Integer secondsPerRound = 60;
     private Integer currentRound = 1;
@@ -220,165 +227,191 @@ public class MainActivity extends AppCompatActivity {
     private Boolean newRoundFlagGEO = false;
     private Boolean newRoundFlagBT = false;
 
-    public void onClick_0(View view) {
+    public void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
         String on1 = "ON";
         b0.setText(on1);
-        //Set the schedule function
+
         timer.scheduleAtFixedRate(new TimerTask() {
-              @Override
-              public void run() {
-                  //Log.i(TAG, "timer: " + timerSecondsCounter);
+                                      @Override
+                                      public void run() {
+                                          //Log.i(TAG, "timer: " + timerSecondsCounter);
 
-                  updateActualTime();
-                  timerSecondsCounter += 1;
-
-
-                  if (timerSecondsCounter > 31) {
-                      if (timerSecondsCounter % 10 == 0) {veloTester1();}
-                      if (timerSecondsCounter % 25 == 0) {veloTester2();}
-                  }
+                                          updateActualTime();
+                                          timerSecondsCounter += 1;
 
 
-                  //START END OF ROUND LOGIC
+                                          if (timerSecondsCounter > 31) {
+                                              if (timerSecondsCounter % 10 == 0) {veloTester1();}
+                                              if (timerSecondsCounter % 25 == 0) {veloTester2();}
+                                          }
 
 
-                  //FOR IN ROUND DISPLAY
-                  double calcCurrentRoundSpd = currentRoundSpeedBT;
-                  if (currentRoundSpeedGEO > calcCurrentRoundSpd) {
-                      calcCurrentRoundSpd = currentRoundSpeedGEO;
-                  }
-                  final double currentRoundSpeed = calcCurrentRoundSpd;
-                  //display this at 7a
-                  //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
+                                          //START END OF ROUND LOGIC
 
 
-                  //END OF ROUND
-                  if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
-
-                      Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
-                      currentRound += 1;
-
-                      //DETERMINE BEST AND LAST
-                      final double lastRoundSpeed = currentRoundSpeed;
-                      //display at 7b
-
-                      double calcBestRoundSpd = bestRoundMPH;
-                      if (lastRoundSpeed > bestRoundMPH) {
-                          bestRoundMPH = lastRoundSpeed;
-                      }
-                      final double bestRoundSpeed = bestRoundMPH;
+                                          //FOR IN ROUND DISPLAY
+                                          double calcCurrentRoundSpd = currentRoundSpeedBT;
+                                          if (currentRoundSpeedGEO > calcCurrentRoundSpd) {
+                                              calcCurrentRoundSpd = currentRoundSpeedGEO;
+                                          }
+                                          final double currentRoundSpeed = calcCurrentRoundSpd;
+                                          //display this at 7a
+                                          //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
 
 
-                      newRoundFlagBT = true;
-                      newRoundFlagGEO = true;
-                      runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              TextView tr = findViewById(R.id.rtStatus);
-                              tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
+                                          //END OF ROUND
+                                          if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
 
-                              TextView t7b = findViewById(R.id.rtText7b);
-                              t7b.setText(String.format("%.1f MPH", lastRoundSpeed));
+                                              Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
+                                              currentRound += 1;
 
-                              TextView t7c = findViewById(R.id.rtText7c);
-                              t7c.setText(String.format("%.1f MPH", bestRoundSpeed));
-                          }
-                      });
-                  }
+                                              //DETERMINE BEST AND LAST
+                                              final double lastRoundSpeed = currentRoundSpeed;
+                                              //display at 7b
 
-                  //END ROUND LOGIC
+                                              double calcBestRoundSpd = bestRoundMPH;
+                                              if (lastRoundSpeed > bestRoundMPH) {
+                                                  bestRoundMPH = lastRoundSpeed;
+                                              }
+                                              final double bestRoundSpeed = bestRoundMPH;
 
 
+                                              newRoundFlagBT = true;
+                                              newRoundFlagGEO = true;
+                                              runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                      TextView tr = findViewById(R.id.rtStatus);
+                                                      tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
 
-                  //START MILE LOGIC
+                                                      TextView t7b = findViewById(R.id.rtText7b);
+                                                      t7b.setText(String.format("%.1f MPH", lastRoundSpeed));
 
-                  if (previousMile != currentMile) {
-                      Log.i(TAG, "NEW MILE");
-                      previousMile = currentMile;
+                                                      TextView t7c = findViewById(R.id.rtText7c);
+                                                      t7c.setText(String.format("%.1f MPH", bestRoundSpeed));
+                                                  }
+                                              });
+                                          }
 
-                      double speedForLastMile = currentMileSpeedBT;
-                      if (currentMileSpeedGEO > currentMileSpeedBT) {
-                          speedForLastMile = currentMileSpeedGEO;
-                      }
-
-                      if (speedForLastMile > bestMileMPH) {bestMileMPH = speedForLastMile;}
-                      final double finalSpeedForLastMile = speedForLastMile;
-                      runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              TextView t = findViewById(R.id.rtStatus);
-                              t.setText(String.format("MILE COMPLETED: %d", previousMile));
-
-                              TextView t1 = findViewById(R.id.rtText6b);
-                              t1.setText(String.format("%.1f MPH", finalSpeedForLastMile));
-
-                              TextView t2 = findViewById(R.id.rtText6c);
-                              t2.setText(String.format("%.1f MPH", bestMileMPH));
-                          }
-                      });
-                      secondsAtEndOfMile = timerSecondsCounter;
-                  }
-
-                  //RT SPEED FOR DURING THE MILE...
-                  if (timerSecondsCounter - secondsAtEndOfMile > 5) {
-                      double currentMileSpeedMPH = currentMileSpeedBT;
-                      if (currentMileSpeedGEO > currentMileSpeedBT) {
-                          currentMileSpeedMPH = currentMileSpeedGEO;
-                      }
-                      final double finalCurrentMileSpeedMPH = currentMileSpeedMPH;
-                      //Log.i(TAG, "CURRENT MILE SPEED: " + finalCurrentMileSpeedMPH);
-                      runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              TextView t3 = findViewById(R.id.rtText6a);
-                              t3.setText(String.format("%.1f MPH", finalCurrentMileSpeedMPH));
-
-                              TextView t37 = findViewById(R.id.rtText7a);
-                              t37.setText(String.format("%.1f MPH", currentRoundSpeed));
-                          }
-                      });
-                  }
-
-                  //END MILE LOGIC
+                                          //END ROUND LOGIC
 
 
 
+                                          //START MILE LOGIC
+                                          //CURRENT MILE
+                                          double currentMileSpeed = currentMileSpeedBT;
+                                          if (currentMileSpeedGEO > currentMileSpeedBT) {
+                                              currentMileSpeed = currentMileSpeedGEO;
+                                          }
+
+                                         //LAST MILE
+                                          lastMileMPH = endMileSpeedBT;
+                                          if (endMileSpeedGEO > endMileSpeedBT) {
+                                              lastMileMPH = endMileSpeedGEO;
+                                          }
+
+                                          //BEST MILE
+                                          if (endMileSpeedBT > bestMileMPH) {
+                                              bestMileMPH = endMileSpeedBT;
+                                          }
+                                          if (endMileSpeedGEO > bestMileMPH) {
+                                              bestMileMPH = endMileSpeedGEO;
+                                          }
+
+                                          //END OF MILE CALC
+
+                                          final double finalLastMileSpeed = lastMileMPH;
+                                          final double finalCurrentMileSpeed = currentMileSpeed;
+                                          runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                      TextView t = findViewById(R.id.rtText6a);
+                                                      t.setText(String.format("%.1f MPH", finalCurrentMileSpeed));
+
+                                                      TextView t1 = findViewById(R.id.rtText6b);
+                                                      t1.setText(String.format("%.1f MPH", finalLastMileSpeed));
+
+                                                      TextView t2 = findViewById(R.id.rtText6c);
+                                                      t2.setText(String.format("%.1f MPH", bestMileMPH));
+
+                                                      TextView t37 = findViewById(R.id.rtText7a);
+                                                      t37.setText(String.format("%.1f MPH", currentRoundSpeed));
+                                                  }
+                                              });
 
 
 
-//                  if (previousRound != currentRound) {
-//                      //Log.i(TAG, "NEW ROUND");
-//                      runOnUiThread(new Runnable() {
-//                          @Override
-//                          public void run() {
-//                              TextView t = findViewById(R.id.rtStatus);
-//                              t.setText(String.format("ROUND COMPLETED: %d", previousRound));
+//                                          if (previousMile != currentMile) {
+//                                              Log.i(TAG, "NEW MILE");
+//                                              previousMile = currentMile;
 //
-//                              TextView rtText7b = findViewById(R.id.rtText7b);
-//                            rtText7b.setText(String.format("%.1f MPH (BT)", finallastRoundMPH));
-//                            TextView rtText7c = findViewById(R.id.rtText7c);
-//                            rtText7c.setText(String.format("%.1f MPH (BT)", finalBestRoundMPH));
+//                                              double speedForLastMile = currentMileSpeedBT;
+//                                              if (currentMileSpeedGEO > currentMileSpeedBT) {
+//                                                  speedForLastMile = currentMileSpeedGEO;
+//                                              }
 //
-//                          }
-//                      });
-//                      previousRound = currentRound;
+//                                              if (speedForLastMile > bestMileMPH) {bestMileMPH = speedForLastMile;}
+//                                              final double finalSpeedForLastMile = speedForLastMile;
+//                                              runOnUiThread(new Runnable() {
+//                                                  @Override
+//                                                  public void run() {
+//                                                      TextView t = findViewById(R.id.rtStatus);
+//                                                      t.setText(String.format("MILE COMPLETED: %d", previousMile));
 //
-//                  }
-                  //UPDATE TAB2 DISPLAY
-                      runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              updateView();
-                          }
-                      });
+//                                                      TextView t1 = findViewById(R.id.rtText6b);
+//                                                      t1.setText(String.format("%.1f MPH", finalSpeedForLastMile));
+//
+//                                                      TextView t2 = findViewById(R.id.rtText6c);
+//                                                      t2.setText(String.format("%.1f MPH", bestMileMPH));
+//                                                  }
+//                                              });
+//                                              secondsAtEndOfMile = timerSecondsCounter;
+//                                          }
+//
+//                                          //RT SPEED FOR DURING THE MILE...
+//                                          if (timerSecondsCounter - secondsAtEndOfMile > 5) {
+//                                              double currentMileSpeedMPH = currentMileSpeedBT;
+//                                              if (currentMileSpeedGEO > currentMileSpeedBT) {
+//                                                  currentMileSpeedMPH = currentMileSpeedGEO;
+//                                              }
+//                                              final double finalCurrentMileSpeedMPH = currentMileSpeedMPH;
+//                                              //Log.i(TAG, "CURRENT MILE SPEED: " + finalCurrentMileSpeedMPH);
+//                                              runOnUiThread(new Runnable() {
+//                                                  @Override
+//                                                  public void run() {
+//                                                      TextView t3 = findViewById(R.id.rtText6a);
+//                                                      t3.setText(String.format("%.1f MPH", finalCurrentMileSpeedMPH));
+//
+//                                                      TextView t37 = findViewById(R.id.rtText7a);
+//                                                      t37.setText(String.format("%.1f MPH", currentRoundSpeed));
+//                                                  }
+//                                              });
+//                                          }
+
+                                          //END MILE LOGIC
+
+                                          //UPDATE TAB2 DISPLAY
+                                          runOnUiThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  updateView();
+                                              }
+                                          });
 
 
 
-              }
-          },
-        1000, 1000);
+                                      }
+                                  },
+                1000, 1000);
         //END TIMER
+    }
+
+    public void onClick_0(View view) {
+        Button b0 = findViewById(R.id.button0);
+        String on1 = "OFF";
+        b0.setText(on1);
+
     }
 
 
@@ -486,11 +519,26 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void tryToConnectAgain() {
+        connectedGatt.disconnect();
+        connectedGatt.close();
+        setConnectedGatt(null);
+        for (String deviceAddress : devicesConnectedAddresses) {
+            final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
+            if (device == null) {
+                Log.i(TAG, "Device not found.  Unable to connect.");
+                return;
+            }
+            connectToDevice(device);
+            Log.i(TAG, "Trying to create a new connection.");
+        }
+    }
 
     //private BluetoothManager bluetooth;
     private BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int state) {
+
 
             connectingToGatt = false;
             super.onConnectionStateChange(gatt, status, state);
@@ -519,7 +567,20 @@ public class MainActivity extends AppCompatActivity {
                 case BluetoothProfile.STATE_DISCONNECTED: {
                     Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
                     setConnectedGatt(null);
-                    //TODO: DO THIS HERE?
+
+                    BluetoothDevice tryToConnectDevice = gatt.getDevice();
+                    connectToDevice(tryToConnectDevice);
+
+                    tryToConnectAgain();
+//                    for (String deviceAddress : devicesConnectedAddresses) {
+//                        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
+//                        if (device == null) {
+//                            Log.i(TAG, "Device not found.  Unable to connect.");
+//                            return;
+//                        }
+//                        connectToDevice(device);
+//                        Log.i(TAG, "Trying to create a new connection.");
+//                    }
                     break;
                 }
                 case BluetoothProfile.STATE_CONNECTING: {
@@ -758,11 +819,29 @@ public class MainActivity extends AppCompatActivity {
         final double totalDistance = totalWheelRevolutions * wheelCircumferenceCM * cmPerMi;
         //final double totalAverageMovingSpeed = (totalWheelRevolutions / (totalTimeInSeconds / 60.0)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
 
-        currentMileSpeedBT = (totalDistance - ((double) currentMile - 1)) / (((double) timerSecondsCounter - (double) secondsAtEndOfMile) / 60.0 / 60.0);
-        if (totalDistance > (double) currentMile && totalDistance > 0.5) {
-            currentMile += 1;
-            secondsAtEndOfMile = timerSecondsCounter;
-        }
+
+        Log.i(TAG, "timerSecondsCounter: " + timerSecondsCounter);
+        Log.i(TAG, "secondsAtEndOfMileBT: " + secondsAtEndOfMileBT);
+        Log.i(TAG, "totalDistance: " + totalDistance);
+        Log.i(TAG, "currentMileBT: " + currentMileBT);
+        Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
+
+
+        //END OF MILE CALC
+        if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
+            if (totalDistance > currentMileBT + 1) {
+                  endMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+                  currentMileBT += 1;
+                  secondsAtEndOfMileBT = timerSecondsCounter;
+              }
+          }
+
+          //CURRENT MILE CALC
+          if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
+              if (totalDistance > currentMileBT - 1) {
+                  currentMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+              }
+          }
 
 
 //        Log.i(TAG, "onWheelMeasurementReceived: DISTANCE = " + String.valueOf(totalDistance));
@@ -917,13 +996,13 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_4(View view) {
         Log.i(TAG, "onClick_4: clicked");
 
-        //remove GPS
-        try {
-            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-        } catch (Exception e){
-            Log.i(TAG, "onClick_4: DIDN'T STOP LOCATION");
-        }
-        //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+//        //remove GPS
+//        try {
+//            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+//        } catch (Exception e){
+//            Log.i(TAG, "onClick_4: DIDN'T STOP LOCATION");
+//        }
+//        //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
         //TODO, CYCLE THROUGH gattsConnected arrList, disconnect all nonNull
         for (BluetoothGatt btGatt : bluetoothGatts) {
@@ -1000,7 +1079,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(Location location) {
-        mPrinter("ON LOCATION RECEIVED:  " + location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
+        //mPrinter("ON LOCATION RECEIVED:  " + location.getProvider() + "," + location.getLatitude() + "," + location.getLongitude());
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
         //mPrinter("ARRLATS.SIZE: " + arrLats.size());
@@ -1014,36 +1093,49 @@ public class MainActivity extends AppCompatActivity {
 
             if (results.length > 0) {
 
-                mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
+                //mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
                 if (results[0] == 0) {
-                    mPrinter("NOTHING AT RESULTS[0] - RETURN");
+                    //mPrinter("NOTHING AT RESULTS[0] - RETURN");
                     return;
                 }
                 if (results[0] * 0.000621371 <= 0) {
-                    mPrinter("NO DISTANCE TRAVELED - RETURN");
+                    //mPrinter("NO DISTANCE TRAVELED - RETURN");
                     return;
                 }
 
                 //OPT 1.  QUICKREAD GEO SPEED
                 final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                mPrinter("GEO SPEED Q: " + geoSpeedQuick);
+                //mPrinter("GEO SPEED Q: " + geoSpeedQuick);
 
                 //OPT 2.  GEO SPEED, LONG VERSION
                 Double gd = results[0] * 0.000621371;
                 long gt = (location.getTime() - oldTime);  //MILLI
                 geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
-                mPrinter("GEO SPEED: " + geoSpeed);
+                //mPrinter("GEO SPEED: " + geoSpeed);
                 //END GEO SPEED CALC
-
-
-
-
-                currentMileSpeedGEO = (geoDistance - ((double) currentMile - 1)) / (((double) timerSecondsCounter - (double) secondsAtEndOfMile) / 60.0 / 60.0);
                 geoDistance += results[0] * 0.000621371;
-                if (geoDistance > (double) currentMile && geoDistance > 0.5) {
-                    currentMile += 1;
-                    secondsAtEndOfMile = timerSecondsCounter;
+
+
+                //END OF MILE CALC
+                if (timerSecondsCounter - secondsAtEndOfMileGeo > 10) {
+                    if (geoDistance > currentMileGEO + 1) {
+                        endMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+                        currentMileGEO += 1;
+                        secondsAtEndOfMileGeo = timerSecondsCounter;
+                    }
                 }
+
+                //CURRENT MILE CALC
+                if (timerSecondsCounter - secondsAtEndOfMileGeo > 0) {
+                    if (geoDistance > currentMileGEO - 1) {
+                        currentMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+                    }
+                }
+
+
+
+
+                //END MILE CALC
 //                mPrinter("OLDTIME " + oldTime);
 //                mPrinter("NEWTIME " + location.getTime());
 //                mPrinter("totalTimeGeo " + totalTimeGeo);
@@ -1383,6 +1475,7 @@ private String calcPace(double mph) {
         Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
         devicesConnected.add(mDevice);
         bluetoothGatts.add(connectedGatt);
+        devicesConnectedAddresses.add(mDevice.getAddress());
 
 
 //        if (connectedGatt == null) {
@@ -1400,6 +1493,7 @@ private String calcPace(double mph) {
 
     private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
     private ArrayList<BluetoothDevice> devicesConnected = new ArrayList<>();
+    private ArrayList<String> devicesConnectedAddresses = new ArrayList<>();
     private ArrayList<BluetoothGatt> bluetoothGatts = new ArrayList<>();
     private Integer deviceIndexVal = 0;
     private Boolean isScanning = false;
@@ -1582,7 +1676,7 @@ private String calcPace(double mph) {
     }
 
     public void onClick_3(View view) {
-        //RESET??
+
     }
 
 

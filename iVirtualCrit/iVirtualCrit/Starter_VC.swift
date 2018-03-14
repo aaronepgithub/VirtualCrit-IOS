@@ -280,16 +280,25 @@ class Starter_VC: UITableViewController {
 //        dump(rounds.geoSpeeds)
 //        print("\n")
         
-        if ConnectionCheck.isConnectedToNetwork() {
-            print("Connected to Internet")
-            print("calling fbPushII")
-            if rounds.speeds.last! > 0.1 {
-                fbPushII()
-            }
-        }
-        else{
-            print("disConnected")
-        }
+        //TODO  TEST PUSH/POST WITHOUT NETWORK...
+        
+                    print("calling fbPushII")
+                    if rounds.speeds.last! > 0.1 {
+                        fbPushII()
+                    }
+        
+        
+        
+//        if ConnectionCheck.isConnectedToNetwork() {
+//            print("Connected to Internet")
+//            print("calling fbPushII")
+//            if rounds.speeds.last! > 0.1 {
+//                fbPushII()
+//            }
+//        }
+//        else{
+//            print("disConnected")
+//        }
     }
     
     
@@ -743,6 +752,8 @@ class Starter_VC: UITableViewController {
         
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
+            
+            //TODO:  IF NOT CONNECTED, DON'T TRY TO DO THIS, FLOODS THE TIMELINE.
             
             if ConnectionCheck.isConnectedToNetwork() {
                 print("Connected to Internet")
