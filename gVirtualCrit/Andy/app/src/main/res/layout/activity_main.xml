@@ -460,6 +460,7 @@
 
         </LinearLayout>
 
+        <!--MILE MPH-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -497,6 +498,46 @@
                 android:textStyle="bold"
                 android:textAlignment="viewStart" />
         </LinearLayout>
+
+        <!--MILE PACE-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rtText6aa"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="SPEED(PACE)"
+                android:layout_margin="8dp"
+                android:textStyle="bold"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/rtText6bb"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="LAST(PACE)"
+                android:layout_margin="8dp"
+                android:textStyle="bold"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/rtText6cc"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="BEST(PACE)"
+                android:layout_margin="8dp"
+                android:textStyle="bold"
+                android:textAlignment="viewStart" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -850,16 +891,17 @@
 
     </ScrollView>
 
+
     <LinearLayout
         android:id="@+id/llView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="44dp"
         android:layout_marginBottom="60dp"
-        android:layout_marginLeft="8dp"
-        android:visibility="gone"
-        android:layout_marginRight="8dp">
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvHeader"
@@ -867,9 +909,13 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="24sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="1dp"
-            android:text="00:00:00   00.0 AVG" />
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00:00:00   00.0 AVG"
+            android:gravity="center"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tvTop"
@@ -877,8 +923,14 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="50sp"
-            android:layout_marginEnd="1dp"
-            android:text="00 BPM" />
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00 BPM"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tvMiddle"
@@ -886,10 +938,15 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="60sp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="00.0 MPH" />
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00.0 MPH"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
+            android:layout_weight="3"/>
 
         <TextView
             android:id="@+id/tvBottom"
@@ -897,8 +954,14 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="50sp"
-            android:layout_marginEnd="1dp"
-            android:text="00 CAD" />
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="00 RPM"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tvFooter"
@@ -906,9 +969,13 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="24sp"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="16dp"
-            android:text="00:00:00    00.00 MILES" />
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00:00:00    00.00 MILES"
+            android:gravity="center"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 

@@ -305,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
                                               currentMileSpeed = currentMileSpeedGEO;
                                           }
 
+
                                          //LAST MILE
                                           lastMileMPH = endMileSpeedBT;
                                           if (endMileSpeedGEO > endMileSpeedBT) {
@@ -334,6 +335,17 @@ public class MainActivity extends AppCompatActivity {
 
                                                       TextView t2 = findViewById(R.id.rtText6c);
                                                       t2.setText(String.format("%.1f MPH", bestMileMPH));
+
+                                                      //MILE PACE
+                                                      TextView tt = findViewById(R.id.rtText6aa);
+                                                      tt.setText(calcPace(finalCurrentMileSpeed));
+
+                                                      TextView tt1 = findViewById(R.id.rtText6bb);
+                                                      tt1.setText(calcPace(finalLastMileSpeed));
+
+                                                      TextView tt2 = findViewById(R.id.rtText6cc);
+                                                      tt2.setText(calcPace(bestMileMPH));
+
 
                                                       TextView t37 = findViewById(R.id.rtText7a);
                                                       t37.setText(String.format("%.1f MPH", currentRoundSpeed));
@@ -427,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView fMid = findViewById(R.id.textView2);
         TextView tMid = findViewById(R.id.tvMiddle);
-        tMid.setText(String.format("%s", fMid.getText().toString()));
+        tMid.setText(String.format("%s", fMid.getText().toString().substring(0, fMid.getText().toString().length() - 4)));
 
         TextView fBot = findViewById(R.id.textView3);
         TextView tBot = findViewById(R.id.tvBottom);
@@ -785,13 +797,15 @@ public class MainActivity extends AppCompatActivity {
         final int timeDiff = do16BitDiff(wheelRevolutionTimeValue, mLastWheelEventTime);
         final int wheelDiff = do16BitDiff(wheelRevolutionValue, mLastWheelRevolutions);
 
-        if (wheelDiff == 0 || wheelDiff > 15) {
+        if (wheelDiff == 0 || wheelDiff > 35) {
             mLastWheelRevolutions = wheelRevolutionValue;
             mLastWheelEventTime = wheelRevolutionTimeValue;
             return;
         }
 
-        if (timeDiff < 500) {
+        if (timeDiff < 1100) {
+            //LET'S NOT PROCESS SO MANY, IGNORE EVERY OTHER ONE?
+            //TODO:  MAY LOWER OR RAISE...
             return;
         }
 
@@ -820,11 +834,11 @@ public class MainActivity extends AppCompatActivity {
         //final double totalAverageMovingSpeed = (totalWheelRevolutions / (totalTimeInSeconds / 60.0)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
 
 
-        Log.i(TAG, "timerSecondsCounter: " + timerSecondsCounter);
-        Log.i(TAG, "secondsAtEndOfMileBT: " + secondsAtEndOfMileBT);
-        Log.i(TAG, "totalDistance: " + totalDistance);
-        Log.i(TAG, "currentMileBT: " + currentMileBT);
-        Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
+//        Log.i(TAG, "timerSecondsCounter: " + timerSecondsCounter);
+//        Log.i(TAG, "secondsAtEndOfMileBT: " + secondsAtEndOfMileBT);
+//        Log.i(TAG, "totalDistance: " + totalDistance);
+//        Log.i(TAG, "currentMileBT: " + currentMileBT);
+//        Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
 
 
         //END OF MILE CALC
@@ -837,11 +851,30 @@ public class MainActivity extends AppCompatActivity {
           }
 
           //CURRENT MILE CALC
+        final double curDist = totalDistance;
+        final double timerSecCtr = timerSecondsCounter;
+        final double secAtEndOfMile = secondsAtEndOfMileBT;
+        final int curMile = currentMileBT;
+        double curMileResult = 0.0;
+
           if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
-              if (totalDistance > currentMileBT - 1) {
-                  currentMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+              //if (totalDistance > (currentMileBT - 1)) {
+                  //currentMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+                  //CALC BASED ON ELAPSED DISTANCE WITHIN CURRENT MILE
+              if (curMile == 1 && curDist > (curMile - 1)) {
+//                  double currentMileSpeedBT = ( totalDistance - ((double) currentMileBT - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+//                  Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
+                  curMileResult = curDist / ((timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
+                  //Log.i(TAG, "curMileResult: " + curMileResult);
               }
+
+              if (curMile > 1 && curDist > (curMile - 1)) {
+                  curMileResult = ( curDist - ((double) curMile - 1.0) ) / (( timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
+                  //Log.i(TAG, "curMileResult2: " + curMileResult);
+              }
+              //}
           }
+        currentMileSpeedBT = curMileResult;
 
 
 //        Log.i(TAG, "onWheelMeasurementReceived: DISTANCE = " + String.valueOf(totalDistance));
@@ -931,18 +964,18 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (timeDiff < 500) {
+        if (timeDiff < 1100) {
             return;
         }
 
-        if (timeDiff > 5000) {
+        if (timeDiff > 8000) {
             mLastCrankRevolutions = crankRevolutionValue;
             mLastCrankEventTime = crankRevolutionTimeValue;
             return;
         }
 
 
-        Log.i("CAD", "onWheelMeasurementReceived: crankDiff, timeDiff: " + crankDiff + ", " + timeDiff);
+        //Log.i("CAD", "onWheelMeasurementReceived: crankDiff, timeDiff: " + crankDiff + ", " + timeDiff);
         final double cadence = (double) crankDiff / ((((double) timeDiff) / 1024.0) / 60);
         if (cadence == 0) {
             return;
@@ -950,7 +983,7 @@ public class MainActivity extends AppCompatActivity {
         if (cadence > 150) {
             return;
         }
-        Log.i("CAD", "CADENCE: " + cadence);
+        //Log.i("CAD", "CADENCE: " + cadence);
 
         runOnUiThread(new Runnable() {
             @SuppressLint("DefaultLocale")
@@ -1125,12 +1158,49 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                //CURRENT MILE CALC GEO
                 //CURRENT MILE CALC
-                if (timerSecondsCounter - secondsAtEndOfMileGeo > 0) {
-                    if (geoDistance > currentMileGEO - 1) {
-                        currentMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+                final double curDist = geoDistance;
+                final double timerSecCtr = timerSecondsCounter;
+                final double secAtEndOfMile = secondsAtEndOfMileGeo;
+                final int curMile = currentMileGEO;
+                double curMileResult = 0.0;
+
+                if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
+                    //if (totalDistance > (currentMileBT - 1)) {
+                    //currentMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+                    //CALC BASED ON ELAPSED DISTANCE WITHIN CURRENT MILE
+                    if (curMile == 1 && curDist > (curMile - 1)) {
+//                  double currentMileSpeedBT = ( totalDistance - ((double) currentMileBT - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+//                  Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
+                        curMileResult = curDist / ((timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
+                        //Log.i(TAG, "curMileResult: " + curMileResult);
                     }
+
+                    if (curMile > 1 && curDist > (curMile - 1)) {
+                        curMileResult = ( curDist - ((double) curMile - 1.0) ) / (( timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
+                        //Log.i(TAG, "curMileResult2: " + curMileResult);
+                    }
+                    //}
                 }
+                currentMileSpeedGEO = curMileResult;
+
+
+//                if (timerSecondsCounter - secondsAtEndOfMileGeo > 0) {
+//                    if (geoDistance > currentMileGEO - 1) {
+//                        //currentMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+//
+//                        if (currentMileGEO == 1) {
+//                            double currentMileSpeedGEO = ( geoDistance - ((double) currentMileGEO - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+//                            Log.i(TAG, "currentMileSpeedGEO: " + currentMileSpeedGEO);
+//                        } else {
+//                            double currentMileSpeedGEO = ( geoDistance - ((double) currentMileGEO - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+//                            Log.i(TAG, "currentMileSpeedGEO: " + currentMileSpeedGEO);
+//                        }
+//
+//
+//                    }
+//                }
 
 
 
@@ -1320,7 +1390,7 @@ private String calcPace(double mph) {
             @Override
             public void run() {
                 mLEScanner.stopScan(mScanCallback);
-                Log.i("SCANLEDEVICE", "TOP SCANNING");
+                Log.i("SCANLEDEVICE", "STOP SCANNING");
 //                    sendToaster("SCAN COMPLETE");
                 isScanning = false;
                 sendToaster("SCAN COMPLETE");
@@ -1399,7 +1469,7 @@ private String calcPace(double mph) {
             public void onScanResult(int callbackType, ScanResult result) {
 
                 if (result.getDevice().getName() != null) {
-                    Log.i("SCAN_CB", "onScanResult: " + result.getDevice().getName());
+//                    Log.i("SCAN_CB", "onScanResult: " + result.getDevice().getName());
                     BluetoothDevice deviceDiscovered = result.getDevice();
                     String deviceName = result.getDevice().getName();
                     String deviceAddress = result.getDevice().getAddress();
@@ -1408,7 +1478,6 @@ private String calcPace(double mph) {
                         devicesDiscovered.add(deviceDiscovered);
 
                         sendToaster("FOUND:  " + deviceName);
-
                         Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
                         Log.i("result", "NAME  " + result.getDevice().getName());
                         Log.i("result", "ADDRESS  " + result.getDevice().getAddress());
@@ -1476,18 +1545,6 @@ private String calcPace(double mph) {
         devicesConnected.add(mDevice);
         bluetoothGatts.add(connectedGatt);
         devicesConnectedAddresses.add(mDevice.getAddress());
-
-
-//        if (connectedGatt == null) {
-//            Log.i("connectToDevice", "connecting to device: "+mDevice.toString());
-//            connectedGatt = mDevice.connectGatt(this, false, gattCallback);
-//            Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-//            devicesConnected.add(mDevice);
-//            for (BluetoothDevice d : devicesConnected) {
-//                String d2 = String.valueOf(devicesConnected.indexOf(d)) + ".  " + d.getName();
-//                Log.i("CONNECTED", "devicesConnected: " + d2);;
-//            }
-//        }
     }
 
 
