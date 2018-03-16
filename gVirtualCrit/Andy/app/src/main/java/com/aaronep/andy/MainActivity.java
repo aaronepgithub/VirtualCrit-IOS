@@ -1018,7 +1018,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothGatt gatt1;
     private BluetoothGatt gatt2;
     private BluetoothGatt gatt3;
-    private BluetoothGatt gatt4;
+    //private BluetoothGatt gatt4;
 
     private boolean connectingToGatt;
     private final Object connectingToGattMonitor = new Object();
@@ -1027,15 +1027,8 @@ public class MainActivity extends AppCompatActivity {
 
     //DISCONNECT ALL
     public void onClick_4(View view) {
-        Log.i(TAG, "onClick_4: clicked");
+        Log.i(TAG, "onClick_4: clicked, disconnect all");
 
-//        //remove GPS
-//        try {
-//            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-//        } catch (Exception e){
-//            Log.i(TAG, "onClick_4: DIDN'T STOP LOCATION");
-//        }
-//        //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
         //TODO, CYCLE THROUGH gattsConnected arrList, disconnect all nonNull
         for (BluetoothGatt btGatt : bluetoothGatts) {
@@ -1043,7 +1036,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "bluetoothGatts to disconnect, Name: " + btGatt.getDevice().getName());
                 btGatt.disconnect();
                 btGatt.close();
-                setConnectedGatt(null);
             }
 
         }
@@ -1053,37 +1045,33 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "onClick_4: connectedGatt name:  " + connectedGatt.getDevice().getName());
             connectedGatt.disconnect();
             connectedGatt.close();
-            setConnectedGatt(null);
         }
 
 
         int locCycle = cycle;
         if (locCycle == 1) {
             if (gatt1 != null) {
-                Log.i(TAG, "onClick_4: gatt1 name:  " + gatt1.getDevice().getName());
+                Log.i(TAG, "onClick_4: disconnect gatt1,  name:  " + gatt1.getDevice().getName());
                 gatt1.disconnect();
                 gatt1.close();
-                setConnectedGatt(null);
                 gatt1 = null;
             }
             cycle = 2;
         }
         if (locCycle == 2) {
             if (gatt2 != null) {
-                Log.i(TAG, "onClick_4: gatt2 name:  " + gatt2.getDevice().getName());
+                Log.i(TAG, "onClick_4: disconnect gatt2 name:  " + gatt2.getDevice().getName());
                 gatt2.disconnect();
                 gatt2.close();
-                setConnectedGatt(null);
                 gatt2 = null;
             }
             cycle = 3;
         }
         if (locCycle == 3) {
             if (gatt3 != null) {
-                Log.i(TAG, "onClick_4: gatt3 name:  " + gatt3.getDevice().getName());
+                Log.i(TAG, "onClick_4: disconnect gatt3 name:  " + gatt3.getDevice().getName());
                 gatt3.disconnect();
                 gatt3.close();
-                setConnectedGatt(null);
                 gatt3 = null;
             }
             cycle = 1;
@@ -1733,6 +1721,25 @@ private String calcPace(double mph) {
     }
 
     public void onClick_3(View view) {
+
+            devicesDiscovered = new ArrayList<>();
+            deviceIndexVal = 0;
+
+            Button btn100 = findViewById(R.id.button100);
+            Button btn101 = findViewById(R.id.button101);
+            Button btn102 = findViewById(R.id.button102);
+            Button btn103 = findViewById(R.id.button103);
+            Button btn104 = findViewById(R.id.button104);
+
+            btn100.setVisibility(View.GONE);
+            btn101.setVisibility(View.GONE);
+            btn102.setVisibility(View.GONE);
+            btn103.setVisibility(View.GONE);
+            btn104.setVisibility(View.GONE);
+
+//            mLEScanner.startScan(filters, settings, mScanCallback);
+//            isScanning = true;
+//            Log.i("SCAN", "isScanning: ");
 
     }
 

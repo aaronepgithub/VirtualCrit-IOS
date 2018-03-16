@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:onClick="onClick_3"
-                android:text="RESET"
+                android:text="RESET BT"
                 android:layout_marginRight="8dp"
                 android:textAlignment="center" />
 
@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:onClick="onClick_4"
-                android:text="DISCONNECT ALL"
+                android:text="DISCONNECT BT"
                 android:layout_marginRight="8dp"
                 android:textAlignment="center" />
         </LinearLayout>
