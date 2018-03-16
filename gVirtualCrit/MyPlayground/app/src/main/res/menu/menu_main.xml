@@ -8,13 +8,13 @@
         android:onClick="onScan_Click"
         android:orderInCategory="90"
         android:title="SCAN"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_bleConnect"
         android:onClick="onConnect_Click"
         android:orderInCategory="91"
         android:title="CONNECT"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="101"
@@ -23,11 +23,13 @@
     <item
         android:id="@+id/action_exit"
         android:orderInCategory="102"
-        android:title="Exit"
+        android:title="HIDE"
+        android:onClick="onClick_Hide"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_nothing"
         android:orderInCategory="103"
-        android:title="Nothing"
+        android:title="UNHIDE"
+        android:onClick="onClick_UnHide"
         app:showAsAction="never" />
 </menu>

@@ -18,9 +18,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "TAG";
+    private ListView listView;
+    private String[] values2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +37,54 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        listView = findViewById(R.id.lv1);
+        // Defined Array values to show in ListView
+        String[] values = new String[] {
+                "Android List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View"
+        };
+
+        // Define a new Adapter
+        // First parameter - Context
+        // Second parameter - Layout for the row
+        // Third parameter - ID of the TextView to which the data is written
+        // Forth - the Array of data
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+        // Assign adapter to ListView
+        listView.setAdapter(adapter);
+
+        // ListView Item Click Listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition = position;
+
+                // ListView Clicked item value
+                String itemValue  = (String) listView.getItemAtPosition(position);
+
+                // Show Alert
+                Toast.makeText(getApplicationContext(),
+                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
+                        .show();
+
+            }
+
+        });
+
+
 
 
         localBroadcastReceiver = new LocalBroadcastReceiver();
@@ -54,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @Override
     protected void onPause() {
@@ -91,7 +150,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onScan_Click(MenuItem item) {
+        values2 = new String[] {
+                "Aaron's List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View"
+        };
 
+        listView = findViewById(R.id.lv1);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, values2);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_2, android.R.id.text1, values2);
+
+
+        listView.setAdapter(adapter);
+
+
+
+
+    }
+
+    public void onClick_Hide(MenuItem item) {
+        Log.i(TAG, "onClick_Hide");
+        ScrollView sv1 = findViewById(R.id.sView1);
+        sv1.setVisibility(View.GONE);
+    }
+
+    public void onClick_UnHide(MenuItem item) {
+        Log.i(TAG, "onClick_UnHide");
+        ScrollView sv1 = findViewById(R.id.sView1);
+        sv1.setVisibility(View.VISIBLE);
+    }
+
+    public void onConnect_Click(MenuItem item) {
+        Log.i(TAG, "onConnect_Click");
+    }
+
+    public void onButton2_Click(View view) {
+        Log.i(TAG, "onButton2_Click");
+        Button b = findViewById(R.id.buttonX);
+        b.setText("CHANGED");
     }
 
     private class LocalBroadcastReceiver extends BroadcastReceiver {
