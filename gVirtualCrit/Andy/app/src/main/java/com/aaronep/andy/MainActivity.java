@@ -534,7 +534,6 @@ public class MainActivity extends AppCompatActivity {
     private void tryToConnectAgain() {
         connectedGatt.disconnect();
         connectedGatt.close();
-        setConnectedGatt(null);
         for (String deviceAddress : devicesConnectedAddresses) {
             final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
             if (device == null) {
@@ -1591,7 +1590,7 @@ private String calcPace(double mph) {
     public void setConnectedGatt(final BluetoothGatt connectedGatt) {
         this.connectedGatt = connectedGatt;
 
-        Log.i(TAG, "setConnectedGatt, is null?: " + (connectedGatt == null));
+        Log.i(TAG, "setConnectedGatt, is null... " + (connectedGatt == null));
         Log.i(TAG, "setConnectedGatt: NOT GETTING CONNECTED STATE CHANGE AFTER FIRST DISCONNECT, BECAUSE OF CLOSE()");
         //NO CONNECTED STATE CHANGE?
         runOnUiThread(new Runnable() {
