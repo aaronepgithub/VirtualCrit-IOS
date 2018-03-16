@@ -249,6 +249,11 @@ public class MainActivity extends AppCompatActivity {
 
                                           //START END OF ROUND LOGIC
 
+                                          if (timerSecondsCounter == reconnectFlag) {
+                                              Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
+                                              reconnectToDevice(tryToConnectDevice);
+                                          }
+
 
                                           //FOR IN ROUND DISPLAY
                                           double calcCurrentRoundSpd = currentRoundSpeedBT;
@@ -545,6 +550,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public int reconnectFlag;
+    public BluetoothDevice tryToConnectDevice;
+
+
+
     //private BluetoothManager bluetooth;
     private BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
         @Override
@@ -579,10 +589,16 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
                     setConnectedGatt(null);
 
-                    BluetoothDevice tryToConnectDevice = gatt.getDevice();
-                    connectToDevice(tryToConnectDevice);
+                    tryToConnectDevice = gatt.getDevice();
+                    reconnectFlag = timerSecondsCounter + 20;
 
-                    tryToConnectAgain();
+//                      try this after timer gets to reconnect flag
+//                    reconnectToDevice(tryToConnectDevice);
+
+
+                    //tryToConnectAgain();
+
+
 //                    for (String deviceAddress : devicesConnectedAddresses) {
 //                        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
 //                        if (device == null) {
@@ -614,8 +630,9 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "onReadRemoteRssi: " + rssi);
         }
 
-
-        public Boolean tryVelo = false;
+//        public int reconnectFlag;
+//        public BluetoothDevice tryToConnectDevice;
+        private Boolean tryVelo = false;
 
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
@@ -1522,11 +1539,23 @@ private String calcPace(double mph) {
         };
     }
 //SCANCALLBACK - FINISH
+public void reconnectToDevice(BluetoothDevice mDevice) {
+    Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
+    Log.i("ReconnectToDevice", "Addresss: " + mDevice.getAddress());
+
+    connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
+    devicesConnected.add(mDevice);
+    bluetoothGatts.add(connectedGatt);
+    devicesConnectedAddresses.add(mDevice.getAddress());
+}
+
 
     public void connectToDevice(BluetoothDevice mDevice) {
         Log.i("connectToDevice", "Device: " + mDevice.getName());
         Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
 
+        //TODO:  TEST WITH AUTOCONNECT
+        //AUTOCONNECT CHANGED FROM FALSE TO TRUE
         connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
         Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
         devicesConnected.add(mDevice);
