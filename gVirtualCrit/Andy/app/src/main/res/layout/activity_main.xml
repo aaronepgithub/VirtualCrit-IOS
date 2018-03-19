@@ -903,6 +903,13 @@
         android:layout_marginTop="8dp"
         android:visibility="gone">
 
+
+    <LinearLayout
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvHeader"
             android:layout_width="match_parent"
@@ -913,9 +920,27 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:text="00:00:00   00.0 AVG"
+            android:text="00:00:00"
             android:gravity="center"
             android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tvHeader2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00.0 AVG"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/tvTop"
@@ -963,19 +988,47 @@
             android:layout_marginBottom="1dp"
             android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/tvFooter"
+
+        <LinearLayout
+            android:id="@+id/llFooter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:background="@android:color/holo_red_dark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="00:00:00    00.00 MILES"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tvFooter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:background="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="00:00:00"
+                android:gravity="center"
+                android:layout_weight="1"/>
+
+
+            <TextView
+                android:id="@+id/tvFooter2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:background="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="00.00 MILES"
+                android:gravity="center"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+
     </LinearLayout>
 
 

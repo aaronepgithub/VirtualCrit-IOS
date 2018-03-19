@@ -22,45 +22,32 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelUuid;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.aaronep.andy.BluetoothUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.Task;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -71,6 +58,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import javax.security.auth.login.LoginException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,6 +81,82 @@ public class MainActivity extends AppCompatActivity {
     private ScanSettings settings;
     private List<ScanFilter> filters;
 
+    // setup UI handler
+    private final static int UPDATE_VALUE = 0;
+    private final static int UPDATE_HR = 3;
+    private final static int UPDATE_SPEED = 4;
+    private final static int UPDATE_CADENCE = 5;
+
+    @SuppressLint("HandlerLeak")
+    private final Handler uiHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            final int what = msg.what;
+            final String value = (String) msg.obj;
+            switch(what) {
+                case UPDATE_VALUE: updateValue(value); break;
+                case UPDATE_HR:
+                    updateValueHR(value);
+                    break;
+                case UPDATE_CADENCE:
+                    updateValueCADENCE(value);
+                    break;
+                case UPDATE_SPEED:
+                    updateValueSPEED(value);
+                    break;
+            }
+        }
+    };
+
+    private void updateValue(final String value){
+
+        if (!dashboardON) {
+            final TextView tvAt = findViewById(R.id.rtText1);
+            tvAt.setText(value);
+        } else {
+            final TextView tvAT = findViewById(R.id.tvFooter);
+            tvAT.setText(value);
+        }
+
+    }
+
+    private void updateValueHR(final String value) {
+
+        if (dashboardON) {
+            final TextView t2 = findViewById(R.id.tvTop);
+            t2.setText(value);
+        } else {
+            TextView t1 = findViewById(R.id.textView1);
+            t1.setText(value);
+        }
+    }
+
+    private void updateValueCADENCE(final String value) {
+
+        if (dashboardON) {
+            final TextView tBot = findViewById(R.id.tvBottom);
+            tBot.setText(value);
+        } else {
+            final TextView t3 = findViewById(R.id.textView3);
+            t3.setText(value);
+        }
+
+    }
+
+    private void updateValueSPEED(final String value) {
+
+        if (dashboardON) {
+            final TextView tMid = findViewById(R.id.tvMiddle);
+            tMid.setText(value);
+        } else {
+            final TextView t2 = findViewById(R.id.textView2);
+            t2.setText(value);
+        }
+
+
+
+    }
+
+    private Boolean dashboardON = false;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -104,11 +169,13 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
+                    dashboardON = false;
                     ll.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
+                    dashboardON = true;
                     sv.setVisibility(View.GONE);
                     ll.setVisibility(View.VISIBLE);
                     return true;
@@ -122,17 +189,24 @@ public class MainActivity extends AppCompatActivity {
 
     private Calendar startTime;
 
+    private Tim tim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        tim = new Tim("TIM");
+        Log.i(TAG, "onCreate: tim.name:  " + tim.name);
+
+
+        mTextMessage = findViewById(R.id.message);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         startTime = Calendar.getInstance(Locale.ENGLISH);
+        tim.startTime = startTime;
+
         mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
 
 //        Log.i("TIME", "getActualTime");
@@ -201,12 +275,10 @@ public class MainActivity extends AppCompatActivity {
     }
     //END ON_CREATE
 
-    public Timer timer = new Timer();
+    private Timer timer = new Timer();
     private Integer timerSecondsCounter = 0;
     private Integer currentMileBT = 1;
-    private Integer previousMileBT = 1;
     private Integer currentMileGEO = 1;
-    private Integer previousMileGEO = 1;
     private Integer secondsAtEndOfMileGeo = 0;
     private Integer secondsAtEndOfMileBT = 0;
     private double bestMileMPH = 0;
@@ -218,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Integer secondsPerRound = 60;
     private Integer currentRound = 1;
-    private Integer previousRound = 1;
 
     private double bestRoundMPH = 0;
     private double currentRoundSpeedBT = 0;
@@ -227,195 +298,220 @@ public class MainActivity extends AppCompatActivity {
     private Boolean newRoundFlagGEO = false;
     private Boolean newRoundFlagBT = false;
 
-    public void onPowerOn() {
+    private void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
         String on1 = "ON";
         b0.setText(on1);
 
+
         timer.scheduleAtFixedRate(new TimerTask() {
-                                      @Override
-                                      public void run() {
-                                          //Log.i(TAG, "timer: " + timerSecondsCounter);
+              @Override
+              public void run() {
+                  //Log.i(TAG, "timer: " + timerSecondsCounter);
 
-                                          updateActualTime();
-                                          timerSecondsCounter += 1;
+//                  String aT = updateActualTime();
+//                  TextView at = findViewById(R.id.rtText1);
+//                  at.setText(String.format("%s  (ACT)", aT));
 
-
-                                          if (timerSecondsCounter > 31) {
-                                              if (timerSecondsCounter % 10 == 0) {veloTester1();}
-                                              if (timerSecondsCounter % 25 == 0) {veloTester2();}
-                                          }
+                  timerSecondsCounter += 1;
+                  tim.setTotalTimeInSeconds(timerSecondsCounter);
 
 
-                                          //START END OF ROUND LOGIC
+//                  if (Looper.myLooper() == Looper.getMainLooper()) {
+//                      Log.i(TAG, "run: ON THE MAIN THREAD");
+//                      TextView tvAt = findViewById(R.id.rtText1);
+//                      tvAt.setText(String.format("%s  (ACT)", tim.getTotalTimeString()));
+//                  } else {
+//                      //Log.i(TAG, "NOT ON THE MAIN THREAD");
+//                      runOnUiThread(new Runnable() {
+//                      @Override
+//                      public void run() {
+//                          TextView tvAt = findViewById(R.id.rtText1);
+//                          tvAt.setText(String.format("%s  (ACT)", tim.getTotalTimeString()));
+//                          }
+//                      });
+//                  }
 
-                                          if (timerSecondsCounter == reconnectFlag) {
-                                              Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
-                                              reconnectToDevice(tryToConnectDevice);
-                                          }
+                    Message msg = Message.obtain();
+                  msg.obj = tim.getTotalTimeString();
+                    msg.what = 0;
+                    msg.setTarget(uiHandler);
+                    msg.sendToTarget();
 
-
-                                          //FOR IN ROUND DISPLAY
-                                          double calcCurrentRoundSpd = currentRoundSpeedBT;
-                                          if (currentRoundSpeedGEO > calcCurrentRoundSpd) {
-                                              calcCurrentRoundSpd = currentRoundSpeedGEO;
-                                          }
-                                          final double currentRoundSpeed = calcCurrentRoundSpd;
-                                          //display this at 7a
-                                          //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
-
-
-                                          //END OF ROUND
-                                          if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
-
-                                              Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
-                                              currentRound += 1;
-
-                                              //DETERMINE BEST AND LAST
-                                              final double lastRoundSpeed = currentRoundSpeed;
-                                              //display at 7b
-
-                                              double calcBestRoundSpd = bestRoundMPH;
-                                              if (lastRoundSpeed > bestRoundMPH) {
-                                                  bestRoundMPH = lastRoundSpeed;
-                                              }
-                                              final double bestRoundSpeed = bestRoundMPH;
+                  if (timerSecondsCounter > 31) {
+                      if (timerSecondsCounter % 25 == 0) {veloTester1();}
+                      if (timerSecondsCounter % 35 == 0) {veloTester2();}
+                  }
 
 
-                                              newRoundFlagBT = true;
-                                              newRoundFlagGEO = true;
-                                              runOnUiThread(new Runnable() {
-                                                  @Override
-                                                  public void run() {
-                                                      TextView tr = findViewById(R.id.rtStatus);
-                                                      tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
+                  //START END OF ROUND LOGIC
 
-                                                      TextView t7b = findViewById(R.id.rtText7b);
-                                                      t7b.setText(String.format("%.1f MPH", lastRoundSpeed));
-
-                                                      TextView t7c = findViewById(R.id.rtText7c);
-                                                      t7c.setText(String.format("%.1f MPH", bestRoundSpeed));
-                                                  }
-                                              });
-                                          }
-
-                                          //END ROUND LOGIC
+//                  if (timerSecondsCounter == reconnectFlag) {
+//                      Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
+//                      reconnectToDevice(tryToConnectDevice);
+//                  }
 
 
-
-                                          //START MILE LOGIC
-                                          //CURRENT MILE
-                                          double currentMileSpeed = currentMileSpeedBT;
-                                          if (currentMileSpeedGEO > currentMileSpeedBT) {
-                                              currentMileSpeed = currentMileSpeedGEO;
-                                          }
-
-
-                                         //LAST MILE
-                                          lastMileMPH = endMileSpeedBT;
-                                          if (endMileSpeedGEO > endMileSpeedBT) {
-                                              lastMileMPH = endMileSpeedGEO;
-                                          }
-
-                                          //BEST MILE
-                                          if (endMileSpeedBT > bestMileMPH) {
-                                              bestMileMPH = endMileSpeedBT;
-                                          }
-                                          if (endMileSpeedGEO > bestMileMPH) {
-                                              bestMileMPH = endMileSpeedGEO;
-                                          }
-
-                                          //END OF MILE CALC
-
-                                          final double finalLastMileSpeed = lastMileMPH;
-                                          final double finalCurrentMileSpeed = currentMileSpeed;
-                                          runOnUiThread(new Runnable() {
-                                                  @Override
-                                                  public void run() {
-                                                      TextView t = findViewById(R.id.rtText6a);
-                                                      t.setText(String.format("%.1f MPH", finalCurrentMileSpeed));
-
-                                                      TextView t1 = findViewById(R.id.rtText6b);
-                                                      t1.setText(String.format("%.1f MPH", finalLastMileSpeed));
-
-                                                      TextView t2 = findViewById(R.id.rtText6c);
-                                                      t2.setText(String.format("%.1f MPH", bestMileMPH));
-
-                                                      //MILE PACE
-                                                      TextView tt = findViewById(R.id.rtText6aa);
-                                                      tt.setText(calcPace(finalCurrentMileSpeed));
-
-                                                      TextView tt1 = findViewById(R.id.rtText6bb);
-                                                      tt1.setText(calcPace(finalLastMileSpeed));
-
-                                                      TextView tt2 = findViewById(R.id.rtText6cc);
-                                                      tt2.setText(calcPace(bestMileMPH));
+                  //FOR IN ROUND DISPLAY
+                  double calcCurrentRoundSpd = currentRoundSpeedBT;
+                  if (currentRoundSpeedGEO > calcCurrentRoundSpd) {
+                      calcCurrentRoundSpd = currentRoundSpeedGEO;
+                  }
+                  final double currentRoundSpeed = calcCurrentRoundSpd;
+                  //display this at 7a
+                  //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
 
 
-                                                      TextView t37 = findViewById(R.id.rtText7a);
-                                                      t37.setText(String.format("%.1f MPH", currentRoundSpeed));
-                                                  }
-                                              });
+                  //END OF ROUND
+                  double bestRoundSpeed = 0;
+                  if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
+
+                      Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
+                      currentRound += 1;
+
+                      newRoundFlagBT = true;
+                      newRoundFlagGEO = true;
+
+
+                      //DETERMINE BEST AND LAST
+
+
+                      if (currentRoundSpeed > bestRoundMPH) {
+                          bestRoundMPH = currentRoundSpeed;
+                      }
+                      bestRoundSpeed = bestRoundMPH;
+
+
+                      final double finalBestRoundSpeed = bestRoundSpeed;
+                      runOnUiThread(new Runnable() {
+                      @Override
+                      public void run() {
+                          TextView tr = findViewById(R.id.rtStatus);
+                          tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
+
+                          TextView t7b = findViewById(R.id.rtText7b);
+                          t7b.setText(String.format("%.1f MPH", currentRoundSpeed));
+
+                          TextView t7c = findViewById(R.id.rtText7c);
+                          t7c.setText(String.format("%.1f MPH", finalBestRoundSpeed));
+                          }
+                      });
 
 
 
-//                                          if (previousMile != currentMile) {
-//                                              Log.i(TAG, "NEW MILE");
-//                                              previousMile = currentMile;
+                  }
+
+                  //END ROUND LOGIC
+
+
 //
-//                                              double speedForLastMile = currentMileSpeedBT;
-//                                              if (currentMileSpeedGEO > currentMileSpeedBT) {
-//                                                  speedForLastMile = currentMileSpeedGEO;
-//                                              }
+                  //START MILE LOGIC
+                  //CURRENT MILE
+                  double currentMileSpeed = currentMileSpeedBT;
+                  if (currentMileSpeedGEO > currentMileSpeedBT) {
+                      currentMileSpeed = currentMileSpeedGEO;
+                  }
 //
-//                                              if (speedForLastMile > bestMileMPH) {bestMileMPH = speedForLastMile;}
-//                                              final double finalSpeedForLastMile = speedForLastMile;
-//                                              runOnUiThread(new Runnable() {
-//                                                  @Override
-//                                                  public void run() {
-//                                                      TextView t = findViewById(R.id.rtStatus);
-//                                                      t.setText(String.format("MILE COMPLETED: %d", previousMile));
 //
-//                                                      TextView t1 = findViewById(R.id.rtText6b);
-//                                                      t1.setText(String.format("%.1f MPH", finalSpeedForLastMile));
+//                 //LAST MILE
+                  lastMileMPH = endMileSpeedBT;
+                  if (endMileSpeedGEO > endMileSpeedBT) {
+                      lastMileMPH = endMileSpeedGEO;
+                  }
 //
-//                                                      TextView t2 = findViewById(R.id.rtText6c);
-//                                                      t2.setText(String.format("%.1f MPH", bestMileMPH));
-//                                                  }
-//                                              });
-//                                              secondsAtEndOfMile = timerSecondsCounter;
-//                                          }
+//                  //BEST MILE
+                  if (endMileSpeedBT > bestMileMPH) {
+                      bestMileMPH = endMileSpeedBT;
+                  }
+                  if (endMileSpeedGEO > bestMileMPH) {
+                      bestMileMPH = endMileSpeedGEO;
+                  }
 //
-//                                          //RT SPEED FOR DURING THE MILE...
-//                                          if (timerSecondsCounter - secondsAtEndOfMile > 5) {
-//                                              double currentMileSpeedMPH = currentMileSpeedBT;
-//                                              if (currentMileSpeedGEO > currentMileSpeedBT) {
-//                                                  currentMileSpeedMPH = currentMileSpeedGEO;
-//                                              }
-//                                              final double finalCurrentMileSpeedMPH = currentMileSpeedMPH;
-//                                              //Log.i(TAG, "CURRENT MILE SPEED: " + finalCurrentMileSpeedMPH);
-//                                              runOnUiThread(new Runnable() {
-//                                                  @Override
-//                                                  public void run() {
-//                                                      TextView t3 = findViewById(R.id.rtText6a);
-//                                                      t3.setText(String.format("%.1f MPH", finalCurrentMileSpeedMPH));
+//                  //END OF MILE CALC
 //
-//                                                      TextView t37 = findViewById(R.id.rtText7a);
-//                                                      t37.setText(String.format("%.1f MPH", currentRoundSpeed));
-//                                                  }
-//                                              });
-//                                          }
+                  final double finalLastMileSpeed = lastMileMPH;
+                  final double finalCurrentMileSpeed = currentMileSpeed;
 
-                                          //END MILE LOGIC
 
-                                          //UPDATE TAB2 DISPLAY
-                                          runOnUiThread(new Runnable() {
-                                              @Override
-                                              public void run() {
-                                                  updateView();
-                                              }
-                                          });
 
+
+
+//                  runOnUiThread(new Runnable() {
+//                      @Override
+//                      public void run() {
+//                      TextView t = findViewById(R.id.rtText6a);
+//                          t.setText(String.format("%.1f MPH", finalCurrentMileSpeed));
+//
+//                          TextView t1 = findViewById(R.id.rtText6b);
+//                          t1.setText(String.format("%.1f MPH", finalLastMileSpeed));
+//
+//                          TextView t2 = findViewById(R.id.rtText6c);
+//                          t2.setText(String.format("%.1f MPH", bestMileMPH));
+//
+//                          //MILE PACE
+//                          TextView tt = findViewById(R.id.rtText6aa);
+//                          tt.setText(calcPace(finalCurrentMileSpeed));
+//
+//                          TextView tt1 = findViewById(R.id.rtText6bb);
+//                          tt1.setText(calcPace(finalLastMileSpeed));
+//
+//                          TextView tt2 = findViewById(R.id.rtText6cc);
+//                          tt2.setText(calcPace(bestMileMPH));
+//
+//
+//                          TextView t37 = findViewById(R.id.rtText7a);
+//                          t37.setText(String.format("%.1f MPH", currentRoundSpeed));
+//
+//
+//                      }
+//                      });
+
+                  //final double finalBestRoundSpeed = bestRoundSpeed;
+                  runOnUiThread(new Runnable() {
+                      @Override
+                      public void run() {
+
+
+//                          TextView tr = findViewById(R.id.rtStatus);
+//                          tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
+
+//                          TextView t7b = findViewById(R.id.rtText7b);
+//                          t7b.setText(String.format("%.1f MPH", currentRoundSpeed));
+//
+//                          TextView t7c = findViewById(R.id.rtText7c);
+//                          t7c.setText(String.format("%.1f MPH", finalBestRoundSpeed));
+
+                          TextView t = findViewById(R.id.rtText6a);
+                          t.setText(String.format("%.1f MPH", finalCurrentMileSpeed));
+                          TextView t1 = findViewById(R.id.rtText6b);
+                          t1.setText(String.format("%.1f MPH", finalLastMileSpeed));
+
+                          TextView t2 = findViewById(R.id.rtText6c);
+                          t2.setText(String.format("%.1f MPH", bestMileMPH));
+
+                          //MILE PACE
+                          TextView tt = findViewById(R.id.rtText6aa);
+                          tt.setText(calcPace(finalCurrentMileSpeed));
+
+                          TextView tt1 = findViewById(R.id.rtText6bb);
+                          tt1.setText(calcPace(finalLastMileSpeed));
+
+                          TextView tt2 = findViewById(R.id.rtText6cc);
+                          tt2.setText(calcPace(bestMileMPH));
+
+
+                          TextView t37 = findViewById(R.id.rtText7a);
+                          t37.setText(String.format("%.1f MPH", currentRoundSpeed));
+
+
+                      }
+                  });
+
+
+
+
+                  //UPDATE DATA
+                  //updateView();
 
 
                                       }
@@ -433,68 +529,88 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateView() {
-        TextView fHeader1 = findViewById(R.id.rtText1a);
-        TextView fHeader2 = findViewById(R.id.rtText8a);
-        TextView tHeader = findViewById(R.id.tvHeader);
-        tHeader.setText(String.format("%s    %s", fHeader1.getText().toString(), fHeader2.getText().toString()));
 
-        TextView fTop1 = findViewById(R.id.textView1);
-        TextView tTop1 = findViewById(R.id.tvTop);
-        tTop1.setText(String.format("%s", fTop1.getText().toString()));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "run: UPDATE DASHBOARD VIEW");
+                TextView fHeader1 = findViewById(R.id.rtText1a);
+                TextView fHeader2 = findViewById(R.id.rtText8a);
+                TextView tHeader = findViewById(R.id.tvHeader);
+                tHeader.setText(String.format("%s    %s", fHeader1.getText().toString(), fHeader2.getText().toString()));
 
-        TextView fMid = findViewById(R.id.textView2);
-        TextView tMid = findViewById(R.id.tvMiddle);
-        tMid.setText(String.format("%s", fMid.getText().toString().substring(0, fMid.getText().toString().length() - 4)));
+                TextView fTop1 = findViewById(R.id.textView1);
+                TextView tTop1 = findViewById(R.id.tvTop);
+                tTop1.setText(String.format("%s", fTop1.getText().toString()));
 
-        TextView fBot = findViewById(R.id.textView3);
-        TextView tBot = findViewById(R.id.tvBottom);
-        tBot.setText(String.format("%s", fBot.getText().toString()));
+                TextView fMid = findViewById(R.id.textView2);
+                TextView tMid = findViewById(R.id.tvMiddle);
+                tMid.setText(String.format("%s", fMid.getText().toString().substring(0, fMid.getText().toString().length() - 4)));
 
-        TextView fFooter1 = findViewById(R.id.rtText1);
-        TextView fFooter2 = findViewById(R.id.rtText4a);
-        TextView tFooter = findViewById(R.id.tvFooter);
-        tFooter.setText(String.format("%s    %s", fFooter1.getText().toString(), fFooter2.getText().toString()));
+                TextView fBot = findViewById(R.id.textView3);
+                TextView tBot = findViewById(R.id.tvBottom);
+                tBot.setText(String.format("%s", fBot.getText().toString()));
 
-
-
+                TextView fFooter1 = findViewById(R.id.rtText1);
+                TextView fFooter2 = findViewById(R.id.rtText4a);
+                TextView tFooter = findViewById(R.id.tvFooter);
+                tFooter.setText(String.format("%s    %s", fFooter1.getText().toString(), fFooter2.getText().toString()));
+            }
+        });
     }
 
     private String oldHR = "START", oldSPD = "START", oldCAD = "START";
     private void veloTester1() {
         //TEST FOR 0, SPD/CAD
         //SET TEXTVIEW TO "0", VELO
-        //Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
-        TextView t2 = findViewById(R.id.textView2);
-        String s2 = t2.getText().toString();
-        if (Objects.equals(s2, oldSPD)) {
-            resetSPD0();
-        }
-        oldSPD = s2;
+        Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
 
-        TextView t3 = findViewById(R.id.textView3);
-        String s3 = t3.getText().toString();
-        if (Objects.equals(s3, oldCAD)) {
-            resetCAD0();
-        }
-        oldCAD = s3;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView t2 = findViewById(R.id.textView2);
+                String s2 = t2.getText().toString();
+                if (Objects.equals(s2, oldSPD)) {
+                    resetSPD0();
+                }
+                oldSPD = s2;
+
+                TextView t3 = findViewById(R.id.textView3);
+                String s3 = t3.getText().toString();
+                if (Objects.equals(s3, oldCAD)) {
+                    resetCAD0();
+                }
+                oldCAD = s3;
+            }
+        });
+
+
+
     }
     private void veloTester2() {
         //TEST FOR 0, HR
         //SET TEXTVIEW TO "0", VELO
-        //Log.i("TIMER", "TEST FOR 0 VAL HR");
-        TextView t1 = findViewById(R.id.textView1);
-        String s1 = t1.getText().toString();
-        if (Objects.equals(s1, oldHR)) {
-            resetHR0();
-        }
-        oldHR = s1;
+        Log.i("TIMER", "TEST FOR 0 VAL HR");
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView t1 = findViewById(R.id.textView1);
+                String s1 = t1.getText().toString();
+                if (Objects.equals(s1, oldHR)) {
+                    resetHR0();
+                }
+                oldHR = s1;
+            }
+        });
+
     }
 
     private void resetSPD0() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.i("SPD", "RESET SPD");
+                Log.i("SPD", "RESET SPD");
                 TextView t1 = findViewById(R.id.textView2);
                 String s1x = "0.0 MPH";
                 t1.setText(s1x);
@@ -505,7 +621,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.i("HR", "RESET HR");
+                Log.i("HR", "RESET HR");
                 TextView t1 = findViewById(R.id.textView1);
                 String s1x = "0 BPM";
                 t1.setText(s1x);
@@ -516,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.i("CAD", "RESET CAD");
+                Log.i("CAD", "RESET CAD");
                 TextView t1 = findViewById(R.id.textView3);
                 String s1x = "0 RPM";
                 t1.setText(s1x);
@@ -536,32 +652,285 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void tryToConnectAgain() {
-        connectedGatt.disconnect();
-        connectedGatt.close();
-        for (String deviceAddress : devicesConnectedAddresses) {
-            final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
-            if (device == null) {
-                Log.i(TAG, "Device not found.  Unable to connect.");
-                return;
-            }
-            connectToDevice(device);
-            Log.i(TAG, "Trying to create a new connection.");
-        }
-    }
+//    private void tryToConnectAgain() {
+//        connectedGatt.disconnect();
+//        connectedGatt.close();
+//        for (String deviceAddress : devicesConnectedAddresses) {
+//            final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
+//            if (device == null) {
+//                Log.i(TAG, "Device not found.  Unable to connect.");
+//                return;
+//            }
+//            connectToDevice(device);
+//            Log.i(TAG, "Trying to create a new connection.");
+//        }
+//    }
 
     public int reconnectFlag;
     public BluetoothDevice tryToConnectDevice;
 
 
 
+//2ND CB START
+
+
+    //private BluetoothManager bluetooth;
+//    private BluetoothGattCallback bluetoothGattCallback2 = new BluetoothGattCallback() {
+//        @Override
+//        public void onConnectionStateChange(final BluetoothGatt gatt, int status, int state) {
+//
+//
+//            super.onConnectionStateChange(gatt, status, state);
+//
+//            switch (status) {
+//                case BluetoothGatt.GATT_SUCCESS: {
+//                    Log.i(TAG, "onConnectionStateChange: GATT_SUCCESS");
+//                    break;
+//                }
+//                case BluetoothGatt.GATT_FAILURE: {
+//                    Log.i(TAG, "onConnectionStateChange: GATT_FAILURE");
+//                    break;
+//                }
+//                default:
+//                    Log.i(TAG, "onConnectionStateChange: NOT SUCCESS OR FAILURE");
+//
+//            }
+//
+//            switch (state) {
+//                case BluetoothProfile.STATE_CONNECTED: {
+//                    Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
+//                    //setConnectedGatt(gatt);
+//                    gatt.discoverServices();
+//                    break;
+//                }
+//                case BluetoothProfile.STATE_DISCONNECTED: {
+//                    Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
+//                    //setConnectedGatt(null);
+//
+////                    runOnUiThread(new Runnable() {
+////                        @Override
+////                        public void run() {
+////                            TextView tr = findViewById(R.id.rtStatus);
+////                            tr.setText(String.format("BT DISCONNECT:  %s", gatt.getDevice().getName()));
+////                            Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
+////                        }
+////                    });
+//
+//
+//                    tryToConnectDevice = gatt.getDevice();
+//                    reconnectFlag = timerSecondsCounter + 20;
+//                    break;
+//                }
+//                case BluetoothProfile.STATE_CONNECTING: {
+//                    Log.i(TAG, "onConnectionStateChange: STATE_CONNECTING");
+//                    break;
+//                }
+//                case BluetoothProfile.STATE_DISCONNECTING: {
+//                    Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTING");
+//                    break;
+//                }
+//                default:
+//                    Log.i("gattCallback", "STATE_OTHER");
+//
+//            }
+//        }  //END CONNECTION STATE CHANGE
+//
+////        @Override
+////        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+////            super.onReadRemoteRssi(gatt, rssi, status);
+////            Log.i(TAG, "onReadRemoteRssi: " + rssi);
+////        }
+//
+//        private Boolean tryVelo = false;
+//
+//        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+//            super.onServicesDiscovered(gatt, status);
+//            Log.d(TAG, "onServicesDiscovered status:" + BluetoothUtil.statusToString(status));
+//
+//            Boolean hasHR = false;
+//            Boolean hasCSC = false;
+//
+//            List<BluetoothGattService> services = gatt.getServices();
+//            Log.i("TEST", "DETERMINE IF BOTH SERVICES EXIST");
+//            for (BluetoothGattService service : services) {
+//
+//
+//                if (service.getUuid().equals(HR_SERVICE_UUID)) {
+//                    hasHR = true;
+//                    BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
+//                    boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
+//                    Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+//                    BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
+//                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//                    boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
+//                    Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+//                }
+//                if (service.getUuid().equals(CSC_SERVICE_UUID)) {
+//                    hasCSC = true;
+//                    if (hasHR) {
+//                        //need to wait and then try to notify
+//                        Log.i(TAG, "onServicesDiscovered: IS A VELO");
+//                        gatt0 = gatt;
+//                        if (!tryVelo) {
+//                            tryVelo = true;
+//                        }
+//
+//                    }
+//
+//                    BluetoothGattCharacteristic valueCharacteristic = gatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_CHARACTERISTIC_UUID);
+//                    boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
+//                    Log.i(TAG, "registered for CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+//                    BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
+//                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//                    boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
+//                    Log.i(TAG, "wrote Descriptor for CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+//                }
+//
+//            }
+//
+//        }
+//
+//
+//
+//        @Override
+//        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+//            super.onCharacteristicChanged(gatt, characteristic);
+//            byte[] value = characteristic.getValue();
+//
+//
+//            if (HR_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
+//                Log.i(TAG, "onCharacteristicChanged: HR, START");
+//                gatt1 = gatt;
+//                //int flag = characteristic.getProperties();
+//                final int flag = characteristic.getValue()[0]; // 1 byte
+//                int format;
+//                if ((flag & 0x01) != 0) {
+//                    format = BluetoothGattCharacteristic.FORMAT_UINT16;
+//                } else {
+//                    format = BluetoothGattCharacteristic.FORMAT_UINT8;
+//                }
+//                final int hrValue = characteristic.getIntValue(format, 1);
+//
+////                runOnUiThread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        Log.i(TAG, "run: UPDATE HR DATA");
+////                        TextView t1 = findViewById(R.id.textView1);
+////                        TextView tTop1 = findViewById(R.id.tvTop);
+////                        t1.setText(String.format("%d BPM", hrValue));
+////                        tTop1.setText(String.format("%d BPM", hrValue));
+////                    }
+////                });
+//
+//                Message msg = Message.obtain();
+//                String hrString = String.format("%d BPM", hrValue);
+//                msg.obj = hrString;
+//                msg.what = 3;
+//                msg.setTarget(uiHandler);
+//                msg.sendToTarget();
+//
+//
+//
+//
+//
+//
+//                if (tryVelo) {
+//                    tryVelo = false;
+//                    //Log.i(TAG, "onCharacteristicChanged: TRYING VELO...SET NOTIFY");
+//                    BluetoothGattCharacteristic valueCharacteristic = gatt0.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_CHARACTERISTIC_UUID);
+//                    boolean notificationSet = gatt0.setCharacteristicNotification(valueCharacteristic, true);
+//                    //Log.d(TAG, "registered for VELO CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+//                    BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
+//                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//                    boolean writeDescriptorSuccess = gatt0.writeDescriptor(descriptor);
+//                    //Log.d(TAG, "wrote Descriptor for VELO CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+//                }
+//                Log.i(TAG, "onCharacteristicChanged: HR, END");
+//                return;
+//            }  //END HR
+//
+//
+//            final byte WHEEL_REVOLUTIONS_DATA_PRESENT = 0x01; // 1 bit
+//            final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
+//
+//            if (CSC_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
+//                Log.i(TAG, "onCharacteristicChanged: CSC");
+//
+//                final int flags = characteristic.getValue()[0]; // 1 byte
+//                final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
+//                final boolean crankRevPreset = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
+//
+//                if (wheelRevPresent) {
+//                    gatt2 = gatt;
+//                    final int cumulativeWheelRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
+//                    final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
+//
+//
+//                    //Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ", " + lastWheelEventReadValue);
+////                    runOnUiThread(new Runnable() {
+////                        @SuppressLint("DefaultLocale")
+////                        public void run() {
+////                            TextView t = findViewById(R.id.textView1);
+////                            t.setText(String.valueOf(cumulativeWheelRevolutions));
+////                        }
+////                    });
+//
+//
+//                    Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
+//
+//                    Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
+//                    onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
+////
+////                    Message msg = Message.obtain();
+////                    msg.obj = cumulativeWheelRevolutions + " W";
+////                    msg.what = 4;
+////                    msg.setTarget(uiHandler);
+////                    msg.sendToTarget();
+//
+//
+//                    if (crankRevPreset) {
+//                        gatt3 = gatt;
+//                        final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
+//                        final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
+//                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+//                        onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
+////                        Message msg2 = Message.obtain();
+////                        msg2.obj = cumulativeCrankRevolutions + " C";
+////                        msg2.what = 5;
+////                        msg2.setTarget(uiHandler);
+////                        msg2.sendToTarget();
+//
+//                    }
+//                } else {
+//                    if (crankRevPreset) {
+//                        gatt3 = gatt;
+//                        final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
+//                        final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
+//                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+//                        onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
+//                    }
+//                }
+//
+//            }  //END CSC CALC
+//
+//        }  //END ON CHAR CHANGED
+//
+//
+//    }; //END BLUETOOTHGATTCALLBACK
+
+
+
+//2ND GATT CALLBACK END
+
+
+
+
     //private BluetoothManager bluetooth;
     private BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
         @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int state) {
+        public void onConnectionStateChange(final BluetoothGatt gatt, int status, int state) {
 
 
-            connectingToGatt = false;
             super.onConnectionStateChange(gatt, status, state);
 
             switch (status) {
@@ -581,33 +950,26 @@ public class MainActivity extends AppCompatActivity {
             switch (state) {
                 case BluetoothProfile.STATE_CONNECTED: {
                     Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
-                    setConnectedGatt(gatt);
+                    //setConnectedGatt(gatt);
                     gatt.discoverServices();
                     break;
                 }
                 case BluetoothProfile.STATE_DISCONNECTED: {
                     Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
-                    setConnectedGatt(null);
+                    //setConnectedGatt(null);
+
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            TextView tr = findViewById(R.id.rtStatus);
+//                            tr.setText(String.format("BT DISCONNECT:  %s", gatt.getDevice().getName()));
+//                            Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
+//                        }
+//                    });
+
 
                     tryToConnectDevice = gatt.getDevice();
                     reconnectFlag = timerSecondsCounter + 20;
-
-//                      try this after timer gets to reconnect flag
-//                    reconnectToDevice(tryToConnectDevice);
-
-
-                    //tryToConnectAgain();
-
-
-//                    for (String deviceAddress : devicesConnectedAddresses) {
-//                        final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
-//                        if (device == null) {
-//                            Log.i(TAG, "Device not found.  Unable to connect.");
-//                            return;
-//                        }
-//                        connectToDevice(device);
-//                        Log.i(TAG, "Trying to create a new connection.");
-//                    }
                     break;
                 }
                 case BluetoothProfile.STATE_CONNECTING: {
@@ -624,14 +986,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }  //END CONNECTION STATE CHANGE
 
-        @Override
-        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
-            super.onReadRemoteRssi(gatt, rssi, status);
-            Log.i(TAG, "onReadRemoteRssi: " + rssi);
-        }
+//        @Override
+//        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+//            super.onReadRemoteRssi(gatt, rssi, status);
+//            Log.i(TAG, "onReadRemoteRssi: " + rssi);
+//        }
 
-//        public int reconnectFlag;
-//        public BluetoothDevice tryToConnectDevice;
         private Boolean tryVelo = false;
 
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
@@ -682,9 +1042,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        double lastWheelTime = NOT_SET;
-        long lastWheelCount = NOT_SET;
-        double wheelSize = 2105;
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
@@ -692,28 +1049,40 @@ public class MainActivity extends AppCompatActivity {
             byte[] value = characteristic.getValue();
 
 
-            if (characteristic.getUuid().equals(HR_CHARACTERISTIC_UUID)) {
+            if (HR_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
+                Log.i(TAG, "onCharacteristicChanged: HR, START");
                 gatt1 = gatt;
-                int flag = characteristic.getProperties();
-                int format = -1;
+                //int flag = characteristic.getProperties();
+                final int flag = characteristic.getValue()[0]; // 1 byte
+                int format;
                 if ((flag & 0x01) != 0) {
                     format = BluetoothGattCharacteristic.FORMAT_UINT16;
                 } else {
                     format = BluetoothGattCharacteristic.FORMAT_UINT8;
                 }
-                final Integer hrValue = characteristic.getIntValue(format, 1);
-                final String hr = String.valueOf(hrValue) + " BPM";
+                final int hrValue = characteristic.getIntValue(format, 1);
 
-//                updateActualTime();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.i(TAG, "run: UPDATE HR DATA");
+//                        TextView t1 = findViewById(R.id.textView1);
+//                        TextView tTop1 = findViewById(R.id.tvTop);
+//                        t1.setText(String.format("%d BPM", hrValue));
+//                        tTop1.setText(String.format("%d BPM", hrValue));
+//                    }
+//                });
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Log.i("HR", "hr: " + hr);
-                        TextView t1 = findViewById(R.id.textView1);
-                        t1.setText(hr);
-                    }
-                });
+                Message msg = Message.obtain();
+                String hrString = String.format("%d BPM", hrValue);
+                msg.obj = hrString;
+                msg.what = 3;
+                msg.setTarget(uiHandler);
+                msg.sendToTarget();
+
+
+
+
 
 
                 if (tryVelo) {
@@ -727,7 +1096,7 @@ public class MainActivity extends AppCompatActivity {
                     boolean writeDescriptorSuccess = gatt0.writeDescriptor(descriptor);
                     //Log.d(TAG, "wrote Descriptor for VELO CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
                 }
-
+                Log.i(TAG, "onCharacteristicChanged: HR, END");
                 return;
             }  //END HR
 
@@ -735,7 +1104,8 @@ public class MainActivity extends AppCompatActivity {
             final byte WHEEL_REVOLUTIONS_DATA_PRESENT = 0x01; // 1 bit
             final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 
-            if (characteristic.getUuid().equals(CSC_CHARACTERISTIC_UUID)) {
+            if (CSC_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
+                Log.i(TAG, "onCharacteristicChanged: CSC");
 
                 final int flags = characteristic.getValue()[0]; // 1 byte
                 final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
@@ -755,32 +1125,53 @@ public class MainActivity extends AppCompatActivity {
 //                            t.setText(String.valueOf(cumulativeWheelRevolutions));
 //                        }
 //                    });
+
+
+                    Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
+                    Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
                     onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
+
+//                    Message msg = Message.obtain();
+//                    msg.obj = cumulativeWheelRevolutions + " W";
+//                    msg.what = 4;
+//                    msg.setTarget(uiHandler);
+//                    msg.sendToTarget();
+
 
                     if (crankRevPreset) {
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
-                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
                         onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
+//                        Message msg2 = Message.obtain();
+//                        msg2.obj = cumulativeCrankRevolutions + " C";
+//                        msg2.what = 5;
+//                        msg2.setTarget(uiHandler);
+//                        msg2.sendToTarget();
+
                     }
                 } else {
                     if (crankRevPreset) {
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
-                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
                         onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
                     }
                 }
 
             }  //END CSC CALC
 
-
         }  //END ON CHAR CHANGED
 
 
     }; //END BLUETOOTHGATTCALLBACK
+
+
+
+
+
 
 
     private int mFirstWheelRevolutions = -1;
@@ -792,12 +1183,16 @@ public class MainActivity extends AppCompatActivity {
 
     private double totalWheelRevolutions = 0;
     private double totalTimeInSeconds = 0;
-
+//
     private double distanceAtStartOfPreviousRound = 0;
     private double secondsAtStartOfPreviousRound = 0;
 
+
     //CSC ADVANCED CALC
     private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
+        Log.i(TAG, "onWheelMeasurementReceived:  START");
+        final int localTimerSecCounter = timerSecondsCounter;
+        
         if (mFirstWheelRevolutions < 0) {
             mFirstWheelRevolutions = wheelRevolutionValue;
             mLastWheelRevolutions = wheelRevolutionValue;
@@ -819,143 +1214,166 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (timeDiff < 1100) {
+        if (timeDiff < 1000) {
             //LET'S NOT PROCESS SO MANY, IGNORE EVERY OTHER ONE?
             //TODO:  MAY LOWER OR RAISE...
             return;
         }
 
-        if (timeDiff > 5000) {
+        if (timeDiff > 30000) {
             mLastWheelRevolutions = wheelRevolutionValue;
             mLastWheelEventTime = wheelRevolutionTimeValue;
             return;
         }
 
-        //Log.i(TAG, "onWheelMeasurementReceived: wheelDiff, timeDiff: " + wheelDiff + ", " + timeDiff);
 
         totalWheelRevolutions += (double) wheelDiff;
         totalTimeInSeconds += (double) timeDiff / 1024.0;
 
+        tim.addWheelDiff(wheelDiff);
+        tim.addTimeDiff(timeDiff);
+
+        mLastWheelRevolutions = wheelRevolutionValue;
+        mLastWheelEventTime = wheelRevolutionTimeValue;
+
+        //final double localTotalTimeInSeconds = totalTimeInSeconds;
+//        Log.i(TAG, "onWheelMeasurementReceived: totalTimeInSeconds: " + totalTimeInSeconds);
+//        Log.i(TAG, "onWheelMeasurementReceived: totalWheelRevolutions: " + totalWheelRevolutions);
+
         final double wheelTimeInSeconds = timeDiff / 1024.0;
         final double wheelCircumference = wheelSizeMM;
         final double wheelCircumferenceCM = wheelCircumference / 10;
-
-
         final double wheelRPM = (double) wheelDiff / (wheelTimeInSeconds / 60.0);
         final double cmPerMi = 0.00001 * 0.621371;
         final double minsPerHour = 60.0;
         final double speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;  //MPH CURRENT
-
         final double totalDistance = totalWheelRevolutions * wheelCircumferenceCM * cmPerMi;
-        //final double totalAverageMovingSpeed = (totalWheelRevolutions / (totalTimeInSeconds / 60.0)) * wheelCircumferenceCM * cmPerMi * minsPerHour;
+
+        Log.i(TAG, "onWheelMeasurementReceived: speed: " + speed);
+        Log.i(TAG, "onWheelMeasurementReceived: totalDistance: " + totalDistance);
+        Log.i(TAG, "onWheelMeasurementReceived: calc totaltimeBT and avgSpeedBT");
 
 
-//        Log.i(TAG, "timerSecondsCounter: " + timerSecondsCounter);
-//        Log.i(TAG, "secondsAtEndOfMileBT: " + secondsAtEndOfMileBT);
-//        Log.i(TAG, "totalDistance: " + totalDistance);
-//        Log.i(TAG, "currentMileBT: " + currentMileBT);
-//        Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
+        final long millis = (long) totalTimeInSeconds * 1000;
+        final String hms = getTimeStringFromMilli(millis);
+        final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
+
+//        Log.i(TAG, "onWheelMeasurementReceived: btAvgSpeed:  " + btAvgSpeed);
+//        Log.i(TAG, "onWheelMeasurementReceived: btElapsedTime: " + hms);
+
+        tim.btTotalDistance = totalDistance;
+        tim.btMovingTime = (long) wheelTimeInSeconds;
+        tim.btAvgSpeed = btAvgSpeed;
+
+        final String btAvgPce = calcPace(speed);
+
+        updateUI(tim.btTotalDistance, hms, tim.btAvgSpeed, btAvgPce);
+
+
+        Message msg = Message.obtain();
+        msg.obj = String.format("%.1f MPH", speed);
+        msg.what = 4;
+        msg.setTarget(uiHandler);
+        msg.sendToTarget();
+
+
+//        mLastWheelRevolutions = wheelRevolutionValue;
+//        mLastWheelEventTime = wheelRevolutionTimeValue;
 
 
         //END OF MILE CALC
-        if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
+        if (localTimerSecCounter - secondsAtEndOfMileBT > 10) {
+            //Log.i(TAG, "onWheelMeasurementReceived: end of mile calc");
             if (totalDistance > currentMileBT) {
-                  endMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+                  endMileSpeedBT = 1 / (((double) localTimerSecCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
                   currentMileBT += 1;
-                  secondsAtEndOfMileBT = timerSecondsCounter;
+                  secondsAtEndOfMileBT = localTimerSecCounter;
               }
           }
 
-          //CURRENT MILE CALC
-        final double curDist = totalDistance;
-        final double timerSecCtr = timerSecondsCounter;
+        //CURRENT MILE CALC
         final double secAtEndOfMile = secondsAtEndOfMileBT;
         final int curMile = currentMileBT;
         double curMileResult = 0.0;
 
-          if (timerSecondsCounter - secondsAtEndOfMileBT > 10) {
-              //if (totalDistance > (currentMileBT - 1)) {
-                  //currentMileSpeedBT = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
-                  //CALC BASED ON ELAPSED DISTANCE WITHIN CURRENT MILE
-              if (curMile == 1 && curDist > (curMile - 1)) {
-//                  double currentMileSpeedBT = ( totalDistance - ((double) currentMileBT - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
-//                  Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
-                  curMileResult = curDist / ((timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
-                  //Log.i(TAG, "curMileResult: " + curMileResult);
+          if (localTimerSecCounter - secondsAtEndOfMileBT > 10) {
+              //Log.i(TAG, "onWheelMeasurementReceived: current mile calc");
+              if (curMile == 1 && totalDistance > (curMile - 1)) {
+                  curMileResult = totalDistance / (((double) localTimerSecCounter - secAtEndOfMile) / 60.0 / 60.0);
               }
 
-              if (curMile > 1 && curDist > (curMile - 1)) {
-                  curMileResult = ( curDist - ((double) curMile - 1.0) ) / (( timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
-                  //Log.i(TAG, "curMileResult2: " + curMileResult);
+              if (curMile > 1 && totalDistance > (curMile - 1)) {
+                  curMileResult = ( totalDistance - ((double) curMile - 1.0) ) / (( (double) localTimerSecCounter - secAtEndOfMile) / 60.0 / 60.0);
               }
-              //}
           }
         currentMileSpeedBT = curMileResult;
 
 
-//        Log.i(TAG, "onWheelMeasurementReceived: DISTANCE = " + String.valueOf(totalDistance));
-//        Log.i(TAG, "onWheelMeasurementReceived: SPEED = " + String.valueOf(speed));
-//        Log.i(TAG, "onWheelMeasurementReceived: AVG SPEED = " + String.valueOf(totalAverageMovingSpeed));
 
-        final long millis = (long) totalTimeInSeconds * 1000;
-        final String hms = getTimeStringFromMilli(millis);
-//        @SuppressLint("DefaultLocale") final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-//                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-//                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-
-
-        final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
+        //final String hms_act = getTimeStringFromMilli((long) localTimerSecCounter * 1000);
 
 
         //ROUND CALC
         //USES TIMERCOUNTER, NOT BT.TOTALTIME IN SECONDS
         double distanceDuringCurrentRound = totalDistance - distanceAtStartOfPreviousRound;
-        double elapsedSecondsInCurrentRound = (double) timerSecondsCounter - (double) secondsAtStartOfPreviousRound;
+        double elapsedSecondsInCurrentRound = (double) localTimerSecCounter - secondsAtStartOfPreviousRound;
         double currentRoundSpeedMPH = 0;
         if (elapsedSecondsInCurrentRound > 5) {
+            Log.i(TAG, "onWheelMeasurementReceived: calc roundspeedBT");
             currentRoundSpeedMPH = distanceDuringCurrentRound / (elapsedSecondsInCurrentRound / 60.0 / 60.0);
         }
         currentRoundSpeedBT = currentRoundSpeedMPH;
 
-//        Log.i(TAG, "distanceDuringCurrentRound: " + distanceDuringCurrentRound);
-//        Log.i(TAG, "elapsedSecondsInCurrentRound: " + elapsedSecondsInCurrentRound);
-//        Log.i(TAG, "currentRoundSpeedMPH: " + currentRoundSpeedMPH);
-
         if (newRoundFlagBT && totalDistance > distanceAtStartOfPreviousRound) {
-            Log.i(TAG, "BT NEW ROUND");
-
+            //Log.i(TAG, "BT NEW ROUND");
             distanceAtStartOfPreviousRound = totalDistance;
-            secondsAtStartOfPreviousRound = timerSecondsCounter;
+            secondsAtStartOfPreviousRound = localTimerSecCounter;
             newRoundFlagBT = false;
         }
 
+//
+//
+
+
+
+        Log.i(TAG, "onWheelMeasurementReceived:  END");
+
+    }
+
+
+    //updateUI(tim.btTotalDistance, tim.btMovingTime, tim.btAvgSpeed);
+    private void updateUI(final double dist, final String btTime, final double avgSpd, final String rtPace) {
+        final TextView foot2 = findViewById(R.id.tvFooter2);
+        final TextView head1 = findViewById(R.id.tvHeader);
+        final TextView head2 = findViewById(R.id.tvHeader2);
+
+        final TextView bTime = findViewById(R.id.rtText1a);
+        final TextView bPace = findViewById(R.id.rtText3a);
+        final TextView bAvgSp = findViewById(R.id.rtText8a);
+        final TextView bAvgPc = findViewById(R.id.rtText9a);
+        final TextView bDist = findViewById(R.id.rtText4a);
 
         runOnUiThread(new Runnable() {
             @SuppressLint("DefaultLocale")
             public void run() {
-                TextView t2 = findViewById(R.id.textView2);
-                t2.setText(String.format("%.1f MPH (BT)", speed));
-                TextView t4 = findViewById(R.id.rtText1a);
-                String hms2 = hms + " (BT)";
-                t4.setText(hms2);
-                TextView td = findViewById(R.id.rtText4a);
-                td.setText(String.format("%.2f MI (BT)", totalDistance));
-                TextView rtText8a = findViewById(R.id.rtText8a);
-                rtText8a.setText(String.format("%.1f AVG (BT)", btAvgSpeed));
+                head1.setText(btTime);
+                bTime.setText(btTime);
 
-                TextView rtText3a = findViewById(R.id.rtText3a);
-                rtText3a.setText(String.format("%s (BT)", calcPace(speed)));
+                head2.setText(String.format("%.1f MPH", avgSpd));
+                bAvgSp.setText(String.format("%.1f MPH", avgSpd));
+                bAvgPc.setText(calcPace(avgSpd));
 
-                TextView rtText9a = findViewById(R.id.rtText9a);
-                rtText9a.setText(String.format("%s (BT)", calcPace(btAvgSpeed)));
+                foot2.setText(String.format("%.1f MI", dist));
+                bDist.setText(String.format("%.1f MI", dist));
+
+                bPace.setText(rtPace);
 
             }
         });
-
-
-        mLastWheelRevolutions = wheelRevolutionValue;
-        mLastWheelEventTime = wheelRevolutionTimeValue;
     }
+
+
+
 
 
     private void onCrankMeasurementReceived(final int crankRevolutionValue, final int crankRevolutionTimeValue) {
@@ -980,11 +1398,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (timeDiff < 1100) {
+        if (timeDiff < 2000) {
             return;
         }
 
-        if (timeDiff > 8000) {
+        if (timeDiff > 30000) {
             mLastCrankRevolutions = crankRevolutionValue;
             mLastCrankEventTime = crankRevolutionTimeValue;
             return;
@@ -1001,14 +1419,17 @@ public class MainActivity extends AppCompatActivity {
         }
         //Log.i("CAD", "CADENCE: " + cadence);
 
-        runOnUiThread(new Runnable() {
-            @SuppressLint("DefaultLocale")
-            public void run() {
-                TextView t3 = findViewById(R.id.textView3);
-                t3.setText(String.format("%.0f RPM", cadence));
-            }
-        });
+        Message msg = Message.obtain();
+        String caString = String.format("%.0f RPM", cadence);
+        msg.obj = caString;
+        msg.what = 5;
+        msg.setTarget(uiHandler);
+        msg.sendToTarget();
+
     }
+
+
+
 
 
     //END CSC ADVANCED CALC
@@ -1035,9 +1456,6 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothGatt gatt2;
     private BluetoothGatt gatt3;
     //private BluetoothGatt gatt4;
-
-    private boolean connectingToGatt;
-    private final Object connectingToGattMonitor = new Object();
 
     private int cycle = 1;
 
@@ -1104,7 +1522,6 @@ public class MainActivity extends AppCompatActivity {
     private Double oldLat = 0.0;
     private Double oldLon = 0.0;
     private Double geoDistance = 0.0;
-    private Double geoSpeed = 0.0;
     private Double geoAvgSpeed = 0.0;
     private float[] results = new float[2];
     private long oldTime = 0;
@@ -1147,7 +1564,7 @@ public class MainActivity extends AppCompatActivity {
                 //OPT 2.  GEO SPEED, LONG VERSION
                 Double gd = results[0] * 0.000621371;
                 long gt = (location.getTime() - oldTime);  //MILLI
-                geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+                Double geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
                 //mPrinter("GEO SPEED: " + geoSpeed);
                 //END GEO SPEED CALC
                 geoDistance += results[0] * 0.000621371;
@@ -1188,25 +1605,6 @@ public class MainActivity extends AppCompatActivity {
                     //}
                 }
                 currentMileSpeedGEO = curMileResult;
-
-
-//                if (timerSecondsCounter - secondsAtEndOfMileGeo > 0) {
-//                    if (geoDistance > currentMileGEO - 1) {
-//                        //currentMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
-//
-//                        if (currentMileGEO == 1) {
-//                            double currentMileSpeedGEO = ( geoDistance - ((double) currentMileGEO - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
-//                            Log.i(TAG, "currentMileSpeedGEO: " + currentMileSpeedGEO);
-//                        } else {
-//                            double currentMileSpeedGEO = ( geoDistance - ((double) currentMileGEO - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
-//                            Log.i(TAG, "currentMileSpeedGEO: " + currentMileSpeedGEO);
-//                        }
-//
-//
-//                    }
-//                }
-
-
 
 
                 //END MILE CALC
@@ -1539,15 +1937,15 @@ private String calcPace(double mph) {
         };
     }
 //SCANCALLBACK - FINISH
-public void reconnectToDevice(BluetoothDevice mDevice) {
-    Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
-    Log.i("ReconnectToDevice", "Addresss: " + mDevice.getAddress());
-
-    connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
-    devicesConnected.add(mDevice);
-    bluetoothGatts.add(connectedGatt);
-    devicesConnectedAddresses.add(mDevice.getAddress());
-}
+//public void reconnectToDevice(BluetoothDevice mDevice) {
+//    Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
+//    Log.i("ReconnectToDevice", "Addresss: " + mDevice.getAddress());
+//
+//    connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
+//    devicesConnected.add(mDevice);
+//    bluetoothGatts.add(connectedGatt);
+//    devicesConnectedAddresses.add(mDevice.getAddress());
+//}
 
 
     public void connectToDevice(BluetoothDevice mDevice) {
@@ -1556,6 +1954,7 @@ public void reconnectToDevice(BluetoothDevice mDevice) {
 
         //TODO:  TEST WITH AUTOCONNECT
         //AUTOCONNECT CHANGED FROM FALSE TO TRUE
+
         connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
         Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
         devicesConnected.add(mDevice);
@@ -1563,6 +1962,19 @@ public void reconnectToDevice(BluetoothDevice mDevice) {
         devicesConnectedAddresses.add(mDevice.getAddress());
     }
 
+//    public void connectToDeviceII (BluetoothDevice mDevice) {
+//        Log.i("connectToDevice", "Device: " + mDevice.getName());
+//        Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
+//
+//        //TODO:  TEST WITH AUTOCONNECT
+//        //AUTOCONNECT CHANGED FROM FALSE TO TRUE
+//
+//        connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback2);
+//        Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
+//        devicesConnected.add(mDevice);
+//        bluetoothGatts.add(connectedGatt);
+//        devicesConnectedAddresses.add(mDevice.getAddress());
+//    }
 
     private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
     private ArrayList<BluetoothDevice> devicesConnected = new ArrayList<>();
@@ -1616,56 +2028,55 @@ public void reconnectToDevice(BluetoothDevice mDevice) {
 
 
 
-    public void setConnectedGatt(final BluetoothGatt connectedGatt) {
-        this.connectedGatt = connectedGatt;
-
-        Log.i(TAG, "setConnectedGatt, is null... " + (connectedGatt == null));
-        Log.i(TAG, "setConnectedGatt: NOT GETTING CONNECTED STATE CHANGE AFTER FIRST DISCONNECT, BECAUSE OF CLOSE()");
-        //NO CONNECTED STATE CHANGE?
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                if (connectedGatt != null) {
-                    Log.i(TAG, "run: :CONNECTED GATT DEVICE NAME " + connectedGatt.getDevice().getName());
-                    Log.i(TAG, "run: CONNECTED GATT DEVICE: " + connectedGatt.toString());
-                    Button b2 = findViewById(R.id.button2);
-                    b2.setEnabled(true);
-                } //else {
-//                    Button b1 = findViewById(R.id.button1);
-//                    b1.setEnabled(true);
+//    public void setConnectedGatt(final BluetoothGatt connectedGatt) {
+//        this.connectedGatt = connectedGatt;
 //
+//        Log.i(TAG, "setConnectedGatt, is null... " + (connectedGatt == null));
+//        Log.i(TAG, "setConnectedGatt: NOT GETTING CONNECTED STATE CHANGE AFTER FIRST DISCONNECT, BECAUSE OF CLOSE()");
+//        //NO CONNECTED STATE CHANGE?
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                if (connectedGatt != null) {
+//                    Log.i(TAG, "run: :CONNECTED GATT DEVICE NAME " + connectedGatt.getDevice().getName());
+//                    Log.i(TAG, "run: CONNECTED GATT DEVICE: " + connectedGatt.toString());
 //                    Button b2 = findViewById(R.id.button2);
-//                    b2.setEnabled(false);
-//                }
-
-            }
-        });
-    }
-
-
-    private void updateActualTime(){
-        //update actual time
-        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
-        long st = startTime.getTimeInMillis();
-        long nt = nowTime.getTimeInMillis();
-        long millis_act = nt - st;
-        @SuppressLint("DefaultLocale") final String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
-                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
-                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
-//        TextView at = findViewById(R.id.rtText1);
-//        at.setText(String.format("%s  ", hms_act));
+//                    b2.setEnabled(true);
+//                } //else {
+////                    Button b1 = findViewById(R.id.button1);
+////                    b1.setEnabled(true);
+////
+////                    Button b2 = findViewById(R.id.button2);
+////                    b2.setEnabled(false);
+////                }
+//
+//            }
+//        });
+//    }
 
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView at = findViewById(R.id.rtText1);
-                at.setText(String.format("%s  (ACT)", hms_act));
-            }
-        });
 
-    }
+
+//    private void updateActualTime(){
+//        //update actual time
+//        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
+//        long st = startTime.getTimeInMillis();
+//        long nt = nowTime.getTimeInMillis();
+//        long millis_act = nt - st;
+//        @SuppressLint("DefaultLocale") final String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
+//                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
+//                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
+//        Log.i(TAG, "updateActualTime: " + hms_act + " >> " + timerSecondsCounter);
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                TextView at = findViewById(R.id.rtText1);
+//                at.setText(String.format("%s  (ACT)", hms_act));
+//            }
+//        });
+//        //return (String.format("%s  (ACT)", hms_act));
+//    }
 
     private BluetoothDevice mDevice;
 
@@ -1677,7 +2088,15 @@ public void reconnectToDevice(BluetoothDevice mDevice) {
                 .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("BTN","CONNECT");
+
                         connectToDevice(mDevice);
+
+//                        if (indexVal == 0) {
+//                            connectToDeviceII(mDevice);
+//                        } else {
+//                            connectToDevice(mDevice);
+//                        }
+
 
                         switch (indexVal) {
                             case 0: {
@@ -1764,6 +2183,24 @@ public void reconnectToDevice(BluetoothDevice mDevice) {
             btn102.setVisibility(View.GONE);
             btn103.setVisibility(View.GONE);
             btn104.setVisibility(View.GONE);
+
+//mBluetoothAdapter.getBondedDevices().toString();
+
+            mBluetoothAdapter.disable();
+            //BA.disable();
+            Toast.makeText(getApplicationContext(), "bt off" ,Toast.LENGTH_LONG).show();
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBluetoothAdapter.enable();
+                Toast.makeText(getApplicationContext(), "bt On", Toast.LENGTH_LONG).show();
+            }
+        }, SCAN_PERIOD);
+
+
+
 
 //            mLEScanner.startScan(filters, settings, mScanCallback);
 //            isScanning = true;
