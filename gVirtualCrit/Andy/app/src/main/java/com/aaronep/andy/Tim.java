@@ -54,8 +54,6 @@ public class Tim {
     double btTotalDistance;
     double btAvgSpeed;
     String btAvgPace;
-    long btMovingTime; //IN SECONDS
-    String btMovingTimeString;
     double btSpeed;
     String btPace;
 
@@ -112,22 +110,6 @@ public class Tim {
         this.btAvgSpeed = btAvgSpeed;
     }
 
-    public long getBtMovingTime() {
-        return btMovingTime;
-    }
-
-    public void setBtMovingTime(long btMovingTime) {
-        this.btMovingTime = btMovingTime;
-
-        long millis = btMovingTime * 1000;
-        btMovingTimeString = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-    }
-
-    public String getBtMovingTimeString() {
-        return btMovingTimeString;
-    }
 
     public String getBtAvgPace() {
         return btAvgPace;

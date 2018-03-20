@@ -124,9 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateValueHR(final String value) {
         final TextView t2 = findViewById(R.id.tvTop);
+        final TextView t2Geo = findViewById(R.id.tvTopGeo);
         TextView t1 = findViewById(R.id.textView1);
         t1.setText(value);
         t2.setText(value);
+        t2Geo.setText(value);
     }
 
     private void updateValueCADENCE(final String value) {
@@ -1270,6 +1272,7 @@ public class MainActivity extends AppCompatActivity {
 
         final long millis = (long) totalTimeInSeconds * 1000;
         final String hms = getTimeStringFromMilli(millis);
+
         final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
 
 //        Log.i(TAG, "onWheelMeasurementReceived: btAvgSpeed:  " + btAvgSpeed);
@@ -1282,14 +1285,13 @@ public class MainActivity extends AppCompatActivity {
         tim.setBtSpeed(speed);
         tim.setBtPace(calcPace(speed));
         tim.setBtTotalDistance(totalDistance);
-        tim.setBtMovingTime((long) wheelTimeInSeconds);
         tim.setBtAvgSpeed(btAvgSpeed);
         tim.setBtAvgPace(calcPace(speed));
 
 
         //final String btAvgPce = calcPace(speed);
 
-        updateUI(tim.getBtTotalDistance(), tim.getBtMovingTimeString(), tim.getBtAvgSpeed(), tim.getBtAvgPace());
+        updateUI(tim.getBtTotalDistance(), hms, tim.getBtAvgSpeed(), tim.getBtAvgPace());
 
 
         Message msg = Message.obtain();
@@ -1379,9 +1381,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 bTime.setText(btTime);
+                head1.setText(btTime);
+
                 bAvgSp.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
                 bAvgPc.setText(calcPace(avgSpd));
-                head1.setText(btTime);
+
                 foot2.setText(String.format(Locale.US,"%.1f MI", dist));
                 head2.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
                 bDist.setText(String.format(Locale.US,"%.1f MI", dist));
@@ -1687,9 +1691,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                         final TextView tMid = findViewById(R.id.tvMiddleGeo);
-                        tMid.setText(String.format("%s (G)", calcPace(geoSpeedQuick)));
+                        tMid.setText(String.format("%s", calcPace(geoSpeedQuick)));
                         final TextView tBot = findViewById(R.id.tvBottomGeo);
-                        tBot.setText(String.format("%s (AVG)", calcPace(geoAvgSpeed)));
+                        tBot.setText(String.format("%s (a)", calcPace(geoAvgSpeed)));
                         final TextView foot2 = findViewById(R.id.tvFooter2Geo);
                         foot2.setText(String.format("%.2f MI (G)", geoDistance));
                         final TextView head2 = findViewById(R.id.tvHeader2Geo);
@@ -1728,7 +1732,11 @@ private String calcPace(double mph) {
 
         double m = a * 60.0 * 1000.0;
         long mill = (long) m;
-    final String minutesPerMile = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mill),
+//    final String minutesPerMile = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mill),
+//            TimeUnit.MILLISECONDS.toMinutes(mill) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mill)),
+//            TimeUnit.MILLISECONDS.toSeconds(mill) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mill)));
+
+    final String minutesPerMile = String.format(Locale.US,"%02d:%02d",
             TimeUnit.MILLISECONDS.toMinutes(mill) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mill)),
             TimeUnit.MILLISECONDS.toSeconds(mill) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mill)));
 
