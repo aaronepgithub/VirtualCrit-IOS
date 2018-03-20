@@ -39,7 +39,7 @@ public class Tim {
         Long st = startTime.getTimeInMillis();
         Long nt = nowTime.getTimeInMillis();
         long millis_act = nt - st;
-        String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
+        String hms_act = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
                 TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
                 TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
         Log.i(TAG, hms_act);
@@ -51,24 +51,21 @@ public class Tim {
     //BT
     double btTotalWheelRevolutions = 0;
     double btTotalTimeInSeconds = 0;
-
     double btTotalDistance;
     double btAvgSpeed;
-    long btMovingTime;
+    String btAvgPace;
+    long btMovingTime; //IN SECONDS
+    String btMovingTimeString;
+    double btSpeed;
+    String btPace;
 
+    //GEO
     double geoTotalDistance;
     double geoAvgSpeed;
     long geoMovingTime;
 
 
-    public void addWheelDiff(int w) {
-        btTotalWheelRevolutions += (double) w;
-        Log.i(TAG, "addWheelDiff: " + w);
-    }
 
-    public void addTimeDiff(int t) {
-        btTotalTimeInSeconds += (double) t;
-    }
 
     public Tim(String name) {
         this.name = name;
@@ -82,6 +79,19 @@ public class Tim {
         Log.i(TAG, "setName: name: " + name);
     }
 
+    public void addWheelDiff(int w) {
+        btTotalWheelRevolutions += (double) w;
+        Log.i(TAG, "addWheelDiff: " + w);
+    }
+
+    public void addTimeDiff(int t) {
+        btTotalTimeInSeconds += (double) t;
+    }
+
+
+
+
+    //BT
     public double getBtTotalDistance() {
         return btTotalDistance;
     }
@@ -108,16 +118,46 @@ public class Tim {
 
     public void setBtMovingTime(long btMovingTime) {
         this.btMovingTime = btMovingTime;
+
+        long millis = btMovingTime * 1000;
+        btMovingTimeString = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+    }
+
+    public String getBtMovingTimeString() {
+        return btMovingTimeString;
+    }
+
+    public String getBtAvgPace() {
+        return btAvgPace;
+    }
+
+    public void setBtAvgPace(String btAvgPace) {
+        this.btAvgPace = btAvgPace;
+    }
+
+    public double getBtSpeed() {
+        return btSpeed;
+    }
+
+    public void setBtSpeed(double btSpeed) {
+        this.btSpeed = btSpeed;
+    }
+
+    public String getBtPace() {
+        return btPace;
+    }
+
+    public void setBtPace(String btPace) {
+        this.btPace = btPace;
     }
 
 
 
 
 
-
-
-
-
+    //GEO
     public double getGeoTotalDistance() {
         return geoTotalDistance;
     }

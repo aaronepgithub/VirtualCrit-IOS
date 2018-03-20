@@ -36,9 +36,11 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -109,54 +113,39 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateValue(final String value){
 
-        if (!dashboardON) {
-            final TextView tvAt = findViewById(R.id.rtText1);
-            tvAt.setText(value);
-        } else {
-            final TextView tvAT = findViewById(R.id.tvFooter);
-            tvAT.setText(value);
-        }
+        final TextView tvAt = findViewById(R.id.rtText1);
+        final TextView tvAT = findViewById(R.id.tvFooter1);
+        final TextView tvATGeo = findViewById(R.id.tvFooter1Geo);
+        tvAt.setText(value);
+        tvAT.setText(value);
+        tvATGeo.setText(value);
 
     }
 
     private void updateValueHR(final String value) {
-
-        if (dashboardON) {
-            final TextView t2 = findViewById(R.id.tvTop);
-            t2.setText(value);
-        } else {
-            TextView t1 = findViewById(R.id.textView1);
-            t1.setText(value);
-        }
+        final TextView t2 = findViewById(R.id.tvTop);
+        TextView t1 = findViewById(R.id.textView1);
+        t1.setText(value);
+        t2.setText(value);
     }
 
     private void updateValueCADENCE(final String value) {
-
-        if (dashboardON) {
-            final TextView tBot = findViewById(R.id.tvBottom);
-            tBot.setText(value);
-        } else {
-            final TextView t3 = findViewById(R.id.textView3);
-            t3.setText(value);
-        }
-
+        final TextView tBot = findViewById(R.id.tvBottom);
+        final TextView t3 = findViewById(R.id.textView3);
+        tBot.setText(value);
+        t3.setText(value);
     }
 
     private void updateValueSPEED(final String value) {
 
-        if (dashboardON) {
-            final TextView tMid = findViewById(R.id.tvMiddle);
-            tMid.setText(value);
-        } else {
-            final TextView t2 = findViewById(R.id.textView2);
-            t2.setText(value);
-        }
-
-
-
+        final TextView tMid = findViewById(R.id.tvMiddle);
+        final TextView t2 = findViewById(R.id.textView2);
+        tMid.setText(value);
+        t2.setText(value);
     }
 
-    private Boolean dashboardON = false;
+    private int dashboardON = 0;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -165,22 +154,40 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             ScrollView sv = findViewById(R.id.svSettings);
             LinearLayout ll = findViewById(R.id.llView);
+            LinearLayout llGeo = findViewById(R.id.llViewGeo);
+            LinearLayout svtl = findViewById(R.id.svTimeline);
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
-                    dashboardON = false;
                     ll.setVisibility(View.GONE);
+                    llGeo.setVisibility(View.GONE);
+                    svtl.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
-                    dashboardON = true;
-                    sv.setVisibility(View.GONE);
-                    ll.setVisibility(View.VISIBLE);
+                    if (dashboardON == 0) {
+                        ll.setVisibility(View.VISIBLE);
+                        llGeo.setVisibility(View.GONE);
+                        sv.setVisibility(View.GONE);
+                        svtl.setVisibility(View.GONE);
+                        dashboardON = 1;
+                    } else {
+                        ll.setVisibility(View.GONE);
+                        llGeo.setVisibility(View.VISIBLE);
+                        sv.setVisibility(View.GONE);
+                        svtl.setVisibility(View.GONE);
+                        dashboardON = 0;
+                    }
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
+                    ll.setVisibility(View.GONE);
+                    llGeo.setVisibility(View.GONE);
+                    sv.setVisibility(View.GONE);
+                    svtl.setVisibility(View.VISIBLE);
+
                     return true;
             }
             return false;
@@ -188,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private Calendar startTime;
-
     private Tim tim;
 
     @Override
@@ -271,6 +277,8 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
 
+        valuesRounds.add("Rounds Completed (Speeds)");
+        valuesMiles.add("Miles Completed (Speeds)");
 
     }
     //END ON_CREATE
@@ -297,6 +305,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean newRoundFlagGEO = false;
     private Boolean newRoundFlagBT = false;
+
+    private ArrayList<String> valuesRounds = new ArrayList<>();
+    private ArrayList<String> valuesMiles = new ArrayList<>();
+
 
     private void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
@@ -367,6 +379,7 @@ public class MainActivity extends AppCompatActivity {
                   if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
 
                       Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
+                      valuesRounds.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.2f MPH", currentRoundSpeed)));
                       currentRound += 1;
 
                       newRoundFlagBT = true;
@@ -387,13 +400,13 @@ public class MainActivity extends AppCompatActivity {
                       @Override
                       public void run() {
                           TextView tr = findViewById(R.id.rtStatus);
-                          tr.setText(String.format("ROUND COMPLETED: %d", currentRound - 1));
+                          tr.setText(String.format(Locale.US,"ROUND COMPLETED: %d", currentRound - 1));
 
                           TextView t7b = findViewById(R.id.rtText7b);
-                          t7b.setText(String.format("%.1f MPH", currentRoundSpeed));
+                          t7b.setText(String.format(Locale.US,"%.1f MPH", currentRoundSpeed));
 
                           TextView t7c = findViewById(R.id.rtText7c);
-                          t7c.setText(String.format("%.1f MPH", finalBestRoundSpeed));
+                          t7c.setText(String.format(Locale.US,"%.1f MPH", finalBestRoundSpeed));
                           }
                       });
 
@@ -482,12 +495,12 @@ public class MainActivity extends AppCompatActivity {
 //                          t7c.setText(String.format("%.1f MPH", finalBestRoundSpeed));
 
                           TextView t = findViewById(R.id.rtText6a);
-                          t.setText(String.format("%.1f MPH", finalCurrentMileSpeed));
+                          t.setText(String.format(Locale.US,"%.1f MPH", finalCurrentMileSpeed));
                           TextView t1 = findViewById(R.id.rtText6b);
-                          t1.setText(String.format("%.1f MPH", finalLastMileSpeed));
+                          t1.setText(String.format(Locale.US,"%.1f MPH", finalLastMileSpeed));
 
                           TextView t2 = findViewById(R.id.rtText6c);
-                          t2.setText(String.format("%.1f MPH", bestMileMPH));
+                          t2.setText(String.format(Locale.US,"%.1f MPH", bestMileMPH));
 
                           //MILE PACE
                           TextView tt = findViewById(R.id.rtText6aa);
@@ -501,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                           TextView t37 = findViewById(R.id.rtText7a);
-                          t37.setText(String.format("%.1f MPH", currentRoundSpeed));
+                          t37.setText(String.format(Locale.US,"%.1f MPH", currentRoundSpeed));
 
 
                       }
@@ -528,36 +541,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void updateView() {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.i(TAG, "run: UPDATE DASHBOARD VIEW");
-                TextView fHeader1 = findViewById(R.id.rtText1a);
-                TextView fHeader2 = findViewById(R.id.rtText8a);
-                TextView tHeader = findViewById(R.id.tvHeader);
-                tHeader.setText(String.format("%s    %s", fHeader1.getText().toString(), fHeader2.getText().toString()));
-
-                TextView fTop1 = findViewById(R.id.textView1);
-                TextView tTop1 = findViewById(R.id.tvTop);
-                tTop1.setText(String.format("%s", fTop1.getText().toString()));
-
-                TextView fMid = findViewById(R.id.textView2);
-                TextView tMid = findViewById(R.id.tvMiddle);
-                tMid.setText(String.format("%s", fMid.getText().toString().substring(0, fMid.getText().toString().length() - 4)));
-
-                TextView fBot = findViewById(R.id.textView3);
-                TextView tBot = findViewById(R.id.tvBottom);
-                tBot.setText(String.format("%s", fBot.getText().toString()));
-
-                TextView fFooter1 = findViewById(R.id.rtText1);
-                TextView fFooter2 = findViewById(R.id.rtText4a);
-                TextView tFooter = findViewById(R.id.tvFooter);
-                tFooter.setText(String.format("%s    %s", fFooter1.getText().toString(), fFooter2.getText().toString()));
-            }
-        });
-    }
+//    private void updateView() {
+//
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.i(TAG, "run: UPDATE DASHBOARD VIEW");
+//                TextView fHeader1 = findViewById(R.id.rtText1a);
+//                TextView fHeader2 = findViewById(R.id.rtText8a);
+//                TextView tHeader1 = findViewById(R.id.tvHeader1);
+//                TextView tHeader2 = findViewById(R.id.tvHeader2);
+//
+//                //tHeader.setText(String.format("%s    %s", fHeader1.getText().toString(), fHeader2.getText().toString()));
+//
+//                TextView fTop1 = findViewById(R.id.textView1);
+//                TextView tTop1 = findViewById(R.id.tvTop);
+//                tTop1.setText(String.format("%s", fTop1.getText().toString()));
+//
+//                TextView fMid = findViewById(R.id.textView2);
+//                TextView tMid = findViewById(R.id.tvMiddle);
+//                tMid.setText(String.format("%s", fMid.getText().toString().substring(0, fMid.getText().toString().length() - 4)));
+//
+//                TextView fBot = findViewById(R.id.textView3);
+//                TextView tBot = findViewById(R.id.tvBottom);
+//                tBot.setText(String.format("%s", fBot.getText().toString()));
+//
+//                TextView fFooter1 = findViewById(R.id.rtText1);
+//                TextView fFooter2 = findViewById(R.id.rtText4a);
+//                TextView tFooter = findViewById(R.id.tvFooter);
+//                tFooter.setText(String.format("%s    %s", fFooter1.getText().toString(), fFooter2.getText().toString()));
+//            }
+//        });
+//    }
 
     private String oldHR = "START", oldSPD = "START", oldCAD = "START";
     private void veloTester1() {
@@ -1183,7 +1198,6 @@ public class MainActivity extends AppCompatActivity {
 
     private double totalWheelRevolutions = 0;
     private double totalTimeInSeconds = 0;
-//
     private double distanceAtStartOfPreviousRound = 0;
     private double secondsAtStartOfPreviousRound = 0;
 
@@ -1261,24 +1275,29 @@ public class MainActivity extends AppCompatActivity {
 //        Log.i(TAG, "onWheelMeasurementReceived: btAvgSpeed:  " + btAvgSpeed);
 //        Log.i(TAG, "onWheelMeasurementReceived: btElapsedTime: " + hms);
 
-        tim.btTotalDistance = totalDistance;
-        tim.btMovingTime = (long) wheelTimeInSeconds;
-        tim.btAvgSpeed = btAvgSpeed;
+//        tim.btTotalDistance = totalDistance;
+//        tim.btMovingTime = (long) wheelTimeInSeconds;
+//        tim.btAvgSpeed = btAvgSpeed;
 
-        final String btAvgPce = calcPace(speed);
+        tim.setBtSpeed(speed);
+        tim.setBtPace(calcPace(speed));
+        tim.setBtTotalDistance(totalDistance);
+        tim.setBtMovingTime((long) wheelTimeInSeconds);
+        tim.setBtAvgSpeed(btAvgSpeed);
+        tim.setBtAvgPace(calcPace(speed));
 
-        updateUI(tim.btTotalDistance, hms, tim.btAvgSpeed, btAvgPce);
+
+        //final String btAvgPce = calcPace(speed);
+
+        updateUI(tim.getBtTotalDistance(), tim.getBtMovingTimeString(), tim.getBtAvgSpeed(), tim.getBtAvgPace());
 
 
         Message msg = Message.obtain();
-        msg.obj = String.format("%.1f MPH", speed);
+        msg.obj = String.format(Locale.US,"%.1f MPH", tim.getBtSpeed());
         msg.what = 4;
         msg.setTarget(uiHandler);
         msg.sendToTarget();
 
-
-//        mLastWheelRevolutions = wheelRevolutionValue;
-//        mLastWheelEventTime = wheelRevolutionTimeValue;
 
 
         //END OF MILE CALC
@@ -1286,8 +1305,11 @@ public class MainActivity extends AppCompatActivity {
             //Log.i(TAG, "onWheelMeasurementReceived: end of mile calc");
             if (totalDistance > currentMileBT) {
                   endMileSpeedBT = 1 / (((double) localTimerSecCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
+                  valuesMiles.add(String.format("%d.  %s", currentMileBT, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedBT)));
                   currentMileBT += 1;
                   secondsAtEndOfMileBT = localTimerSecCounter;
+                //current round starts at 1
+
               }
           }
 
@@ -1341,10 +1363,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //updateUI(tim.btTotalDistance, tim.btMovingTime, tim.btAvgSpeed);
+
     private void updateUI(final double dist, final String btTime, final double avgSpd, final String rtPace) {
         final TextView foot2 = findViewById(R.id.tvFooter2);
-        final TextView head1 = findViewById(R.id.tvHeader);
+        final TextView head1 = findViewById(R.id.tvHeader1);
         final TextView head2 = findViewById(R.id.tvHeader2);
 
         final TextView bTime = findViewById(R.id.rtText1a);
@@ -1354,18 +1376,15 @@ public class MainActivity extends AppCompatActivity {
         final TextView bDist = findViewById(R.id.rtText4a);
 
         runOnUiThread(new Runnable() {
-            @SuppressLint("DefaultLocale")
             public void run() {
-                head1.setText(btTime);
+
                 bTime.setText(btTime);
-
-                head2.setText(String.format("%.1f MPH", avgSpd));
-                bAvgSp.setText(String.format("%.1f MPH", avgSpd));
+                bAvgSp.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
                 bAvgPc.setText(calcPace(avgSpd));
-
-                foot2.setText(String.format("%.1f MI", dist));
-                bDist.setText(String.format("%.1f MI", dist));
-
+                head1.setText(btTime);
+                foot2.setText(String.format(Locale.US,"%.1f MI", dist));
+                head2.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
+                bDist.setText(String.format(Locale.US,"%.1f MI", dist));
                 bPace.setText(rtPace);
 
             }
@@ -1420,8 +1439,7 @@ public class MainActivity extends AppCompatActivity {
         //Log.i("CAD", "CADENCE: " + cadence);
 
         Message msg = Message.obtain();
-        String caString = String.format("%.0f RPM", cadence);
-        msg.obj = caString;
+        msg.obj = String.format(Locale.US,"%.0f RPM", cadence);
         msg.what = 5;
         msg.setTarget(uiHandler);
         msg.sendToTarget();
@@ -1442,7 +1460,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getTimeStringFromMilli(long totalMilliseconds) {
-        @SuppressLint("DefaultLocale") final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(totalMilliseconds),
+        final String hms = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(totalMilliseconds),
                 TimeUnit.MILLISECONDS.toMinutes(totalMilliseconds) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(totalMilliseconds)),
                 TimeUnit.MILLISECONDS.toSeconds(totalMilliseconds) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalMilliseconds)));
         return hms;
@@ -1666,10 +1684,22 @@ public class MainActivity extends AppCompatActivity {
 
                         TextView rtText4b = findViewById(R.id.rtText4b);
                         rtText4b.setText(String.format("%.2f MI (G)", geoDistance));
+
+
+                        final TextView tMid = findViewById(R.id.tvMiddleGeo);
+                        tMid.setText(String.format("%s (G)", calcPace(geoSpeedQuick)));
+                        final TextView tBot = findViewById(R.id.tvBottomGeo);
+                        tBot.setText(String.format("%s (AVG)", calcPace(geoAvgSpeed)));
+                        final TextView foot2 = findViewById(R.id.tvFooter2Geo);
+                        foot2.setText(String.format("%.2f MI (G)", geoDistance));
+                        final TextView head2 = findViewById(R.id.tvHeader2Geo);
+                        head2.setText(String.format("%.1f AVG (G)", geoAvgSpeed));
+                        final TextView head1 = findViewById(R.id.tvHeader1Geo);
+                        head1.setText(String.format("%s  (G)", hms));
+
                     }
                 });
 
-//                mPrinter("geoAvgSpeed: " + geoAvgSpeed);
 
             }
 
@@ -1698,10 +1728,9 @@ private String calcPace(double mph) {
 
         double m = a * 60.0 * 1000.0;
         long mill = (long) m;
-    @SuppressLint("DefaultLocale") final String minutesPerMile = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mill),
+    final String minutesPerMile = String.format(Locale.US,"%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mill),
             TimeUnit.MILLISECONDS.toMinutes(mill) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mill)),
             TimeUnit.MILLISECONDS.toSeconds(mill) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mill)));
-
 
         return minutesPerMile;
 
@@ -2334,7 +2363,70 @@ private String calcPace(double mph) {
         builder.show();
     }
 
+    private ListView listView;
+    private String[] values2;
+
+    public void tlButton1_Click(View view) {
+
+        listView = findViewById(R.id.lv1);
+        // Defined Array values to show in ListView
+        String[] values = new String[] {
+                "Android List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View",
+                "Aaron's List View",
+                "Aaron's Adapter",
+                "Simple List View In Android",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View",
+                "Aaron's List View",
+                "Aaron's Adapter"
+        };
+
+        // Define a new Adapter
+        // First parameter - Context
+        // Second parameter - Layout for the row
+        // Third parameter - ID of the TextView to which the data is written
+        // Forth - the Array of data
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, valuesRounds);
+
+        // Assign adapter to ListView
+        listView.setAdapter(adapter);
+
+    }
+
+    public void tlButton2_Click(View view) {
+
+        values2 = new String[] {
+                "Aaron's List View",
+                "Aaron's Adapter",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter"
+        };
+
+        listView = findViewById(R.id.lv1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, valuesMiles);
+
+        listView.setAdapter(adapter);
 
 
-
+    }
 }
