@@ -6,11 +6,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by aaronep on 3/17/18.
- */
 
-public class Tim extends MainActivity {
+
+public class Tim {
 
     private static final String TAG = "TIM";
     public Calendar startTime;
@@ -25,15 +23,6 @@ public class Tim extends MainActivity {
     }
 
     public String getTotalTimeString() {
-
-//        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
-//        Long st = startTime.getTimeInMillis();
-//        Long nt = nowTime.getTimeInMillis();
-//        long millis_act = nt - st;
-//        String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
-//                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
-//                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
-//        Log.i(TAG, hms_act);
         return actualTotalTimeString;
     }
 
@@ -60,9 +49,6 @@ public class Tim extends MainActivity {
 
 
     //BT
-
-
-
     double btTotalWheelRevolutions = 0;
     double btTotalTimeInSeconds = 0;
 
