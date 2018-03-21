@@ -282,10 +282,11 @@ class Starter_VC: UITableViewController {
         
         //TODO  TEST PUSH/POST WITHOUT NETWORK...
         
-                    print("calling fbPushII")
-                    if rounds.speeds.last! > 0.1 {
-                        fbPushII()
-                    }
+        print("calling fbPushII")
+        fbPushII()
+//        if rounds.speeds.last! > 0.1 {
+//            fbPushII()
+//        }
         
         
         
