@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "454506348897",
+    "firebase_url": "https://virtualcrit-47b94.firebaseio.com",
+    "project_id": "virtualcrit-47b94",
+    "storage_bucket": "virtualcrit-47b94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454506348897:android:f66f971c5b240bb5",
+        "android_client_info": {
+          "package_name": "com.aaronep.andy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454506348897-9cmgithbitf1mc8vn2l8ilrr7nn10hs5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-qu6JlQV3MZzj4G7sjq6lfIdC3SplmpU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
