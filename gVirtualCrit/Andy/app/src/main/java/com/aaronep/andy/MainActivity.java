@@ -50,6 +50,12 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -535,10 +541,51 @@ public class MainActivity extends AppCompatActivity {
         //END TIMER
     }
 
+
+
+    private void readFromFB() {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        // Read from the database
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                Log.i(TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.i(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
+
+
+    }
+
+
     public void onClick_0(View view) {
-        Button b0 = findViewById(R.id.button0);
-        String on1 = "OFF";
-        b0.setText(on1);
+//        Button b0 = findViewById(R.id.button0);
+//        String on1 = "OFF";
+//        b0.setText(on1);
+
+        Log.i(TAG, "onClick_0: WRITE TO FB");
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+        myRef.setValue("Hello, World!");
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                readFromFB();
+            }
+        }, SCAN_PERIOD);
 
     }
 

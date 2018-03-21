@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "454506348897-bjaug7md3ehd4i3f83gq7fn6knr0vnvj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaronep.andy",
+            "certificate_hash": "13f7dba03bfdaf09108b96cbc66b27650f705455"
+          }
+        },
+        {
           "client_id": "454506348897-9cmgithbitf1mc8vn2l8ilrr7nn10hs5.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454506348897-9cmgithbitf1mc8vn2l8ilrr7nn10hs5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "454506348897-oakk941lqjdgs9l9se0bmv885ovv8c9d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aaronep.iVirtualCrit"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

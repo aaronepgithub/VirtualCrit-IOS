@@ -17,6 +17,13 @@ public class Tim {
     private long totalTimeInSeconds;
     private String actualTotalTimeString;
 
+    //FB ROUND OBJ
+    private double roundSpeed = 0;
+    private double roundHR = 0;
+    private double roundScore = 0;
+    private double roundCadence = 0;
+
+
     //ACTUAL TIME
     public long getTotalTimeInSeconds() {
         return totalTimeInSeconds;
