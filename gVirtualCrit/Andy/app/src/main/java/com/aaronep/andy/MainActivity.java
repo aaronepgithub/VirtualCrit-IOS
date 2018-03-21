@@ -236,11 +236,6 @@ public class MainActivity extends AppCompatActivity {
             mBluetoothAdapter = bluetoothManager.getAdapter();
         }
 
-        if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        }
-
 
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -280,7 +275,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         valuesRounds.add("Rounds Completed (Speeds)");
-        valuesMiles.add("Miles Completed (Speeds)");
+        valuesMiles.add("Miles Completed (Speeds)");  //BT
+        valuesMilesGeo.add("Miles Completed (Speeds (G))");  //GEO
 
     }
     //END ON_CREATE
@@ -308,8 +304,12 @@ public class MainActivity extends AppCompatActivity {
     private Boolean newRoundFlagGEO = false;
     private Boolean newRoundFlagBT = false;
 
+
+    //STRINGS USED FOR LISTS
     private ArrayList<String> valuesRounds = new ArrayList<>();
-    private ArrayList<String> valuesMiles = new ArrayList<>();
+    private ArrayList<String> valuesMiles = new ArrayList<>();  //BT
+    private ArrayList<String> valuesMilesGeo = new ArrayList<>();  //GEO
+
 
 
     private void onPowerOn() {
@@ -1596,6 +1596,7 @@ public class MainActivity extends AppCompatActivity {
                 if (timerSecondsCounter - secondsAtEndOfMileGeo > 10) {
                     if (geoDistance > currentMileGEO) {
                         endMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
+                        valuesMilesGeo.add(String.format("%d.  %s", currentMileGEO, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedGEO)));
                         currentMileGEO += 1;
                         secondsAtEndOfMileGeo = timerSecondsCounter;
                     }
