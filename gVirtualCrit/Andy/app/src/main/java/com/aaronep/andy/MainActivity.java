@@ -545,18 +545,47 @@ public class MainActivity extends AppCompatActivity {
 
     private void readFromFB() {
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        Log.i(TAG, "readFromFB");
 
-        // Read from the database
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//
+//        // Read from the database
+//
+//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.i(TAG, "Value is: " + value);
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                    // Failed to read value
+//                    Log.i(TAG, "Failed to read value.", databaseError.toException());
+//            }
+//        });
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        //READ TOTALS
+        //TODO:  GET DATE FORMATTED
+        String totalsURL = "totals/20180322";
+        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+        mDatabaseTotals.limitToLast(10).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                Log.i(TAG, "Value is: " + value);
+                Log.i(TAG, "onDataChange");
+                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                ArrayList<String> names= new ArrayList<>();
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String name = ds.child("fb_timName").getValue(String.class);
+                    Double score = ds.child("fb_scoreHRTotal").getValue(Double.class);
+                    names.add(name);
+                    Log.i("FB", name);
+                    Log.i("FB", String.valueOf(score));
+                }  //COMPLETED - READING EACH SNAP
+                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
+                    Log.i(TAG, "onDataChange: (name) " + name);
+                }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
@@ -565,7 +594,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        
+
+//        mDatabaseTotals.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Log.i(TAG, "onDataChange");
+//                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+//                ArrayList<String> names= new ArrayList<>();
+//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    String name = ds.child("fb_timName").getValue(String.class);
+//                    Double score = ds.child("fb_scoreHRTotal").getValue(Double.class);
+//                    names.add(name);
+//                    Log.i("FB", name);
+//                    Log.i("FB", String.valueOf(score));
+//                }  //COMPLETED - READING EACH SNAP
+//                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
+//                    Log.i(TAG, "onDataChange: (name) " + name);
+//                }
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                    // Failed to read value
+//                    Log.i(TAG, "Failed to read value.", databaseError.toException());
+//            }
+//        });
+
+        //END READ TOTALS
+
+
     }
+
+
 
 
     public void onClick_0(View view) {
@@ -573,19 +633,43 @@ public class MainActivity extends AppCompatActivity {
 //        String on1 = "OFF";
 //        b0.setText(on1);
 
-        Log.i(TAG, "onClick_0: WRITE TO FB");
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
+        Log.i(TAG, "onClick_0: WRITE TO FB");
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//        myRef.setValue("Hello, World!");
 
+        //WRITE END OF ROUND DATA
+        //TODO:  GET DATE FORMATTED
+        String roundURL = "rounds/20180322";
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
+// Creating new user node, which returns the unique key value
+// new user node would be /users/$userid/
+        String userId = mDatabase.push().getKey();
+// creating user object
+        Round round = new Round("aaron2", 10.0);
+// pushing user to 'users' node using the userId
+        mDatabase.child(userId).setValue(round);
+
+
+        //WRITE TOTAL DATA
+        //TODO:  GET DATE FORMATTED
+        String totalsURL = "totals/20180322/aaron3";
+        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+        Total total = new Total("aaron3", 50.0);
+        mDatabaseTotals.setValue(total);
+
+
+
+
+        //READ FROM FB
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 readFromFB();
             }
-        }, SCAN_PERIOD);
+        }, 10000);
 
     }
 
