@@ -12,13 +12,62 @@ public class Tim {
 
     private static final String TAG = "TIM";
     public Calendar startTime;
-
+    public String currentDate;
     public String name;
     private long totalTimeInSeconds;
     private String actualTotalTimeString;
 
     //FB ROUND OBJ
     private double roundSpeed = 0;
+
+    public double getRoundSpeed() {
+        return roundSpeed;
+    }
+
+    public void setRoundSpeed(double roundSpeed) {
+        this.roundSpeed = roundSpeed;
+    }
+
+    public double getRoundHR() {
+        return roundHR;
+    }
+
+    public void setRoundHR(double roundHR) {
+        //roundScore = (roundHR / 185.0) * 100;
+        setRoundScore((roundHR / 185.0) * 100);
+        this.roundHR = roundHR;
+    }
+
+    public double totalAvgSpeed = 0;
+    public double getTotalAvgSpeed() {
+
+        if (btAvgSpeed == 0 && geoAvgSpeed == 0) {
+            return 0;
+        }
+
+        if (btAvgSpeed > geoAvgSpeed) {
+            return btAvgSpeed;
+        } else {
+            return geoAvgSpeed;
+        }
+    }
+
+    public double getRoundScore() {
+        return roundScore;
+    }
+
+    public void setRoundScore(double roundScore) {
+        this.roundScore = roundScore;
+    }
+
+    public double getRoundCadence() {
+        return roundCadence;
+    }
+
+    public void setRoundCadence(double roundCadence) {
+        this.roundCadence = roundCadence;
+    }
+
     private double roundHR = 0;
     private double roundScore = 0;
     private double roundCadence = 0;
@@ -58,15 +107,15 @@ public class Tim {
     //BT
     double btTotalWheelRevolutions = 0;
     double btTotalTimeInSeconds = 0;
-    double btTotalDistance;
-    double btAvgSpeed;
+    double btTotalDistance = 0;
+    double btAvgSpeed = 0;
     String btAvgPace;
-    double btSpeed;
+    double btSpeed = 0;
     String btPace;
 
     //GEO
-    double geoTotalDistance;
-    double geoAvgSpeed;
+    double geoTotalDistance = 0;
+    double geoAvgSpeed = 0;
     long geoMovingTime;
 
 

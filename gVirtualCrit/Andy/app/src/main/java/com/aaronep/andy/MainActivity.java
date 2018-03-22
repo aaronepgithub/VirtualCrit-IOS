@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -71,8 +72,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnInitListener {
 
+    private TextToSpeech engine;
     private TextView mTextMessage;
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -213,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
         tim = new Tim("TIM");
         Log.i(TAG, "onCreate: tim.name:  " + tim.name);
 
+        engine = new TextToSpeech(this, this);
+
 
         mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -234,8 +238,16 @@ public class MainActivity extends AppCompatActivity {
 
         onPowerOn();
 
-        //START BT SETUP
+
+        int yearInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
+        int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
+        int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
+        tim.currentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
+        Log.i(TAG, "onCreate: currentDate  " + tim.currentDate);
+
+
         //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
+        //START BT SETUP
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         if (bluetoothManager != null) {
@@ -260,13 +272,15 @@ public class MainActivity extends AppCompatActivity {
                     .setServiceUuid(ParcelUuid.fromString("00001816-0000-1000-8000-00805f9b34fb"))
                     .build();
             filters.add(scanFilter2);
-
-
         }
+        //END BT SETUP
+        //COMMENT TO HERE FOR EMULATOR
 
-        //TODO:  DISABLE TO LAUNCH ON EMULATOR
+        //TODO:  DISABLE TO LAUNCH ON EMULATOR??
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
-        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("This app needs location access");
             builder.setMessage("Please grant location access so this app can detect peripherals.");
@@ -274,15 +288,31 @@ public class MainActivity extends AppCompatActivity {
             builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
                 }
             });
             builder.show();
         }
 
+//        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("This app needs location access");
+//            builder.setMessage("Please grant location access so this app can detect peripherals.");
+//            builder.setPositiveButton(android.R.string.ok, null);
+//            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+//                }
+//            });
+//            builder.show();
+//        }
+
         valuesRounds.add("Rounds Completed (Speeds)");
         valuesMiles.add("Miles Completed (Speeds)");  //BT
         valuesMilesGeo.add("Miles Completed (Speeds (G))");  //GEO
+        valuesRoundLeaders.add("Round Leaders (Speeds)");
+        valuesTotalsLeaders.add("Total Leaders (Speeds)");
 
     }
     //END ON_CREATE
@@ -316,12 +346,37 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> valuesMiles = new ArrayList<>();  //BT
     private ArrayList<String> valuesMilesGeo = new ArrayList<>();  //GEO
 
+    private ArrayList<String> valuesRoundLeaders = new ArrayList<>();
+    private ArrayList<String> valuesTotalsLeaders = new ArrayList<>();
+
+
+
+    public void speakText(TimerTask v, String st) {
+
+//        String textContents = "Hi Kazumi, Let's get Started";
+        String textContents = st;
+        engine.speak(textContents, TextToSpeech.QUEUE_FLUSH, null, null);
+
+    }
+
+    @Override
+    public void onInit(int i) {
+
+
+        if (i == TextToSpeech.SUCCESS) {
+            //Setting speech Language
+            engine.setLanguage(Locale.ENGLISH);
+            engine.setPitch(1);
+        }
+    }
+
 
 
     private void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
         String on1 = "ON";
         b0.setText(on1);
+
 
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -337,22 +392,7 @@ public class MainActivity extends AppCompatActivity {
                   tim.setTotalTimeInSeconds(timerSecondsCounter);
 
 
-//                  if (Looper.myLooper() == Looper.getMainLooper()) {
-//                      Log.i(TAG, "run: ON THE MAIN THREAD");
-//                      TextView tvAt = findViewById(R.id.rtText1);
-//                      tvAt.setText(String.format("%s  (ACT)", tim.getTotalTimeString()));
-//                  } else {
-//                      //Log.i(TAG, "NOT ON THE MAIN THREAD");
-//                      runOnUiThread(new Runnable() {
-//                      @Override
-//                      public void run() {
-//                          TextView tvAt = findViewById(R.id.rtText1);
-//                          tvAt.setText(String.format("%s  (ACT)", tim.getTotalTimeString()));
-//                          }
-//                      });
-//                  }
-
-                    Message msg = Message.obtain();
+                  Message msg = Message.obtain();
                   msg.obj = tim.getTotalTimeString();
                     msg.what = 0;
                     msg.setTarget(uiHandler);
@@ -363,6 +403,9 @@ public class MainActivity extends AppCompatActivity {
                       if (timerSecondsCounter % 35 == 0) {veloTester2();}
                   }
 
+//                  if (timerSecondsCounter == 5) {
+//                      speakText(this);
+//                  }
 
                   //START END OF ROUND LOGIC
 
@@ -388,10 +431,19 @@ public class MainActivity extends AppCompatActivity {
 
                       Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
                       valuesRounds.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.2f MPH", currentRoundSpeed)));
-                      currentRound += 1;
+                      tim.setRoundSpeed(currentRoundSpeed);
 
+                      //WRITE TO FB AT ROUND END
+                      Log.i(TAG, "currentRoundSpeed  " + currentRoundSpeed);
+                      Log.i(TAG, "tim.getRoundSpeed  " + tim.getRoundSpeed());
+                      Log.i(TAG, "CALLING writeToFB()");
+                      writeToFB();
+
+                      currentRound += 1;
                       newRoundFlagBT = true;
                       newRoundFlagGEO = true;
+
+
 
 
                       //DETERMINE BEST AND LAST
@@ -401,6 +453,14 @@ public class MainActivity extends AppCompatActivity {
                           bestRoundMPH = currentRoundSpeed;
                       }
                       bestRoundSpeed = bestRoundMPH;
+
+
+
+                      String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f MPH", currentRoundSpeed);
+                      String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed);
+
+                      speakText(this, toSpeak1 + toSpeak2);
+
 
 
                       final double finalBestRoundSpeed = bestRoundSpeed;
@@ -417,9 +477,6 @@ public class MainActivity extends AppCompatActivity {
                           t7c.setText(String.format(Locale.US,"%.1f MPH", finalBestRoundSpeed));
                           }
                       });
-
-
-
                   }
 
                   //END ROUND LOGIC
@@ -523,16 +580,13 @@ public class MainActivity extends AppCompatActivity {
 
                           TextView t37 = findViewById(R.id.rtText7a);
                           t37.setText(String.format(Locale.US,"%.1f MPH", currentRoundSpeed));
-
-
                       }
                   });
 
-
-
-
                   //UPDATE DATA
                   //updateView();
+
+
 
 
                                       }
@@ -542,134 +596,142 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private TextToSpeech t1;
 
-    private void readFromFB() {
-
-        Log.i(TAG, "readFromFB");
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("message");
-//
-//        // Read from the database
-//
-//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.i(TAG, "Value is: " + value);
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                    // Failed to read value
-//                    Log.i(TAG, "Failed to read value.", databaseError.toException());
-//            }
-//        });
-
-        //READ TOTALS
-        //TODO:  GET DATE FORMATTED
-        String totalsURL = "totals/20180322";
-        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
-        mDatabaseTotals.limitToLast(10).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange");
-                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
-                ArrayList<String> names= new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String name = ds.child("fb_timName").getValue(String.class);
-                    Double score = ds.child("fb_scoreHRTotal").getValue(Double.class);
-                    names.add(name);
-                    Log.i("FB", name);
-                    Log.i("FB", String.valueOf(score));
-                }  //COMPLETED - READING EACH SNAP
-                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
-                    Log.i(TAG, "onDataChange: (name) " + name);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.i(TAG, "Failed to read value.", databaseError.toException());
-            }
-        });
-
-
-        
-
-//        mDatabaseTotals.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.i(TAG, "onDataChange");
-//                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
-//                ArrayList<String> names= new ArrayList<>();
-//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    String name = ds.child("fb_timName").getValue(String.class);
-//                    Double score = ds.child("fb_scoreHRTotal").getValue(Double.class);
-//                    names.add(name);
-//                    Log.i("FB", name);
-//                    Log.i("FB", String.valueOf(score));
-//                }  //COMPLETED - READING EACH SNAP
-//                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
-//                    Log.i(TAG, "onDataChange: (name) " + name);
-//                }
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                    // Failed to read value
-//                    Log.i(TAG, "Failed to read value.", databaseError.toException());
-//            }
-//        });
-
-        //END READ TOTALS
-
-
-    }
-
-
-
-
-    public void onClick_0(View view) {
-//        Button b0 = findViewById(R.id.button0);
-//        String on1 = "OFF";
-//        b0.setText(on1);
-
-        // Write a message to the database
-        Log.i(TAG, "onClick_0: WRITE TO FB");
+    private void writeToFB() {
+        Log.i(TAG, "WRITE TO FB");
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference myRef = database.getReference("message");
 //        myRef.setValue("Hello, World!");
 
         //WRITE END OF ROUND DATA
         //TODO:  GET DATE FORMATTED
-        String roundURL = "rounds/20180322";
+//        String roundURL = "rounds/20180322";
+        String roundURL = "rounds/" + tim.currentDate;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
 // Creating new user node, which returns the unique key value
 // new user node would be /users/$userid/
         String userId = mDatabase.push().getKey();
 // creating user object
-        Round round = new Round("aaron2", 10.0);
+        Round round = new Round(tim.getName(), tim.getRoundSpeed());
+        Log.i(TAG, "writeToFB: getRoundSpeed" + tim.getRoundSpeed());
 // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
 
 
-        //WRITE TOTAL DATA
+        //WRITE UPDATE TOTAL DATA
         //TODO:  GET DATE FORMATTED
-        String totalsURL = "totals/20180322/aaron3";
+        String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
-        Total total = new Total("aaron3", 50.0);
+        Total total = new Total(tim.getName(), 50.0, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
+
+    }
+
+    private void readFromFB() {
+
+        Log.i(TAG, "READ FROM FB");
+
+
+        //READ TOTALS
+        //TODO:  GET DATE FORMATTED
+        String totalsURL = "totals/" + tim.currentDate;
+        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+        mDatabaseTotals.limitToLast(5).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange - TOTALS");
+                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                ArrayList<String> names= new ArrayList<>();
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String name = ds.child("fb_timName").getValue(String.class);
+                    Double speed = ds.child("a_speedTotal").getValue(Double.class);
+                    names.add(name);
+                    Log.i("FB", name);
+                    Log.i("FB", String.valueOf(speed));
+                    valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    Log.i(TAG, "*****");
+                }  //COMPLETED - READING EACH SNAP
+                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
+                    //Log.i(TAG, "onDataChange: (name) " + name);
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.i(TAG, "Failed to read value - totals.", databaseError.toException());
+            }
+        });
+        //END READ TOTALS
+
+        //START READ ROUNDS
+//        String roundsURL = "rounds/20180322";
+        String roundsURL = "rounds";
+        DatabaseReference mDatabaseRounds = FirebaseDatabase.getInstance().getReference(roundsURL);
+        mDatabaseRounds.child(tim.currentDate).limitToLast(5).orderByChild("fb_SPD").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange - ROUNDS");
+                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                ArrayList<String> names= new ArrayList<>();
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String name = ds.child("fb_timName").getValue(String.class);
+                    Double speed = ds.child("fb_SPD").getValue(Double.class);
+                    names.add(name);
+                    Log.i("FB", name);
+                    Log.i("FB", String.valueOf(speed));
+                    valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    Log.i(TAG, "*****");
+                }  //COMPLETED - READING EACH SNAP
+                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
+                    //Log.i(TAG, "onDataChange: (name) " + name);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+            }
+        });
+        //END READ ROUNDS
+    }
+
+
+
+
+
+
+    //private Boolean toggleClick0 = true;
+    public void onClick_0(View view) {
+
+        Button b0 = findViewById(R.id.button0);
+//        String on1 = "OFF";
+//        b0.setText(on1);
+
+        readFromFB();
+
+//        if (toggleClick0) {
+//            b0.setText("READ");
+//            writeToFB();
+//            toggleClick0 = false;
+//        } else {
+//            b0.setText("WRITE");
+//            readFromFB();
+//            toggleClick0 = true;
+//        }
 
 
 
 
         //READ FROM FB
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                readFromFB();
-            }
-        }, 10000);
+//        Handler mHandler = new Handler();
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                readFromFB();
+//            }
+//        }, 10000);
 
     }
 
@@ -1405,7 +1467,7 @@ public class MainActivity extends AppCompatActivity {
         final String hms = getTimeStringFromMilli(millis);
 
         final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
-
+        tim.setBtAvgSpeed(btAvgSpeed);
 //        Log.i(TAG, "onWheelMeasurementReceived: btAvgSpeed:  " + btAvgSpeed);
 //        Log.i(TAG, "onWheelMeasurementReceived: btElapsedTime: " + hms);
 
@@ -1771,6 +1833,7 @@ public class MainActivity extends AppCompatActivity {
 
                 double ttg = totalTimeGeo;  //IN MILLI
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+                tim.setGeoAvgSpeed(geoAvgSpeed);
 
                 long millis = totalTimeGeo;
                 @SuppressLint("DefaultLocale") final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
@@ -2470,6 +2533,7 @@ private String calcPace(double mph) {
                 userName = input.getText().toString().toUpperCase();
                 Button b = findViewById(R.id.button50b);
                 b.setText(userName);
+                tim.setName(userName);
 
                 try {
                     getSupportActionBar().setTitle("VIRTUAL CRIT (" + userName + ")");
@@ -2504,30 +2568,31 @@ private String calcPace(double mph) {
     }
 
     private ListView listView;
-    private String[] values2;
+//    private String[] values2;
 
+    private Integer lvToggle = 0;
     public void tlButton1_Click(View view) {
 
         listView = findViewById(R.id.lv1);
         // Defined Array values to show in ListView
-        String[] values = new String[] {
-                "Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View",
-                "Aaron's List View",
-                "Aaron's Adapter",
-                "Simple List View In Android",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View",
-                "Aaron's List View",
-                "Aaron's Adapter"
-        };
+//        String[] values = new String[] {
+//                "Android List View",
+//                "Adapter implementation",
+//                "Simple List View In Android",
+//                "Create List View Android",
+//                "Android Example",
+//                "List View Source Code",
+//                "List View Array Adapter",
+//                "Android Example List View",
+//                "Aaron's List View",
+//                "Aaron's Adapter",
+//                "Simple List View In Android",
+//                "List View Source Code",
+//                "List View Array Adapter",
+//                "Android Example List View",
+//                "Aaron's List View",
+//                "Aaron's Adapter"
+//        };
 
         // Define a new Adapter
         // First parameter - Context
@@ -2535,31 +2600,56 @@ private String calcPace(double mph) {
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, valuesRounds);
+
+        switch (lvToggle) {
+            case 0: {
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, valuesRounds);
+                listView.setAdapter(adapter);
+                lvToggle = 1;
+                break;
+            }
+            case 1: {
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, valuesRoundLeaders);
+                listView.setAdapter(adapter);
+                lvToggle = 2;
+                break;
+            }
+            case 2: {
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, valuesTotalsLeaders);
+                listView.setAdapter(adapter);
+                lvToggle = 0;
+                break;
+            }
+        }
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, valuesRounds);
 
         // Assign adapter to ListView
-        listView.setAdapter(adapter);
+//        listView.setAdapter(adapter);
 
     }
 
     public void tlButton2_Click(View view) {
 
-        values2 = new String[] {
-                "Aaron's List View",
-                "Aaron's Adapter",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter"
-        };
+//        values2 = new String[] {
+//                "Aaron's List View",
+//                "Aaron's Adapter",
+//                "Simple List View In Android",
+//                "Create List View Android",
+//                "Android Example",
+//                "List View Source Code",
+//                "List View Array Adapter",
+//                "Android Example List View",
+//                "Simple List View In Android",
+//                "Create List View Android",
+//                "Android Example",
+//                "List View Source Code",
+//                "List View Array Adapter"
+//        };
 
         listView = findViewById(R.id.lv1);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -2567,6 +2657,16 @@ private String calcPace(double mph) {
 
         listView.setAdapter(adapter);
 
+
+    }
+
+    public void tlButton3_Click(View view) {
+
+        listView = findViewById(R.id.lv1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, valuesMilesGeo);
+
+        listView.setAdapter(adapter);
 
     }
 }

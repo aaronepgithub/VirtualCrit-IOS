@@ -39,26 +39,27 @@ public class Total {
     public Total() {
     }
 
-    public Total(String fb_timName, Double a_scoreHRTotal) {
+    public Total(String fb_timName, Double a_scoreHRTotal, Double a_speedTotal) {
 
         this.fb_timName = fb_timName;
         this.a_scoreHRTotal = a_scoreHRTotal;
+        this.a_speedTotal = a_speedTotal;
 
         this.a_calcDurationPost = "1";
         this.a_scoreHRRoundLast = 1.0;
-        this.a_speedLast = 1.0;
-        this.a_speedTotal = 1.0;
+        this.a_speedLast = a_speedTotal;
+
         this.fb_Date = 1;
         this.fb_DateNow = 1;
         this.fb_maxHRTotal = 1;
         this.fb_scoreHRRoundLast = 1.0;
         this.fb_scoreHRTotal = 1.0;
         this.fb_timAvgCADtotal = 1.0;
-        this.fb_timAvgSPDtotal = 1.0;
+        this.fb_timAvgSPDtotal = a_speedTotal;
         this.fb_timDistanceTraveled = 1.0;
-        this.fb_timGroup = "group";
-        this.fb_timLastSPD = 1.0;
-        this.fb_timTeam = "team";
+        this.fb_timGroup = "ANDY";
+        this.fb_timLastSPD = a_speedTotal;
+        this.fb_timTeam = "Square Pizza";
     }
 
 }

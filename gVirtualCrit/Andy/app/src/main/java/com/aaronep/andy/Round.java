@@ -43,13 +43,13 @@ public class Round {
 
         this.a_calcDurationPost = 1;
         this.a_scoreRoundLast = 1.0;
-        this.a_speedRoundLast = 1.0;
+        this.a_speedRoundLast = fb_RND;
 
         this.fb_RND = fb_RND;
         this.fb_timName = fb_timName;
 
-        this.fb_timGroup = "tester";
-        this.fb_timTeam = "tester";
+        this.fb_timGroup = "ANDY";
+        this.fb_timTeam = "Square Pizza";
         this.fb_CAD = 1.0;
         this.fb_Date = 20180322;
         this.fb_DateNow = 20180322;
@@ -58,8 +58,8 @@ public class Round {
         this.fb_scoreHRRound = 1.0;
         this.fb_scoreHRRoundLast = 1.0;
         this.fb_scoreHRTotal = 1.0;
-        this.fb_SPD = 1.0;
-        this.fb_timAvgSPDtotal = 1.0;
+        this.fb_SPD = fb_RND;
+        this.fb_timAvgSPDtotal = fb_RND;
         this.fb_timAvgCADtotal = 1.0;
         this.fb_timAvgHRtotal = 1.0;
         this.fb_timDistanceTraveled = 1.0;
