@@ -632,14 +632,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //TODO:  GET DATE FORMATTED
         String totalsURL = "totals/" + tim.currentDate;
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
-        mDatabaseTotals.limitToLast(5).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseTotals.limitToLast(15).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "onDataChange - TOTALS");
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesTotalsLeaders.clear();
-                valuesTotalsLeaders.add("Total Leaders (Speeds)");
+
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("a_speedTotal").getValue(Double.class);
@@ -649,6 +649,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
+                valuesTotalsLeaders.add("Total Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
 
@@ -671,14 +672,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //        String roundsURL = "rounds/20180322";
         String roundsURL = "rounds";
         DatabaseReference mDatabaseRounds = FirebaseDatabase.getInstance().getReference(roundsURL);
-        mDatabaseRounds.child(tim.currentDate).limitToLast(5).orderByChild("fb_SPD").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_SPD").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "onDataChange - ROUNDS");
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeaders.clear();
-                valuesRoundLeaders.add("Round Leaders (Speeds)");
+
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("fb_SPD").getValue(Double.class);
@@ -688,6 +689,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
+                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
                 }
