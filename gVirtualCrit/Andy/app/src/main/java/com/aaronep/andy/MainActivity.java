@@ -354,8 +354,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     public void speakText(TimerTask v, String st) {
 
 //        String textContents = "Hi Kazumi, Let's get Started";
-        String textContents = st;
-        engine.speak(textContents, TextToSpeech.QUEUE_FLUSH, null, null);
+        engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
 
     }
 
@@ -403,9 +402,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       if (timerSecondsCounter % 35 == 0) {veloTester2();}
                   }
 
-//                  if (timerSecondsCounter == 5) {
-//                      speakText(this);
-//                  }
+
 
                   //START END OF ROUND LOGIC
 
@@ -459,7 +456,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f MPH", currentRoundSpeed);
                       String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed);
 
-                      speakText(this, toSpeak1 + toSpeak2);
+                      //speakText(this, toSpeak1 + toSpeak2);
 
 
 
@@ -628,10 +625,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     }
 
-    private void readFromFB() {
-
-        Log.i(TAG, "READ FROM FB");
-
+    private void readFromFBII() {
+        Log.i(TAG, "READ FROM FBII - TOTALS");
 
         //READ TOTALS
         //TODO:  GET DATE FORMATTED
@@ -659,11 +654,21 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.i(TAG, "Failed to read value - totals.", databaseError.toException());
+                // Failed to read value
+                Log.i(TAG, "Failed to read value - totals.", databaseError.toException());
             }
         });
         //END READ TOTALS
+
+
+    }
+
+    private void readFromFB() {
+
+        Log.i(TAG, "READ FROM FB");
+
+
+
 
         //START READ ROUNDS
 //        String roundsURL = "rounds/20180322";
@@ -695,6 +700,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             }
         });
         //END READ ROUNDS
+
+        //READ FROM FB
+//        Handler mHandler = new Handler();
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                readFromFB();
+//            }
+//        }, 10000);
+
+
     }
 
 
@@ -1315,7 +1331,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 
             if (CSC_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
-                Log.i(TAG, "onCharacteristicChanged: CSC");
+                //Log.i(TAG, "onCharacteristicChanged: CSC");
 
                 final int flags = characteristic.getValue()[0]; // 1 byte
                 final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
@@ -1337,8 +1353,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    });
 
 
-                    Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
-                    Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
+                    //Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
+                    //Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
                     onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
 
 //                    Message msg = Message.obtain();
@@ -1352,7 +1368,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
-                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
                         onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
 //                        Message msg2 = Message.obtain();
 //                        msg2.obj = cumulativeCrankRevolutions + " C";
@@ -1366,7 +1382,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
-                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
                         onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
                     }
                 }
@@ -1399,7 +1415,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     //CSC ADVANCED CALC
     private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
-        Log.i(TAG, "onWheelMeasurementReceived:  START");
+        //Log.i(TAG, "onWheelMeasurementReceived:  START");
         final int localTimerSecCounter = timerSecondsCounter;
         
         if (mFirstWheelRevolutions < 0) {
@@ -1458,9 +1474,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         final double speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;  //MPH CURRENT
         final double totalDistance = totalWheelRevolutions * wheelCircumferenceCM * cmPerMi;
 
-        Log.i(TAG, "onWheelMeasurementReceived: speed: " + speed);
-        Log.i(TAG, "onWheelMeasurementReceived: totalDistance: " + totalDistance);
-        Log.i(TAG, "onWheelMeasurementReceived: calc totaltimeBT and avgSpeedBT");
+//        Log.i(TAG, "onWheelMeasurementReceived: speed: " + speed);
+//        Log.i(TAG, "onWheelMeasurementReceived: totalDistance: " + totalDistance);
+//        Log.i(TAG, "onWheelMeasurementReceived: calc totaltimeBT and avgSpeedBT");
 
 
         final long millis = (long) totalTimeInSeconds * 1000;
@@ -1536,7 +1552,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         double elapsedSecondsInCurrentRound = (double) localTimerSecCounter - secondsAtStartOfPreviousRound;
         double currentRoundSpeedMPH = 0;
         if (elapsedSecondsInCurrentRound > 5) {
-            Log.i(TAG, "onWheelMeasurementReceived: calc roundspeedBT");
+            //Log.i(TAG, "onWheelMeasurementReceived: calc roundspeedBT");
             currentRoundSpeedMPH = distanceDuringCurrentRound / (elapsedSecondsInCurrentRound / 60.0 / 60.0);
         }
         currentRoundSpeedBT = currentRoundSpeedMPH;
@@ -1553,7 +1569,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
 
-        Log.i(TAG, "onWheelMeasurementReceived:  END");
+        //Log.i(TAG, "onWheelMeasurementReceived:  END");
 
     }
 
