@@ -61,6 +61,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -403,7 +404,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   }
 
 
-
                   //START END OF ROUND LOGIC
 
 //                  if (timerSecondsCounter == reconnectFlag) {
@@ -432,8 +432,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                       //WRITE TO FB AT ROUND END
                       Log.i(TAG, "currentRoundSpeed  " + currentRoundSpeed);
-                      Log.i(TAG, "tim.getRoundSpeed  " + tim.getRoundSpeed());
-                      Log.i(TAG, "CALLING writeToFB()");
+                      //Log.i(TAG, "tim.getRoundSpeed  " + tim.getRoundSpeed());
                       writeToFB();
 
                       currentRound += 1;
@@ -456,7 +455,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f MPH", currentRoundSpeed);
                       String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed);
 
-                      //speakText(this, toSpeak1 + toSpeak2);
+                      speakText(this, toSpeak1 + toSpeak2);
 
 
 
@@ -474,6 +473,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           t7c.setText(String.format(Locale.US,"%.1f MPH", finalBestRoundSpeed));
                           }
                       });
+
                   }
 
                   //END ROUND LOGIC
@@ -611,7 +611,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String userId = mDatabase.push().getKey();
 // creating user object
         Round round = new Round(tim.getName(), tim.getRoundSpeed());
-        Log.i(TAG, "writeToFB: getRoundSpeed" + tim.getRoundSpeed());
+        Log.i(TAG, "writeToFB/ROUND" + tim.getRoundSpeed());
 // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
 
@@ -620,6 +620,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //TODO:  GET DATE FORMATTED
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+        Log.i(TAG, "writeToFB/TOTAL" + tim.getTotalAvgSpeed());
         Total total = new Total(tim.getName(), 50.0, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
 
@@ -627,7 +628,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     private void readFromFBII() {
         Log.i(TAG, "READ FROM FBII - TOTALS");
-
         //READ TOTALS
         //TODO:  GET DATE FORMATTED
         String totalsURL = "totals/" + tim.currentDate;
@@ -638,14 +638,16 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 Log.i(TAG, "onDataChange - TOTALS");
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
+                valuesTotalsLeaders.clear();
+                valuesTotalsLeaders.add("Total Leaders (Speeds)");
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("a_speedTotal").getValue(Double.class);
                     names.add(name);
-                    Log.i("FB", name);
-                    Log.i("FB", String.valueOf(speed));
+                    //Log.i("FB", name);
+                    //Log.i("FB", String.valueOf(speed));
                     valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    Log.i(TAG, "*****");
+                    Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
@@ -664,12 +666,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     }
 
     private void readFromFB() {
-
-        Log.i(TAG, "READ FROM FB");
-
-
-
-
+        Log.i(TAG, "READ FROM FB/ROUNDS");
         //START READ ROUNDS
 //        String roundsURL = "rounds/20180322";
         String roundsURL = "rounds";
@@ -680,14 +677,16 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 Log.i(TAG, "onDataChange - ROUNDS");
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
+                valuesRoundLeaders.clear();
+                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("fb_SPD").getValue(Double.class);
                     names.add(name);
-                    Log.i("FB", name);
-                    Log.i("FB", String.valueOf(speed));
+//                    Log.i("FB", name);
+//                    Log.i("FB", String.valueOf(speed));
                     valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    Log.i(TAG, "*****");
+                    Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
@@ -789,7 +788,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private void veloTester1() {
         //TEST FOR 0, SPD/CAD
         //SET TEXTVIEW TO "0", VELO
-        Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
+        //Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
 
         runOnUiThread(new Runnable() {
             @Override
@@ -816,7 +815,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private void veloTester2() {
         //TEST FOR 0, HR
         //SET TEXTVIEW TO "0", VELO
-        Log.i("TIMER", "TEST FOR 0 VAL HR");
+        //Log.i("TIMER", "TEST FOR 0 VAL HR");
 
         runOnUiThread(new Runnable() {
             @Override
@@ -836,7 +835,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.i("SPD", "RESET SPD");
+                //Log.i("SPD", "RESET SPD");
                 TextView t1 = findViewById(R.id.textView2);
                 String s1x = "0.0 MPH";
                 t1.setText(s1x);
@@ -847,7 +846,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.i("HR", "RESET HR");
+                //Log.i("HR", "RESET HR");
                 TextView t1 = findViewById(R.id.textView1);
                 String s1x = "0 BPM";
                 t1.setText(s1x);
@@ -858,7 +857,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.i("CAD", "RESET CAD");
+                //Log.i("CAD", "RESET CAD");
                 TextView t1 = findViewById(R.id.textView3);
                 String s1x = "0 RPM";
                 t1.setText(s1x);
@@ -1857,7 +1856,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
 
 
-                mPrinter("ELAPSED TIME (GEO): " + hms);
+                //mPrinter("ELAPSED TIME (GEO): " + hms);
 
                 //START ROUND CALC
                 double distanceDuringCurrentRoundGeo = geoDistance - distanceAtStartOfPreviousRoundGeo;
@@ -2568,6 +2567,7 @@ private String calcPace(double mph) {
                 userName = userName + i1;
                 Button b = findViewById(R.id.button50b);
                 b.setText(userName);
+                tim.setName(userName);
 
                 try {
                     getSupportActionBar().setTitle("VIRTUAL CRIT (" + userName + ")");
@@ -2619,6 +2619,7 @@ private String calcPace(double mph) {
 
         switch (lvToggle) {
             case 0: {
+                readFromFB();
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, valuesRounds);
                 listView.setAdapter(adapter);
@@ -2626,6 +2627,8 @@ private String calcPace(double mph) {
                 break;
             }
             case 1: {
+                readFromFBII();
+                Collections.reverse(valuesRoundLeaders);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, valuesRoundLeaders);
                 listView.setAdapter(adapter);
@@ -2633,6 +2636,7 @@ private String calcPace(double mph) {
                 break;
             }
             case 2: {
+                Collections.reverse(valuesTotalsLeaders);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, valuesTotalsLeaders);
                 listView.setAdapter(adapter);

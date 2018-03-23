@@ -125,7 +125,7 @@ public class Tim {
         this.name = name;
     }
     public String getName() {
-        Log.i(TAG, "getName: name: " + name);
+        //Log.i(TAG, "getName: name: " + name);
         return name;
     }
     public void setName(String name) {
@@ -135,7 +135,7 @@ public class Tim {
 
     public void addWheelDiff(int w) {
         btTotalWheelRevolutions += (double) w;
-        Log.i(TAG, "addWheelDiff: " + w);
+        //Log.i(TAG, "addWheelDiff: " + w);
     }
 
     public void addTimeDiff(int t) {
