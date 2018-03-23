@@ -610,7 +610,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     }
 
 
-    private TextToSpeech t1;
     private Boolean readMileInfo = false;
 
     private void writeToFB() {
@@ -665,17 +664,18 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("a_speedTotal").getValue(Double.class);
-                    names.add(name);
+                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     //Log.i("FB", name);
                     //Log.i("FB", String.valueOf(speed));
-                    valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    //valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
-                valuesTotalsLeaders.add("Total Leaders (Speeds)");
+//                valuesTotalsLeaders.add("Total Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
-
+                    valuesTotalsLeaders.add(name);
                 }
+                valuesTotalsLeaders.add("Total Leaders (Speeds)");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -705,16 +705,18 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("fb_SPD").getValue(Double.class);
-                    names.add(name);
+                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
 //                    Log.i("FB", name);
 //                    Log.i("FB", String.valueOf(speed));
-                    valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
-                valuesRoundLeaders.add("Round Leaders (Speeds)");
+//                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
+                    valuesRoundLeaders.add(name);
                 }
+                valuesRoundLeaders.add("Round Leaders (Speeds)");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -1299,7 +1301,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
             if (HR_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
-                Log.i(TAG, "onCharacteristicChanged: HR, START");
+                //Log.i(TAG, "onCharacteristicChanged: HR, START");
                 gatt1 = gatt;
                 //int flag = characteristic.getProperties();
                 final int flag = characteristic.getValue()[0]; // 1 byte
@@ -1348,7 +1350,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     boolean writeDescriptorSuccess = gatt0.writeDescriptor(descriptor);
                     //Log.d(TAG, "wrote Descriptor for VELO CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
                 }
-                Log.i(TAG, "onCharacteristicChanged: HR, END");
+                //Log.i(TAG, "onCharacteristicChanged: HR, END");
                 return;
             }  //END HR
 
@@ -1424,7 +1426,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     private ArrayList<Double> arrHeartrates = new ArrayList<>();
     private void computeRoundHR() {
-        Log.i(TAG, "roundHR: compute roundHR");
+        //Log.i(TAG, "roundHR: compute roundHR");
         double sum = 0;
         for (double hr : arrHeartrates) {
             sum += hr;
