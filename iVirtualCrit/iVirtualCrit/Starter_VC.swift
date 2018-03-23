@@ -340,7 +340,7 @@ class Starter_VC: UITableViewController {
         //arrSend.insert("RC", at: 0)
         
         //MY BEST ROUNDS POINT
-        let when = DispatchTime.now() + 25
+        let when = DispatchTime.now() + 240
         DispatchQueue.main.asyncAfter(deadline: when){
             self.newBestRoundPoint(mileString: "MY BEST ROUNDS\n\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE.\n\n LEADER IS \(self.currentSpeedLeaderName).\n\(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))")
             
@@ -863,7 +863,13 @@ class Starter_VC: UITableViewController {
                 print(self.arrLeaderNamesBySpeed)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SPEED)\n\(self.arrLeaderNamesBySpeed)")
                 print("\n")
-                self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
+                
+                let when2 = DispatchTime.now() + 120
+                DispatchQueue.main.asyncAfter(deadline: when2){
+                    self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
+                }
+                
+//                self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
             }
         })
         { (error) in
