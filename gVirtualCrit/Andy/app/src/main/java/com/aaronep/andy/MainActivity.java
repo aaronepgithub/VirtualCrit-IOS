@@ -371,6 +371,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     }
 
 
+    private int fetchRoundData = 0;
+    private int fetchTotalsData = 0;
 
     private void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
@@ -452,9 +454,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
 
-                      String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f MPH", currentRoundSpeed);
-                      String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed);
-
+                      String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", currentRoundSpeed);
+                      String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f", bestRoundSpeed);
                       speakText(this, toSpeak1 + toSpeak2);
 
 
@@ -476,7 +477,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                   }
 
-                  //END ROUND LOGIC
+                  //END END_OF_ROUND PROCESSING
+
+                  if (timerSecondsCounter == fetchRoundData) {
+                      Log.i(TAG, "run: readFromFB - ROUNDS");
+                      readFromFB();
+                  }
+
+                  if (timerSecondsCounter == fetchTotalsData) {
+                      Log.i(TAG, "run: readFromFBII - TOTALS");
+                      readFromFBII();
+                  }
 
 
 //
@@ -506,8 +517,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //
                   final double finalLastMileSpeed = lastMileMPH;
                   final double finalCurrentMileSpeed = currentMileSpeed;
+                  final double finalBestMileMPH = bestMileMPH;
 
-
+                  if (readMileInfo) {
+                      String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
+                      String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
+                      speakText(this, toSpeakMile1 + toSpeakMile2);
+                      readMileInfo = false;
+                  }
 
 
 
@@ -594,35 +611,40 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
     private TextToSpeech t1;
+    private Boolean readMileInfo = false;
 
     private void writeToFB() {
         Log.i(TAG, "WRITE TO FB");
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("message");
-//        myRef.setValue("Hello, World!");
+        //        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //        DatabaseReference myRef = database.getReference("message");
+        //        myRef.setValue("Hello, World!");
 
         //WRITE END OF ROUND DATA
-        //TODO:  GET DATE FORMATTED
-//        String roundURL = "rounds/20180322";
         String roundURL = "rounds/" + tim.currentDate;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
-// Creating new user node, which returns the unique key value
-// new user node would be /users/$userid/
+        // Creating new user node, which returns the unique key value
+        // new user node would be /users/$userid/
         String userId = mDatabase.push().getKey();
-// creating user object
+        // creating user object
         Round round = new Round(tim.getName(), tim.getRoundSpeed());
         Log.i(TAG, "writeToFB/ROUND" + tim.getRoundSpeed());
-// pushing user to 'users' node using the userId
+        // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
 
 
         //WRITE UPDATE TOTAL DATA
-        //TODO:  GET DATE FORMATTED
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
         Log.i(TAG, "writeToFB/TOTAL" + tim.getTotalAvgSpeed());
         Total total = new Total(tim.getName(), 50.0, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
+
+        //SCHEDULE READS
+        fetchRoundData = timerSecondsCounter + 30;
+        fetchTotalsData = timerSecondsCounter + 45;
+
+        //TODO:  ADD HR/SCORE DATA TO FB AND DISPLAY
+        arrHeartrates.clear();
 
     }
 
@@ -1289,6 +1311,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 }
                 final int hrValue = characteristic.getIntValue(format, 1);
 
+                arrHeartrates.add((double) hrValue);
+                computeRoundHR();
+
 //                runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -1397,8 +1422,15 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
 
-
-
+    private ArrayList<Double> arrHeartrates = new ArrayList<>();
+    private void computeRoundHR() {
+        Log.i(TAG, "roundHR: compute roundHR");
+        double sum = 0;
+        for (double hr : arrHeartrates) {
+            sum += hr;
+        }
+        tim.setRoundHR(arrHeartrates.isEmpty()? 0: 1.0*sum/arrHeartrates.size());
+    }
 
 
     private int mFirstWheelRevolutions = -1;
@@ -1596,7 +1628,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 bAvgSp.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
                 bAvgPc.setText(calcPace(avgSpd));
 
-                foot2.setText(String.format(Locale.US,"%.1f MI", dist));
+                foot2.setText(String.format(Locale.US,"%.2f MI", dist));
                 head2.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
                 bDist.setText(String.format(Locale.US,"%.1f MI", dist));
                 bPace.setText(rtPace);
@@ -1809,6 +1841,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         valuesMilesGeo.add(String.format("%d.  %s", currentMileGEO, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedGEO)));
                         currentMileGEO += 1;
                         secondsAtEndOfMileGeo = timerSecondsCounter;
+                        readMileInfo = true;
                     }
                 }
 
@@ -2621,7 +2654,7 @@ private String calcPace(double mph) {
 
         switch (lvToggle) {
             case 0: {
-                readFromFB();
+                //readFromFB();
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, valuesRounds);
                 listView.setAdapter(adapter);
@@ -2629,7 +2662,7 @@ private String calcPace(double mph) {
                 break;
             }
             case 1: {
-                readFromFBII();
+                //readFromFBII();
                 Collections.reverse(valuesRoundLeaders);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, android.R.id.text1, valuesRoundLeaders);

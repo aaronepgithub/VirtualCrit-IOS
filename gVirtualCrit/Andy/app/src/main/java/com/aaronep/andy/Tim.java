@@ -33,7 +33,6 @@ public class Tim {
     }
 
     public void setRoundHR(double roundHR) {
-        //roundScore = (roundHR / 185.0) * 100;
         setRoundScore((roundHR / 185.0) * 100);
         this.roundHR = roundHR;
     }
@@ -87,9 +86,7 @@ public class Tim {
         if (totalTimeInSeconds == 30) {
             Log.i(TAG, "setTotalTimeInSeconds: 30");
         }
-        if (totalTimeInSeconds % 60 == 0) {
-            Log.i(TAG, "ANOTHER 60");
-        }
+
 
         Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
         Long st = startTime.getTimeInMillis();
