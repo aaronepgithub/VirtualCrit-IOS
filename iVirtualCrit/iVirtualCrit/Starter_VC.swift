@@ -142,7 +142,7 @@ class Starter_VC: UITableViewController {
         if secondsInCurrentRound >= secondsPerRound {
             print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
             //arr.insert("ROUND COMPLETE", at: 0)
-            arrSend.insert("RC", at: 0)
+            arrSend.insert("R", at: 0)
             roundsCompleted += 1
             currentRound += 1
             distanceAtStartOfRoundBT = current.totalDistance
@@ -337,7 +337,7 @@ class Starter_VC: UITableViewController {
             bestRoundScore = getScoreFromHR(x: bestRoundHR)
         }
         
-        arrSend.insert("RC", at: 0)
+        //arrSend.insert("RC", at: 0)
         
         //MY BEST ROUNDS POINT
         let when = DispatchTime.now() + 25
