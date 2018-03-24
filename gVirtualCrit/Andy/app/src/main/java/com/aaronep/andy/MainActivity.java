@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -58,10 +59,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
+import org.qap.ctimelineview.TimelineRow;
+import org.qap.ctimelineview.TimelineViewAdapter;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -228,6 +233,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
 
+        createTimeline("HI KAZUMI, LET'S GET STARTED");
+
 //        Log.i("TIME", "getActualTime");
 //        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
 //        Long st = startTime.getTimeInMillis();
@@ -357,6 +364,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //        String textContents = "Hi Kazumi, Let's get Started";
         engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
 
+
     }
 
     @Override
@@ -441,8 +449,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       newRoundFlagBT = true;
                       newRoundFlagGEO = true;
 
-
-
+                      //CREATE TIMELINE POST
+                      createTimeline("ONE MORE POINT");
 
                       //DETERMINE BEST AND LAST
 
@@ -476,6 +484,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       });
 
                   }
+
+
 
                   //END END_OF_ROUND PROCESSING
 
@@ -2726,4 +2736,60 @@ private String calcPace(double mph) {
         listView.setAdapter(adapter);
 
     }
-}
+
+    private ArrayList<TimelineRow> timelineRowsList = new ArrayList<>();
+
+    private void createTimeline(String tlTitle) {
+
+        // Create new timeline row (Row Id)
+        TimelineRow myRow = new TimelineRow(0);
+
+// To set the row Date (optional)
+        myRow.setDate(new Date());
+// To set the row Title (optional)
+        myRow.setTitle(tlTitle);
+// To set the row Description (optional)
+        myRow.setDescription("Description");
+// To set the row bitmap image (optional)
+        myRow.setImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+// To set row Below Line Color (optional)
+        myRow.setBellowLineColor(Color.argb(255, 0, 0, 0));
+// To set row Below Line Size in dp (optional)
+        myRow.setBellowLineSize(2);
+// To set row Image Size in dp (optional)
+        myRow.setImageSize(2);
+// To set background color of the row image (optional)
+        myRow.setBackgroundColor(Color.argb(255, 0, 0, 0));
+// To set the Background Size of the row image in dp (optional)
+        myRow.setBackgroundSize(10);
+// To set row Date text color (optional)
+        myRow.setDateColor(Color.argb(255, 0, 0, 0));
+// To set row Title text color (optional)
+        myRow.setTitleColor(Color.argb(255, 0, 0, 0));
+// To set row Description text color (optional)
+        myRow.setDescriptionColor(Color.argb(255, 0, 0, 0));
+
+// Add the new row to the list
+        timelineRowsList.add(myRow);
+
+// Create the Timeline Adapter
+        final ArrayAdapter<TimelineRow> myAdapter = new TimelineViewAdapter(this, 0, timelineRowsList,
+                //if true, list will be sorted by date
+                true);
+
+// Get the ListView and Bind it with the Timeline Adapter
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ListView myListView = (ListView) findViewById(R.id.timeline_listView);
+                myListView.setAdapter(myAdapter);
+            }
+        });
+
+
+
+
+    }
+
+}  //END MAIN ACTIVITY
