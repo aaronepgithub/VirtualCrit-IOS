@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     }
 
     private int dashboardON = 0;
+    private int timelineON = 0;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             LinearLayout ll = findViewById(R.id.llView);
             LinearLayout llGeo = findViewById(R.id.llViewGeo);
             LinearLayout svtl = findViewById(R.id.svTimeline);
+            LinearLayout svleader = findViewById(R.id.svLeaderboards);
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
@@ -179,30 +181,45 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     ll.setVisibility(View.GONE);
                     llGeo.setVisibility(View.GONE);
                     svtl.setVisibility(View.GONE);
+                    svleader.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+//                    mTextMessage.setText(R.string.title_dashboard);
+                    mTextMessage.setText("");
                     if (dashboardON == 0) {
                         ll.setVisibility(View.VISIBLE);
                         llGeo.setVisibility(View.GONE);
                         sv.setVisibility(View.GONE);
+                        svleader.setVisibility(View.GONE);
                         svtl.setVisibility(View.GONE);
                         dashboardON = 1;
                     } else {
                         ll.setVisibility(View.GONE);
                         llGeo.setVisibility(View.VISIBLE);
                         sv.setVisibility(View.GONE);
+                        svleader.setVisibility(View.GONE);
                         svtl.setVisibility(View.GONE);
                         dashboardON = 0;
                     }
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    ll.setVisibility(View.GONE);
-                    llGeo.setVisibility(View.GONE);
-                    sv.setVisibility(View.GONE);
-                    svtl.setVisibility(View.VISIBLE);
+                    mTextMessage.setText("");
+                    if (timelineON == 0) {
+                        ll.setVisibility(View.GONE);
+                        llGeo.setVisibility(View.GONE);
+                        sv.setVisibility(View.GONE);
+                        svleader.setVisibility(View.GONE);
+                        svtl.setVisibility(View.VISIBLE);
+                        timelineON = 1;
+                    } else {
+                        ll.setVisibility(View.GONE);
+                        llGeo.setVisibility(View.GONE);
+                        sv.setVisibility(View.GONE);
+                        svleader.setVisibility(View.VISIBLE);
+                        svtl.setVisibility(View.GONE);
+                        timelineON = 0;
+                    }
 
                     return true;
             }
@@ -233,7 +250,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
 
-        createTimeline("HI KAZUMI, LET'S GET STARTED");
+        createTimeline("LET'S GET STARTED", ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
 
 //        Log.i("TIME", "getActualTime");
 //        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
@@ -362,6 +379,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     public void speakText(TimerTask v, String st) {
 
 //        String textContents = "Hi Kazumi, Let's get Started";
+        if (!audioValue) {return;}
+
         engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
 
 
@@ -449,8 +468,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       newRoundFlagBT = true;
                       newRoundFlagGEO = true;
 
-                      //CREATE TIMELINE POST
-                      createTimeline("ONE MORE POINT");
+
 
                       //DETERMINE BEST AND LAST
 
@@ -466,7 +484,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f", bestRoundSpeed);
                       speakText(this, toSpeak1 + toSpeak2);
 
-
+                      //CREATE TIMELINE POST
+                      createTimeline("ROUND COMPLETE\n" + String.format(Locale.US, "%.1f MPH", currentRoundSpeed)  + " ROUND\n" + "  YOUR BEST: " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed), "");
 
                       final double finalBestRoundSpeed = bestRoundSpeed;
                       runOnUiThread(new Runnable() {
@@ -534,6 +553,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
                       speakText(this, toSpeakMile1 + toSpeakMile2);
                       readMileInfo = false;
+                      createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH), "");
                   }
 
 
@@ -698,6 +718,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     }
 
+    private String stRoundLeaders = "";
     private void readFromFB() {
         Log.i(TAG, "READ FROM FB/ROUNDS");
         //START READ ROUNDS
@@ -711,7 +732,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeaders.clear();
-
+                stRoundLeaders = "";
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("fb_SPD").getValue(Double.class);
@@ -725,8 +746,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
                     valuesRoundLeaders.add(name);
+                    stRoundLeaders = name + "\n" + stRoundLeaders;
                 }
                 valuesRoundLeaders.add("Round Leaders (Speeds)");
+                stRoundLeaders = "Round Leaders (Speeds)" + "\n" + stRoundLeaders;
+                createTimeline(stRoundLeaders, "");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -2739,7 +2763,7 @@ private String calcPace(double mph) {
 
     private ArrayList<TimelineRow> timelineRowsList = new ArrayList<>();
 
-    private void createTimeline(String tlTitle) {
+    private void createTimeline(String tlTitle, String tlDescription) {
 
         // Create new timeline row (Row Id)
         TimelineRow myRow = new TimelineRow(0);
@@ -2749,7 +2773,7 @@ private String calcPace(double mph) {
 // To set the row Title (optional)
         myRow.setTitle(tlTitle);
 // To set the row Description (optional)
-        myRow.setDescription("Description");
+        myRow.setDescription(tlDescription);
 // To set the row bitmap image (optional)
         myRow.setImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
 // To set row Below Line Color (optional)
