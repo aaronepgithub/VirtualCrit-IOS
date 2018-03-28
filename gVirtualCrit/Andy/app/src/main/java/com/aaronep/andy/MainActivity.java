@@ -521,7 +521,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                   if (timerSecondsCounter == fetchRoundDataScores) {
                       Log.i(TAG, "run: readFromFB - ROUNDS/Scores");
-                      readFromFB_RoundScores();
+                      //readFromFB_RoundScores();
                   }
 
                   if (timerSecondsCounter == fetchTotalsData) {
@@ -776,7 +776,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
     //READ ROUND LEADERS - SCORES
-
+//TODO:  PLACE HR INTO ROUND OBJECT AND SEND TO FB
     private String stRoundLeadersScores = "";
     private void readFromFB_RoundScores() {
         Log.i(TAG, "READ FROM FB/ROUNDS/SCORES");
@@ -794,7 +794,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double score = ds.child("fb_RND").getValue(Double.class);
-                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.1f %MAX", score)));
+                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.1f SCORE", score)));
 //                    Log.i("FB", name);
 //                    Log.i("FB", String.valueOf(speed));
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
