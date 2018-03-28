@@ -338,6 +338,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         valuesMilesGeo.add("Miles Completed (Speeds (G))");  //GEO
         valuesRoundLeaders.add("Round Leaders (Speeds)");
         valuesTotalsLeaders.add("Total Leaders (Speeds)");
+        valuesRoundLeadersScores.add("Round Leaders (Scores)");
+        valuesTotalsLeadersScores.add("Total Leaders (Scores)");
 
     }
     //END ON_CREATE
@@ -355,7 +357,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private double endMileSpeedBT = 0;
     private double endMileSpeedGEO = 0;
 
-    private Integer secondsPerRound = 60;
+    private Integer secondsPerRound = 300;
     private Integer currentRound = 1;
 
     private double bestRoundMPH = 0;
@@ -373,6 +375,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     private ArrayList<String> valuesRoundLeaders = new ArrayList<>();
     private ArrayList<String> valuesTotalsLeaders = new ArrayList<>();
+
+    private ArrayList<String> valuesRoundLeadersScores = new ArrayList<>();
+    private ArrayList<String> valuesTotalsLeadersScores = new ArrayList<>();
 
 
 
@@ -399,6 +404,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
     private int fetchRoundData = 0;
+    private int fetchRoundDataScores = 0;
     private int fetchTotalsData = 0;
 
     private void onPowerOn() {
@@ -511,6 +517,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   if (timerSecondsCounter == fetchRoundData) {
                       Log.i(TAG, "run: readFromFB - ROUNDS");
                       readFromFB();
+                  }
+
+                  if (timerSecondsCounter == fetchRoundDataScores) {
+                      Log.i(TAG, "run: readFromFB - ROUNDS/Scores");
+                      readFromFB_RoundScores();
                   }
 
                   if (timerSecondsCounter == fetchTotalsData) {
@@ -670,7 +681,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         //SCHEDULE READS
         fetchRoundData = timerSecondsCounter + 30;
-        fetchTotalsData = timerSecondsCounter + 45;
+        fetchTotalsData = timerSecondsCounter + 90;
+
+        fetchRoundDataScores = timerSecondsCounter + 60;
 
         //TODO:  ADD HR/SCORE DATA TO FB AND DISPLAY
         arrHeartrates.clear();
@@ -759,21 +772,55 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             }
         });
         //END READ ROUNDS
-
-        //READ FROM FB
-//        Handler mHandler = new Handler();
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                readFromFB();
-//            }
-//        }, 10000);
-
-
     }
 
 
+    //READ ROUND LEADERS - SCORES
 
+    private String stRoundLeadersScores = "";
+    private void readFromFB_RoundScores() {
+        Log.i(TAG, "READ FROM FB/ROUNDS/SCORES");
+        //START READ ROUND SCORES
+//        String roundsURL = "rounds/20180322";
+        String roundsURL = "rounds";
+        DatabaseReference mDatabaseRounds = FirebaseDatabase.getInstance().getReference(roundsURL);
+        mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_RND").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange - ROUND SCORES");
+                ArrayList<String> names= new ArrayList<>();
+                valuesRoundLeadersScores.clear();
+                stRoundLeadersScores = "";
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String name = ds.child("fb_timName").getValue(String.class);
+                    Double score = ds.child("fb_RND").getValue(Double.class);
+                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.1f %MAX", score)));
+//                    Log.i("FB", name);
+//                    Log.i("FB", String.valueOf(speed));
+                    //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.1f MPH", score)));
+                }  //COMPLETED - READING EACH SNAP
+//                valuesRoundLeaders.add("Round Leaders (Speeds)");
+                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
+                    //Log.i(TAG, "onDataChange: (name) " + name);
+                    valuesRoundLeadersScores.add(name);
+                    stRoundLeadersScores = name + "\n" + stRoundLeaders;
+                }
+                valuesRoundLeadersScores.add("Round Leaders (Scores)");
+                stRoundLeadersScores = "Round Leaders (Scores)" + "\n" + stRoundLeadersScores;
+                createTimeline(stRoundLeadersScores, "");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.i(TAG, "Failed to read value - rounds/scores.", databaseError.toException());
+            }
+        });
+        //END READ ROUNDS
+    }
+
+
+    //END READ ROUND LEADERS - SCORES
 
 
 
@@ -784,7 +831,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //        String on1 = "OFF";
 //        b0.setText(on1);
 
-        readFromFB();
+//        readFromFB();
 
 //        if (toggleClick0) {
 //            b0.setText("READ");
@@ -1397,7 +1444,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 final int flags = characteristic.getValue()[0]; // 1 byte
                 final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
-                final boolean crankRevPreset = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
+                final boolean crankRevPresent = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
 
                 if (wheelRevPresent) {
                     gatt2 = gatt;
@@ -1426,7 +1473,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    msg.sendToTarget();
 
 
-                    if (crankRevPreset) {
+                    if (crankRevPresent) {
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
@@ -1440,7 +1487,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                     }
                 } else {
-                    if (crankRevPreset) {
+                    if (crankRevPresent) {
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
@@ -2097,8 +2144,8 @@ private String calcPace(double mph) {
     //START SCAN BUTTON
     public void onClick_1(View view) {
         Log.i("CLICK", "onClick_1: clicked");
-        Button b1 = findViewById(R.id.button1);
-        b1.setText("ON");
+        final Button b1 = findViewById(R.id.button1);
+        b1.setText("...");
         Toast.makeText(this,"SCANNING...", Toast.LENGTH_LONG).show();
         //scanLeDevice(true);
 
@@ -2114,6 +2161,7 @@ private String calcPace(double mph) {
 //                    sendToaster("SCAN COMPLETE");
                 isScanning = false;
                 sendToaster("SCAN COMPLETE");
+                b1.setText("SCAN");
             }
         }, SCAN_PERIOD);
 
@@ -2506,14 +2554,14 @@ private String calcPace(double mph) {
 
             mBluetoothAdapter.disable();
             //BA.disable();
-            Toast.makeText(getApplicationContext(), "bt off" ,Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "BT OFF" ,Toast.LENGTH_LONG).show();
 
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mBluetoothAdapter.enable();
-                Toast.makeText(getApplicationContext(), "bt On", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "BT ON", Toast.LENGTH_LONG).show();
             }
         }, SCAN_PERIOD);
 
