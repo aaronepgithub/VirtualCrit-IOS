@@ -414,31 +414,34 @@
                 android:id="@+id/rtText6a"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="SPEED"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText6b"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="LAST"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText6c"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="BEST"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!--MILE PACE-->
@@ -453,31 +456,34 @@
                 android:id="@+id/rtText6aa"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="SPEED(PACE)"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:layout_weight="2"
+                android:text="SPEED(P)"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText6bb"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="LAST(PACE)"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:layout_weight="2"
+                android:text="LAST(P)"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText6cc"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="BEST(PACE)"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:layout_weight="2"
+                android:text="BEST(P)"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
@@ -509,31 +515,34 @@
                 android:id="@+id/rtText7a"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="SPEED"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText7b"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="LAST"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText7c"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="BEST"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
@@ -893,16 +902,7 @@
                 android:textAlignment="viewStart" />
 
         </LinearLayout>
-
-
-
-
-
-
-
     </LinearLayout>
-
-
     </ScrollView>
 
 
@@ -1040,13 +1040,10 @@
                 android:layout_weight="1"/>
 
         </LinearLayout>
-
-
-
     </LinearLayout>
 
 
-
+    <!--START VIEW GEO-->
     <LinearLayout
         android:id="@+id/llViewGeo"
         android:layout_width="match_parent"
@@ -1094,8 +1091,6 @@
                 android:layout_weight="1"/>
 
         </LinearLayout>
-
-
 
         <TextView
             android:id="@+id/tvTopGeo"
@@ -1181,10 +1176,151 @@
                 android:layout_weight="1"/>
 
         </LinearLayout>
+    </LinearLayout>
+    <!--END VIEW GEO-->
+
+
+
+    <!--START VIEW MILE-->
+    <LinearLayout
+        android:id="@+id/llViewMile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+
+
+        <LinearLayout
+            android:id="@+id/llHeaderMile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvHeader1Mile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:background="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="00:00:00"
+                android:gravity="center"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tvHeader2Mile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:background="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="00.0 AVG"
+                android:gravity="center"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/tvTopMile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="50sp"
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00 NOW"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tvMiddleMile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="60sp"
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="00 BEST"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
+            android:layout_weight="3"/>
+
+        <TextView
+            android:id="@+id/tvBottomMile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="50sp"
+            android:background="@android:color/holo_red_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="00 LAST"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"/>
+
+
+        <LinearLayout
+            android:id="@+id/llFooterMile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tvFooter1Mile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:background="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="00:00:00"
+                android:gravity="center"
+                android:layout_weight="1"/>
+
+
+            <TextView
+                android:id="@+id/tvFooter2Mile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:background="@android:color/holo_red_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="00.00 MILES"
+                android:gravity="center"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
 
 
     </LinearLayout>
+    <!--END VIEW MILE-->
 
 
     <!--<ScrollView-->

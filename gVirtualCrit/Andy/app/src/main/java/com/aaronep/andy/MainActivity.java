@@ -171,7 +171,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             ScrollView sv = findViewById(R.id.svSettings);
             LinearLayout ll = findViewById(R.id.llView);
-            LinearLayout llGeo = findViewById(R.id.llViewGeo);
+            LinearLayout llMile = findViewById(R.id.llViewGeo);
+            LinearLayout llGeo = findViewById(R.id.llViewMile);
             LinearLayout svtl = findViewById(R.id.svTimeline);
             LinearLayout svleader = findViewById(R.id.svLeaderboards);
 
@@ -180,28 +181,43 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     mTextMessage.setText(R.string.title_home);
                     ll.setVisibility(View.GONE);
                     llGeo.setVisibility(View.GONE);
+                    llMile.setVisibility(View.GONE);
                     svtl.setVisibility(View.GONE);
                     svleader.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
 //                    mTextMessage.setText(R.string.title_dashboard);
+                    int x = dashboardON;
                     mTextMessage.setText("");
-                    if (dashboardON == 0) {
+                    if (x == 0) {
                         ll.setVisibility(View.VISIBLE);
                         llGeo.setVisibility(View.GONE);
+                        llMile.setVisibility(View.GONE);
                         sv.setVisibility(View.GONE);
                         svleader.setVisibility(View.GONE);
                         svtl.setVisibility(View.GONE);
                         dashboardON = 1;
-                    } else {
+                    }
+                    if (x == 1) {
                         ll.setVisibility(View.GONE);
                         llGeo.setVisibility(View.VISIBLE);
+                        llMile.setVisibility(View.GONE);
+                        sv.setVisibility(View.GONE);
+                        svleader.setVisibility(View.GONE);
+                        svtl.setVisibility(View.GONE);
+                        dashboardON = 2;
+                    }
+                    if (x == 2) {
+                        ll.setVisibility(View.GONE);
+                        llGeo.setVisibility(View.GONE);
+                        llMile.setVisibility(View.VISIBLE);
                         sv.setVisibility(View.GONE);
                         svleader.setVisibility(View.GONE);
                         svtl.setVisibility(View.GONE);
                         dashboardON = 0;
                     }
+
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText("");
@@ -238,6 +254,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         tim = new Tim("TIM");
         Log.i(TAG, "onCreate: tim.name:  " + tim.name);
 
+
         engine = new TextToSpeech(this, this);
 
 
@@ -247,6 +264,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         startTime = Calendar.getInstance(Locale.ENGLISH);
         tim.startTime = startTime;
+
+        setRandomUsernameOnStart();
 
         mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
 
@@ -272,14 +291,13 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
         //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
+
         //START BT SETUP
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         if (bluetoothManager != null) {
             mBluetoothAdapter = bluetoothManager.getAdapter();
         }
-
-
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -301,10 +319,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //END BT SETUP
         //COMMENT TO HERE FOR EMULATOR
 
+
+
         //TODO:  DISABLE TO LAUNCH ON EMULATOR??
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
-
-
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("This app needs location access");
@@ -455,7 +473,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   final double currentRoundSpeed = calcCurrentRoundSpd;
                   //display this at 7a
                   //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
-
+                  //END...FOR IN ROUND DISPLAY
 
                   //END OF ROUND
                   double bestRoundSpeed = 0;
@@ -509,9 +527,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       });
 
                   }
-
-
-
                   //END END_OF_ROUND PROCESSING
 
                   if (timerSecondsCounter == fetchRoundData) {
@@ -552,9 +567,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   if (endMileSpeedGEO > bestMileMPH) {
                       bestMileMPH = endMileSpeedGEO;
                   }
+
+                  //END...IN-MILE LOGIC
 //
-//                  //END OF MILE CALC
-//
+
+                  //END OF MILE CALC
                   final double finalLastMileSpeed = lastMileMPH;
                   final double finalCurrentMileSpeed = currentMileSpeed;
                   final double finalBestMileMPH = bestMileMPH;
@@ -619,6 +636,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           TextView t1 = findViewById(R.id.rtText6b);
                           t1.setText(String.format(Locale.US,"%.1f MPH", finalLastMileSpeed));
 
+                          TextView tMile1 = findViewById(R.id.tvTopMile);
+                          tMile1.setText(String.format(Locale.US,"%.1f NOW", finalCurrentMileSpeed));
+                          TextView tMile2 = findViewById(R.id.tvMiddleMile);
+                          tMile2.setText(String.format(Locale.US,"%.1f BEST", bestMileMPH));
+                          TextView tMile3 = findViewById(R.id.tvBottomMile);
+                          tMile3.setText(String.format(Locale.US,"%.1f LAST", finalLastMileSpeed));
+
+
                           TextView t2 = findViewById(R.id.rtText6c);
                           t2.setText(String.format(Locale.US,"%.1f MPH", bestMileMPH));
 
@@ -666,7 +691,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         // new user node would be /users/$userid/
         String userId = mDatabase.push().getKey();
         // creating user object
-        Round round = new Round(tim.getName(), tim.getRoundSpeed());
+        Round round = new Round(tim.getName(), tim.getRoundSpeed(), tim.getRoundHR(), tim.getRoundScore());
         Log.i(TAG, "writeToFB/ROUND" + tim.getRoundSpeed());
         // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
@@ -676,7 +701,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
         Log.i(TAG, "writeToFB/TOTAL" + tim.getTotalAvgSpeed());
-        Total total = new Total(tim.getName(), 50.0, tim.getTotalAvgSpeed());
+        Total total = new Total(tim.getName(), totalAverageScore, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
 
         //SCHEDULE READS
@@ -1395,6 +1420,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 final int hrValue = characteristic.getIntValue(format, 1);
 
                 arrHeartrates.add((double) hrValue);
+                sumOfTotalHeartRates += hrValue;
+                indexOfTotalHeartrates += 1;
                 computeRoundHR();
 
 //                runOnUiThread(new Runnable() {
@@ -1505,6 +1532,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
 
+    private int sumOfTotalHeartRates = 1;
+    private int indexOfTotalHeartrates = 1;
+    private double totalAverageHeartrate = 0;
+    private double totalAverageScore = 0;
     private ArrayList<Double> arrHeartrates = new ArrayList<>();
     private void computeRoundHR() {
         //Log.i(TAG, "roundHR: compute roundHR");
@@ -1513,6 +1544,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             sum += hr;
         }
         tim.setRoundHR(arrHeartrates.isEmpty()? 0: 1.0*sum/arrHeartrates.size());
+        totalAverageHeartrate = (double) sumOfTotalHeartRates / (double) indexOfTotalHeartrates;
+        totalAverageScore  = (totalAverageHeartrate / 185.0) * 100;
     }
 
 
@@ -2647,6 +2680,23 @@ private String calcPace(double mph) {
         }
     }
 
+
+    private void setRandomUsernameOnStart() {
+        userName = "TIM";
+        Random r = new Random();
+        int i1 = r.nextInt(9999 - 1001);
+        userName = userName + i1;
+        Button b = findViewById(R.id.button50b);
+        b.setText(userName);
+        tim.setName(userName);
+        Log.i(TAG, "setRandomUsernameOnStart: " + userName);
+        try {
+            getSupportActionBar().setTitle("VIRTUAL CRIT (" + userName + ")");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public String userName = "TIM";
     public void onClick_setName(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2681,6 +2731,7 @@ private String calcPace(double mph) {
         builder.setNegativeButton("RANDOM", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                userName = "TIM";
                 Random r = new Random();
                 int i1 = r.nextInt(9999 - 1001);
                 userName = userName + i1;

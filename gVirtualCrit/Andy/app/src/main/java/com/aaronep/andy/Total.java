@@ -46,14 +46,14 @@ public class Total {
         this.a_speedTotal = a_speedTotal;
 
         this.a_calcDurationPost = "1";
-        this.a_scoreHRRoundLast = 1.0;
+        this.a_scoreHRRoundLast = a_scoreHRTotal;
         this.a_speedLast = a_speedTotal;
 
         this.fb_Date = 1;
         this.fb_DateNow = 1;
         this.fb_maxHRTotal = 1;
-        this.fb_scoreHRRoundLast = 1.0;
-        this.fb_scoreHRTotal = 1.0;
+        this.fb_scoreHRRoundLast = a_scoreHRTotal;
+        this.fb_scoreHRTotal = a_scoreHRTotal;
         this.fb_timAvgCADtotal = 1.0;
         this.fb_timAvgSPDtotal = a_speedTotal;
         this.fb_timDistanceTraveled = 1.0;
