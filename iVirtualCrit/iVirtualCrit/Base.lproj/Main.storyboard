@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -650,515 +650,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="RAW DATA" id="IsJ-Gb-gzS" userLabel="SECTION 2 TEST DATA">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="XiK-4G-vUb" userLabel="TOTAL TIME">
-                                        <rect key="frame" x="0.0" y="800" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XiK-4G-vUb" id="TJe-4T-CEb">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCY-8f-dFJ">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="FCY-8f-dFJ" secondAttribute="bottom" id="HDt-Lo-QXt"/>
-                                                <constraint firstAttribute="trailing" secondItem="FCY-8f-dFJ" secondAttribute="trailing" constant="10" id="QGU-bT-4o3"/>
-                                                <constraint firstItem="FCY-8f-dFJ" firstAttribute="leading" secondItem="TJe-4T-CEb" secondAttribute="leading" constant="10" id="ZtD-0e-N4B"/>
-                                                <constraint firstItem="FCY-8f-dFJ" firstAttribute="top" secondItem="TJe-4T-CEb" secondAttribute="top" id="kk0-z7-LhH"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="mfT-5d-fJK" userLabel="TIMEINROUND">
-                                        <rect key="frame" x="0.0" y="840" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mfT-5d-fJK" id="bBg-rx-daM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TIME IN ROUND/MILE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9Y-R6-m3Z" userLabel="TIMEINROUND">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="V9Y-R6-m3Z" firstAttribute="leading" secondItem="bBg-rx-daM" secondAttribute="leading" constant="10" id="Rai-61-g6A"/>
-                                                <constraint firstAttribute="trailing" secondItem="V9Y-R6-m3Z" secondAttribute="trailing" constant="10" id="UD1-TD-IAi"/>
-                                                <constraint firstAttribute="bottom" secondItem="V9Y-R6-m3Z" secondAttribute="bottom" id="Vut-Cy-nje"/>
-                                                <constraint firstItem="V9Y-R6-m3Z" firstAttribute="top" secondItem="bBg-rx-daM" secondAttribute="top" id="o0L-6u-0Eg"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="hq5-Os-Ujx" userLabel="GPS TIME">
-                                        <rect key="frame" x="0.0" y="880" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hq5-Os-Ujx" id="qA5-NZ-1tF">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1l-wR-0Aw">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="m1l-wR-0Aw" firstAttribute="top" secondItem="qA5-NZ-1tF" secondAttribute="top" id="NAZ-cG-vCE"/>
-                                                <constraint firstAttribute="bottom" secondItem="m1l-wR-0Aw" secondAttribute="bottom" id="OdP-HZ-5aw"/>
-                                                <constraint firstItem="m1l-wR-0Aw" firstAttribute="leading" secondItem="qA5-NZ-1tF" secondAttribute="leading" constant="10" id="OkS-iq-ypJ"/>
-                                                <constraint firstAttribute="trailing" secondItem="m1l-wR-0Aw" secondAttribute="trailing" constant="10" id="iaK-VG-e4E"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="2v6-O0-v2U" userLabel="GPS MOVING PACE">
-                                        <rect key="frame" x="0.0" y="920" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2v6-O0-v2U" id="clJ-Qw-dAT">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING PACE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="teG-Tl-NtZ">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="teG-Tl-NtZ" firstAttribute="leading" secondItem="clJ-Qw-dAT" secondAttribute="leading" constant="10" id="16b-Xb-1eC"/>
-                                                <constraint firstAttribute="bottom" secondItem="teG-Tl-NtZ" secondAttribute="bottom" id="Gn5-ja-6yX"/>
-                                                <constraint firstAttribute="trailing" secondItem="teG-Tl-NtZ" secondAttribute="trailing" constant="10" id="I7A-99-FiS"/>
-                                                <constraint firstItem="teG-Tl-NtZ" firstAttribute="top" secondItem="clJ-Qw-dAT" secondAttribute="top" id="VA0-ER-Mwn"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="LhP-sH-rFl" userLabel="GPS MOVING SPEED">
-                                        <rect key="frame" x="0.0" y="960" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LhP-sH-rFl" id="0Yq-ZY-eIV">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aum-PG-ly3">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Aum-PG-ly3" firstAttribute="leading" secondItem="0Yq-ZY-eIV" secondAttribute="leading" constant="10" id="2LB-5K-fhE"/>
-                                                <constraint firstAttribute="bottom" secondItem="Aum-PG-ly3" secondAttribute="bottom" id="ahK-Ec-Zkh"/>
-                                                <constraint firstItem="Aum-PG-ly3" firstAttribute="top" secondItem="0Yq-ZY-eIV" secondAttribute="top" id="ci9-4Y-XOv"/>
-                                                <constraint firstAttribute="trailing" secondItem="Aum-PG-ly3" secondAttribute="trailing" constant="10" id="nbz-bM-H8F"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="gbN-gp-jpF" userLabel="GPS AVG SPEED">
-                                        <rect key="frame" x="0.0" y="1000" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gbN-gp-jpF" id="Upb-XM-nQ6">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS AVG SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zD-2r-znI">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="2zD-2r-znI" firstAttribute="top" secondItem="Upb-XM-nQ6" secondAttribute="top" id="kU6-90-BpI"/>
-                                                <constraint firstAttribute="trailing" secondItem="2zD-2r-znI" secondAttribute="trailing" constant="10" id="sKe-qd-ULO"/>
-                                                <constraint firstItem="2zD-2r-znI" firstAttribute="leading" secondItem="Upb-XM-nQ6" secondAttribute="leading" constant="10" id="vDM-XO-oVb"/>
-                                                <constraint firstAttribute="bottom" secondItem="2zD-2r-znI" secondAttribute="bottom" id="xEd-JM-XwM"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="aTK-dg-Sq0" userLabel="GPS AVG PACE">
-                                        <rect key="frame" x="0.0" y="1040" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aTK-dg-Sq0" id="VAc-rZ-CQm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS AVG PACE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZG3-mA-U7a">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="ZG3-mA-U7a" secondAttribute="bottom" id="4VO-bb-SE9"/>
-                                                <constraint firstItem="ZG3-mA-U7a" firstAttribute="top" secondItem="VAc-rZ-CQm" secondAttribute="top" id="Kpy-K5-agR"/>
-                                                <constraint firstItem="ZG3-mA-U7a" firstAttribute="leading" secondItem="VAc-rZ-CQm" secondAttribute="leading" constant="10" id="R56-6m-JQJ"/>
-                                                <constraint firstAttribute="trailing" secondItem="ZG3-mA-U7a" secondAttribute="trailing" constant="10" id="RCk-uJ-dHN"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="WJs-fU-j3P" userLabel="GPS DIRECTION">
-                                        <rect key="frame" x="0.0" y="1080" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WJs-fU-j3P" id="vnC-IA-hVI">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS DIRECTION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HI8-Ig-14K">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="HI8-Ig-14K" secondAttribute="bottom" id="0aD-un-6VH"/>
-                                                <constraint firstItem="HI8-Ig-14K" firstAttribute="leading" secondItem="vnC-IA-hVI" secondAttribute="leading" constant="10" id="CXV-Ep-z8X"/>
-                                                <constraint firstAttribute="trailing" secondItem="HI8-Ig-14K" secondAttribute="trailing" constant="10" id="gOQ-xS-S8X"/>
-                                                <constraint firstItem="HI8-Ig-14K" firstAttribute="top" secondItem="vnC-IA-hVI" secondAttribute="top" id="x06-lC-EB2"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="XLc-99-eO2" userLabel="GPS SPEED RND">
-                                        <rect key="frame" x="0.0" y="1120" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XLc-99-eO2" id="76y-gj-3NF">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS ROUND SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TiY-i7-wHU" userLabel="gpd speed round">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="TiY-i7-wHU" firstAttribute="leading" secondItem="76y-gj-3NF" secondAttribute="leading" constant="10" id="JF5-1R-xXj"/>
-                                                <constraint firstItem="TiY-i7-wHU" firstAttribute="top" secondItem="76y-gj-3NF" secondAttribute="top" id="O3f-pS-vTB"/>
-                                                <constraint firstAttribute="bottom" secondItem="TiY-i7-wHU" secondAttribute="bottom" id="S4U-x8-DJ4"/>
-                                                <constraint firstAttribute="trailing" secondItem="TiY-i7-wHU" secondAttribute="trailing" constant="10" id="ZnH-jc-mCj"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="MN6-kR-b8c" userLabel="GPS DISTANCE">
-                                        <rect key="frame" x="0.0" y="1160" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MN6-kR-b8c" id="5Jz-ke-m7I">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS DISTANCE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAQ-ot-z7H">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="PAQ-ot-z7H" secondAttribute="bottom" id="2Qa-rs-ipZ"/>
-                                                <constraint firstItem="PAQ-ot-z7H" firstAttribute="leading" secondItem="5Jz-ke-m7I" secondAttribute="leading" constant="10" id="CYd-wm-vA6"/>
-                                                <constraint firstAttribute="trailing" secondItem="PAQ-ot-z7H" secondAttribute="trailing" constant="10" id="EKf-Dg-pit"/>
-                                                <constraint firstItem="PAQ-ot-z7H" firstAttribute="top" secondItem="5Jz-ke-m7I" secondAttribute="top" id="kxO-Vn-ltG"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="Pr9-Uw-rBG" userLabel="BT DISTANCE">
-                                        <rect key="frame" x="0.0" y="1200" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pr9-Uw-rBG" id="aeE-BG-6AT">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT DISTANCE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZ0-oE-ogw" userLabel="BT distance">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="MZ0-oE-ogw" secondAttribute="trailing" constant="10" id="ULd-SX-OBL"/>
-                                                <constraint firstItem="MZ0-oE-ogw" firstAttribute="top" secondItem="aeE-BG-6AT" secondAttribute="top" id="hDk-U4-7VW"/>
-                                                <constraint firstItem="MZ0-oE-ogw" firstAttribute="leading" secondItem="aeE-BG-6AT" secondAttribute="leading" constant="10" id="k0k-UO-RgJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="MZ0-oE-ogw" secondAttribute="bottom" id="s4m-SM-s5G"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="rTT-CF-XTn" userLabel="BT HR">
-                                        <rect key="frame" x="0.0" y="1240" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTT-CF-XTn" id="lBU-5e-N0I">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT HR" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4L-M6-db0" userLabel="BT hr">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="o4L-M6-db0" firstAttribute="top" secondItem="lBU-5e-N0I" secondAttribute="top" id="A7f-0I-WIt"/>
-                                                <constraint firstItem="o4L-M6-db0" firstAttribute="leading" secondItem="lBU-5e-N0I" secondAttribute="leading" constant="10" id="Oqk-U8-qfL"/>
-                                                <constraint firstAttribute="trailing" secondItem="o4L-M6-db0" secondAttribute="trailing" constant="10" id="an5-d1-XjR"/>
-                                                <constraint firstAttribute="bottom" secondItem="o4L-M6-db0" secondAttribute="bottom" id="pao-EG-ZYB"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="luu-yk-99s" userLabel="BT SPEED">
-                                        <rect key="frame" x="0.0" y="1280" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="luu-yk-99s" id="7yM-KT-138">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3a0-Ct-dng" userLabel="BT speed">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="3a0-Ct-dng" secondAttribute="bottom" id="CVw-8m-yzH"/>
-                                                <constraint firstItem="3a0-Ct-dng" firstAttribute="leading" secondItem="7yM-KT-138" secondAttribute="leading" constant="10" id="Deb-S0-Jeb"/>
-                                                <constraint firstAttribute="trailing" secondItem="3a0-Ct-dng" secondAttribute="trailing" constant="10" id="dtm-GT-gIJ"/>
-                                                <constraint firstItem="3a0-Ct-dng" firstAttribute="top" secondItem="7yM-KT-138" secondAttribute="top" id="fRY-Ah-UI2"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="SPP-VR-fZN" userLabel="BT CAD">
-                                        <rect key="frame" x="0.0" y="1320" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SPP-VR-fZN" id="jmD-rg-ds5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT CAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaQ-Bq-MJL" userLabel="BT cad">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="zaQ-Bq-MJL" firstAttribute="leading" secondItem="jmD-rg-ds5" secondAttribute="leading" constant="10" id="D7n-ao-2wK"/>
-                                                <constraint firstItem="zaQ-Bq-MJL" firstAttribute="top" secondItem="jmD-rg-ds5" secondAttribute="top" id="bBf-0t-7B2"/>
-                                                <constraint firstAttribute="bottom" secondItem="zaQ-Bq-MJL" secondAttribute="bottom" id="r6i-h8-sjL"/>
-                                                <constraint firstAttribute="trailing" secondItem="zaQ-Bq-MJL" secondAttribute="trailing" constant="10" id="tcG-RI-kf5"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="06o-VE-n53" userLabel="BT SCORE">
-                                        <rect key="frame" x="0.0" y="1360" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="06o-VE-n53" id="eSZ-i9-6Z8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0R4-Vm-rwm" userLabel="BT score">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="0R4-Vm-rwm" firstAttribute="top" secondItem="eSZ-i9-6Z8" secondAttribute="top" id="7hq-0w-akH"/>
-                                                <constraint firstItem="0R4-Vm-rwm" firstAttribute="leading" secondItem="eSZ-i9-6Z8" secondAttribute="leading" constant="10" id="KQ3-VN-pcn"/>
-                                                <constraint firstAttribute="trailing" secondItem="0R4-Vm-rwm" secondAttribute="trailing" constant="10" id="PJz-Uq-WYe"/>
-                                                <constraint firstAttribute="bottom" secondItem="0R4-Vm-rwm" secondAttribute="bottom" id="uzI-Bb-l2H"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="gUz-5m-7ad" userLabel="BT MOVING TIME">
-                                        <rect key="frame" x="0.0" y="1400" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gUz-5m-7ad" id="moz-am-UHf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT MOVING TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rp4-VX-wMV" userLabel="BT Moving time">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="rp4-VX-wMV" secondAttribute="bottom" id="8MC-Jx-xB3"/>
-                                                <constraint firstItem="rp4-VX-wMV" firstAttribute="leading" secondItem="moz-am-UHf" secondAttribute="leading" constant="10" id="AZG-Ai-R5b"/>
-                                                <constraint firstItem="rp4-VX-wMV" firstAttribute="top" secondItem="moz-am-UHf" secondAttribute="top" id="Lhs-7n-8ub"/>
-                                                <constraint firstAttribute="trailing" secondItem="rp4-VX-wMV" secondAttribute="trailing" constant="10" id="mrG-VZ-49S"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="ROg-gv-mFs" userLabel="BT AVG">
-                                        <rect key="frame" x="0.0" y="1440" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ROg-gv-mFs" id="zjj-bU-rWO">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT AVG SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y10-PW-Qp7" userLabel="BT AVG">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Y10-PW-Qp7" secondAttribute="bottom" id="PLg-O9-Kxs"/>
-                                                <constraint firstItem="Y10-PW-Qp7" firstAttribute="leading" secondItem="zjj-bU-rWO" secondAttribute="leading" constant="10" id="TZJ-e9-45h"/>
-                                                <constraint firstAttribute="trailing" secondItem="Y10-PW-Qp7" secondAttribute="trailing" constant="10" id="gVM-a8-KUe"/>
-                                                <constraint firstItem="Y10-PW-Qp7" firstAttribute="top" secondItem="zjj-bU-rWO" secondAttribute="top" id="vTe-qp-hEw"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="1hs-bd-HR5" userLabel="BT SPD RND">
-                                        <rect key="frame" x="0.0" y="1480" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1hs-bd-HR5" id="0re-Bw-ZoS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPEED ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQW-Bv-6ay" userLabel="BT spd round">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="kQW-Bv-6ay" firstAttribute="top" secondItem="0re-Bw-ZoS" secondAttribute="top" id="2cw-om-B1F"/>
-                                                <constraint firstItem="kQW-Bv-6ay" firstAttribute="leading" secondItem="0re-Bw-ZoS" secondAttribute="leading" constant="10" id="7pU-ag-90N"/>
-                                                <constraint firstAttribute="bottom" secondItem="kQW-Bv-6ay" secondAttribute="bottom" id="OYN-ZY-wpp"/>
-                                                <constraint firstAttribute="trailing" secondItem="kQW-Bv-6ay" secondAttribute="trailing" constant="10" id="OgI-S8-O2x"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="8v4-ip-kGJ" userLabel="BT CAD RND">
-                                        <rect key="frame" x="0.0" y="1520" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8v4-ip-kGJ" id="wdL-xX-Vxu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT CAD ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6O1-EY-BIE" userLabel="BT CAD RND">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="6O1-EY-BIE" secondAttribute="trailing" constant="10" id="6ax-WR-UP2"/>
-                                                <constraint firstItem="6O1-EY-BIE" firstAttribute="top" secondItem="wdL-xX-Vxu" secondAttribute="top" id="Us3-vm-wcw"/>
-                                                <constraint firstItem="6O1-EY-BIE" firstAttribute="leading" secondItem="wdL-xX-Vxu" secondAttribute="leading" constant="10" id="Vaa-hI-0zd"/>
-                                                <constraint firstAttribute="bottom" secondItem="6O1-EY-BIE" secondAttribute="bottom" id="sS7-LD-4Do"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="b3d-0D-fgn" userLabel="BT HR RND">
-                                        <rect key="frame" x="0.0" y="1560" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="b3d-0D-fgn" id="SaI-EB-swq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT HR RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gE1-dW-MXg" userLabel="BT HR RND">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="gE1-dW-MXg" firstAttribute="leading" secondItem="SaI-EB-swq" secondAttribute="leading" constant="10" id="VHd-tR-hhU"/>
-                                                <constraint firstItem="gE1-dW-MXg" firstAttribute="top" secondItem="SaI-EB-swq" secondAttribute="top" id="eag-u9-PVr"/>
-                                                <constraint firstAttribute="bottom" secondItem="gE1-dW-MXg" secondAttribute="bottom" id="sQy-yR-vYz"/>
-                                                <constraint firstAttribute="trailing" secondItem="gE1-dW-MXg" secondAttribute="trailing" constant="10" id="vyi-9m-vt5"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="geU-yG-uba" userLabel="BT SCORE RND">
-                                        <rect key="frame" x="0.0" y="1600" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="geU-yG-uba" id="jJ9-QI-SpP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjh-Lt-08t" userLabel="BT SCORE RND">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="gjh-Lt-08t" secondAttribute="trailing" constant="10" id="GJJ-lh-r1S"/>
-                                                <constraint firstAttribute="bottom" secondItem="gjh-Lt-08t" secondAttribute="bottom" id="RrL-0u-QOS"/>
-                                                <constraint firstItem="gjh-Lt-08t" firstAttribute="leading" secondItem="jJ9-QI-SpP" secondAttribute="leading" constant="10" id="cXk-sn-6CS"/>
-                                                <constraint firstItem="gjh-Lt-08t" firstAttribute="top" secondItem="jJ9-QI-SpP" secondAttribute="top" id="n1G-dL-Nen"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="hCg-bd-8C8" userLabel="FB LEADER">
-                                        <rect key="frame" x="0.0" y="1640" width="375" height="40"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hCg-bd-8C8" id="o1b-av-wRW">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uY0-iN-fRb" userLabel="FB LEADER">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="39.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="uY0-iN-fRb" firstAttribute="top" secondItem="o1b-av-wRW" secondAttribute="top" id="KuM-GF-gh9"/>
-                                                <constraint firstAttribute="trailing" secondItem="uY0-iN-fRb" secondAttribute="trailing" constant="10" id="VTw-Ih-ulb"/>
-                                                <constraint firstItem="uY0-iN-fRb" firstAttribute="leading" secondItem="o1b-av-wRW" secondAttribute="leading" constant="10" id="Z6u-0c-exS"/>
-                                                <constraint firstAttribute="bottom" secondItem="uY0-iN-fRb" secondAttribute="bottom" id="n9A-Jy-ab9"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dDB-St-Pk0" userLabel="R2">
-                                        <rect key="frame" x="0.0" y="1680" width="375" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dDB-St-Pk0" id="sxR-8g-NJ8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="END" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNJ-15-Iz3" userLabel="END">
-                                                    <rect key="frame" x="20" y="16" width="335" height="18"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="jNJ-15-Iz3" secondAttribute="trailing" constant="12" id="Den-Un-BWj"/>
-                                                <constraint firstItem="jNJ-15-Iz3" firstAttribute="leading" secondItem="sxR-8g-NJ8" secondAttribute="leadingMargin" constant="12" id="YZ9-WH-4MC"/>
-                                                <constraint firstItem="jNJ-15-Iz3" firstAttribute="centerY" secondItem="sxR-8g-NJ8" secondAttribute="centerY" id="yYV-1e-AaV"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="kHJ-Ok-oWa" id="qha-Jh-LDa"/>
@@ -1201,6 +692,155 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HUR-V0-u92" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="x66-sz-Ifj">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="577"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GXa-Do-eYp">
+                            <rect key="frame" x="21" y="20" width="199.5" height="528"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TOTAL TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCY-8f-dFJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TIME IN ROUND/MILE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9Y-R6-m3Z" userLabel="TIMEINROUND">
+                                    <rect key="frame" x="0.0" y="24" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1l-wR-0Aw">
+                                    <rect key="frame" x="0.0" y="48" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING PACE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="teG-Tl-NtZ">
+                                    <rect key="frame" x="0.0" y="72" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS MOVING SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aum-PG-ly3">
+                                    <rect key="frame" x="0.0" y="96" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS AVG SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zD-2r-znI">
+                                    <rect key="frame" x="0.0" y="120" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS AVG PACE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZG3-mA-U7a">
+                                    <rect key="frame" x="0.0" y="144" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS DIRECTION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HI8-Ig-14K">
+                                    <rect key="frame" x="0.0" y="168" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS ROUND SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TiY-i7-wHU" userLabel="gpd speed round">
+                                    <rect key="frame" x="0.0" y="192" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS DISTANCE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAQ-ot-z7H">
+                                    <rect key="frame" x="0.0" y="216" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT DISTANCE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZ0-oE-ogw" userLabel="BT distance">
+                                    <rect key="frame" x="0.0" y="240" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT HR" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4L-M6-db0" userLabel="BT hr">
+                                    <rect key="frame" x="0.0" y="264" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3a0-Ct-dng" userLabel="BT speed">
+                                    <rect key="frame" x="0.0" y="288" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT CAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaQ-Bq-MJL" userLabel="BT cad">
+                                    <rect key="frame" x="0.0" y="312" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0R4-Vm-rwm" userLabel="BT score">
+                                    <rect key="frame" x="0.0" y="336" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT MOVING TIME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rp4-VX-wMV" userLabel="BT Moving time">
+                                    <rect key="frame" x="0.0" y="360" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT AVG SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y10-PW-Qp7" userLabel="BT AVG">
+                                    <rect key="frame" x="0.0" y="384" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPEED ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQW-Bv-6ay" userLabel="BT spd round">
+                                    <rect key="frame" x="0.0" y="408" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT CAD ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6O1-EY-BIE" userLabel="BT CAD RND">
+                                    <rect key="frame" x="0.0" y="432" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT HR RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gE1-dW-MXg" userLabel="BT HR RND">
+                                    <rect key="frame" x="0.0" y="456" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjh-Lt-08t" userLabel="BT SCORE RND">
+                                    <rect key="frame" x="0.0" y="480" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uY0-iN-fRb" userLabel="FB LEADER">
+                                    <rect key="frame" x="0.0" y="504" width="199.5" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="GXa-Do-eYp" firstAttribute="leading" secondItem="MXW-2s-XBX" secondAttribute="leading" constant="21" id="asq-pa-EUS"/>
+                        <constraint firstItem="GXa-Do-eYp" firstAttribute="top" secondItem="MXW-2s-XBX" secondAttribute="top" id="rt8-oO-oDQ"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="MXW-2s-XBX"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="562" y="-421"/>
         </scene>
