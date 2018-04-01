@@ -629,7 +629,7 @@ class Starter_VC: UITableViewController {
     //FB PUSH, AT ROUND COMPLETE
     func fbPushII() {
         
-       
+       //(rounds.heartrates.last!*1000).rounded()/1000
 //    func fbPush(rSpeed: String, rHeartrate: String, rScore: String, rCadence: String) {
         //send round data to fb
         print("Start fbPush")
@@ -639,21 +639,21 @@ class Starter_VC: UITableViewController {
             // FIREBASE PUSH  - START
             let round_post = [
                 "a_calcDurationPost" : roundsCompleted * 5,
-                "a_scoreRoundLast" : rounds.scores.last!,
-                "a_speedRoundLast" : rounds.speeds.last!,
-                "fb_CAD" : rounds.cadences.last!,
+                "a_scoreRoundLast" : (rounds.scores.last!*1000).rounded()/1000,
+                "a_speedRoundLast" : (rounds.speeds.last!*1000).rounded()/1000,
+                "fb_CAD" : (rounds.cadences.last!*1000).rounded()/1000,
                 "fb_Date" : result,
                 "fb_DateNow" : result,
-                "fb_HR" : rounds.heartrates.last!,
-                "fb_RND" : rounds.scores.last!,
-                "fb_SPD" : rounds.speeds.last!,
+                "fb_HR" : (rounds.heartrates.last!*1000).rounded()/1000,
+                "fb_RND" : (rounds.scores.last!*1000).rounded()/1000,
+                "fb_SPD" : (rounds.speeds.last!*1000).rounded()/1000,
                 "fb_maxHRTotal" : maxHRvalue,
-                "fb_scoreHRRound" : rounds.scores.last!,
-                "fb_scoreHRRoundLast" : rounds.scores.last!,
-                "fb_scoreHRTotal" : rounds.scores.last!,
+                "fb_scoreHRRound" : (rounds.scores.last!*1000).rounded()/1000,
+                "fb_scoreHRRoundLast" : (rounds.scores.last!*1000).rounded()/1000,
+                "fb_scoreHRTotal" : (rounds.scores.last!*1000).rounded()/1000,
                 "fb_timAvgCADtotal" : rounds.cadences.last!,
-                "fb_timAvgHRtotal" : rounds.scores.last!,
-                "fb_timAvgSPDtotal" : rounds.speeds.last!,
+                "fb_timAvgHRtotal" : (rounds.scores.last!*1000).rounded()/1000,
+                "fb_timAvgSPDtotal" : (rounds.speeds.last!*1000).rounded()/1000,
                 "fb_timDistanceTraveled" : longestDistance,
                 "fb_timGroup" : "iOS",
                 "fb_timName" : riderName,
@@ -682,12 +682,17 @@ class Starter_VC: UITableViewController {
         if current.totalAverageSpeed > geo.avgSpeed {
             tSpeed = current.totalAverageSpeed
         }
-        tSpeed = tSpeed * 100
-        tSpeed = round(tSpeed)
-        tSpeed = tSpeed / 100
+//        tSpeed = tSpeed * 100
+//        tSpeed = round(tSpeed)
+//        tSpeed = tSpeed / 100
+        tSpeed = (tSpeed*1000).rounded()/1000
+        //(tSpeed*1000).rounded()/1000
 
-        let tScore = getScoreFromHR(x: rounds.heartrates.average)
-        let tCadence = rounds.cadences.average
+        var tScore = getScoreFromHR(x: rounds.heartrates.average)
+        tScore = (tScore*1000).rounded()/1000
+        
+        var tCadence = rounds.cadences.average
+        tCadence = (tCadence*1000).rounded()/1000
         
         print("Start fbPost for Totals")
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
