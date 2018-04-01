@@ -23,6 +23,9 @@ class Viewer_VC: UIViewController {
     @IBOutlet weak var dat2: UILabel!
     @IBOutlet weak var dat3: UILabel!
     
+    @IBOutlet weak var lab4: UILabel!
+    
+    
     //EACH SECOND
     @objc func timerInterval() {
         updateDisplay()
@@ -38,6 +41,12 @@ class Viewer_VC: UIViewController {
         lab1.text = "\(arrSend[4])"
         lab2.text = "\(arrSend[5])"
         lab3.text = "\(arrSend[6])"
+        
+        if lab3.text == "PACE" {
+            lab4.text = ""
+        } else {
+            lab4.text = "RPM"
+        }
     }
     
     override func viewDidLoad() {

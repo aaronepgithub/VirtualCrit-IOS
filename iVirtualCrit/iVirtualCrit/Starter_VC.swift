@@ -114,15 +114,15 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var lbl_timeInRound: UILabel!
     @IBOutlet weak var fb_SpeedLeader: UILabel!
     
-    func processUD(st: String) {
-        udString = "\(secondsSinceStart):  \(st) \n"
-        if currentRound == 1 {
-         udArray = []
-        }
-        udArray.append(udString)
-        let defaults = UserDefaults.standard
-        defaults.set(udArray, forKey: "SavedStringArray")
-    }
+//    func processUD(st: String) {
+//        udString = "\(secondsSinceStart):  \(st) \n"
+//        if currentRound == 1 {
+//         udArray = []
+//        }
+//        udArray.append(udString)
+//        let defaults = UserDefaults.standard
+//        defaults.set(udArray, forKey: "SavedStringArray")
+//    }
     
     
     //EACH SECOND
@@ -141,8 +141,6 @@ class Starter_VC: UITableViewController {
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
         if secondsInCurrentRound >= secondsPerRound {
             print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
-            //arr.insert("ROUND COMPLETE", at: 0)
-            arrSend.insert("R", at: 0)
             roundsCompleted += 1
             currentRound += 1
             distanceAtStartOfRoundBT = current.totalDistance
@@ -259,12 +257,12 @@ class Starter_VC: UITableViewController {
         let a = "ROUND \(stringer(dbl: roundsCompleted, len: 0)) "
         let b = "\(stringer(dbl: rounds.heartrates.last!, len: 1)) HR"
         let c = "\(stringer(dbl: rounds.scores.last!, len: 1)) % MAX"
-        let d = "\(stringer(dbl: rounds.speeds.last!, len: 2))  MPH/BT"
+        let d = "\(stringer(dbl: rounds.btSpeeds.last!, len: 2))  MPH/BT"
         let e = "\(stringer(dbl: rounds.cadences.last!, len: 1)) RPM"
         let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 2))  MPH/GEO"
 
-        arrResults.append("\(a)\(b)\(c)")
-        arrResultsDetails.append("\(d)\(e)\(f)")
+        arrResults.append("\(a) \(b), \(c)")
+        arrResultsDetails.append("\(d), \(e), \(f)")
 
         //ROUNDCOMPLETE POINT
         newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(f)\n\(b)\n\(roundPace) PACE\n\(e)")
@@ -280,26 +278,11 @@ class Starter_VC: UITableViewController {
 //        dump(rounds.geoSpeeds)
 //        print("\n")
         
-        //TODO  TEST PUSH/POST WITHOUT NETWORK...
+        geo.speed = 0.0
+        geo.pace = "00:00"
         
         print("calling fbPushII")
         fbPushII()
-//        if rounds.speeds.last! > 0.1 {
-//            fbPushII()
-//        }
-        
-        
-        
-//        if ConnectionCheck.isConnectedToNetwork() {
-//            print("Connected to Internet")
-//            print("calling fbPushII")
-//            if rounds.speeds.last! > 0.1 {
-//                fbPushII()
-//            }
-//        }
-//        else{
-//            print("disConnected")
-//        }
     }
     
     
@@ -337,7 +320,6 @@ class Starter_VC: UITableViewController {
             bestRoundScore = getScoreFromHR(x: bestRoundHR)
         }
         
-        //arrSend.insert("RC", at: 0)
         
         //MY BEST ROUNDS POINT
         let when = DispatchTime.now() + 240
@@ -413,8 +395,8 @@ class Starter_VC: UITableViewController {
         //REMOVE OLD HISTORY
         //udArray = []
         //udArray.append(udString)
-        let defaults = UserDefaults.standard
-        defaults.set(udArray, forKey: "SavedStringArray")
+//        let defaults = UserDefaults.standard
+//        defaults.set(udArray, forKey: "SavedStringArray")
     }
     
     func presentHistory() {
@@ -423,7 +405,7 @@ class Starter_VC: UITableViewController {
     
     func createViewerArray() {
         //HDR
-        if geo.status == "ON/USE" || current.totalMovingTime == 0 {
+        if activityType == "RUN" || current.totalMovingTime == 0 {
             arr.append("\(createTimeString(seconds: Int(geo.elapsedTime)))  \(stringer(dbl: geo.avgSpeed, len: 1)) AVG")
         } else {
             arr.append("\(createTimeString(seconds: Int(current.totalMovingTime)))  \(stringer(dbl: current.totalAverageSpeed, len: 1)) AVG")
@@ -433,7 +415,7 @@ class Starter_VC: UITableViewController {
         arr.append("\(stringer(dbl: Double(current.currentHR), len: 0))")
         tabBarController?.tabBar.items?[0].badgeValue = "\(stringer(dbl: Double(current.currentHR), len: 0))"
         
-        if geo.status == "ON/USE" || current.totalMovingTime == 0 {
+        if activityType == "RUN" || current.totalMovingTime == 0 {
             arr.append("\(stringer(dbl: geo.speed, len: 1))")
             tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: geo.speed, len: 1))"
         } else {
@@ -451,12 +433,12 @@ class Starter_VC: UITableViewController {
         //3 LBLS
         arr.append("\(stringer(dbl: current.currentScore, len: 0))%\nHR")
         
-        arr.append("SPD\nMPH\n\(stringer(dbl: Double(secondsInCurrentRound), len: 0))")
+        arr.append("SPD\n\(stringer(dbl: Double(secondsInCurrentRound), len: 0))")
         
         if activityType == "RUN" {
             arr.append("PACE")
         } else {
-            arr.append("CAD\nRPM")
+            arr.append("CAD")
         }
         
         //FOOTER
@@ -539,24 +521,13 @@ class Starter_VC: UITableViewController {
             
             if system.status == "STOPPED" {
                 system.status = "STARTED";statusValue.text = "STARTED";
-                //system.startTime = Date()
                 system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
                 
                 if geo.status == "ON" {
-                    //geo.startTime = Date()
                     startLocationUpdates()
                 }
                 
-                if geo.status == "ON/USE" {
-                    //geo.startTime = Date()
-                }
-                
                 startTimer()
-                
-
-                
-                //NotificationCenter.default.addObserver(self, selector: #selector(updateBT(not:)), name: Notification.Name("bleUpdate"), object: nil)
-                
             } else {
                 system.status = "STOPPED";statusValue.text = "STOPPED";
                 system.stopTime = Date()
@@ -570,9 +541,9 @@ class Starter_VC: UITableViewController {
             }
         case 2:
             let gst = geo.status
-            if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
-            if gst == "ON/USE" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates();}
-            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";}
+            //if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
+            if gst == "ON" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates();}
+            if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates();}
         case 3:
             //ble
             self.tabBarController?.selectedIndex = 1
@@ -611,13 +582,14 @@ class Starter_VC: UITableViewController {
             }
         case 13:
             print("13")
-            if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
+            //if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
 
             //CLEAR HISTORY
-            udArray = []
-            udArray.append("CLEARED")
-            let defaults = UserDefaults.standard
-            defaults.set(udArray, forKey: "SavedStringArray")
+//            udArray = []
+//            udArray.append("CLEARED")
+//            let defaults = UserDefaults.standard
+//            defaults.set(udArray, forKey: "SavedStringArray")
+            
             //CLEAR DB
 //            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
 //            refDB.removeValue()
@@ -642,9 +614,9 @@ class Starter_VC: UITableViewController {
         riderName = "TIM" + String(rn)
         lblRiderName.text = riderName
         
-        let defaults = UserDefaults.standard
-        udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
-        udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
+//        let defaults = UserDefaults.standard
+//        udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
+//        udString = "NEW ACTIVITY, \(getFormattedTimeAndDate(d: Date()))\n"
     }
     
 
@@ -815,6 +787,8 @@ class Starter_VC: UITableViewController {
         }
     }
     
+    
+    
     var currentSpeedLeaderName = ""
     var currentSpeedLeaderSpeed: Double = 0
     var newSpeedLeader: Bool = false
@@ -869,7 +843,6 @@ class Starter_VC: UITableViewController {
                     self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
                 }
                 
-//                self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
             }
         })
         { (error) in

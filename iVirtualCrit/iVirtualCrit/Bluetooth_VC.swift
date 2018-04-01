@@ -132,7 +132,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
-            
+            self.out_Btn1.setTitle("RESCAN", for: .normal)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                 self.BLTE_tableViewOutlet.reloadData()
@@ -169,8 +169,8 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             
             current.currentHR = bpmValue
             current.currentScore = getScoreFromHR(x: Double(current.currentHR))
-            let str: String = "\(current.currentHR):\(stringer(dbl: current.currentScore, len: 0))"
-            out_Btn1.setTitle(str, for: .normal)
+            //let str: String = "\(current.currentHR):\(stringer(dbl: current.currentScore, len: 0))"
+            //out_Btn1.setTitle(str, for: .normal)
         }
         
         
@@ -182,12 +182,12 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             if flag & WHEEL_REVOLUTION_FLAG == 1 {
                 //print("SPD value[1]");print(value[1])
                 if value[1] > 0 {
-                  out_Btn2.setTitle(String(value[1]), for: .normal)
+                  //out_Btn2.setTitle(String(value[1]), for: .normal)
                 }
                 processWheelData(withData: data)
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
                     if value[7] > 0 {
-                        out_Btn3.setTitle(String(value[7]), for: .normal)
+                        //out_Btn3.setTitle(String(value[7]), for: .normal)
                     }
                     //print("CAD value[7]");print(value[7])
                     processCrankData(withData: data, andCrankRevolutionIndex: 7)
@@ -195,7 +195,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
             } else {
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
                     if value[1] > 0 {
-                        out_Btn3.setTitle(String(value[1]), for: .normal)
+                        //out_Btn3.setTitle(String(value[1]), for: .normal)
                     }
                     //print("CAD value[1]");print(value[1])
                     processCrankData(withData: data, andCrankRevolutionIndex: 1)

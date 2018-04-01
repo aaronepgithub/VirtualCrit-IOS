@@ -30,7 +30,7 @@ class History_VC: UIViewController {
         var y = 0
         while y < x {
             z += udArray[y]
-            z += "\n\n  RECORD \(y) OF \(x)  \n\n"
+            z += "\n  RECORD \(y + 1) OF \(x)  \n\n"
             y += 1
         }
         textViewTimeline.text = z
