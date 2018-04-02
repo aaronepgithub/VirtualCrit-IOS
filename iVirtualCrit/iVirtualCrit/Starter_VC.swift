@@ -309,7 +309,7 @@ class Starter_VC: UITableViewController {
     
     // CALC BESTROUND METRICS
     func calcBestRoundMetrics() {
-        print("CALCBESTROUND METRICS")
+        print("CALC BEST ROUND METRICS")
         if roundSpeed > bestRoundSpeed {
             bestRoundSpeed = roundSpeed
             bestRoundPace = calcMinPerMile(mph: roundSpeed)
@@ -318,22 +318,13 @@ class Starter_VC: UITableViewController {
             if audioStatus == "ON" {
                 
                 if roundHR > bestRoundHR {
-                    
-                    if (currentRound < 5 || currentRound % 5 == 0) {
                         Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
-                    }
-                    
-
                 } else {
-                    if (currentRound < 5 || currentRound % 5 == 0) {
                         Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
-                    }
                 }
             }
         } else {
-            if (currentRound < 5 || currentRound % 5 == 0) {
                 if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")}
-            }
         }
         if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
         if roundHR > bestRoundHR {
@@ -379,7 +370,10 @@ class Starter_VC: UITableViewController {
             }
         } else {
             if audioStatus == "ON" {
-                Utils.shared.say(sentence: "Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
+//                Utils.shared.say(sentence: "Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
+
+                Utils.shared.say(sentence: "Sorry, not your best mile. Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
+                
                 
                 print("Sorry, not your best mile.  The fastest is still \(stringer(dbl: fastestMile, len: 1)) Miles Per Hour.  A Pace of \(calcMinPerMile(mph: fastestMile)) PER MILE.  Your last mile ranked number \(indexOfLastMileSpeed) out of \(arrMileSpeeds.count).")
             }
@@ -652,9 +646,6 @@ class Starter_VC: UITableViewController {
     
     //FB PUSH, AT ROUND COMPLETE
     func fbPushII() {
-        
-       //(rounds.heartrates.last!*1000).rounded()/1000
-//    func fbPush(rSpeed: String, rHeartrate: String, rScore: String, rCadence: String) {
         //send round data to fb
         print("Start fbPush")
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
@@ -768,7 +759,9 @@ class Starter_VC: UITableViewController {
         }
     }
     
-    
+    var currentScoreLeaderName = ""
+    var currentScoreLeaderScore: Double = 0
+    var newScoreLeader: Bool = false
     var freshFB = false
     var arrLeaderNamesByScore: String = ""
     //FB GETS (1,2,3,4)
@@ -796,6 +789,11 @@ class Starter_VC: UITableViewController {
 
                     if let dRND = fbRND as? Double {
                         sRND = stringer(dbl: dRND, len: 1)
+                        if dRND > self.currentScoreLeaderScore {
+                            self.currentScoreLeaderName = "\(fbNAME)"
+                            self.currentScoreLeaderScore = dRND
+                            self.newScoreLeader = true
+                        }
                     } else {
                         sRND = "0"
                     }
@@ -811,10 +809,9 @@ class Starter_VC: UITableViewController {
                     } else {
                         arrResultsRoundScore.append("\(fbNAME)")
                     }
-                    
-                    
-//                    arrResultsRoundScore.append("\(fbNAME)")
                     arrResultsDetailsRoundScore.append("\(sRND) % MAX")
+                    
+
                     
                 }
                 
@@ -822,7 +819,7 @@ class Starter_VC: UITableViewController {
                 arrResultsDetailsRoundScore.reverse()
                 
                 
-                print("Completed:  (Round) Get 5 leaders, ordered by score")
+                print("Completed:  (Round) Get 15 leaders, ordered by score")
                 print(self.arrLeaderNamesByScore)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SCORE)\n\(self.arrLeaderNamesByScore)")
                 print("\n")
@@ -831,7 +828,7 @@ class Starter_VC: UITableViewController {
         { (error) in
             print(error.localizedDescription);print("error fb1");}
         print("fb1 complete")
-        let when = DispatchTime.now() + 10
+        let when = DispatchTime.now() + 15
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb2")
             self.fb2()
@@ -915,6 +912,7 @@ class Starter_VC: UITableViewController {
                 let when2 = DispatchTime.now() + 120
                 DispatchQueue.main.asyncAfter(deadline: when2){
                     self.newBestSpeedsPoint(mileString: "TOP SPEEDS\n\n\(self.arrLeaderNamesBySpeed)")
+
                 }
                 
             }
@@ -922,6 +920,30 @@ class Starter_VC: UITableViewController {
         { (error) in
             print(error.localizedDescription);print("error fb2");}
         print("fb2 complete")
+        
+        if self.newSpeedLeader == true && newScoreLeader == false {
+            self.newSpeedLeader = false
+            if self.audioStatus == "ON" {
+                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
+            }
+        }
+        
+        if self.newSpeedLeader == false && newScoreLeader == true {
+            self.newScoreLeader = false
+            if self.audioStatus == "ON" {
+                Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
+            }
+        }
+        
+        if self.newSpeedLeader == true && newScoreLeader == true {
+            self.newScoreLeader = false
+            self.newSpeedLeader = false
+            if self.audioStatus == "ON" {
+                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
+            }
+        }
+        
+        
         let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb3")
