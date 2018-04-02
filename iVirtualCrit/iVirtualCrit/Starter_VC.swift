@@ -27,9 +27,26 @@ var crankRotationsDuringRound: Double = 0
 var arr = [String]()
 var arrSend = [String]()
 
-//USED FOR HISTORY_VC
+//USED FOR RESULTS_VC (UDARRAY IS USED FOR HISTORY)
 var arrResults = [String]()
 var arrResultsDetails = [String]()
+
+var arrResultsMyRoundSpeed = [String]()
+var arrResultsDetailsMyRoundSpeed = [String]()
+
+var arrResultsRoundSpeed = [String]()
+var arrResultsDetailsRoundSpeed = [String]()
+
+var arrResultsRoundScore = [String]()
+var arrResultsDetailsRoundScore = [String]()
+
+var arrResultsTotalSpeed = [String]()
+var arrResultsDetailsTotalSpeed = [String]()
+
+var arrResultsTotalScore = [String]()
+var arrResultsDetailsTotalScore = [String]()
+
+
 
 var roundCadence: Double = 0
 
@@ -257,12 +274,16 @@ class Starter_VC: UITableViewController {
         let a = "ROUND \(stringer(dbl: roundsCompleted, len: 0)) "
         let b = "\(stringer(dbl: rounds.heartrates.last!, len: 1)) HR"
         let c = "\(stringer(dbl: rounds.scores.last!, len: 1)) % MAX"
-        let d = "\(stringer(dbl: rounds.btSpeeds.last!, len: 2))  MPH/BT"
+        let d = "\(stringer(dbl: rounds.btSpeeds.last!, len: 2))  MPH"
         let e = "\(stringer(dbl: rounds.cadences.last!, len: 1)) RPM"
-        let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 2))  MPH/GEO"
+        let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 2))  GEO"
 
-        arrResults.append("\(a) \(b), \(c)")
-        arrResultsDetails.append("\(d), \(e), \(f)")
+//        arrResults.append("\(a) \(b), \(c)")
+//        arrResultsDetails.append("\(d), \(e), \(f)")
+
+        arrResultsMyRoundSpeed.append("\(a) \(b), \(c)")
+        arrResultsDetailsMyRoundSpeed.append("\(d), \(e), \(f)")
+        
 
         //ROUNDCOMPLETE POINT
         newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(f)\n\(b)\n\(roundPace) PACE\n\(e)")
@@ -571,6 +592,10 @@ class Starter_VC: UITableViewController {
             if tsz == 2155 {lblTireSize.text = "700X25";wheelCircumference = 2105;}
             
             print("WheelCir:  \(wheelCircumference)")
+        case 10:
+            print("SHOW HISTORY PAGE")
+        case 11:
+            print("SHOW RESULTS PAGE")
         case 12:
             let spr = secondsPerRound
             if system.status == "STOPPED" {
@@ -593,7 +618,6 @@ class Starter_VC: UITableViewController {
             //CLEAR DB
 //            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
 //            refDB.removeValue()
-
 
             
         default:
@@ -751,11 +775,13 @@ class Starter_VC: UITableViewController {
     func fb1() {
         print("start fb1")
         arrLeaderNamesByScore = ""
+        arrResultsRoundScore = []
+        arrResultsDetailsRoundScore = []
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         //let result = "20170527"
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         let ref = refDB.child(result)
-        _ = ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
+        _ = ref.queryLimited(toLast: 15).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -775,7 +801,16 @@ class Starter_VC: UITableViewController {
                     }
 
                     self.arrLeaderNamesByScore = "\(sRND) %  \(fbNAME)\n" + self.arrLeaderNamesByScore
+                    
+                    arrResultsRoundScore.append("\(fbNAME)")
+                    arrResultsDetailsRoundScore.append("\(sRND) % MAX")
+                    
                 }
+                
+                arrResultsRoundScore.reverse()
+                arrResultsDetailsRoundScore.reverse()
+                
+                
                 print("Completed:  (Round) Get 5 leaders, ordered by score")
                 print(self.arrLeaderNamesByScore)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SCORE)\n\(self.arrLeaderNamesByScore)")
@@ -801,11 +836,13 @@ class Starter_VC: UITableViewController {
     func fb2() {
         print("start fb2")
         arrLeaderNamesBySpeed = ""
+        arrResultsRoundSpeed = []
+        arrResultsDetailsRoundSpeed = []
         var n1: String = ""
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         let ref = refDB.child(result)
-        _ = ref.queryLimited(toLast: 5).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
+        _ = ref.queryLimited(toLast: 15).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -837,8 +874,15 @@ class Starter_VC: UITableViewController {
                         sSPD = "0"
                     }
                     self.arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + self.arrLeaderNamesBySpeed
+                    
+                    arrResultsRoundSpeed.append("\(fbNAME)")
+                    arrResultsDetailsRoundSpeed.append("\(sSPD) MPH")
                 }
-                print("Completed:  (Round) Get 5 leaders, ordered by speed")
+                
+                arrResultsRoundSpeed.reverse()
+                arrResultsDetailsRoundSpeed.reverse()
+                
+                print("Completed:  (Round) Get 15 leaders, ordered by speed")
                 print(self.arrLeaderNamesBySpeed)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SPEED)\n\(self.arrLeaderNamesBySpeed)")
                 print("\n")
@@ -864,6 +908,8 @@ class Starter_VC: UITableViewController {
     func fb3() { //get Totals from fb, ordered by score
         print("start fb3")
         leaderNamesByScoreTotals = ""
+        arrResultsTotalScore = []
+        arrResultsDetailsTotalScore = []
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         var sSCORE: String = "0"
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
@@ -884,7 +930,15 @@ class Starter_VC: UITableViewController {
                         sSCORE = "0"
                     }
                     self.leaderNamesByScoreTotals = "\(sSCORE)%  \(fbNAME)\n" + self.leaderNamesByScoreTotals
+                    
+                    arrResultsTotalScore.append("\(fbNAME)")
+                    arrResultsDetailsTotalScore.append("\(sSCORE) % MAX")
+                
                 }
+                arrResultsTotalScore.reverse()
+                arrResultsDetailsTotalScore.reverse()
+                
+                
                 print("leaderNamesByScoreTotals\n\(self.leaderNamesByScoreTotals) \n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSCORE LEADERS (TOTAL)\n\(self.leaderNamesByScoreTotals)")
                 
@@ -905,6 +959,8 @@ class Starter_VC: UITableViewController {
     func fb4() { //get Totals from fb, ordered by speed
         print("start fb4")
         leaderNamesBySpeedTotals = ""
+        arrResultsTotalSpeed = []
+        arrResultsDetailsTotalSpeed = []
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
@@ -925,7 +981,15 @@ class Starter_VC: UITableViewController {
                         sSPD = "0"
                     }
                     self.leaderNamesBySpeedTotals = "\(sSPD) MPH  \(fbNAME)\n" + self.leaderNamesBySpeedTotals
+                    
+                    arrResultsTotalSpeed.append("\(fbNAME)")
+                    arrResultsDetailsTotalSpeed.append("\(sSPD) MPH")
+                    
                 }
+                    
+                    arrResultsTotalSpeed.reverse()
+                    arrResultsDetailsTotalSpeed.reverse()
+                    
                 print("Complete fb4")
                 print("leaderNamesBySpeedTotals\n\(self.leaderNamesBySpeedTotals)\n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSPEED LEADERS (TOTAL)\n\(self.leaderNamesBySpeedTotals)")
