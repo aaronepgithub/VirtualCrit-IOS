@@ -616,8 +616,8 @@ class Starter_VC: UITableViewController {
 //            defaults.set(udArray, forKey: "SavedStringArray")
             
             //CLEAR DB
-//            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
-//            refDB.removeValue()
+            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
+            refDB.removeValue()
 
             
         default:
@@ -802,7 +802,18 @@ class Starter_VC: UITableViewController {
 
                     self.arrLeaderNamesByScore = "\(sRND) %  \(fbNAME)\n" + self.arrLeaderNamesByScore
                     
-                    arrResultsRoundScore.append("\(fbNAME)")
+                    if let xn = fbNAME as? String {
+                        if xn == self.riderName {
+                            arrResultsRoundScore.append("<ME>")
+                        } else {
+                            arrResultsRoundScore.append("\(fbNAME)")
+                        }
+                    } else {
+                        arrResultsRoundScore.append("\(fbNAME)")
+                    }
+                    
+                    
+//                    arrResultsRoundScore.append("\(fbNAME)")
                     arrResultsDetailsRoundScore.append("\(sRND) % MAX")
                     
                 }
@@ -869,13 +880,27 @@ class Starter_VC: UITableViewController {
                             print("New Fastest Speed:  \(self.currentSpeedLeaderSpeed)")
                             self.self.fb_SpeedLeader.text = "\(self.currentSpeedLeaderName):  \(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))"
                         }
-                        sSPD = stringer(dbl: dSPD, len: 1)
+                        sSPD = stringer(dbl: dSPD, len: 2)
                     } else {
                         sSPD = "0"
                     }
-                    self.arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + self.arrLeaderNamesBySpeed
+//                    self.arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + self.arrLeaderNamesBySpeed
                     
-                    arrResultsRoundSpeed.append("\(fbNAME)")
+                    if let xn = fbNAME as? String {
+                        if xn == self.riderName {
+                            arrResultsRoundSpeed.append("<ME>")
+                            self.arrLeaderNamesBySpeed = "\(sSPD) MPH  <ME>\n" + self.arrLeaderNamesBySpeed
+                        } else {
+                            arrResultsRoundSpeed.append("\(fbNAME)")
+                            self.arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + self.arrLeaderNamesBySpeed
+                        }
+                    } else {
+                        arrResultsRoundSpeed.append("\(fbNAME)")
+                        self.arrLeaderNamesBySpeed = "\(sSPD) MPH  \(fbNAME)\n" + self.arrLeaderNamesBySpeed
+                    }
+                    
+                    
+//                    arrResultsRoundSpeed.append("\(fbNAME)")
                     arrResultsDetailsRoundSpeed.append("\(sSPD) MPH")
                 }
                 
@@ -913,7 +938,7 @@ class Starter_VC: UITableViewController {
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         var sSCORE: String = "0"
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
-        ref.queryLimited(toLast: 10).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
+        ref.queryLimited(toLast: 15).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -925,13 +950,25 @@ class Starter_VC: UITableViewController {
                     
                     
                     if let dSCORE = fbSCORE as? Double {
-                        sSCORE = stringer(dbl: dSCORE, len: 1)
+                        sSCORE = stringer(dbl: dSCORE, len: 2)
                     } else {
                         sSCORE = "0"
                     }
                     self.leaderNamesByScoreTotals = "\(sSCORE)%  \(fbNAME)\n" + self.leaderNamesByScoreTotals
                     
-                    arrResultsTotalScore.append("\(fbNAME)")
+                    if let xn = fbNAME as? String {
+                        if xn == self.riderName {
+                            arrResultsTotalScore.append("<ME>")
+                        } else {
+                            arrResultsTotalScore.append("\(fbNAME)")
+                        }
+                    } else {
+                        arrResultsTotalScore.append("\(fbNAME)")
+                    }
+                    
+                    
+                    
+//                    arrResultsTotalScore.append("\(fbNAME)")
                     arrResultsDetailsTotalScore.append("\(sSCORE) % MAX")
                 
                 }
@@ -964,7 +1001,7 @@ class Starter_VC: UITableViewController {
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
         let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
-        ref.queryLimited(toLast: 10).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
+        ref.queryLimited(toLast: 15).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
                 if ( snapshot.value is NSNull ) {
                 print("not found")
             } else {
@@ -976,13 +1013,25 @@ class Starter_VC: UITableViewController {
                     let fbSPEED = dict["a_speedTotal"]!
                     
                     if let dSPD = fbSPEED as? Double {
-                        sSPD = stringer(dbl: dSPD, len: 1)
+                        sSPD = stringer(dbl: dSPD, len: 2)
                     } else {
                         sSPD = "0"
                     }
                     self.leaderNamesBySpeedTotals = "\(sSPD) MPH  \(fbNAME)\n" + self.leaderNamesBySpeedTotals
                     
-                    arrResultsTotalSpeed.append("\(fbNAME)")
+                    if let xn = fbNAME as? String {
+                        if xn == self.riderName {
+                            arrResultsTotalSpeed.append("<ME>")
+                        } else {
+                            arrResultsTotalSpeed.append("\(fbNAME)")
+                        }
+                    } else {
+                        arrResultsTotalSpeed.append("\(fbNAME)")
+                    }
+                    
+                    
+                    
+//                    arrResultsTotalSpeed.append("\(fbNAME)")
                     arrResultsDetailsTotalSpeed.append("\(sSPD) MPH")
                     
                 }

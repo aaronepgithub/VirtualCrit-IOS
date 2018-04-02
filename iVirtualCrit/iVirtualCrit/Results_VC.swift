@@ -89,7 +89,7 @@ class Results_VC: UITableViewController {
         outHeader.addGestureRecognizer(tapHeader)
         
         if arrResultsMyRoundSpeed.count > 0 {
-            outHeader.text = "MY CRIT SPEEDS"
+            outHeader.text = "MY RESULTS"
             arrResults = arrResultsMyRoundSpeed
             arrResultsDetails = arrResultsDetailsMyRoundSpeed
         }
