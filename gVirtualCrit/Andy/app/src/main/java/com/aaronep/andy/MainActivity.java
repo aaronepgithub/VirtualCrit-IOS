@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             ScrollView sv = findViewById(R.id.svSettings);
             LinearLayout ll = findViewById(R.id.llView);
-            LinearLayout llMile = findViewById(R.id.llViewGeo);
-            LinearLayout llGeo = findViewById(R.id.llViewMile);
+//            LinearLayout llMile = findViewById(R.id.llViewGeo);
+            LinearLayout llGeo = findViewById(R.id.llViewGeo);
             LinearLayout svtl = findViewById(R.id.svTimeline);
             LinearLayout svleader = findViewById(R.id.svLeaderboards);
 
@@ -181,37 +181,25 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     mTextMessage.setText(R.string.title_home);
                     ll.setVisibility(View.GONE);
                     llGeo.setVisibility(View.GONE);
-                    llMile.setVisibility(View.GONE);
                     svtl.setVisibility(View.GONE);
                     svleader.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
                     int x = dashboardON;
                     mTextMessage.setText("");
-                    if (x == 0) {
+//                    if (x == 0) {
+                    if (activityValue != "RUN") {
                         ll.setVisibility(View.VISIBLE);
                         llGeo.setVisibility(View.GONE);
-                        llMile.setVisibility(View.GONE);
                         sv.setVisibility(View.GONE);
                         svleader.setVisibility(View.GONE);
                         svtl.setVisibility(View.GONE);
                         dashboardON = 1;
                     }
-                    if (x == 1) {
+                    if (activityValue == "RUN") {
                         ll.setVisibility(View.GONE);
                         llGeo.setVisibility(View.VISIBLE);
-                        llMile.setVisibility(View.GONE);
-                        sv.setVisibility(View.GONE);
-                        svleader.setVisibility(View.GONE);
-                        svtl.setVisibility(View.GONE);
-                        dashboardON = 2;
-                    }
-                    if (x == 2) {
-                        ll.setVisibility(View.GONE);
-                        llGeo.setVisibility(View.GONE);
-                        llMile.setVisibility(View.VISIBLE);
                         sv.setVisibility(View.GONE);
                         svleader.setVisibility(View.GONE);
                         svtl.setVisibility(View.GONE);
@@ -351,7 +339,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //            builder.show();
 //        }
 
-        valuesRounds.add("Rounds Completed (Speeds)");
+        valuesRounds.add("My Rounds Completed (Speeds)");
+        valuesRoundsHeartrates.add("My Rounds Completed (Heartrates)");
+        valuesRoundsScores.add("My Rounds Completed (Scores)");
         valuesMiles.add("Miles Completed (Speeds)");  //BT
         valuesMilesGeo.add("Miles Completed (Speeds (G))");  //GEO
         valuesRoundLeaders.add("Round Leaders (Speeds)");
@@ -387,7 +377,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
     //STRINGS USED FOR LISTS
-    private ArrayList<String> valuesRounds = new ArrayList<>();
+    private ArrayList<String> valuesRounds = new ArrayList<>(); //SPEEDS
+    private ArrayList<String> valuesRoundsHeartrates = new ArrayList<>(); //HEARTRATES
+    private ArrayList<String> valuesRoundsScores = new ArrayList<>(); //SCORES
+
     private ArrayList<String> valuesMiles = new ArrayList<>();  //BT
     private ArrayList<String> valuesMilesGeo = new ArrayList<>();  //GEO
 
@@ -397,7 +390,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private ArrayList<String> valuesRoundLeadersScores = new ArrayList<>();
     private ArrayList<String> valuesTotalsLeadersScores = new ArrayList<>();
 
-
+    //ARRLISTS OF DOUBLES USED FOR INDEX VALUES
+    private ArrayList<Double> doubleValuesRounds = new ArrayList<>(); //SPEEDS
+    private ArrayList<Double> doubleValuesRoundsHeartrates = new ArrayList<>(); //HEARTRATES
+    private ArrayList<Double> doubleValuesRoundsScores = new ArrayList<>(); //SCORES
+    private ArrayList<Double> doubleValuesMiles = new ArrayList<>(); //MILES
 
     public void speakText(TimerTask v, String st) {
 
@@ -424,6 +421,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private int fetchRoundData = 0;
     private int fetchRoundDataScores = 0;
     private int fetchTotalsData = 0;
+    private int fetchTotalsDataScores = 0;
+    private double lastMileTester = 0;
 
     private void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
@@ -481,17 +480,37 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                       Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
                       valuesRounds.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.2f MPH", currentRoundSpeed)));
+                      valuesRoundsHeartrates.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.1f BPM", tim.getRoundHR())));
+                      valuesRoundsScores.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.1f %% MAX", tim.getRoundScore())));
+
+                      doubleValuesRounds.add(currentRoundSpeed);
+                      doubleValuesRoundsHeartrates.add(tim.getRoundHR());
+                      doubleValuesRoundsScores.add(tim.getRoundScore());
+
+                      String roundIndexString = "";
+
+                      //GET INDEX VALS
+                      int position = -1;
+                      position = doubleValuesRounds.indexOf(currentRoundSpeed);
+                      if (position == -1) {
+                          Log.e(TAG, "Object not found in List");
+                      } else {
+                          position += 1;
+                          Log.i(TAG, "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size());
+                          roundIndexString = "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size();
+                      }
+
+
                       tim.setRoundSpeed(currentRoundSpeed);
 
                       //WRITE TO FB AT ROUND END
-                      Log.i(TAG, "currentRoundSpeed  " + currentRoundSpeed);
+                      //Log.i(TAG, "currentRoundSpeed  " + currentRoundSpeed);
                       //Log.i(TAG, "tim.getRoundSpeed  " + tim.getRoundSpeed());
                       writeToFB();
 
                       currentRound += 1;
                       newRoundFlagBT = true;
                       newRoundFlagGEO = true;
-
 
 
                       //DETERMINE BEST AND LAST
@@ -505,11 +524,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
                       String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", currentRoundSpeed);
-                      String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f", bestRoundSpeed);
-                      speakText(this, toSpeak1 + toSpeak2);
+                      String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f", bestRoundSpeed) + " .  ";
+                      speakText(this, toSpeak1 + toSpeak2 + roundIndexString);
 
                       //CREATE TIMELINE POST
-                      createTimeline("ROUND COMPLETE\n" + String.format(Locale.US, "%.1f MPH", currentRoundSpeed)  + " ROUND\n" + "  YOUR BEST: " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed), "");
+                      createTimeline("ROUND COMPLETE\n" + String.format(Locale.US, "%.1f MPH", currentRoundSpeed)  + " \n" + String.format(Locale.US, "%.1f %% MAX", tim.getRoundScore())  + " \n" + "  YOUR BEST: " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed) + "\n" + roundIndexString, "");
 
                       final double finalBestRoundSpeed = bestRoundSpeed;
                       runOnUiThread(new Runnable() {
@@ -536,12 +555,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                   if (timerSecondsCounter == fetchRoundDataScores) {
                       Log.i(TAG, "run: readFromFB - ROUNDS/Scores");
-                      //readFromFB_RoundScores();
+                      readFromFB_RoundScores();
                   }
 
                   if (timerSecondsCounter == fetchTotalsData) {
                       Log.i(TAG, "run: readFromFBII - TOTALS");
                       readFromFBII();
+                  }
+
+                  if (timerSecondsCounter == fetchTotalsDataScores) {
+                      Log.i(TAG, "run: readFromFBIII - TOTALS SCORES");
+                      readFromFBIII();
                   }
 
 
@@ -576,12 +600,41 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   final double finalCurrentMileSpeed = currentMileSpeed;
                   final double finalBestMileMPH = bestMileMPH;
 
-                  if (readMileInfo) {
+                  if (finalLastMileSpeed != lastMileTester) {
+                      Log.i(TAG, "END OF MILE, REGARDLESS OF GEO OR BT");
+                      Log.i(TAG, "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed));
+                      Log.i(TAG, "Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH));
+
+                      doubleValuesMiles.add(finalLastMileSpeed);
+
+                      String mileRankingString = "";
+                      int positionM = -1;
+                      positionM = doubleValuesMiles.indexOf(finalLastMileSpeed);
+                      if (positionM == -1) {
+                          Log.e(TAG, "Object not found in List");
+                      } else {
+                          positionM += 1;
+                          Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
+                          mileRankingString = "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size();
+                      }
+
+
+
+                      lastMileTester = finalLastMileSpeed;
                       String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
                       String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
-                      speakText(this, toSpeakMile1 + toSpeakMile2);
+                      speakText(this, toSpeakMile1 + toSpeakMile2 + mileRankingString);
                       readMileInfo = false;
-                      createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH), "");
+                      createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH) + "\n" + mileRankingString, "");
+
+                  }
+
+                  if (readMileInfo) {
+//                      String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
+//                      String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
+//                      speakText(this, toSpeakMile1 + toSpeakMile2);
+                      readMileInfo = false;
+                      //createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH), "");
                   }
 
 
@@ -693,7 +746,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String userId = mDatabase.push().getKey();
         // creating user object
         Round round = new Round(tim.getName(), tim.getRoundSpeed(), tim.getRoundHR(), tim.getRoundScore());
-        Log.i(TAG, "writeToFB/ROUND" + tim.getRoundSpeed());
+        Log.i(TAG, "writeToFB/ROUND SPEED:  " + tim.getRoundSpeed());
+        Log.i(TAG, "writeToFB/ROUND SCORE:  " + tim.getRoundScore());
         // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
 
@@ -709,7 +763,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //WRITE UPDATE TOTAL DATA
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
-        Log.i(TAG, "writeToFB/TOTAL" + tim.getTotalAvgSpeed());
+        Log.i(TAG, "writeToFB/TOTAL:  " + tim.getTotalAvgSpeed());
         Total total = new Total(tim.getName(), totalAverageScore, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
 
@@ -725,6 +779,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //SCHEDULE READS
         fetchRoundData = timerSecondsCounter + 30;
         fetchTotalsData = timerSecondsCounter + 90;
+        fetchTotalsDataScores = timerSecondsCounter + 75;
         fetchRoundDataScores = timerSecondsCounter + 60;
 
         //TODO:  ADD HR/SCORE DATA TO FB AND DISPLAY
@@ -732,8 +787,70 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     }
 
+
+
+    //START READ FROM FB III
+    //VALUES TOTALS LEADERS SCORES
+    private String stTotalsLeadersScores = "";
+    private void readFromFBIII() {
+        Log.i(TAG, "READ FROM FBIII - TOTALS, SCORES");
+
+        //READ TOTALS SCORES
+        String totalsURL = "totals/" + tim.currentDate;
+        if (activityValue == "RUN") {
+            totalsURL = "totals/run/" + tim.currentDate;
+        }
+        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+        mDatabaseTotals.limitToLast(15).orderByChild("a_scoreHRTotal").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Log.i(TAG, "onDataChange - TOTALS/SCORES");
+                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                ArrayList<String> names= new ArrayList<>();
+                valuesTotalsLeadersScores.clear();
+                stTotalsLeadersScores = "";
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String name = ds.child("fb_timName").getValue(String.class);
+                    Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
+                    //names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f %% MAX", score)));
+                    names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f %% MAX", score) , name));
+
+
+                    //Log.i("FB", name);
+                    //Log.i("FB", String.valueOf(speed));
+                    //valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f PERCENT MAX", score)));
+                }  //COMPLETED - READING EACH SNAP
+//                valuesTotalsLeaders.add("Total Leaders (Speeds)");
+                for(String name : names) {  //NOW READING EACH IN ARRAYLIST
+                    //Log.i(TAG, "onDataChange: (name) " + name);
+                    valuesTotalsLeadersScores.add(name);
+                    stTotalsLeadersScores = name + "\n" + stTotalsLeadersScores;
+                }
+                valuesTotalsLeadersScores.add("Total Leaders (Scores)");
+                Collections.reverse(valuesTotalsLeadersScores);
+
+                stTotalsLeadersScores = "Totals Leaders (Scores)" + "\n" + stTotalsLeadersScores;
+                createTimeline(stTotalsLeadersScores, "");
+                Log.i(TAG, "stTotalsLeadersScores: " + stTotalsLeadersScores);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.i(TAG, "Failed to read value - totals, scores.", databaseError.toException());
+            }
+        });
+        //END READ TOTALS SCORES
+
+
+    }
+
+    //END VALUES TOTALS LEADERS SCORES
+    private String stTotalsLeaders = "";
     private void readFromFBII() {
         Log.i(TAG, "READ FROM FBII - TOTALS");
+        valuesTotalsLeaders.clear();
         //READ TOTALS
         String totalsURL = "totals/" + tim.currentDate;
         if (activityValue == "RUN") {
@@ -747,22 +864,32 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesTotalsLeaders.clear();
+                stTotalsLeaders = "";
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("a_speedTotal").getValue(Double.class);
-                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+//                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name));
                     //Log.i("FB", name);
                     //Log.i("FB", String.valueOf(speed));
                     //valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesTotalsLeaders.add("Total Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
                     valuesTotalsLeaders.add(name);
+                    stTotalsLeaders = name + "\n" + stTotalsLeaders;
                 }
                 valuesTotalsLeaders.add("Total Leaders (Speeds)");
+                Collections.reverse(valuesTotalsLeaders);
+
+                stTotalsLeaders = "Totals Leaders (Speeds)" + "\n" + stTotalsLeaders;
+                createTimeline(stTotalsLeaders, "");
+                Log.i(TAG, "stTotalsLeaders: " + stTotalsLeaders);
+
+                //readFromFBIII();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -788,7 +915,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_SPD").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange - ROUNDS");
+                //Log.i(TAG, "onDataChange - ROUNDS");
                 //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeaders.clear();
@@ -796,11 +923,12 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("fb_SPD").getValue(Double.class);
-                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+//                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name));
 //                    Log.i("FB", name);
 //                    Log.i("FB", String.valueOf(speed));
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
@@ -809,8 +937,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     stRoundLeaders = name + "\n" + stRoundLeaders;
                 }
                 valuesRoundLeaders.add("Round Leaders (Speeds)");
+                Collections.reverse(valuesRoundLeaders);
                 stRoundLeaders = "Round Leaders (Speeds)" + "\n" + stRoundLeaders;
                 createTimeline(stRoundLeaders, "");
+                Log.i(TAG, "stRoundLeaders: " + stRoundLeaders);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -823,7 +953,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
     //READ ROUND LEADERS - SCORES
-//TODO:  PLACE HR INTO ROUND OBJECT AND SEND TO FB
     private String stRoundLeadersScores = "";
     private void readFromFB_RoundScores() {
         Log.i(TAG, "READ FROM FB/ROUNDS/SCORES");
@@ -837,28 +966,31 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_RND").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange - ROUND SCORES");
+                //Log.i(TAG, "onDataChange - ROUND SCORES");
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeadersScores.clear();
                 stRoundLeadersScores = "";
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double score = ds.child("fb_RND").getValue(Double.class);
-                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.1f SCORE", score)));
+//                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.1f %% MAX", score)));
+                    names.add(String.format("%s.  %s", String.format(Locale.US, "%.1f %% MAX", score), name));
 //                    Log.i("FB", name);
 //                    Log.i("FB", String.valueOf(speed));
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.1f MPH", score)));
+                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.1f PERCENT MAX", score)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
                     //Log.i(TAG, "onDataChange: (name) " + name);
                     valuesRoundLeadersScores.add(name);
-                    stRoundLeadersScores = name + "\n" + stRoundLeaders;
+                    stRoundLeadersScores = name + "\n" + stRoundLeadersScores;
                 }
                 valuesRoundLeadersScores.add("Round Leaders (Scores)");
+                Collections.reverse(valuesRoundLeadersScores);
                 stRoundLeadersScores = "Round Leaders (Scores)" + "\n" + stRoundLeadersScores;
                 createTimeline(stRoundLeadersScores, "");
+                Log.i(TAG, "stRoundLeaderScores:  " + stRoundLeadersScores);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -1689,6 +1821,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         if (localTimerSecCounter - secondsAtEndOfMileBT > 10) {
             //Log.i(TAG, "onWheelMeasurementReceived: end of mile calc");
             if (totalDistance > currentMileBT) {
+                Log.i(TAG, "onWheelMeasurementReceived: END OF MILE BT");
                   endMileSpeedBT = 1 / (((double) localTimerSecCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
                   valuesMiles.add(String.format("%d.  %s", currentMileBT, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedBT)));
                   currentMileBT += 1;
@@ -1978,6 +2111,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 //END OF MILE CALC
                 if (timerSecondsCounter - secondsAtEndOfMileGeo > 10) {
                     if (geoDistance > currentMileGEO) {
+                        Log.i(TAG, "onLocationReceived: END OF CURRENT MILE GEO");
                         endMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
                         valuesMilesGeo.add(String.format("%d.  %s", currentMileGEO, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedGEO)));
                         currentMileGEO += 1;
@@ -2785,32 +2919,6 @@ private String calcPace(double mph) {
     public void tlButton1_Click(View view) {
 
         listView = findViewById(R.id.lv1);
-        // Defined Array values to show in ListView
-//        String[] values = new String[] {
-//                "Android List View",
-//                "Adapter implementation",
-//                "Simple List View In Android",
-//                "Create List View Android",
-//                "Android Example",
-//                "List View Source Code",
-//                "List View Array Adapter",
-//                "Android Example List View",
-//                "Aaron's List View",
-//                "Aaron's Adapter",
-//                "Simple List View In Android",
-//                "List View Source Code",
-//                "List View Array Adapter",
-//                "Android Example List View",
-//                "Aaron's List View",
-//                "Aaron's Adapter"
-//        };
-
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
 
         switch (lvToggle) {
             case 0: {
@@ -2823,17 +2931,27 @@ private String calcPace(double mph) {
             }
             case 1: {
                 //readFromFBII();
-                Collections.reverse(valuesRoundLeaders);
+//                Collections.reverse(valuesRoundLeaders);
+                ArrayList<String> temp = valuesRoundLeaders;
+                if (temp.size() < 1) {return;}
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, valuesRoundLeaders);
+                        android.R.layout.simple_list_item_1, android.R.id.text1, temp);
                 listView.setAdapter(adapter);
                 lvToggle = 2;
                 break;
             }
             case 2: {
-                Collections.reverse(valuesTotalsLeaders);
+                ArrayList<String> temp2 = valuesRoundLeadersScores;
+                if (temp2.size() < 1) {return;}
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, valuesTotalsLeaders);
+                        android.R.layout.simple_list_item_1, android.R.id.text1, temp2);
+                listView.setAdapter(adapter);
+                lvToggle = 3;
+                break;
+            }
+            case 3: {
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, valuesRoundsScores);
                 listView.setAdapter(adapter);
                 lvToggle = 0;
                 break;
@@ -2848,40 +2966,65 @@ private String calcPace(double mph) {
 
     }
 
+    private int tlButton2_toggle = 0;
     public void tlButton2_Click(View view) {
 
-//        values2 = new String[] {
-//                "Aaron's List View",
-//                "Aaron's Adapter",
-//                "Simple List View In Android",
-//                "Create List View Android",
-//                "Android Example",
-//                "List View Source Code",
-//                "List View Array Adapter",
-//                "Android Example List View",
-//                "Simple List View In Android",
-//                "Create List View Android",
-//                "Android Example",
-//                "List View Source Code",
-//                "List View Array Adapter"
-//        };
-
         listView = findViewById(R.id.lv1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, valuesMiles);
 
-        listView.setAdapter(adapter);
+        if (tlButton2_toggle == 0) {
+            Log.i(TAG, "tlButton2_Click: " + tlButton2_toggle);
+            tlButton2_toggle = 1;
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, valuesMiles);
+
+            listView.setAdapter(adapter);
+        } else {
+            Log.i(TAG, "tlButton2_Click: " + tlButton2_toggle);
+            tlButton2_toggle = 0;
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, valuesMilesGeo);
+
+            listView.setAdapter(adapter);
+        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, valuesMiles);
+//
+//        listView.setAdapter(adapter);
 
 
     }
 
+    private int tlButton3_toggle = 0;
     public void tlButton3_Click(View view) {
 
         listView = findViewById(R.id.lv1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, valuesMilesGeo);
 
-        listView.setAdapter(adapter);
+        if (tlButton3_toggle == 0) {
+            Log.i(TAG, "tlButton3_Click: " + tlButton3_toggle);
+            ArrayList<String> temp = valuesTotalsLeaders;
+            if (temp.size() < 1) {return;}
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, temp);
+
+            listView.setAdapter(adapter);
+            tlButton3_toggle = 1;
+        } else {
+
+            Log.i(TAG, "tlButton3_Click: " + tlButton3_toggle);
+            ArrayList<String> temp = valuesTotalsLeadersScores;
+            if (temp.size() < 1) {return;}
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, temp);
+
+            listView.setAdapter(adapter);
+            tlButton3_toggle = 0;
+
+        }
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, valuesTotalsLeaders);
+//
+//        listView.setAdapter(adapter);
 
     }
 
