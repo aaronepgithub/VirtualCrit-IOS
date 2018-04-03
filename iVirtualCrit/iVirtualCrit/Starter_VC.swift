@@ -157,7 +157,7 @@ class Starter_VC: UITableViewController {
         //NEW ROUND IDENTIFIER
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
         if secondsInCurrentRound >= secondsPerRound {
-            print("\nNEW ROUND, ROUND \(currentRound) COMPLETE")
+            print("\n STARTING ROUND \(currentRound + 1), ROUND \(currentRound) COMPLETE")
             roundsCompleted += 1
             currentRound += 1
             distanceAtStartOfRoundBT = current.totalDistance
@@ -270,23 +270,52 @@ class Starter_VC: UITableViewController {
         let roundPace = calcMinPerMile(mph: roundSpeed)
         rounds.speeds.append(roundSpeed)
         
+        let arrRoundSpeedsSorted = rounds.speeds.sorted { $0 > $1 }
+        let ix = arrRoundSpeedsSorted.index(of: roundSpeed)
+        var indexOfLastRoundSpeed = 0
+        if ix != nil {
+            indexOfLastRoundSpeed = (ix ?? 10000) + 1
+            print("indexOfLastRoundSpeed  \(indexOfLastRoundSpeed)")
+            print("total Rounds:  \(rounds.speeds.count)")
+            if indexOfLastRoundSpeed < 10000 {
+                roundIndexSentance = ".  Your last round's speed ranked number \(indexOfLastRoundSpeed) out of \(rounds.speeds.count).  "
+            }
+        }
+        
+        let arrRoundHeartratesSorted = rounds.heartrates.sorted { $0 > $1 }
+        let hix = arrRoundHeartratesSorted.index(of: roundHR)
+        var indexOfLastRoundHeartrate = 0
+        if hix != nil {
+            indexOfLastRoundHeartrate = (hix ?? 10000) + 1
+            print("indexOfLastRoundHeartrate  \(indexOfLastRoundHeartrate)")
+            print("total Rounds:  \(rounds.heartrates.count)")
+            if indexOfLastRoundHeartrate < 10000 {
+                roundIndexSentance += ".  Your last round's score ranked number \(indexOfLastRoundHeartrate) out of \(rounds.heartrates.count).  "
+            }
+        }
+
+        
+        
+        
+        
         //RESULTS DATA
         let a = "ROUND \(stringer(dbl: roundsCompleted, len: 0)) "
         let b = "\(stringer(dbl: rounds.heartrates.last!, len: 1)) HR"
         let c = "\(stringer(dbl: rounds.scores.last!, len: 1)) % MAX"
-        let d = "\(stringer(dbl: rounds.btSpeeds.last!, len: 2))  MPH"
+        let d = "\(stringer(dbl: rounds.speeds.last!, len: 2))  MPH"
+//        let d = "\(stringer(dbl: rounds.btSpeeds.last!, len: 2))  MPH"
         let e = "\(stringer(dbl: rounds.cadences.last!, len: 1)) RPM"
-        let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 2))  GEO"
+        //let f = "\(stringer(dbl: rounds.geoSpeeds.last!, len: 2))  GEO"
 
 //        arrResults.append("\(a) \(b), \(c)")
 //        arrResultsDetails.append("\(d), \(e), \(f)")
 
-        arrResultsMyRoundSpeed.append("\(a) \(b), \(c)")
-        arrResultsDetailsMyRoundSpeed.append("\(d), \(e), \(f)")
+        arrResultsMyRoundSpeed.append("  \(b),   \(c)")
+        arrResultsDetailsMyRoundSpeed.append("  \(d)    \(e)")
         
 
         //ROUNDCOMPLETE POINT
-        newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(f)\n\(b)\n\(roundPace) PACE\n\(e)")
+        newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(b)\n\(roundPace) PACE\n\(e)\n\n\(roundIndexSentance)")
         calcBestRoundMetrics()
         
 //        print("\n")
@@ -306,7 +335,7 @@ class Starter_VC: UITableViewController {
         fbPushII()
     }
     
-    
+    var roundIndexSentance: String = ""
     // CALC BESTROUND METRICS
     func calcBestRoundMetrics() {
         print("CALC BEST ROUND METRICS")
@@ -318,13 +347,18 @@ class Starter_VC: UITableViewController {
             if audioStatus == "ON" {
                 
                 if roundHR > bestRoundHR {
+                    print("fastest round and highest score")
                         Utils.shared.say(sentence: "That was your fastest round and your highest score. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
                 } else {
+                    print("fastest round")
                         Utils.shared.say(sentence: "That was your fastest round. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")
                 }
             }
         } else {
-                if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE")}
+            print(roundIndexSentance)
+            
+                if audioStatus == "ON" {Utils.shared.say(sentence: "Round Complete. \(stringer(dbl: roundSpeed, len: 1)) MPH.  Your pace was \(calcMinPerMile(mph: roundSpeed)) PER MILE.  \(roundIndexSentance)")}
+            roundIndexSentance = ""
         }
         if roundCadence > bestRoundCadence {bestRoundCadence = roundCadence}
         if roundHR > bestRoundHR {
@@ -336,11 +370,11 @@ class Starter_VC: UITableViewController {
         //MY BEST ROUNDS POINT
         let when = DispatchTime.now() + 240
         DispatchQueue.main.asyncAfter(deadline: when){
-            self.newBestRoundPoint(mileString: "MY BEST ROUNDS\n\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE.\n\n LEADER IS \(self.currentSpeedLeaderName).\n\(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))")
+            self.newBestRoundPoint(mileString: "MY BEST ROUNDS\n\n\(stringer(dbl: self.bestRoundSpeed, len: 2)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE.\n\n LEADER IS \(self.currentSpeedLeaderName).\n\(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))")
             
             //print("\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
             
-            udArray.append("\(getFormattedTimeAndDate(d: Date()))\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 1)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
+            udArray.append("\(getFormattedTimeAndDate(d: Date()))\nMY BEST ROUNDS\n\(stringer(dbl: self.bestRoundSpeed, len: 2)) SPEED\n\(stringer(dbl: self.bestRoundCadence, len: 1)) CADENCE\n\(stringer(dbl: self.bestRoundHR, len: 1)) HR\n\(stringer(dbl: self.bestRoundScore, len: 1)) SCORE\n\(self.bestRoundPace) PACE\n")
         }
     }
     
@@ -379,11 +413,11 @@ class Starter_VC: UITableViewController {
             }
         }
 
-        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
+        newMilePoint(mileString: "\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 2)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 2)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
-        print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
+        print("\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 2)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 2)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
-        udArray.append("\(getFormattedTimeAndDate(d: Date()))\n\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 1)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 1)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
+        udArray.append("\(getFormattedTimeAndDate(d: Date()))\n\(stringer(dbl: (currentMile - 1), len: 0)) MILES COMPLETE\n\(stringer(dbl: speedForLastMile, len: 2)) MPH\n\(calcMinPerMile(mph: speedForLastMile)) PACE\nRANKING \(indexOfLastMileSpeed) OF \(arrMileSpeeds.count)\n\n\(stringer(dbl: fastestMile, len: 2)) FASTEST MILE\n\(calcMinPerMile(mph: fastestMile)) FASTEST PACE")
         
         distanceAtStartOfMile = 0
     }
@@ -543,6 +577,7 @@ class Starter_VC: UITableViewController {
                 }
                 
                 startTimer()
+                self.tabBarController?.selectedIndex = 3
             } else {
                 system.status = "STOPPED";statusValue.text = "STOPPED";
                 system.stopTime = Date()
@@ -610,10 +645,10 @@ class Starter_VC: UITableViewController {
 //            defaults.set(udArray, forKey: "SavedStringArray")
             
             //CLEAR DB
-            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
-            refDB.removeValue()
-
+//            let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/")
+//            refDB.removeValue()
             
+
         default:
             print("DO NOTHING")
         }
@@ -670,14 +705,20 @@ class Starter_VC: UITableViewController {
                 "fb_timAvgHRtotal" : (rounds.scores.last!*1000).rounded()/1000,
                 "fb_timAvgSPDtotal" : (rounds.speeds.last!*1000).rounded()/1000,
                 "fb_timDistanceTraveled" : longestDistance,
-                "fb_timGroup" : "iOS",
+                "fb_timGroup" : activityType,
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
                 ] as [String : Any]
 
             
+            if activityType == "RUN" {
+                let refDBRun  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run/\(result)")
+                refDBRun.childByAutoId().setValue(round_post)
+            }
+            
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(result)")
             refDB.childByAutoId().setValue(round_post)
+            
             print("Complete pushFBRound")
         }
         
@@ -731,16 +772,19 @@ class Starter_VC: UITableViewController {
                 "fb_timAvgHRtotal" : tScore,
                 "fb_timAvgSPDtotal" : tSpeed,
                 "fb_timDistanceTraveled" : longestDistance,
-                "fb_timGroup" : "iOS",
+                "fb_timGroup" : activityType,
                 "fb_timName" : riderName,
                 "fb_timTeam" : "Square Pizza"
                 ] as [String : Any]
             
+            if activityType == "RUN" {
+                let refDBRun  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(result)/\(riderName)")
+                refDBRun.setValue(totals_post)
+            }
+            
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(riderName)")
             refDB.setValue(totals_post)
             print("Complete postFBTotals")
-        } else {
-                self.tabBarController?.selectedIndex = 3
         }
         
         let when = DispatchTime.now() + 5
@@ -772,7 +816,10 @@ class Starter_VC: UITableViewController {
         arrResultsDetailsRoundScore = []
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         //let result = "20170527"
-        let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+        var refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+        if activityType == "RUN" {
+            refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run")
+        }
         let ref = refDB.child(result)
         _ = ref.queryLimited(toLast: 15).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
@@ -828,13 +875,12 @@ class Starter_VC: UITableViewController {
         { (error) in
             print(error.localizedDescription);print("error fb1");}
         print("fb1 complete")
-        let when = DispatchTime.now() + 15
+        let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
             print("calling fb2")
             self.fb2()
         }
     }
-    
     
     
     var currentSpeedLeaderName = ""
@@ -847,8 +893,11 @@ class Starter_VC: UITableViewController {
         arrResultsRoundSpeed = []
         arrResultsDetailsRoundSpeed = []
         var n1: String = ""
-        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
-        let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date);
+        var refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+        if activityType == "RUN" {
+            refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run")
+        }
         let ref = refDB.child(result)
         _ = ref.queryLimited(toLast: 15).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
@@ -959,7 +1008,10 @@ class Starter_VC: UITableViewController {
         arrResultsDetailsTotalScore = []
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         var sSCORE: String = "0"
-        let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
+        var ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
+        if activityType == "RUN" {
+            ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(result)")
+        }
         ref.queryLimited(toLast: 15).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
@@ -1022,7 +1074,10 @@ class Starter_VC: UITableViewController {
         arrResultsDetailsTotalSpeed = []
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
-        let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
+        var ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
+        if activityType == "RUN" {
+            ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(result)")
+        }
         ref.queryLimited(toLast: 15).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
                 if ( snapshot.value is NSNull ) {
                 print("not found")
