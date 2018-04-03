@@ -278,7 +278,8 @@ class Starter_VC: UITableViewController {
             print("indexOfLastRoundSpeed  \(indexOfLastRoundSpeed)")
             print("total Rounds:  \(rounds.speeds.count)")
             if indexOfLastRoundSpeed < 10000 {
-                roundIndexSentance = ".  Your last round's speed ranked number \(indexOfLastRoundSpeed) out of \(rounds.speeds.count).  "
+                roundIndexSentance = "  Your last round's speed ranked number \(indexOfLastRoundSpeed) out of \(rounds.speeds.count).  "
+                roundIndexString1 = "SPEED RANK: \(indexOfLastRoundSpeed) OF \(rounds.speeds.count)"
             }
         }
         
@@ -290,7 +291,8 @@ class Starter_VC: UITableViewController {
             print("indexOfLastRoundHeartrate  \(indexOfLastRoundHeartrate)")
             print("total Rounds:  \(rounds.heartrates.count)")
             if indexOfLastRoundHeartrate < 10000 {
-                roundIndexSentance += ".  Your last round's score ranked number \(indexOfLastRoundHeartrate) out of \(rounds.heartrates.count).  "
+                roundIndexSentance += "  Your last round's score ranked number \(indexOfLastRoundHeartrate) out of \(rounds.heartrates.count).  "
+                roundIndexString2 = "SCORE RANK: \(indexOfLastRoundHeartrate) OF \(rounds.heartrates.count)"
             }
         }
 
@@ -336,6 +338,9 @@ class Starter_VC: UITableViewController {
     }
     
     var roundIndexSentance: String = ""
+    var roundIndexString1: String = ""
+    var roundIndexString2: String = ""
+    
     // CALC BESTROUND METRICS
     func calcBestRoundMetrics() {
         print("CALC BEST ROUND METRICS")

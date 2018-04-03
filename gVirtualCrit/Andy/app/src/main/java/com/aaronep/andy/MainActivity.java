@@ -678,6 +678,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     private Boolean readMileInfo = false;
 
+
     private void writeToFB() {
         Log.i(TAG, "WRITE TO FB");
         //        FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -696,6 +697,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
 
+        //RUNNER FB WRITE
+        if (activityValue == "RUN") {
+            String roundURLrun = "rounds/run/" + tim.currentDate;
+            DatabaseReference mDatabaseRun = FirebaseDatabase.getInstance().getReference(roundURLrun);
+            mDatabaseRun.child(userId).setValue(round);
+        }
+        //END RUNNER FB WRITE
+
 
         //WRITE UPDATE TOTAL DATA
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
@@ -704,10 +713,18 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         Total total = new Total(tim.getName(), totalAverageScore, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
 
+        //RUNNER FB WRITE TOTALS
+        if (activityValue == "RUN") {
+            String totalsURLrun = "totals/run/"+ tim.currentDate +"/" + tim.getName();
+            DatabaseReference mDatabaseTotalsRun = FirebaseDatabase.getInstance().getReference(totalsURLrun);
+            mDatabaseTotalsRun.setValue(total);
+        }
+        //END RUNNER FB WRITE TOTALS
+
+
         //SCHEDULE READS
         fetchRoundData = timerSecondsCounter + 30;
         fetchTotalsData = timerSecondsCounter + 90;
-
         fetchRoundDataScores = timerSecondsCounter + 60;
 
         //TODO:  ADD HR/SCORE DATA TO FB AND DISPLAY
@@ -718,8 +735,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private void readFromFBII() {
         Log.i(TAG, "READ FROM FBII - TOTALS");
         //READ TOTALS
-        //TODO:  GET DATE FORMATTED
         String totalsURL = "totals/" + tim.currentDate;
+        if (activityValue == "RUN") {
+            totalsURL = "totals/run/" + tim.currentDate;
+        }
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
         mDatabaseTotals.limitToLast(15).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -762,6 +781,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //START READ ROUNDS
 //        String roundsURL = "rounds/20180322";
         String roundsURL = "rounds";
+        if (activityValue == "RUN") {
+            roundsURL = "rounds/run";
+        }
         DatabaseReference mDatabaseRounds = FirebaseDatabase.getInstance().getReference(roundsURL);
         mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_SPD").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -808,6 +830,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //START READ ROUND SCORES
 //        String roundsURL = "rounds/20180322";
         String roundsURL = "rounds";
+        if (activityValue == "RUN") {
+            roundsURL = "rounds/run";
+        }
         DatabaseReference mDatabaseRounds = FirebaseDatabase.getInstance().getReference(roundsURL);
         mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_RND").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
