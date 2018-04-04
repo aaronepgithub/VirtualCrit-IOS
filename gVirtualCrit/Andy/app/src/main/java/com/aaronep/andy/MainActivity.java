@@ -1761,7 +1761,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         }
         tim.setRoundHR(arrHeartrates.isEmpty()? 0: 1.0*sum/arrHeartrates.size());
         totalAverageHeartrate = (double) sumOfTotalHeartRates / (double) indexOfTotalHeartrates;
-        totalAverageScore  = (totalAverageHeartrate / 185.0) * 100;
+        totalAverageScore  = (totalAverageHeartrate / maxHRdouble) * 100;
     }
 
 
@@ -3157,5 +3157,49 @@ private String calcPace(double mph) {
 
 
     }
+
+    private int maxHR = 185;
+    private double maxHRdouble = 185.0;
+    public void onClick_setMaxHR(View view) {
+        Log.i(TAG, "onClick_setMaxHR: " + maxHR);
+        Button b = findViewById(R.id.button153b);
+        switch (maxHR) {
+            case 185: {
+                maxHR = 190;
+                b.setText(maxHR);
+                maxHRdouble = (double) maxHR;
+                tim.maxHR = maxHR;
+                tim.maxHRdouble = maxHRdouble;
+                break;
+            }
+            case 190: {
+                maxHR = 195;
+                b.setText(maxHR);
+                maxHRdouble = (double) maxHR;
+                tim.maxHR = maxHR;
+                tim.maxHRdouble = maxHRdouble;
+                break;
+            }
+            case 195: {
+                maxHR = 200;
+                b.setText(maxHR);
+                maxHRdouble = (double) maxHR;
+                tim.maxHR = maxHR;
+                tim.maxHRdouble = maxHRdouble;
+                break;
+            }
+            case 200: {
+                maxHR = 185;
+                b.setText(maxHR);
+                maxHRdouble = (double) maxHR;
+                tim.maxHR = maxHR;
+                tim.maxHRdouble = maxHRdouble;
+                break;
+            }
+        }
+
+        Log.i(TAG, "onClick_setMaxHR: " + maxHR);
+    }
+
 
 }  //END MAIN ACTIVITY

@@ -17,6 +17,9 @@ public class Tim {
     private long totalTimeInSeconds;
     private String actualTotalTimeString;
 
+    public double maxHRdouble = 185.0;
+    public int maxHR = 185;
+
     //FB ROUND OBJ
     private double roundSpeed = 0;
 
@@ -33,7 +36,7 @@ public class Tim {
     }
 
     public void setRoundHR(double roundHR) {
-        setRoundScore((roundHR / 185.0) * 100);
+        setRoundScore((roundHR / maxHRdouble) * 100);
         this.roundHR = roundHR;
     }
 
