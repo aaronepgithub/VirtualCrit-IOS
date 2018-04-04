@@ -951,7 +951,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:text="00 BPM"
+            android:text="00 HR"
             android:gravity="center"
             android:layout_marginTop="1dp"
             android:layout_weight="1"/>

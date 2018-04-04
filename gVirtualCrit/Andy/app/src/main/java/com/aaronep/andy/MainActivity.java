@@ -63,6 +63,7 @@ import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -257,7 +258,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         mPrinter("Starttime: " + ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
 
-        createTimeline("LET'S GET STARTED", ""+startTime.get(Calendar.HOUR_OF_DAY)+":"+startTime.get(Calendar.MINUTE)+":"+startTime.get(Calendar.SECOND));
+        String currTimeStmp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        createTimeline("LET'S GET STARTED", "" + currTimeStmp);
 
 //        Log.i("TIME", "getActualTime");
 //        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
@@ -278,7 +280,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         Log.i(TAG, "onCreate: currentDate  " + tim.currentDate);
 
 
-        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE
+        //TODO:  TO LAUNCH WITH EMULATOR, DISABLE...
 
         //START BT SETUP
         final BluetoothManager bluetoothManager =
@@ -307,9 +309,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //END BT SETUP
         //COMMENT TO HERE FOR EMULATOR
 
+        //TODO:  ... END DISABLE FOR EMULATOR
 
 
-        //TODO:  DISABLE TO LAUNCH ON EMULATOR??
+
+
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -423,7 +427,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private int fetchRoundDataScores = 0;
     private int fetchTotalsData = 0;
     private int fetchTotalsDataScores = 0;
-    private double lastMileTester = 0;
+
+    private Boolean usingBT = false;
+
 
     private void onPowerOn() {
         Button b0 = findViewById(R.id.button0);
@@ -479,12 +485,16 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   double bestRoundSpeed = 0;
                   if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
 
+                      usingBT = false;  //ANY NEW READING WILL CHANGE IT TO TRUE
                       Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
+
+                      tim.setRoundSpeed(currentRoundSpeed);
                       valuesRounds.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.2f MPH", currentRoundSpeed)));
+
                       valuesRoundsHeartrates.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.1f BPM", tim.getRoundHR())));
                       valuesRoundsScores.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.1f %% MAX", tim.getRoundScore())));
 
-                      doubleValuesRounds.add(currentRoundSpeed);
+                      doubleValuesRounds.add(tim.getRoundSpeed());
                       doubleValuesRoundsHeartrates.add(tim.getRoundHR());
                       doubleValuesRoundsScores.add(tim.getRoundScore());
 
@@ -492,45 +502,34 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       Collections.sort(doubleValuesRoundsHeartrates, Collections.reverseOrder());
                       Collections.sort(doubleValuesRoundsScores, Collections.reverseOrder());
 
-                      String roundIndexString = "";
-
-                      //GET INDEX VALS
-                      int position = -1;
-                      position = doubleValuesRounds.indexOf(currentRoundSpeed);
-                      if (position == -1) {
-                          Log.e(TAG, "Object not found in List");
-                      } else {
-                          position += 1;
-                          Log.i(TAG, "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size());
-                          roundIndexString = "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size();
-                      }
-
-
-                      tim.setRoundSpeed(currentRoundSpeed);
-
-                      //WRITE TO FB AT ROUND END
-                      //Log.i(TAG, "currentRoundSpeed  " + currentRoundSpeed);
-                      //Log.i(TAG, "tim.getRoundSpeed  " + tim.getRoundSpeed());
-                      writeToFB();
-
                       currentRound += 1;
                       newRoundFlagBT = true;
                       newRoundFlagGEO = true;
 
 
                       //DETERMINE BEST AND LAST
-
-
                       if (currentRoundSpeed > bestRoundMPH) {
                           bestRoundMPH = currentRoundSpeed;
                       }
                       bestRoundSpeed = bestRoundMPH;
 
 
-
+                      String roundIndexString = "";
                       String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", currentRoundSpeed);
                       String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f", bestRoundSpeed) + " .  ";
-                      speakText(this, toSpeak1 + toSpeak2 + roundIndexString);
+                      //GET INDEX VALS
+                      int position = -1;
+                      position = doubleValuesRounds.indexOf(currentRoundSpeed);
+                      if (position == -1) {
+                          Log.i(TAG, "Object not found in List");
+                      } else {
+                          position += 1;
+                          Log.i(TAG, "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size());
+                          roundIndexString = "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size() + ".";
+                      }
+
+                      String toSpeak3 = ",  " + roundIndexString;
+                      speakText(this, toSpeak1 + toSpeak2 + toSpeak3);
 
                       //CREATE TIMELINE POST
                       createTimeline("ROUND COMPLETE\n" + String.format(Locale.US, "%.1f MPH", currentRoundSpeed)  + " \n" + String.format(Locale.US, "%.1f %% MAX", tim.getRoundScore())  + " \n" + "  YOUR BEST: " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed) + "\n" + roundIndexString, "");
@@ -550,6 +549,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           }
                       });
 
+                      //WRITE TO FB
+                      writeToFB();
+
                   }
                   //END END_OF_ROUND PROCESSING
 
@@ -560,6 +562,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                   if (timerSecondsCounter == fetchRoundDataScores) {
                       Log.i(TAG, "run: readFromFB - ROUNDS/Scores");
+                      speakText(this, "The speed leader is " + stLeaderName);
                       readFromFB_RoundScores();
                   }
 
@@ -596,19 +599,19 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   if (endMileSpeedGEO > bestMileMPH) {
                       bestMileMPH = endMileSpeedGEO;
                   }
-
                   //END...IN-MILE LOGIC
-//
+
 
                   //END OF MILE CALC
                   final double finalLastMileSpeed = lastMileMPH;
                   final double finalCurrentMileSpeed = currentMileSpeed;
                   final double finalBestMileMPH = bestMileMPH;
 
-
-                  double comboMileSpeed = 0;
+                  //DETERMINE END OF MILE
+//                  double comboMileSpeed = 0;
                   if (currentMileBT > currentMile || currentMileGEO > currentMile) {
                       currentMile += 1;
+                      double comboMileSpeed = 0;
                       //NOW WE HAVE A SINGLE END OF MILE
                       if (currentMileBT == currentMile) {
                           //WE KNOW IT WAS THE BT MILE
@@ -618,13 +621,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           comboMileSpeed = endMileSpeedGEO;
                       }
 
-                      Log.i(TAG, "COMBO MILE MPH" + comboMileSpeed);
+                      Log.i(TAG, "COMBO MILE MPH  " + comboMileSpeed);
                       doubleValuesMiles.add(comboMileSpeed);
 
                       String mileRankingString = "";
                       int positionM = -1;
-
-
                       Collections.sort(doubleValuesMiles, Collections.reverseOrder());
                       positionM = doubleValuesMiles.indexOf(finalLastMileSpeed);
                       if (positionM == -1) {
@@ -635,14 +636,13 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           mileRankingString = "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size();
                       }
 
-
-                      String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
-                      String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
+                      String stBestMileMph = String.format(Locale.US, "%.1f Miles Per Hour.,", finalBestMileMPH);
+                      String stLastMileMph = String.format(Locale.US, "%.1f Miles Per Hour.,", finalLastMileSpeed);
+                      String toSpeakMile1 = "Speed for the last mile was " + stLastMileMph;
+                      String toSpeakMile2 = "Your fastest is, " + stBestMileMph;
                       speakText(this, toSpeakMile1 + toSpeakMile2 + mileRankingString);
                       //readMileInfo = false;
                       createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH) + "\n" + mileRankingString, "");
-
-
 
                   }
 
@@ -883,7 +883,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 Collections.reverse(valuesTotalsLeadersScores);
 
                 stTotalsLeadersScores = "Totals Leaders (Scores)" + "\n" + stTotalsLeadersScores;
-                createTimeline(stTotalsLeadersScores, "");
+                //createTimeline(stTotalsLeadersScores, "");
                 Log.i(TAG, "stTotalsLeadersScores: " + stTotalsLeadersScores);
             }
             @Override
@@ -940,7 +940,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 Collections.reverse(valuesTotalsLeaders);
 
                 stTotalsLeaders = "Totals Leaders (Speeds)" + "\n" + stTotalsLeaders;
-                createTimeline(stTotalsLeaders, "");
+                //createTimeline(stTotalsLeaders, "");
                 Log.i(TAG, "stTotalsLeaders: " + stTotalsLeaders);
 
                 //readFromFBIII();
@@ -956,6 +956,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     }
 
+    String stLeaderName = "";
     private String stRoundLeaders = "";
     private void readFromFB() {
         Log.i(TAG, "READ FROM FB/ROUNDS");
@@ -974,11 +975,13 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeaders.clear();
                 stRoundLeaders = "";
+
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
                     Double speed = ds.child("fb_SPD").getValue(Double.class);
 //                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name));
+                    stLeaderName = name;
 //                    Log.i("FB", name);
 //                    Log.i("FB", String.valueOf(speed));
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
@@ -995,6 +998,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 stRoundLeaders = "Round Leaders (Speeds)" + "\n" + stRoundLeaders;
                 createTimeline(stRoundLeaders, "");
                 Log.i(TAG, "stRoundLeaders: " + stRoundLeaders);
+
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -1191,7 +1196,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             public void run() {
                 //Log.i("HR", "RESET HR");
                 TextView t1 = findViewById(R.id.textView1);
-                String s1x = "0 BPM";
+                String s1x = "0 HR";
                 t1.setText(s1x);
             }
         });
@@ -1647,7 +1652,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                });
 
                 Message msg = Message.obtain();
-                String hrString = String.format("%d BPM", hrValue);
+                String hrString = String.format("%d HR", hrValue);
                 msg.obj = hrString;
                 msg.what = 3;
                 msg.setTarget(uiHandler);
@@ -1776,6 +1781,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     //CSC ADVANCED CALC
     private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
         //Log.i(TAG, "onWheelMeasurementReceived:  START");
+
+        usingBT = true;
         final int localTimerSecCounter = timerSecondsCounter;
         
         if (mFirstWheelRevolutions < 0) {
@@ -2167,7 +2174,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     if (geoDistance > currentMileGEO) {
                         Log.i(TAG, "onLocationReceived: END OF CURRENT MILE GEO");
                         endMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
-                        valuesMilesGeo.add(String.format("%d.  %s", currentMileGEO, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedGEO)));
+                        valuesMilesGeo.add(String.format("%d.  %s", currentMileGEO, String.format(Locale.US, "%.2f MPH (GEO)", endMileSpeedGEO)));
                         currentMileGEO += 1;
                         secondsAtEndOfMileGeo = timerSecondsCounter;
                         readMileInfo = true;
@@ -2274,6 +2281,20 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         head2.setText(String.format("%.1f AVG (G)", geoAvgSpeed));
                         final TextView head1 = findViewById(R.id.tvHeader1Geo);
                         head1.setText(String.format("%s  (G)", hms));
+
+                        if (usingBT == false) {
+                            final TextView tMidXXX = findViewById(R.id.tvMiddle);
+                            tMidXXX.setText(String.format("%.1f MPH", geoSpeedQuick));
+                            final TextView tBotXXX = findViewById(R.id.tvBottom);
+                            tBotXXX.setText(String.format("%s", calcPace(geoSpeedQuick)));
+                            final TextView foot2XXX = findViewById(R.id.tvFooter2);
+                            foot2XXX.setText(String.format("%.2f MI (G)", geoDistance));
+                            final TextView head2XXX = findViewById(R.id.tvHeader2);
+                            head2XXX.setText(String.format("%.1f AVG (G)", geoAvgSpeed));
+                            final TextView head1XXX = findViewById(R.id.tvHeader1);
+                            head1XXX.setText(String.format("%s  (G)", hms));
+
+                        }
 
                     }
                 });
