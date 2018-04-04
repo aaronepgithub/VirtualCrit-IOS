@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private Integer timerSecondsCounter = 0;
     private Integer currentMileBT = 1;
     private Integer currentMileGEO = 1;
+    private Integer currentMile = 1;
     private Integer secondsAtEndOfMileGeo = 0;
     private Integer secondsAtEndOfMileBT = 0;
     private double bestMileMPH = 0;
@@ -487,6 +488,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       doubleValuesRoundsHeartrates.add(tim.getRoundHR());
                       doubleValuesRoundsScores.add(tim.getRoundScore());
 
+                      Collections.sort(doubleValuesRounds, Collections.reverseOrder());
+                      Collections.sort(doubleValuesRoundsHeartrates, Collections.reverseOrder());
+                      Collections.sort(doubleValuesRoundsScores, Collections.reverseOrder());
+
                       String roundIndexString = "";
 
                       //GET INDEX VALS
@@ -600,15 +605,27 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   final double finalCurrentMileSpeed = currentMileSpeed;
                   final double finalBestMileMPH = bestMileMPH;
 
-                  if (finalLastMileSpeed != lastMileTester) {
-                      Log.i(TAG, "END OF MILE, REGARDLESS OF GEO OR BT");
-                      Log.i(TAG, "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed));
-                      Log.i(TAG, "Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH));
 
-                      doubleValuesMiles.add(finalLastMileSpeed);
+                  double comboMileSpeed = 0;
+                  if (currentMileBT > currentMile || currentMileGEO > currentMile) {
+                      currentMile += 1;
+                      //NOW WE HAVE A SINGLE END OF MILE
+                      if (currentMileBT == currentMile) {
+                          //WE KNOW IT WAS THE BT MILE
+                          comboMileSpeed = endMileSpeedBT;
+                      } else {
+                          //WE KNOW IT WAS THE GEO MILE
+                          comboMileSpeed = endMileSpeedGEO;
+                      }
+
+                      Log.i(TAG, "COMBO MILE MPH" + comboMileSpeed);
+                      doubleValuesMiles.add(comboMileSpeed);
 
                       String mileRankingString = "";
                       int positionM = -1;
+
+
+                      Collections.sort(doubleValuesMiles, Collections.reverseOrder());
                       positionM = doubleValuesMiles.indexOf(finalLastMileSpeed);
                       if (positionM == -1) {
                           Log.e(TAG, "Object not found in List");
@@ -619,23 +636,54 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       }
 
 
-
-                      lastMileTester = finalLastMileSpeed;
                       String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
                       String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
                       speakText(this, toSpeakMile1 + toSpeakMile2 + mileRankingString);
-                      readMileInfo = false;
+                      //readMileInfo = false;
                       createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH) + "\n" + mileRankingString, "");
+
+
 
                   }
 
-                  if (readMileInfo) {
+
+
+//                  if (finalLastMileSpeed != lastMileTester) {
+//                      Log.i(TAG, "END OF MILE, REGARDLESS OF GEO OR BT");
+//                      Log.i(TAG, "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed));
+//                      Log.i(TAG, "Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH));
+
+//                      doubleValuesMiles.add(finalLastMileSpeed);
+
+//                      String mileRankingString = "";
+//                      int positionM = -1;
+//                      positionM = doubleValuesMiles.indexOf(finalLastMileSpeed);
+//                      if (positionM == -1) {
+//                          Log.e(TAG, "Object not found in List");
+//                      } else {
+//                          positionM += 1;
+//                          Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
+//                          mileRankingString = "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size();
+//                      }
+
+
+
+                      //lastMileTester = finalLastMileSpeed;
+//                      String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
+//                      String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
+//                      speakText(this, toSpeakMile1 + toSpeakMile2 + mileRankingString);
+//                      readMileInfo = false;
+//                      createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH) + "\n" + mileRankingString, "");
+
+//                  }
+
+//                  if (readMileInfo) {
 //                      String toSpeakMile1 = "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed);
 //                      String toSpeakMile2 = ".  Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH);
 //                      speakText(this, toSpeakMile1 + toSpeakMile2);
-                      readMileInfo = false;
-                      //createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH), "");
-                  }
+//                      readMileInfo = false;
+//                      //createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH), "");
+//                  }
 
 
 
@@ -812,6 +860,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
+                    if (name == tim.getName()) {
+                        name = "-ME-";
+                    }
                     Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
                     //names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f %% MAX", score)));
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f %% MAX", score) , name));
@@ -868,6 +919,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("fb_timName").getValue(String.class);
+                    if (name == tim.getName()) {
+                        name = "-ME-";
+                    }
                     Double speed = ds.child("a_speedTotal").getValue(Double.class);
 //                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name));
