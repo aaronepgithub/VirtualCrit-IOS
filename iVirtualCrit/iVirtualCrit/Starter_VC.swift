@@ -975,27 +975,27 @@ class Starter_VC: UITableViewController {
             print(error.localizedDescription);print("error fb2");}
         print("fb2 complete")
         
-        if self.newSpeedLeader == true && newScoreLeader == false {
-            self.newSpeedLeader = false
-            if self.audioStatus == "ON" {
-                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
-            }
-        }
-        
-        if self.newSpeedLeader == false && newScoreLeader == true {
-            self.newScoreLeader = false
-            if self.audioStatus == "ON" {
-                Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
-            }
-        }
-        
-        if self.newSpeedLeader == true && newScoreLeader == true {
-            self.newScoreLeader = false
-            self.newSpeedLeader = false
-            if self.audioStatus == "ON" {
-                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
-            }
-        }
+//        if self.newSpeedLeader == true && newScoreLeader == false {
+//            self.newSpeedLeader = false
+//            if self.audioStatus == "ON" {
+//                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
+//            }
+//        }
+//
+//        if self.newSpeedLeader == false && newScoreLeader == true {
+//            self.newScoreLeader = false
+//            if self.audioStatus == "ON" {
+//                Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
+//            }
+//        }
+//
+//        if self.newSpeedLeader == true && newScoreLeader == true {
+//            self.newScoreLeader = false
+//            self.newSpeedLeader = false
+//            if self.audioStatus == "ON" {
+//                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
+//            }
+//        }
         
         
         let when = DispatchTime.now() + 10
@@ -1069,6 +1069,31 @@ class Starter_VC: UITableViewController {
             print("calling fb4")
             self.fb4()
         }
+        
+        
+        if self.newSpeedLeader == true && newScoreLeader == false {
+            self.newSpeedLeader = false
+            if self.audioStatus == "ON" {
+                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
+            }
+        }
+        
+        if self.newSpeedLeader == false && newScoreLeader == true {
+            self.newScoreLeader = false
+            if self.audioStatus == "ON" {
+                Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
+            }
+        }
+        
+        if self.newSpeedLeader == true && newScoreLeader == true {
+            self.newScoreLeader = false
+            self.newSpeedLeader = false
+            if self.audioStatus == "ON" {
+                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
+            }
+        }
+        
+        
     }  //fb3 complete
     
     var leaderNamesBySpeedTotals: String = ""
