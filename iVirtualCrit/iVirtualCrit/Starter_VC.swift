@@ -277,7 +277,7 @@ class Starter_VC: UITableViewController {
             indexOfLastRoundSpeed = (ix ?? 10000) + 1
             print("indexOfLastRoundSpeed  \(indexOfLastRoundSpeed)")
             print("total Rounds:  \(rounds.speeds.count)")
-            if indexOfLastRoundSpeed < 10000 {
+            if indexOfLastRoundSpeed < 10000 && rounds.speeds.last! > 1.0 {
                 roundIndexSentance = "  Your last round's speed ranked number \(indexOfLastRoundSpeed) out of \(rounds.speeds.count).  "
                 roundIndexString1 = "SPEED RANK: \(indexOfLastRoundSpeed) OF \(rounds.speeds.count)"
             }
@@ -290,7 +290,7 @@ class Starter_VC: UITableViewController {
             indexOfLastRoundHeartrate = (hix ?? 10000) + 1
             print("indexOfLastRoundHeartrate  \(indexOfLastRoundHeartrate)")
             print("total Rounds:  \(rounds.heartrates.count)")
-            if indexOfLastRoundHeartrate < 10000 {
+            if indexOfLastRoundHeartrate < 10000 && rounds.heartrates.last! > 1.0 {
                 roundIndexSentance += "  Your last round's score ranked number \(indexOfLastRoundHeartrate) out of \(rounds.heartrates.count).  "
                 roundIndexString2 = "SCORE RANK: \(indexOfLastRoundHeartrate) OF \(rounds.heartrates.count)"
             }
@@ -317,7 +317,7 @@ class Starter_VC: UITableViewController {
         
 
         //ROUNDCOMPLETE POINT
-        newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(b)\n\(roundPace) PACE\n\(e)\n\n\(roundIndexSentance)")
+        newRoundPoint(mileString: "\(a) COMPLETE\n\n\(d)\n\(b)\n\(roundPace) PACE\n\(e)\n\n\(roundIndexString1)\n\(roundIndexString2)")
         calcBestRoundMetrics()
         
 //        print("\n")
