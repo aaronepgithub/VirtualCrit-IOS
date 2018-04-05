@@ -14,6 +14,9 @@ import UIKit
 import CoreBluetooth
 
 var maxHRvalue: Int = 185
+var usingBTforSpeed: Bool = false
+var usingBTforCadence: Bool = false
+var usingBTforHeartrate: Bool = false
 
 class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDataSource, UITableViewDelegate {
     
@@ -166,7 +169,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
                 //hr = stringer(dbl: Double(bpmValue), len: 0)
             }
-            
+            usingBTforHeartrate = true
             current.currentHR = bpmValue
             current.currentScore = getScoreFromHR(x: Double(current.currentHR))
             //let str: String = "\(current.currentHR):\(stringer(dbl: current.currentScore, len: 0))"
@@ -183,11 +186,13 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 //print("SPD value[1]");print(value[1])
                 if value[1] > 0 {
                   //out_Btn2.setTitle(String(value[1]), for: .normal)
+                    usingBTforSpeed = true
                 }
                 processWheelData(withData: data)
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
                     if value[7] > 0 {
                         //out_Btn3.setTitle(String(value[7]), for: .normal)
+                        usingBTforCadence = true
                     }
                     //print("CAD value[7]");print(value[7])
                     processCrankData(withData: data, andCrankRevolutionIndex: 7)
@@ -196,6 +201,7 @@ class Bluetooth_VC: UIViewController, CBCentralManagerDelegate, CBPeripheralDele
                 if flag & CRANK_REVOLUTION_FLAG == 2 {
                     if value[1] > 0 {
                         //out_Btn3.setTitle(String(value[1]), for: .normal)
+                        usingBTforCadence = true
                     }
                     //print("CAD value[1]");print(value[1])
                     processCrankData(withData: data, andCrankRevolutionIndex: 1)

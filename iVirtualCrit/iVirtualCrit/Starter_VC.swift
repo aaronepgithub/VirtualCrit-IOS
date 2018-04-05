@@ -164,7 +164,9 @@ class Starter_VC: UITableViewController {
             distanceAtStartOfRoundGEO = geo.distance
             crankRotationsDuringRound = 0
             inRoundHR = []
-            
+            usingBTforCadence = false
+            usingBTforSpeed = false
+            usingBTforHeartrate = false
             updateRound()
             return
         }
@@ -459,7 +461,7 @@ class Starter_VC: UITableViewController {
     
     func createViewerArray() {
         //HDR
-        if activityType == "RUN" || current.totalMovingTime == 0 {
+        if activityType == "RUN" || current.totalMovingTime == 0 || usingBTforSpeed == false {
             arr.append("\(createTimeString(seconds: Int(geo.elapsedTime)))  \(stringer(dbl: geo.avgSpeed, len: 1)) AVG")
         } else {
             arr.append("\(createTimeString(seconds: Int(current.totalMovingTime)))  \(stringer(dbl: current.totalAverageSpeed, len: 1)) AVG")
@@ -469,7 +471,7 @@ class Starter_VC: UITableViewController {
         arr.append("\(stringer(dbl: Double(current.currentHR), len: 0))")
         tabBarController?.tabBar.items?[0].badgeValue = "\(stringer(dbl: Double(current.currentHR), len: 0))"
         
-        if activityType == "RUN" || current.totalMovingTime == 0 {
+        if activityType == "RUN" || current.totalMovingTime == 0 || usingBTforSpeed == false{
             arr.append("\(stringer(dbl: geo.speed, len: 1))")
             tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: geo.speed, len: 1))"
         } else {
@@ -477,7 +479,7 @@ class Starter_VC: UITableViewController {
             tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: current.currentSpeed, len: 1))"
         }
         
-        if activityType == "RUN" {
+        if activityType == "RUN" || usingBTforCadence == false {
             arr.append("\(geo.pace)")
         } else {
             arr.append("\(stringer(dbl: current.currentCadence, len: 0))")
@@ -489,7 +491,7 @@ class Starter_VC: UITableViewController {
         
         arr.append("SPD\n\(stringer(dbl: Double(secondsInCurrentRound), len: 0))")
         
-        if activityType == "RUN" {
+        if activityType == "RUN" || usingBTforCadence == false {
             arr.append("PACE")
         } else {
             arr.append("CAD")
@@ -1071,27 +1073,7 @@ class Starter_VC: UITableViewController {
         }
         
         
-        if self.newSpeedLeader == true && newScoreLeader == false {
-            self.newSpeedLeader = false
-            if self.audioStatus == "ON" {
-                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
-            }
-        }
-        
-        if self.newSpeedLeader == false && newScoreLeader == true {
-            self.newScoreLeader = false
-            if self.audioStatus == "ON" {
-                Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
-            }
-        }
-        
-        if self.newSpeedLeader == true && newScoreLeader == true {
-            self.newScoreLeader = false
-            self.newSpeedLeader = false
-            if self.audioStatus == "ON" {
-                Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
-            }
-        }
+
         
         
     }  //fb3 complete
@@ -1150,6 +1132,30 @@ class Starter_VC: UITableViewController {
                 print("leaderNamesBySpeedTotals\n\(self.leaderNamesBySpeedTotals)\n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSPEED LEADERS (TOTAL)\n\(self.leaderNamesBySpeedTotals)")
                 self.freshFB = true
+                    
+                    if self.newSpeedLeader == true && self.newScoreLeader == false {
+                    self.newSpeedLeader = false
+                    if self.audioStatus == "ON" {
+                        Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
+                    }
+                }
+                
+                    if self.newSpeedLeader == false && self.newScoreLeader == true {
+                    self.newScoreLeader = false
+                    if self.audioStatus == "ON" {
+                        Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
+                    }
+                }
+                
+                    if self.newSpeedLeader == true && self.newScoreLeader == true {
+                    self.newScoreLeader = false
+                    self.newSpeedLeader = false
+                    if self.audioStatus == "ON" {
+                        Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
+                    }
+                }
+                    
+                    
             }
         })
         { (error) in
