@@ -516,10 +516,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                       String roundPaceString = calcPace(currentRoundSpeed);
                       String roundIndexString = "";
-                      String toSpeak1 = "Your last round's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", currentRoundSpeed);
+                      String toSpeak1 = "Round complete, your speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", currentRoundSpeed);
                       String toSpeak1b = "A Pace of " + roundPaceString + ".  ";
                       String toSpeak2 = ".  Your best is " + String.format(Locale.US, "%.1f", bestRoundSpeed) + " .  ";
-                      //GET INDEX VALS
+                      String toSpeak1c = "";
+                      //GET INDEX VALS SPEED
                       int position = -1;
                       position = doubleValuesRounds.indexOf(currentRoundSpeed);
                       if (position == -1) {
@@ -528,13 +529,30 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           position += 1;
                           Log.i(TAG, "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size());
                           roundIndexString = "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size() + ".";
+                          toSpeak1c = ", Ranking " + position + " out of " + doubleValuesRounds.size();
+                      }
+                      String toSpeak3 = ",  " + roundIndexString;
+
+                      String toSpeak1d = "";
+                      //GET INDEX VALS SCORE
+                      int positionS = -1;
+                      positionS = doubleValuesRoundsHeartrates.indexOf(tim.getRoundHR());
+                      if (positionS == -1) {
+                          Log.i(TAG, "HR Object not found in List");
+                      } else {
+                          positionS += 1;
+                          Log.i(TAG, "SCORE RANK IS NUMBER " + positionS + " OUT OF " + doubleValuesRoundsHeartrates.size());
+                          toSpeak1d = ", Your score ranking was number  " + positionS + " . ";
                       }
 
-                      String toSpeak3 = ",  " + roundIndexString;
-                      speakText(this, toSpeak1 + toSpeak1b + toSpeak2 + toSpeak3);
+
+
+
 
                       //CREATE TIMELINE POST
                       createTimeline("ROUND COMPLETE\n" + String.format(Locale.US, "%.1f MPH", currentRoundSpeed)  + " \n" + String.format(Locale.US, "%.1f %% MAX", tim.getRoundScore())  + " \n" + "  YOUR BEST: " + String.format(Locale.US, "%.1f MPH", bestRoundSpeed) + "\n" + roundIndexString, "");
+
+                      speakText(this, toSpeak1 + toSpeak1b + toSpeak1c + toSpeak1d);
 
                       final double finalBestRoundSpeed = bestRoundSpeed;
                       runOnUiThread(new Runnable() {
@@ -633,6 +651,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       doubleValuesMiles.add(comboMileSpeed);
 
                       String mileRankingString = "";
+                      String toSpeakMile4 = "";
                       int positionM = -1;
                       Collections.sort(doubleValuesMiles, Collections.reverseOrder());
                       positionM = doubleValuesMiles.indexOf(finalLastMileSpeed);
@@ -642,13 +661,19 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           positionM += 1;
                           Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
                           mileRankingString = "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size();
+                          toSpeakMile4 = ", Ranking " + positionM + " out of " + doubleValuesMiles.size();
                       }
 
                       String stBestMileMph = String.format(Locale.US, "%.1f Miles Per Hour.,", finalBestMileMPH);
                       String stLastMileMph = String.format(Locale.US, "%.1f Miles Per Hour.,", finalLastMileSpeed);
                       String toSpeakMile1 = "Speed for the last mile was " + stLastMileMph;
                       String toSpeakMile2 = "Your fastest is, " + stBestMileMph;
-                      speakText(this, toSpeakMile1 + toSpeakMile2 + mileRankingString);
+                      String toSpeakMile3 = ",  A Pace of " + calcPace(finalBestMileMPH);
+                      //speakText(this, toSpeakMile1 + toSpeakMile2 + mileRankingString);
+
+                      speakText(this, toSpeakMile1 + toSpeakMile3 + toSpeakMile4);
+
+
                       //readMileInfo = false;
                       createTimeline("MILE COMPLETE\n" + String.format(Locale.US, "%.1f MPH\n  ", finalLastMileSpeed) + "  BEST MILE: " + String.format(Locale.US, "%.1f MPH", finalBestMileMPH) + "\n" + mileRankingString, "");
 
@@ -1041,6 +1066,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.1f %% MAX", score), name));
 //                    Log.i("FB", name);
 //                    Log.i("FB", String.valueOf(speed));
+                    stLeaderNameScore = name;
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.1f PERCENT MAX", score)));
                 }  //COMPLETED - READING EACH SNAP
@@ -1049,7 +1075,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     //Log.i(TAG, "onDataChange: (name) " + name);
                     valuesRoundLeadersScores.add(name);
                     stRoundLeadersScores = name + "\n" + stRoundLeadersScores;
-                    stLeaderNameScore = name;
                 }
                 valuesRoundLeadersScores.add("Round Leaders (Scores)");
                 Collections.reverse(valuesRoundLeadersScores);
