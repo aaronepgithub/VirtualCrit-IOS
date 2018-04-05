@@ -3172,7 +3172,7 @@ private String calcPace(double mph) {
         switch (maxHR) {
             case 185: {
                 maxHR = 190;
-                b.setText(maxHR);
+                b.setText(String.valueOf(maxHR));
                 maxHRdouble = (double) maxHR;
                 tim.maxHR = maxHR;
                 tim.maxHRdouble = maxHRdouble;
@@ -3180,7 +3180,7 @@ private String calcPace(double mph) {
             }
             case 190: {
                 maxHR = 195;
-                b.setText(maxHR);
+                b.setText(String.valueOf(maxHR));
                 maxHRdouble = (double) maxHR;
                 tim.maxHR = maxHR;
                 tim.maxHRdouble = maxHRdouble;
@@ -3188,7 +3188,7 @@ private String calcPace(double mph) {
             }
             case 195: {
                 maxHR = 200;
-                b.setText(maxHR);
+                b.setText(String.valueOf(maxHR));
                 maxHRdouble = (double) maxHR;
                 tim.maxHR = maxHR;
                 tim.maxHRdouble = maxHRdouble;
@@ -3196,7 +3196,7 @@ private String calcPace(double mph) {
             }
             case 200: {
                 maxHR = 185;
-                b.setText(maxHR);
+                b.setText(String.valueOf(maxHR));
                 maxHRdouble = (double) maxHR;
                 tim.maxHR = maxHR;
                 tim.maxHRdouble = maxHRdouble;
