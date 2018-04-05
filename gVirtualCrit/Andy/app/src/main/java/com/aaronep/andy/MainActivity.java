@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -3233,4 +3234,9 @@ private String calcPace(double mph) {
     }
 
 
+    public void onClick_sendToLegal(View view) {
+
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.virtualcrit.com/tandc.html")));
+
+    }
 }  //END MAIN ACTIVITY
