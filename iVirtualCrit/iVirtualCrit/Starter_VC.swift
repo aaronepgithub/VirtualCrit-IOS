@@ -509,7 +509,7 @@ class Starter_VC: UITableViewController {
         arrSend = arr
         arr = []
     }
-
+    
     
     @IBOutlet weak var lblRiderName: UILabel!
     
@@ -643,6 +643,8 @@ class Starter_VC: UITableViewController {
             }
         case 13:
             print("13")
+            
+            UIApplication.shared.openURL(URL(string: "https://www.virtualcrit.com/tandc.html")!)
             //if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
 
             //CLEAR HISTORY
