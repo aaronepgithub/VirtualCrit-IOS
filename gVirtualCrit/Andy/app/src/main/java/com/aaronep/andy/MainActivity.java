@@ -429,6 +429,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private int fetchTotalsData = 0;
     private int fetchTotalsDataScores = 0;
 
+
     private Boolean usingBT = false;
     private String speakLeaderNames = "";
 
@@ -453,11 +454,24 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   tim.setTotalTimeInSeconds(timerSecondsCounter);
 
 
+
                   Message msg = Message.obtain();
                   msg.obj = tim.getTotalTimeString();
                     msg.what = 0;
                     msg.setTarget(uiHandler);
                     msg.sendToTarget();
+
+                  if (timerSecondsCounter == reconnectFlag) {
+                      Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
+                      reconnectFlag = 0;
+                      if (connectedGatt != null) {
+                          Log.i(TAG, "Clear connectedGatt, name:  " + connectedGatt.getDevice().getName());
+                          connectedGatt.disconnect();
+                          connectedGatt.close();
+                      }
+
+                      connectedGatt = tryToConnectDevice.connectGatt(getApplicationContext(), false, bluetoothGattCallback);
+                  }
 
                   if (timerSecondsCounter > 31) {
                       if (timerSecondsCounter % 25 == 0) {veloTester1();}
@@ -466,11 +480,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
                   //START END OF ROUND LOGIC
-
-//                  if (timerSecondsCounter == reconnectFlag) {
-//                      Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
-//                      reconnectToDevice(tryToConnectDevice);
-//                  }
 
 
                   //FOR IN ROUND DISPLAY
@@ -751,6 +760,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                      }
 //                      });
 
+
+
                   //final double finalBestRoundSpeed = bestRoundSpeed;
                   runOnUiThread(new Runnable() {
                       @Override
@@ -864,7 +875,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         fetchTotalsDataScores = timerSecondsCounter + 75;
         fetchRoundDataScores = timerSecondsCounter + 60;
 
-        //TODO:  ADD HR/SCORE DATA TO FB AND DISPLAY
+        //AT END OF ROUND, CLEAR HR
         arrHeartrates.clear();
 
     }
@@ -1561,20 +1572,19 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 }
                 case BluetoothProfile.STATE_DISCONNECTED: {
                     Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
-                    //setConnectedGatt(null);
+                    Log.i(TAG, "Waiting 30 sec, then attempt reconnect");
 
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            TextView tr = findViewById(R.id.rtStatus);
-//                            tr.setText(String.format("BT DISCONNECT:  %s", gatt.getDevice().getName()));
-//                            Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
-//                        }
-//                    });
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView tr = findViewById(R.id.rtStatus);
+                            tr.setText(String.format("BT DISCONNECT:  %s", gatt.getDevice().getName()));
+                            Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
+                        }
+                    });
 
                     tryToConnectDevice = gatt.getDevice();
-                    reconnectFlag = timerSecondsCounter + 20;
+                    reconnectFlag = timerSecondsCounter + 30;
                     break;
                 }
                 case BluetoothProfile.STATE_CONNECTING: {
@@ -1666,6 +1676,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     format = BluetoothGattCharacteristic.FORMAT_UINT8;
                 }
                 final int hrValue = characteristic.getIntValue(format, 1);
+
+                if (hrValue < 20 || hrValue > 230) {return;}
 
                 arrHeartrates.add((double) hrValue);
                 sumOfTotalHeartRates += hrValue;
@@ -1787,7 +1799,12 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private ArrayList<Double> arrHeartrates = new ArrayList<>();
     private void computeRoundHR() {
         //Log.i(TAG, "roundHR: compute roundHR");
+        if (reconnectFlag == 0) {
+            reconnectFlag = 1;
+            return;
+        }
         double sum = 0;
+
         for (double hr : arrHeartrates) {
             sum += hr;
         }
@@ -2141,6 +2158,19 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             }
             cycle = 1;
         }
+
+        Button btn100 = findViewById(R.id.button100);
+        Button btn101 = findViewById(R.id.button101);
+        Button btn102 = findViewById(R.id.button102);
+        Button btn103 = findViewById(R.id.button103);
+        Button btn104 = findViewById(R.id.button104);
+
+        btn100.setVisibility(View.GONE);
+        btn101.setVisibility(View.GONE);
+        btn102.setVisibility(View.GONE);
+        btn103.setVisibility(View.GONE);
+        btn104.setVisibility(View.GONE);
+
 
     }
 
@@ -2602,23 +2632,23 @@ private String calcPace(double mph) {
         };
     }
 //SCANCALLBACK - FINISH
-//public void reconnectToDevice(BluetoothDevice mDevice) {
-//    Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
-//    Log.i("ReconnectToDevice", "Addresss: " + mDevice.getAddress());
-//
-//    connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
-//    devicesConnected.add(mDevice);
-//    bluetoothGatts.add(connectedGatt);
-//    devicesConnectedAddresses.add(mDevice.getAddress());
-//}
+
+
+    public void reconnectToDevice(BluetoothDevice mDevice) {
+    Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
+    Log.i("ReconnectToDevice", "Address: " + mDevice.getAddress());
+
+//disconnect/close old gatts first?
+    connectedGatt = mDevice.connectGatt(this, true, bluetoothGattCallback);
+
+
+}
 
 
     public void connectToDevice(BluetoothDevice mDevice) {
         Log.i("connectToDevice", "Device: " + mDevice.getName());
         Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
 
-        //TODO:  TEST WITH AUTOCONNECT
-        //AUTOCONNECT CHANGED FROM FALSE TO TRUE
 
         connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
         Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
