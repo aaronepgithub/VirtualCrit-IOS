@@ -609,8 +609,8 @@ class Starter_VC: UITableViewController {
         case 6:
             let at = activityType
             if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";}
-            if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";}
-            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";}
+            if at == "RUN" {activityType = "BIKE";lblActivityType.text = "BIKE";}
+            //if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";}
         case 7:
             if lblAudioStatus.text == "OFF" {audioStatus = "ON";lblAudioStatus.text = "ON";print("audioStatus is ON");} else {audioStatus = "OFF";lblAudioStatus.text = "OFF"}
         case 8:
