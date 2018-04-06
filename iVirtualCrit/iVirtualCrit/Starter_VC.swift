@@ -1138,14 +1138,14 @@ class Starter_VC: UITableViewController {
                     if self.newSpeedLeader == true && self.newScoreLeader == false {
                     self.newSpeedLeader = false
                     if self.audioStatus == "ON" {
-                        Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName)")
+                        Utils.shared.say(sentence: "The Speed Leader is now, \(self.currentSpeedLeaderName)")
                     }
                 }
                 
                     if self.newSpeedLeader == false && self.newScoreLeader == true {
                     self.newScoreLeader = false
                     if self.audioStatus == "ON" {
-                        Utils.shared.say(sentence: "The Score Leader is now \(self.currentScoreLeaderName)")
+                        Utils.shared.say(sentence: "The Score Leader is now, \(self.currentScoreLeaderName)")
                     }
                 }
                 
@@ -1153,7 +1153,7 @@ class Starter_VC: UITableViewController {
                     self.newScoreLeader = false
                     self.newSpeedLeader = false
                     if self.audioStatus == "ON" {
-                        Utils.shared.say(sentence: "The Speed Leader is now \(self.currentSpeedLeaderName).  And The Score Leader is now \(self.currentScoreLeaderName)")
+                        Utils.shared.say(sentence: "The Speed Leader is now, \(self.currentSpeedLeaderName).  And The Score Leader is now, \(self.currentScoreLeaderName)")
                     }
                 }
                     
