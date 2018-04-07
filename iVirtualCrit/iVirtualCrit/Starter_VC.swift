@@ -131,6 +131,12 @@ class Starter_VC: UITableViewController {
     @IBOutlet weak var lbl_timeInRound: UILabel!
     @IBOutlet weak var fb_SpeedLeader: UILabel!
     
+    //NEW LABELS FOR STARTER/STATUS
+    @IBOutlet weak var st_timeInCurrentMile: UILabel!
+    @IBOutlet weak var st_speedRoundBT: UILabel!
+    @IBOutlet weak var st_speedRoundGPS: UILabel!
+    
+    
 //    func processUD(st: String) {
 //        udString = "\(secondsSinceStart):  \(st) \n"
 //        if currentRound == 1 {
@@ -146,6 +152,7 @@ class Starter_VC: UITableViewController {
     @objc func timerInterval() {
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         secondsInCurrentMile += 1
+        st_timeInCurrentMile.text = "\(createTimeString(seconds: Int(round(secondsInCurrentMile)))) IN MILE \(Int(currentMile))"
         secondsSinceStart = round(system.actualElapsedTime)
         let s1 = Int(secondsSinceStart)
         let s2 = currentRound * secondsPerRound
@@ -210,6 +217,7 @@ class Starter_VC: UITableViewController {
             if inRoundBtDistance > 0.01 && secondsInCurrentRound > 5 {
                 inRoundBtSpeed = rndSpdBT
                 btSpdRnd.text = "\(stringer(dbl: inRoundBtSpeed, len: 1)) RND SPD"
+                st_speedRoundBT.text = "\(stringer(dbl: inRoundBtSpeed, len: 1)) MPH(BT) ROUND \(currentRound)"
             } else {inRoundBtSpeed = 0}
         }
         
@@ -218,6 +226,7 @@ class Starter_VC: UITableViewController {
             if inRoundGeoDistance > 0.1 && Double(secondsInCurrentRound) > 10 {
                 inRoundGeoSpeed = inRoundGeoDistance / (Double(secondsInCurrentRound) / 60.0 / 60.0)
                 gpsRoundSpeed.text = "\(stringer(dbl: inRoundGeoSpeed, len: 1)) RND SPD(G)"
+                st_speedRoundGPS.text = "\(stringer(dbl: inRoundGeoSpeed, len: 1)) MPH(GPS) ROUND \(currentRound)"
             } else {inRoundGeoSpeed = 0}
         }
 

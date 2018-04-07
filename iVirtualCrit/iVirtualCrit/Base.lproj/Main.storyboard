@@ -157,7 +157,7 @@
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                         <color key="sectionIndexColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zie-XF-b6h">
+                        <label key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zie-XF-b6h">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -653,6 +653,111 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hHg-sa-ZMn" userLabel="DATA HEADER">
+                                        <rect key="frame" x="0.0" y="744" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hHg-sa-ZMn" id="Cj4-6S-QFE">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STATUS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ng-Os-9zv" userLabel="STATUS">
+                                                    <rect key="frame" x="12" y="17.5" width="343" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="0.1761009989" blue="0.097475948579999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5ng-Os-9zv" secondAttribute="trailing" constant="12" id="cHF-Ev-aTD"/>
+                                                <constraint firstItem="5ng-Os-9zv" firstAttribute="centerY" secondItem="Cj4-6S-QFE" secondAttribute="centerY" id="fp3-nm-h20"/>
+                                                <constraint firstItem="5ng-Os-9zv" firstAttribute="leading" secondItem="Cj4-6S-QFE" secondAttribute="leadingMargin" constant="4" id="jv0-fn-k3w"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="656-Fz-Whv" userLabel="TIME IN CURRENT MILE">
+                                        <rect key="frame" x="0.0" y="794" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="656-Fz-Whv" id="YUc-78-kf7">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 IN MILE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSq-6h-0d9" userLabel="TIME IN CURRENT MILE">
+                                                    <rect key="frame" x="12" y="16" width="343" height="18"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="centerY" secondItem="YUc-78-kf7" secondAttribute="centerY" id="Bfg-8Q-caZ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="CSq-6h-0d9" secondAttribute="trailing" constant="12" id="VSU-aR-uLU"/>
+                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="leading" secondItem="YUc-78-kf7" secondAttribute="leadingMargin" constant="4" id="Why-1F-REF"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="4LH-s0-mv0" userLabel="ROUND SPEED (BT)">
+                                        <rect key="frame" x="0.0" y="844" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4LH-s0-mv0" id="1po-H8-nan">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 MPH (BT) / ROUND" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFw-Zw-d72" userLabel="ROUND SPEED (BT)">
+                                                    <rect key="frame" x="12" y="16" width="343" height="18"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="AFw-Zw-d72" secondAttribute="trailing" constant="12" id="Zrw-BW-bhg"/>
+                                                <constraint firstItem="AFw-Zw-d72" firstAttribute="centerY" secondItem="1po-H8-nan" secondAttribute="centerY" id="kB3-XT-e4W"/>
+                                                <constraint firstItem="AFw-Zw-d72" firstAttribute="leading" secondItem="1po-H8-nan" secondAttribute="leadingMargin" constant="4" id="nIt-pc-exi"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="jqi-me-YVI" userLabel="ROUND SPEED (G)">
+                                        <rect key="frame" x="0.0" y="894" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jqi-me-YVI" id="GY6-16-iCT">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 MPH (G) / ROUND" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7kC-Mj-Jyu" userLabel="ROUND SPEED (G)">
+                                                    <rect key="frame" x="12" y="16" width="343" height="18"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="7kC-Mj-Jyu" secondAttribute="trailing" constant="12" id="CdE-Nd-A3G"/>
+                                                <constraint firstItem="7kC-Mj-Jyu" firstAttribute="centerY" secondItem="GY6-16-iCT" secondAttribute="centerY" id="kIN-NG-mTF"/>
+                                                <constraint firstItem="7kC-Mj-Jyu" firstAttribute="leading" secondItem="GY6-16-iCT" secondAttribute="leadingMargin" constant="4" id="vud-bS-mCq"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="s0s-Dw-Ips" userLabel="END">
+                                        <rect key="frame" x="0.0" y="944" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="s0s-Dw-Ips" id="Vem-cC-62p">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="END" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1z9-pF-E8Z" userLabel="END">
+                                                    <rect key="frame" x="12" y="17.5" width="343" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="0.1761009989" blue="0.097475948579999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1z9-pF-E8Z" firstAttribute="leading" secondItem="Vem-cC-62p" secondAttribute="leadingMargin" constant="4" id="EO8-J2-Cu6"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="1z9-pF-E8Z" secondAttribute="trailing" constant="12" id="WP4-F8-LI6"/>
+                                                <constraint firstItem="1z9-pF-E8Z" firstAttribute="centerY" secondItem="Vem-cC-62p" secondAttribute="centerY" id="pcd-va-zGY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -691,6 +796,9 @@
                         <outlet property="lblSecPerRound" destination="TpV-1W-zry" id="va8-ZV-zSD"/>
                         <outlet property="lblTireSize" destination="rn2-3E-BkG" id="dis-TR-w8a"/>
                         <outlet property="lbl_timeInRound" destination="V9Y-R6-m3Z" id="8Io-k8-49P"/>
+                        <outlet property="st_speedRoundBT" destination="AFw-Zw-d72" id="pW5-UK-HEG"/>
+                        <outlet property="st_speedRoundGPS" destination="7kC-Mj-Jyu" id="3yR-Wg-9Vk"/>
+                        <outlet property="st_timeInCurrentMile" destination="CSq-6h-0d9" id="cQP-Ds-lVp"/>
                         <outlet property="statusValue" destination="lf3-oL-LBZ" id="XmA-Hs-MgB"/>
                         <outlet property="tDisplayVal" destination="9Qh-lL-IEQ" id="gSc-aQ-MH6"/>
                         <outlet property="totalTime" destination="FCY-8f-dFJ" id="eBc-4f-y7m"/>
@@ -752,7 +860,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS ROUND SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TiY-i7-wHU" userLabel="gpd speed round">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" GPS ROUND SPEED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TiY-i7-wHU" userLabel="GPS Speed Round">
                                     <rect key="frame" x="0.0" y="192" width="199.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <nil key="textColor"/>
@@ -806,7 +914,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPEED ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQW-Bv-6ay" userLabel="BT spd round">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SPEED ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQW-Bv-6ay" userLabel="BT Speed Round">
                                     <rect key="frame" x="0.0" y="408" width="199.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <nil key="textColor"/>
@@ -830,7 +938,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BT SCORE RND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uY0-iN-fRb" userLabel="FB LEADER">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FB SPD LEADER" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uY0-iN-fRb" userLabel="FB LEADER">
                                     <rect key="frame" x="0.0" y="504" width="199.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <nil key="textColor"/>
