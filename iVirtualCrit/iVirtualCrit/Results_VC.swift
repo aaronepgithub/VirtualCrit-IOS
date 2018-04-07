@@ -54,7 +54,7 @@ class Results_VC: UITableViewController {
             tapHeaderCount = 5
         case 5:
         if arrResultsMyRoundSpeed.isEmpty {return}
-        outHeader.text = "MY RESULTS"
+        outHeader.text = "MY RESULTS (TAP TO CHANGE)"
         arrResults = arrResultsMyRoundSpeed
         arrResultsDetails = arrResultsDetailsMyRoundSpeed
         outResults.reloadData()
