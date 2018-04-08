@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private double endMileSpeedBT = 0;
     private double endMileSpeedGEO = 0;
 
-    private Integer secondsPerRound = 300;
+    private Integer secondsPerRound = 1800;
     private Integer currentRound = 1;
 
     private double bestRoundMPH = 0;
@@ -2980,7 +2980,7 @@ private String calcPace(double mph) {
             case "RUN":
                 activityValue = "BIKE";
                 b.setText("BIKE");
-                secondsPerRound = 300;
+                secondsPerRound = 1800;
                 b2.setText("30 Minutes");
                 break;
         }

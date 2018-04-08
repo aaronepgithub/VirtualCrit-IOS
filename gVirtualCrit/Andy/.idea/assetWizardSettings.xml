@@ -23,8 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="99" />
-                                                <entry key="trimmed" value="true" />
+                                                <entry key="scalingPercent" value="97" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -35,7 +34,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../../../Icons/VirtualCritCombo 1024.png" />
+                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../../../Icons/AppIconResizer_201804081434_15009f3701a4078a415eedbba337eb31/GooglePlayStore.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
