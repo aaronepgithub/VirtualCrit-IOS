@@ -617,9 +617,12 @@ class Starter_VC: UITableViewController {
             showInputDialog()
         case 6:
             let at = activityType
-            if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";secondsPerRound = 300;lblSecPerRound.text = "300";}
-            if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";secondsPerRound = 300;lblSecPerRound.text = "300";}
-            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
+            if secondsSinceStart < 45 {
+                if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";secondsPerRound = 300;lblSecPerRound.text = "300";}
+                if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";secondsPerRound = 300;lblSecPerRound.text = "300";}
+                if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
+            }
+
 //            if at == "RUN" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
 //            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
         case 7:
