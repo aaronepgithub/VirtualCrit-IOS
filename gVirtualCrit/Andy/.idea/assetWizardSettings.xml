@@ -23,6 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+                                                <entry key="scalingPercent" value="99" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -33,7 +34,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../../../VirtualCritMS.png" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../../../Icons/VirtualCritCombo 1024.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

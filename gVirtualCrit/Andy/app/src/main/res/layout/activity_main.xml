@@ -335,7 +335,7 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="300 Seconds"
+                android:text="30 Minutes"
                 android:layout_margin="8dp"
                 android:onClick="onClick_setSecondsPerRound"
                 android:textAlignment="viewStart" />

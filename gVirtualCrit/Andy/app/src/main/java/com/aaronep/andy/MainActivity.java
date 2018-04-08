@@ -2905,6 +2905,7 @@ private String calcPace(double mph) {
 
 
     public void onClick_setSecondsPerRound(View view) {
+        if (timerSecondsCounter > 45) {return;}
         Button b = findViewById(R.id.button54b);
         switch (secondsPerRound) {
             case 60:
@@ -2959,19 +2960,28 @@ private String calcPace(double mph) {
 
     public String activityValue = "BIKE";
     public void onClick_setActivity(View view) {
+        if (timerSecondsCounter > 45) {return;}
         Button b = findViewById(R.id.button51b);
+        Button b2 = findViewById(R.id.button54b);
         switch (activityValue) {
             case "BIKE":
                 b.setText("RUN");
                 activityValue = "RUN";
+                secondsPerRound = 300;
+                b2.setText("300 Seconds");
                 break;
+//            case "RUN":
+//                b.setText("ROW");
+//                activityValue = "ROW";
+//                //ADD SUPPORT FOR ROW LATER
+//                secondsPerRound = 300;
+//                b2.setText("300 Seconds");
+//                break;
             case "RUN":
-                b.setText("ROW");
-                activityValue = "ROW";
-                break;
-            case "ROW":
                 activityValue = "BIKE";
                 b.setText("BIKE");
+                secondsPerRound = 300;
+                b2.setText("30 Minutes");
                 break;
         }
     }
