@@ -2920,6 +2920,7 @@ private String calcPace(double mph) {
                 secondsPerRound = 60;
                 b.setText("1 Minute");
         }
+        Log.i(TAG, "onClick_setSecondsPerRound: " + secondsPerRound);
     }
 
     public Boolean audioValue = true;
