@@ -36,7 +36,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ffffff" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/Combo23.png" />
+                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../../../Icons/iTunesArtwork@2x.png" />
                                       <entry key="legacyIconShape" value="NONE" />
                                       <entry key="webIconShape" value="NONE" />
                                     </map>
