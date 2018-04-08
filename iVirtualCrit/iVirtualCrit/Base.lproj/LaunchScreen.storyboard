@@ -21,14 +21,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="0gn-8q-IYf">
                                 <rect key="frame" x="8" y="100" width="304" height="300"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_directions_bike" translatesAutoresizingMaskIntoConstraints="NO" id="vvb-qJ-ynj">
-                                        <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_directions_run" translatesAutoresizingMaskIntoConstraints="NO" id="oAa-k1-cTH">
-                                        <rect key="frame" x="0.0" y="100" width="304" height="100"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_rowing" translatesAutoresizingMaskIntoConstraints="NO" id="s8O-w1-WGW">
-                                        <rect key="frame" x="0.0" y="200" width="304" height="100"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iTunesArtwork" translatesAutoresizingMaskIntoConstraints="NO" id="vvb-qJ-ynj">
+                                        <rect key="frame" x="0.0" y="0.0" width="304" height="300"/>
                                     </imageView>
                                 </subviews>
                             </stackView>
@@ -49,8 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_directions_bike" width="24" height="24"/>
-        <image name="ic_directions_run" width="24" height="24"/>
-        <image name="ic_rowing" width="24" height="24"/>
+        <image name="iTunesArtwork" width="512" height="512"/>
     </resources>
 </document>
