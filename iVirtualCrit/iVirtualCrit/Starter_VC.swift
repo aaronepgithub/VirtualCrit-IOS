@@ -80,7 +80,7 @@ class Starter_VC: UITableViewController {
 //    var roundCadence: Double = 0
     
     
-    var secondsPerRound: Int = 300
+    var secondsPerRound: Int = 1800
     var roundGeoSpeed: Double = 0
     
     var roundsCompleted: Double = 0
@@ -470,7 +470,7 @@ class Starter_VC: UITableViewController {
     
     func createViewerArray() {
         //HDR
-        if activityType == "RUN" || current.totalMovingTime == 0 || usingBTforSpeed == false {
+        if activityType == "RUN" || activityType == "ROW" || current.totalMovingTime == 0 || usingBTforSpeed == false {
             arr.append("\(createTimeString(seconds: Int(geo.elapsedTime)))  \(stringer(dbl: geo.avgSpeed, len: 1)) AVG")
         } else {
             arr.append("\(createTimeString(seconds: Int(current.totalMovingTime)))  \(stringer(dbl: current.totalAverageSpeed, len: 1)) AVG")
@@ -480,7 +480,7 @@ class Starter_VC: UITableViewController {
         arr.append("\(stringer(dbl: Double(current.currentHR), len: 0))")
         tabBarController?.tabBar.items?[0].badgeValue = "\(stringer(dbl: Double(current.currentHR), len: 0))"
         
-        if activityType == "RUN" || current.totalMovingTime == 0 || usingBTforSpeed == false{
+        if activityType == "RUN" || activityType == "ROW" || current.totalMovingTime == 0 || usingBTforSpeed == false{
             arr.append("\(stringer(dbl: geo.speed, len: 1))")
             tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: geo.speed, len: 1))"
         } else {
@@ -488,7 +488,7 @@ class Starter_VC: UITableViewController {
             tabBarController?.tabBar.items?[1].badgeValue = "\(stringer(dbl: current.currentSpeed, len: 1))"
         }
         
-        if activityType == "RUN" || usingBTforCadence == false {
+        if activityType == "RUN" || activityType == "ROW" || usingBTforCadence == false {
             arr.append("\(geo.pace)")
         } else {
             arr.append("\(stringer(dbl: current.currentCadence, len: 0))")
@@ -500,7 +500,7 @@ class Starter_VC: UITableViewController {
         
         arr.append("SPD\n\(stringer(dbl: Double(secondsInCurrentRound), len: 0))")
         
-        if activityType == "RUN" || usingBTforCadence == false {
+        if activityType == "RUN" || activityType == "ROW" || usingBTforCadence == false {
             arr.append("PACE")
         } else {
             arr.append("CAD")
@@ -617,9 +617,11 @@ class Starter_VC: UITableViewController {
             showInputDialog()
         case 6:
             let at = activityType
-            if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";}
-            if at == "RUN" {activityType = "BIKE";lblActivityType.text = "BIKE";}
-            //if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";}
+            if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";secondsPerRound = 300;lblSecPerRound.text = "300";}
+            if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";secondsPerRound = 300;lblSecPerRound.text = "300";}
+            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
+//            if at == "RUN" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
+//            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
         case 7:
             if lblAudioStatus.text == "OFF" {audioStatus = "ON";lblAudioStatus.text = "ON";print("audioStatus is ON");} else {audioStatus = "OFF";lblAudioStatus.text = "OFF"}
         case 8:
@@ -643,7 +645,7 @@ class Starter_VC: UITableViewController {
             print("SHOW RESULTS PAGE")
         case 12:
             let spr = secondsPerRound
-            if system.status == "STOPPED" {
+            if system.status == "STOPPED" || secondsSinceStart < 45 {
                 if spr == 60 {secondsPerRound = 300;lblSecPerRound.text = "300"}
                 if spr == 300 {secondsPerRound = 1800;lblSecPerRound.text = "1800"}
                 if spr == 1800 {secondsPerRound = 60;lblSecPerRound.text = "60"}
@@ -733,6 +735,10 @@ class Starter_VC: UITableViewController {
                 let refDBRun  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run/\(result)")
                 refDBRun.childByAutoId().setValue(round_post)
             }
+            if activityType == "ROW" {
+                let refDBRun  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/row/\(result)")
+                refDBRun.childByAutoId().setValue(round_post)
+            }
             
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(result)")
             refDB.childByAutoId().setValue(round_post)
@@ -799,6 +805,10 @@ class Starter_VC: UITableViewController {
                 let refDBRun  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(result)/\(riderName)")
                 refDBRun.setValue(totals_post)
             }
+            if activityType == "ROW" {
+                let refDBRun  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/row/\(result)/\(riderName)")
+                refDBRun.setValue(totals_post)
+            }
             
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(riderName)")
             refDB.setValue(totals_post)
@@ -837,6 +847,9 @@ class Starter_VC: UITableViewController {
         var refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         if activityType == "RUN" {
             refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run")
+        }
+        if activityType == "ROW" {
+            refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/row")
         }
         let ref = refDB.child(result)
         _ = ref.queryLimited(toLast: 15).queryOrdered(byChild: "fb_RND").observeSingleEvent(of: .value, with: { snapshot in
@@ -915,6 +928,9 @@ class Starter_VC: UITableViewController {
         var refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
         if activityType == "RUN" {
             refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run")
+        }
+        if activityType == "ROW" {
+            refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/row")
         }
         let ref = refDB.child(result)
         _ = ref.queryLimited(toLast: 15).queryOrdered(byChild: "fb_SPD").observeSingleEvent(of: .value, with: { snapshot in
@@ -1030,6 +1046,9 @@ class Starter_VC: UITableViewController {
         if activityType == "RUN" {
             ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(result)")
         }
+        if activityType == "ROW" {
+            ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/row/\(result)")
+        }
         ref.queryLimited(toLast: 15).queryOrdered(byChild: "a_scoreHRTotal").observeSingleEvent(of: .value, with: { snapshot in
             if ( snapshot.value is NSNull ) {
                 print("not found")
@@ -1088,6 +1107,30 @@ class Starter_VC: UITableViewController {
         
         
     }  //fb3 complete
+
+    //DO AFTER START TO CATCH THE RIGHT ACTIVITY TYPE
+//    var superLeaderScore = ""
+//    var superLeaderName = ""
+//    func fbSuper() {
+//        print("start fbSuper")
+//        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
+//        let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/super/\(result)/\(activityType)")
+//
+//        ref.observe(.value, with: { (snapshot) in
+//            let postDict = snapshot.value as? [String : AnyObject] ?? [:]
+//            if postDict.count == 0 {
+//                print("none")
+//                return;
+//            } else {
+//                let s1 = postDict["superLeaderScore"]
+//                let s2 = postDict["superLeaderName"]
+//                print(s1 as Any)
+//                print(s2 as Any)
+//                
+//            }
+//            
+//        })
+//    }
     
     var leaderNamesBySpeedTotals: String = ""
     func fb4() { //get Totals from fb, ordered by speed
@@ -1100,6 +1143,9 @@ class Starter_VC: UITableViewController {
         var ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)")
         if activityType == "RUN" {
             ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(result)")
+        }
+        if activityType == "ROW" {
+            ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/row/\(result)")
         }
         ref.queryLimited(toLast: 15).queryOrdered(byChild: "a_speedTotal").observeSingleEvent(of: .value, with: { snapshot in
                 if ( snapshot.value is NSNull ) {
@@ -1235,7 +1281,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                             gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed, len: 1)) AVG(G)"
                             gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed)) AVG(G)"
                             
-                            if activityType == "RUN" {
+                            if activityType == "RUN" || activityType == "ROW" {
                             tabBarController?.tabBar.items?[3].badgeValue = "\(String(describing: geo.pace))"
                             tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: geo.distance, len: 2)) MI"
                             }
