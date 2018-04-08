@@ -24,7 +24,7 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_directions_bike" translatesAutoresizingMaskIntoConstraints="NO" id="vvb-qJ-ynj">
                                         <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_favorite" translatesAutoresizingMaskIntoConstraints="NO" id="oAa-k1-cTH">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_directions_run" translatesAutoresizingMaskIntoConstraints="NO" id="oAa-k1-cTH">
                                         <rect key="frame" x="0.0" y="100" width="304" height="100"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_rowing" translatesAutoresizingMaskIntoConstraints="NO" id="s8O-w1-WGW">
@@ -50,7 +50,7 @@
     </scenes>
     <resources>
         <image name="ic_directions_bike" width="24" height="24"/>
-        <image name="ic_favorite" width="24" height="24"/>
+        <image name="ic_directions_run" width="24" height="24"/>
         <image name="ic_rowing" width="24" height="24"/>
     </resources>
 </document>
