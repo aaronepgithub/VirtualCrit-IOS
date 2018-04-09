@@ -15,13 +15,13 @@ class Results_VC: UITableViewController {
     @IBOutlet weak var outHeader: UILabel!
     
     @objc func tapFooterFunction(sender:UITapGestureRecognizer) {
-        print("tapFooter working")
+        //print("tapFooter working")
         disMe()
     }
     
     var tapHeaderCount = 5
     @objc func tapHeaderFunction(sender:UITapGestureRecognizer) {
-        print("tapHeader working, change to resultsRoundSpeed")
+        //print("tapHeader working, change to resultsRoundSpeed")
         
         switch tapHeaderCount {
         case 1:

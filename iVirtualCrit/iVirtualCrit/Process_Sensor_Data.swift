@@ -31,7 +31,7 @@ func processWheelData(withData data :Data) {
     if (oldWheelRevolution == 999999) {
         oldWheelRevolution = wheelRevolution;
         oldWheelEventTime = wheelEventTime;
-        print("First Read SPD")
+        //print("First Read SPD")
     } else {
         var a: Double = 0;var b: Double = 0;
         a = wheelRevolution - oldWheelRevolution
@@ -96,7 +96,7 @@ func processWheelData(withData data :Data) {
 //        print("current.totalAverageSpeed: \(current.totalAverageSpeed)")
         
         if current.currentSpeed.isNaN == true {
-            print("current.currentSpeed.isNaN")
+            //print("current.currentSpeed.isNaN")
             current.currentSpeed = 0
         }
         oldWheelRevolution = wheelRevolution
@@ -120,7 +120,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
     if (oldCrankRevolution == 999999) {
         oldCrankRevolution = crankRevolution
         oldCrankEventTime = crankEventTime
-        print("First Read CAD, \(oldCrankRevolution)")
+        //print("First Read CAD, \(oldCrankRevolution)")
     } else {
         var a: Double = 0;var b: Double = 0;
         a = crankRevolution - oldCrankRevolution
@@ -161,7 +161,7 @@ func processCrankData(withData data : Data, andCrankRevolutionIndex index : Int)
         crankRotationsDuringRound += a
 
         if current.currentCadence.isNaN == true {
-            print("current.currentCadence.isNaN == true")
+            //print("current.currentCadence.isNaN == true")
             current.currentCadence = 0
         }
         

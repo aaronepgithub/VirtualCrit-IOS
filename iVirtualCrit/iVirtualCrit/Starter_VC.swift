@@ -633,7 +633,7 @@ class Starter_VC: UITableViewController {
             if hrz == 190 {maxHRvalue = 195;lblMaxHeartrateValue.text = "195";}
             if hrz == 195 {maxHRvalue = 200;lblMaxHeartrateValue.text = "200";}
             if hrz == 200 {maxHRvalue = 185;lblMaxHeartrateValue.text = "185";}
-            print("Max HR:  \(maxHRvalue)")
+            //print("Max HR:  \(maxHRvalue)")
             
         case 9:
             let tsz = wheelCircumference
@@ -641,7 +641,7 @@ class Starter_VC: UITableViewController {
             if tsz == 2136 {lblTireSize.text = "700X32";wheelCircumference = 2155;}
             if tsz == 2155 {lblTireSize.text = "700X25";wheelCircumference = 2105;}
             
-            print("WheelCir:  \(wheelCircumference)")
+            //print("WheelCir:  \(wheelCircumference)")
         case 10:
             print("SHOW HISTORY PAGE")
         case 11:
@@ -653,10 +653,10 @@ class Starter_VC: UITableViewController {
                 if spr == 300 {secondsPerRound = 1800;lblSecPerRound.text = "1800"}
                 if spr == 1800 {secondsPerRound = 60;lblSecPerRound.text = "60"}
             } else {
-                print("already started")
+                //print("already started")
             }
         case 13:
-            print("13")
+            //print("13")
             
             UIApplication.shared.openURL(URL(string: "https://www.virtualcrit.com/tandc.html")!)
             //if audioStatus == "ON" {Utils.shared.say(sentence: "OK Kazumi, Let's Go")}
@@ -681,7 +681,7 @@ class Starter_VC: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
+        //print("viewDidLoad")
         
         system.startTime = Date()
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
@@ -705,7 +705,7 @@ class Starter_VC: UITableViewController {
     //FB PUSH, AT ROUND COMPLETE
     func fbPushII() {
         //send round data to fb
-        print("Start fbPush")
+        //print("Start fbPush")
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
         if roundsCompleted > 0 {
@@ -746,12 +746,12 @@ class Starter_VC: UITableViewController {
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(result)")
             refDB.childByAutoId().setValue(round_post)
             
-            print("Complete pushFBRound")
+            //print("Complete pushFBRound")
         }
         
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
-            print("calling fbPost for Totals")
+            //print("calling fbPost for Totals")
             self.fbPost()
         }
         
@@ -777,7 +777,7 @@ class Starter_VC: UITableViewController {
         var tCadence = rounds.cadences.average
         tCadence = (tCadence*1000).rounded()/1000
         
-        print("Start fbPost for Totals")
+        //print("Start fbPost for Totals")
         let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
         
         if roundsCompleted > 0 {
@@ -815,7 +815,7 @@ class Starter_VC: UITableViewController {
             
             let refDB  = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(result)/\(riderName)")
             refDB.setValue(totals_post)
-            print("Complete postFBTotals")
+            //print("Complete postFBTotals")
         }
         
         let when = DispatchTime.now() + 5
@@ -824,12 +824,12 @@ class Starter_VC: UITableViewController {
             //TODO:  IF NOT CONNECTED, DON'T TRY TO DO THIS, FLOODS THE TIMELINE.
             
             if ConnectionCheck.isConnectedToNetwork() {
-                print("Connected to Internet")
-                print("calling fb1")
+                //print("Connected to Internet")
+                //print("calling fb1")
                 self.fb1()
             }
             else{
-                print("disConnected")
+                //print("disConnected")
             }
         }
     }
@@ -841,7 +841,7 @@ class Starter_VC: UITableViewController {
     var arrLeaderNamesByScore: String = ""
     //FB GETS (1,2,3,4)
     func fb1() {
-        print("start fb1")
+        //print("start fb1")
         arrLeaderNamesByScore = ""
         arrResultsRoundScore = []
         arrResultsDetailsRoundScore = []
@@ -900,18 +900,18 @@ class Starter_VC: UITableViewController {
                 arrResultsDetailsRoundScore.reverse()
                 
                 
-                print("Completed:  (Round) Get 15 leaders, ordered by score")
-                print(self.arrLeaderNamesByScore)
+                //print("Completed:  (Round) Get 15 leaders, ordered by score")
+                //print(self.arrLeaderNamesByScore)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SCORE)\n\(self.arrLeaderNamesByScore)")
-                print("\n")
+                //print("\n")
             }
         })
         { (error) in
             print(error.localizedDescription);print("error fb1");}
-        print("fb1 complete")
+        //print("fb1 complete")
         let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
-            print("calling fb2")
+            //print("calling fb2")
             self.fb2()
         }
     }
@@ -922,7 +922,7 @@ class Starter_VC: UITableViewController {
     var newSpeedLeader: Bool = false
     var arrLeaderNamesBySpeed: String = ""
     func fb2() {
-        print("start fb2")
+        //print("start fb2")
         arrLeaderNamesBySpeed = ""
         arrResultsRoundSpeed = []
         arrResultsDetailsRoundSpeed = []
@@ -959,8 +959,8 @@ class Starter_VC: UITableViewController {
                             self.currentSpeedLeaderSpeed = dSPD
                             self.currentSpeedLeaderName = n1
                             self.newSpeedLeader = true
-                            print("New Speed Leader:  \(self.currentSpeedLeaderName)")
-                            print("New Fastest Speed:  \(self.currentSpeedLeaderSpeed)")
+                            //print("New Speed Leader:  \(self.currentSpeedLeaderName)")
+                            //print("New Fastest Speed:  \(self.currentSpeedLeaderSpeed)")
                             self.self.fb_SpeedLeader.text = "\(self.currentSpeedLeaderName):  \(stringer(dbl: self.currentSpeedLeaderSpeed, len: 2))"
                         }
                         sSPD = stringer(dbl: dSPD, len: 2)
@@ -990,10 +990,10 @@ class Starter_VC: UITableViewController {
                 arrResultsRoundSpeed.reverse()
                 arrResultsDetailsRoundSpeed.reverse()
                 
-                print("Completed:  (Round) Get 15 leaders, ordered by speed")
-                print(self.arrLeaderNamesBySpeed)
+                //print("Completed:  (Round) Get 15 leaders, ordered by speed")
+                //print(self.arrLeaderNamesBySpeed)
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nROUND LEADERS (SPEED)\n\(self.arrLeaderNamesBySpeed)")
-                print("\n")
+                //print("\n")
                 
                 let when2 = DispatchTime.now() + 120
                 DispatchQueue.main.asyncAfter(deadline: when2){
@@ -1032,14 +1032,14 @@ class Starter_VC: UITableViewController {
         
         let when = DispatchTime.now() + 10
         DispatchQueue.main.asyncAfter(deadline: when){
-            print("calling fb3")
+            //print("calling fb3")
             self.fb3()
         }
     }
     
     var leaderNamesByScoreTotals: String = ""
     func fb3() { //get Totals from fb, ordered by score
-        print("start fb3")
+        //print("start fb3")
         leaderNamesByScoreTotals = ""
         arrResultsTotalScore = []
         arrResultsDetailsTotalScore = []
@@ -1090,18 +1090,18 @@ class Starter_VC: UITableViewController {
                 arrResultsDetailsTotalScore.reverse()
                 
                 
-                print("leaderNamesByScoreTotals\n\(self.leaderNamesByScoreTotals) \n")
+                //print("leaderNamesByScoreTotals\n\(self.leaderNamesByScoreTotals) \n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSCORE LEADERS (TOTAL)\n\(self.leaderNamesByScoreTotals)")
                 
-                print("Complete fb3")
+                //print("Complete fb3")
             }
         })
         { (error) in
             print(error.localizedDescription);print("error fb3");}
-        print("fb3 complete")
+        //print("fb3 complete")
         let when = DispatchTime.now() + 5
         DispatchQueue.main.asyncAfter(deadline: when){
-            print("calling fb4")
+            //print("calling fb4")
             self.fb4()
         }
         
@@ -1111,33 +1111,11 @@ class Starter_VC: UITableViewController {
         
     }  //fb3 complete
 
-    //DO AFTER START TO CATCH THE RIGHT ACTIVITY TYPE
-//    var superLeaderScore = ""
-//    var superLeaderName = ""
-//    func fbSuper() {
-//        print("start fbSuper")
-//        let date = Date();let formatter = DateFormatter();formatter.dateFormat = "yyyyMMdd";let result = formatter.string(from: date)
-//        let ref = FIRDatabase.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/super/\(result)/\(activityType)")
-//
-//        ref.observe(.value, with: { (snapshot) in
-//            let postDict = snapshot.value as? [String : AnyObject] ?? [:]
-//            if postDict.count == 0 {
-//                print("none")
-//                return;
-//            } else {
-//                let s1 = postDict["superLeaderScore"]
-//                let s2 = postDict["superLeaderName"]
-//                print(s1 as Any)
-//                print(s2 as Any)
-//                
-//            }
-//            
-//        })
-//    }
+
     
     var leaderNamesBySpeedTotals: String = ""
     func fb4() { //get Totals from fb, ordered by speed
-        print("start fb4")
+        //print("start fb4")
         leaderNamesBySpeedTotals = ""
         arrResultsTotalSpeed = []
         arrResultsDetailsTotalSpeed = []
@@ -1188,8 +1166,8 @@ class Starter_VC: UITableViewController {
                     arrResultsTotalSpeed.reverse()
                     arrResultsDetailsTotalSpeed.reverse()
                     
-                print("Complete fb4")
-                print("leaderNamesBySpeedTotals\n\(self.leaderNamesBySpeedTotals)\n")
+                //print("Complete fb4")
+                //print("leaderNamesBySpeedTotals\n\(self.leaderNamesBySpeedTotals)\n")
                 udArray.append("\(getFormattedTimeAndDate(d: Date()))\nSPEED LEADERS (TOTAL)\n\(self.leaderNamesBySpeedTotals)")
                 self.freshFB = true
                     
@@ -1220,7 +1198,7 @@ class Starter_VC: UITableViewController {
         })
         { (error) in
             print(error.localizedDescription);print("error fb4");}
-        print("fb4 complete")
+        //print("fb4 complete")
     }  //fb4 complete
    
     
@@ -1310,7 +1288,7 @@ extension Starter_VC: CLLocationManagerDelegate {
                 } else {
                     print("Waiting for the 3rd update  \(self.locations.count)")
                     if (self.locations.count == 2) {
-                    print("Last One")
+                    //print("Last One")
                     }
                 }
                 self.locations.append(location)

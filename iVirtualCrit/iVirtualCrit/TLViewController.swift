@@ -78,7 +78,7 @@ class TLViewController: UIViewController {
     
     
     func newPoint(titleString: String) {
-        print("newPoint")
+        //print("newPoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -95,7 +95,7 @@ class TLViewController: UIViewController {
     
     
     func newBlack(titleString: String) {
-        print("newBlack")
+        //print("newBlack")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
@@ -169,12 +169,12 @@ class TLViewController: UIViewController {
 
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("TL will Disappear")
+        //print("TL will Disappear")
         //NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("TL will Appear")
+        //print("TL will Appear")
 //        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
     }
     

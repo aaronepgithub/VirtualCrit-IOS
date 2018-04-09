@@ -73,13 +73,13 @@ class Viewer_VC: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("View will Disappear")
+        //print("View will Disappear")
         //NotificationCenter.default.removeObserver(self)
         timer.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("View will Appear")
+        //print("View will Appear")
         timer = Timer.scheduledTimer(timeInterval: 1,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
         
         var i: Int = 0
