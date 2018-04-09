@@ -33,15 +33,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>REQ FOR BT SENSOR USAGE</string>
+	<string>REQUIRED FOR BLUETOOTH SENSOR USAGE</string>
 	<key>NSHumanReadableCopyright</key>
 	<string></string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>REQ FOR FITNESS TRACKING</string>
+	<string>REQUIRED FOR FITNESS TRACKING</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>REQ FOR FITNESS TRACKING</string>
+	<string>REQUIRED FOR FITNESS TRACKING</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>REQ FOR FITNESS TRACKING</string>
+	<string>REQUIRED FOR FITNESS TRACKING</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
