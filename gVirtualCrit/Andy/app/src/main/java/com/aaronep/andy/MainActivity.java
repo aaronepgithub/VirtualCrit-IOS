@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         setContentView(R.layout.activity_main);
 
         tim = new Tim("TIM");
-        Log.i(TAG, "onCreate: tim.name:  " + tim.name);
+        //Log.i(TAG, "onCreate: tim.name:  " + tim.name);
 
 
         engine = new TextToSpeech(this, this);
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String currTimeStmp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         createTimeline("LET'S GET STARTED", "" + currTimeStmp);
 
-//        Log.i("TIME", "getActualTime");
+//        //Log.i("TIME", "getActualTime");
 //        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
 //        Long st = startTime.getTimeInMillis();
 //        Long nt = nowTime.getTimeInMillis();
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
         int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
         tim.currentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
-        Log.i(TAG, "onCreate: currentDate  " + tim.currentDate);
+        //Log.i(TAG, "onCreate: currentDate  " + tim.currentDate);
 
 
         //TODO:  TO LAUNCH WITH EMULATOR, DISABLE...
@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         timer.scheduleAtFixedRate(new TimerTask() {
               @Override
               public void run() {
-                  //Log.i(TAG, "timer: " + timerSecondsCounter);
+                  //////Log.i(TAG, "timer: " + timerSecondsCounter);
 
 //                  String aT = updateActualTime();
 //                  TextView at = findViewById(R.id.rtText1);
@@ -462,10 +462,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     msg.sendToTarget();
 
                   if (timerSecondsCounter == reconnectFlag) {
-                      Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
+                      //Log.i(TAG, "run: RECONNECT FLAG, TRY TO RECONNECT");
                       reconnectFlag = 0;
                       if (connectedGatt != null) {
-                          Log.i(TAG, "Clear connectedGatt, name:  " + connectedGatt.getDevice().getName());
+                          //Log.i(TAG, "Clear connectedGatt, name:  " + connectedGatt.getDevice().getName());
                           connectedGatt.disconnect();
                           connectedGatt.close();
                       }
@@ -489,7 +489,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   }
                   final double currentRoundSpeed = calcCurrentRoundSpd;
                   //display this at 7a
-                  //Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
+                  ////Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
                   //END...FOR IN ROUND DISPLAY
 
                   //END OF ROUND
@@ -497,7 +497,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   if (timerSecondsCounter % secondsPerRound == 0 && timerSecondsCounter > 50) {
 
                       usingBT = false;  //ANY NEW READING WILL CHANGE IT TO TRUE
-                      Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
+                      //Log.i(TAG, "NEW ROUND: " + timerSecondsCounter);
 
                       tim.setRoundSpeed(currentRoundSpeed);
                       valuesRounds.add(String.format("%d.  %s", currentRound, String.format(Locale.US, "%.2f MPH", currentRoundSpeed)));
@@ -534,10 +534,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       int position = -1;
                       position = doubleValuesRounds.indexOf(currentRoundSpeed);
                       if (position == -1) {
-                          Log.i(TAG, "Object not found in List");
+                          //Log.i(TAG, "Object not found in List");
                       } else {
                           position += 1;
-                          Log.i(TAG, "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size());
+                          //Log.i(TAG, "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size());
                           roundIndexString = "SPEED RANK IS NUMBER " + position + " OUT OF " + doubleValuesRounds.size() + ".";
                           toSpeak1c = ", Ranking " + position + " out of " + doubleValuesRounds.size();
                       }
@@ -548,10 +548,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       int positionS = -1;
                       positionS = doubleValuesRoundsHeartrates.indexOf(tim.getRoundHR());
                       if (positionS == -1) {
-                          Log.i(TAG, "HR Object not found in List");
+                          //Log.i(TAG, "HR Object not found in List");
                       } else {
                           positionS += 1;
-                          Log.i(TAG, "SCORE RANK IS NUMBER " + positionS + " OUT OF " + doubleValuesRoundsHeartrates.size());
+                          //Log.i(TAG, "SCORE RANK IS NUMBER " + positionS + " OUT OF " + doubleValuesRoundsHeartrates.size());
                           toSpeak1d = ", Your score ranking was number  " + positionS + " . ";
                       }
 
@@ -586,24 +586,24 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                   //END END_OF_ROUND PROCESSING
 
                   if (timerSecondsCounter == fetchRoundData) {
-                      Log.i(TAG, "run: readFromFB - ROUNDS");
+                      //Log.i(TAG, "run: readFromFB - ROUNDS");
                       readFromFB();
                   }
 
                   if (timerSecondsCounter == fetchRoundDataScores) {
-                      Log.i(TAG, "run: readFromFB - ROUNDS/Scores");
+                      //Log.i(TAG, "run: readFromFB - ROUNDS/Scores");
 //                      speakText(this, "The speed leader is " + stLeaderName);
                       readFromFB_RoundScores();
                   }
 
                   if (timerSecondsCounter == fetchTotalsData) {
-                      Log.i(TAG, "run: readFromFBII - TOTALS");
+                      //Log.i(TAG, "run: readFromFBII - TOTALS");
                       readFromFBII();
                   }
 
 
                   if (timerSecondsCounter == fetchTotalsDataScores) {
-                      Log.i(TAG, "run: readFromFBIII - TOTALS SCORES");
+                      //Log.i(TAG, "run: readFromFBIII - TOTALS SCORES");
                       readFromFBIII();
 
                       String tempSpeak = "The speed leader is " + stLeaderName + ", The leading score is from " + stLeaderNameScore;
@@ -657,7 +657,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           comboMileSpeed = endMileSpeedGEO;
                       }
 
-                      Log.i(TAG, "COMBO MILE MPH  " + comboMileSpeed);
+                      //Log.i(TAG, "COMBO MILE MPH  " + comboMileSpeed);
                       doubleValuesMiles.add(comboMileSpeed);
 
                       String mileRankingString = "";
@@ -669,7 +669,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                           Log.e(TAG, "Object not found in List");
                       } else {
                           positionM += 1;
-                          Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
+                          //Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
                           mileRankingString = "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size();
                           toSpeakMile4 = ", Ranking " + positionM + " out of " + doubleValuesMiles.size();
                       }
@@ -692,9 +692,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
 //                  if (finalLastMileSpeed != lastMileTester) {
-//                      Log.i(TAG, "END OF MILE, REGARDLESS OF GEO OR BT");
-//                      Log.i(TAG, "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed));
-//                      Log.i(TAG, "Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH));
+//                      //Log.i(TAG, "END OF MILE, REGARDLESS OF GEO OR BT");
+//                      //Log.i(TAG, "Your last miles's speed was " + String.format(Locale.US, "%.1f Miles Per Hour.", finalLastMileSpeed));
+//                      //Log.i(TAG, "Your best is " + String.format(Locale.US, "%.1f", finalBestMileMPH));
 
 //                      doubleValuesMiles.add(finalLastMileSpeed);
 
@@ -705,7 +705,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                          Log.e(TAG, "Object not found in List");
 //                      } else {
 //                          positionM += 1;
-//                          Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
+//                          //Log.i(TAG, "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size());
 //                          mileRankingString = "LAST MILE RANKED " + positionM + " OUT OF " + doubleValuesMiles.size();
 //                      }
 
@@ -826,7 +826,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
     private void writeToFB() {
-        Log.i(TAG, "WRITE TO FB");
+        //Log.i(TAG, "WRITE TO FB");
         //        FirebaseDatabase database = FirebaseDatabase.getInstance();
         //        DatabaseReference myRef = database.getReference("message");
         //        myRef.setValue("Hello, World!");
@@ -839,8 +839,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String userId = mDatabase.push().getKey();
         // creating user object
         Round round = new Round(tim.getName(), tim.getRoundSpeed(), tim.getRoundHR(), tim.getRoundScore());
-        Log.i(TAG, "writeToFB/ROUND SPEED:  " + tim.getRoundSpeed());
-        Log.i(TAG, "writeToFB/ROUND SCORE:  " + tim.getRoundScore());
+        //Log.i(TAG, "writeToFB/ROUND SPEED:  " + tim.getRoundSpeed());
+        //Log.i(TAG, "writeToFB/ROUND SCORE:  " + tim.getRoundScore());
         // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round);
 
@@ -856,7 +856,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         //WRITE UPDATE TOTAL DATA
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
-        Log.i(TAG, "writeToFB/TOTAL:  " + tim.getTotalAvgSpeed());
+        //Log.i(TAG, "writeToFB/TOTAL:  " + tim.getTotalAvgSpeed());
         Total total = new Total(tim.getName(), totalAverageScore, tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
 
@@ -886,7 +886,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     //VALUES TOTALS LEADERS SCORES
     private String stTotalsLeadersScores = "";
     private void readFromFBIII() {
-        Log.i(TAG, "READ FROM FBIII - TOTALS, SCORES");
+        //Log.i(TAG, "READ FROM FBIII - TOTALS, SCORES");
 
         //READ TOTALS SCORES
         String totalsURL = "totals/" + tim.currentDate;
@@ -897,8 +897,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mDatabaseTotals.limitToLast(15).orderByChild("a_scoreHRTotal").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.i(TAG, "onDataChange - TOTALS/SCORES");
-                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                ////Log.i(TAG, "onDataChange - TOTALS/SCORES");
+                ////Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesTotalsLeadersScores.clear();
                 stTotalsLeadersScores = "";
@@ -913,14 +913,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f %% MAX", score) , name));
 
 
-                    //Log.i("FB", name);
-                    //Log.i("FB", String.valueOf(speed));
+                    ////Log.i("FB", name);
+                    ////Log.i("FB", String.valueOf(speed));
                     //valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f PERCENT MAX", score)));
+                    ////Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f PERCENT MAX", score)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesTotalsLeaders.add("Total Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
-                    //Log.i(TAG, "onDataChange: (name) " + name);
+                    ////Log.i(TAG, "onDataChange: (name) " + name);
                     valuesTotalsLeadersScores.add(name);
                     stTotalsLeadersScores = name + "\n" + stTotalsLeadersScores;
                 }
@@ -929,12 +929,12 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 stTotalsLeadersScores = "Totals Leaders (Scores)" + "\n" + stTotalsLeadersScores;
                 //createTimeline(stTotalsLeadersScores, "");
-                Log.i(TAG, "stTotalsLeadersScores: " + stTotalsLeadersScores);
+                //Log.i(TAG, "stTotalsLeadersScores: " + stTotalsLeadersScores);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.i(TAG, "Failed to read value - totals, scores.", databaseError.toException());
+                //Log.i(TAG, "Failed to read value - totals, scores.", databaseError.toException());
             }
         });
         //END READ TOTALS SCORES
@@ -945,7 +945,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     //END VALUES TOTALS LEADERS SCORES
     private String stTotalsLeaders = "";
     private void readFromFBII() {
-        Log.i(TAG, "READ FROM FBII - TOTALS");
+        //Log.i(TAG, "READ FROM FBII - TOTALS");
         valuesTotalsLeaders.clear();
         //READ TOTALS
         String totalsURL = "totals/" + tim.currentDate;
@@ -956,8 +956,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mDatabaseTotals.limitToLast(15).orderByChild("a_speedTotal").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange - TOTALS");
-                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                //Log.i(TAG, "onDataChange - TOTALS");
+                ////Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesTotalsLeaders.clear();
                 stTotalsLeaders = "";
@@ -970,14 +970,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     Double speed = ds.child("a_speedTotal").getValue(Double.class);
 //                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name));
-                    //Log.i("FB", name);
-                    //Log.i("FB", String.valueOf(speed));
+                    ////Log.i("FB", name);
+                    ////Log.i("FB", String.valueOf(speed));
                     //valuesTotalsLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    ////Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesTotalsLeaders.add("Total Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
-                    //Log.i(TAG, "onDataChange: (name) " + name);
+                    ////Log.i(TAG, "onDataChange: (name) " + name);
                     valuesTotalsLeaders.add(name);
                     stTotalsLeaders = name + "\n" + stTotalsLeaders;
                 }
@@ -986,14 +986,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 stTotalsLeaders = "Totals Leaders (Speeds)" + "\n" + stTotalsLeaders;
                 //createTimeline(stTotalsLeaders, "");
-                Log.i(TAG, "stTotalsLeaders: " + stTotalsLeaders);
+                //Log.i(TAG, "stTotalsLeaders: " + stTotalsLeaders);
 
                 //readFromFBIII();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.i(TAG, "Failed to read value - totals.", databaseError.toException());
+                //Log.i(TAG, "Failed to read value - totals.", databaseError.toException());
             }
         });
         //END READ TOTALS
@@ -1004,7 +1004,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     String stLeaderName = "";
     private String stRoundLeaders = "";
     private void readFromFB() {
-        Log.i(TAG, "READ FROM FB/ROUNDS/SPEED");
+        //Log.i(TAG, "READ FROM FB/ROUNDS/SPEED");
         String roundsURL = "rounds";
         if (activityValue == "RUN") {
             roundsURL = "rounds/run";
@@ -1013,8 +1013,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_SPD").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.i(TAG, "onDataChange - ROUNDS");
-                //Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
+                ////Log.i(TAG, "onDataChange - ROUNDS");
+                ////Log.i(TAG, "onDataChange: " + dataSnapshot.toString());
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeaders.clear();
                 stRoundLeaders = "";
@@ -1025,14 +1025,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name));
                     stLeaderName = name;
-//                    Log.i("FB", name);
-//                    Log.i("FB", String.valueOf(speed));
+//                    //Log.i("FB", name);
+//                    //Log.i("FB", String.valueOf(speed));
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
+                    ////Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
-                    //Log.i(TAG, "onDataChange: (name) " + name);
+                    ////Log.i(TAG, "onDataChange: (name) " + name);
                     valuesRoundLeaders.add(name);
                     stRoundLeaders = name + "\n" + stRoundLeaders;
                 }
@@ -1040,14 +1040,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 Collections.reverse(valuesRoundLeaders);
                 stRoundLeaders = "Round Leaders (Speeds)" + "\n" + stRoundLeaders;
                 createTimeline(stRoundLeaders, "");
-                Log.i(TAG, "stRoundLeaders: " + stRoundLeaders);
+                //Log.i(TAG, "stRoundLeaders: " + stRoundLeaders);
 
 
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                //Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
             }
         });
         //END READ ROUNDS
@@ -1058,7 +1058,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private String stRoundLeadersScores = "";
     String stLeaderNameScore = "";
     private void readFromFB_RoundScores() {
-        Log.i(TAG, "READ FROM FB/ROUNDS/SCORES");
+        //Log.i(TAG, "READ FROM FB/ROUNDS/SCORES");
         String roundsURL = "rounds";
         if (activityValue == "RUN") {
             roundsURL = "rounds/run";
@@ -1067,7 +1067,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mDatabaseRounds.child(tim.currentDate).limitToLast(15).orderByChild("fb_RND").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.i(TAG, "onDataChange - ROUND SCORES");
+                ////Log.i(TAG, "onDataChange - ROUND SCORES");
                 ArrayList<String> names= new ArrayList<>();
                 valuesRoundLeadersScores.clear();
                 stRoundLeadersScores = "";
@@ -1076,15 +1076,15 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     Double score = ds.child("fb_RND").getValue(Double.class);
 //                    names.add(String.format("%s.  %s", name, String.format(Locale.US, "%.1f %% MAX", score)));
                     names.add(String.format("%s.  %s", String.format(Locale.US, "%.1f %% MAX", score), name));
-//                    Log.i("FB", name);
-//                    Log.i("FB", String.valueOf(speed));
+//                    //Log.i("FB", name);
+//                    //Log.i("FB", String.valueOf(speed));
                     stLeaderNameScore = name;
                     //valuesRoundLeaders.add(String.format("%s.  %s", name, String.format(Locale.US, "%.2f MPH", speed)));
-                    //Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.1f PERCENT MAX", score)));
+                    ////Log.i(TAG, String.format("%s.  %s", name, String.format(Locale.US, "%.1f PERCENT MAX", score)));
                 }  //COMPLETED - READING EACH SNAP
 //                valuesRoundLeaders.add("Round Leaders (Speeds)");
                 for(String name : names) {  //NOW READING EACH IN ARRAYLIST
-                    //Log.i(TAG, "onDataChange: (name) " + name);
+                    ////Log.i(TAG, "onDataChange: (name) " + name);
                     valuesRoundLeadersScores.add(name);
                     stRoundLeadersScores = name + "\n" + stRoundLeadersScores;
                 }
@@ -1092,12 +1092,12 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 Collections.reverse(valuesRoundLeadersScores);
                 stRoundLeadersScores = "Round Leaders (Scores)" + "\n" + stRoundLeadersScores;
                 createTimeline(stRoundLeadersScores, "");
-                Log.i(TAG, "stRoundLeaderScores:  " + stRoundLeadersScores);
+                //Log.i(TAG, "stRoundLeaderScores:  " + stRoundLeadersScores);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.i(TAG, "Failed to read value - rounds/scores.", databaseError.toException());
+                //Log.i(TAG, "Failed to read value - rounds/scores.", databaseError.toException());
             }
         });
         //END READ ROUNDS
@@ -1147,7 +1147,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //        runOnUiThread(new Runnable() {
 //            @Override
 //            public void run() {
-//                Log.i(TAG, "run: UPDATE DASHBOARD VIEW");
+//                //Log.i(TAG, "run: UPDATE DASHBOARD VIEW");
 //                TextView fHeader1 = findViewById(R.id.rtText1a);
 //                TextView fHeader2 = findViewById(R.id.rtText8a);
 //                TextView tHeader1 = findViewById(R.id.tvHeader1);
@@ -1179,7 +1179,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private void veloTester1() {
         //TEST FOR 0, SPD/CAD
         //SET TEXTVIEW TO "0", VELO
-        //Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
+        ////Log.i("TIMER", "TEST FOR 0 VAL SPD/CAD");
 
         runOnUiThread(new Runnable() {
             @Override
@@ -1206,7 +1206,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private void veloTester2() {
         //TEST FOR 0, HR
         //SET TEXTVIEW TO "0", VELO
-        //Log.i("TIMER", "TEST FOR 0 VAL HR");
+        ////Log.i("TIMER", "TEST FOR 0 VAL HR");
 
         runOnUiThread(new Runnable() {
             @Override
@@ -1226,7 +1226,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.i("SPD", "RESET SPD");
+                ////Log.i("SPD", "RESET SPD");
                 TextView t1 = findViewById(R.id.textView2);
                 String s1x = "0.0 MPH";
                 t1.setText(s1x);
@@ -1237,7 +1237,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.i("HR", "RESET HR");
+                ////Log.i("HR", "RESET HR");
                 TextView t1 = findViewById(R.id.textView1);
                 String s1x = "0 HR";
                 t1.setText(s1x);
@@ -1248,7 +1248,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Log.i("CAD", "RESET CAD");
+                ////Log.i("CAD", "RESET CAD");
                 TextView t1 = findViewById(R.id.textView3);
                 String s1x = "0 RPM";
                 t1.setText(s1x);
@@ -1274,11 +1274,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //        for (String deviceAddress : devicesConnectedAddresses) {
 //            final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
 //            if (device == null) {
-//                Log.i(TAG, "Device not found.  Unable to connect.");
+//                //Log.i(TAG, "Device not found.  Unable to connect.");
 //                return;
 //            }
 //            connectToDevice(device);
-//            Log.i(TAG, "Trying to create a new connection.");
+//            //Log.i(TAG, "Trying to create a new connection.");
 //        }
 //    }
 
@@ -1300,27 +1300,27 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //
 //            switch (status) {
 //                case BluetoothGatt.GATT_SUCCESS: {
-//                    Log.i(TAG, "onConnectionStateChange: GATT_SUCCESS");
+//                    //Log.i(TAG, "onConnectionStateChange: GATT_SUCCESS");
 //                    break;
 //                }
 //                case BluetoothGatt.GATT_FAILURE: {
-//                    Log.i(TAG, "onConnectionStateChange: GATT_FAILURE");
+//                    //Log.i(TAG, "onConnectionStateChange: GATT_FAILURE");
 //                    break;
 //                }
 //                default:
-//                    Log.i(TAG, "onConnectionStateChange: NOT SUCCESS OR FAILURE");
+//                    //Log.i(TAG, "onConnectionStateChange: NOT SUCCESS OR FAILURE");
 //
 //            }
 //
 //            switch (state) {
 //                case BluetoothProfile.STATE_CONNECTED: {
-//                    Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
+//                    //Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
 //                    //setConnectedGatt(gatt);
 //                    gatt.discoverServices();
 //                    break;
 //                }
 //                case BluetoothProfile.STATE_DISCONNECTED: {
-//                    Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
+//                    //Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
 //                    //setConnectedGatt(null);
 //
 ////                    runOnUiThread(new Runnable() {
@@ -1328,7 +1328,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 ////                        public void run() {
 ////                            TextView tr = findViewById(R.id.rtStatus);
 ////                            tr.setText(String.format("BT DISCONNECT:  %s", gatt.getDevice().getName()));
-////                            Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
+////                            //Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
 ////                        }
 ////                    });
 //
@@ -1338,15 +1338,15 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    break;
 //                }
 //                case BluetoothProfile.STATE_CONNECTING: {
-//                    Log.i(TAG, "onConnectionStateChange: STATE_CONNECTING");
+//                    //Log.i(TAG, "onConnectionStateChange: STATE_CONNECTING");
 //                    break;
 //                }
 //                case BluetoothProfile.STATE_DISCONNECTING: {
-//                    Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTING");
+//                    //Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTING");
 //                    break;
 //                }
 //                default:
-//                    Log.i("gattCallback", "STATE_OTHER");
+//                    //Log.i("gattCallback", "STATE_OTHER");
 //
 //            }
 //        }  //END CONNECTION STATE CHANGE
@@ -1354,7 +1354,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 ////        @Override
 ////        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
 ////            super.onReadRemoteRssi(gatt, rssi, status);
-////            Log.i(TAG, "onReadRemoteRssi: " + rssi);
+////            //Log.i(TAG, "onReadRemoteRssi: " + rssi);
 ////        }
 //
 //        private Boolean tryVelo = false;
@@ -1367,7 +1367,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //            Boolean hasCSC = false;
 //
 //            List<BluetoothGattService> services = gatt.getServices();
-//            Log.i("TEST", "DETERMINE IF BOTH SERVICES EXIST");
+//            //Log.i("TEST", "DETERMINE IF BOTH SERVICES EXIST");
 //            for (BluetoothGattService service : services) {
 //
 //
@@ -1375,17 +1375,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    hasHR = true;
 //                    BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
 //                    boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
-//                    Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+//                    //Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
 //                    BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
 //                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 //                    boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
-//                    Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+//                    //Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
 //                }
 //                if (service.getUuid().equals(CSC_SERVICE_UUID)) {
 //                    hasCSC = true;
 //                    if (hasHR) {
 //                        //need to wait and then try to notify
-//                        Log.i(TAG, "onServicesDiscovered: IS A VELO");
+//                        //Log.i(TAG, "onServicesDiscovered: IS A VELO");
 //                        gatt0 = gatt;
 //                        if (!tryVelo) {
 //                            tryVelo = true;
@@ -1395,11 +1395,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //
 //                    BluetoothGattCharacteristic valueCharacteristic = gatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_CHARACTERISTIC_UUID);
 //                    boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
-//                    Log.i(TAG, "registered for CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+//                    //Log.i(TAG, "registered for CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
 //                    BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
 //                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 //                    boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
-//                    Log.i(TAG, "wrote Descriptor for CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+//                    //Log.i(TAG, "wrote Descriptor for CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
 //                }
 //
 //            }
@@ -1415,7 +1415,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //
 //
 //            if (HR_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
-//                Log.i(TAG, "onCharacteristicChanged: HR, START");
+//                //Log.i(TAG, "onCharacteristicChanged: HR, START");
 //                gatt1 = gatt;
 //                //int flag = characteristic.getProperties();
 //                final int flag = characteristic.getValue()[0]; // 1 byte
@@ -1430,7 +1430,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 ////                runOnUiThread(new Runnable() {
 ////                    @Override
 ////                    public void run() {
-////                        Log.i(TAG, "run: UPDATE HR DATA");
+////                        //Log.i(TAG, "run: UPDATE HR DATA");
 ////                        TextView t1 = findViewById(R.id.textView1);
 ////                        TextView tTop1 = findViewById(R.id.tvTop);
 ////                        t1.setText(String.format("%d BPM", hrValue));
@@ -1452,7 +1452,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //
 //                if (tryVelo) {
 //                    tryVelo = false;
-//                    //Log.i(TAG, "onCharacteristicChanged: TRYING VELO...SET NOTIFY");
+//                    ////Log.i(TAG, "onCharacteristicChanged: TRYING VELO...SET NOTIFY");
 //                    BluetoothGattCharacteristic valueCharacteristic = gatt0.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_CHARACTERISTIC_UUID);
 //                    boolean notificationSet = gatt0.setCharacteristicNotification(valueCharacteristic, true);
 //                    //Log.d(TAG, "registered for VELO CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
@@ -1461,7 +1461,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    boolean writeDescriptorSuccess = gatt0.writeDescriptor(descriptor);
 //                    //Log.d(TAG, "wrote Descriptor for VELO CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
 //                }
-//                Log.i(TAG, "onCharacteristicChanged: HR, END");
+//                //Log.i(TAG, "onCharacteristicChanged: HR, END");
 //                return;
 //            }  //END HR
 //
@@ -1470,7 +1470,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //            final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 //
 //            if (CSC_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
-//                Log.i(TAG, "onCharacteristicChanged: CSC");
+//                //Log.i(TAG, "onCharacteristicChanged: CSC");
 //
 //                final int flags = characteristic.getValue()[0]; // 1 byte
 //                final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
@@ -1482,7 +1482,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
 //
 //
-//                    //Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ", " + lastWheelEventReadValue);
+//                    ////Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ", " + lastWheelEventReadValue);
 ////                    runOnUiThread(new Runnable() {
 ////                        @SuppressLint("DefaultLocale")
 ////                        public void run() {
@@ -1492,9 +1492,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 ////                    });
 //
 //
-//                    Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
+//                    //Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
 //
-//                    Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
+//                    //Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
 //                    onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
 ////
 ////                    Message msg = Message.obtain();
@@ -1508,7 +1508,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                        gatt3 = gatt;
 //                        final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
 //                        final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
-//                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+//                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
 //                        onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
 ////                        Message msg2 = Message.obtain();
 ////                        msg2.obj = cumulativeCrankRevolutions + " C";
@@ -1522,7 +1522,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                        gatt3 = gatt;
 //                        final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
 //                        final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
-//                        Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+//                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
 //                        onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
 //                    }
 //                }
@@ -1551,35 +1551,35 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
             switch (status) {
                 case BluetoothGatt.GATT_SUCCESS: {
-                    Log.i(TAG, "onConnectionStateChange: GATT_SUCCESS");
+                    //Log.i(TAG, "onConnectionStateChange: GATT_SUCCESS");
                     break;
                 }
                 case BluetoothGatt.GATT_FAILURE: {
-                    Log.i(TAG, "onConnectionStateChange: GATT_FAILURE");
+                    //Log.i(TAG, "onConnectionStateChange: GATT_FAILURE");
                     break;
                 }
                 default:
-                    Log.i(TAG, "onConnectionStateChange: NOT SUCCESS OR FAILURE");
+                    //Log.i(TAG, "onConnectionStateChange: NOT SUCCESS OR FAILURE");
 
             }
 
             switch (state) {
                 case BluetoothProfile.STATE_CONNECTED: {
-                    Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
+                    //Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
                     //setConnectedGatt(gatt);
                     gatt.discoverServices();
                     break;
                 }
                 case BluetoothProfile.STATE_DISCONNECTED: {
-                    Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
-                    Log.i(TAG, "Waiting 30 sec, then attempt reconnect");
+                    //Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED");
+                    //Log.i(TAG, "Waiting 30 sec, then attempt reconnect");
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             TextView tr = findViewById(R.id.rtStatus);
                             tr.setText(String.format("BT DISCONNECT:  %s", gatt.getDevice().getName()));
-                            Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
+                            //Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
                         }
                     });
 
@@ -1588,15 +1588,15 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     break;
                 }
                 case BluetoothProfile.STATE_CONNECTING: {
-                    Log.i(TAG, "onConnectionStateChange: STATE_CONNECTING");
+                    //Log.i(TAG, "onConnectionStateChange: STATE_CONNECTING");
                     break;
                 }
                 case BluetoothProfile.STATE_DISCONNECTING: {
-                    Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTING");
+                    //Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTING");
                     break;
                 }
                 default:
-                    Log.i("gattCallback", "STATE_OTHER");
+                    //Log.i("gattCallback", "STATE_OTHER");
 
             }
         }  //END CONNECTION STATE CHANGE
@@ -1604,7 +1604,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //        @Override
 //        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
 //            super.onReadRemoteRssi(gatt, rssi, status);
-//            Log.i(TAG, "onReadRemoteRssi: " + rssi);
+//            //Log.i(TAG, "onReadRemoteRssi: " + rssi);
 //        }
 
         private Boolean tryVelo = false;
@@ -1617,7 +1617,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             Boolean hasCSC = false;
 
             List<BluetoothGattService> services = gatt.getServices();
-            Log.i("TEST", "DETERMINE IF BOTH SERVICES EXIST");
+            //Log.i("TEST", "DETERMINE IF BOTH SERVICES EXIST");
             for (BluetoothGattService service : services) {
 
 
@@ -1625,17 +1625,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     hasHR = true;
                     BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
                     boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
-                    Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+                    //Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
                     BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
                     descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                     boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
-                    Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+                    //Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
                 }
                 if (service.getUuid().equals(CSC_SERVICE_UUID)) {
                     hasCSC = true;
                     if (hasHR) {
                         //need to wait and then try to notify
-                        Log.i(TAG, "onServicesDiscovered: IS A VELO");
+                        //Log.i(TAG, "onServicesDiscovered: IS A VELO");
                         gatt0 = gatt;
                         if (!tryVelo) {
                             tryVelo = true;
@@ -1645,11 +1645,11 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                     BluetoothGattCharacteristic valueCharacteristic = gatt.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_CHARACTERISTIC_UUID);
                     boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
-                    Log.i(TAG, "registered for CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+                    //Log.i(TAG, "registered for CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
                     BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
                     descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                     boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
-                    Log.i(TAG, "wrote Descriptor for CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+                    //Log.i(TAG, "wrote Descriptor for CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
                 }
 
             }
@@ -1665,7 +1665,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
             if (HR_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
-                //Log.i(TAG, "onCharacteristicChanged: HR, START");
+                ////Log.i(TAG, "onCharacteristicChanged: HR, START");
                 gatt1 = gatt;
                 //int flag = characteristic.getProperties();
                 final int flag = characteristic.getValue()[0]; // 1 byte
@@ -1687,7 +1687,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        Log.i(TAG, "run: UPDATE HR DATA");
+//                        //Log.i(TAG, "run: UPDATE HR DATA");
 //                        TextView t1 = findViewById(R.id.textView1);
 //                        TextView tTop1 = findViewById(R.id.tvTop);
 //                        t1.setText(String.format("%d BPM", hrValue));
@@ -1709,7 +1709,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 if (tryVelo) {
                     tryVelo = false;
-                    //Log.i(TAG, "onCharacteristicChanged: TRYING VELO...SET NOTIFY");
+                    ////Log.i(TAG, "onCharacteristicChanged: TRYING VELO...SET NOTIFY");
                     BluetoothGattCharacteristic valueCharacteristic = gatt0.getService(CSC_SERVICE_UUID).getCharacteristic(CSC_CHARACTERISTIC_UUID);
                     boolean notificationSet = gatt0.setCharacteristicNotification(valueCharacteristic, true);
                     //Log.d(TAG, "registered for VELO CSC updates " + (notificationSet ? "successfully" : "unsuccessfully"));
@@ -1718,7 +1718,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     boolean writeDescriptorSuccess = gatt0.writeDescriptor(descriptor);
                     //Log.d(TAG, "wrote Descriptor for VELO CSC updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
                 }
-                //Log.i(TAG, "onCharacteristicChanged: HR, END");
+                ////Log.i(TAG, "onCharacteristicChanged: HR, END");
                 return;
             }  //END HR
 
@@ -1727,7 +1727,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
             final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 
             if (CSC_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
-                //Log.i(TAG, "onCharacteristicChanged: CSC");
+                ////Log.i(TAG, "onCharacteristicChanged: CSC");
 
                 final int flags = characteristic.getValue()[0]; // 1 byte
                 final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
@@ -1739,7 +1739,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
 
 
-                    //Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ", " + lastWheelEventReadValue);
+                    ////Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ", " + lastWheelEventReadValue);
 //                    runOnUiThread(new Runnable() {
 //                        @SuppressLint("DefaultLocale")
 //                        public void run() {
@@ -1749,8 +1749,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 //                    });
 
 
-                    //Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
-                    //Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
+                    ////Log.i("WHEEL_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeWheelRevolutions + ",  " + lastWheelEventReadValue);
+                    ////Log.i(TAG, "onCharacteristicChanged: CALLING onWheelMeasurementReceived");
                     onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
 
 //                    Message msg = Message.obtain();
@@ -1764,7 +1764,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
-                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+                        ////Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
                         onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
 //                        Message msg2 = Message.obtain();
 //                        msg2.obj = cumulativeCrankRevolutions + " C";
@@ -1778,7 +1778,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                         gatt3 = gatt;
                         final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
                         final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
-                        //Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
+                        ////Log.i("CRANK_EVENT", "onCharacteristicChanged, revs, time:  " + cumulativeCrankRevolutions + ", " + lastCrankEventReadValue);
                         onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
                     }
                 }
@@ -1798,7 +1798,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     private double totalAverageScore = 0;
     private ArrayList<Double> arrHeartrates = new ArrayList<>();
     private void computeRoundHR() {
-        //Log.i(TAG, "roundHR: compute roundHR");
+        ////Log.i(TAG, "roundHR: compute roundHR");
         if (reconnectFlag == 0) {
             reconnectFlag = 1;
             return;
@@ -1829,7 +1829,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     //CSC ADVANCED CALC
     private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
-        //Log.i(TAG, "onWheelMeasurementReceived:  START");
+        ////Log.i(TAG, "onWheelMeasurementReceived:  START");
 
         usingBT = true;
         final int localTimerSecCounter = timerSecondsCounter;
@@ -1878,8 +1878,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         mLastWheelEventTime = wheelRevolutionTimeValue;
 
         //final double localTotalTimeInSeconds = totalTimeInSeconds;
-//        Log.i(TAG, "onWheelMeasurementReceived: totalTimeInSeconds: " + totalTimeInSeconds);
-//        Log.i(TAG, "onWheelMeasurementReceived: totalWheelRevolutions: " + totalWheelRevolutions);
+//        //Log.i(TAG, "onWheelMeasurementReceived: totalTimeInSeconds: " + totalTimeInSeconds);
+//        //Log.i(TAG, "onWheelMeasurementReceived: totalWheelRevolutions: " + totalWheelRevolutions);
 
         final double wheelTimeInSeconds = timeDiff / 1024.0;
         final double wheelCircumference = wheelSizeMM;
@@ -1890,9 +1890,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         final double speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;  //MPH CURRENT
         final double totalDistance = totalWheelRevolutions * wheelCircumferenceCM * cmPerMi;
 
-//        Log.i(TAG, "onWheelMeasurementReceived: speed: " + speed);
-//        Log.i(TAG, "onWheelMeasurementReceived: totalDistance: " + totalDistance);
-//        Log.i(TAG, "onWheelMeasurementReceived: calc totaltimeBT and avgSpeedBT");
+//        //Log.i(TAG, "onWheelMeasurementReceived: speed: " + speed);
+//        //Log.i(TAG, "onWheelMeasurementReceived: totalDistance: " + totalDistance);
+//        //Log.i(TAG, "onWheelMeasurementReceived: calc totaltimeBT and avgSpeedBT");
 
 
         final long millis = (long) totalTimeInSeconds * 1000;
@@ -1900,8 +1900,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
         tim.setBtAvgSpeed(btAvgSpeed);
-//        Log.i(TAG, "onWheelMeasurementReceived: btAvgSpeed:  " + btAvgSpeed);
-//        Log.i(TAG, "onWheelMeasurementReceived: btElapsedTime: " + hms);
+//        //Log.i(TAG, "onWheelMeasurementReceived: btAvgSpeed:  " + btAvgSpeed);
+//        //Log.i(TAG, "onWheelMeasurementReceived: btElapsedTime: " + hms);
 
 //        tim.btTotalDistance = totalDistance;
 //        tim.btMovingTime = (long) wheelTimeInSeconds;
@@ -1929,9 +1929,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
         //END OF MILE CALC
         if (localTimerSecCounter - secondsAtEndOfMileBT > 10) {
-            //Log.i(TAG, "onWheelMeasurementReceived: end of mile calc");
+            ////Log.i(TAG, "onWheelMeasurementReceived: end of mile calc");
             if (totalDistance > currentMileBT) {
-                Log.i(TAG, "onWheelMeasurementReceived: END OF MILE BT");
+                //Log.i(TAG, "onWheelMeasurementReceived: END OF MILE BT");
                   endMileSpeedBT = 1 / (((double) localTimerSecCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
                   valuesMiles.add(String.format("%d.  %s", currentMileBT, String.format(Locale.US, "%.2f MPH (BT)", endMileSpeedBT)));
                   currentMileBT += 1;
@@ -1947,7 +1947,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         double curMileResult = 0.0;
 
           if (localTimerSecCounter - secondsAtEndOfMileBT > 10) {
-              //Log.i(TAG, "onWheelMeasurementReceived: current mile calc");
+              ////Log.i(TAG, "onWheelMeasurementReceived: current mile calc");
               if (curMile == 1 && totalDistance > (curMile - 1)) {
                   curMileResult = totalDistance / (((double) localTimerSecCounter - secAtEndOfMile) / 60.0 / 60.0);
               }
@@ -1969,13 +1969,13 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         double elapsedSecondsInCurrentRound = (double) localTimerSecCounter - secondsAtStartOfPreviousRound;
         double currentRoundSpeedMPH = 0;
         if (elapsedSecondsInCurrentRound > 5) {
-            //Log.i(TAG, "onWheelMeasurementReceived: calc roundspeedBT");
+            ////Log.i(TAG, "onWheelMeasurementReceived: calc roundspeedBT");
             currentRoundSpeedMPH = distanceDuringCurrentRound / (elapsedSecondsInCurrentRound / 60.0 / 60.0);
         }
         currentRoundSpeedBT = currentRoundSpeedMPH;
 
         if (newRoundFlagBT && totalDistance > distanceAtStartOfPreviousRound) {
-            //Log.i(TAG, "BT NEW ROUND");
+            ////Log.i(TAG, "BT NEW ROUND");
             distanceAtStartOfPreviousRound = totalDistance;
             secondsAtStartOfPreviousRound = localTimerSecCounter;
             newRoundFlagBT = false;
@@ -1986,7 +1986,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
 
-        //Log.i(TAG, "onWheelMeasurementReceived:  END");
+        ////Log.i(TAG, "onWheelMeasurementReceived:  END");
 
     }
 
@@ -2058,7 +2058,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         }
 
 
-        //Log.i("CAD", "onWheelMeasurementReceived: crankDiff, timeDiff: " + crankDiff + ", " + timeDiff);
+        ////Log.i("CAD", "onWheelMeasurementReceived: crankDiff, timeDiff: " + crankDiff + ", " + timeDiff);
         final double cadence = (double) crankDiff / ((((double) timeDiff) / 1024.0) / 60);
         if (cadence == 0) {
             return;
@@ -2066,7 +2066,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         if (cadence > 150) {
             return;
         }
-        //Log.i("CAD", "CADENCE: " + cadence);
+        ////Log.i("CAD", "CADENCE: " + cadence);
 
         Message msg = Message.obtain();
         msg.obj = String.format(Locale.US,"%.0f RPM", cadence);
@@ -2109,13 +2109,13 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     //DISCONNECT ALL
     public void onClick_4(View view) {
-        Log.i(TAG, "onClick_4: clicked, disconnect all");
+        //Log.i(TAG, "onClick_4: clicked, disconnect all");
 
 
         //TODO, CYCLE THROUGH gattsConnected arrList, disconnect all nonNull
         for (BluetoothGatt btGatt : bluetoothGatts) {
             if (btGatt != null) {
-                Log.i(TAG, "bluetoothGatts to disconnect, Name: " + btGatt.getDevice().getName());
+                //Log.i(TAG, "bluetoothGatts to disconnect, Name: " + btGatt.getDevice().getName());
                 btGatt.disconnect();
                 btGatt.close();
             }
@@ -2124,7 +2124,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
 
         if (connectedGatt != null) {
-            Log.i(TAG, "onClick_4: connectedGatt name:  " + connectedGatt.getDevice().getName());
+            //Log.i(TAG, "onClick_4: connectedGatt name:  " + connectedGatt.getDevice().getName());
             connectedGatt.disconnect();
             connectedGatt.close();
         }
@@ -2133,7 +2133,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         int locCycle = cycle;
         if (locCycle == 1) {
             if (gatt1 != null) {
-                Log.i(TAG, "onClick_4: disconnect gatt1,  name:  " + gatt1.getDevice().getName());
+                //Log.i(TAG, "onClick_4: disconnect gatt1,  name:  " + gatt1.getDevice().getName());
                 gatt1.disconnect();
                 gatt1.close();
                 gatt1 = null;
@@ -2142,7 +2142,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         }
         if (locCycle == 2) {
             if (gatt2 != null) {
-                Log.i(TAG, "onClick_4: disconnect gatt2 name:  " + gatt2.getDevice().getName());
+                //Log.i(TAG, "onClick_4: disconnect gatt2 name:  " + gatt2.getDevice().getName());
                 gatt2.disconnect();
                 gatt2.close();
                 gatt2 = null;
@@ -2151,7 +2151,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         }
         if (locCycle == 3) {
             if (gatt3 != null) {
-                Log.i(TAG, "onClick_4: disconnect gatt3 name:  " + gatt3.getDevice().getName());
+                //Log.i(TAG, "onClick_4: disconnect gatt3 name:  " + gatt3.getDevice().getName());
                 gatt3.disconnect();
                 gatt3.close();
                 gatt3 = null;
@@ -2234,7 +2234,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                 //END OF MILE CALC
                 if (timerSecondsCounter - secondsAtEndOfMileGeo > 10) {
                     if (geoDistance > currentMileGEO) {
-                        Log.i(TAG, "onLocationReceived: END OF CURRENT MILE GEO");
+                        //Log.i(TAG, "onLocationReceived: END OF CURRENT MILE GEO");
                         endMileSpeedGEO = 1 / (((double) timerSecondsCounter - (double) secondsAtEndOfMileGeo) / 60.0 / 60.0);
                         valuesMilesGeo.add(String.format("%d.  %s", currentMileGEO, String.format(Locale.US, "%.2f MPH (GEO)", endMileSpeedGEO)));
                         currentMileGEO += 1;
@@ -2257,14 +2257,14 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     //CALC BASED ON ELAPSED DISTANCE WITHIN CURRENT MILE
                     if (curMile == 1 && curDist > (curMile - 1)) {
 //                  double currentMileSpeedBT = ( totalDistance - ((double) currentMileBT - 1.0) ) / (((double) timerSecondsCounter - (double) secondsAtEndOfMileBT) / 60.0 / 60.0);
-//                  Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
+//                  //Log.i(TAG, "currentMileSpeedBT: " + currentMileSpeedBT);
                         curMileResult = curDist / ((timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
-                        //Log.i(TAG, "curMileResult: " + curMileResult);
+                        ////Log.i(TAG, "curMileResult: " + curMileResult);
                     }
 
                     if (curMile > 1 && curDist > (curMile - 1)) {
                         curMileResult = ( curDist - ((double) curMile - 1.0) ) / (( timerSecCtr - secAtEndOfMile) / 60.0 / 60.0);
-                        //Log.i(TAG, "curMileResult2: " + curMileResult);
+                        ////Log.i(TAG, "curMileResult2: " + curMileResult);
                     }
                     //}
                 }
@@ -2300,9 +2300,9 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     currentRoundSpeedMPHGeo = distanceDuringCurrentRoundGeo / (elapsedSecondsInCurrentRoundGeo / 60.0 / 60.0);
                 }
                 currentRoundSpeedGEO = currentRoundSpeedMPHGeo;
-                //Log.i(TAG, "CURRENT ROUND SPEED GEO: " + currentRoundSpeedMPHGeo);
+                ////Log.i(TAG, "CURRENT ROUND SPEED GEO: " + currentRoundSpeedMPHGeo);
                 if (newRoundFlagGEO && geoDistance > distanceAtStartOfPreviousRoundGeo) {
-                    Log.i(TAG, "GEO NEW ROUND");
+                    //Log.i(TAG, "GEO NEW ROUND");
 
                     distanceAtStartOfPreviousRoundGeo = geoDistance;
                     secondsAtStartOfPreviousRoundGeo = timerSecondsCounter;
@@ -2373,7 +2373,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     }
 
     private void mPrinter(String s) {
-        Log.i(TAG, ":" + s);
+        //Log.i(TAG, ":" + s);
     }
 
     //end on location
@@ -2412,7 +2412,7 @@ private String calcPace(double mph) {
     //GPS BUTTON...
     private Boolean isGpsActive = false;
     public void onClick_2(View view) {
-        Log.i(TAG, "onClick_2: clicked");
+        //Log.i(TAG, "onClick_2: clicked");
         Button b2 = findViewById(R.id.button2);
 
         if (isGpsActive) {
@@ -2420,7 +2420,7 @@ private String calcPace(double mph) {
             try {
                 mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             } catch (Exception e){
-                Log.i(TAG, "onClick_2 Error,  DIDN'T STOP LOCATION");
+                //Log.i(TAG, "onClick_2 Error,  DIDN'T STOP LOCATION");
             }
         }
 
@@ -2445,7 +2445,7 @@ private String calcPace(double mph) {
             }
 
             private void onNewLocation(Location lastLocation) {
-                //Log.i(TAG, "onNewLocation: " + lastLocation.getSpeed());
+                ////Log.i(TAG, "onNewLocation: " + lastLocation.getSpeed());
                 onLocationReceived(lastLocation);
             }
         };
@@ -2472,13 +2472,13 @@ private String calcPace(double mph) {
 
     //START SCAN BUTTON
     public void onClick_1(View view) {
-        Log.i("CLICK", "onClick_1: clicked");
+        //Log.i("CLICK", "onClick_1: clicked");
         final Button b1 = findViewById(R.id.button1);
         b1.setText("...");
         Toast.makeText(this,"SCANNING...", Toast.LENGTH_LONG).show();
         //scanLeDevice(true);
 
-            Log.i("SCANLEDEVICE", "START SCANNING");
+            //Log.i("SCANLEDEVICE", "START SCANNING");
         mLEScanner.startScan(filters, settings, mScanCallback);
         isScanning = true;
         Handler mHandler = new Handler();
@@ -2486,7 +2486,7 @@ private String calcPace(double mph) {
             @Override
             public void run() {
                 mLEScanner.stopScan(mScanCallback);
-                Log.i("SCANLEDEVICE", "STOP SCANNING");
+                //Log.i("SCANLEDEVICE", "STOP SCANNING");
 //                    sendToaster("SCAN COMPLETE");
                 isScanning = false;
                 sendToaster("SCAN COMPLETE");
@@ -2512,7 +2512,7 @@ private String calcPace(double mph) {
 
             mLEScanner.startScan(filters, settings, mScanCallback);
             isScanning = true;
-            Log.i("SCAN", "isScanning: ");
+            //Log.i("SCAN", "isScanning: ");
         }
 
 
@@ -2542,7 +2542,7 @@ private String calcPace(double mph) {
 //                            }
 //                        });
 //                        updateRssiDisplay(rssi);
-//                        Log.i(TAG, "onLeScan: UPDATE RSSI: " + rssi);
+//                        //Log.i(TAG, "onLeScan: UPDATE RSSI: " + rssi);
 //
 //                        mBluetoothAdapter.stopLeScan(this);
 //                    }
@@ -2566,7 +2566,7 @@ private String calcPace(double mph) {
             public void onScanResult(int callbackType, ScanResult result) {
 
                 if (result.getDevice().getName() != null) {
-//                    Log.i("SCAN_CB", "onScanResult: " + result.getDevice().getName());
+//                    //Log.i("SCAN_CB", "onScanResult: " + result.getDevice().getName());
                     BluetoothDevice deviceDiscovered = result.getDevice();
                     String deviceName = result.getDevice().getName();
                     String deviceAddress = result.getDevice().getAddress();
@@ -2575,9 +2575,9 @@ private String calcPace(double mph) {
                         devicesDiscovered.add(deviceDiscovered);
 
                         sendToaster("FOUND:  " + deviceName);
-                        Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
-                        Log.i("result", "NAME  " + result.getDevice().getName());
-                        Log.i("result", "ADDRESS  " + result.getDevice().getAddress());
+                        //Log.i("deviceIndexVal", "deviceIndexVal  " + deviceIndexVal);
+                        //Log.i("result", "NAME  " + result.getDevice().getName());
+                        //Log.i("result", "ADDRESS  " + result.getDevice().getAddress());
 
                         Button btn100 = findViewById(R.id.button100);
                         Button btn101 = findViewById(R.id.button101);
@@ -2588,27 +2588,27 @@ private String calcPace(double mph) {
                         if (deviceIndexVal == 0) {
                             btn100.setVisibility(View.VISIBLE);
                             btn100.setText(deviceName);
-                            Log.i("btn100", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
+                            //Log.i("btn100", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 1) {
                             btn101.setVisibility(View.VISIBLE);
                             btn101.setText(deviceName);
-                            Log.i("btn101", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
+                            //Log.i("btn101", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 2) {
                             btn102.setVisibility(View.VISIBLE);
                             btn102.setText(deviceName);
-                            Log.i("btn102", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
+                            //Log.i("btn102", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 3) {
                             btn103.setVisibility(View.VISIBLE);
                             btn103.setText(deviceName);
-                            Log.i("btn103", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
+                            //Log.i("btn103", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         if (deviceIndexVal == 4) {
                             btn104.setVisibility(View.VISIBLE);
                             btn104.setText(deviceName);
-                            Log.i("btn104", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
+                            //Log.i("btn104", "deviceIndexVal:  " + deviceIndexVal + " - " + deviceName);
                         }
                         deviceIndexVal = deviceIndexVal + 1;
                     }  //DUPLICATE, DON'T ADD
@@ -2621,13 +2621,13 @@ private String calcPace(double mph) {
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
                 for (ScanResult sr : results) {
-                    Log.i("ScanResult - Results", sr.toString());
+                    //Log.i("ScanResult - Results", sr.toString());
                 }
             }
 
             @Override
             public void onScanFailed(int errorCode) {
-                Log.i("Scan Failed", "Error Code: " + errorCode);
+                //Log.i("Scan Failed", "Error Code: " + errorCode);
             }
         };
     }
@@ -2635,8 +2635,8 @@ private String calcPace(double mph) {
 
 
     public void reconnectToDevice(BluetoothDevice mDevice) {
-    Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
-    Log.i("ReconnectToDevice", "Address: " + mDevice.getAddress());
+    //Log.i("ReconnectToDevice", "Device: " + mDevice.getName());
+    //Log.i("ReconnectToDevice", "Address: " + mDevice.getAddress());
 
 //disconnect/close old gatts first?
     connectedGatt = mDevice.connectGatt(this, true, bluetoothGattCallback);
@@ -2646,8 +2646,8 @@ private String calcPace(double mph) {
 
 
     public void connectToDevice(BluetoothDevice mDevice) {
-        Log.i("connectToDevice", "Device: " + mDevice.getName());
-        Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
+        //Log.i("connectToDevice", "Device: " + mDevice.getName());
+        //Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
 
 
         connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback);
@@ -2658,8 +2658,8 @@ private String calcPace(double mph) {
     }
 
 //    public void connectToDeviceII (BluetoothDevice mDevice) {
-//        Log.i("connectToDevice", "Device: " + mDevice.getName());
-//        Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
+//        //Log.i("connectToDevice", "Device: " + mDevice.getName());
+//        //Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
 //
 //        //TODO:  TEST WITH AUTOCONNECT
 //        //AUTOCONNECT CHANGED FROM FALSE TO TRUE
@@ -2679,7 +2679,7 @@ private String calcPace(double mph) {
     private Boolean isScanning = false;
 
 //    private void scanLeDevice(final boolean enable) {
-//        Log.i(TAG, "scanLeDevice: CALLED SCANLEDEVICE");
+//        //Log.i(TAG, "scanLeDevice: CALLED SCANLEDEVICE");
 //        if (enable) {
 //        isScanning = true;
 //        Handler mHandler = new Handler();
@@ -2687,7 +2687,7 @@ private String calcPace(double mph) {
 //            @Override
 //            public void run() {
 //                mLEScanner.stopScan(mScanCallback);
-//                Log.i("SCANLEDEVICE", "run: STOP SCANNING");
+//                //Log.i("SCANLEDEVICE", "run: STOP SCANNING");
 ////                    sendToaster("SCAN COMPLETE");
 //                isScanning = false;
 //                sendToaster("SCAN COMPLETE");
@@ -2712,7 +2712,7 @@ private String calcPace(double mph) {
 //
 //            mLEScanner.startScan(filters, settings, mScanCallback);
 //            isScanning = true;
-//            Log.i("SCAN", "scanLeDevice: ");
+//            //Log.i("SCAN", "scanLeDevice: ");
 //        }
 //    } else {
 //        isScanning = false;
@@ -2726,16 +2726,16 @@ private String calcPace(double mph) {
 //    public void setConnectedGatt(final BluetoothGatt connectedGatt) {
 //        this.connectedGatt = connectedGatt;
 //
-//        Log.i(TAG, "setConnectedGatt, is null... " + (connectedGatt == null));
-//        Log.i(TAG, "setConnectedGatt: NOT GETTING CONNECTED STATE CHANGE AFTER FIRST DISCONNECT, BECAUSE OF CLOSE()");
+//        //Log.i(TAG, "setConnectedGatt, is null... " + (connectedGatt == null));
+//        //Log.i(TAG, "setConnectedGatt: NOT GETTING CONNECTED STATE CHANGE AFTER FIRST DISCONNECT, BECAUSE OF CLOSE()");
 //        //NO CONNECTED STATE CHANGE?
 //        runOnUiThread(new Runnable() {
 //            @Override
 //            public void run() {
 //
 //                if (connectedGatt != null) {
-//                    Log.i(TAG, "run: :CONNECTED GATT DEVICE NAME " + connectedGatt.getDevice().getName());
-//                    Log.i(TAG, "run: CONNECTED GATT DEVICE: " + connectedGatt.toString());
+//                    //Log.i(TAG, "run: :CONNECTED GATT DEVICE NAME " + connectedGatt.getDevice().getName());
+//                    //Log.i(TAG, "run: CONNECTED GATT DEVICE: " + connectedGatt.toString());
 //                    Button b2 = findViewById(R.id.button2);
 //                    b2.setEnabled(true);
 //                } //else {
@@ -2762,7 +2762,7 @@ private String calcPace(double mph) {
 //        @SuppressLint("DefaultLocale") final String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
 //                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
 //                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
-//        Log.i(TAG, "updateActualTime: " + hms_act + " >> " + timerSecondsCounter);
+//        //Log.i(TAG, "updateActualTime: " + hms_act + " >> " + timerSecondsCounter);
 //        runOnUiThread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -2782,7 +2782,7 @@ private String calcPace(double mph) {
                 .setCancelable(false)
                 .setPositiveButton("CONNECT", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.i("BTN","CONNECT");
+                        //Log.i("BTN","CONNECT");
 
                         connectToDevice(mDevice);
 
@@ -2833,7 +2833,7 @@ private String calcPace(double mph) {
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.i("BTN","CANCEL");
+                        //Log.i("BTN","CANCEL");
                     }
                 });
         AlertDialog alert = builder.create();
@@ -2899,7 +2899,7 @@ private String calcPace(double mph) {
 
 //            mLEScanner.startScan(filters, settings, mScanCallback);
 //            isScanning = true;
-//            Log.i("SCAN", "isScanning: ");
+//            //Log.i("SCAN", "isScanning: ");
 
     }
 
@@ -2920,7 +2920,7 @@ private String calcPace(double mph) {
                 secondsPerRound = 60;
                 b.setText("1 Minute");
         }
-        Log.i(TAG, "onClick_setSecondsPerRound: " + secondsPerRound);
+        //Log.i(TAG, "onClick_setSecondsPerRound: " + secondsPerRound);
     }
 
     public Boolean audioValue = true;
@@ -2996,7 +2996,7 @@ private String calcPace(double mph) {
         Button b = findViewById(R.id.button50b);
         b.setText(userName);
         tim.setName(userName);
-        Log.i(TAG, "setRandomUsernameOnStart: " + userName);
+        //Log.i(TAG, "setRandomUsernameOnStart: " + userName);
         try {
             getSupportActionBar().setTitle("VIRTUAL CRIT (" + userName + ")");
         } catch (Exception e) {
@@ -3120,14 +3120,14 @@ private String calcPace(double mph) {
         listView = findViewById(R.id.lv1);
 
         if (tlButton2_toggle == 0) {
-            Log.i(TAG, "tlButton2_Click: " + tlButton2_toggle);
+            //Log.i(TAG, "tlButton2_Click: " + tlButton2_toggle);
             tlButton2_toggle = 1;
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, valuesMiles);
 
             listView.setAdapter(adapter);
         } else {
-            Log.i(TAG, "tlButton2_Click: " + tlButton2_toggle);
+            //Log.i(TAG, "tlButton2_Click: " + tlButton2_toggle);
             tlButton2_toggle = 0;
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, valuesMilesGeo);
@@ -3148,7 +3148,7 @@ private String calcPace(double mph) {
         listView = findViewById(R.id.lv1);
 
         if (tlButton3_toggle == 0) {
-            Log.i(TAG, "tlButton3_Click: " + tlButton3_toggle);
+            //Log.i(TAG, "tlButton3_Click: " + tlButton3_toggle);
             ArrayList<String> temp = valuesTotalsLeaders;
             if (temp.size() < 1) {return;}
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -3158,7 +3158,7 @@ private String calcPace(double mph) {
             tlButton3_toggle = 1;
         } else {
 
-            Log.i(TAG, "tlButton3_Click: " + tlButton3_toggle);
+            //Log.i(TAG, "tlButton3_Click: " + tlButton3_toggle);
             ArrayList<String> temp = valuesTotalsLeadersScores;
             if (temp.size() < 1) {return;}
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -3234,7 +3234,7 @@ private String calcPace(double mph) {
     private int maxHR = 185;
     private double maxHRdouble = 185.0;
     public void onClick_setMaxHR(View view) {
-        Log.i(TAG, "onClick_setMaxHR: " + maxHR);
+        //Log.i(TAG, "onClick_setMaxHR: " + maxHR);
         Button b = findViewById(R.id.button153b);
         switch (maxHR) {
             case 185: {
@@ -3271,7 +3271,7 @@ private String calcPace(double mph) {
             }
         }
 
-        Log.i(TAG, "onClick_setMaxHR: " + maxHR);
+        //Log.i(TAG, "onClick_setMaxHR: " + maxHR);
     }
 
 
