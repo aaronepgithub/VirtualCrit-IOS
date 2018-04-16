@@ -174,8 +174,11 @@ class TLViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //print("TL will Appear")
+        print("TL will Appear")
 //        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
+        
+
+
     }
     
     override func viewDidLoad() {
@@ -209,6 +212,15 @@ class TLViewController: UIViewController {
         
         timeline.contentInset = UIEdgeInsetsMake(20.0, 20.0, 20.0, 20.0)
         timeline.points = myPoints
+        
+        if firstTimer == true {
+            
+            let when = DispatchTime.now() + 10
+            DispatchQueue.main.asyncAfter(deadline: when){
+                self.tabBarController?.selectedIndex = 0
+                firstTimer = false
+            }
+        }
         
     }
 

@@ -681,17 +681,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 IN MILE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSq-6h-0d9" userLabel="TIME IN CURRENT MILE">
-                                                    <rect key="frame" x="12" y="13.5" width="343" height="24"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 IN MILE 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSq-6h-0d9" userLabel="TIME IN CURRENT MILE">
+                                                    <rect key="frame" x="38" y="15" width="329" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="centerY" secondItem="YUc-78-kf7" secondAttribute="centerY" id="Bfg-8Q-caZ"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="CSq-6h-0d9" secondAttribute="trailing" constant="12" id="VSU-aR-uLU"/>
-                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="leading" secondItem="YUc-78-kf7" secondAttribute="leadingMargin" constant="4" id="Why-1F-REF"/>
+                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YUc-78-kf7" secondAttribute="trailingMargin" id="Acm-5H-jil"/>
+                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="centerY" secondItem="YUc-78-kf7" secondAttribute="centerY" id="Lkd-bZ-vTe"/>
+                                                <constraint firstItem="CSq-6h-0d9" firstAttribute="leading" secondItem="YUc-78-kf7" secondAttribute="leadingMargin" constant="30" id="xcr-HY-oJ5"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -702,17 +702,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 MPH (BT) / ROUND" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFw-Zw-d72" userLabel="ROUND SPEED (BT)">
-                                                    <rect key="frame" x="12" y="13.5" width="343" height="24"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 MPH (BT) / ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFw-Zw-d72" userLabel="ROUND SPEED (BT)">
+                                                    <rect key="frame" x="38" y="14.5" width="329" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="AFw-Zw-d72" secondAttribute="trailing" constant="12" id="Zrw-BW-bhg"/>
+                                                <constraint firstItem="AFw-Zw-d72" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1po-H8-nan" secondAttribute="trailingMargin" id="jo2-C9-Lo8"/>
                                                 <constraint firstItem="AFw-Zw-d72" firstAttribute="centerY" secondItem="1po-H8-nan" secondAttribute="centerY" id="kB3-XT-e4W"/>
-                                                <constraint firstItem="AFw-Zw-d72" firstAttribute="leading" secondItem="1po-H8-nan" secondAttribute="leadingMargin" constant="4" id="nIt-pc-exi"/>
+                                                <constraint firstItem="AFw-Zw-d72" firstAttribute="leading" secondItem="1po-H8-nan" secondAttribute="leadingMargin" constant="30" id="nIt-pc-exi"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -723,17 +723,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 MPH (G) / ROUND" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7kC-Mj-Jyu" userLabel="ROUND SPEED (G)">
-                                                    <rect key="frame" x="12" y="13.5" width="343" height="24"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00 MPH (G) / ROUND" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7kC-Mj-Jyu" userLabel="ROUND SPEED (G)">
+                                                    <rect key="frame" x="38" y="14.5" width="329" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="7kC-Mj-Jyu" secondAttribute="trailing" constant="12" id="CdE-Nd-A3G"/>
+                                                <constraint firstItem="7kC-Mj-Jyu" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GY6-16-iCT" secondAttribute="trailingMargin" id="XWW-v0-OkN"/>
                                                 <constraint firstItem="7kC-Mj-Jyu" firstAttribute="centerY" secondItem="GY6-16-iCT" secondAttribute="centerY" id="kIN-NG-mTF"/>
-                                                <constraint firstItem="7kC-Mj-Jyu" firstAttribute="leading" secondItem="GY6-16-iCT" secondAttribute="leadingMargin" constant="4" id="vud-bS-mCq"/>
+                                                <constraint firstItem="7kC-Mj-Jyu" firstAttribute="leading" secondItem="GY6-16-iCT" secondAttribute="leadingMargin" constant="30" id="vud-bS-mCq"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -745,15 +745,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="END" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1z9-pF-E8Z" userLabel="END">
-                                                    <rect key="frame" x="12" y="17.5" width="343" height="14.5"/>
+                                                    <rect key="frame" x="12" y="17.5" width="355" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                     <color key="textColor" red="1" green="0.1761009989" blue="0.097475948579999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="1z9-pF-E8Z" secondAttribute="trailing" id="DDg-wR-r73"/>
                                                 <constraint firstItem="1z9-pF-E8Z" firstAttribute="leading" secondItem="Vem-cC-62p" secondAttribute="leadingMargin" constant="4" id="EO8-J2-Cu6"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="1z9-pF-E8Z" secondAttribute="trailing" constant="12" id="WP4-F8-LI6"/>
                                                 <constraint firstItem="1z9-pF-E8Z" firstAttribute="centerY" secondItem="Vem-cC-62p" secondAttribute="centerY" id="pcd-va-zGY"/>
                                             </constraints>
                                         </tableViewCellContentView>

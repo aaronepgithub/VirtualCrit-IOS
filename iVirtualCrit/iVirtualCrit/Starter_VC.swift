@@ -23,6 +23,8 @@ var secondsInCurrentRound: Int = 0
 var distanceAtStartOfRoundBT = Double(0)
 var crankRotationsDuringRound: Double = 0
 
+var firstTimer: Bool = true
+
 //USED FOR VIEWER_VC
 var arr = [String]()
 var arrSend = [String]()
@@ -160,6 +162,12 @@ class Starter_VC: UITableViewController {
         
 //        print("secondsInCurrentRound:  \(secondsInCurrentRound)")
 //        print("secondsSinceStart:  \(secondsSinceStart)")
+        
+        if secondsSinceStart == 295 {
+            if firstTimer == true {
+                self.tabBarController?.selectedIndex = 3
+            }
+        }
         
         //NEW ROUND IDENTIFIER
         //TODO:  TURN THIS OFF TO TEST WITHOUT ANY NEW ROUNDS...
@@ -567,8 +575,19 @@ class Starter_VC: UITableViewController {
         print("Started")
         print(getFormattedTime(d: system.startTime!))
         print(getFormattedTimeAndDate(d: system.startTime!));print("\n");
+        
+
+
     }
     
+    func startAtLaunch() {
+        print("startAtLaunch")
+        system.status = "STARTED";statusValue.text = "STARTED";
+        system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
+        
+        startTimer()
+        startLocationUpdates()
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath)
@@ -584,30 +603,41 @@ class Starter_VC: UITableViewController {
                 print("disConnected")
             }
             
-            if system.status == "STOPPED" {
-                system.status = "STARTED";statusValue.text = "STARTED";
-                system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
-                
-                if geo.status == "ON" {
-                    startLocationUpdates()
-                }
-                
-                startTimer()
-                self.tabBarController?.selectedIndex = 3
-            } else {
-                system.status = "STOPPED";statusValue.text = "STOPPED";
-                system.stopTime = Date()
-                print("Stopped")
-                print(getFormattedTime(d: system.stopTime!))
-                print(getFormattedTimeAndDate(d: system.stopTime!));print("\n");
-                print(getTimeIntervalSince(d1: system.startTime!, d2: system.stopTime!));print("\n");
-                timer.invalidate()
-                stopLocationUpdates()
-                stopAndSave()
-            }
+            system.status = "STOPPED";statusValue.text = "COMPLETE";
+            system.stopTime = Date()
+            print("Stopped")
+            print(getFormattedTime(d: system.stopTime!))
+            print(getFormattedTimeAndDate(d: system.stopTime!));print("\n");
+            print(getTimeIntervalSince(d1: system.startTime!, d2: system.stopTime!));print("\n");
+            timer.invalidate()
+            stopLocationUpdates()
+            stopAndSave()
+            
+            
+            
+//            if system.status == "STOPPED" {
+//                system.status = "STARTED";statusValue.text = "STARTED";
+//                system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
+//
+//                if geo.status == "ON" {
+//                    startLocationUpdates()
+//                }
+//
+//                startTimer()
+//                self.tabBarController?.selectedIndex = 3
+//            } else {
+//                system.status = "STOPPED";statusValue.text = "STOPPED";
+//                system.stopTime = Date()
+//                print("Stopped")
+//                print(getFormattedTime(d: system.stopTime!))
+//                print(getFormattedTimeAndDate(d: system.stopTime!));print("\n");
+//                print(getTimeIntervalSince(d1: system.startTime!, d2: system.stopTime!));print("\n");
+//                timer.invalidate()
+//                stopLocationUpdates()
+//                stopAndSave()
+//            }
         case 2:
             let gst = geo.status
-            //if gst == "ON" {geo.status = "ON/USE";gpsStatus.text = "ON/USE";}
             if gst == "ON" {geo.status = "OFF";gpsStatus.text = "OFF";stopLocationUpdates();}
             if gst == "OFF" {geo.status = "ON";gpsStatus.text = "ON";startLocationUpdates();}
         case 3:
@@ -617,14 +647,12 @@ class Starter_VC: UITableViewController {
             showInputDialog()
         case 6:
             let at = activityType
-            if secondsSinceStart < 45 {
+            if secondsSinceStart < 245 {
                 if at == "BIKE" {activityType = "RUN";lblActivityType.text = "RUN";secondsPerRound = 300;lblSecPerRound.text = "300";}
                 if at == "RUN" {activityType = "ROW";lblActivityType.text = "ROW";secondsPerRound = 300;lblSecPerRound.text = "300";}
                 if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
             }
 
-//            if at == "RUN" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
-//            if at == "ROW" {activityType = "BIKE";lblActivityType.text = "BIKE";secondsPerRound = 1800;lblSecPerRound.text = "1800";}
         case 7:
             if lblAudioStatus.text == "OFF" {audioStatus = "ON";lblAudioStatus.text = "ON";print("audioStatus is ON");} else {audioStatus = "OFF";lblAudioStatus.text = "OFF"}
         case 8:
@@ -648,10 +676,9 @@ class Starter_VC: UITableViewController {
             print("SHOW RESULTS PAGE")
         case 12:
             let spr = secondsPerRound
-            if system.status == "STOPPED" || secondsSinceStart < 45 {
-                if spr == 60 {secondsPerRound = 300;lblSecPerRound.text = "300"}
+            if system.status == "STOPPED" || secondsSinceStart < 245 {
                 if spr == 300 {secondsPerRound = 1800;lblSecPerRound.text = "1800"}
-                if spr == 1800 {secondsPerRound = 60;lblSecPerRound.text = "60"}
+                if spr == 1800 {secondsPerRound = 300;lblSecPerRound.text = "300"}
             } else {
                 //print("already started")
             }
@@ -681,14 +708,19 @@ class Starter_VC: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print("viewDidLoad")
+        print("viewDidLoad")
         
         system.startTime = Date()
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         
+        print("system.startTime:  \(String(describing: system.startTime))")
+        
         let rn = Int(arc4random_uniform(1000))
         riderName = "TIM" + String(rn)
         lblRiderName.text = riderName
+        
+        startAtLaunch()
+
         
 //        let defaults = UserDefaults.standard
 //        udArray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
