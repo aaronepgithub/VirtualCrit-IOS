@@ -2516,42 +2516,6 @@ private String calcPace(double mph) {
         }
 
 
-
-
-
-        //final BluetoothAdapter adapter = bluetooth.getAdapter();
-//        UUID[] serviceUUIDs = new UUID[]{HR_SERVICE_UUID};
-//
-//        mBluetoothAdapter.startLeScan(serviceUUIDs, new BluetoothAdapter.LeScanCallback() {
-//
-//            @Override
-//            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-//                Log.d(TAG, "found device " + device.getAddress());
-//                synchronized (connectingToGattMonitor){
-//                    if (!connectingToGatt) {
-//                        connectingToGatt = true;
-//                        Log.d(TAG, "connecting to " + device.getAddress());
-////                        device.connectGatt(MainActivity.this, false, bluetoothGattCallback);
-//                        device.connectGatt(MainActivity.this, false, bluetoothGattCallback);
-//
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                        Button b1 = findViewById(R.id.button1);
-//                        b1.setEnabled(false);
-//                            }
-//                        });
-//                        updateRssiDisplay(rssi);
-//                        //Log.i(TAG, "onLeScan: UPDATE RSSI: " + rssi);
-//
-//                        mBluetoothAdapter.stopLeScan(this);
-//                    }
-//                }
-//            }
-//        });//onLEScan CB Finished
-//        Button b1 = findViewById(R.id.button1);
-//        b1.setEnabled(false);
-
     } //END BTN1 CLICK
 
     private void sendToaster(String toasterText) {
@@ -2905,10 +2869,10 @@ private String calcPace(double mph) {
 
 
     public void onClick_setSecondsPerRound(View view) {
-        if (timerSecondsCounter > 45) {return;}
+        if (timerSecondsCounter > 245) {return;}
         Button b = findViewById(R.id.button54b);
         switch (secondsPerRound) {
-            case 60:
+            case 1800:
                 secondsPerRound = 300;
                 b.setText("300 Seconds");
                 break;
@@ -2916,9 +2880,6 @@ private String calcPace(double mph) {
                 secondsPerRound = 1800;
                 b.setText("30 Minutes");
                 break;
-            case 1800:
-                secondsPerRound = 60;
-                b.setText("1 Minute");
         }
         //Log.i(TAG, "onClick_setSecondsPerRound: " + secondsPerRound);
     }
@@ -2961,7 +2922,7 @@ private String calcPace(double mph) {
 
     public String activityValue = "BIKE";
     public void onClick_setActivity(View view) {
-        if (timerSecondsCounter > 45) {return;}
+        if (timerSecondsCounter > 245) {return;}
         Button b = findViewById(R.id.button51b);
         Button b2 = findViewById(R.id.button54b);
         switch (activityValue) {
