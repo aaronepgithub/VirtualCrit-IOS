@@ -208,20 +208,21 @@ public class BluetoothLeService extends Service {
         private void closeSpecificGatt(BluetoothDevice bluetoothDevice) {
             Log.i(TAG, "close gatt after disconnection & try to reconnect");
             if (mGatt0 == null) {
-                Log.i(TAG, "closeSpecificGatt & try to reconnect: no gatt0");
+                Log.i(TAG, "closeSpecificGatt no mGatt0");
             } else {
                 if (mGatt0.getDevice() != null && bluetoothDevice == mGatt0.getDevice()) {
                     Log.i(TAG, "close: mGatt0");
                     devicesConnected.remove(mGatt0.getDevice());
                     devicesDiscovered.remove(mGatt0.getDevice());
                     broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
-                    bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
+    //TEST AUTOCONNECT FOR RECONNECT ONLY...
+                    bluetoothDevice.connectGatt(BluetoothLeService.this, true, mBluetoothGattCallback0);
                     mGatt0.close();
                 }
             }
 
             if (mGatt1 == null) {
-                Log.i(TAG, "closeSpecificGatt: no gatt1");
+                Log.i(TAG, "closeSpecificGatt: no mGatt1");
             } else {
                 if (mGatt1.getDevice() != null && bluetoothDevice == mGatt1.getDevice()) {
                     Log.i(TAG, "close: mGatt1");
@@ -235,7 +236,7 @@ public class BluetoothLeService extends Service {
             }
 
             if (mGatt2 == null) {
-                Log.i(TAG, "closeSpecificGatt: no gatt2");
+                Log.i(TAG, "closeSpecificGatt: no mGatt2");
             } else {
                 if (mGatt2.getDevice() != null && bluetoothDevice == mGatt2.getDevice()) {
                     Log.i(TAG, "close: mGatt2");

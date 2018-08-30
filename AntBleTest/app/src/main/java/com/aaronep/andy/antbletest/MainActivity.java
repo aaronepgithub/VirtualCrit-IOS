@@ -303,24 +303,10 @@ public class MainActivity extends AppCompatActivity {
 
             BluetoothDevice deviceDiscovered = result.getDevice();
             if (deviceDiscovered.getName() != null) {
-//                if (!devicesDiscovered.contains(deviceDiscovered)) {
-//                    devicesDiscovered.add(deviceDiscovered);
-//                    Log.i(TAG, "onScanResult: " + deviceDiscovered.getName());
-//                    mBluetoothLeService.updateDiscoveredDevices(deviceDiscovered);
-//
-//                    storage.setDevice(deviceDiscovered);
-//                    storage.setDeviceAddress(deviceDiscovered.getAddress());
-//                    storage.setStorageCounter();
-//                    localCounter += 1;
-//                    Log.i(TAG, "onScanResult: localCounter:  " + localCounter);
-//
-//                }
 
                 if (!mBluetoothLeService.getDevicesDiscovered().contains(deviceDiscovered)) {
-                    //THIS MAY NOT WORK, MAY NEED TO DO THE SEARCH IN THE SERVICE...
                     mBluetoothLeService.addDeviceDiscovered(deviceDiscovered);
                     Log.i(TAG, "onScanResult: " + deviceDiscovered.getName());
-                    //mBluetoothLeService.updateDiscoveredDevices(deviceDiscovered);
                     localCounter += 1;
                     Log.i(TAG, "onScanResult: localCounter:  " + localCounter);
 
