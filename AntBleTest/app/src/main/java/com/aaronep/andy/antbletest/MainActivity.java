@@ -831,6 +831,11 @@ public class MainActivity extends AppCompatActivity {
                     .build();
             filters.add(scanFilter2);
 
+            // Show Alert
+            Toast.makeText(getApplicationContext(),
+                    "SCANNING" , Toast.LENGTH_SHORT)
+                    .show();
+
             //START SCAN
             Log.i(TAG, "START SCANNING");
             mLEScanner.startScan(filters, settings, mScanCallback);
