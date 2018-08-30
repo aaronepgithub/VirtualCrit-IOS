@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int REQUEST_ENABLE_BT = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    private static final long SCAN_PERIOD = 5000;
+    private static final long SCAN_PERIOD = 2000;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mLEScanner;
     private ScanSettings settings;
@@ -108,13 +108,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "onReceive: ACTION_GATT_CONNECTED");
                 displayData("ACTION_GATT_CONNECTED");
                 mConnected = true;
+                refreshDevicesList();
                 //updateConnectionState(R.string.connected);
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_DISCONNECTED");
                 displayData("ACTION_GATT_DISCONNECTED");
+                displayDataDISCONNECTED(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 Log.i(TAG, "onReceive: DISCONNECTED: " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
 //                GO THROUGH DISCOVERED DEVICES AND REMOVE THE ONE WITH THE MATCHING NAME AND REFRESH
+                refreshDevicesList();
                 mConnected = false;
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_SERVICES_DISCOVERED");
@@ -199,6 +202,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void displayDataDISCONNECTED(final String nameOfDisconnectedDevice) {
+        if (nameOfDisconnectedDevice != null) {
+            Log.i(TAG, "displayDataDISCONNECTED: name:  " + nameOfDisconnectedDevice);
+        }
+    }
+
     //END SERVICE MANAGEMENT
 
 
@@ -256,9 +265,7 @@ public class MainActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-        Log.i(TAG, "onScanResult: getFromStorage Size: " + storage.getDeviceAddresses().size());
-        Log.i(TAG, "onScanResult: getStorageCounter:  " + storage.getStorageCounter());
-
+        //Log.i(TAG, "onCreate: getSizeOfDevicesDiscovered: " + mBluetoothLeService.getSizeOfDevicesDiscovered());
     }
 
 
@@ -301,8 +308,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     //SCAN CALLBACK mScanCallback
-    private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
-    private ArrayList<BluetoothDevice> devicesConnected = new ArrayList<>();
+    private ArrayList<BluetoothDevice> devicesDiscoveredX = new ArrayList<>();
+    private ArrayList<BluetoothDevice> devicesConnectedX = new ArrayList<>();
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -310,23 +317,30 @@ public class MainActivity extends AppCompatActivity {
 
             BluetoothDevice deviceDiscovered = result.getDevice();
             if (deviceDiscovered.getName() != null) {
-                if (!devicesDiscovered.contains(deviceDiscovered)) {
-                    devicesDiscovered.add(deviceDiscovered);
-                    Log.i(TAG, "onScanResult: " + deviceDiscovered.getName());
-                    mBluetoothLeService.updateDiscoveredDevices(deviceDiscovered);
+//                if (!devicesDiscovered.contains(deviceDiscovered)) {
+//                    devicesDiscovered.add(deviceDiscovered);
+//                    Log.i(TAG, "onScanResult: " + deviceDiscovered.getName());
+//                    mBluetoothLeService.updateDiscoveredDevices(deviceDiscovered);
+//
+//                    storage.setDevice(deviceDiscovered);
+//                    storage.setDeviceAddress(deviceDiscovered.getAddress());
+//                    storage.setStorageCounter();
+//                    localCounter += 1;
+//                    Log.i(TAG, "onScanResult: localCounter:  " + localCounter);
+//
+//                }
 
-                    storage.setDevice(deviceDiscovered);
-                    storage.setDeviceAddress(deviceDiscovered.getAddress());
-                    storage.setStorageCounter();
+                if (!mBluetoothLeService.getDevicesDiscovered().contains(deviceDiscovered)) {
+                    //THIS MAY NOT WORK, MAY NEED TO DO THE SEARCH IN THE SERVICE...
+                    mBluetoothLeService.addDeviceDiscovered(deviceDiscovered);
+                    Log.i(TAG, "onScanResult: " + deviceDiscovered.getName());
+                    //mBluetoothLeService.updateDiscoveredDevices(deviceDiscovered);
                     localCounter += 1;
                     Log.i(TAG, "onScanResult: localCounter:  " + localCounter);
 
                 }
             }
-            Log.i(TAG, "onScanResult: getFromStorage: " + storage.getDeviceAddresses().get(0));
-            Log.i(TAG, "onScanResult: getFromStorage Size: " + storage.getDeviceAddresses().size());
-            Log.i(TAG, "onScanResult: getStorageCounter:  " + storage.getStorageCounter());
-
+            Log.i(TAG, "onScanResult: getSizeOfDevicesDiscovered:  " + mBluetoothLeService.getSizeOfDevicesDiscovered());
         }
 
         @Override
@@ -697,7 +711,8 @@ public class MainActivity extends AppCompatActivity {
 //            mGatt5 = indexDevice.connectGatt(this, false, mBluetoothGattCallback0);
 //        }
 
-        devicesConnected.add(indexDevice);
+        //devicesConnected.add(indexDevice);
+//        mBluetoothLeService.addDeviceConnected(indexDevice);
         mBluetoothLeService.connectToBtDevice(indexValue, indexDeviceAddress);
         //btn0.setText(".....");
 
@@ -767,8 +782,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_0(View view) {
         Log.i(TAG, "onClick_0:  SCANNING");
         //btn0.setText("....");
-        Log.i(TAG, "onClick_0: counter value:  " + counter);
-        Log.i(TAG, "onClick_0: deviceDiscovered size:  " + devicesDiscovered.size());
+//        Log.i(TAG, "onClick_0: counter value:  " + counter);
+//        Log.i(TAG, "onClick_0: deviceDiscovered size:  " + devicesDiscovered.size());
 //        if (counter > 0 && counter < devicesDiscovered.size()) {
 //            connectToBtDevices();
 //            Log.i(TAG, "counter > 0 && counter < devicesDiscovered, so tconnectToBtDevices() and return");
@@ -825,8 +840,8 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     mLEScanner.stopScan(mScanCallback);
                     Log.i(TAG, "run: STOP SCANNING");
-                    if (devicesDiscovered.size() > 0) {
-                        Log.i(TAG, "devicesDiscovered.size = " + devicesDiscovered.size());
+                    if (mBluetoothLeService.getSizeOfDevicesDiscovered() > 0) {
+                        Log.i(TAG, "devicesDiscovered.size = " + mBluetoothLeService.getSizeOfDevicesDiscovered());
                         //NOW...PROCESS THE LIST, START WITH THE FIRST
                         //btn0.setText("CONNECT");
                         //connectToBtDevices();
@@ -906,14 +921,28 @@ public class MainActivity extends AppCompatActivity {
 
         String y;
         Integer arrCounter = 0;
-        for (BluetoothDevice i : devicesDiscovered) {
+//        for (BluetoothDevice i : devicesDiscovered) {
+//            y = (i.getName() + " : " +i.getAddress());
+//            Log.i(TAG, "refreshDevicesList: y:  " + y);
+//            devicesDiscoveredFromMainActivityNames.add(y);
+//            arrCounter += 1;
+//        }
+
+//        if (mBluetoothLeService.getSizeOfDevicesDiscovered() == 0) {
+//            Log.i(TAG, "refreshDevicesList: no devicesDiscovered, return");
+//            return;
+//        }
+
+
+
+        for (BluetoothDevice i : mBluetoothLeService.getDevicesDiscovered()) {
             y = (i.getName() + " : " +i.getAddress());
             Log.i(TAG, "refreshDevicesList: y:  " + y);
             devicesDiscoveredFromMainActivityNames.add(y);
             arrCounter += 1;
         }
 
-        Log.i(TAG, "refreshDevicesList: size of names:  " + devicesDiscoveredFromMainActivityNames.size());
+        Log.i(TAG, "refreshDevicesList: devicesDiscoveredFromMainActivityNames  " + devicesDiscoveredFromMainActivityNames.size());
         
         listView = findViewById(R.id.list0);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, devicesDiscoveredFromMainActivityNames);
@@ -933,7 +962,15 @@ public class MainActivity extends AppCompatActivity {
                 String  itemValue = (String) listView.getItemAtPosition(position);
 
                 //THIS IS WHAT IS CONTROLLING THINGS
-                if (devicesConnected.contains(devicesDiscovered.get(itemPosition))) {
+//                if (devicesConnected.contains(devicesDiscovered.get(itemPosition))) {
+//                    Log.i(TAG, "connectToBtDevices: Already connected, so do nothing");
+//                    return;
+//                }
+
+
+
+                if (mBluetoothLeService.getDevicesConnected().contains(mBluetoothLeService.getDevicesDiscovered().get(itemPosition))) {
+                    Log.i(TAG, "onItemClick: mBluetoothLeService.getSizeOfDevicesConnected():  " + mBluetoothLeService.getSizeOfDevicesConnected());
                     Log.i(TAG, "connectToBtDevices: Already connected, so do nothing");
                     return;
                 }
@@ -943,7 +980,8 @@ public class MainActivity extends AppCompatActivity {
                         "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
                         .show();
 
-                connectToBtDevice(itemPosition, devicesDiscovered.get(itemPosition), devicesDiscovered.get(itemPosition).getAddress());
+//                connectToBtDevice(itemPosition, devicesDiscovered.get(itemPosition), devicesDiscovered.get(itemPosition).getAddress());
+                connectToBtDevice(itemPosition, mBluetoothLeService.getDevicesDiscovered().get(itemPosition), mBluetoothLeService.getDevicesDiscovered().get(itemPosition).getAddress());
             }
         });
     }
