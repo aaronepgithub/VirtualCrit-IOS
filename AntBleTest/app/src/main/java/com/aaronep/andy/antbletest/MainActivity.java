@@ -100,14 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                Log.i(TAG, "onReceive: ACTION_GATT_CONNECTED");
-                displayData("ACTION_GATT_CONNECTED");
+                Log.i(TAG, "onReceive: ACTION_GATT_CONNECTED  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                displayData("ACTION_GATT_CONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 refreshDevicesList();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                Log.i(TAG, "onReceive: ACTION_GATT_DISCONNECTED");
-                displayData("ACTION_GATT_DISCONNECTED");
+                Log.i(TAG, "onReceive: ACTION_GATT_DISCONNECTED  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                displayData("ACTION_GATT_DISCONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 displayDataDISCONNECTED(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                Log.i(TAG, "onReceive: DISCONNECTED: " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 refreshDevicesList();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_SERVICES_DISCOVERED");
@@ -134,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
     private void displayData(String data) {
         if (data != null) {
             Log.i(TAG, "displayData: " + data);
+        }
+    }
+
+    private void displayData(String data1, String data2) {
+        if (data1 != null) {
+            Log.i(TAG, "displayData1: " + data1);
+        }
+        if (data2 != null) {
+            Log.i(TAG, "displayData2: " + data2);
         }
     }
 

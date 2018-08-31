@@ -43,6 +43,7 @@ public class BluetoothLeService extends Service {
 
     private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
     private ArrayList<BluetoothDevice> devicesConnected = new ArrayList<>();
+    private ArrayList<BluetoothDevice> devicesReconnected = new ArrayList<>();
 
 
     private int mConnectionState = STATE_DISCONNECTED;
@@ -168,6 +169,14 @@ public class BluetoothLeService extends Service {
 
             switch (newState) {
                 case BluetoothAdapter.STATE_CONNECTED: {
+                    Log.i(TAG, "onConnectionStateChange: STATE CONNECTED");
+
+//                    Log.i(TAG, "onConnectionStateChange: CHECK FOR RECONNECTION");
+//                    if (devicesReconnected.contains(gatt.getDevice())) {
+//                        Log.i(TAG, "onConnectionStateChange: THIS IS FOR A RECONNECT, DO NOT DISCOVER SERVICES...");
+//                        return;
+//                    }
+
                     Log.i(TAG, "onConnectionStateChange: STATE CONNECTED, DISCOVER SERVICES: " + gatt.getDevice().getName());
 
                     if (!devicesDiscovered.contains(gatt.getDevice())) {
@@ -178,7 +187,7 @@ public class BluetoothLeService extends Service {
                         devicesConnected.add(gatt.getDevice());
                     }
 
-                    broadcastUpdate(ACTION_GATT_CONNECTED);
+                    broadcastUpdate(ACTION_GATT_CONNECTED, gatt.getDevice().getName());
                     gatt.discoverServices();
                     break;
                 }
@@ -206,7 +215,7 @@ public class BluetoothLeService extends Service {
         }
 
         private void closeSpecificGatt(BluetoothDevice bluetoothDevice) {
-            Log.i(TAG, "close gatt after disconnection & try to reconnect");
+            Log.i(TAG, "closeSpecificGatt after disconnection & try to reconnect");
             if (mGatt0 == null) {
                 Log.i(TAG, "closeSpecificGatt no mGatt0");
             } else {
@@ -214,9 +223,10 @@ public class BluetoothLeService extends Service {
                     Log.i(TAG, "close: mGatt0");
                     devicesConnected.remove(mGatt0.getDevice());
                     devicesDiscovered.remove(mGatt0.getDevice());
-                    broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
-    //TEST AUTOCONNECT FOR RECONNECT ONLY...
-                    bluetoothDevice.connectGatt(BluetoothLeService.this, true, mBluetoothGattCallback0);
+                    devicesReconnected.add(mGatt0.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt0.getDevice().getName());
+    //TEST AUTOCONNECT FOR RECONNECT ONLY...SET TO TRUE, NOT NECCESSARY
+                    bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
                     mGatt0.close();
                 }
             }
@@ -228,7 +238,8 @@ public class BluetoothLeService extends Service {
                     Log.i(TAG, "close: mGatt1");
                     devicesConnected.remove(mGatt1.getDevice());
                     devicesDiscovered.remove(mGatt1.getDevice());
-                    broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
+                    devicesReconnected.add(mGatt1.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt1.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
                     mGatt1.close();
                     //mGatt1 = null;
@@ -242,7 +253,8 @@ public class BluetoothLeService extends Service {
                     Log.i(TAG, "close: mGatt2");
                     devicesConnected.remove(mGatt2.getDevice());
                     devicesDiscovered.remove(mGatt2.getDevice());
-                    broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
+                    devicesReconnected.add(mGatt2.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt2.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
                     mGatt2.close();
                     //mGatt2 = null;
@@ -256,7 +268,8 @@ public class BluetoothLeService extends Service {
                     Log.i(TAG, "close: mGatt3");
                     devicesConnected.remove(mGatt3.getDevice());
                     devicesDiscovered.remove(mGatt3.getDevice());
-                    broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
+                    devicesReconnected.add(mGatt3.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt3.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
                     mGatt3.close();
                 }
@@ -269,7 +282,8 @@ public class BluetoothLeService extends Service {
                     Log.i(TAG, "close: mGatt4");
                     devicesConnected.remove(mGatt4.getDevice());
                     devicesDiscovered.remove(mGatt4.getDevice());
-                    broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
+                    devicesReconnected.add(mGatt4.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt4.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
                     mGatt4.close();
                 }
@@ -282,7 +296,8 @@ public class BluetoothLeService extends Service {
                     Log.i(TAG, "close: mGatt5");
                     devicesConnected.remove(mGatt5.getDevice());
                     devicesDiscovered.remove(mGatt5.getDevice());
-                    broadcastUpdate(ACTION_GATT_DISCONNECTED, bluetoothDevice.getName());
+                    devicesReconnected.add(mGatt5.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt5.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
                     mGatt5.close();
                 }
@@ -686,6 +701,10 @@ public class BluetoothLeService extends Service {
         return devicesConnected;
     }
 
+    public ArrayList<BluetoothDevice> getDevicesReonnected() {
+        return devicesReconnected;
+    }
+
     public int getSizeOfDevicesDiscovered() {
         Log.i(TAG, "getSizeOfDevicesDiscovered: " + devicesDiscovered.size());
         return devicesDiscovered.size();
@@ -704,6 +723,11 @@ public class BluetoothLeService extends Service {
     public void addDeviceConnected(BluetoothDevice device) {
         Log.i(TAG, "addDevice: " + device.getName());
         devicesConnected.add(device);
+    }
+
+    public void addDeviceReconnected(BluetoothDevice device) {
+        Log.i(TAG, "addDevice, Reconnected: " + device.getName());
+        devicesReconnected.add(device);
     }
 
     public String getDeviceAddress(BluetoothDevice device) {
