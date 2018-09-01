@@ -101,19 +101,19 @@ public class MainActivity extends AppCompatActivity {
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_CONNECTED  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                displayData("ACTION_GATT_CONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayData("ACTION_GATT_CONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 refreshDevicesList();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_DISCONNECTED  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                displayData("ACTION_GATT_DISCONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                displayDataDISCONNECTED(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayData("ACTION_GATT_DISCONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayDataDISCONNECTED(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 refreshDevicesList();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_SERVICES_DISCOVERED");
-                displayData("ACTION_GATT_SERVICES_DISCOVERED");
+                //displayData("ACTION_GATT_SERVICES_DISCOVERED");
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION DATA AVAILABLE");
-                displayData("ACTION_DATA_AVAILABLE  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayData("ACTION_DATA_AVAILABLE  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE_HR.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION DATA AVAILABLE_HR");
                 displayDataHR(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
@@ -440,6 +440,11 @@ public class MainActivity extends AppCompatActivity {
 
         String y;
         Integer arrCounter = 0;
+        
+        if (mBluetoothLeService.getDevicesDiscovered().size() == 0) {
+            Log.i(TAG, "refreshDevicesList: NO DEVICES DISCOVERED");
+            return;
+        }
 
         for (BluetoothDevice i : mBluetoothLeService.getDevicesDiscovered()) {
             y = (i.getName() + " : " +i.getAddress());
