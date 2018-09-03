@@ -17,6 +17,7 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.TextView;
@@ -69,6 +70,8 @@ public class BluetoothLeService extends Service {
             "com.example.bluetooth.le.ACTION_DATA_AVAILABLE_DISTANCE";
     public final static String ACTION_DATA_AVAILABLE_CAD =
             "com.example.bluetooth.le.ACTION_DATA_AVAILABLE_CAD";
+    public final static String ACTION_DATA_AVAILABLE_WHEEL =
+            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE_WHEEL";
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
 
@@ -178,7 +181,7 @@ public class BluetoothLeService extends Service {
 //                    }
 
                     Log.i(TAG, "onConnectionStateChange: STATE CONNECTED, DISCOVER SERVICES: " + gatt.getDevice().getName());
-
+                    broadcastUpdate(ACTION_GATT_CONNECTED);
                     if (!devicesDiscovered.contains(gatt.getDevice())) {
                         devicesDiscovered.add(gatt.getDevice());
                     }
@@ -197,6 +200,8 @@ public class BluetoothLeService extends Service {
                 }
                 case BluetoothAdapter.STATE_DISCONNECTED: {
                     Log.i(TAG, "onConnectionStateChange: STATE DISCONNECTED:  " + gatt.getDevice().getName());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED);
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED, gatt.getDevice().getName());
 
                     if (devicesDiscovered.contains(gatt.getDevice())) {
                         devicesDiscovered.remove(gatt.getDevice());
@@ -225,8 +230,11 @@ public class BluetoothLeService extends Service {
                     devicesDiscovered.remove(mGatt0.getDevice());
                     devicesReconnected.add(mGatt0.getDevice());
 //                    broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt0.getDevice().getName());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED);
+                    Log.i(TAG, "closeSpecificGatt: attempt reconnect");
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
-                    mGatt0.close();
+                    //MAYBE SHOULDN'T CLOSE?
+                    //mGatt0.close();
                 }
             }
 
@@ -238,9 +246,12 @@ public class BluetoothLeService extends Service {
                     devicesConnected.remove(mGatt1.getDevice());
                     devicesDiscovered.remove(mGatt1.getDevice());
                     devicesReconnected.add(mGatt1.getDevice());
+                    broadcastUpdate(ACTION_GATT_DISCONNECTED);
                     //broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt1.getDevice().getName());
+                    Log.i(TAG, "closeSpecificGatt: attempt reconnect");
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
-                    mGatt1.close();
+                    //MAYBE SHOULDN'T CLOSE?
+                    //mGatt1.close();
                     //mGatt1 = null;
                 }
             }
@@ -255,7 +266,7 @@ public class BluetoothLeService extends Service {
                     devicesReconnected.add(mGatt2.getDevice());
                     //broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt2.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
-                    mGatt2.close();
+                    //mGatt2.close();
                     //mGatt2 = null;
                 }
             }
@@ -270,7 +281,7 @@ public class BluetoothLeService extends Service {
                     devicesReconnected.add(mGatt3.getDevice());
                     //broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt3.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
-                    mGatt3.close();
+                    //mGatt3.close();
                 }
             }
 
@@ -284,7 +295,7 @@ public class BluetoothLeService extends Service {
                     devicesReconnected.add(mGatt4.getDevice());
                     //broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt4.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
-                    mGatt4.close();
+                    //mGatt4.close();
                 }
             }
 
@@ -298,7 +309,7 @@ public class BluetoothLeService extends Service {
                     devicesReconnected.add(mGatt5.getDevice());
                     //broadcastUpdate(ACTION_GATT_DISCONNECTED, mGatt5.getDevice().getName());
                     bluetoothDevice.connectGatt(BluetoothLeService.this, false, mBluetoothGattCallback0);
-                    mGatt5.close();
+                    //mGatt5.close();
                 }
             }
 
@@ -313,6 +324,7 @@ public class BluetoothLeService extends Service {
             Boolean hasCSC = false;
 
             Log.i(TAG, "onServicesDiscovered");
+            broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             List<BluetoothGattService> services = gatt.getServices();
             for (BluetoothGattService service : services) {
                 if (service.getUuid().equals(HR_SERVICE_UUID)) {
@@ -421,12 +433,39 @@ public class BluetoothLeService extends Service {
     private BluetoothGatt mGatt4;
     private BluetoothGatt mGatt5;
 
-    public void connectToBtDevice(final Integer indexValue, String indexDeviceAddress) {
+    public void connectToBtDeviceAfterDelay(final Integer indexValue, String indexDeviceAddress) {
+        Log.i(TAG, "connectToBtDeviceAfterDelay");
+        final BluetoothDevice sIndexDevice = mBluetoothAdapter.getRemoteDevice(indexDeviceAddress);
+
+        if (sIndexDevice == null) {
+            Log.i(TAG, "Device not found.  Unable to connect.");
+            isBusy = false;
+        } else {
+            if (indexValue == 0) {
+                mGatt0 = sIndexDevice.connectGatt(this, false, mBluetoothGattCallback0);
+                devicesConnected.add(mGatt0.getDevice());
+            }
+            if (indexValue == 1) {
+                mGatt1 = sIndexDevice.connectGatt(this, false, mBluetoothGattCallback0);
+                devicesConnected.add(mGatt1.getDevice());
+            }
+        }
+    }
+
+    public void connectToBtDevice(final Integer indexValue, final String indexDeviceAddress) {
         Log.i(TAG, "connectToBtDevice");
 
         if (isBusy) {
             Log.i(TAG, "connectToBtDevice: IS BUSY...SHOULD RETURN AND WAIT...");
-            return;
+            //return;
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(TAG, "run: AFTER DELAY, IS BUSY");
+                    connectToBtDeviceAfterDelay(indexValue, indexDeviceAddress);
+                }
+            }, 30000);
         }
         isBusy = true;
         
@@ -538,9 +577,16 @@ public class BluetoothLeService extends Service {
         final boolean crankRevPresent = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
 
         if (wheelRevPresent) {
+
             final int cumulativeWheelRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
             final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
+
+            @SuppressLint("DefaultLocale") final String wString = String.valueOf(cumulativeWheelRevolutions);
+            Log.i(TAG, "getSpeedCadenceValue wString: " + wString);
+            broadcastUpdate(ACTION_DATA_AVAILABLE_WHEEL, wString);
+
             onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
+
 
             if (crankRevPresent) {
                 final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
