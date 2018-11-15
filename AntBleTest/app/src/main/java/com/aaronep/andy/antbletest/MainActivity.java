@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int REQUEST_ENABLE_BT = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    private static final long SCAN_PERIOD = 2000;
+    private static final long SCAN_PERIOD = 3000;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mLEScanner;
     private ScanSettings settings;
@@ -100,21 +100,23 @@ public class MainActivity extends AppCompatActivity {
 
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                Log.i(TAG, "onReceive: ACTION_GATT_CONNECTED");
-                displayData("ACTION_GATT_CONNECTED");
+                Log.i(TAG, "onReceive: ACTION_GATT_CONNECTED  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayData("ACTION_GATT_CONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                displayData("CONNECTED");
                 refreshDevicesList();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                Log.i(TAG, "onReceive: ACTION_GATT_DISCONNECTED");
-                displayData("ACTION_GATT_DISCONNECTED");
-                displayDataDISCONNECTED(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                Log.i(TAG, "onReceive: DISCONNECTED: " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                Log.i(TAG, "onReceive: ACTION_GATT_DISCONNECTED  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayData("ACTION_GATT_DISCONNECTED", intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayDataDISCONNECTED(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                displayData("DISCONNECTED");
                 refreshDevicesList();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION_GATT_SERVICES_DISCOVERED");
-                displayData("ACTION_GATT_SERVICES_DISCOVERED");
+                displayData("SVC DISCO");
+                //displayData("ACTION_GATT_SERVICES_DISCOVERED");
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION DATA AVAILABLE");
-                displayData("ACTION_DATA_AVAILABLE  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                //displayData("ACTION_DATA_AVAILABLE  " + intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE_HR.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION DATA AVAILABLE_HR");
                 displayDataHR(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
@@ -127,13 +129,33 @@ public class MainActivity extends AppCompatActivity {
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE_DISTANCE.equals(action)) {
                 Log.i(TAG, "onReceive: ACTION DATA AVAILABLE_DISTANCE");
                 displayDataDISTANCE(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE_WHEEL.equals(action)) {
+                Log.i(TAG, "onReceive: ACTION DATA AVAILABLE_WHEEL");
+                displayDataWHEEL(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
+
         }
     };
 
-    private void displayData(String data) {
+    private void displayData(final String data) {
         if (data != null) {
             Log.i(TAG, "displayData: " + data);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Button btn1 = (Button) findViewById(R.id.button1);
+                    btn1.setText(data);
+                }
+            });
+        }
+    }
+
+    private void displayData(final String data1, final String data2) {
+        if (data1 != null) {
+            Log.i(TAG, "displayData1: " + data1);
+        }
+        if (data2 != null) {
+            Log.i(TAG, "displayData2: " + data2);
         }
     }
 
@@ -191,6 +213,21 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+        private void displayDataWHEEL(final String data) {
+            if (data != null) {
+                Log.i(TAG, "displayDataWHEEL: " + data);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        TextView tview13 = (TextView) findViewById(R.id.TextView13);
+//                        tview13.setText(data);
+                        Button btn = (Button) findViewById(R.id.button0);
+                        btn.setText(data);
+                    }
+                });
+            }
+        }
 
     private void displayDataDISCONNECTED(final String nameOfDisconnectedDevice) {
         if (nameOfDisconnectedDevice != null) {
@@ -288,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE_SPD);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE_CAD);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE_DISTANCE);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE_WHEEL);
         return intentFilter;
     }
 
@@ -432,6 +470,11 @@ public class MainActivity extends AppCompatActivity {
 
         String y;
         Integer arrCounter = 0;
+        
+        if (mBluetoothLeService.getDevicesDiscovered().size() == 0) {
+            Log.i(TAG, "refreshDevicesList: NO DEVICES DISCOVERED");
+            return;
+        }
 
         for (BluetoothDevice i : mBluetoothLeService.getDevicesDiscovered()) {
             y = (i.getName() + " : " +i.getAddress());

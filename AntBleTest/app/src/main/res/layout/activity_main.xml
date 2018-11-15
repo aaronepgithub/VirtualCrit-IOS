@@ -155,17 +155,17 @@
         android:id="@+id/TextView13"
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:checked="false"
-        android:text="[DEVICES]"
-        android:textSize="12sp"
-        android:visibility="visible"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="155dp"
+        android:layout_weight="3"
+        android:checked="false"
+        android:text="[DEVICES]"
+        android:textSize="18sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/list0"
@@ -173,11 +173,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </ListView>
+        app:layout_constraintTop_toTopOf="parent"></ListView>
 
 
     <ScrollView
