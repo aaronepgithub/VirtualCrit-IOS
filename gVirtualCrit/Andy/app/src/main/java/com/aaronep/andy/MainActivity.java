@@ -263,15 +263,6 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String currTimeStmp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         createTimeline("LET'S GET STARTED", "" + currTimeStmp);
 
-//        //Log.i("TIME", "getActualTime");
-//        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
-//        Long st = startTime.getTimeInMillis();
-//        Long nt = nowTime.getTimeInMillis();
-//        long millis_act = nt - st;
-//        @SuppressLint("DefaultLocale") String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
-//                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
-//                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
-
         onPowerOn();
 
 
@@ -445,16 +436,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         timer.scheduleAtFixedRate(new TimerTask() {
               @Override
               public void run() {
-                  //////Log.i(TAG, "timer: " + timerSecondsCounter);
 
-//                  String aT = updateActualTime();
-//                  TextView at = findViewById(R.id.rtText1);
-//                  at.setText(String.format("%s  (ACT)", aT));
 
                   timerSecondsCounter += 1;
                   tim.setTotalTimeInSeconds(timerSecondsCounter);
-
-
 
                   Message msg = Message.obtain();
                   msg.obj = tim.getTotalTimeString();
@@ -489,9 +474,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                       calcCurrentRoundSpd = currentRoundSpeedGEO;
                   }
                   final double currentRoundSpeed = calcCurrentRoundSpd;
-                  //display this at 7a
-                  ////Log.i(TAG, "CURRENT ROUND SPEED: " + currentRoundSpeed);
-                  //END...FOR IN ROUND DISPLAY
+
 
                   //END OF ROUND
                   double bestRoundSpeed = 0;
@@ -825,9 +808,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
     private Boolean readMileInfo = false;
 
+    private int currentlyWriting = 0;
 
     private void writeToFB() {
-        //Log.i(TAG, "WRITE TO FB");
+
+        if (currentlyWriting == 1) {
+            return;
+        }
+
+        currentlyWriting = 1;
+
+        Log.i(TAG, "WRITE TO FB");
         //        FirebaseDatabase database = FirebaseDatabase.getInstance();
         //        DatabaseReference myRef = database.getReference("message");
         //        myRef.setValue("Hello, World!");
@@ -1005,6 +996,8 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
     String stLeaderName = "";
     private String stRoundLeaders = "";
     private void readFromFB() {
+
+        currentlyWriting = 0;
         //Log.i(TAG, "READ FROM FB/ROUNDS/SPEED");
         String roundsURL = "rounds";
         if (activityValue == "RUN") {
@@ -1569,6 +1562,17 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
                     //Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED");
                     //setConnectedGatt(gatt);
                     gatt.discoverServices();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView tr = findViewById(R.id.rtStatus);
+                            tr.setText(String.format("BT CONNECTED:  %s", gatt.getDevice().getName()));
+                            //Log.i(TAG, "BT DISCONNECT:  " + gatt.getDevice().getName());
+                        }
+                    });
+
+
                     break;
                 }
                 case BluetoothProfile.STATE_DISCONNECTED: {
@@ -2622,19 +2626,6 @@ private String calcPace(double mph) {
         devicesConnectedAddresses.add(mDevice.getAddress());
     }
 
-//    public void connectToDeviceII (BluetoothDevice mDevice) {
-//        //Log.i("connectToDevice", "Device: " + mDevice.getName());
-//        //Log.i("connectToDevice", "Addresss: " + mDevice.getAddress());
-//
-//        //TODO:  TEST WITH AUTOCONNECT
-//        //AUTOCONNECT CHANGED FROM FALSE TO TRUE
-//
-//        connectedGatt = mDevice.connectGatt(this, false, bluetoothGattCallback2);
-//        Toast.makeText(this,"Connecting to: " + mDevice.getName(), Toast.LENGTH_LONG).show();
-//        devicesConnected.add(mDevice);
-//        bluetoothGatts.add(connectedGatt);
-//        devicesConnectedAddresses.add(mDevice.getAddress());
-//    }
 
     private ArrayList<BluetoothDevice> devicesDiscovered = new ArrayList<>();
     private ArrayList<BluetoothDevice> devicesConnected = new ArrayList<>();
@@ -2643,100 +2634,7 @@ private String calcPace(double mph) {
     private Integer deviceIndexVal = 0;
     private Boolean isScanning = false;
 
-//    private void scanLeDevice(final boolean enable) {
-//        //Log.i(TAG, "scanLeDevice: CALLED SCANLEDEVICE");
-//        if (enable) {
-//        isScanning = true;
-//        Handler mHandler = new Handler();
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLEScanner.stopScan(mScanCallback);
-//                //Log.i("SCANLEDEVICE", "run: STOP SCANNING");
-////                    sendToaster("SCAN COMPLETE");
-//                isScanning = false;
-//                sendToaster("SCAN COMPLETE");
-//            }
-//        }, SCAN_PERIOD);
-//
-//        if (!isScanning) {
-//            devicesDiscovered = new ArrayList<>();
-//            deviceIndexVal = 0;
-//
-//            Button btn100 = findViewById(R.id.button100);
-//            Button btn101 = findViewById(R.id.button101);
-//            Button btn102 = findViewById(R.id.button102);
-//            Button btn103 = findViewById(R.id.button103);
-//            Button btn104 = findViewById(R.id.button104);
-//
-//            btn100.setVisibility(View.GONE);
-//            btn101.setVisibility(View.GONE);
-//            btn102.setVisibility(View.GONE);
-//            btn103.setVisibility(View.GONE);
-//            btn104.setVisibility(View.GONE);
-//
-//            mLEScanner.startScan(filters, settings, mScanCallback);
-//            isScanning = true;
-//            //Log.i("SCAN", "scanLeDevice: ");
-//        }
-//    } else {
-//        isScanning = false;
-//        mLEScanner.stopScan(mScanCallback);
-//    }
-//}
 
-
-
-
-//    public void setConnectedGatt(final BluetoothGatt connectedGatt) {
-//        this.connectedGatt = connectedGatt;
-//
-//        //Log.i(TAG, "setConnectedGatt, is null... " + (connectedGatt == null));
-//        //Log.i(TAG, "setConnectedGatt: NOT GETTING CONNECTED STATE CHANGE AFTER FIRST DISCONNECT, BECAUSE OF CLOSE()");
-//        //NO CONNECTED STATE CHANGE?
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                if (connectedGatt != null) {
-//                    //Log.i(TAG, "run: :CONNECTED GATT DEVICE NAME " + connectedGatt.getDevice().getName());
-//                    //Log.i(TAG, "run: CONNECTED GATT DEVICE: " + connectedGatt.toString());
-//                    Button b2 = findViewById(R.id.button2);
-//                    b2.setEnabled(true);
-//                } //else {
-////                    Button b1 = findViewById(R.id.button1);
-////                    b1.setEnabled(true);
-////
-////                    Button b2 = findViewById(R.id.button2);
-////                    b2.setEnabled(false);
-////                }
-//
-//            }
-//        });
-//    }
-
-
-
-
-//    private void updateActualTime(){
-//        //update actual time
-//        Calendar nowTime = Calendar.getInstance(Locale.ENGLISH);
-//        long st = startTime.getTimeInMillis();
-//        long nt = nowTime.getTimeInMillis();
-//        long millis_act = nt - st;
-//        @SuppressLint("DefaultLocale") final String hms_act = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis_act),
-//                TimeUnit.MILLISECONDS.toMinutes(millis_act) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis_act)),
-//                TimeUnit.MILLISECONDS.toSeconds(millis_act) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis_act)));
-//        //Log.i(TAG, "updateActualTime: " + hms_act + " >> " + timerSecondsCounter);
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                TextView at = findViewById(R.id.rtText1);
-//                at.setText(String.format("%s  (ACT)", hms_act));
-//            }
-//        });
-//        //return (String.format("%s  (ACT)", hms_act));
-//    }
 
     private BluetoothDevice mDevice;
 
