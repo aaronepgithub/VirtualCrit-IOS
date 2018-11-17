@@ -2,6 +2,7 @@ package com.aaronep.andy;
 
 import android.util.Log;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -20,11 +21,14 @@ public class Tim {
     public double maxHRdouble = 185.0;
     public int maxHR = 185;
 
+    DecimalFormat df = new DecimalFormat("#.###");
+
     //FB ROUND OBJ
     private double roundSpeed = 0;
 
     public double getRoundSpeed() {
-        return roundSpeed;
+        //return roundSpeed;
+        return Double.valueOf(df.format(roundSpeed));
     }
 
     public void setRoundSpeed(double roundSpeed) {
@@ -32,7 +36,7 @@ public class Tim {
     }
 
     public double getRoundHR() {
-        return roundHR;
+        return Double.valueOf(df.format(roundHR));
     }
 
     public void setRoundHR(double roundHR) {
@@ -48,14 +52,17 @@ public class Tim {
         }
 
         if (btAvgSpeed > geoAvgSpeed) {
-            return btAvgSpeed;
+            //return btAvgSpeed;
+            return Double.valueOf(df.format(btAvgSpeed));
         } else {
-            return geoAvgSpeed;
+            //return geoAvgSpeed;
+            return Double.valueOf(df.format(geoAvgSpeed));
         }
     }
 
     public double getRoundScore() {
-        return roundScore;
+        //return roundScore;
+        return Double.valueOf(df.format(roundScore));
     }
 
     public void setRoundScore(double roundScore) {
@@ -63,7 +70,8 @@ public class Tim {
     }
 
     public double getRoundCadence() {
-        return roundCadence;
+        //return roundCadence;
+        return Double.valueOf(df.format(roundCadence));
     }
 
     public void setRoundCadence(double roundCadence) {
@@ -159,7 +167,9 @@ public class Tim {
     }
 
     public double getBtAvgSpeed() {
-        return btAvgSpeed;
+        //return btAvgSpeed;
+        return Double.valueOf(df.format(btAvgSpeed));
+
     }
 
     public void setBtAvgSpeed(double btAvgSpeed) {
@@ -176,7 +186,8 @@ public class Tim {
     }
 
     public double getBtSpeed() {
-        return btSpeed;
+        //return btSpeed;
+        return Double.valueOf(df.format(btSpeed));
     }
 
     public void setBtSpeed(double btSpeed) {
@@ -205,7 +216,8 @@ public class Tim {
     }
 
     public double getGeoAvgSpeed() {
-        return geoAvgSpeed;
+        //return geoAvgSpeed;
+        return Double.valueOf(df.format(geoAvgSpeed));
     }
 
     public void setGeoAvgSpeed(double geoAvgSpeed) {
