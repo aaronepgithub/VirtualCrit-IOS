@@ -65,6 +65,7 @@ import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -849,7 +850,10 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
         String totalsURL = "totals/"+ tim.currentDate +"/" + tim.getName();
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
         //Log.i(TAG, "writeToFB/TOTAL:  " + tim.getTotalAvgSpeed());
-        Total total = new Total(tim.getName(), totalAverageScore, tim.getTotalAvgSpeed());
+        DecimalFormat df = new DecimalFormat("#.###");
+        //Double.valueOf(df.format(totalAverageScore));
+//        Total total = new Total(tim.getName(), totalAverageScore, tim.getTotalAvgSpeed());
+        Total total = new Total(tim.getName(), Double.valueOf(df.format(totalAverageScore)), tim.getTotalAvgSpeed());
         mDatabaseTotals.setValue(total);
 
         //RUNNER FB WRITE TOTALS
