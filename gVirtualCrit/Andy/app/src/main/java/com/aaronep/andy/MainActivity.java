@@ -2023,7 +2023,7 @@ public class MainActivity extends AppCompatActivity  implements TextToSpeech.OnI
 
                 foot2.setText(String.format(Locale.US,"%.2f MI", dist));
                 head2.setText(String.format(Locale.US,"%.1f MPH", avgSpd));
-                bDist.setText(String.format(Locale.US,"%.1f MI", dist));
+                bDist.setText(String.format(Locale.US,"%.2f MI", dist));
                 bPace.setText(rtPace);
 
             }

@@ -740,11 +740,11 @@
                 android:id="@+id/rtText4a"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="2"
                 android:text="DISTANCE(BT)"
-                android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rtText4b"
