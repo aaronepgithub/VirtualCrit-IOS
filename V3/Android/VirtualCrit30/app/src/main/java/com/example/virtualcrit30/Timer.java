@@ -1,7 +1,7 @@
 package com.example.virtualcrit30;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import android.annotation.SuppressLint;
+
 
 public final class Timer {
 
@@ -39,12 +39,14 @@ public final class Timer {
         Timer.totalMillis = totalMillis;
     }
 
+    @SuppressLint("DefaultLocale")
     public static String getTotalTimeString() {
         return String.format("%02d:%02d:%02d", totalMillis/(3600*1000),
                 totalMillis/(60*1000) % 60,
                 totalMillis/1000 % 60);
     }
 
+    @SuppressLint("DefaultLocale")
     public static String getActiveTimeString() {
         return String.format("%02d:%02d:%02d", activeMillis/(3600*1000),
                 activeMillis/(60*1000) % 60,

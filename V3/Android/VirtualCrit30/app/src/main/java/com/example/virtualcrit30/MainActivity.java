@@ -1,14 +1,17 @@
 package com.example.virtualcrit30;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,21 +26,33 @@ public class MainActivity extends AppCompatActivity {
     private long totalMillis = 0;
     private long lastMillis = 0;
 
+    private String settingsName = "TIM";
+    private String settingsGPS = "OFF";
+
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
-
         @SuppressLint("DefaultLocale")
         @Override
         public void run() {
             totalMillis = System.currentTimeMillis() - startTime;
-
             Timer.setTotalMillis(totalMillis);
-            mValueTimer.setText(Timer.getTotalTimeString());
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mValueTimer.setText(Timer.getTotalTimeString());
+                }
+            });
 
             if (Timer.getStatus() == 0 && lastMillis > 0) {
                 activeMillis += (totalMillis - lastMillis);
                 Timer.setActiveMillis(activeMillis);
-                mActiveTimer.setText(Timer.getActiveTimeString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mActiveTimer.setText(Timer.getActiveTimeString());
+                    }
+                });
             }
 
             lastMillis = totalMillis;
@@ -80,15 +95,58 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickName(View view) {
         Log.i(TAG, "clickName: ");
-        TextView mName = findViewById(R.id.valueName);
-        mName.setText("Selected Name Value");
+        inputName();
+    }
+
+    public void displayName(String n) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView mName = findViewById(R.id.valueName);
+                mName.setText(n);
+            }
+        });
+    }
+
+    public void inputName() {
+        final EditText txtUrl = new EditText(this);
+
+        new AlertDialog.Builder(this)
+                .setTitle("SETTINGS")
+                .setMessage("ENTER NAME")
+                .setView(txtUrl)
+                .setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        settingsName = txtUrl.getText().toString().toUpperCase();
+                        Log.i(TAG, "settingsName:  " + settingsName);
+                        displayName(settingsName);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .show();
     }
 
 
     public void clickGPS(View view) {
-        Log.i(TAG, "clickGPS: ");
         TextView mGPS = findViewById(R.id.valueGPS);
-        mGPS.setText("Selected GPS");
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (settingsGPS.equals("OFF")) {
+                    mGPS.setText("ON");
+                    settingsGPS = "ON";
+                    Log.i(TAG, "clickGPS: ON");
+                } else {
+                    mGPS.setText("OFF");
+                    settingsGPS = "OFF";
+                    Log.i(TAG, "clickGPS: OFF");
+                }
+            }
+        });
     }
 
     public void clickStart(View view) {
@@ -111,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         if (Timer.getStatus() == 2) {
             Log.i(TAG, "ReStart Timer");
             //WILL NOT ALLOW THIS...
-            mValueTimer.setText("00:00:00");
+            //mValueTimer.setText("00:00:00");
             totalMillis = 0;
             lastMillis = 0;
             activeMillis = 0;
