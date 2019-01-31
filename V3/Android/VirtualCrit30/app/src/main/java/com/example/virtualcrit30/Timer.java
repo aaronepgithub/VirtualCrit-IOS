@@ -39,6 +39,8 @@ public final class Timer {
         Timer.totalMillis = totalMillis;
     }
 
+
+
     @SuppressLint("DefaultLocale")
     public static String getTotalTimeString() {
         return String.format("%02d:%02d:%02d", totalMillis/(3600*1000),

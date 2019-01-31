@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -140,10 +141,17 @@ public class MainActivity extends AppCompatActivity {
                     mGPS.setText("ON");
                     settingsGPS = "ON";
                     Log.i(TAG, "clickGPS: ON");
+                    // Show Alert
+                    Toast.makeText(getApplicationContext(),
+                            "GPS ON" , Toast.LENGTH_SHORT)
+                            .show();
                 } else {
                     mGPS.setText("OFF");
                     settingsGPS = "OFF";
                     Log.i(TAG, "clickGPS: OFF");
+                    Toast.makeText(getApplicationContext(),
+                            "GPS OFF" , Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
@@ -202,14 +210,23 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 Log.i(TAG, "manageTimer: Start");
                 Timer.setStatus(0);
+                Toast.makeText(getApplicationContext(),
+                        "START" , Toast.LENGTH_SHORT)
+                        .show();
                 return;
             case 1:
                 Log.i(TAG, "manageTimer: Pause");
                 Timer.setStatus(1);
+                Toast.makeText(getApplicationContext(),
+                        "PAUSE" , Toast.LENGTH_SHORT)
+                        .show();
                 return;
             case 2:
                 Log.i(TAG, "manageTimer: End");
                 Timer.setStatus(2);
+                Toast.makeText(getApplicationContext(),
+                        "COMPLETE" , Toast.LENGTH_SHORT)
+                        .show();
         }
 
 
