@@ -2,13 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
-
-
     defaultConfig {
         applicationId "com.example.virtualcrit30"
         minSdkVersion 24
