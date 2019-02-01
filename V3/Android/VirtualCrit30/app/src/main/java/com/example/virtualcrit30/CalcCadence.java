@@ -81,10 +81,8 @@ public final class CalcCadence {
 
         //@SuppressLint("DefaultLocale") final String cadString = String.format("%.0f C", cadence);
         if (cadValuesLinkedList.peekFirst().equals(cadValuesLinkedList.peekLast())) {
-            //adviseActivityCAD("0 C");
             Variables.setCadence("0 C");
         } else {
-            //adviseActivityCAD(String.valueOf(cadString));
             Variables.setCadence(String.format("%.0f C", cadence));
         }
 

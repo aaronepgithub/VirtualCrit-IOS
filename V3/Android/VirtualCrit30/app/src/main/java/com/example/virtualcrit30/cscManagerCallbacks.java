@@ -1,16 +1,18 @@
 package com.example.virtualcrit30;
 
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 
 import no.nordicsemi.android.ble.BleManagerCallbacks;
 
 
     public class cscManagerCallbacks implements BleManagerCallbacks {
-
         private final static String TAG = cscManagerCallbacks.class.getSimpleName();
-
 
         /**
          * Called when the Android device started connecting to given device.
@@ -36,7 +38,6 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onDeviceConnected(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceConnected: " + device.getName());
-
         }
 
         /**
@@ -49,15 +50,15 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
             Log.i(TAG, "onDeviceDisconnecting: " + device.getName());
         }
 
-        /**
-         * Called when the device has disconnected (when the callback returned
-         * {@link BluetoothGattCallback#onConnectionStateChange(BluetoothGatt, int, int)} with state
-         * DISCONNECTED), but ONLY if the {@link BleManager#shouldAutoConnect()} method returned false
-         * for this device when it was connecting.
-         * Otherwise the {@link #onLinkLossOccurred(BluetoothDevice)} method will be called instead.
-         *
-         * @param device the device that got disconnected.
-         */
+//        /**
+//         * Called when the device has disconnected (when the callback returned
+//         * {@link BluetoothGattCallback#onConnectionStateChange(BluetoothGatt, int, int)} with state
+//         * DISCONNECTED), but ONLY if the {@link BleManager#shouldAutoConnect()} method returned false
+//         * for this device when it was connecting.
+//         * Otherwise the {@link #onLinkLossOccurred(BluetoothDevice)} method will be called instead.
+//         *
+//         * @param device the device that got disconnected.
+//         */
         @Override
         public void onDeviceDisconnected(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceDisconnected: " + device.getName());
@@ -92,7 +93,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
          */
         @Override
         public void onServicesDiscovered(@NonNull BluetoothDevice device, boolean optionalServicesFound) {
-            Log.i(TAG, "onServicesDiscovered: ");
+            Log.i(TAG, "onServicesDiscovered: " + device.getName());
         }
 
         /**
@@ -102,7 +103,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
          */
         @Override
         public void onDeviceReady(@NonNull BluetoothDevice device) {
-            Log.i(TAG, "onDeviceReady: ");
+            Log.i(TAG, "onDeviceReady: " + device.getName());
         }
 
         /**
@@ -146,7 +147,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
          */
         @Override
         public void onError(@NonNull BluetoothDevice device, @NonNull String message, int errorCode) {
-            Log.i(TAG, "onError: ");
+            Log.i(TAG, "onError: " + device.getName());
         }
 
         /**
@@ -158,6 +159,8 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         public void onDeviceNotSupported(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceNotSupported: ");
         }
+
+
 
     }
 

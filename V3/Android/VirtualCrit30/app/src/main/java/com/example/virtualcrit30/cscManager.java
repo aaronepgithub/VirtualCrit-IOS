@@ -70,16 +70,16 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
         return mGattCallbackCSC;
     }
 
-
-    private static final byte HEART_RATE_VALUE_FORMAT = 0x01; // 1 bit
-    private static final byte SENSOR_CONTACT_STATUS = 0x06; // 2 bits
-    private static final byte ENERGY_EXPANDED_STATUS = 0x08; // 1 bit
-    private static final byte RR_INTERVAL = 0x10; // 1 bit
+//    private static final byte HEART_RATE_VALUE_FORMAT = 0x01; // 1 bit
+//    private static final byte SENSOR_CONTACT_STATUS = 0x06; // 2 bits
+//    private static final byte ENERGY_EXPANDED_STATUS = 0x08; // 1 bit
+//    private static final byte RR_INTERVAL = 0x10; // 1 bit
 
     private static final byte WHEEL_REVOLUTIONS_DATA_PRESENT = 0x01; // 1 bit
     private static final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 
     private final DataReceivedCallback cscData = new DataReceivedCallback() {
+
         @Override
         public void onDataReceived(@NonNull BluetoothDevice device, @NonNull Data data) {
             //Log.i(TAG, "onDataReceived: CSC");
@@ -98,8 +98,6 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
                 final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
 
                 @SuppressLint("DefaultLocale") final String wString = String.valueOf(cumulativeWheelRevolutions);
-                //Log.i(TAG, "getSpeedCadenceValue wString: " + wString);
-                //broadcastUpdate(ACTION_DATA_AVAILABLE_WHEEL, wString);
                 onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
 
 
@@ -144,11 +142,14 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
 
         }
 
+
         @Override
         protected void onDeviceDisconnected() {
-            Log.i(TAG, "onDeviceDisconnected: ");
-            //adviseActivityCAD("-");
+            Log.i(TAG, "onDeviceDisconnected: " + getBluetoothDevice());
+            adviseActivityMessageBar("onDeviceDisconnected:  " + getBluetoothDevice().getName());
         }
+
+
     };
 
 
@@ -219,6 +220,17 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
             ii.putExtra("type", "cad");
             getContext().sendBroadcast(ii);
 
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+
+    private void adviseActivityMessageBar(String s){
+        try {
+            Intent ii = new Intent("MESSAGE");
+            ii.putExtra("msg", s);
+            ii.putExtra("type", "messageBar");
+            getContext().sendBroadcast(ii);
         } catch (Exception e) {
             System.out.print(e);
         }

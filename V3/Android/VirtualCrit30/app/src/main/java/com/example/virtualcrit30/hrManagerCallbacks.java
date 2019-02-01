@@ -1,15 +1,19 @@
 package com.example.virtualcrit30;
 
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattCallback;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.BleManagerCallbacks;
 
 public class hrManagerCallbacks implements BleManagerCallbacks {
 
     private final static String TAG = hrManagerCallbacks.class.getSimpleName();
-
+    private Context context;
 
     /**
      * Called when the Android device started connecting to given device.
@@ -20,7 +24,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onDeviceConnecting(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onDeviceConnecting: ");
+        Log.i(TAG, "onDeviceConnecting: " + device.getName());
     }
 
     /**
@@ -34,8 +38,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onDeviceConnected(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onDeviceConnected: ");
-
+        Log.i(TAG, "onDeviceConnected: " + device.getName());
     }
 
     /**
@@ -45,21 +48,21 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onDeviceDisconnecting(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onDeviceDisconnecting: ");
+        Log.i(TAG, "onDeviceDisconnecting: " + device.getName());
     }
 
-    /**
-     * Called when the device has disconnected (when the callback returned
-     * {@link BluetoothGattCallback#onConnectionStateChange(BluetoothGatt, int, int)} with state
-     * DISCONNECTED), but ONLY if the {@link BleManager#shouldAutoConnect()} method returned false
-     * for this device when it was connecting.
-     * Otherwise the {@link #onLinkLossOccurred(BluetoothDevice)} method will be called instead.
-     *
-     * @param device the device that got disconnected.
-     */
+//    /**
+//     * Called when the device has disconnected (when the callback returned
+//     * {@link BluetoothGattCallback#onConnectionStateChange(BluetoothGatt, int, int)} with state
+//     * DISCONNECTED), but ONLY if the {@link BleManager#shouldAutoConnect()} method returned false
+//     * for this device when it was connecting.
+//     * Otherwise the {@link #onLinkLossOccurred(BluetoothDevice)} method will be called instead.
+//     *
+//     * @param device the device that got disconnected.
+//     */
     @Override
     public void onDeviceDisconnected(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onDeviceDisconnected: ");
+        Log.i(TAG, "onDeviceDisconnected: " + device.getName());
     }
 
     /**
@@ -72,7 +75,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onLinkLossOccurred(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onLinkLossOccurred: ");
+        Log.i(TAG, "onLinkLossOccurred: " + device.getName());
     }
 
     /**
@@ -91,7 +94,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onServicesDiscovered(@NonNull BluetoothDevice device, boolean optionalServicesFound) {
-        Log.i(TAG, "onServicesDiscovered: ");
+        Log.i(TAG, "onServicesDiscovered: " + device.getName());
     }
 
     /**
@@ -101,15 +104,15 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onDeviceReady(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onDeviceReady: ");
+        Log.i(TAG, "onDeviceReady: " + device.getName());
     }
 
-    /**
-     * Called when an {@link BluetoothGatt#GATT_INSUFFICIENT_AUTHENTICATION} error occurred and the
-     * device bond state is {@link BluetoothDevice#BOND_NONE}.
-     *
-     * @param device the device that requires bonding.
-     */
+//    /**
+//     * Called when an {@link BluetoothGatt#GATT_INSUFFICIENT_AUTHENTICATION} error occurred and the
+//     * device bond state is {@link BluetoothDevice#BOND_NONE}.
+//     *
+//     * @param device the device that requires bonding.
+//     */
     @Override
     public void onBondingRequired(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onBondingRequired: ");
@@ -145,7 +148,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onError(@NonNull BluetoothDevice device, @NonNull String message, int errorCode) {
-        Log.i(TAG, "onError: ");
+        Log.i(TAG, "onError: " + device.getName());
     }
 
     /**
@@ -155,6 +158,8 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
      */
     @Override
     public void onDeviceNotSupported(@NonNull BluetoothDevice device) {
-        Log.i(TAG, "onDeviceNotSupported: ");
+        Log.i(TAG, "onDeviceNotSupported: " + device.getName());
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.virtualcrit30;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
 import no.nordicsemi.android.ble.BleManager;
@@ -92,7 +94,6 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
 
             final StringBuilder builder = new StringBuilder();
             builder.append(heartRateValue).append(" HR");
-            //Log.i(TAG, "HR:  " + builder);
 
             adviseActivity(String.valueOf(builder));
         }
@@ -101,61 +102,59 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
 
     public void adviseActivity(String s){
         Log.i(TAG, "adviseActivity: " + s);
-//        try {
-//            Intent i = new Intent("MESSAGE");
-//            i.putExtra("msg", s);
-//            i.putExtra("type", "hr");
-//            getContext().sendBroadcast(i);
-//
-//        } catch (Exception e) {
-//            System.out.print(e);
-//        }
+        try {
+            Intent i = new Intent("MESSAGE");
+            i.putExtra("msg", s);
+            i.putExtra("type", "hr");
+            getContext().sendBroadcast(i);
+
+        } catch (Exception e) {
+            System.out.print(e);
+        }
     }
 
 
     private static final byte WHEEL_REVOLUTIONS_DATA_PRESENT = 0x01; // 1 bit
     private static final byte CRANK_REVOLUTION_DATA_PRESENT = 0x02; // 1 bit
 
-//    private final DataReceivedCallback cscData = new DataReceivedCallback() {
-//        @Override
-//        public void onDataReceived(@NonNull BluetoothDevice device, @NonNull Data data) {
-//            Log.i(TAG, "onDataReceived: MIO, cscData");
-//
-//            final Data d = data;
-//
-//            byte[] value = d.getValue();
-////            final int flags = characteristic.getValue()[0]; // 1 byte
-//            final int flags = value[0]; // 1 byte
-//
-//            final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
-//            final boolean crankRevPresent = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
-//
-//            if (wheelRevPresent) {
-//
-//                final int cumulativeWheelRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
-//                final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
-//
-//                @SuppressLint("DefaultLocale") final String wString = String.valueOf(cumulativeWheelRevolutions);
-//                //Log.i(TAG, "getSpeedCadenceValue wString: " + wString);
-//                //broadcastUpdate(ACTION_DATA_AVAILABLE_WHEEL, wString);
-//                onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
-//
-//
-//                if (crankRevPresent) {
-//                    final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
-//                    final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
-//                    onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
-//                }
-//            } else {
-//                if (crankRevPresent) {
-//                    final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
-//                    final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
-//                    onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
-//                }
-//            }
-//        }
-//
-//    };
+    private final DataReceivedCallback cscData = new DataReceivedCallback() {
+        @Override
+        public void onDataReceived(@NonNull BluetoothDevice device, @NonNull Data data) {
+            Log.i(TAG, "onDataReceived: MIO, cscData");
+
+            final Data d = data;
+
+            byte[] value = d.getValue();
+//            final int flags = characteristic.getValue()[0]; // 1 byte
+            final int flags = value[0]; // 1 byte
+
+            final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
+            final boolean crankRevPresent = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
+
+            if (wheelRevPresent) {
+
+                final int cumulativeWheelRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
+                final int lastWheelEventReadValue = (value[5] & 0xff) | ((value[6] & 0xff) << 8);
+
+                @SuppressLint("DefaultLocale") final String wString = String.valueOf(cumulativeWheelRevolutions);
+                onWheelMeasurementReceived(cumulativeWheelRevolutions, lastWheelEventReadValue);
+
+
+                if (crankRevPresent) {
+                    final int cumulativeCrankRevolutions = (value[7] & 0xff) | ((value[8] & 0xff) << 8);
+                    final int lastCrankEventReadValue = (value[9] & 0xff) | ((value[10] & 0xff) << 8);
+                    onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
+                }
+            } else {
+                if (crankRevPresent) {
+                    final int cumulativeCrankRevolutions = (value[1] & 0xff) | ((value[2] & 0xff) << 8);
+                    final int lastCrankEventReadValue = (value[3] & 0xff) | ((value[4] & 0xff) << 8);
+                    onCrankMeasurementReceived(cumulativeCrankRevolutions, lastCrankEventReadValue);
+                }
+            }
+        }
+
+    };
 
     private final BleManagerGattCallback mGattCallback = new BleManagerGattCallback() {
 
@@ -165,9 +164,9 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
             setNotificationCallback(hrCharacteristic).with(hrData);
             enableNotifications(hrCharacteristic).enqueue();
 
-//            Log.i(TAG, "initialize  BleManagerGattCallback mGattCallback MIO");
-//            setNotificationCallback(cscCharacteristic).with(cscData);
-//            enableNotifications(cscCharacteristic).enqueue();
+            Log.i(TAG, "initialize  BleManagerGattCallback mGattCallback MIO");
+            setNotificationCallback(cscCharacteristic).with(cscData);
+            enableNotifications(cscCharacteristic).enqueue();
         }
 
         @Override
@@ -192,229 +191,91 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
 
         @Override
         protected void onDeviceDisconnected() {
-            Log.i(TAG, "onDeviceDisconnected: ");
-            //LAST MESSAGE, REQUEST RECONNECT HERE
-            //adviseActivity("xx");
+            Log.i(TAG, "onDeviceDisconnected: " + getBluetoothDevice().getName());
+            adviseActivityMessageBar("onDeviceDisconnected:  " + getBluetoothDevice().getName());
         }
     };
 
-
-//    private int mFirstCrankRevolutions = -1;
-//    private int mLastCrankRevolutions = -1;
-//    private int mLastCrankEventTime = -1;
-
-//    private LinkedList<Integer> cadValuesLinkedList = new LinkedList<Integer>();
-//    private LinkedList<Integer> speedValuesLinkedList = new LinkedList<Integer>();
-
-//    private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
-//
-//
-//        Boolean hasSpeed = CalcSpeed.calcSpeed(wheelRevolutionValue, wheelRevolutionTimeValue);
-//
-//        if (hasSpeed == Boolean.TRUE) {
-//
-//            Log.i(TAG, "onWheelMeasurementReceived: HAS SPEED");
-//            adviseActivitySPD(Variables.getSpeed(), Variables.getDistance(), Variables.getAvgSpeed());
-//
-//
-//        } else {
-//            Log.i(TAG, "onWheelMeasurementReceived: NO SPEED");
-//            //return;
-//        }
-//
-//
-////        final int circumference = Integer.parseInt(preferences.getString(SettingsFragment.SETTINGS_WHEEL_SIZE, String.valueOf(SettingsFragment.SETTINGS_WHEEL_SIZE_DEFAULT))); // [mm]
-////        final int circumference = 2105; // [mm]
-////
-////        speedValuesLinkedList.push(wheelRevolutionValue);
-////        if (speedValuesLinkedList.size() > 5) {
-////            speedValuesLinkedList.removeLast();
-////        }
-////        if (speedValuesLinkedList.peekFirst().equals(speedValuesLinkedList.peekLast())) {
-////            Log.i(TAG, "SPD =  0");
-////            adviseActivitySPD("0", String.format("%.2f MILES", tDistance), String.format("%.1f MPH", tAvgSpeed));
-////        }
-////
-////        if (mFirstWheelRevolutions < 0) {
-////            mFirstWheelRevolutions = wheelRevolutionValue;
-////            mLastWheelRevolutions = wheelRevolutionValue;
-////            mLastWheelEventTime = wheelRevolutionTimeValue;
-////            return;
-////        }
-////
-////        if (mLastWheelEventTime == wheelRevolutionTimeValue) {
-////            return;
-////        }
-////
-////
-////        final int timeDiff = do16BitDiff(wheelRevolutionTimeValue, mLastWheelEventTime);
-////        final int wheelDiff = do16BitDiff(wheelRevolutionValue, mLastWheelRevolutions);
-////
-////        if (wheelDiff == 0 || wheelDiff > 35) {
-////            mLastWheelRevolutions = wheelRevolutionValue;
-////            mLastWheelEventTime = wheelRevolutionTimeValue;
-////            return;
-////        }
-////
-////        if (timeDiff < 1000) {
-////            //LET'S NOT PROCESS SO MANY, IGNORE EVERY OTHER ONE?
-////            return;
-////        }
-////
-////        if (timeDiff > 30000) {
-////            mLastWheelRevolutions = wheelRevolutionValue;
-////            mLastWheelEventTime = wheelRevolutionTimeValue;
-////            return;
-////        }
-////
-////
-////        totalWheelRevolutions += (double) wheelDiff;
-////        double localDistance = (totalWheelRevolutions * ( (((double) circumference) / 1000) * 0.000621371 ));
-////        totalTimeInSeconds += (double) timeDiff / 1024.0;
-////
-////        mLastWheelRevolutions = wheelRevolutionValue;
-////        mLastWheelEventTime = wheelRevolutionTimeValue;
-////
-////        final double wheelTimeInSeconds = timeDiff / 1024.0;
-////        final double wheelCircumference = (double) circumference;
-////        final double wheelCircumferenceCM = wheelCircumference / 10;
-////        final double wheelRPM = (double) wheelDiff / (wheelTimeInSeconds / 60.0);
-////        final double cmPerMi = 0.00001 * 0.621371;
-////        final double minsPerHour = 60.0;
-////        final double speed = wheelRPM * wheelCircumferenceCM * cmPerMi * minsPerHour;  //MPH CURRENT
-////
-////        final double totalDistance = totalWheelRevolutions * wheelCircumferenceCM * cmPerMi;
-////        final double btAvgSpeed = totalDistance / (totalTimeInSeconds / 60.0 / 60.0);
-////
-////        tDistance = totalDistance;
-////        tAvgSpeed = btAvgSpeed;
-////        //Log.d(TAG, "onWheelMeasurementReceived: btAvgSpeed = " + String.format("%.1f Avg Speed", btAvgSpeed));
-////
-////        @SuppressLint("DefaultLocale") final String spdString = String.format("%.2f S", speed);
-////        @SuppressLint("DefaultLocale") final String distanceString = String.format("%.2f MILES", tDistance);
-////        @SuppressLint("DefaultLocale") final String spdAvgString = String.format("%.2f AVG MPH", tAvgSpeed);
-////
-////        adviseActivitySPD(String.valueOf(spdString), String.valueOf(distanceString), String.valueOf(spdAvgString));
-//
-//    }  //END WHEEL CALC
+    private void onWheelMeasurementReceived(final int wheelRevolutionValue, final int wheelRevolutionTimeValue) {
 
 
-//    private void adviseActivitySPD(String s, String d, String a){
-//        try {
-//            Intent i = new Intent("MESSAGE");
-//            i.putExtra("msg", s);
-//            i.putExtra("type", "spd");
-//            i.putExtra("distance", d);
-//            i.putExtra("avgspeed", a);
-//            getContext().sendBroadcast(i);
-//
-//            Variables.setDistance(d);
-//            Variables.setAvgSpeed(a);
-//
-//        } catch (Exception e) {
-//            System.out.print(e);
-//        }
-//
-//
-//    }
+        Boolean hasSpeed = CalcSpeed.calcSpeed(wheelRevolutionValue, wheelRevolutionTimeValue);
+
+        if (hasSpeed == Boolean.TRUE) {
+
+            Log.i(TAG, "onWheelMeasurementReceived: HAS SPEED");
+            adviseActivitySPD(Variables.getSpeed(), Variables.getDistance(), Variables.getAvgSpeed());
+
+
+        } else {
+            Log.i(TAG, "onWheelMeasurementReceived: NO SPEED");
+            //return;
+        }
+
+    }  //END WHEEL CALC
+
+
+    private void adviseActivitySPD(String s, String d, String a){
+        try {
+            Intent i = new Intent("MESSAGE");
+            i.putExtra("msg", s);
+            i.putExtra("type", "spd");
+            i.putExtra("distance", d);
+            i.putExtra("avgspeed", a);
+            getContext().sendBroadcast(i);
+
+            Variables.setDistance(d);
+            Variables.setAvgSpeed(a);
+
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+
+
+    }
 
 
 
-//    private void onCrankMeasurementReceived(final int crankRevolutionValue, final int crankRevolutionTimeValue) {
-//
-//        Boolean hasCadence = CalcCadence.calcCadence(crankRevolutionValue, crankRevolutionTimeValue);
-//
-//        if (hasCadence == Boolean.TRUE) {
-//
-//            Log.i(TAG, "onWheelMeasurementReceived: HAS CADENCE");
-//            adviseActivityCAD(Variables.getCadence());
-//
-//
-//        } else {
-//            Log.i(TAG, "onWheelMeasurementReceived: NO CADENCE");
-//            //return;
-//        }
-//
-//        //Log.i("CAD", "onCrankMeasurementReceived, crankRevolutionValue: " + crankRevolutionValue);
-//        //Log.i("CAD", "onCrankMeasurementReceived, mLastCrankRevolutions: " + mLastCrankRevolutions);
-//
-//
-////        cadValuesLinkedList.push(crankRevolutionValue);
-////        Log.i(TAG, "cadValuesLinkedList: " + Arrays.toString(cadValuesLinkedList.toArray()));
-////        if (cadValuesLinkedList.size() > 5) {
-////            cadValuesLinkedList.removeLast();
-////        }
-////        if (cadValuesLinkedList.peekFirst().equals(cadValuesLinkedList.peekLast())) {
-////            Log.i(TAG, "CAD = 0");
-////            adviseActivityCAD("0 C");
-////        }
-////
-////
-////        if (mFirstCrankRevolutions < 0) {
-////            mFirstCrankRevolutions = crankRevolutionValue;
-////            mLastCrankRevolutions = crankRevolutionValue;
-////            mLastCrankEventTime = crankRevolutionTimeValue;
-////            return;
-////        }
-////
-////
-////        if (mLastCrankEventTime == crankRevolutionTimeValue) {
-////            return;
-////        }
-////
-////
-////        final int timeDiff = do16BitDiff(crankRevolutionTimeValue, mLastCrankEventTime);
-////        final int crankDiff = do16BitDiff(crankRevolutionValue, mLastCrankRevolutions);
-////
-////        if (crankDiff == 0) {
-////            mLastCrankRevolutions = crankRevolutionValue;
-////            mLastCrankEventTime = crankRevolutionTimeValue;
-////            return;
-////        }
-////
-////        if (timeDiff < 2000) {
-////            return;
-////        }
-////
-////        if (timeDiff > 30000) {
-////            mLastCrankRevolutions = crankRevolutionValue;
-////            mLastCrankEventTime = crankRevolutionTimeValue;
-////            return;
-////        }
-////
-////
-////        ////Log.i("CAD", "onWheelMeasurementReceived: crankDiff, timeDiff: " + crankDiff + ", " + timeDiff);
-////        final double cadence = (double) crankDiff / ((((double) timeDiff) / 1024.0) / 60);
-////        if (cadence == 0) {
-////            return;
-////        }
-////        if (cadence > 150) {
-////            return;
-////        }
-////
-////
-////        @SuppressLint("DefaultLocale") final String cadString = String.format("%.0f C", cadence);
-////        if (cadValuesLinkedList.peekFirst().equals(cadValuesLinkedList.peekLast())) {
-////            adviseActivityCAD("0 C");
-////        } else {
-////            adviseActivityCAD(String.valueOf(cadString));
-////        }
-//
-//
-//    }
-    //END CAD CALC
+    private void onCrankMeasurementReceived(final int crankRevolutionValue, final int crankRevolutionTimeValue) {
 
-//    private void adviseActivityCAD(String s){
-//        try {
-//            Intent ii = new Intent("MESSAGE");
-//            ii.putExtra("msg", s);
-//            ii.putExtra("type", "cad");
-//            getContext().sendBroadcast(ii);
-//
-//        } catch (Exception e) {
-//            System.out.print(e);
-//        }
-//    }
+        Boolean hasCadence = CalcCadence.calcCadence(crankRevolutionValue, crankRevolutionTimeValue);
+
+        if (hasCadence == Boolean.TRUE) {
+
+            Log.i(TAG, "onWheelMeasurementReceived: HAS CADENCE");
+            adviseActivityCAD(Variables.getCadence());
+
+
+        } else {
+            Log.i(TAG, "onWheelMeasurementReceived: NO CADENCE");
+            //return;
+        }
+
+    }
+//    END CAD CALC
+
+    private void adviseActivityCAD(String s){
+        try {
+            Intent ii = new Intent("MESSAGE");
+            ii.putExtra("msg", s);
+            ii.putExtra("type", "cad");
+            getContext().sendBroadcast(ii);
+
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+
+    private void adviseActivityMessageBar(String s){
+        try {
+            Intent ii = new Intent("MESSAGE");
+            ii.putExtra("msg", s);
+            ii.putExtra("type", "messageBar");
+            getContext().sendBroadcast(ii);
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
 
 
 

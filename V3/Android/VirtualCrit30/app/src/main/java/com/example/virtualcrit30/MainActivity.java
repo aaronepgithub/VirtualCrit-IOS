@@ -65,8 +65,17 @@ public class MainActivity extends AppCompatActivity {
                     String action = intent.getAction();
                     String xtr = intent.getStringExtra("msg");
                     String xtrName = intent.getStringExtra("type");
-                    Log.i(TAG, "onReceive: " + action + ",  " + xtr + ",  " + xtrName);
-//                    setMessageText("---");
+                    Log.i(TAG, "BroadcastReceiver, onReceive: " + action + ",  " + xtr + ",  " + xtrName);
+
+
+                    if(action.equals("MESSAGE") && xtrName.equals("messageBar")){
+                        Log.i(TAG, "onReceive: action:  " + action);
+                        Log.i(TAG, "onReceive: Type:  " + xtrName);
+                        Log.i(TAG, "onReceive: xtr:  " + xtr);
+
+                        setMessageText(xtr);
+
+                    }
 
                     if(action.equals("MESSAGE") && xtrName.equals("hr")){
                         Log.i(TAG, "onReceive: action:  " + action);
@@ -111,9 +120,8 @@ public class MainActivity extends AppCompatActivity {
                                 TextView mDistance = (TextView) findViewById(R.id.valueDistanceBLE);
                                 mDistance.setText(intent.getStringExtra("distance"));
 
-
-//                                mAvgSpeed = (TextView) findViewById(R.id.tvAvgSpeed);
-//                                mAvgSpeed.setText(intent.getStringExtra("avgspeed"));
+                                TextView mAvgSpeed = (TextView) findViewById(R.id.valueAverageSpeedBLE);
+                                mAvgSpeed.setText(intent.getStringExtra("avgspeed"));
                             }
                         });
                     }
@@ -648,9 +656,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             Log.i(TAG, "onClick: YES, now call to connect to device " + d.getName());
                             //send connection request
-                            //Log.i(TAG, "onClick: index number of device: " + devicesDiscoveredHR.indexOf(d));
-                            //Log.i(TAG, "onClick: Devices.devicesDiscovered(index) name " + Devices.getSpecificDeviceHR(devicesDiscoveredHR.indexOf(d)).getName());
-
+                            devicesConnectedHR.add(d);
                         initManagerHR(d);
 
                         }
@@ -693,6 +699,11 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            if (devicesConnectedHR.contains(d)) {
+                Log.i(TAG, "postScanPopupCSC (HR): already connected to " + d.getName());
+                return;
+            }
+
 
 
             new AlertDialog.Builder(this)
@@ -704,6 +715,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "onClick: YES, now call to connect to device");
                             Log.i(TAG, "onClick: " + d.getName());
                             //send connection request
+                            devicesConnectedCSC.add(d);
                         initManagerCSC(d);
                         }
                     })
