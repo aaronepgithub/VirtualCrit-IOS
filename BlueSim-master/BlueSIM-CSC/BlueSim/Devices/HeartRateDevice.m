@@ -12,13 +12,13 @@
 #import "HeartRateDevice.h"
 #import <Foundation/NSNotification.h>
 
-#define HEART_RATE_SERVICE_UUID                      @"180D"
-#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A37"
-#define BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID     @"2A38"
-
-//#define HEART_RATE_SERVICE_UUID                      @"1816"
-//#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A5B"
+//#define HEART_RATE_SERVICE_UUID                      @"180D"
+//#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A37"
 //#define BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID     @"2A38"
+
+#define HEART_RATE_SERVICE_UUID                      @"1816"
+#define HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID   @"2A5B"
+#define BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID     @"2A38"
 
 
 //let HR_Service = "0x180D"
@@ -43,6 +43,11 @@
     uint8_t _b5;
     uint8_t _b6;
     
+    uint8_t _b7;
+    uint8_t _b8;
+    uint8_t _b9;
+    uint8_t _b10;
+    
 }
 
 - (id)init
@@ -52,8 +57,14 @@
     {
         _currentHeartRate = _targetHeartRate = 1;
         _location = HRSensorLocationFinger;
-        _b5 = 100;
+        _b5 = 1;
         _b6 = 1;
+        
+        _b7 = 1;
+        _b8 = 4;
+        _b9 = 1;
+        _b10 = 4;
+        
     }
     return self;
 }
@@ -163,7 +174,13 @@ const int fluxEitherSide = 2;
     
     int flux = (arc4random_uniform(fluxEitherSide * 2));
     _currentHeartRate = _currentHeartRate + flux;
+
+    _b5 = _b5 * (2 * flux);
     _b6 = _b6 + 2;
+    
+    _b7 = _b7 + 1 + flux;
+    _b9 = _b9 + (2  * flux);
+    _b10 = _b10 + 4 + flux;
     
     [self sendHeartRateMeasurement];
 }
@@ -185,10 +202,21 @@ const int fluxEitherSide = 2;
 {
     // The structure of the heart rate measurement characteristic is described at
     // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-        
-    NSMutableData* payload = [NSMutableData dataWithLength:7];
+    
+    //WORKING SPEED
+//    NSMutableData* payload = [NSMutableData dataWithLength:7];
+    
+    //ADD CAD TEST
+    NSMutableData* payload = [NSMutableData dataWithLength:11];
+    
     uint8_t *bytes = [payload mutableBytes];
-    bytes[0] = 0x01;
+
+    //WORKING SPEED & HR
+    //    bytes[0] = 0x01;
+    
+    //CAD & SPEED TEST
+    bytes[0] = 0x03;
+    
 //    bytes[1] = (uint32_t) self.heartRate;
 //    bytes[5] = (uint16_t) self.heartRate;
     bytes[1] = (uint8_t) self.heartRate;
@@ -197,6 +225,13 @@ const int fluxEitherSide = 2;
         bytes[4] = (uint8_t) 0;
     bytes[5] = (uint8_t) _b5;
     bytes[6] = (uint8_t) _b6;
+    
+    
+    bytes[7] = (uint8_t) _b7;
+    bytes[8] = (uint8_t) _b8;
+    bytes[9] = (uint8_t) _b9;
+    bytes[10] = (uint8_t) _b10;
+
     
     return payload;
 }
