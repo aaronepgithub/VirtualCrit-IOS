@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     IntentFilter filter;
 
 //CAN'T PAUSE AFTER END
-    
+
 
     private void init() {
         try {
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //clickStart(getCurrentFocus());
+        clickStart(getCurrentFocus());
 
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
@@ -630,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //IF CONNECTED, DON'T ASK
-    
+
     private void postScanPopup() {
 //        Devices.setDevicesDiscoveredHR(devicesDiscoveredHR);
 
