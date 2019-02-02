@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver receiver;
     IntentFilter filter;
 
+//CAN'T PAUSE AFTER END
+    
 
     private void init() {
         try {
