@@ -86,8 +86,13 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
             final Data d = data;
 
             byte[] value = d.getValue();
-//            final int flags = characteristic.getValue()[0]; // 1 byte
+//            Log.i(TAG, "onDataReceived: d:  " + d.toString());
+//            Log.i(TAG, "onDataReceived: value[0]:  " + value[0]);
+//            Log.i(TAG, "onDataReceived: value:  " + value);
+
             final int flags = value[0]; // 1 byte
+
+            Log.i(TAG, "onDataReceived: flags:  " + flags);
 
             final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
             final boolean crankRevPresent = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;
@@ -160,12 +165,12 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
 
         if (hasSpeed == Boolean.TRUE) {
 
-            Log.i(TAG, "onWheelMeasurementReceived: HAS SPEED");
+            //Log.i(TAG, "onWheelMeasurementReceived: HAS SPEED");
             adviseActivitySPD(Variables.getSpeed(), Variables.getDistance(), Variables.getAvgSpeed());
 
 
         } else {
-            Log.i(TAG, "onWheelMeasurementReceived: NO SPEED");
+            //Log.i(TAG, "onWheelMeasurementReceived: NO SPEED");
             //return;
         }
 
@@ -200,12 +205,12 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
 
         if (hasCadence == Boolean.TRUE) {
 
-            Log.i(TAG, "onWheelMeasurementReceived: HAS CADENCE");
+            //Log.i(TAG, "onCrankMeasurementReceived: HAS CADENCE");
             adviseActivityCAD(Variables.getCadence());
 
 
         } else {
-            Log.i(TAG, "onWheelMeasurementReceived: NO CADENCE");
+            //Log.i(TAG, "onCrankMeasurementReceived: NO CADENCE");
             //return;
         }
 

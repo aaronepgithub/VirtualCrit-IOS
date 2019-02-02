@@ -227,7 +227,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="-"
+
                     android:textStyle="bold"
                     android:textAlignment="viewStart" />
                 <TextView
@@ -235,7 +235,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="-"
+
                     android:textStyle="bold"
                     android:textAlignment="viewStart" />
                 <TextView
@@ -243,7 +243,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:text="-"
+
                     android:textStyle="bold"
                     android:textAlignment="viewStart" />
 
@@ -317,7 +317,39 @@
             </TableRow>
 
 
+            <!--GPS-->
+            <LinearLayout
+                android:id="@+id/editWheelSize"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/valueWheelSize"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="WHEEL SIZE: 700X25"
+                    android:textAlignment="viewStart"
+                    android:onClick="clickWheelSize"/>
+
+                <Button
+                    android:id="@+id/valueAudio"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="AUDIO OFF"
+                    android:textAlignment="viewStart"
+                    android:onClick="clickAudio"/>
+
+            </LinearLayout>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#444">
+            </TableRow>
 
 
         </LinearLayout>

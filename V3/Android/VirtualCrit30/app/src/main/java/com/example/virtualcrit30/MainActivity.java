@@ -195,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //clickStart(getCurrentFocus());
+
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
         mActiveTimer = findViewById(R.id.activeTimer);
@@ -215,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 TextView mDistance = (TextView) findViewById(R.id.valueDistanceBLE);
                 mDistance.setText(Variables.getDistance());
-//
-//                TextView mAvgSpeed = (TextView) findViewById(R.id.tvAvgSpeed);
-//                mAvgSpeed.setText(Variables.getAvgSpeed());
+
+                TextView mAvgSpeed = (TextView) findViewById(R.id.valueAverageSpeedBLE);
+                mAvgSpeed.setText(Variables.getAvgSpeed());
             }
         });
 
@@ -657,6 +659,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "onClick: YES, now call to connect to device " + d.getName());
                             //send connection request
                             devicesConnectedHR.add(d);
+                            setBluetoothDeviceNames(d.getName().toUpperCase());
                         initManagerHR(d);
 
                         }
@@ -716,6 +719,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "onClick: " + d.getName());
                             //send connection request
                             devicesConnectedCSC.add(d);
+                            setBluetoothDeviceNames(d.getName().toUpperCase());
                         initManagerCSC(d);
                         }
                     })
@@ -728,14 +732,79 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "postScanPopupCSC: loop complete, hope nordic buffers");
 
     }
-    
 
 
 
 
+
+    private void setBluetoothDeviceNames (String x) {
+        Log.i(TAG, "setBluetoothDeviceNames: " + x);
+        runOnUiThread(() -> {
+            TextView tv1 = findViewById(R.id.valueBluetoothDevice1);
+            TextView tv2 = findViewById(R.id.valueBluetoothDevice2);
+            TextView tv3 = findViewById(R.id.valueBluetoothDevice3);
+            if (tv1.getText().equals("")) {
+                Log.i(TAG, "setBluetoothDeviceNames: tv1");
+                tv1.setText(x);
+                return;
+            }
+            if (tv2.getText().equals("")) {
+
+                tv2.setText(x);
+                return;
+            }
+            if (tv3.getText().equals("")) {
+                tv3.setText(x);
+            }
+            Log.i(TAG, "setBluetoothDeviceNames: all name slots taken");
+
+        });
+    }
 
     private void setMessageText (String x) {
         runOnUiThread(() -> mTextMessage.setText(x));
     }
 
+    public void clickWheelSize(View view) {
+
+        runOnUiThread(() -> {
+
+            TextView tv = findViewById(R.id.valueWheelSize);
+            switch (Variables.getWheelSizeInMM()) {
+                case 2105: {
+                    tv.setText("WHEEL SIZE: 700X28");
+                    Variables.setWheelSizeInMM(2136);
+                    break;
+                }
+                case 2136: {
+                    tv.setText("WHEEL SIZE: 700X32");
+                    Variables.setWheelSizeInMM(2155);
+                    break;
+                }
+                case 2155: {
+                    tv.setText("WHEEL SIZE: 700X42");
+                    Variables.setWheelSizeInMM(2224);
+                    break;
+                }
+                case 2224: {
+                    tv.setText("WHEEL SIZE: 700X25");
+                    Variables.setWheelSizeInMM(2105);
+                    break;
+                }
+                default: {
+                    tv.setText("WHEEL SIZE: 700X25");
+                    Variables.setWheelSizeInMM(2105);
+                }
+            }
+            Log.i(TAG, "clickWheelSize: new size: " + Variables.getWheelSizeInMM());
+
+        });
+
+
+
+    }
+
+    public void clickAudio(View view) {
+        Log.i(TAG, "clickAudio: ...");
+    }
 }

@@ -21,18 +21,15 @@ public final class CalcCadence {
     @SuppressLint("DefaultLocale")
     public static Boolean calcCadence(final int revs, final int time ) {
 
+        Log.i(TAG, "calcCadence: revs, time:  " + revs + ", " + time);
+
         cadValuesLinkedList.push(revs);
 
         if (cadValuesLinkedList.size() > 5) {
             cadValuesLinkedList.removeLast();
         }
         if (cadValuesLinkedList.peekFirst().equals(cadValuesLinkedList.peekLast())) {
-            //Log.i(TAG, "****   4 in a row, make a 0");
-            //adviseActivityCAD("0 C");
-
-
-            Variables.setCadence("0 C");
-
+            Variables.setCadence("0 RPM");
             return Boolean.TRUE;
         }
 

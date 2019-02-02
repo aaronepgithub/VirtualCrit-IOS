@@ -39,7 +39,7 @@ public final class CalcSpeed {
         if (speedValuesLinkedList.peekFirst().equals(speedValuesLinkedList.peekLast())) {
             //Log.i(TAG, "SPD =  0");
             //adviseActivitySPD("0 S", String.format("%.2f MILES", tDistance), String.format("%.1f MPH", tAvgSpeed));
-            Variables.setSpeed("0 S");
+            Variables.setSpeed("0 MPH");
             return hasSpeed = Boolean.TRUE;
         }
 
@@ -98,10 +98,10 @@ public final class CalcSpeed {
 
 
         Variables.setDistance(String.format("%.2f MILES", tDistance));
-        Variables.setAvgSpeed(String.format("%.2f AVG MPH", tAvgSpeed));
-        Variables.setSpeed(String.format("%.2f S", speed));
+        Variables.setAvgSpeed(String.format("%.1f AVG", tAvgSpeed));
+        Variables.setSpeed(String.format("%.2f MPH", speed));
 
-        Log.i(TAG, "calcSpeed: " + String.format("%.2f S", speed));
+        Log.i(TAG, "calcSpeed: " + String.format("%.2f MPH", speed));
 
         return hasSpeed = Boolean.TRUE;
     }
