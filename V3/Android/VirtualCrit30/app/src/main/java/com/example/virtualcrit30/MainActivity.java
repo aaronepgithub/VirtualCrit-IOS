@@ -16,8 +16,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -32,6 +34,19 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.concurrent.TimeUnit;
+import android.location.Location;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+
+import org.w3c.dom.Text;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
     BroadcastReceiver receiver;
     IntentFilter filter;
-
-//CAN'T PAUSE AFTER END
 
 
     private void init() {
@@ -124,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 TextView mAvgSpeed = (TextView) findViewById(R.id.valueAverageSpeedBLE);
                                 mAvgSpeed.setText(intent.getStringExtra("avgspeed"));
+
+                                TextView mActiveTimeBle = (TextView) findViewById(R.id.valueActiveTimeBLE);
+                                mActiveTimeBle.setText(Variables.getvTotalTimeSeconds());
                             }
                         });
                     }
@@ -274,6 +290,138 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+    @SuppressLint("DefaultLocale")
+    public void onLocationReceived(Location location) {
+        Log.i(TAG, "onLocationReceived");
+        arrLats.add(location.getLatitude());
+        arrLons.add(location.getLongitude());
+
+        if (arrLats.size() < 5) {
+            oldLat = location.getLatitude();
+            oldLon = location.getLongitude();
+            oldTime = location.getTime();
+        } else {
+            Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
+
+            if (results.length > 0) {
+
+                //mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
+                if (results[0] == 0) {
+                    //mPrinter("NOTHING AT RESULTS[0] - RETURN");
+                    return;
+                }
+                if (results[0] * 0.000621371 <= 0) {
+                    //mPrinter("NO DISTANCE TRAVELED - RETURN");
+                    return;
+                }
+
+                //OPT 1.  QUICKREAD GEO SPEED
+                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                Log.i(TAG, "onLocationReceived: QuickSpeedCalc: " + geoSpeedQuick);
+
+                //OPT 2.  GEO SPEED, LONG VERSION
+                Double gd = results[0] * 0.000621371;
+                long gt = (location.getTime() - oldTime);  //MILLI
+                Double geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+                geoDistance += results[0] * 0.000621371;
+
+
+                totalTimeGeo += (location.getTime() - oldTime);  //MILLI
+                double ttg = totalTimeGeo;  //IN MILLI
+                double geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+                long millis = totalTimeGeo;
+                @SuppressLint("DefaultLocale")
+                final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+                //UPDATE UI WITH SPEED AND DISTANCE
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView tvSpd = (TextView) findViewById(R.id.valueSpeedGPS);
+                        tvSpd.setText(String.format("%.2f MPH", geoSpeedQuick));
+
+                        TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
+                        tvDst.setText(String.format("%.2f Miles", geoDistance));
+
+                        TextView tvTime = (TextView) findViewById(R.id.valueActiveTimeGPS);
+                        tvTime.setText(hms);
+
+                        TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
+                        tvAvgSpd.setText(String.format("%.2f MPH", geoAvgSpeed));
+                    }
+                });
+
+
+
+            }
+
+            oldLat = location.getLatitude();
+            oldLon = location.getLongitude();
+            oldTime = location.getTime();
+        }
+
+
+    }
+
+    private ArrayList<Double> arrLats = new ArrayList<>();
+    private ArrayList<Double> arrLons = new ArrayList<>();
+    private Double oldLat = 0.0;
+    private Double oldLon = 0.0;
+    private Double geoDistance = 0.0;
+    private Double geoAvgSpeed = 0.0;
+    private float[] results = new float[2];
+    private long oldTime = 0;
+    private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
+
+    private void startGPS() {
+        Log.i(TAG, "startGPS: ");
+        //START GPS
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(3000);
+        mLocationRequest.setFastestInterval(2000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
+
+
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        //CHANGE FROM WORKING ORIGINAL
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                onNewLocation(locationResult.getLastLocation());
+            }
+
+            private void onNewLocation(Location lastLocation) {
+                ////Log.i(TAG, "onNewLocation: " + lastLocation.getSpeed());
+                onLocationReceived(lastLocation);
+            }
+        };
+
+        try {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                    mLocationCallback, Looper.myLooper());
+        } catch (SecurityException unlikely) {
+            //Utils.setRequestingLocationUpdates(this, false);
+            Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
+        }
+
+    }
+
+
+    private LocationRequest mLocationRequest;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationCallback mLocationCallback;
+    private Handler mServiceHandler;
+    private Location mLocation;
+
+
     public void clickGPS(View view) {
         TextView mGPS = findViewById(R.id.valueGPS);
 
@@ -284,6 +432,7 @@ public class MainActivity extends AppCompatActivity {
                     mGPS.setText("ON");
                     settingsGPS = "ON";
                     Log.i(TAG, "clickGPS: ON");
+                    startGPS();
                     // Show Alert
                     Toast.makeText(getApplicationContext(),
                             "GPS ON" , Toast.LENGTH_SHORT)
@@ -292,6 +441,13 @@ public class MainActivity extends AppCompatActivity {
                     mGPS.setText("OFF");
                     settingsGPS = "OFF";
                     Log.i(TAG, "clickGPS: OFF");
+                    //STOP GPS
+                    try {
+                        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+                    } catch (Exception e){
+                        Log.i(TAG, "Error,  DIDN'T STOP LOCATION");
+                    }
+                    //SHOWALERT
                     Toast.makeText(getApplicationContext(),
                             "GPS OFF" , Toast.LENGTH_SHORT)
                             .show();

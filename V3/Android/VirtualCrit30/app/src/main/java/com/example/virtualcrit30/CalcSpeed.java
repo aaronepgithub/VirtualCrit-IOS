@@ -20,7 +20,6 @@ public final class CalcSpeed {
     private static double tDistance = 0;
     private static double tAvgSpeed = 0;
 
-    private static LinkedList<Integer> cadValuesLinkedList = new LinkedList<Integer>();
     private static LinkedList<Integer> speedValuesLinkedList = new LinkedList<Integer>();
 
     private static Boolean hasSpeed = Boolean.TRUE;
@@ -100,8 +99,9 @@ public final class CalcSpeed {
         Variables.setDistance(String.format("%.2f MILES", tDistance));
         Variables.setAvgSpeed(String.format("%.1f AVG", tAvgSpeed));
         Variables.setSpeed(String.format("%.2f MPH", speed));
+        Variables.setvTotalTimeSeconds(Timer.getActiveTimeStringFromSeconds((int) totalTimeInSeconds));
 
-        Log.i(TAG, "calcSpeed: " + String.format("%.2f MPH", speed));
+//        Log.i(TAG, "calcSpeed: " + String.format("%.2f MPH", speed));
 
         return hasSpeed = Boolean.TRUE;
     }

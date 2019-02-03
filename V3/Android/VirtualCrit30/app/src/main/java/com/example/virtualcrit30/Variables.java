@@ -2,9 +2,11 @@ package com.example.virtualcrit30;
 
 public final class Variables {
 
+    //BLE VARIABLES
     private static String vSpeed;
-    private static String vDistance;
-    private static String vAvgSpeed;
+    private static String vDistance = "0.00 Miles";
+    private static String vAvgSpeed = "0.0 MPH";
+    private static String vTotalTimeSeconds;
     private static int wheelSizeInMM = 2105;
 
     private static String vCadence;
@@ -49,4 +51,12 @@ public final class Variables {
         Variables.vCadence = vCadence;
     }
 
+    public static String getvTotalTimeSeconds() {
+        return vTotalTimeSeconds;
+    }
+
+    //STRING
+    public static void setvTotalTimeSeconds(String vTotalTimeSeconds) {
+        Variables.vTotalTimeSeconds = vTotalTimeSeconds;
+    }
 }

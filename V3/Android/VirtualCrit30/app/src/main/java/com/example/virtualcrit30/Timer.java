@@ -54,4 +54,11 @@ public final class Timer {
                 activeMillis/(60*1000) % 60,
                 activeMillis/1000 % 60);
     }
+
+    @SuppressLint("DefaultLocale")
+    public static String getActiveTimeStringFromSeconds(int s) {
+        return String.format("%02d:%02d:%02d", activeMillis/(3600*1000),
+                activeMillis/(60*1000) % 60,
+                activeMillis/1000 % 60);
+    }
 }
