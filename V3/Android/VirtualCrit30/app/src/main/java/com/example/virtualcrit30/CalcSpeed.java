@@ -29,7 +29,7 @@ public final class CalcSpeed {
 
 
     public static Boolean calcSpeed( final int revs, final int time) {
-
+        Log.i(TAG, "calcSpeed: " + revs + ", " + time);
         final int circumference = Variables.getWheelSizeInMM(); // [mm]
 
         speedValuesLinkedList.push(revs);

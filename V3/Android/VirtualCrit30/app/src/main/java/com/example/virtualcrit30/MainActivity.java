@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     IntentFilter filter;
 
 //CAN'T PAUSE AFTER END
-    
+
 
     private void init() {
         try {

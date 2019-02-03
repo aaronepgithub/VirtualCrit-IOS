@@ -21,7 +21,7 @@ public final class CalcCadence {
     @SuppressLint("DefaultLocale")
     public static Boolean calcCadence(final int revs, final int time ) {
 
-        Log.i(TAG, "calcCadence: revs, time:  " + revs + ", " + time);
+        Log.i(TAG, "calcCadence: " + revs + ", " + time);
 
         cadValuesLinkedList.push(revs);
 
