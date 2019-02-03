@@ -39,6 +39,8 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     @Override
     public void onDeviceConnected(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onDeviceConnected: " + device.getName());
+        Variables.setStatusHR(device.getName() + " Connected");
+
     }
 
     /**

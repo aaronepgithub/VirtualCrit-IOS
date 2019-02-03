@@ -24,6 +24,9 @@ public final class CalcSpeed {
 
     private static Boolean hasSpeed = Boolean.TRUE;
 
+    private static int wheelRevolutionsPerMile = 0;
+    private static int nextMile = 1;
+    private static int calibratedWheelSize = 0;
 
 
 
@@ -101,7 +104,14 @@ public final class CalcSpeed {
         Variables.setSpeed(String.format("%.2f MPH", speed));
         Variables.setvTotalTimeSeconds(Timer.getActiveTimeStringFromSeconds((int) totalTimeInSeconds));
 
-//        Log.i(TAG, "calcSpeed: " + String.format("%.2f MPH", speed));
+        wheelRevolutionsPerMile += revs;
+        if (tDistance >= (double) nextMile) {
+            nextMile += 1;
+            calibratedWheelSize = (int) (1609344 / wheelRevolutionsPerMile);
+            wheelRevolutionsPerMile = 0;
+            //DISPLAY THIS SOMEWHERE
+        }
+
 
         return hasSpeed = Boolean.TRUE;
     }

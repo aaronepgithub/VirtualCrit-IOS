@@ -9,6 +9,11 @@ public final class Variables {
     private static String vTotalTimeSeconds;
     private static int wheelSizeInMM = 2105;
 
+    private static String statusHR = "0";
+    private static String statusSC = "0";
+
+
+
     private static String vCadence;
 
     public static String getDistance(){
@@ -58,5 +63,21 @@ public final class Variables {
     //STRING
     public static void setvTotalTimeSeconds(String vTotalTimeSeconds) {
         Variables.vTotalTimeSeconds = vTotalTimeSeconds;
+    }
+
+    public static String getStatusHR() {
+        return statusHR;
+    }
+
+    public static void setStatusHR(String statusHR) {
+        Variables.statusHR = statusHR;
+    }
+
+    public static String getStatusSC() {
+        return statusSC;
+    }
+
+    public static void setStatusSC(String statusSC) {
+        Variables.statusSC = statusSC;
     }
 }

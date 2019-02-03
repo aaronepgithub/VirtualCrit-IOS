@@ -189,6 +189,7 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
 
         }
 
+
         @Override
         protected void onDeviceDisconnected() {
             Log.i(TAG, "onDeviceDisconnected: " + getBluetoothDevice().getName());

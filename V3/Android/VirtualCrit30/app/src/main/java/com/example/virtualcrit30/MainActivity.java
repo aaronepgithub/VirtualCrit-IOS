@@ -182,6 +182,16 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
+            if (Variables.getStatusHR() != "0") {
+                setMessageText(Variables.getStatusHR());
+                Variables.setStatusHR("0");
+            }
+
+            if (Variables.getStatusSC() != "0") {
+                setMessageText(Variables.getStatusSC());
+                Variables.setStatusSC("0");
+            }
+
             lastMillis = totalMillis;
             timerHandler.postDelayed(this, 1000);
         }

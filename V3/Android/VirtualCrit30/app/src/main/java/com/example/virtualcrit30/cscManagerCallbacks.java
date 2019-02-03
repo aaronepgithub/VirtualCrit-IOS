@@ -38,6 +38,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onDeviceConnected(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceConnected: " + device.getName());
+            Variables.setStatusSC(device.getName() + " Connected");
         }
 
         /**
@@ -62,16 +63,17 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onDeviceDisconnected(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceDisconnected: " + device.getName());
+
         }
 
-        /**
-         * This callback is invoked when the Ble Manager lost connection to a device that has been
-         * connected with autoConnect option (see {@link BleManager#shouldAutoConnect()}.
-         * Otherwise a {@link #onDeviceDisconnected(BluetoothDevice)} method will be called on such
-         * event.
-         *
-         * @param device the device that got disconnected due to a link loss.
-         */
+//        /**
+//         * This callback is invoked when the Ble Manager lost connection to a device that has been
+//         * connected with autoConnect option (see {@link BleManager#shouldAutoConnect()}.
+//         * Otherwise a {@link #onDeviceDisconnected(BluetoothDevice)} method will be called on such
+//         * event.
+//         *
+//         * @param device the device that got disconnected due to a link loss.
+//         */
         @Override
         public void onLinkLossOccurred(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onLinkLossOccurred: " + device.getName());
