@@ -76,7 +76,8 @@ public final class CalcSpeed {
             return hasSpeed = Boolean.FALSE;
         }
 
-        totalWheelRevolutions += wheelDiff;
+
+        totalWheelRevolutions += (double) wheelDiff;
         double localDistance = (totalWheelRevolutions * ( (((double) circumference) / 1000) * 0.000621371 ));
         totalTimeInSeconds += (double) timeDiff / 1024.0;
 
