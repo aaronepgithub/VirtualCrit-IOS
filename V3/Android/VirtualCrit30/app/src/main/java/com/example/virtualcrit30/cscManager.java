@@ -86,7 +86,7 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
             final Data d = data;
 
             byte[] value = d.getValue();
-            Log.i(TAG, "onDataReceived: d:  " + d.toString());
+//            Log.i(TAG, "onDataReceived: d:  " + d.toString());
 //            Log.i(TAG, "onDataReceived: value[0]:  " + value[0]);
 //            Log.i(TAG, "onDataReceived: value:  " + value);
             //adviseActivityMessageBar(value.toString());

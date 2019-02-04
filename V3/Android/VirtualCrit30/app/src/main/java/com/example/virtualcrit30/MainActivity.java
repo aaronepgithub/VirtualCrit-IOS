@@ -304,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int nextMile = 1;
     private int calibratedWheelSize = 0;
+    private int revsAtStartOfMile = 1;
 
 
     @SuppressLint("DefaultLocale")
@@ -347,10 +348,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (geoDistance >= (double) nextMile) {
             nextMile += 1;
-            calibratedWheelSize = (int) (1609344 / Variables.getWheelRevPerMile());
-            Variables.setWheelRevPerMile(1);
-            //DISPLAY THIS SOMEWHERE
-            Variables.setMessageBarValue(String.valueOf(calibratedWheelSize) + ",  CALIBRATED WHEELSIZE MM");
+            int cal = Variables.getWheelRevPerMile() - revsAtStartOfMile;
+            if (cal > 1) {
+                calibratedWheelSize = (int) (1609344 / cal);
+                //DISPLAY THIS SOMEWHERE
+                Variables.setMessageBarValue(String.valueOf(calibratedWheelSize) + ",  CALIBRATED WHEELSIZE MM");
+            }
+            revsAtStartOfMile = Variables.getWheelRevPerMile();
+
         }
 
 

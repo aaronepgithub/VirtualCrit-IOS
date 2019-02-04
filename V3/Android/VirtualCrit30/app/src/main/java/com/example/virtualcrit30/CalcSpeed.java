@@ -31,7 +31,7 @@ public final class CalcSpeed {
     public static Boolean calcSpeed( final int revs, final int time) {
         //Log.i(TAG, "calcSpeed: " + revs + ", " + time);
 
-        Variables.setWheelRevPerMile(revs);
+
         final int circumference = Variables.getWheelSizeInMM(); // [mm]
 
         speedValuesLinkedList.push(revs);
@@ -76,8 +76,7 @@ public final class CalcSpeed {
             return hasSpeed = Boolean.FALSE;
         }
 
-        Variables.setWheelRevPerMile(Variables.getWheelRevPerMile() + wheelDiff);
-
+        totalWheelRevolutions += wheelDiff;
         double localDistance = (totalWheelRevolutions * ( (((double) circumference) / 1000) * 0.000621371 ));
         totalTimeInSeconds += (double) timeDiff / 1024.0;
 
@@ -104,6 +103,7 @@ public final class CalcSpeed {
         Variables.setAvgSpeed(String.format("%.1f AVG", tAvgSpeed));
         Variables.setSpeed(String.format("%.2f MPH", speed));
         Variables.setvTotalTimeSeconds(Timer.getActiveTimeStringFromSeconds((int) totalTimeInSeconds));
+        Variables.setWheelRevPerMile(revs);
 
         return hasSpeed = Boolean.TRUE;
     }
