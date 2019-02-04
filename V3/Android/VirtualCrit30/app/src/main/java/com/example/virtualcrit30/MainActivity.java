@@ -163,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             totalMillis = System.currentTimeMillis() - startTime;
             Timer.setTotalMillis(totalMillis);
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -206,12 +205,16 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
+//                    Variables.setMessageBarValue("clickHome");
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
+//                    Variables.setMessageBarValue("clickDashboard");
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
+                    mTextMessage.setText(Variables.getMessageBarValue());
+                    //getMessageBarValue()
                     return true;
             }
             return false;
@@ -222,9 +225,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         clickStart(getCurrentFocus());
-
+        Variables.setMessageBarValue("onCreate");
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
         mActiveTimer = findViewById(R.id.activeTimer);
@@ -300,6 +302,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private int nextMile = 1;
+    private int calibratedWheelSize = 0;
 
 
     @SuppressLint("DefaultLocale")
@@ -336,6 +340,18 @@ public class MainActivity extends AppCompatActivity {
                 long gt = (location.getTime() - oldTime);  //MILLI
                 Double geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
                 geoDistance += results[0] * 0.000621371;
+
+
+                //        //NEED TO USE GEO TO DETERMINE 1 MILE!!!
+
+
+        if (geoDistance >= (double) nextMile) {
+            nextMile += 1;
+            calibratedWheelSize = (int) (1609344 / Variables.getWheelRevPerMile());
+            Variables.setWheelRevPerMile(1);
+            //DISPLAY THIS SOMEWHERE
+            Variables.setMessageBarValue(String.valueOf(calibratedWheelSize) + ",  CALIBRATED WHEELSIZE MM");
+        }
 
 
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI

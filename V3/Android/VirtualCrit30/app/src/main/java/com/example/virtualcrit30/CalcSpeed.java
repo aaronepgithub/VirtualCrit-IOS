@@ -24,14 +24,14 @@ public final class CalcSpeed {
 
     private static Boolean hasSpeed = Boolean.TRUE;
 
-    private static int wheelRevolutionsPerMile = 0;
-    private static int nextMile = 1;
-    private static int calibratedWheelSize = 0;
+
 
 
 
     public static Boolean calcSpeed( final int revs, final int time) {
-        Log.i(TAG, "calcSpeed: " + revs + ", " + time);
+        //Log.i(TAG, "calcSpeed: " + revs + ", " + time);
+
+        Variables.setWheelRevPerMile(revs);
         final int circumference = Variables.getWheelSizeInMM(); // [mm]
 
         speedValuesLinkedList.push(revs);
@@ -76,7 +76,8 @@ public final class CalcSpeed {
             return hasSpeed = Boolean.FALSE;
         }
 
-        totalWheelRevolutions += (double) wheelDiff;
+        Variables.setWheelRevPerMile(Variables.getWheelRevPerMile() + wheelDiff);
+
         double localDistance = (totalWheelRevolutions * ( (((double) circumference) / 1000) * 0.000621371 ));
         totalTimeInSeconds += (double) timeDiff / 1024.0;
 
@@ -103,15 +104,6 @@ public final class CalcSpeed {
         Variables.setAvgSpeed(String.format("%.1f AVG", tAvgSpeed));
         Variables.setSpeed(String.format("%.2f MPH", speed));
         Variables.setvTotalTimeSeconds(Timer.getActiveTimeStringFromSeconds((int) totalTimeInSeconds));
-
-        wheelRevolutionsPerMile += revs;
-        if (tDistance >= (double) nextMile) {
-            nextMile += 1;
-            calibratedWheelSize = (int) (1609344 / wheelRevolutionsPerMile);
-            wheelRevolutionsPerMile = 0;
-            //DISPLAY THIS SOMEWHERE
-        }
-
 
         return hasSpeed = Boolean.TRUE;
     }

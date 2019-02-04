@@ -25,6 +25,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     @Override
     public void onDeviceConnecting(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onDeviceConnecting: " + device.getName());
+        Variables.setMessageBarValue(device.getName() + " onDeviceConnecting");
     }
 
     /**
@@ -40,6 +41,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     public void onDeviceConnected(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onDeviceConnected: " + device.getName());
         Variables.setStatusHR(device.getName() + " Connected");
+        Variables.setMessageBarValue(device.getName() + " Connected");
 
     }
 
@@ -51,6 +53,8 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     @Override
     public void onDeviceDisconnecting(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onDeviceDisconnecting: " + device.getName());
+        Variables.setMessageBarValue(device.getName() + " Disconnecting");
+
     }
 
 //    /**
@@ -65,6 +69,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     @Override
     public void onDeviceDisconnected(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onDeviceDisconnected: " + device.getName());
+        Variables.setMessageBarValue(device.getName() + " Disconnected");
     }
 
     /**
@@ -78,6 +83,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     @Override
     public void onLinkLossOccurred(@NonNull BluetoothDevice device) {
         Log.i(TAG, "onLinkLossOccurred: " + device.getName());
+        Variables.setMessageBarValue(device.getName() + " onLinkLossOccured");
     }
 
     /**
@@ -151,6 +157,7 @@ public class hrManagerCallbacks implements BleManagerCallbacks {
     @Override
     public void onError(@NonNull BluetoothDevice device, @NonNull String message, int errorCode) {
         Log.i(TAG, "onError: " + device.getName());
+        Variables.setMessageBarValue(device.getName() + " onError");
     }
 
     /**

@@ -24,6 +24,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onDeviceConnecting(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceConnecting: " + device.getName());
+            Variables.setMessageBarValue(device.getName() + " Connecting");
         }
 
         /**
@@ -39,6 +40,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         public void onDeviceConnected(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceConnected: " + device.getName());
             Variables.setStatusSC(device.getName() + " Connected");
+            Variables.setMessageBarValue(device.getName() + " Connected");
         }
 
         /**
@@ -49,6 +51,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onDeviceDisconnecting(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceDisconnecting: " + device.getName());
+            Variables.setMessageBarValue(device.getName() + " Disconnecting");
         }
 
 //        /**
@@ -63,6 +66,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onDeviceDisconnected(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceDisconnected: " + device.getName());
+            Variables.setMessageBarValue(device.getName() + " Disconnected");
 
         }
 
@@ -77,6 +81,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onLinkLossOccurred(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onLinkLossOccurred: " + device.getName());
+            Variables.setMessageBarValue(device.getName() + " onLinkLoss");
         }
 
         /**
@@ -150,6 +155,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         @Override
         public void onError(@NonNull BluetoothDevice device, @NonNull String message, int errorCode) {
             Log.i(TAG, "onError: " + device.getName());
+            Variables.setMessageBarValue(device.getName() + " onError");
         }
 
         /**
@@ -161,6 +167,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
         public void onDeviceNotSupported(@NonNull BluetoothDevice device) {
             Log.i(TAG, "onDeviceNotSupported: ");
         }
+
 
 
 
