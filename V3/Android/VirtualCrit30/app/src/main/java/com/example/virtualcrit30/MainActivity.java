@@ -181,15 +181,15 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-            if (Variables.getStatusHR() != "0") {
-                setMessageText(Variables.getStatusHR());
-                Variables.setStatusHR("0");
-            }
-
-            if (Variables.getStatusSC() != "0") {
-                setMessageText(Variables.getStatusSC());
-                Variables.setStatusSC("0");
-            }
+//            if (Variables.getStatusHR() != "0") {
+//                setMessageText(Variables.getStatusHR());
+//                Variables.setStatusHR("0");
+//            }
+//
+//            if (Variables.getStatusSC() != "0") {
+//                setMessageText(Variables.getStatusSC());
+//                Variables.setStatusSC("0");
+//            }
 
             lastMillis = totalMillis;
             timerHandler.postDelayed(this, 1000);
@@ -204,17 +204,18 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-//                    Variables.setMessageBarValue("clickHome");
+                    //mTextMessage.setText(R.string.title_home);
+                    setMessageText("Home");
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-//                    Variables.setMessageBarValue("clickDashboard");
+                    //mTextMessage.setText(R.string.title_dashboard);
+                    setMessageText("Dashboard");
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    mTextMessage.setText(Variables.getMessageBarValue());
+                    //mTextMessage.setText(R.string.title_notifications);
+                    //mTextMessage.setText(Variables.getMessageBarValue());
                     //getMessageBarValue()
+                    setMessageText(Variables.getMessageBarValue());
                     return true;
             }
             return false;
@@ -638,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     mLEScanner.stopScan(mScanCallback);
                     Log.i(TAG, "run: STOP SCANNING");
-                    setMessageText("-");
+                    //setMessageText("-");
                     deviceDiscovered = null;
                     preScanStartCSC();
                 }
@@ -702,13 +703,13 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     mLEScanner.stopScan(mScanCallbackCSC);
                     Log.i(TAG, "run: STOP SCANNING CSC");
-                    setMessageText("-");
+                    //setMessageText("-");
 
                     //SHOW DEVICES FOUND
                     deviceDiscovered = null;
 
                     if (devicesDiscoveredHR.size() + devicesDiscoveredCSC.size() == 0) {
-                        setMessageText("NO DEVICES FOUND");
+                        //setMessageText("NO DEVICES FOUND");
                         Toast.makeText(getApplicationContext(),
                                 "NO FOUND DEVICES" , Toast.LENGTH_SHORT)
                                 .show();
@@ -823,7 +824,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "postScanPopup");
         if (devicesDiscoveredHR.size() + devicesDiscoveredCSC.size() == 0) {
-            setMessageText("NO DEVICES FOUND");
+            //setMessageText("NO DEVICES FOUND");
             Toast.makeText(getApplicationContext(),
                     "NO FOUND DEVICES" , Toast.LENGTH_SHORT)
                     .show();
@@ -878,7 +879,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "postScanPopupCSC Started");
         if (devicesDiscoveredCSC.size() == 0) {
-            setMessageText("NO MORE DEVICES");
+            //setMessageText("NO MORE DEVICES");
             return;
         }
 
