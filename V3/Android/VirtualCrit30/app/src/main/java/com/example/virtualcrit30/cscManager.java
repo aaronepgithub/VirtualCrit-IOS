@@ -93,7 +93,7 @@ public class cscManager extends BleManager<cscManagerCallbacks> {
 
             final int flags = value[0]; // 1 byte
 
-            Log.i(TAG, "onDataReceived: flags:  " + flags);
+            //Log.i(TAG, "onDataReceived: flags:  " + flags);
 
             final boolean wheelRevPresent = (flags & WHEEL_REVOLUTIONS_DATA_PRESENT) > 0;
             final boolean crankRevPresent = (flags & CRANK_REVOLUTION_DATA_PRESENT) > 0;

@@ -84,18 +84,18 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if(action.equals("MESSAGE") && xtrName.equals("messageBar")){
-                        Log.i(TAG, "onReceive: action:  " + action);
-                        Log.i(TAG, "onReceive: Type:  " + xtrName);
-                        Log.i(TAG, "onReceive: xtr:  " + xtr);
+//                        Log.i(TAG, "onReceive: action:  " + action);
+//                        Log.i(TAG, "onReceive: Type:  " + xtrName);
+//                        Log.i(TAG, "onReceive: xtr:  " + xtr);
 
                         setMessageText(xtr);
 
                     }
 
                     if(action.equals("MESSAGE") && xtrName.equals("hr")){
-                        Log.i(TAG, "onReceive: action:  " + action);
-                        Log.i(TAG, "onReceive: Type:  " + xtrName);
-                        Log.i(TAG, "onReceive: xtr:  " + xtr);
+//                        Log.i(TAG, "onReceive: action:  " + action);
+//                        Log.i(TAG, "onReceive: Type:  " + xtrName);
+//                        Log.i(TAG, "onReceive: xtr:  " + xtr);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if(action.equals("MESSAGE") && xtrName.equals("cad")){
-                        Log.i(TAG, "onReceive: action:  " + action);
-                        Log.i(TAG, "onReceive: xtr:  " + xtr);
+//                        Log.i(TAG, "onReceive: action:  " + action);
+//                        Log.i(TAG, "onReceive: xtr:  " + xtr);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if(action.equals("MESSAGE") && xtrName.equals("spd")){
-                        Log.i(TAG, "onReceive: action:  " + action);
-                        Log.i(TAG, "onReceive: xtr:  " + xtr);
+//                        Log.i(TAG, "onReceive: action:  " + action);
+//                        Log.i(TAG, "onReceive: xtr:  " + xtr);
 
                         rDistance = intent.getStringExtra("distance");
                         rAvgSpeed = intent.getStringExtra("avgspeed");
@@ -339,17 +339,17 @@ public class MainActivity extends AppCompatActivity {
                 //        //NEED TO USE GEO TO DETERMINE 1 MILE!!!
 
 
-        if (geoDistance >= (double) nextMile) {
-            nextMile += 1;
-            int cal = Variables.getWheelRevPerMile() - revsAtStartOfMile;
-            if (cal > 1) {
-                calibratedWheelSize = (int) (1609344 / cal);
-                //DISPLAY THIS SOMEWHERE
-                Variables.setMessageBarValue(String.valueOf(calibratedWheelSize) + ",  CALIBRATED WHEELSIZE MM");
-            }
-            revsAtStartOfMile = Variables.getWheelRevPerMile();
-
-        }
+//        if (geoDistance >= (double) nextMile) {
+//            nextMile += 1;
+//            int cal = Variables.getWheelRevPerMile() - revsAtStartOfMile;
+//            if (cal > 1) {
+//                calibratedWheelSize = (int) (1609344 / cal);
+//                //DISPLAY THIS SOMEWHERE
+//                Variables.setMessageBarValue(String.valueOf(calibratedWheelSize) + ",  CALIBRATED WHEELSIZE MM");
+//            }
+//            revsAtStartOfMile = Variables.getWheelRevPerMile();
+//
+//        }
 
 
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                         tvTime.setText(hms);
 
                         TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
-                        tvAvgSpd.setText(String.format("%.2f MPH", geoAvgSpeed));
+                        tvAvgSpd.setText(String.format("%.1f MPH", geoAvgSpeed));
                     }
                 });
 

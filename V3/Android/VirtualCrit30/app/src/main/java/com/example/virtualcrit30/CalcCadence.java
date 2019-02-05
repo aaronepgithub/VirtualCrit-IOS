@@ -21,7 +21,7 @@ public final class CalcCadence {
     @SuppressLint("DefaultLocale")
     public static Boolean calcCadence(final int revs, final int time ) {
 
-        Log.i(TAG, "calcCadence: " + revs + ", " + time);
+        //Log.i(TAG, "calcCadence: " + revs + ", " + time);
 
         cadValuesLinkedList.push(revs);
 
@@ -78,12 +78,12 @@ public final class CalcCadence {
 
         //@SuppressLint("DefaultLocale") final String cadString = String.format("%.0f C", cadence);
         if (cadValuesLinkedList.peekFirst().equals(cadValuesLinkedList.peekLast())) {
-            Variables.setCadence("0 C");
+            Variables.setCadence("0 RPM");
         } else {
-            Variables.setCadence(String.format("%.0f C", cadence));
+            Variables.setCadence(String.format("%.0f RPM", cadence));
         }
 
-        Log.i(TAG, "calcCadence: " + String.format("%.0f C", cadence));
+        //Log.i(TAG, "calcCadence: " + String.format("%.0f RPM", cadence));
         return Boolean.TRUE;
 
     }
