@@ -181,15 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-//            if (Variables.getStatusHR() != "0") {
-//                setMessageText(Variables.getStatusHR());
-//                Variables.setStatusHR("0");
-//            }
-//
-//            if (Variables.getStatusSC() != "0") {
-//                setMessageText(Variables.getStatusSC());
-//                Variables.setStatusSC("0");
-//            }
 
             lastMillis = totalMillis;
             timerHandler.postDelayed(this, 1000);
@@ -215,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
                     //mTextMessage.setText(R.string.title_notifications);
                     //mTextMessage.setText(Variables.getMessageBarValue());
                     //getMessageBarValue()
-                    setMessageText(Variables.getMessageBarValue());
+                    //setMessageText(Variables.getMessageBarValue());
+                    setMessageText("Notification");
                     return true;
             }
             return false;
@@ -703,7 +695,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     mLEScanner.stopScan(mScanCallbackCSC);
                     Log.i(TAG, "run: STOP SCANNING CSC");
-                    //setMessageText("-");
+                    setMessageText("SCAN COMPLETE");
 
                     //SHOW DEVICES FOUND
                     deviceDiscovered = null;
@@ -996,5 +988,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickAudio(View view) {
         Log.i(TAG, "clickAudio: ...");
+    }
+
+    public void clickMessageBar(View view) {
+        Log.i(TAG, "clickMessageBar: ");
+        setMessageText(Variables.getMessageBarValue());
     }
 }
