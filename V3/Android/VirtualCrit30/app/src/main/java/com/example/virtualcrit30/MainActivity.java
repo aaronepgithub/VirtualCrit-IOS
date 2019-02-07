@@ -154,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private int secondsPerRound = 30;
+    private int currentRound = 1;
+
+//WRITE ROUND DATA...
 
 
     Handler timerHandler = new Handler();
@@ -163,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             totalMillis = System.currentTimeMillis() - startTime;
             Timer.setTotalMillis(totalMillis);
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -179,6 +184,16 @@ public class MainActivity extends AppCompatActivity {
                         mActiveTimer.setText(Timer.getActiveTimeString());
                     }
                 });
+            }
+
+            if (totalMillis > (currentRound * secondsPerRound)) {
+                currentRound += 1;
+                Log.i(TAG, "round " + (currentRound - 1) + " complete");
+                setMessageText("round " + (currentRound - 1) + " complete");
+                //geoRoundSpd =
+                //geoBleSpd
+                //geoHR
+                //PROCESS NEW ROUND
             }
 
 
@@ -298,6 +313,8 @@ public class MainActivity extends AppCompatActivity {
     private int nextMile = 1;
     private int calibratedWheelSize = 0;
     private int revsAtStartOfMile = 1;
+
+
 
 
     @SuppressLint("DefaultLocale")

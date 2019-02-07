@@ -31,7 +31,9 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
     private BluetoothGattCharacteristic hrCharacteristic;
     private BluetoothGattCharacteristic cscCharacteristic;
 
-
+private int totalAllHeartrateReadings = 0;
+private int totalAllHeartrateCount = 0;
+private double totalAverageHeartrate = 0;
 
 //    /**
 //     * The manager constructor.
@@ -96,6 +98,13 @@ public class hrManager extends BleManager<hrManagerCallbacks> {
             builder.append(heartRateValue).append(" HR");
 
             adviseActivity(String.valueOf(builder));
+
+            if (heartRateValue == 0) {return;}
+            totalAllHeartrateReadings += heartRateValue;
+            totalAllHeartrateCount += 1;
+            totalAverageHeartrate = (double) totalAllHeartrateReadings / (double) totalAllHeartrateCount;
+            Log.i(TAG, "totalAverageHeartrate: " + totalAverageHeartrate);
+
         }
 
     };
