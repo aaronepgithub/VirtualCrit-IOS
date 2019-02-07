@@ -29,6 +29,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     mValueTimer.setText(Timer.getTotalTimeString());
+                    TextView t1 = findViewById(R.id.tvHeader1);
+                    t1.setText(Timer.getTotalTimeString());
                 }
             });
 
@@ -186,10 +190,10 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-            if (totalMillis > (currentRound * secondsPerRound)) {
+            if (totalMillis > (currentRound * secondsPerRound * 1000)) {
                 currentRound += 1;
                 Log.i(TAG, "round " + (currentRound - 1) + " complete");
-                setMessageText("round " + (currentRound - 1) + " complete");
+                setMessageText("ROUND " + (currentRound));
                 //geoRoundSpd =
                 //geoBleSpd
                 //geoHR
@@ -211,23 +215,68 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
+                    changeState(0);
                     setMessageText("Home");
                     return true;
                 case R.id.navigation_dashboard:
                     //mTextMessage.setText(R.string.title_dashboard);
                     setMessageText("Dashboard");
+                    changeState(1);
                     return true;
                 case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
-                    //mTextMessage.setText(Variables.getMessageBarValue());
-                    //getMessageBarValue()
-                    //setMessageText(Variables.getMessageBarValue());
                     setMessageText("Notification");
                     return true;
             }
             return false;
         }
     };
+
+
+    private int viewState = 0;
+    private void changeState(int i) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ScrollView sv = findViewById(R.id.svSettings);
+                LinearLayout ll = findViewById(R.id.llView);
+
+                switch (viewState) {
+                    case 0: {
+
+                        if (i == 1) {
+                            viewState = 1;
+//                        mTextMessage.setVisibility(View.GONE);
+                            ll.setVisibility(View.VISIBLE);
+                            sv.setVisibility(View.GONE);
+                        }
+
+                        break;
+                    }
+
+                    case 1: {
+
+                        if (i == 0) {
+                            viewState = 0;
+//                        mTextMessage.setVisibility(View.GONE);
+                            ll.setVisibility(View.GONE);
+                            sv.setVisibility(View.VISIBLE);
+                        }
+
+                        break;
+                    }
+
+                    default: {
+                        Log.i(TAG, "default...");
+                    }
+                }
+            }
+        });
+
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
