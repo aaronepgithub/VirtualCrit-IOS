@@ -309,11 +309,11 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/valueWheelSize"
+                    android:id="@+id/valueRoundButton"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="FUTURE"
+                    android:text="1 MIN/RND"
                     android:textAlignment="viewStart"
                     android:onClick="clickWheelSize"/>
 

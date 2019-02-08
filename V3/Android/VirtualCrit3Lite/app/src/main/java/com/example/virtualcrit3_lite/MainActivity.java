@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -33,6 +34,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -75,21 +77,31 @@ public class MainActivity extends AppCompatActivity {
     private double roundHeartRateCount = 0;
     private double roundHeartRate = 0;
     private double roundSpeed;
+    private double bestRoundSpeed = 1;
 
     @SuppressLint("DefaultLocale")
     private void roundEndCalculate() {
         newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
         roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
-        setMessageText("ROUND SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartRate));
+        setMessageText("ROUND "+ currentRound + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
+
+        if (roundSpeed > bestRoundSpeed) {
+            vibrator600();
+            bestRoundSpeed = roundSpeed;
+        } else {
+            //vibrator300();
+            Log.i(TAG, "roundEndCalculate: not the best");
+        }
 
         //after...
         oldDistance = newDistance;
         roundHeartrateTotal = 0;
         roundHeartRateCount = 0;
         roundHeartRate = 0;
+
 
     }
 
@@ -107,6 +119,11 @@ public class MainActivity extends AppCompatActivity {
                     mValueTimer.setText(Timer.getTotalTimeString());
                     TextView t1 = findViewById(R.id.tvHeader1);
                     t1.setText(Timer.getTotalTimeString());
+
+                    Button rnd = (Button) findViewById(R.id.valueRoundButton);
+                    //rnd.setText("TEST");
+                    rnd.setText(String.valueOf( ((int) totalMillis / 1000 ) - ((currentRound - 1) * settingsSecondsPerRound)) );
+
                 }
             });
 
@@ -1030,6 +1047,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private void vibrator300() {
+        Log.i(TAG, "Vibrator300: ");
+        // Get instance of Vibrator from current Context
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+// Vibrate for 400 milliseconds
+        v.vibrate(300);
+    }
+
+    private void vibrator600() {
+        Log.i(TAG, "Vibrator600: ");
+        // Get instance of Vibrator from current Context
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+// Vibrate for 400 milliseconds
+        v.vibrate(600);
+    }
 
     private void close() {
         if (mBluetoothGatt == null) {
