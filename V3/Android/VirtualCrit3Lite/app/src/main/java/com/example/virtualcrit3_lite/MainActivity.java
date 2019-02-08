@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,9 +36,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +52,12 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 
+import org.qap.ctimelineview.TimelineRow;
+import org.qap.ctimelineview.TimelineViewAdapter;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -67,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String settingsName = "TIM";
     private String settingsGPS = "OFF";
-    private int settingsSecondsPerRound = 60;
+    private int settingsSecondsPerRound = 300;
     private int settingsMaxHeartrate = 185;
 
     private int currentRound = 1;
@@ -100,8 +109,11 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
 
+        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartRate), Timer.getCurrentTimeStamp());
+
         if (roundSpeed > bestRoundSpeed) {
             vibrator600();
+            createTimeline("BEST ROUND (SPEED)", "");
             bestRoundSpeed = roundSpeed;
         } else {
             //vibrator300();
@@ -172,71 +184,44 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            ScrollView sv = findViewById(R.id.svSettings);
+            LinearLayout ll = findViewById(R.id.llView);
+            LinearLayout tl = findViewById(R.id.llTimeline);
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
-                    setMessageText("HOME");
-                    changeState(0);
+                    //setMessageText("HOME");
+                    //changeState(0);
+                    sv.setVisibility(View.VISIBLE);
+                    mTextMessage.setVisibility(View.VISIBLE);
+                    ll.setVisibility(View.GONE);
+                    tl.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_dashboard:
 //                    mTextMessage.setText(R.string.title_dashboard);
-                    setMessageText("DASHBOARD");
-                    changeState(1);
+                    //setMessageText("DASHBOARD");
+                    //changeState(1);
+                    ll.setVisibility(View.VISIBLE);
+                    sv.setVisibility(View.GONE);
+                    mTextMessage.setVisibility(View.GONE);
+                    tl.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_notifications:
 //                    mTextMessage.setText(R.string.title_notifications);
-                    setMessageText("NOTIFICATIONS");
+                    //setMessageText("NOTIFICATIONS");
+                    //changeState(2);
+                    ll.setVisibility(View.GONE);
+                    sv.setVisibility(View.GONE);
+                    mTextMessage.setVisibility(View.GONE);
+                    tl.setVisibility(View.VISIBLE);
                     return true;
             }
             return false;
         }
     };
 
-
-    private int viewState = 0;
-    private void changeState(final int i) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ScrollView sv = findViewById(R.id.svSettings);
-                LinearLayout ll = findViewById(R.id.llView);
-
-                switch (viewState) {
-                    case 0: {
-
-                        if (i == 1) {
-                            viewState = 1;
-//                        mTextMessage.setVisibility(View.GONE);
-                            ll.setVisibility(View.VISIBLE);
-                            sv.setVisibility(View.GONE);
-                        }
-
-                        break;
-                    }
-
-                    case 1: {
-
-                        if (i == 0) {
-                            viewState = 0;
-//                        mTextMessage.setVisibility(View.GONE);
-                            ll.setVisibility(View.GONE);
-                            sv.setVisibility(View.VISIBLE);
-                        }
-
-                        break;
-                    }
-
-                    default: {
-                        Log.i(TAG, "default...");
-                    }
-                }
-            }
-        });
-
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
     }
 
 
@@ -306,19 +293,6 @@ public class MainActivity extends AppCompatActivity {
 
     double distance_between(Double lat1, Double lon1, Double lat2, Double lon2)
     {
-        //float results[] = new float[1];
-    /* Doesn't work. returns inconsistent results
-    Location.distanceBetween(
-            l1.getLatitude(),
-            l1.getLongitude(),
-            l2.getLatitude(),
-            l2.getLongitude(),
-            results);
-            */
-//        double lat1=l1.getLatitude();
-//        double lon1=l1.getLongitude();
-//        double lat2=l2.getLatitude();
-//        double lon2=l2.getLongitude();
         double R = 6371; // km
         double dLat = (lat2-lat1)*Math.PI/180;
         double dLon = (lon2-lon1)*Math.PI/180;
@@ -386,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
                 double ttg = totalTimeGeo;  //IN MILLI
-                final double geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+                geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
                 long millis = totalTimeGeo;
                 @SuppressLint("DefaultLocale")
                 final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
@@ -450,6 +424,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startGPS() {
         Log.i(TAG, "startGPS: ");
+        createTimeline("Starting GPS", Timer.getCurrentTimeStamp());
         //START GPS
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(3000);
@@ -903,14 +878,15 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                     int newState) {
-                    String intentAction;
+                    //String intentAction;
                     if (newState == BluetoothProfile.STATE_CONNECTED) {
-                        intentAction = ACTION_GATT_CONNECTED;
+                        //intentAction = ACTION_GATT_CONNECTED;
                         mConnectionState = STATE_CONNECTED;
                         mBluetoothGatt = gatt;
                         mBluetoothDeviceAddress = gatt.getDevice().getAddress();
 //                        broadcastUpdate(intentAction);
                         setMessageText(gatt.getDevice().getName() + "  CONNECTED");
+                        createTimeline(gatt.getDevice().getName() + "  CONNECTED", Timer.getCurrentTimeStamp());
                         Log.i(TAG, "Connected to GATT server. " + gatt.getDevice().getName());
 
                         Log.i(TAG, "Attempting to start service discovery: " +
@@ -921,6 +897,7 @@ public class MainActivity extends AppCompatActivity {
                         mConnectionState = STATE_DISCONNECTED;
                         Log.i(TAG, "Disconnected from GATT server. " + gatt.getDevice().getName());
                         setMessageText(gatt.getDevice().getName() + "  DISCONNECTED");
+                        createTimeline(gatt.getDevice().getName() + "  DISCONNECTED", Timer.getCurrentTimeStamp());
                         //broadcastUpdate(intentAction);
                         setValueHR("0");
                         close();
@@ -1074,6 +1051,60 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    //TIMELINE
+
+    private ArrayList<TimelineRow> timelineRowsList = new ArrayList<>();
+    private void createTimeline(String tlTitle, String tlDescription) {
+
+        // Create new timeline row (Row Id)
+        TimelineRow myRow = new TimelineRow(0);
+
+// To set the row Date (optional)
+        myRow.setDate(new Date());
+// To set the row Title (optional)
+        myRow.setTitle(tlTitle);
+// To set the row Description (optional)
+        myRow.setDescription(tlDescription);
+// To set the row bitmap image (optional)
+        myRow.setImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+// To set row Below Line Color (optional)
+        myRow.setBellowLineColor(Color.argb(255, 0, 0, 0));
+// To set row Below Line Size in dp (optional)
+        myRow.setBellowLineSize(2);
+// To set row Image Size in dp (optional)
+        myRow.setImageSize(2);
+// To set background color of the row image (optional)
+        myRow.setBackgroundColor(Color.argb(255, 0, 0, 0));
+// To set the Background Size of the row image in dp (optional)
+        myRow.setBackgroundSize(10);
+// To set row Date text color (optional)
+        myRow.setDateColor(Color.argb(255, 0, 0, 0));
+// To set row Title text color (optional)
+        myRow.setTitleColor(Color.argb(255, 0, 0, 0));
+// To set row Description text color (optional)
+        myRow.setDescriptionColor(Color.argb(255, 0, 0, 0));
+
+// Add the new row to the list
+        timelineRowsList.add(myRow);
+
+// Create the Timeline Adapter
+        final ArrayAdapter<TimelineRow> myAdapter = new TimelineViewAdapter(this, 0, timelineRowsList,
+                //if true, list will be sorted by date
+                true);
+
+// Get the ListView and Bind it with the Timeline Adapter
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ListView myListView = (ListView) findViewById(R.id.timeline_listView);
+                myListView.setAdapter(myAdapter);
+            }
+        });
+    }
+
+    //END TIMELINE
 
 
 

@@ -2,6 +2,9 @@ package com.example.virtualcrit3_lite;
 
 import android.annotation.SuppressLint;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public final class Timer {
 
@@ -9,6 +12,7 @@ public final class Timer {
     private static int status = 99;
     private static long activeMillis = 0;
     private static long totalMillis = 0;
+    private static String currentTimeStamp;
 
 
     public static int getStatus() {
@@ -60,5 +64,10 @@ public final class Timer {
         return String.format("%02d:%02d:%02d", activeMillis/(3600*1000),
                 activeMillis/(60*1000) % 60,
                 activeMillis/1000 % 60);
+    }
+
+    public static String getCurrentTimeStamp() {
+
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 }

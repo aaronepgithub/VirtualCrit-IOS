@@ -407,7 +407,7 @@
 
 
 
-
+<!--DASHBOARD-->
     <LinearLayout
         android:id="@+id/llView"
         android:layout_width="match_parent"
@@ -666,6 +666,23 @@
                 android:layout_weight="1"/>
 
         </LinearLayout>
+    </LinearLayout>
+
+    <!--NOTIFICATIONS TIMELINE-->
+    <LinearLayout
+        android:id="@+id/llTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ListView
+            android:id="@+id/timeline_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
