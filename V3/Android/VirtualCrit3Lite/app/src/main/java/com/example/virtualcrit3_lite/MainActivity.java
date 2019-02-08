@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private String settingsName = "TIM";
     private String settingsGPS = "OFF";
     private int settingsSecondsPerRound = 60;
+    private int settingsMaxHeartrate = 185;
 
     private int currentRound = 1;
 
@@ -79,11 +80,22 @@ public class MainActivity extends AppCompatActivity {
     private double roundSpeed;
     private double bestRoundSpeed = 1;
 
+    private double returnScoreFromHeartrate(double hr) {
+        //(totalAverageHeartrate / maxHRdouble) * 100;
+        return ((double) hr) / ( (double) settingsMaxHeartrate) * 100.0;
+    }
+
     @SuppressLint("DefaultLocale")
     private void roundEndCalculate() {
         newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
         roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
+
+        //SET ROUND VALUES
+        Rounds.getArrRoundSpeeds().add(roundSpeed);
+        Rounds.getArrRoundHeartrates().add(roundHeartRate);
+        Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartRate));
+
         setMessageText("ROUND "+ currentRound + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
@@ -95,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             //vibrator300();
             Log.i(TAG, "roundEndCalculate: not the best");
         }
+
 
         //after...
         oldDistance = newDistance;
@@ -231,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         clickStart(getCurrentFocus());
-        Variables.setMessageBarValue("onCreate");
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
         mActiveTimer = findViewById(R.id.activeTimer);
@@ -244,20 +256,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                TextView mDistance = (TextView) findViewById(R.id.valueDistanceBLE);
-//                mDistance.setText(Variables.getDistance());
-//
-//                TextView mAvgSpeed = (TextView) findViewById(R.id.valueAverageSpeedBLE);
-//                mAvgSpeed.setText(Variables.getAvgSpeed());
-//            }
-//        });
-
-//        init();
     }
 
     @Override
