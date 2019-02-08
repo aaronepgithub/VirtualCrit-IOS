@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String settingsName = "TIM";
     private String settingsGPS = "OFF";
+    private int settingsSecondsPerRound = 60;
 
-    private int secondsPerRound = 30;
     private int currentRound = 1;
 
     private double oldDistance = 0;
@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
     private void roundEndCalculate() {
         newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
-        roundSpeed = roundDistance / ((double) secondsPerRound / 60.0 / 60.0);
-        setMessageText("ROUND SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f MPH", roundHeartRate));
+        roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
+        setMessageText("ROUND SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartRate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-            if (totalMillis > (currentRound * secondsPerRound * 1000)) {
+            if (totalMillis > (currentRound * settingsSecondsPerRound * 1000)) {
                 currentRound += 1;
                 Log.i(TAG, "round " + (currentRound - 1) + " complete");
                 //setMessageText("ROUND " + (currentRound));
