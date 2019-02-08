@@ -924,6 +924,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "Disconnected from GATT server. " + gatt.getDevice().getName());
                         setMessageText(gatt.getDevice().getName() + "  DISCONNECTED");
                         //broadcastUpdate(intentAction);
+                        setValueHR("0");
                         close();
                         setReconnectRequest(gatt);
                     }
