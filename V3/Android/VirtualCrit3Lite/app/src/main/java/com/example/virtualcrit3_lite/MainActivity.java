@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private String settingsGPS = "OFF";
     private String settingsAudio = "OFF";
     private String settingsSport = "BIKE";
-    private int settingsSecondsPerRound = 300;
+    private int settingsSecondsPerRound = 60;
     private int settingsMaxHeartrate = 185;
 
     //ROUND
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         Rounds.getArrRoundHeartrates().add(roundHeartrate);
         Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartrate));
 
-        setMessageText("ROUND "+ currentRound + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
+
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
 //        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
@@ -212,11 +212,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.i(TAG, "roundEndCalculate: not the best");
         }
-        String s1 = "\"ROUND \"+ currentRound:";
-        String s2 = "\nSPEED: " + String.format("%.2f MPH", roundSpeed) + "  [" + bestRoundSpeed +"]";
-        String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate + "  [" + bestRoundHeartrate +"]");
+        String s1 = "COMPLETED ROUND: " + (currentRound - 1);
+        String s2 = "\nSPEED: " + String.format("%.2f MPH", roundSpeed);
+        String s2x = "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]";
+        String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate);
+        String s3x = "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
-        createTimeline(s1 + s2 + s3, Timer.getCurrentTimeStamp());
+        createTimeline(s1 + s2 + s2x + s3 + s3x, Timer.getCurrentTimeStamp());
+        setMessageText("ROUND "+ (currentRound - 1) + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
+        Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
         //after...
         oldDistance = newDistance;
@@ -317,14 +321,14 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    public void onDestroy(){
+//    public void onDestroy(){
         //perform uninitialization and free resource
-        Log.i(TAG, "onDestroy: ");
-        mBluetoothGatt.disconnect();
-        mBluetoothGatt.close();
-        mBluetoothGatt = null;
-        super.onDestroy();
-    }
+//        Log.i(TAG, "onDestroy: ");
+//        mBluetoothGatt.disconnect();
+//        mBluetoothGatt.close();
+//        mBluetoothGatt = null;
+//        super.onDestroy();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -962,10 +966,10 @@ public class MainActivity extends AppCompatActivity {
 //                        int format = -1;
                         if ((flag & 0x01) != 0) {
                             format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                            Log.d(TAG, "Heart rate format UINT16.");
+                            //Log.d(TAG, "Heart rate format UINT16.");
                         } else {
                             format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                            Log.d(TAG, "Heart rate format UINT8.");
+                            //Log.d(TAG, "Heart rate format UINT8.");
                         }
                         final int heartRate = characteristic.getIntValue(format, 1);
                         Log.i(TAG, String.format("%d BPM", heartRate));
