@@ -104,13 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Double> arrLats = new ArrayList<>();
     private ArrayList<Double> arrLons = new ArrayList<>();
-    private Double oldLat = 0.0;
-    private Double oldLon = 0.0;
-    private Double geoDistance = 0.0;
-    private Double geoAvgSpeed = 0.0;
+    private double oldLat = 0.0;
+    private double oldLon = 0.0;
+    private double geoDistance = 0.0;
+    private double geoAvgSpeed = 0.0;
     private float[] results = new float[2];
     private long oldTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
+    private Boolean simGPS = false;
 
     //HR
     private int totHR;
@@ -192,23 +193,22 @@ public class MainActivity extends AppCompatActivity {
 //        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
 
         if (roundSpeed > bestRoundSpeed) {
-            //vibrator600();
-            //createTimeline("BEST ROUND (SPEED)", "");
+            vibrator600();
             bestRoundSpeed = roundSpeed;
+            createTimeline("FASTEST SPEED" + "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
         } else {
             //vibrator300();
             Log.i(TAG, "roundEndCalculate: not the best");
         }
-
         if (returnScoreFromHeartrate(roundHeartrate) > bestRoundScore) {
-            //createTimeline("BEST ROUND (SCORE)", "");
             bestRoundScore = returnScoreFromHeartrate(roundHeartrate);
+//            createTimeline("HIGHEST SCORE" + "  [" + String.format("%.2f", bestRoundScore) + "]", "");
         } else {
             Log.i(TAG, "roundEndCalculate: not the best");
         }
         if (roundHeartrate > bestRoundHeartrate) {
-            //createTimeline("BEST ROUND (HEARTRATE)", "");
             bestRoundHeartrate = roundHeartrate;
+            createTimeline("HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
         } else {
             Log.i(TAG, "roundEndCalculate: not the best");
         }
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(Location location) {
-        Log.i(TAG, "onLocationReceived");
+        //Log.i(TAG, "onLocationReceived");
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
 
@@ -434,23 +434,42 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                //FIND RIGHT NUMBER TO GET RID OF THE SMALL MOVEMENTS AND MAKE ACTIVE TIME ACCURATE
+//                if (location.getSpeed() < .1) {
+//                    Log.i(TAG, "check - TOO SMALL");
+//                    oldLat = location.getLatitude();
+//                    oldLon = location.getLongitude();
+//                    oldTime = location.getTime();
+//                    return;
+//                }
+
                 //OPT 1.  QUICKREAD GEO SPEED
-                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                Log.i(TAG, "onLocationReceived: QuickSpeedCalc: " + geoSpeedQuick);
+                //final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                //Log.i(TAG, "onLocationReceived: QuickSpeedCalc: " + geoSpeedQuick);
 
 
                 //TRY DIRECT CALC FORMULA
-                Double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
+                double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
                 //REPLACE results[0] with returned result
+                if (simGPS.equals(true)) {
+                    result = result * 10;
+                }
+//
+//                Log.i(TAG, String.format("onLocationReceived: results[0]: %s", results[0]));
+//                Log.i(TAG, String.format("onLocationReceived: result: %s", result));
 
 
-                //OPT 2.  GEO SPEED, LONG VERSION
-//                Double gd = results[0] * 0.000621371;
-                Double gd = result * 0.000621371;
+                //OPT 2.  GEO SPEED, ACCURATE VERSION
+                double gd = result * 0.000621371;
+                geoDistance += gd;
                 long gt = (location.getTime() - oldTime);  //MILLI
-                Double geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
-//                geoDistance += results[0] * 0.000621371;
-                geoDistance += result * 0.000621371;
+
+                //alternative for results[0]
+                final double geoSpeedQuick = gd / ((double) gt / 1000 / 60 / 60);
+
+                //Log.i(TAG, "onLocationReceived: compareSpeeds: " + geoSpeedQuick + ", " + ((double) location.getSpeed() * 2.23694));
+                //double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+
 
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
                 double ttg = totalTimeGeo;  //IN MILLI
@@ -652,9 +671,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickAudio(View view) {
+        simGPS = true;
+        Log.i(TAG, "clickAudio: simGPS");
     }
 
     public void clickWheelSize(View view) {
+        simGPS = false;
+        Log.i(TAG, "clickWheel: simGPS - false");
     }
 
 
@@ -740,15 +763,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (devicesDiscoveredHR.contains(deviceDiscovered)) {
-                Log.i(TAG, "onScanResult: Already in HR Device Array List, return");
+                //Log.i(TAG, "onScanResult: Already in HR Device Array List, return");
                 return;
             }
 
-            Log.i(TAG, "onScanResult: New HR device");
+            //Log.i(TAG, "onScanResult: New HR device");
             devicesDiscoveredHR.add(deviceDiscovered);
             Log.i(TAG, "onScanResult added HR: " + deviceDiscovered.getName());
             setMessageText("FOUND:  " + deviceDiscovered.getName());
-            Log.i(TAG, "onScanResult: getSizeOfDevicesDiscoveredHR:  " + devicesDiscoveredHR.size());
+            //Log.i(TAG, "onScanResult: getSizeOfDevicesDiscoveredHR:  " + devicesDiscoveredHR.size());
         }
 
         @Override
@@ -767,7 +790,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void postScanPopup() {
 
-        Log.i(TAG, "postScanPopup");
+        //Log.i(TAG, "postScanPopup");
         if (devicesDiscoveredHR.size() == 0) {
             //setMessageText("NO DEVICES FOUND");
             Toast.makeText(getApplicationContext(),
@@ -789,7 +812,7 @@ public class MainActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Log.i(TAG, "onClick: YES, now call to connect to device " + d.getName());
+                            Log.i(TAG, "onClick: YES, connect to device " + d.getName());
                             //send connection request
                             devicesConnectedHR.add(d);
                             setBluetoothDeviceNames(d.getName().toUpperCase());
@@ -803,7 +826,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Log.i(TAG, "onClick: NO");
+                            Log.i(TAG, "onClick: Don't Connect");
                         }
                     }).show();
         }
@@ -935,6 +958,9 @@ public class MainActivity extends AppCompatActivity {
                         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                         boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
                         Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+                        if (writeDescriptorSuccess) {
+                            setMessageText(gatt.getDevice().getName() + "  READY FOR HR UPDATES");
+                        }
                     } else {
                         Log.i(TAG, "onServicesDiscovered received: " + status);
                     }
@@ -957,7 +983,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onCharacteristicChanged(BluetoothGatt gatt,
                                                     BluetoothGattCharacteristic characteristic) {
                     //broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                    Log.i(TAG, "onCharacteristicChanged: HR");
+                    //Log.i(TAG, "onCharacteristicChanged: HR");
 
                     // This is special handling for the Heart Rate Measurement profile. Data
                     // parsing is carried out as per profile specifications.
@@ -972,7 +998,7 @@ public class MainActivity extends AppCompatActivity {
                             //Log.d(TAG, "Heart rate format UINT8.");
                         }
                         final int heartRate = characteristic.getIntValue(format, 1);
-                        Log.i(TAG, String.format("%d BPM", heartRate));
+                        //Log.i(TAG, String.format("%d BPM", heartRate));
                         //intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
                         calcAvgHR(heartRate);
                         setValueHR(String.format("%d", heartRate));
