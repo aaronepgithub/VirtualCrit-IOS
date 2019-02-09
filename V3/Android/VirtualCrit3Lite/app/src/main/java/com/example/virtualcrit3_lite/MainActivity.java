@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private String settingsGPS = "OFF";
     private String settingsAudio = "OFF";
     private String settingsSport = "BIKE";
-    private int settingsSecondsPerRound = 60;
+    private int settingsSecondsPerRound = 300;
     private int settingsMaxHeartrate = 185;
 
     //ROUND
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         if (roundSpeed > bestRoundSpeed) {
             vibrator600();
             bestRoundSpeed = roundSpeed;
-            createTimeline("MY FASTEST SPEED" + "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
+            createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
         } else {
             //vibrator300();
             Log.i(TAG, "roundEndCalculate: not the best");
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         if (roundHeartrate > bestRoundHeartrate) {
             bestRoundHeartrate = roundHeartrate;
 //            createTimeline("MY HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
-            createTimeline("MY HIGHEST SCORE" + "  [" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
+            createTimeline("MY HIGHEST SCORE" + "\n[" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
         } else {
             Log.i(TAG, "roundEndCalculate: not the best");
         }
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
-                        createTimeline("NEW FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                        createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
                 @Override
@@ -660,9 +660,6 @@ public class MainActivity extends AppCompatActivity {
 
                         TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
                         tvDst.setText(String.format("%.1f MILES", geoDistance));
-
-                        TextView t3 = findViewById(R.id.tvFooter2);
-                        t3.setText(String.format("%.0f AVG", averageHR));
 
                         //PLACEHOLDER
                         TextView tx = findViewById(R.id.tvBottom);
@@ -1049,6 +1046,13 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView t1 = findViewById(R.id.tvTop);
                 t1.setText(x);
+
+                TextView t3 = findViewById(R.id.tvFooter2);
+                t3.setText(String.format("%.0f AVG", averageHR));
+
+                TextView a1 = findViewById(R.id.valueHeartrateAverageBLE);
+                a1.setText(String.format("%.0f AVG", averageHR));
+
             }
         });
     }
@@ -1283,6 +1287,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //END TIMELINE
+
+
+    @Override
+    public void onBackPressed() {
+        Log.i(TAG, "onBackPressed: do nothing, might show timeline later...");
+    }
 
 
 
