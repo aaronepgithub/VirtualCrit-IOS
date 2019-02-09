@@ -65,73 +65,167 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = MainActivity.class.getSimpleName();
+
     private TextView mTextMessage;
     private TextView mValueTimer;
     private TextView mActiveTimer;
 
+
+    //TIMER
     private long startTime = 0;
     private long activeMillis = 0;
     private long totalMillis = 0;
     private long lastMillis = 0;
 
+    //SETTINGS
     private String settingsName = "TIM";
     private String settingsGPS = "OFF";
+    private String settingsAudio = "OFF";
+    private String settingsSport = "BIKE";
     private int settingsSecondsPerRound = 300;
     private int settingsMaxHeartrate = 185;
 
+    //ROUND
     private int currentRound = 1;
-
     private double oldDistance = 0;
-    private double newDistance = 0;
     private double roundHeartrateTotal = 0;
-    private double roundHeartRateCount = 0;
-    private double roundHeartRate = 0;
-    private double roundSpeed;
+    private double roundHeartrateCount = 0;
+    private double roundHeartrate = 0;
     private double bestRoundSpeed = 1;
+    private double bestRoundHeartrate = 1;
+    private double bestRoundScore = 1;
+
+    //GPS
+    private LocationRequest mLocationRequest;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationCallback mLocationCallback;
+    private Handler mServiceHandler;
+    private Location mLocation;
+
+    private ArrayList<Double> arrLats = new ArrayList<>();
+    private ArrayList<Double> arrLons = new ArrayList<>();
+    private Double oldLat = 0.0;
+    private Double oldLon = 0.0;
+    private Double geoDistance = 0.0;
+    private Double geoAvgSpeed = 0.0;
+    private float[] results = new float[2];
+    private long oldTime = 0;
+    private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
+
+    //HR
+    private int totHR;
+    private int countHR;
+    private double averageHR = 0;
+
+    //BLE
+    private int REQUEST_ENABLE_BT = 1;
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private static final long SCAN_PERIOD = 3000;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothLeScanner mLEScanner;
+    private ScanSettings settings;
+    private List<ScanFilter> filters;
+    private BluetoothDevice deviceDiscovered;
+    private ArrayList<BluetoothDevice> devicesDiscoveredHR = new ArrayList<>();
+    private ArrayList<BluetoothDevice> devicesConnectedHR = new ArrayList<>();
+    private BluetoothDevice deviceHR;
+    private BluetoothGatt mBluetoothGatt;
+
+    //private static final UUID CSC_SERVICE_UUID = UUID.fromString("00001816-0000-1000-8000-00805f9b34fb");
+    //private static final UUID CSC_CHARACTERISTIC_UUID = UUID.fromString("00002a5b-0000-1000-8000-00805f9b34fb");
+    private static final UUID HR_SERVICE_UUID = UUID.fromString("0000180D-0000-1000-8000-00805f9b34fb");
+    private static final UUID HR_CHARACTERISTIC_UUID = UUID.fromString("00002A37-0000-1000-8000-00805f9b34fb");
+    private static final UUID BTLE_NOTIFICATION_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
+
+    private boolean enabled;
+    private static final int STATE_DISCONNECTED = 0;
+    private static final int STATE_CONNECTING = 1;
+    private static final int STATE_CONNECTED = 2;
+
+    private final static String ACTION_GATT_CONNECTED =
+            "com.example.virtualcrit3_lite.ACTION_GATT_CONNECTED";
+    private final static String ACTION_GATT_DISCONNECTED =
+            "com.example.virtualcrit3_lite.ACTION_GATT_DISCONNECTED";
+    private final static String ACTION_GATT_SERVICES_DISCOVERED =
+            "com.example.virtualcrit3_lite.ACTION_GATT_SERVICES_DISCOVERED";
+    private final static String ACTION_DATA_AVAILABLE =
+            "com.example.virtualcrit3_lite.ACTION_DATA_AVAILABLE";
+    private final static String EXTRA_DATA =
+            "com.example.virtualcrit3_lite.EXTRA_DATA";
+    private Boolean reconnect = true;
+
+
+
+
+    private void calcAvgHR(int hr) {
+        if (hr > 50) {
+            //TOTAL
+            totHR += hr;
+            countHR += 1;
+            averageHR = (double) totHR / (double) countHR;
+            //ROUND
+            roundHeartrateTotal += hr;
+            roundHeartrateCount += 1;
+            roundHeartrate = (double) roundHeartrateTotal / (double) roundHeartrateCount;
+
+        }
+    }
 
     private double returnScoreFromHeartrate(double hr) {
-        //(totalAverageHeartrate / maxHRdouble) * 100;
         return ((double) hr) / ( (double) settingsMaxHeartrate) * 100.0;
     }
 
     @SuppressLint("DefaultLocale")
     private void roundEndCalculate() {
-        newDistance = geoDistance;
+        double newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
-        roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
+        double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
 
         //SET ROUND VALUES
         Rounds.getArrRoundSpeeds().add(roundSpeed);
-        Rounds.getArrRoundHeartrates().add(roundHeartRate);
-        Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartRate));
+        Rounds.getArrRoundHeartrates().add(roundHeartrate);
+        Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartrate));
 
-        setMessageText("ROUND "+ currentRound + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartRate));
-        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartRate));
+        setMessageText("ROUND "+ currentRound + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
+        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
-
-        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartRate), Timer.getCurrentTimeStamp());
+//        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
 
         if (roundSpeed > bestRoundSpeed) {
-            vibrator600();
-            createTimeline("BEST ROUND (SPEED)", "");
+            //vibrator600();
+            //createTimeline("BEST ROUND (SPEED)", "");
             bestRoundSpeed = roundSpeed;
         } else {
             //vibrator300();
             Log.i(TAG, "roundEndCalculate: not the best");
         }
 
+        if (returnScoreFromHeartrate(roundHeartrate) > bestRoundScore) {
+            //createTimeline("BEST ROUND (SCORE)", "");
+            bestRoundScore = returnScoreFromHeartrate(roundHeartrate);
+        } else {
+            Log.i(TAG, "roundEndCalculate: not the best");
+        }
+        if (roundHeartrate > bestRoundHeartrate) {
+            //createTimeline("BEST ROUND (HEARTRATE)", "");
+            bestRoundHeartrate = roundHeartrate;
+        } else {
+            Log.i(TAG, "roundEndCalculate: not the best");
+        }
+        String s1 = "\"ROUND \"+ currentRound:";
+        String s2 = "\nSPEED: " + String.format("%.2f MPH", roundSpeed) + "  [" + bestRoundSpeed +"]";
+        String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate + "  [" + bestRoundHeartrate +"]");
+        //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
+        createTimeline(s1 + s2 + s3, Timer.getCurrentTimeStamp());
 
         //after...
         oldDistance = newDistance;
         roundHeartrateTotal = 0;
-        roundHeartRateCount = 0;
-        roundHeartRate = 0;
-
-
+        roundHeartrateCount = 0;
+        roundHeartrate = 0;
     }
 
     Handler timerHandler = new Handler();
-
     Runnable timerRunnable = new Runnable() {
         @SuppressLint("DefaultLocale")
         @Override
@@ -142,11 +236,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     mValueTimer.setText(Timer.getTotalTimeString());
+
                     TextView t1 = findViewById(R.id.tvHeader1);
                     t1.setText(Timer.getTotalTimeString());
 
                     Button rnd = (Button) findViewById(R.id.valueRoundButton);
-                    //rnd.setText("TEST");
                     rnd.setText(String.valueOf( ((int) totalMillis / 1000 ) - ((currentRound - 1) * settingsSecondsPerRound)) );
 
                 }
@@ -257,11 +351,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //unregisterReceiver(receiver);
     }
-
-
-
 
     public void clickName(View view) {
         Log.i(TAG, "clickName: ");
@@ -316,11 +406,6 @@ public class MainActivity extends AppCompatActivity {
         return d;
     }
 
-    private int nextMile = 1;
-    private int calibratedWheelSize = 0;
-    private int revsAtStartOfMile = 1;
-
-
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(Location location) {
         Log.i(TAG, "onLocationReceived");
@@ -336,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (results.length > 0) {
 
-                //mPrinter("RESULTS[0]  " + results[0] * 0.000621371 +  "  MILES"); //AS MILES
                 if (results[0] == 0) {
                     //mPrinter("NOTHING AT RESULTS[0] - RETURN");
                     return;
@@ -364,9 +448,6 @@ public class MainActivity extends AppCompatActivity {
 //                geoDistance += results[0] * 0.000621371;
                 geoDistance += result * 0.000621371;
 
-
-
-
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
                 double ttg = totalTimeGeo;  //IN MILLI
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
@@ -389,13 +470,12 @@ public class MainActivity extends AppCompatActivity {
                         tvDst.setText(String.format("%.1f MILES", geoDistance));
 
                         TextView t3 = findViewById(R.id.tvFooter2);
-                        t3.setText(String.format("%.0f AV", averageHR));
+                        t3.setText(String.format("%.0f AVG", averageHR));
 
                         //PLACEHOLDER
                         TextView tx = findViewById(R.id.tvBottom);
                         tx.setText(String.format("%.2f", geoDistance));
                         //PLACEHOLDER
-
 
                         TextView tvTime = (TextView) findViewById(R.id.valueActiveTimeGPS);
                         tvTime.setText(hms);
@@ -405,31 +485,17 @@ public class MainActivity extends AppCompatActivity {
                         TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
                         tvAvgSpd.setText(String.format("%.1f MPH", geoAvgSpeed));
                         TextView t2 = findViewById(R.id.tvHeader2);
-                        t2.setText(String.format("%.1f AV", geoAvgSpeed));
+                        t2.setText(String.format("%.1f AVG", geoAvgSpeed));
                     }
                 });
-
-
-
             }
-
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
             oldTime = location.getTime();
         }
-
-
     }
 
-    private ArrayList<Double> arrLats = new ArrayList<>();
-    private ArrayList<Double> arrLons = new ArrayList<>();
-    private Double oldLat = 0.0;
-    private Double oldLon = 0.0;
-    private Double geoDistance = 0.0;
-    private Double geoAvgSpeed = 0.0;
-    private float[] results = new float[2];
-    private long oldTime = 0;
-    private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
+
 
     private void startGPS() {
         Log.i(TAG, "startGPS: ");
@@ -441,9 +507,6 @@ public class MainActivity extends AppCompatActivity {
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
 
-
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        //CHANGE FROM WORKING ORIGINAL
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
         mLocationCallback = new LocationCallback() {
@@ -454,7 +517,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             private void onNewLocation(Location lastLocation) {
-                ////Log.i(TAG, "onNewLocation: " + lastLocation.getSpeed());
                 onLocationReceived(lastLocation);
             }
         };
@@ -463,22 +525,12 @@ public class MainActivity extends AppCompatActivity {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback, Looper.myLooper());
         } catch (SecurityException unlikely) {
-            //Utils.setRequestingLocationUpdates(this, false);
             Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
         }
 
     }
 
-
-    private LocationRequest mLocationRequest;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationCallback mLocationCallback;
-    private Handler mServiceHandler;
-    private Location mLocation;
-
-
     public void clickGPS(View view) {
-//        TextView mGPS = findViewById(R.id.valueGPS);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -547,8 +599,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickPause(View view) {
         Log.i(TAG, "clickPause: ");
-        //CAN'T REMOVE CB, NEED ACTIVE TIME TO CONTINUE
-        //timerHandler.removeCallbacks(timerRunnable);
         manageTimer(1);
     }
 
@@ -597,25 +647,11 @@ public class MainActivity extends AppCompatActivity {
     public void clickMessageBar(View view) {
     }
 
-
-
     public void clickAudio(View view) {
     }
 
     public void clickWheelSize(View view) {
     }
-
-
-
-    private int REQUEST_ENABLE_BT = 1;
-    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
-    private static final long SCAN_PERIOD = 3000;
-    private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothLeScanner mLEScanner;
-    private ScanSettings settings;
-    private List<ScanFilter> filters;
-    private BluetoothDevice deviceDiscovered;
-//    private BluetoothDevice deviceDiscoveredCSC;
 
 
 
@@ -687,12 +723,6 @@ public class MainActivity extends AppCompatActivity {
 
 //SCAN RESULT CB HR
 
-    private ArrayList<BluetoothDevice> devicesDiscoveredHR = new ArrayList<>();
-//    private ArrayList<BluetoothDevice> devicesDiscoveredCSC = new ArrayList<>();
-    private ArrayList<BluetoothDevice> devicesConnectedHR = new ArrayList<>();
-//    private ArrayList<BluetoothDevice> devicesConnectedCSC = new ArrayList<>();
-
-
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -734,7 +764,6 @@ public class MainActivity extends AppCompatActivity {
     private void postScanPopup() {
 
         Log.i(TAG, "postScanPopup");
-//        if (devicesDiscoveredHR.size() + devicesDiscoveredCSC.size() == 0) {
         if (devicesDiscoveredHR.size() == 0) {
             //setMessageText("NO DEVICES FOUND");
             Toast.makeText(getApplicationContext(),
@@ -745,8 +774,6 @@ public class MainActivity extends AppCompatActivity {
 
         for(final BluetoothDevice d : devicesDiscoveredHR) {
             Log.i(TAG, "postScanPopup: attempt connect to " + d.getName());
-
-
             if (devicesConnectedHR.contains(d)) {
                 Log.i(TAG, "postScanPopup: already connected to " + d.getName());
                 return;
@@ -776,9 +803,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).show();
         }
-
-        //NEED TO WAIT UNTIL HR CONNECTION IS COMPLETE OR TRUST THAT NORDIC WILL BUFFER
-        //postScanPopupCSC();
     }
 
 
@@ -825,53 +849,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TextView h = findViewById(R.id.valueHeartrateBLE);
-                h.setText(x + " BPM");
+                h.setText(String.format("%s BPM", x));
 
                 TextView t1 = findViewById(R.id.tvTop);
                 t1.setText(x);
-
             }
         });
     }
 
 
 
-    private BluetoothDevice deviceHR;
-    private BluetoothGatt mBluetoothGatt;
-
-    private static final UUID CSC_SERVICE_UUID = UUID.fromString("00001816-0000-1000-8000-00805f9b34fb");
-    private static final UUID CSC_CHARACTERISTIC_UUID = UUID.fromString("00002a5b-0000-1000-8000-00805f9b34fb");
-    private static final UUID HR_SERVICE_UUID = UUID.fromString("0000180D-0000-1000-8000-00805f9b34fb");
-    private static final UUID HR_CHARACTERISTIC_UUID = UUID.fromString("00002A37-0000-1000-8000-00805f9b34fb");
-    private static final UUID BTLE_NOTIFICATION_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-
     private void connectHR(BluetoothDevice d) {
         Log.i(TAG, "connectHR " + d.getName());
         mBluetoothGatt = d.connectGatt(this, false, mGattCallback);
     }
-
-
-
-    private String mBluetoothDeviceAddress;
-    private int mConnectionState = STATE_DISCONNECTED;
-    private boolean enabled;
-    private static final int STATE_DISCONNECTED = 0;
-    private static final int STATE_CONNECTING = 1;
-    private static final int STATE_CONNECTED = 2;
-
-    private final static String ACTION_GATT_CONNECTED =
-            "com.example.virtualcrit3_lite.ACTION_GATT_CONNECTED";
-    private final static String ACTION_GATT_DISCONNECTED =
-            "com.example.virtualcrit3_lite.ACTION_GATT_DISCONNECTED";
-    private final static String ACTION_GATT_SERVICES_DISCOVERED =
-            "com.example.virtualcrit3_lite.ACTION_GATT_SERVICES_DISCOVERED";
-    private final static String ACTION_DATA_AVAILABLE =
-            "com.example.virtualcrit3_lite.ACTION_DATA_AVAILABLE";
-    private final static String EXTRA_DATA =
-            "com.example.virtualcrit3_lite.EXTRA_DATA";
-
-
-    private Boolean reconnect = true;
 
 
     private void setReconnectRequest(BluetoothGatt g) {
@@ -888,11 +879,12 @@ public class MainActivity extends AppCompatActivity {
                 public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                     int newState) {
                     //String intentAction;
+                    int mConnectionState = STATE_DISCONNECTED;
                     if (newState == BluetoothProfile.STATE_CONNECTED) {
                         //intentAction = ACTION_GATT_CONNECTED;
                         mConnectionState = STATE_CONNECTED;
                         mBluetoothGatt = gatt;
-                        mBluetoothDeviceAddress = gatt.getDevice().getAddress();
+                        String mBluetoothDeviceAddress = gatt.getDevice().getAddress();
 //                        broadcastUpdate(intentAction);
                         setMessageText(gatt.getDevice().getName() + "  CONNECTED");
                         createTimeline(gatt.getDevice().getName() + "  CONNECTED", Timer.getCurrentTimeStamp());
@@ -918,7 +910,7 @@ public class MainActivity extends AppCompatActivity {
                 // New services discovered
                 public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 
-                    if (reconnect == false) {
+                    if (!reconnect) {
                         Log.i(TAG, "onServicesDiscovered: notify already set, disable first");
                         BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
                         boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, false);
@@ -932,7 +924,6 @@ public class MainActivity extends AppCompatActivity {
 
                         //set notifications
                         Log.i(TAG, "onServicesDiscovered: setting notify");
-                        //gatt.setCharacteristicNotification(gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID), enabled);
                         BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
                         boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
                         Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
@@ -940,9 +931,6 @@ public class MainActivity extends AppCompatActivity {
                         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                         boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
                         Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
-
-
-
                     } else {
                         Log.i(TAG, "onServicesDiscovered received: " + status);
                     }
@@ -992,25 +980,6 @@ public class MainActivity extends AppCompatActivity {
 
 
             };
-
-    int totHR;
-    int countHR;
-    double averageHR = 0;
-    private void calcAvgHR(int hr) {
-        if (hr > 50) {
-            //TOTAL
-            totHR += hr;
-            countHR += 1;
-            averageHR = (double) totHR / (double) countHR;
-            //ROUND
-            roundHeartrateTotal += hr;
-            roundHeartRateCount += 1;
-            roundHeartRate = (double) roundHeartrateTotal / (double) roundHeartRateCount;
-
-        }
-    }
-
-//TEST ROUNDS
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
