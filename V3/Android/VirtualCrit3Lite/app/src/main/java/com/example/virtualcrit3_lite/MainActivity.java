@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     private int totHR;
     private int countHR;
     private double averageHR = 0;
+    private Boolean showHR = true;
 
     //BLE
     private int REQUEST_ENABLE_BT = 1;
@@ -234,6 +235,12 @@ public class MainActivity extends AppCompatActivity {
         createTimeline(s1 + s2 + s2x + s3 + s3x, Timer.getCurrentTimeStamp());
         setMessageText("ROUND "+ (currentRound - 1) + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
+
+        if (roundHeartrateCount == 0) {
+            showHR = false;
+        } else {
+            showHR = true;
+        }
 
         //after...
         oldDistance = newDistance;
@@ -388,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
         } //ADD VALUE EVENT ONCE
 
 
+
     }  //END - ROUND END CALCULATE
 
 
@@ -407,8 +415,12 @@ public class MainActivity extends AppCompatActivity {
                     TextView t1 = findViewById(R.id.tvHeader1);
                     t1.setText(Timer.getTotalTimeString());
 
+                    int a1 = (int) totalMillis / 1000;
+                    int a2 = (currentRound - 1) * settingsSecondsPerRound;
+                    int a3 = a1 - a2;
+                    int togo = settingsSecondsPerRound - a3;
                     Button rnd = (Button) findViewById(R.id.valueRoundButton);
-                    rnd.setText(String.valueOf( ((int) totalMillis / 1000 ) - ((currentRound - 1) * settingsSecondsPerRound)) );
+                    rnd.setText(String.format("%s REMAIN", String.valueOf(togo)));
 
                 }
             });
@@ -658,6 +670,17 @@ public class MainActivity extends AppCompatActivity {
                         TextView t1 = findViewById(R.id.tvMiddle);
                         t1.setText(String.format("%.1f", geoSpeedQuick));
 
+                        if (showHR == false) {
+                            TextView p1 = findViewById(R.id.tvTop);
+                            p1.setText(calcPace(geoSpeedQuick));
+
+                            TextView p2 = findViewById(R.id.tvTop_Label);
+                            p2.setText("PACE");
+
+                            TextView p3 = findViewById(R.id.tvFooter2);
+                            p3.setText(String.format("%s AVG", calcPace(geoAvgSpeed)));
+                        }
+
                         TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
                         tvDst.setText(String.format("%.1f MILES", geoDistance));
 
@@ -841,10 +864,10 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "clickAudio: simGPS");
     }
 
-    public void clickWheelSize(View view) {
-        simGPS = false;
-        Log.i(TAG, "clickWheel: simGPS - false");
-    }
+//    public void clickWheelSize(View view) {
+//        simGPS = false;
+//        Log.i(TAG, "clickWheel: simGPS - false");
+//    }
 
 
 
@@ -1046,6 +1069,9 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView t1 = findViewById(R.id.tvTop);
                 t1.setText(x);
+
+                TextView p2 = findViewById(R.id.tvTop_Label);
+                p2.setText("BPM");
 
                 TextView t3 = findViewById(R.id.tvFooter2);
                 t3.setText(String.format("%.0f AVG", averageHR));
@@ -1289,11 +1315,84 @@ public class MainActivity extends AppCompatActivity {
     //END TIMELINE
 
 
+    private String calcPace(double mph) {
+
+        double a = (60.0 / mph);
+        if (a == 0 || a > 50) {
+            return "00:00";
+        }
+
+        double m = a * 60.0 * 1000.0;
+        long mill = (long) m;
+
+        final String minutesPerMile = String.format(Locale.US,"%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(mill) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mill)),
+                TimeUnit.MILLISECONDS.toSeconds(mill) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mill)));
+
+        return minutesPerMile;
+    }
+
     @Override
     public void onBackPressed() {
         Log.i(TAG, "onBackPressed: do nothing, might show timeline later...");
     }
 
+
+    public void clickRoundButton(View view) {
+        Log.i(TAG, "clickRoundButton: ");
+    }
+
+    public void clickEditSport(View view) {
+        Log.i(TAG, "clickEditSport: " + settingsSport);
+        switch (settingsSport) {
+            case "BIKE":
+                //b1.setText("RUN");
+                settingsSport = "RUN";
+                break;
+            case "RUN":
+                //b1.setText("ROW");
+                settingsSport = "ROW";
+                break;
+            case "ROW":
+                settingsSport = "BIKE";
+                //b1.setText("BIKE");
+                break;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button b1 = (Button) findViewById(R.id.valueEditSport);
+                b1.setText(settingsSport);
+            }
+        });
+    }
+
+    public void clickEditMaxHR(View view) {
+        Log.i(TAG, "clickEditMaxHR: ");
+        switch (settingsMaxHeartrate) {
+            case 185:
+                settingsMaxHeartrate = 190;
+                break;
+            case 190:
+                settingsMaxHeartrate = 195;
+                break;
+            case 195:
+                settingsMaxHeartrate = 200;
+                break;
+            case 200:
+                settingsMaxHeartrate = 185;
+                break;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button b1 = (Button) findViewById(R.id.valueEditMaxHR);
+                b1.setText(String.format("%s  MAX HR", String.valueOf(settingsMaxHeartrate)));
+            }
+        });
+    }
 
 
 }

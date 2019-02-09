@@ -300,9 +300,7 @@
             </TableRow>
 
 
-            <!--GPS-->
             <LinearLayout
-                android:id="@+id/editWheelSize"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="18dp"
@@ -313,9 +311,9 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="1 MIN/RND"
+                    android:text="5 MIN/RND"
                     android:textAlignment="viewStart"
-                    android:onClick="clickWheelSize"/>
+                    android:onClick="clickRoundButton"/>
 
                 <Button
                     android:id="@+id/valueAudio"
@@ -325,6 +323,32 @@
                     android:text="AUDIO OFF"
                     android:textAlignment="viewStart"
                     android:onClick="clickAudio"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/valueEditSport"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="BIKE"
+                    android:textAlignment="viewStart"
+                    android:onClick="clickEditSport"/>
+
+                <Button
+                    android:id="@+id/valueEditMaxHR"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="185 MAX HR"
+                    android:textAlignment="viewStart"
+                    android:onClick="clickEditMaxHR"/>
 
             </LinearLayout>
 
@@ -441,7 +465,7 @@
                 android:layout_weight="1"/>
 
             <TextView
-                android:id="@+id/tvHeader2"
+                android:id="@+id/tvFooter1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -450,9 +474,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:text="00.0 AVG"
+                android:text="00:00:00"
                 android:gravity="center"
                 android:layout_weight="1"/>
+
+
 
         </LinearLayout>
 
@@ -498,23 +524,6 @@
         </LinearLayout>
 
 
-        <!--<TextView-->
-            <!--android:id="@+id/tvTop"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textSize="50sp"-->
-            <!--android:background="@android:color/holo_red_dark"-->
-            <!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textStyle="bold"-->
-            <!--android:text="00 HR"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_marginTop="1dp"-->
-            <!--android:layout_weight="1"/>-->
-
-
-
 
     <LinearLayout
         android:id="@+id/llMidView"
@@ -553,38 +562,8 @@
             android:rotation="-90"
             android:layout_weight="2"/>
 
-        <!--<TextView-->
-            <!--android:id="@+id/tvMiddle"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textSize="60sp"-->
-            <!--android:background="@android:color/holo_red_dark"-->
-            <!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textStyle="bold"-->
-            <!--android:text="00.0 MPH"-->
-            <!--android:layout_marginTop="1dp"-->
-            <!--android:layout_marginBottom="1dp"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_weight="3"/>-->
 
     </LinearLayout>
-
-        <!--<TextView-->
-            <!--android:id="@+id/tvBottom"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textSize="50sp"-->
-            <!--android:background="@android:color/holo_red_dark"-->
-            <!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textStyle="bold"-->
-            <!--android:gravity="center"-->
-            <!--android:text="00 RPM"-->
-            <!--android:layout_marginBottom="1dp"-->
-            <!--android:layout_weight="1"/>-->
 
         <LinearLayout
             android:id="@+id/llBottomView"
@@ -637,7 +616,7 @@
 
 
             <TextView
-                android:id="@+id/tvFooter1"
+                android:id="@+id/tvHeader2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -646,9 +625,10 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:text="00:00:00"
+                android:text="00.0 AVG"
                 android:gravity="center"
                 android:layout_weight="1"/>
+
 
 
             <TextView
