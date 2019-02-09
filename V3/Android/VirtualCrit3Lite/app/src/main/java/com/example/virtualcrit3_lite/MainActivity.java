@@ -51,14 +51,24 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -76,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private long activeMillis = 0;
     private long totalMillis = 0;
     private long lastMillis = 0;
+    private String fbCurrentDate = "00000000";
 
     //SETTINGS
     private String settingsName = "TIM";
@@ -178,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     private void roundEndCalculate() {
+        Log.i(TAG, "roundEndCalculate: ");
         double newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
         double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
@@ -188,14 +200,14 @@ public class MainActivity extends AppCompatActivity {
         Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartrate));
 
 
-        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f MPH", roundHeartrate));
+        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
 //        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
 
         if (roundSpeed > bestRoundSpeed) {
             vibrator600();
             bestRoundSpeed = roundSpeed;
-            createTimeline("FASTEST SPEED" + "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
+            createTimeline("MY FASTEST SPEED" + "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
         } else {
             //vibrator300();
             Log.i(TAG, "roundEndCalculate: not the best");
@@ -208,7 +220,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (roundHeartrate > bestRoundHeartrate) {
             bestRoundHeartrate = roundHeartrate;
-            createTimeline("HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
+//            createTimeline("MY HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
+            createTimeline("MY HIGHEST SCORE" + "  [" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
         } else {
             Log.i(TAG, "roundEndCalculate: not the best");
         }
@@ -227,7 +240,157 @@ public class MainActivity extends AppCompatActivity {
         roundHeartrateTotal = 0;
         roundHeartrateCount = 0;
         roundHeartrate = 0;
-    }
+
+        //ROUNDS
+        //WRITE END OF ROUND DATA
+        Log.i(TAG, "fbWriteNewRound: ");
+        String roundURL = "rounds/" + fbCurrentDate;
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
+            // Creating new user node, which returns the unique key value
+            // new user node would be /users/$userid/
+        String userId = mDatabase.push().getKey();
+            // creating user object
+        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(roundHeartrate));
+            // pushing user to 'users' node using the userId
+        mDatabase.child(userId).setValue(round)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        Log.i(TAG, "onSuccess: write ROUNDS was successful");
+                        //fbWriteNewTotal();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Write failed
+                        Log.i(TAG, "onFailure: write ROUNDS failed");
+                    }
+                });
+
+        //TOTALS
+        Log.i(TAG, "fbWriteNewTotal: ");
+        //WRITE UPDATE TOTAL DATA
+        String totalsURL = "totals/"+ fbCurrentDate +"/" + settingsName;
+        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+        DecimalFormat df = new DecimalFormat("#.##");
+        Total total = new Total(settingsName, Double.valueOf(df.format(returnScoreFromHeartrate(averageHR))), Double.valueOf(df.format(geoAvgSpeed)));
+        mDatabaseTotals.setValue(total)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        Log.i(TAG, "onSuccess: write TOTALS was successful");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Write failed
+                        Log.i(TAG, "onFailure: write TOTALS failed");
+                    }
+                });
+
+
+        if ((currentRound-1) == 1) {
+
+            //REQUEST ROUND SPD LEADER
+            mDatabase.limitToLast(1).orderByChild("fb_SPD").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i(TAG, "onDataChange: ROUNDS");
+
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.child("fb_timName").getValue(String.class);
+                        Double speed = ds.child("fb_SPD").getValue(Double.class);
+                        Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+                        createTimeline("NEW FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                    }  //COMPLETED - READING EACH SNAP
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                }
+            });
+            //END READ ROUNDS FOR SPEED LEADER
+
+
+            //REQUEST TOTAL SPD LEADER
+            String totalsURLlistener = "totals/"+ fbCurrentDate;
+            DatabaseReference mDatabaseTotalsListener = FirebaseDatabase.getInstance().getReference(totalsURLlistener);
+            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_speedTotal").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i(TAG, "onDataChange: TOTAL SPEED");
+
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.child("fb_timName").getValue(String.class);
+                        Double speed = ds.child("a_speedTotal").getValue(Double.class);
+                        Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+                        createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                    }  //COMPLETED - READING EACH SNAP
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                }
+            });
+            //END READ TOTALS FOR SPEED LEADER
+
+            //REQUEST ROUND SCORE LEADER
+            mDatabase.limitToLast(1).orderByChild("fb_RND").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i(TAG, "onDataChange: ROUND SCORES");
+
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.child("fb_timName").getValue(String.class);
+                        Double score = ds.child("fb_RND").getValue(Double.class);
+                        Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+                        createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+                    }  //COMPLETED - READING EACH SNAP
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                }
+            });
+            //END READ ROUNDS FOR SCORE LEADER
+
+            //REQUEST TOTALS SCORE LEADER
+            //String totalsURLlistener = "totals/"+ fbCurrentDate;
+            //DatabaseReference mDatabaseTotalsListener = FirebaseDatabase.getInstance().getReference(totalsURLlistener);
+            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_scoreHRTotal").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i(TAG, "onDataChange: TOTAL SCORE");
+
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String name = ds.child("fb_timName").getValue(String.class);
+                        Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
+                        Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+                        createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+                    }  //COMPLETED - READING EACH SNAP
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Failed to read value
+                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                }
+            });
+            //END REQUEST TOTAL SCORE LEADER
+
+
+        } //ADD VALUE EVENT ONCE
+
+
+    }  //END - ROUND END CALCULATE
+
+
 
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
@@ -330,6 +493,7 @@ public class MainActivity extends AppCompatActivity {
 //        super.onDestroy();
 //    }
 
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -344,6 +508,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
+
+        int yearInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
+        int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
+        int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
+        fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
     }
 
 
