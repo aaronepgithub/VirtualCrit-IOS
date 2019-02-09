@@ -223,6 +223,15 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    public void onDestroy(){
+        //perform uninitialization and free resource
+        Log.i(TAG, "onDestroy: ");
+        mBluetoothGatt.disconnect();
+        mBluetoothGatt.close();
+        mBluetoothGatt = null;
+        super.onDestroy();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1046,6 +1055,7 @@ public class MainActivity extends AppCompatActivity {
         if (mBluetoothGatt == null) {
             return;
         }
+        //mBluetoothGatt.disconnect();
         mBluetoothGatt.close();
         mBluetoothGatt = null;
     }
