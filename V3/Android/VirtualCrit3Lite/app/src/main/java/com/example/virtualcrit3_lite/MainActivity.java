@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
 
     private TextView mTextMessage;
-    private TextView mValueTimer;
+    private Button mValueTimer;
     private TextView mActiveTimer;
 
 
