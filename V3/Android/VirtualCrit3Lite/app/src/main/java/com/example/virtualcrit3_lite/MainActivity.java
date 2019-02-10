@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private double roundHeartrateTotal = 0;
     private double roundHeartrateCount = 0;
     private double roundHeartrate = 0;
+    private double roundSpeed = 0;
     private double bestRoundSpeed = 1;
     private double bestRoundHeartrate = 1;
     private double bestRoundScore = 1;
@@ -236,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "roundEndCalculate: ");
         double newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
-        double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
+        roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
 
         //SET ROUND VALUES
         Rounds.getArrRoundSpeeds().add(roundSpeed);
@@ -363,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
-                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
                 }
             });
             //END READ ROUNDS FOR SPEED LEADER
@@ -387,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
-                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
                 }
             });
             //END READ TOTALS FOR SPEED LEADER
@@ -408,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
-                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
                 }
             });
             //END READ ROUNDS FOR SCORE LEADER
@@ -431,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
-                    Log.i(TAG, "Failed to read value - rounds.", databaseError.toException());
+                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
                 }
             });
             //END REQUEST TOTAL SCORE LEADER
@@ -850,6 +851,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void clickAudio(View view) {
+        Log.i(TAG, "clickAudio");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final String a = settingsAudio;
+                Button b = findViewById(R.id.valueAudio);
+                if (a.equals("OFF")) {
+                    b.setText("ON");
+                    settingsAudio = "ON";
+                    Log.i(TAG, "AUDIO: ON");
+                } else {
+                    b.setText("OFF");
+                    settingsAudio = "OFF";
+                    Log.i(TAG, "AUDIO: OFF");
+                }
+            }
+        });
+    }
+
     public void clickGPS(View view) {
 
         runOnUiThread(new Runnable() {
@@ -965,18 +986,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickMessageBar(View view) {
+        Log.i(TAG, "clickMessageBar: ");
     }
-
-    public void clickAudio(View view) {
-        simGPS = true;
-        settingsSecondsPerRound = 30;
-        Log.i(TAG, "clickAudio: simGPS");
-    }
-
-//    public void clickWheelSize(View view) {
-//        simGPS = false;
-//        Log.i(TAG, "clickWheel: simGPS - false");
-//    }
 
 
 
