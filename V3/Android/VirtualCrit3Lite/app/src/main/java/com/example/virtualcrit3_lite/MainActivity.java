@@ -859,12 +859,12 @@ public class MainActivity extends AppCompatActivity {
                 final String a = settingsAudio;
                 Button b = findViewById(R.id.valueAudio);
                 if (a.equals("OFF")) {
-                    b.setText("ON");
+                    b.setText("AUDIO:  ON");
                     settingsAudio = "ON";
                     Log.i(TAG, "AUDIO: ON");
                 } else {
                     b.setText("OFF");
-                    settingsAudio = "OFF";
+                    settingsAudio = "AUDIO:  OFF";
                     Log.i(TAG, "AUDIO: OFF");
                 }
             }
