@@ -804,6 +804,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void displaySpeedValues() {
+        //PASS VALUES TO FCTN TO ABSTRACT GPS VS BLE
         Log.i(TAG, "displaySpeedValues: ");
 
         long millis = totalTimeGeo;
