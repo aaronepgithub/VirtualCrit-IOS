@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
@@ -170,6 +171,45 @@ public class MainActivity extends AppCompatActivity {
     private Boolean reconnect = true;
 
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String Sport = "sportKey";
+    public static final String MaxHR = "maxhrKey";
+    SharedPreferences sharedpreferences;
+    
+    private void getSharedPrefs() {
+        Log.i(TAG, "getSharedPrefs: ");
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        settingsName = sharedpreferences.getString(Name, settingsName);
+        settingsSport = sharedpreferences.getString(Sport, settingsSport);
+        settingsMaxHeartrate = sharedpreferences.getInt(MaxHR, settingsMaxHeartrate);
+
+        Log.i(TAG, "getSharedPrefs: " + settingsName + settingsMaxHeartrate + settingsSport);
+
+        displayName(settingsName);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button b1 = (Button) findViewById(R.id.valueEditMaxHR);
+                b1.setText(String.format("%s  MAX HR", String.valueOf(settingsMaxHeartrate)));
+                Button b2 = (Button) findViewById(R.id.valueEditSport);
+                b2.setText(settingsSport);
+            }
+        });
+
+
+    }
+    
+    private void setSharedPrefs() {
+        Log.i(TAG, "setSharedPrefs: ");
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        editor.putString(Name, settingsName);
+        editor.putString(Sport, settingsSport);
+        editor.putInt(MaxHR, settingsMaxHeartrate);
+        editor.commit();
+    }
 
 
     private void calcAvgHR(int hr) {
@@ -525,6 +565,7 @@ public class MainActivity extends AppCompatActivity {
 
         createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
         setRandomUsernameOnStart();
+        getSharedPrefs();
 
         int yearInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
@@ -584,6 +625,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 settingsName = input.getText().toString().toUpperCase();
                 displayName(settingsName);
+                setSharedPrefs();
                 try {
                     getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
                 } catch (Exception e) {
@@ -599,6 +641,7 @@ public class MainActivity extends AppCompatActivity {
                 int i1 = r.nextInt(9999 - 1001);
                 settingsName = settingsName + i1;
                 displayName(settingsName);
+                setSharedPrefs();
                 try {
                     getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
                 } catch (Exception e) {
@@ -617,6 +660,7 @@ public class MainActivity extends AppCompatActivity {
         int i1 = r.nextInt(9999 - 1001);
         settingsName = "TIM" + i1;
         displayName(settingsName);
+
     }
 
     double distance_between(Double lat1, Double lon1, Double lat2, Double lon2)
@@ -1411,6 +1455,7 @@ public class MainActivity extends AppCompatActivity {
                 b1.setText(settingsSport);
             }
         });
+        setSharedPrefs();
     }
 
     public void clickEditMaxHR(View view) {
@@ -1437,6 +1482,7 @@ public class MainActivity extends AppCompatActivity {
                 b1.setText(String.format("%s  MAX HR", String.valueOf(settingsMaxHeartrate)));
             }
         });
+        setSharedPrefs();
     }
 
 
