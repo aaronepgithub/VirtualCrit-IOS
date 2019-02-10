@@ -26,12 +26,6 @@ public class Total {
 
 
 
-
-    // Default constructor required for calls to
-    // DataSnapshot.getValue(User.class)
-    public Total() {
-    }
-
     public Total(String fb_timName, Double a_scoreHRTotal, Double a_speedTotal) {
 
         this.fb_timName = fb_timName;

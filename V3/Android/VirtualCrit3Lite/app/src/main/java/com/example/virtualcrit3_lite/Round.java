@@ -1,10 +1,15 @@
 package com.example.virtualcrit3_lite;
 
 
+import android.util.Log;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Round {
+
+    private final static String TAG = Round.class.getSimpleName();
+
 
     public Integer a_calcDurationPost;
     public Double a_scoreRoundLast;
@@ -30,14 +35,12 @@ public class Round {
 //    public String name;
 //    public Double score;
 
-    // Default constructor required for calls to
-    // DataSnapshot.getValue(User.class)
-    public Round() {
-    }
 
     public Round(String fb_timName, Double fb_SPD, Double fb_HR, Double fb_RND) {
 //        this.name = name;
 //        this.score = score;
+
+        Log.i(TAG, "Round: " + fb_timName+"  "+ fb_SPD+"  "+fb_RND);
 
         this.a_calcDurationPost = 1;
         this.a_scoreRoundLast = fb_RND;

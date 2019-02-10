@@ -33,6 +33,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +70,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -200,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
         Rounds.getArrRoundHeartrates().add(roundHeartrate);
         Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartrate));
 
+        double pastRoundHeartrate = roundHeartrate;
+
 
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
@@ -257,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             // new user node would be /users/$userid/
         String userId = mDatabase.push().getKey();
             // creating user object
-        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(roundHeartrate));
+        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate));
             // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -520,6 +524,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
+        setRandomUsernameOnStart();
 
         int yearInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
@@ -544,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayName(final String n) {
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -551,29 +557,67 @@ public class MainActivity extends AppCompatActivity {
                 mName.setText(n);
             }
         });
+
+        try {
+            getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void inputName() {
-        final EditText txtUrl = new EditText(this);
 
-        new AlertDialog.Builder(this)
-                .setTitle("SETTINGS")
-                .setMessage("ENTER NAME")
-                .setView(txtUrl)
-                .setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        settingsName = txtUrl.getText().toString().toUpperCase();
-                        Log.i(TAG, "settingsName:  " + settingsName);
-                        displayName(settingsName);
-                    }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                })
-                .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog dialog;
+        builder.setTitle("NAME");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                settingsName = input.getText().toString().toUpperCase();
+                displayName(settingsName);
+                try {
+                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("RANDOM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                settingsName = "TIM";
+                Random r = new Random();
+                int i1 = r.nextInt(9999 - 1001);
+                settingsName = settingsName + i1;
+                displayName(settingsName);
+                try {
+                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
+
+    private void setRandomUsernameOnStart() {
+        Random r = new Random();
+        int i1 = r.nextInt(9999 - 1001);
+        settingsName = "TIM" + i1;
+        displayName(settingsName);
+    }
 
     double distance_between(Double lat1, Double lon1, Double lat2, Double lon2)
     {
@@ -861,6 +905,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickAudio(View view) {
         simGPS = true;
+        settingsSecondsPerRound = 30;
         Log.i(TAG, "clickAudio: simGPS");
     }
 
