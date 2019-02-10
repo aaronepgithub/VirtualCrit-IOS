@@ -374,7 +374,6 @@
                     android:layout_height="wrap_content"
                     android:text="END"
                     android:textAlignment="center"
-                    android:textAlignment="viewStart"
                     android:onClick="clickEnd"/>
 
             </LinearLayout>
