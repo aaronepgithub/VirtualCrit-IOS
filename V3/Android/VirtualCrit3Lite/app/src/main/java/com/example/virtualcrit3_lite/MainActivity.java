@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Double> arrLons = new ArrayList<>();
     private double oldLat = 0.0;
     private double oldLon = 0.0;
+    private double geoSpeed = 0;
     private double geoDistance = 0.0;
     private double geoAvgSpeed = 0.0;
     private float[] results = new float[2];
@@ -734,7 +735,8 @@ public class MainActivity extends AppCompatActivity {
                 long gt = (location.getTime() - oldTime);  //MILLI
 
                 //alternative for results[0]
-                final double geoSpeedQuick = gd / ((double) gt / 1000 / 60 / 60);
+//                final double geoSpeedQuick = gd / ((double) gt / 1000 / 60 / 60);
+                geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
 
                 //Log.i(TAG, "onLocationReceived: compareSpeeds: " + geoSpeedQuick + ", " + ((double) location.getSpeed() * 2.23694));
                 //double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
@@ -743,51 +745,56 @@ public class MainActivity extends AppCompatActivity {
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
                 double ttg = totalTimeGeo;  //IN MILLI
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
-                long millis = totalTimeGeo;
-                @SuppressLint("DefaultLocale")
-                final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+//                long millis = totalTimeGeo;
+//                @SuppressLint("DefaultLocale")
+//                final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+//                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+//                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+//
+//                //UPDATE UI WITH SPEED AND DISTANCE
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        TextView tvSpd = (TextView) findViewById(R.id.valueSpeedGPS);
+//                        tvSpd.setText(String.format("%.1f MPH", geoSpeedQuick));
+//                        TextView t1 = findViewById(R.id.tvMiddle);
+//                        t1.setText(String.format("%.1f", geoSpeedQuick));
+//
+//                        if (showHR == false) {
+//                            TextView p1 = findViewById(R.id.tvTop);
+//                            p1.setText(calcPace(geoSpeedQuick));
+//
+//                            TextView p2 = findViewById(R.id.tvTop_Label);
+//                            p2.setText("PACE");
+//
+//                            TextView p3 = findViewById(R.id.tvFooter2);
+//                            p3.setText(String.format("%s AVG", calcPace(geoAvgSpeed)));
+//                        }
+//
+//                        TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
+//                        tvDst.setText(String.format("%.1f MILES", geoDistance));
+//
+//                        //PLACEHOLDER
+//                        TextView tx = findViewById(R.id.tvBottom);
+//                        tx.setText(String.format("%.2f", geoDistance));
+//                        //PLACEHOLDER
+//
+//                        TextView tvTime = (TextView) findViewById(R.id.valueActiveTimeGPS);
+//                        tvTime.setText(hms);
+//                        TextView t4 = findViewById(R.id.tvFooter1);
+//                        t4.setText(hms);
+//
+//                        TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
+//                        tvAvgSpd.setText(String.format("%.1f MPH", geoAvgSpeed));
+//                        TextView t2 = findViewById(R.id.tvHeader2);
+//                        t2.setText(String.format("%.1f AVG", geoAvgSpeed));
+//
+//
+//                    }
+//                });
 
-                //UPDATE UI WITH SPEED AND DISTANCE
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView tvSpd = (TextView) findViewById(R.id.valueSpeedGPS);
-                        tvSpd.setText(String.format("%.1f MPH", geoSpeedQuick));
-                        TextView t1 = findViewById(R.id.tvMiddle);
-                        t1.setText(String.format("%.1f", geoSpeedQuick));
+                displaySpeedValues();
 
-                        if (showHR == false) {
-                            TextView p1 = findViewById(R.id.tvTop);
-                            p1.setText(calcPace(geoSpeedQuick));
-
-                            TextView p2 = findViewById(R.id.tvTop_Label);
-                            p2.setText("PACE");
-
-                            TextView p3 = findViewById(R.id.tvFooter2);
-                            p3.setText(String.format("%s AVG", calcPace(geoAvgSpeed)));
-                        }
-
-                        TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
-                        tvDst.setText(String.format("%.1f MILES", geoDistance));
-
-                        //PLACEHOLDER
-                        TextView tx = findViewById(R.id.tvBottom);
-                        tx.setText(String.format("%.2f", geoDistance));
-                        //PLACEHOLDER
-
-                        TextView tvTime = (TextView) findViewById(R.id.valueActiveTimeGPS);
-                        tvTime.setText(hms);
-                        TextView t4 = findViewById(R.id.tvFooter1);
-                        t4.setText(hms);
-
-                        TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
-                        tvAvgSpd.setText(String.format("%.1f MPH", geoAvgSpeed));
-                        TextView t2 = findViewById(R.id.tvHeader2);
-                        t2.setText(String.format("%.1f AVG", geoAvgSpeed));
-                    }
-                });
             }
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
@@ -796,6 +803,59 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void displaySpeedValues() {
+        Log.i(TAG, "displaySpeedValues: ");
+
+        long millis = totalTimeGeo;
+
+        @SuppressLint("DefaultLocale")
+        final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+
+        //UPDATE UI WITH SPEED AND DISTANCE
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView tvSpd = (TextView) findViewById(R.id.valueSpeedGPS);
+                tvSpd.setText(String.format("%.1f MPH", geoSpeed));
+                TextView t1 = findViewById(R.id.tvMiddle);
+                t1.setText(String.format("%.1f", geoSpeed));
+
+                if (showHR == false) {
+                    TextView p1 = findViewById(R.id.tvTop);
+                    p1.setText(calcPace(geoSpeed));
+
+                    TextView p2 = findViewById(R.id.tvTop_Label);
+                    p2.setText("PACE");
+
+                    TextView p3 = findViewById(R.id.tvFooter2);
+                    p3.setText(String.format("%s AVG", calcPace(geoAvgSpeed)));
+                }
+
+                TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
+                tvDst.setText(String.format("%.1f MILES", geoDistance));
+
+                //PLACEHOLDER
+                TextView tx = findViewById(R.id.tvBottom);
+                tx.setText(String.format("%.2f", geoDistance));
+                //PLACEHOLDER
+
+                TextView tvTime = (TextView) findViewById(R.id.valueActiveTimeGPS);
+                tvTime.setText(hms);
+                TextView t4 = findViewById(R.id.tvFooter1);
+                t4.setText(hms);
+
+                TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
+                tvAvgSpd.setText(String.format("%.1f MPH", geoAvgSpeed));
+                TextView t2 = findViewById(R.id.tvHeader2);
+                t2.setText(String.format("%.1f AVG", geoAvgSpeed));
+
+
+            }
+        });
+
+    }
 
     private void startGPS() {
         Log.i(TAG, "startGPS: ");
