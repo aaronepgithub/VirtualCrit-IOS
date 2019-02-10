@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean simGPS = false;
 
     //HR
+    private int currentHR = 0;
     private int totHR;
     private int countHR;
     private double averageHR = 0;
@@ -223,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
             roundHeartrateTotal += hr;
             roundHeartrateCount += 1;
             roundHeartrate = (double) roundHeartrateTotal / (double) roundHeartrateCount;
-
         }
     }
 
@@ -805,7 +805,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displaySpeedValues() {
         //PASS VALUES TO FCTN TO ABSTRACT GPS VS BLE
-        Log.i(TAG, "displaySpeedValues: ");
+        //Log.i(TAG, "displaySpeedValues: ");
 
         long millis = totalTimeGeo;
 
@@ -851,6 +851,13 @@ public class MainActivity extends AppCompatActivity {
                 tvAvgSpd.setText(String.format("%.1f MPH", geoAvgSpeed));
                 TextView t2 = findViewById(R.id.tvHeader2);
                 t2.setText(String.format("%.1f AVG", geoAvgSpeed));
+
+                try {
+//                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
+                    getSupportActionBar().setTitle(String.format("%.1f MPH", geoSpeed) + "  (" + settingsName + ")  " + String.format("%.1f MILES", geoDistance));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -1349,8 +1356,7 @@ public class MainActivity extends AppCompatActivity {
                         final int heartRate = characteristic.getIntValue(format, 1);
                         //Log.i(TAG, String.format("%d BPM", heartRate));
                         //intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
-                        calcAvgHR(heartRate);
-                        setValueHR(String.format("%d", heartRate));
+                        onNewHeartrate(heartRate);
                     } else {
                         // For all other profiles, writes the data formatted in HEX.
                         Log.i(TAG, "onCharacteristicChanged: strangeval");
@@ -1360,6 +1366,28 @@ public class MainActivity extends AppCompatActivity {
 
             };
 
+
+    private void onNewHeartrate(final int h) {
+        //Log.i(TAG, "onNewHeartrate: " + h);
+
+        calcAvgHR(h);
+        if (h > 50 && h < 220) {
+            //TOTAL
+            totHR += h;
+            countHR += 1;
+            averageHR = (double) totHR / (double) countHR;
+            //ROUND
+            roundHeartrateTotal += h;
+            roundHeartrateCount += 1;
+            roundHeartrate = (double) roundHeartrateTotal / (double) roundHeartrateCount;
+        }
+
+        setValueHR(String.format("%d", h));
+        currentHR = h;
+
+    }
+
+    //PORT VS LANDSCAPE
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
