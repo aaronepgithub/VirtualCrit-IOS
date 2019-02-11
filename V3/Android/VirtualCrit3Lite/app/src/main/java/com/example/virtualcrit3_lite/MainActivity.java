@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     //SETTINGS
     private String settingsName = "TIM";
     private String settingsGPS = "OFF";
-    private String settingsAudio = "OFF";
+    private Boolean settingsAudio = false;
     private String settingsSport = "BIKE";
     private int settingsSecondsPerRound = 300;
     private int settingsMaxHeartrate = 185;
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 //    public void speakText(TimerTask v, String st) {
     public void speakText(String st) {
-        if (settingsAudio.equals("NO")) {return;}
+        if (!settingsAudio) {return;}
         engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
@@ -875,21 +875,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     public void clickAudio(View view) {
-        Log.i(TAG, "clickAudio");
+        Log.i(TAG, "clickAudio  "  + settingsAudio);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final String a = settingsAudio;
                 Button b = findViewById(R.id.valueAudio);
-                if (a.equals("OFF")) {
+                if (!settingsAudio) {
                     b.setText("AUDIO:  ON");
-                    settingsAudio = "ON";
-                    Log.i(TAG, "AUDIO: ON");
-                    speakText("AUDIO ON");
+                    settingsAudio = true;
+                    Log.i(TAG, "AUDIO: ON " + settingsAudio);
+                    speakText("AUDIO ENABLED");
                 } else {
                     b.setText("AUDIO: OFF");
-                    settingsAudio = "OFF";
-                    Log.i(TAG, "AUDIO: OFF");
+                    settingsAudio = false;
+                    Log.i(TAG, "AUDIO: OFF" + settingsAudio);
                 }
             }
         });
