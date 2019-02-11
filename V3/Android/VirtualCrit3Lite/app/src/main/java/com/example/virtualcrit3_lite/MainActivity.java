@@ -30,6 +30,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -72,13 +73,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
 
+    private TextToSpeech engine;
     private TextView mTextMessage;
     private Button mValueTimer;
     private TextView mActiveTimer;
@@ -215,6 +218,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+//    public void speakText(TimerTask v, String st) {
+    public void speakText(String st) {
+        if (settingsAudio.equals("NO")) {return;}
+        engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+
+    @Override
+    public void onInit(int i) {
+        if (i == TextToSpeech.SUCCESS) {
+            //Setting speech Language
+            engine.setLanguage(Locale.ENGLISH);
+            engine.setPitch(1);
+        }
+    }
+
+
+
     private void calcAvgHR(int hr) {
         if (hr > 50) {
             //TOTAL
@@ -303,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
             // new user node would be /users/$userid/
         String userId = mDatabase.push().getKey();
             // creating user object
-        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate));
+        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate), (currentRound - 1));
             // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -359,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
                         createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + "MPH. " + "Recorded by + " + name);
                     }  //COMPLETED - READING EACH SNAP
                 }
                 @Override
@@ -497,7 +519,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -568,6 +589,8 @@ public class MainActivity extends AppCompatActivity {
         createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
         setRandomUsernameOnStart();
         getSharedPrefs();
+
+        engine = new TextToSpeech(this, this);
 
         int yearInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
@@ -862,6 +885,7 @@ public class MainActivity extends AppCompatActivity {
                     b.setText("AUDIO:  ON");
                     settingsAudio = "ON";
                     Log.i(TAG, "AUDIO: ON");
+                    speakText("AUDIO ON");
                 } else {
                     b.setText("OFF");
                     settingsAudio = "AUDIO:  OFF";

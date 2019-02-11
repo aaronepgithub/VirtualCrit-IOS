@@ -36,13 +36,12 @@ public class Round {
 //    public Double score;
 
 
-    public Round(String fb_timName, Double fb_SPD, Double fb_HR, Double fb_RND) {
-//        this.name = name;
-//        this.score = score;
+    public Round(String fb_timName, Double fb_SPD, Double fb_HR, Double fb_RND, int RoundNumber) {
+
 
         Log.i(TAG, "Round: " + fb_timName+"  "+ fb_SPD+"  "+fb_RND);
 
-        this.a_calcDurationPost = 1;
+        this.a_calcDurationPost = RoundNumber;
         this.a_scoreRoundLast = fb_RND;
         this.a_speedRoundLast = fb_SPD;
 
@@ -52,8 +51,8 @@ public class Round {
         this.fb_timGroup = "ANDY";
         this.fb_timTeam = "Square Pizza";
         this.fb_CAD = 1.0;
-        this.fb_Date = 20180322;
-        this.fb_DateNow = 20180322;
+        this.fb_Date = RoundNumber;
+        this.fb_DateNow = RoundNumber;
         this.fb_HR = fb_HR;
         this.fb_maxHRTotal = 185;
         this.fb_scoreHRRound = fb_RND;
