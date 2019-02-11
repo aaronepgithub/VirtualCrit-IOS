@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
                         createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + "MPH. " + "Recorded by + " + name);
+                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by + " + name);
                     }  //COMPLETED - READING EACH SNAP
                 }
                 @Override
@@ -887,8 +887,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Log.i(TAG, "AUDIO: ON");
                     speakText("AUDIO ON");
                 } else {
-                    b.setText("OFF");
-                    settingsAudio = "AUDIO:  OFF";
+                    b.setText("AUDIO: OFF");
+                    settingsAudio = "OFF";
                     Log.i(TAG, "AUDIO: OFF");
                 }
             }
