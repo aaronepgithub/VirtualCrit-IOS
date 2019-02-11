@@ -745,9 +745,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 //TRY DIRECT CALC FORMULA
                 double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
                 //REPLACE results[0] with returned result
-                if (simGPS.equals(true)) {
-                    result = result * 10;
-                }
+//                if (simGPS.equals(true)) {
+//                    result = result * 10;
+//                }
 //
 //                Log.i(TAG, String.format("onLocationReceived: results[0]: %s", results[0]));
 //                Log.i(TAG, String.format("onLocationReceived: result: %s", result));
@@ -759,12 +759,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 long gt = (location.getTime() - oldTime);  //MILLI
 
                 //alternative for results[0]
-//                final double geoSpeedQuick = gd / ((double) gt / 1000 / 60 / 60);
-                geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
-
-                //Log.i(TAG, "onLocationReceived: compareSpeeds: " + geoSpeedQuick + ", " + ((double) location.getSpeed() * 2.23694));
-                //double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-
+                double geoSpeedLong = gd / ((double) gt / 1000 / 60 / 60);
+                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                //USING
+                geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                
 
                 totalTimeGeo += (location.getTime() - oldTime);  //MILLI
                 double ttg = totalTimeGeo;  //IN MILLI
