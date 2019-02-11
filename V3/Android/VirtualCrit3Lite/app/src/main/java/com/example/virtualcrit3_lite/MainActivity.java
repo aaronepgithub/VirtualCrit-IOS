@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelUuid;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
@@ -704,11 +705,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return d;
     }
 
+
+
+
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(Location location) {
         //Log.i(TAG, "onLocationReceived");
+
+
+        Log.i(TAG, "onLocationReceived: passed the filter");
+
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
+        
 
         if (arrLats.size() < 5) {
             oldLat = location.getLatitude();
@@ -738,12 +747,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 //                }
 
                 //OPT 1.  QUICKREAD GEO SPEED
-                //final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                if (geoSpeedQuick > 35) {
+                    Log.i(TAG, "onLocationReceived: too fast, wait for the next one...");
+//                    oldLat = location.getLatitude();
+//                    oldLon = location.getLongitude();
+//                    oldTime = location.getTime();
+                    return;
+                }
                 //Log.i(TAG, "onLocationReceived: QuickSpeedCalc: " + geoSpeedQuick);
 
 
                 //TRY DIRECT CALC FORMULA
                 double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
+
+                if (result > 161) {
+                    Log.i(TAG, "onLocationReceived: too big of a distance, ignore and wait for the next one...");
+                    oldLat = location.getLatitude();
+                    oldLon = location.getLongitude();
+                    oldTime = location.getTime();
+                    return;
+                }
+
                 //REPLACE results[0] with returned result
 //                if (simGPS.equals(true)) {
 //                    result = result * 10;
@@ -758,10 +783,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 geoDistance += gd;
                 long gt = (location.getTime() - oldTime);  //MILLI
 
-                //alternative for results[0]
+                
                 double geoSpeedLong = gd / ((double) gt / 1000 / 60 / 60);
-                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                //USING
+//                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                //USING QUICK METHOD FOR DISPLAY PURPOSES
                 geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 
 
@@ -848,6 +873,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mLocationRequest.setInterval(3000);
         mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
