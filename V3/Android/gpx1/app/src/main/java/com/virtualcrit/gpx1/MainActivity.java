@@ -95,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
     private long oldTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
 
+    //GPX
+//    private ArrayList<Wpt> wpts = gpx.getWpts();
+//    private ArrayList<Trk> trks = gpx.getTrks();
+//    private ArrayList<Trkpt> trkpts = trks.get(0).getTrkseg();
+
+    private ArrayList<Wpt> wpts = new ArrayList<>();
+    private ArrayList<Trk> trks = new ArrayList<>();
+    private ArrayList<Trkpt> trkpts = new ArrayList<>();
 
 
     /**
@@ -128,52 +136,53 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        AssetManager assetManager = getAssets();
-        GpxParser parser;
-        Gpx gpx = null;
-        try {
-            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
-            parser = new GpxParser(inputStream);
-            gpx = parser.parse();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-// Get a List of waypoints
-        ArrayList<Wpt> wpts = gpx.getWpts();
-
-        Log.i(TAG, "NOW THE WAYPTS \n\n\n");
-
-        for (Wpt w : wpts) {
-            Log.i("Name of waypoint ", w.getName());
-            Log.i("Description ",w.getDesc());
-            Log.i("Symbol of waypoint ",w.getSym());
-            Log.i("Coordinates ",String.valueOf(w.getLatLon()));
-        }
-
-
-
-
-        ArrayList<Trk> trks = gpx.getTrks();
-        ArrayList<Trkpt> trkpts = trks.get(0).getTrkseg();
-
-        Log.i(TAG, "NOW THE TRKSEGS \n\n\n");
-
-        for (Trk t : trks) {
-            Log.i(TAG, "TrkSegs, for loop");
-        }
-
-
-
-
-        Log.i(TAG, "NOW THE TRKPTS \n\n\n");
-
-        for (Trkpt tk : trkpts) {
-//            Log.i(TAG, "Trkpt: Lat" + tk.getLat());
-//            Log.i(TAG, "Trkpt: Lat" + tk.getLon());
-            Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
-        }
+//        AssetManager assetManager = getAssets();
+//        GpxParser parser;
+//        Gpx gpx = null;
+//        try {
+//            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
+//            parser = new GpxParser(inputStream);
+//            gpx = parser.parse();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//// Get a List of waypoints
+////        ArrayList<Wpt> wpts = gpx.getWpts();
+//        wpts = gpx.getWpts();
+//
+//        Log.i(TAG, "NOW THE WAYPTS \n\n\n");
+//
+//        for (Wpt w : wpts) {
+//            Log.i("Name of waypoint ", w.getName());
+//            Log.i("Description ",w.getDesc());
+//            Log.i("Symbol of waypoint ",w.getSym());
+//            Log.i("Coordinates ",String.valueOf(w.getLatLon()));
+//        }
+//
+//
+//
+//
+//        trks = gpx.getTrks();
+//        trkpts = trks.get(0).getTrkseg();
+//
+//        Log.i(TAG, "NOW THE TRKSEGS \n\n\n");
+//
+//        for (Trk t : trks) {
+//            Log.i(TAG, "TrkSegs, for loop");
+//        }
+//
+//
+//
+//
+//        Log.i(TAG, "NOW THE TRKPTS \n\n\n");
+//
+//        for (Trkpt tk : trkpts) {
+////            Log.i(TAG, "Trkpt: Lat" + tk.getLat());
+////            Log.i(TAG, "Trkpt: Lat" + tk.getLon());
+//            Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
+//        }
 
 
 
@@ -209,15 +218,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    //GPS
     private String settingsGPS = "OFF";
     public void clickB1(View view) {
+        Log.i(TAG, "clickB1: GPS");
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     TextView mGPS = findViewById(R.id.button1);
                     if (settingsGPS.equals("OFF")) {
-                        mGPS.setText("ON");
+                        mGPS.setText("GPS: ON");
                         settingsGPS = "ON";
                         Log.i(TAG, "run: GPS On");
                         startGPS();
@@ -226,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                                 "GPS ON" , Toast.LENGTH_SHORT)
                                 .show();
                     } else {
-                        mGPS.setText("OFF");
+                        mGPS.setText("GPS: OFF");
                         settingsGPS = "OFF";
                         Log.i(TAG, "run: GPS Off");
                         //STOP GPS
@@ -246,14 +257,72 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private double gpxLat1;
+    private double gpxLon1;
+    private int currentWaypoint = 0;
+    private int maxWaypoint;
+
+    //GPX
     public void clickB2(View view) {
+        Log.i(TAG, "clickB2: GPX");
+        AssetManager assetManager = getAssets();
+        GpxParser parser;
+        Gpx gpx = null;
+        try {
+            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
+            parser = new GpxParser(inputStream);
+            gpx = parser.parse();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+// Get a List of waypoints
+//        ArrayList<Wpt> wpts = gpx.getWpts();
+        wpts = gpx.getWpts();
+        maxWaypoint = wpts.size();
+
+        Log.i(TAG, "NOW THE WAYPTS \n\n\n");
+
+        for (Wpt w : wpts) {
+            Log.i("Name of waypoint ", w.getName());
+            Log.i("Description ",w.getDesc());
+            Log.i("Symbol of waypoint ",w.getSym());
+            Log.i("Coordinates ",String.valueOf(w.getLatLon()));
+        }
+
+        trks = gpx.getTrks();
+        trkpts = trks.get(0).getTrkseg();
+
+        Log.i(TAG, "NOW THE TRKSEGS \n\n\n");
+
+        for (Trk t : trks) {
+            Log.i(TAG, "TrkSegs, for loop");
+        }
+
+
+
+
+        Log.i(TAG, "NOW THE TRKPTS \n\n\n");
+
+        for (Trkpt tk : trkpts) {
+//            Log.i(TAG, "Trkpt: Lat" + tk.getLat());
+//            Log.i(TAG, "Trkpt: Lat" + tk.getLon());
+            Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
+        }
+
+        //SHOWALERT
+        Toast.makeText(getApplicationContext(),
+                "GPX LOADED" , Toast.LENGTH_SHORT)
+                .show();
+
     }
 
     public void clickB3(View view) {
     }
 
 
-    double distance_between(Double lat1, Double lon1, Double lat2, Double lon2)
+    double distance_between(double lat1, double lon1, double lat2, double lon2)
     {
         double R = 6371; // km
         double dLat = (lat2-lat1)*Math.PI/180;
@@ -269,6 +338,59 @@ public class MainActivity extends AppCompatActivity {
         return d;
     }
 
+
+
+    private void waypointTest(double gpsLa, double gpsLo) {
+        Log.i(TAG, "waypointTest: ");
+        Log.i(TAG, "waypointTest: current " + currentWaypoint);
+        Log.i(TAG, "waypointTest: max " + maxWaypoint);
+
+
+
+        if (currentWaypoint >= maxWaypoint) {
+            //Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+            return;
+        }
+
+        final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
+        Log.i(TAG, "waypointTest: disBetw  " + disBetw);
+
+        if (disBetw < 100) {
+            Log.i(TAG, "waypointTest: close enough, next point");
+            currentWaypoint += 1;
+
+            runOnUiThread(new Runnable() {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void run() {
+                    TextView v1 = findViewById(R.id.value1);
+                    v1.setText((int) disBetw);
+                    TextView v2 = findViewById(R.id.value2);
+                    v2.setText(String.format("WP: %d", currentWaypoint));
+
+                }
+            });
+
+            if (currentWaypoint >= maxWaypoint) {
+                Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+
+                runOnUiThread(new Runnable() {
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void run() {
+                        TextView v1 = findViewById(R.id.value1);
+                        v1.setText("FINISH TIME:");
+                        TextView v2 = findViewById(R.id.value2);
+                        v2.setText("DISPLAY TIME");
+                    }
+                });
+
+
+            }
+
+        }
+
+    }
 
 
     @SuppressLint("DefaultLocale")
@@ -318,6 +440,7 @@ public class MainActivity extends AppCompatActivity {
                 //TRY DIRECT CALC FORMULA
                 double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
 
+                //1/10th of a mile?
                 if (result > 161) {
                     Log.i(TAG, "onLocationReceived: too big of a distance, ignore and wait for the next one...");
                     oldLat = location.getLatitude();
@@ -325,6 +448,9 @@ public class MainActivity extends AppCompatActivity {
                     oldTime = location.getTime();
                     return;
                 }
+
+                Log.i(TAG, "onLocationReceived: calling waypointTest");
+                waypointTest(location.getLatitude(), location.getLongitude());
 
 
                 //OPT 2.  GEO SPEED, ACCURATE VERSION

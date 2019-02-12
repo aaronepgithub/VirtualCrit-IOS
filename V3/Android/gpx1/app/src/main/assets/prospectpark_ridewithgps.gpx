@@ -3,13 +3,6 @@
   <author>RideWithGPS LLC</author>
   <url>https://ridewithgps.com/routes/23577901</url>
   <time>2017-07-27T11:32:28Z</time>
-  <wpt lon="-73.97128000000001" lat="40.65216">
-    <name>Left</name>
-    <sym>Dot</sym>
-    <type>Dot</type>
-    <desc>Slight left onto West Dr</desc>
-    <cmt>Slight left onto West Dr</cmt>
-  </wpt>
   <wpt lon="-73.97055" lat="40.651990000000005">
     <name>Straight</name>
     <sym>Dot</sym>
