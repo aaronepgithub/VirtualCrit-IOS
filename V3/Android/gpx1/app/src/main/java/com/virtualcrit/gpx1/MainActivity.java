@@ -344,16 +344,28 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "waypointTest: ");
         Log.i(TAG, "waypointTest: current " + currentWaypoint);
         Log.i(TAG, "waypointTest: max " + maxWaypoint);
+        final int localWp = currentWaypoint;
 
 
-
-        if (currentWaypoint >= maxWaypoint) {
+        if (localWp >= maxWaypoint) {
             //Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
             return;
         }
 
-        final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
+        final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
         Log.i(TAG, "waypointTest: disBetw  " + disBetw);
+
+        runOnUiThread(new Runnable() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void run() {
+                TextView v1 = findViewById(R.id.value1);
+                v1.setText(String.format("%.2f", disBetw));
+                TextView v2 = findViewById(R.id.value2);
+                v2.setText(String.valueOf(localWp));
+
+            }
+        });
 
         if (disBetw < 100) {
             Log.i(TAG, "waypointTest: close enough, next point");
@@ -364,9 +376,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     TextView v1 = findViewById(R.id.value1);
-                    v1.setText((int) disBetw);
+                    v1.setText(String.format("%.2f", disBetw));
                     TextView v2 = findViewById(R.id.value2);
-                    v2.setText(String.format("WP: %d", currentWaypoint));
+                    v2.setText(String.valueOf(localWp));
 
                 }
             });
