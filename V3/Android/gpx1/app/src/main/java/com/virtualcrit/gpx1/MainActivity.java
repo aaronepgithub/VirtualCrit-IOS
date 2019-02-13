@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Trk> trks = new ArrayList<>();
     private ArrayList<Trkpt> trkpts = new ArrayList<>();
 
+    private long raceStartTime = 0;
+    private long raceFinishTime = 0;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -133,58 +135,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-
-//        AssetManager assetManager = getAssets();
-//        GpxParser parser;
-//        Gpx gpx = null;
-//        try {
-//            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
-//            parser = new GpxParser(inputStream);
-//            gpx = parser.parse();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//// Get a List of waypoints
-////        ArrayList<Wpt> wpts = gpx.getWpts();
-//        wpts = gpx.getWpts();
-//
-//        Log.i(TAG, "NOW THE WAYPTS \n\n\n");
-//
-//        for (Wpt w : wpts) {
-//            Log.i("Name of waypoint ", w.getName());
-//            Log.i("Description ",w.getDesc());
-//            Log.i("Symbol of waypoint ",w.getSym());
-//            Log.i("Coordinates ",String.valueOf(w.getLatLon()));
-//        }
-//
-//
-//
-//
-//        trks = gpx.getTrks();
-//        trkpts = trks.get(0).getTrkseg();
-//
-//        Log.i(TAG, "NOW THE TRKSEGS \n\n\n");
-//
-//        for (Trk t : trks) {
-//            Log.i(TAG, "TrkSegs, for loop");
-//        }
-//
-//
-//
-//
-//        Log.i(TAG, "NOW THE TRKPTS \n\n\n");
-//
-//        for (Trkpt tk : trkpts) {
-////            Log.i(TAG, "Trkpt: Lat" + tk.getLat());
-////            Log.i(TAG, "Trkpt: Lat" + tk.getLon());
-//            Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
-//        }
-
-
 
 
     }
@@ -269,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
         GpxParser parser;
         Gpx gpx = null;
         try {
-            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
+//            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
+            InputStream inputStream = assetManager.open("PP_LOOP_SS.gpx");
             parser = new GpxParser(inputStream);
             gpx = parser.parse();
 
@@ -369,6 +320,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (disBetw < 100) {
             Log.i(TAG, "waypointTest: close enough, next point");
+
+            if (currentWaypoint == 0) {
+                Log.i(TAG, "waypointTest: STARTRACE");
+                raceStartTime = oldTime;
+
+                Toast.makeText(getApplicationContext(),
+                        "RACE STARTING" , Toast.LENGTH_LONG)
+                        .show();
+            }
+
+            if (currentWaypoint > 0 && currentWaypoint < maxWaypoint) {
+                Toast.makeText(getApplicationContext(),
+                        "NEXT CHECKPOINT" , Toast.LENGTH_LONG)
+                        .show();
+            }
             currentWaypoint += 1;
 
             runOnUiThread(new Runnable() {
@@ -385,6 +351,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (currentWaypoint >= maxWaypoint) {
                 Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+
+                raceFinishTime = oldTime;
+                long raceTime = raceFinishTime - raceStartTime;
+
+                Toast.makeText(getApplicationContext(),
+                        "RACE FINISHED, TIME: " + (String.valueOf(raceTime/1000)) , Toast.LENGTH_LONG)
+                        .show();
 
                 runOnUiThread(new Runnable() {
                     @SuppressLint("DefaultLocale")
