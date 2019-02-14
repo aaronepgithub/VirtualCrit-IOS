@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,6 +69,8 @@ import es.atrapandocucarachas.gpxparser.parser.GpxParser;
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = MainActivity.class.getSimpleName();
+    //private MapView mapView;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -115,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Mapbox Access token
+        //Mapbox.getInstance(getApplicationContext(), "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
+
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -135,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
 
 
     }
@@ -206,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private double gpxLat1;
     private double gpxLon1;

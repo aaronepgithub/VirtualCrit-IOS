@@ -63,6 +63,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+
 import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
 
@@ -81,6 +87,9 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
+
+    private MapView mapView;
+
 
     private TextToSpeech engine;
     private TextView mTextMessage;
@@ -564,20 +573,66 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     };
 
 
-//    public void onDestroy(){
-        //perform uninitialization and free resource
-//        Log.i(TAG, "onDestroy: ");
-//        mBluetoothGatt.disconnect();
-//        mBluetoothGatt.close();
-//        mBluetoothGatt = null;
-//        super.onDestroy();
+//    @Override
+//    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+//        mapboxMap.setStyle(new Style.Builder().fromUrl(mapbox://styles/mapbox/streets-v11), new Style.OnStyleLoaded() {
+//        @Override
+//        public void onStyleLoaded(@NonNull Style style) {
+//            /* Image: An image is loaded and added to the map. */
+//            style.addImage(MARKER_IMAGE, BitmapFactory.decodeResource(
+//                    MainActivity.this.getResources(), R.drawable.custom_marker));
+//            addMarkers(style);
+//        }
+//    });
+//}
+//
+//    private void addMarkers(@NonNull Style loadedMapStyle) {
+//        List<Feature> features = new ArrayList<>();
+//        features.add(Feature.fromGeometry(Point.fromLngLat(-74.8168, 43.1391)));
+//
+//        /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
+//
+//        loadedMapStyle.addSource(new GeoJsonSource(MARKER_SOURCE, FeatureCollection.fromFeatures(features)));
+//
+//        /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
+//        loadedMapStyle.addLayer(new SymbolLayer(MARKER_STYLE_LAYER, MARKER_SOURCE)
+//                .withProperties(
+//                        PropertyFactory.iconAllowOverlap(true),
+//                        PropertyFactory.iconIgnorePlacement(true),
+//                        PropertyFactory.iconImage(MARKER_IMAGE),
+//// Adjust the second number of the Float array based on the height of your marker image.
+//// This is because the bottom of the marker should be anchored to the coordinate point, rather
+//// than the middle of the marker being the anchor point on the map.
+//                        PropertyFactory.iconOffset(new Float[] {0f, -52f})
+//                ));
 //    }
 
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Mapbox.getInstance(this, "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
         setContentView(R.layout.activity_main);
+
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+
+                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+
+
+
+                    }
+                });
+            }
+        });
+
 
         clickStart(getCurrentFocus());
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -597,17 +652,66 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
         int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
+
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mapView.onResume();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mapView.onPause();
+//    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+
+
+
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        mapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mapView.onPause();
     }
 
     public void clickName(View view) {
@@ -1033,8 +1137,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
+    private int mapState = 0;
     public void clickMessageBar(View view) {
         Log.i(TAG, "clickMessageBar: ");
+
+        if (mapState == 0) {
+            Log.i(TAG, "clickMessageBar: state 0");
+            mapView.setVisibility(View.GONE);
+            mapState = 1;
+        } else {
+            Log.i(TAG, "clickMessageBar: state 1");
+            mapView.setVisibility(View.VISIBLE);
+            mapState = 0;
+        }
+
     }
 
 
