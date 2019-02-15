@@ -34,6 +34,7 @@ import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -63,6 +64,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -79,6 +84,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private final static String TAG = MainActivity.class.getSimpleName();
 
     private MapView mapView;
+    private MapboxMap mapboxMap;
 
 
     private TextToSpeech engine;
@@ -187,12 +194,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private Boolean reconnect = true;
 
 
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
     public static final String Name = "nameKey";
     public static final String Sport = "sportKey";
     public static final String MaxHR = "maxhrKey";
     SharedPreferences sharedpreferences;
-    
+
     private void getSharedPrefs() {
         Log.i(TAG, "getSharedPrefs: ");
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -216,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     }
-    
+
     private void setSharedPrefs() {
         Log.i(TAG, "setSharedPrefs: ");
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -228,9 +235,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-//    public void speakText(TimerTask v, String st) {
+    //    public void speakText(TimerTask v, String st) {
     public void speakText(String st) {
-        if (!settingsAudio) {return;}
+        if (!settingsAudio) {
+            return;
+        }
         engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
@@ -243,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             engine.setPitch(1);
         }
     }
-
 
 
     private void calcAvgHR(int hr) {
@@ -260,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private double returnScoreFromHeartrate(double hr) {
-        return ((double) hr) / ( (double) settingsMaxHeartrate) * 100.0;
+        return ((double) hr) / ((double) settingsMaxHeartrate) * 100.0;
     }
 
     @SuppressLint("DefaultLocale")
@@ -310,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String s3x = "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
         createTimeline(s1 + s2 + s2x + s3 + s3x, Timer.getCurrentTimeStamp());
-        setMessageText("ROUND "+ (currentRound - 1) + ":   SPEED: " + String.format("%.2f MPH", roundSpeed)+ ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
+        setMessageText("ROUND " + (currentRound - 1) + ":   SPEED: " + String.format("%.2f MPH", roundSpeed) + ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
         if (roundHeartrateCount == 0) {
@@ -330,12 +338,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Log.i(TAG, "fbWriteNewRound: ");
         String roundURL = "rounds/" + fbCurrentDate;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
-            // Creating new user node, which returns the unique key value
-            // new user node would be /users/$userid/
+        // Creating new user node, which returns the unique key value
+        // new user node would be /users/$userid/
         String userId = mDatabase.push().getKey();
-            // creating user object
+        // creating user object
         Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate), (currentRound - 1));
-            // pushing user to 'users' node using the userId
+        // pushing user to 'users' node using the userId
         mDatabase.child(userId).setValue(round)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -356,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //TOTALS
         Log.i(TAG, "fbWriteNewTotal: ");
         //WRITE UPDATE TOTAL DATA
-        String totalsURL = "totals/"+ fbCurrentDate +"/" + settingsName;
+        String totalsURL = "totals/" + fbCurrentDate + "/" + settingsName;
         DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
         DecimalFormat df = new DecimalFormat("#.##");
         Total total = new Total(settingsName, Double.valueOf(df.format(returnScoreFromHeartrate(averageHR))), Double.valueOf(df.format(geoAvgSpeed)));
@@ -377,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 });
 
 
-        if ((currentRound-1) == 1) {
+        if ((currentRound - 1) == 1) {
 
             //REQUEST ROUND SPD LEADER
             mDatabase.limitToLast(1).orderByChild("fb_SPD").addValueEventListener(new ValueEventListener() {
@@ -385,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.i(TAG, "onDataChange: ROUNDS");
 
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
@@ -393,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
                     }  //COMPLETED - READING EACH SNAP
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
@@ -403,20 +412,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
             //REQUEST TOTAL SPD LEADER
-            String totalsURLlistener = "totals/"+ fbCurrentDate;
+            String totalsURLlistener = "totals/" + fbCurrentDate;
             DatabaseReference mDatabaseTotalsListener = FirebaseDatabase.getInstance().getReference(totalsURLlistener);
             mDatabaseTotalsListener.limitToLast(1).orderByChild("a_speedTotal").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.i(TAG, "onDataChange: TOTAL SPEED");
 
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double speed = ds.child("a_speedTotal").getValue(Double.class);
                         Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
                         createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
@@ -431,13 +441,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.i(TAG, "onDataChange: ROUND SCORES");
 
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double score = ds.child("fb_RND").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
                         createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
@@ -454,13 +465,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.i(TAG, "onDataChange: TOTAL SCORE");
 
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
                         Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
                         createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Failed to read value
@@ -473,9 +485,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         } //ADD VALUE EVENT ONCE
 
 
-
     }  //END - ROUND END CALCULATE
-
 
 
     Handler timerHandler = new Handler();
@@ -526,7 +536,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             timerHandler.postDelayed(this, 1000);
         }
     };
-
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -619,19 +628,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-
+                        enableLocationComponent(mapboxMap);
 
 
                     }
                 });
             }
         });
+
+
+
 
 
         clickStart(getCurrentFocus());
@@ -652,6 +663,29 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
         int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
+
+    }
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(MapboxMap mapboxMap) {
+        Log.i(TAG, "enableLocationComponent: ");
+
+
+        // Get an instance of the component
+        LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
+        // Activate with options
+        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
+
+        // Enable to make component visible
+        locationComponent.setLocationComponentEnabled(true);
+
+        // Set the component's camera mode
+        locationComponent.setCameraMode(CameraMode.TRACKING);
+
+        // Set the component's render mode
+        locationComponent.setRenderMode(RenderMode.COMPASS);
+
 
     }
 
