@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
-        if (evalDistanceBet.size() > 5) {
+        if (evalDistanceBet.size() > 5 && currentWaypoint > 0) {
             if ((evalDistanceBet.get(evalDistanceBet.size() - 1) > evalDistanceBet.get(1))) {
                 Log.i(TAG, "waypointTest: off track, reset");
                 currentWaypoint = 0;
@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             if (currentWaypoint > 0 && currentWaypoint < maxWaypoint) {
 
-                createTimeline("NEXT CHECKPOINT", Timer.getCurrentTimeStamp());
+                createTimeline("CHECKPOINT " + currentWaypoint + " OF " + maxWaypoint, Timer.getCurrentTimeStamp());
 
                 Toast.makeText(getApplicationContext(),
                         "MOVE TO THE NEXT CHECKPOINT" , Toast.LENGTH_LONG)
@@ -430,11 +430,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 setMessageText("RACE FINISHED: " + (String.valueOf(raceTime/1000)));
 
                 String s;
-                if (raceTime > bestRaceTime) {
+                if (raceTime < bestRaceTime) {
                     bestRaceTime = raceTime;
                     s = " SECONDS \n THIS IS NOW THE LEADING SCORE.";
                 } else {
-                    s = " SECONDS \n THE LEADING SCORE IS STILL " + bestRaceTime + "  SECONDS.";
+                    s = " SECONDS \n THE LEADING SCORE IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
                 }
 
                 createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
@@ -549,8 +549,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String s2x = "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]";
         String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate);
         String s3x = "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]";
-        String s4 = "\nSCORE:  " + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate));
-        String s4x = "  [" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
+        String s4 = "\nSCORE:  " + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate));
+        String s4x = "  [" + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
         createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
         setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
@@ -658,7 +658,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double speed = ds.child("a_speedTotal").getValue(Double.class);
                         Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
-                        createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                        //createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
 
@@ -704,7 +704,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
                         Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
-                        createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+                        //createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
 
@@ -868,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                         MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
                         GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
-                                Point.fromLngLat(-73.96926, 40.67116))
+                                Point.fromLngLat(-73.97827990290011, 40.661186990290176))
                         );
                         style.addSource(geoJsonSource);
 
