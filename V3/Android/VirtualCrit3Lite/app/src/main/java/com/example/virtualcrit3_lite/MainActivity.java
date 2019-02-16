@@ -588,32 +588,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
-
-    private MapboxMap mapboxMapX;
-    private void mapLiner() {
-
-        // Create a list to store our line coordinates.
-
-        List routeCoordinates = new ArrayList<Point>();
-//        routeCoordinates.add(Point.fromLngLat(-118.394391, 33.397676));
-//        routeCoordinates.add(Point.fromLngLat(-118.370917, 33.391142));
-
-
-
-// Create the LineString from the list of coordinates and then make a GeoJSON FeatureCollection so that we can add the line to our map as a layer.
-
-        LineString lineString = LineString.fromLngLats(routeCoordinates);
-
-        FeatureCollection featureCollection = FeatureCollection.fromFeatures(
-                new Feature[]{Feature.fromGeometry(lineString)});
-
-        GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source", featureCollection);
-        mapboxMap.getStyle().addSource(geoJsonSource);
-
-    }
-
-
-
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -622,17 +596,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Mapbox.getInstance(this, "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
         setContentView(R.layout.activity_main);
 
+
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-                mapboxMapX = mapboxMap;
+
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                        enableLocationComponent(mapboxMap);
+                        //enableLocationComponent(mapboxMap);
                     }
                 });
             }
@@ -640,10 +615,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
         });
-
-
-
-
 
         clickStart(getCurrentFocus());
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -666,28 +637,26 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-    @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(MapboxMap mapboxMap) {
-        Log.i(TAG, "enableLocationComponent: ");
-
-
-        // Get an instance of the component
-        LocationComponent locationComponent = mapboxMap.getLocationComponent();
-
-        // Activate with options
-        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
-
-        // Enable to make component visible
-        locationComponent.setLocationComponentEnabled(true);
-
-        // Set the component's camera mode
-        locationComponent.setCameraMode(CameraMode.TRACKING);
-
-        // Set the component's render mode
-        locationComponent.setRenderMode(RenderMode.COMPASS);
-
-
-    }
+//    @SuppressWarnings( {"MissingPermission"})
+//    private void enableLocationComponent(MapboxMap mapboxMap) {
+//        Log.i(TAG, "enableLocationComponent: ");
+//
+//        // Get an instance of the component
+//        LocationComponent locationComponent = mapboxMap.getLocationComponent();
+//
+//        // Activate with options
+//        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
+//
+//        // Enable to make component visible
+//        locationComponent.setLocationComponentEnabled(true);
+//
+//        // Set the component's camera mode
+//        locationComponent.setCameraMode(CameraMode.TRACKING);
+//
+//        // Set the component's render mode
+//        locationComponent.setRenderMode(RenderMode.COMPASS);
+//
+//    }
 
     @Override
     public void onStart() {
@@ -695,17 +664,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mapView.onStart();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mapView.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mapView.onPause();
-//    }
 
     @Override
     public void onStop() {
@@ -730,11 +688,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-
-
-
-
-
 
     @Override
     protected void onResume() {
@@ -1007,6 +960,25 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Log.i(TAG, "startGPS: ");
         createTimeline("Starting GPS", Timer.getCurrentTimeStamp());
         //START GPS
+
+
+        // Make sure we have access coarse location enabled, if not, prompt the user to enable it
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("This app needs location access");
+            builder.setMessage("Please grant location access so this app can detect peripherals and use GPS to calculate speed and distance.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                }
+            });
+            builder.show();
+        }
+
+
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(3000);
         mLocationRequest.setFastestInterval(2000);
