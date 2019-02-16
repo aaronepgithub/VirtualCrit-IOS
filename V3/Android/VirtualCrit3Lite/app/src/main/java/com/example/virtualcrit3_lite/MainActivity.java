@@ -356,11 +356,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             evalDistanceBet = new ArrayList<>();
         }
         oldDtw = disBetw;
-            
+
 
 
         if (evalDistanceBet.size() > 5) {
-            if ((evalDistanceBet.get(evalDistanceBet.size()) > evalDistanceBet.get(1))) {
+            if ((evalDistanceBet.get(evalDistanceBet.size() - 1) > evalDistanceBet.get(1))) {
                 Log.i(TAG, "waypointTest: off track, reset");
                 currentWaypoint = 0;
                 createTimeline("OFF TRACK", "RETURN TO START");
@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String s4x = "  [" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
         createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
-        setMessageText("ROUND " + (currentRound - 1) + ":   SPEED: " + String.format("%.2f MPH", roundSpeed) + ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
+        setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
         if (roundHeartrateCount == 0) {
