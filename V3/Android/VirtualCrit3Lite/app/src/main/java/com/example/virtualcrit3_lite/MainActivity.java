@@ -65,6 +65,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
@@ -73,6 +77,7 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
@@ -582,39 +587,32 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     };
 
 
-//    @Override
-//    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//        mapboxMap.setStyle(new Style.Builder().fromUrl(mapbox://styles/mapbox/streets-v11), new Style.OnStyleLoaded() {
-//        @Override
-//        public void onStyleLoaded(@NonNull Style style) {
-//            /* Image: An image is loaded and added to the map. */
-//            style.addImage(MARKER_IMAGE, BitmapFactory.decodeResource(
-//                    MainActivity.this.getResources(), R.drawable.custom_marker));
-//            addMarkers(style);
-//        }
-//    });
-//}
-//
-//    private void addMarkers(@NonNull Style loadedMapStyle) {
-//        List<Feature> features = new ArrayList<>();
-//        features.add(Feature.fromGeometry(Point.fromLngLat(-74.8168, 43.1391)));
-//
-//        /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
-//
-//        loadedMapStyle.addSource(new GeoJsonSource(MARKER_SOURCE, FeatureCollection.fromFeatures(features)));
-//
-//        /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
-//        loadedMapStyle.addLayer(new SymbolLayer(MARKER_STYLE_LAYER, MARKER_SOURCE)
-//                .withProperties(
-//                        PropertyFactory.iconAllowOverlap(true),
-//                        PropertyFactory.iconIgnorePlacement(true),
-//                        PropertyFactory.iconImage(MARKER_IMAGE),
-//// Adjust the second number of the Float array based on the height of your marker image.
-//// This is because the bottom of the marker should be anchored to the coordinate point, rather
-//// than the middle of the marker being the anchor point on the map.
-//                        PropertyFactory.iconOffset(new Float[] {0f, -52f})
-//                ));
-//    }
+
+
+    private MapboxMap mapboxMapX;
+    private void mapLiner() {
+
+        // Create a list to store our line coordinates.
+
+        List routeCoordinates = new ArrayList<Point>();
+//        routeCoordinates.add(Point.fromLngLat(-118.394391, 33.397676));
+//        routeCoordinates.add(Point.fromLngLat(-118.370917, 33.391142));
+
+
+
+// Create the LineString from the list of coordinates and then make a GeoJSON FeatureCollection so that we can add the line to our map as a layer.
+
+        LineString lineString = LineString.fromLngLats(routeCoordinates);
+
+        FeatureCollection featureCollection = FeatureCollection.fromFeatures(
+                new Feature[]{Feature.fromGeometry(lineString)});
+
+        GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source", featureCollection);
+        mapboxMap.getStyle().addSource(geoJsonSource);
+
+    }
+
+
 
     @SuppressLint("DefaultLocale")
     @Override
@@ -629,16 +627,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+                mapboxMapX = mapboxMap;
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
                         enableLocationComponent(mapboxMap);
-
-
                     }
                 });
             }
+
+
+
         });
 
 
