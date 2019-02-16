@@ -331,6 +331,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
+    private ArrayList<Double> evalDistanceBet = new ArrayList<>();
+    double oldDtw = 0;
     private void waypointTest(double gpsLa, double gpsLo) {
         Log.i(TAG, "waypointTest: ");
         Log.i(TAG, "waypointTest: current " + currentWaypoint);
@@ -344,7 +346,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
 
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
+
+
         Log.i(TAG, "waypointTest: disBetw  " + disBetw);
+
+        if (disBetw > oldDtw) {
+            evalDistanceBet.add(disBetw);
+        } else {
+            evalDistanceBet = new ArrayList<>();
+        }
+        oldDtw = disBetw;
+            
+
+
+        if (evalDistanceBet.size() > 5) {
+            if ((evalDistanceBet.get(evalDistanceBet.size()) > evalDistanceBet.get(1))) {
+                Log.i(TAG, "waypointTest: off track, reset");
+                currentWaypoint = 0;
+                createTimeline("OFF TRACK", "RETURN TO START");
+                evalDistanceBet = new ArrayList<>();
+                return;
+            }
+        }
 
         runOnUiThread(new Runnable() {
             @SuppressLint("DefaultLocale")
@@ -503,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (roundSpeed > bestRoundSpeed) {
             vibrator600();
             bestRoundSpeed = roundSpeed;
-            createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
+            //createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
         } else {
             //vibrator300();
             Log.i(TAG, "roundEndCalculate: not the best");
@@ -517,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (roundHeartrate > bestRoundHeartrate) {
             bestRoundHeartrate = roundHeartrate;
 //            createTimeline("MY HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
-            createTimeline("MY HIGHEST SCORE" + "\n[" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
+            //createTimeline("MY HIGHEST SCORE" + "\n[" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
         } else {
             Log.i(TAG, "roundEndCalculate: not the best");
         }
@@ -526,8 +549,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String s2x = "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]";
         String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate);
         String s3x = "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]";
+        String s4 = "\nSCORE:  " + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate));
+        String s4x = "  [" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
-        createTimeline(s1 + s2 + s2x + s3 + s3x, Timer.getCurrentTimeStamp());
+        createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
         setMessageText("ROUND " + (currentRound - 1) + ":   SPEED: " + String.format("%.2f MPH", roundSpeed) + ",  HR:  " + String.format("%.1f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
