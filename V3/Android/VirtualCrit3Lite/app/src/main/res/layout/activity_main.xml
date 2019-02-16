@@ -13,12 +13,13 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="8dp"
-        android:text="CLICK TO ENABLE/DISABLE MAP"
         android:onClick="clickMessageBar"
+        android:text="CLICK TO ENABLE/DISABLE MAP"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:textColor="@color/mapbox_blue"
+        android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -337,7 +338,7 @@
                     android:layout_height="wrap_content"
                     android:text="START"
                     android:textAlignment="viewStart"
-                    android:onClick="clickStart" />
+                    android:onClick="timerStart" />
 
                 <Button
                     android:layout_width="0dp"

@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -69,6 +70,8 @@ import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
@@ -77,16 +80,21 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -95,6 +103,12 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import es.atrapandocucarachas.gpxparser.model.Gpx;
+import es.atrapandocucarachas.gpxparser.model.Trk;
+import es.atrapandocucarachas.gpxparser.model.Trkpt;
+import es.atrapandocucarachas.gpxparser.model.Wpt;
+import es.atrapandocucarachas.gpxparser.parser.GpxParser;
+
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -102,11 +116,25 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private MapView mapView;
     private MapboxMap mapboxMap;
 
+    private GeoJsonSource source;
+    private FeatureCollection featureCollection;
+    private HashMap<String, View> viewMap;
+
+
 
     private TextToSpeech engine;
     private TextView mTextMessage;
     private Button mValueTimer;
     private TextView mActiveTimer;
+
+    //GPX
+    private ArrayList<Wpt> wpts = new ArrayList<>();
+    private ArrayList<Trk> trks = new ArrayList<>();
+    private ArrayList<Trkpt> trkpts = new ArrayList<>();
+
+    private long raceStartTime = 0;
+    private long raceFinishTime = 0;
+
 
 
     //TIMER
@@ -238,6 +266,183 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         editor.putInt(MaxHR, settingsMaxHeartrate);
         editor.commit();
     }
+
+
+
+    private double gpxLat1;
+    private double gpxLon1;
+    private int currentWaypoint = 0;
+    private int maxWaypoint;
+
+
+
+    //GPX
+//    public void startGPX(View view) {
+    public void startGPX() {
+        Log.i(TAG, "startGPX");
+        AssetManager assetManager = getAssets();
+        GpxParser parser;
+        Gpx gpx = null;
+        try {
+//            InputStream inputStream = assetManager.open("prospectpark_ridewithgps.gpx");
+            InputStream inputStream = assetManager.open("prospectpark_1loop.gpx");
+            parser = new GpxParser(inputStream);
+            gpx = parser.parse();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+// Get a List of waypoints
+//        ArrayList<Wpt> wpts = gpx.getWpts();
+        assert gpx != null;
+        wpts = gpx.getWpts();
+        maxWaypoint = wpts.size();
+
+        Log.i(TAG, "NOW THE WAYPTS \n\n\n");
+
+        for (Wpt w : wpts) {
+            Log.i("Name of waypoint ", w.getName());
+            Log.i("Description ",w.getDesc());
+            Log.i("Symbol of waypoint ",w.getSym());
+            Log.i("Coordinates ",String.valueOf(w.getLatLon()));
+        }
+
+        trks = gpx.getTrks();
+        trkpts = trks.get(0).getTrkseg();
+
+        //Log.i(TAG, "NOW THE TRKSEGS \n\n\n");
+
+        for (Trk t : trks) {
+            //Log.i(TAG, "TrkSegs, for loop");
+        }
+
+        //Log.i(TAG, "NOW THE TRKPTS \n\n\n");
+
+        for (Trkpt tk : trkpts) {
+            //Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
+        }
+
+        //SHOWALERT
+        Toast.makeText(getApplicationContext(),
+                "GPX LOADED" , Toast.LENGTH_SHORT)
+                .show();
+
+    }
+
+
+    private void waypointTest(double gpsLa, double gpsLo) {
+        Log.i(TAG, "waypointTest: ");
+        Log.i(TAG, "waypointTest: current " + currentWaypoint);
+        Log.i(TAG, "waypointTest: max " + maxWaypoint);
+        final int localWp = currentWaypoint;
+
+
+        if (localWp >= maxWaypoint) {
+            //Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+            return;
+        }
+
+        final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
+        Log.i(TAG, "waypointTest: disBetw  " + disBetw);
+
+        runOnUiThread(new Runnable() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void run() {
+//                TextView v1 = findViewById(R.id.value1);
+//                v1.setText(String.format("%.2f", disBetw));
+//                TextView v2 = findViewById(R.id.value2);
+//                v2.setText(String.valueOf(localWp));
+
+            }
+        });
+
+        if (disBetw < 100) {
+            Log.i(TAG, "waypointTest: close enough, next point");
+
+            if (currentWaypoint == 0) {
+                Log.i(TAG, "waypointTest: STARTRACE");
+                raceStartTime = oldTime;
+
+                createTimeline("RACE STARTING", Timer.getCurrentTimeStamp());
+
+                Toast.makeText(getApplicationContext(),
+                        "RACE STARTING" , Toast.LENGTH_LONG)
+                        .show();
+            }
+
+            if (currentWaypoint > 0 && currentWaypoint < maxWaypoint) {
+
+                createTimeline("NEXT CHECKPOINT", Timer.getCurrentTimeStamp());
+
+                Toast.makeText(getApplicationContext(),
+                        "MOVE TO THE NEXT CHECKPOINT" , Toast.LENGTH_LONG)
+                        .show();
+            }
+            currentWaypoint += 1;
+
+            runOnUiThread(new Runnable() {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void run() {
+//                    TextView v1 = findViewById(R.id.value1);
+//                    v1.setText(String.format("%.2f", disBetw));
+//                    TextView v2 = findViewById(R.id.value2);
+//                    v2.setText(String.valueOf(localWp));
+
+                }
+            });
+
+            if (currentWaypoint >= maxWaypoint) {
+                Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+
+                raceFinishTime = oldTime;
+                long raceTime = raceFinishTime - raceStartTime;
+
+                Toast.makeText(getApplicationContext(),
+                        "RACE FINISHED, TIME: " + (String.valueOf(raceTime/1000)) , Toast.LENGTH_LONG)
+                        .show();
+
+                setMessageText("RACE FINISHED: " + (String.valueOf(raceTime/1000)));
+
+                String s;
+                if (raceTime > bestRaceTime) {
+                    bestRaceTime = raceTime;
+                    s = " SECONDS \n THIS IS NOW THE LEADING SCORE.";
+                } else {
+                    s = " SECONDS \n THE LEADING SCORE IS STILL " + bestRaceTime + "  SECONDS.";
+                }
+
+                createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
+                Log.i(TAG, "waypointTest: finished  " +  String.valueOf(raceTime/1000) + s);
+
+                //reset
+                currentWaypoint = 0;
+
+                runOnUiThread(new Runnable() {
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void run() {
+//                        TextView v1 = findViewById(R.id.value1);
+//                        v1.setText("FINISH TIME:");
+//                        TextView v2 = findViewById(R.id.value2);
+//                        v2.setText("DISPLAY TIME");
+
+                    }
+                });
+
+
+            }
+
+        }
+
+    }
+
+
+    private long bestRaceTime = 0;
+
+
 
 
     //    public void speakText(TimerTask v, String st) {
@@ -596,27 +801,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Mapbox.getInstance(this, "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
         setContentView(R.layout.activity_main);
 
-
-        mapView = findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                        //enableLocationComponent(mapboxMap);
-                    }
-                });
-            }
-
-
-
-        });
-
-        clickStart(getCurrentFocus());
+        timerStart(getCurrentFocus());
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
         mActiveTimer = findViewById(R.id.activeTimer);
@@ -635,28 +820,90 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
 
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Log.i(TAG, "onMapReady");
+
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+                        enableLocationComponent(mapboxMap);
+
+
+                        //setMarker(style);
+
+                        // Add the marker image to map
+                        style.addImage("marker-icon-id",
+                                BitmapFactory.decodeResource(
+                                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+                        GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
+                                Point.fromLngLat(-73.96926, 40.67116))
+                        );
+                        style.addSource(geoJsonSource);
+
+                        SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
+                        symbolLayer.withProperties(
+                                PropertyFactory.iconImage("marker-icon-id")
+                        );
+                        style.addLayer(symbolLayer);
+
+                        //Point.fromLngLat(-73.97827990290011, 40.661186990290176)));
+
+
+                    }
+                });
+            }
+        });
+
     }
 
-//    @SuppressWarnings( {"MissingPermission"})
-//    private void enableLocationComponent(MapboxMap mapboxMap) {
-//        Log.i(TAG, "enableLocationComponent: ");
-//
-//        // Get an instance of the component
-//        LocationComponent locationComponent = mapboxMap.getLocationComponent();
-//
-//        // Activate with options
-//        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
-//
-//        // Enable to make component visible
-//        locationComponent.setLocationComponentEnabled(true);
-//
-//        // Set the component's camera mode
-//        locationComponent.setCameraMode(CameraMode.TRACKING);
-//
-//        // Set the component's render mode
-//        locationComponent.setRenderMode(RenderMode.COMPASS);
-//
-//    }
+
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(MapboxMap mapboxMap) {
+        Log.i(TAG, "enableLocationComponent: ");
+
+        // Make sure we have access coarse location enabled, if not, prompt the user to enable it
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("This app needs location access");
+            builder.setMessage("Please grant so the app can capture distance and speed (for raceing), location (map display), and Bluetooth (finding devices))");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                }
+            });
+            builder.show();
+        }
+
+        // Get an instance of the component
+        LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
+        // Activate with options
+        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
+
+        // Enable to make component visible
+        locationComponent.setLocationComponentEnabled(true);
+
+        // Set the component's camera mode
+        locationComponent.setCameraMode(CameraMode.TRACKING);
+
+        // Set the component's render mode
+        locationComponent.setRenderMode(RenderMode.COMPASS);
+
+        //Make Visible
+        mapView.setVisibility(View.VISIBLE);
+
+    }
 
     @Override
     public void onStart() {
@@ -860,6 +1107,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     return;
                 }
 
+
+                Log.i(TAG, "onLocationReceived: calling waypointTest");
+                waypointTest(location.getLatitude(), location.getLongitude());
+
                 //REPLACE results[0] with returned result
 //                if (simGPS.equals(true)) {
 //                    result = result * 10;
@@ -958,7 +1209,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void startGPS() {
         Log.i(TAG, "startGPS: ");
-        createTimeline("Starting GPS", Timer.getCurrentTimeStamp());
+        createTimeline("STARTING GPS", Timer.getCurrentTimeStamp());
         //START GPS
 
 
@@ -1006,6 +1257,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         } catch (SecurityException unlikely) {
             Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
         }
+
+        //startGPX(getCurrentFocus());
+        startGPX();
 
     }
 
@@ -1063,8 +1317,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
     }
 
-    public void clickStart(View view) {
-        Log.i(TAG, "clickStart: ");
+    public void timerStart(View view) {
+        Log.i(TAG, "timerStart: ");
 
         if (Timer.getStatus() == 99) {
             Log.i(TAG, "Start Timer - First Time");
@@ -1143,7 +1397,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-    private int mapState = 0;
+    private int mapState = 1;
     public void clickMessageBar(View view) {
         Log.i(TAG, "clickMessageBar: ");
 
