@@ -336,64 +336,60 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     //CHECKPOINTS
     private ArrayList<Long> newTimesBest = new ArrayList<>();
     private ArrayList<Long> newTimesMe = new ArrayList<>();
+    private long lastCheckpointTime = 0;
 
-    private ArrayList<Double> evalDistanceBet = new ArrayList<>();
-    double oldDtw = 0;
     private void waypointTest(double gpsLa, double gpsLo) {
-        //Log.i(TAG, "waypointTest: ");
+        Log.i(TAG, "waypointTest: ");
         //Log.i(TAG, "waypointTest: current " + currentWaypoint);
         //Log.i(TAG, "waypointTest: max " + maxWaypoint);
         final int localWp = currentWaypoint;
 
 
         if (localWp >= maxWaypoint) {
-            //Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+            Log.i(TAG, "waypointTest, LOCALWP >MAXWAYPOINT, SHOULDN'T HAPPEN, RETURN");
             return;
         }
 
+        long offTrackChecker = 600000;
+        if (settingsSport == "RUN") {
+        offTrackChecker = 2400000;
+        }
+        if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
+            Log.i(TAG, "waypointTest: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
+            createTimeline("OFF TRACK, START OVER", Timer.getCurrentTimeStamp());
+            currentWaypoint = 0;
+            lastCheckpointTime = 0;
+            return;
+        }
+
+
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
-        Log.i(TAG, "waypointTest: disBetw  " + disBetw);
+        Log.i(TAG, " - " + disBetw + "DISTANCE BETWEEN");
 
-        if (disBetw > oldDtw) {
-            evalDistanceBet.add(disBetw);
-        } else {
-            evalDistanceBet = new ArrayList<>();
-        }
-        oldDtw = disBetw;
-
-
-
-        if (evalDistanceBet.size() > 10 && currentWaypoint > 0) {
-            if ((evalDistanceBet.get(evalDistanceBet.size() - 1) > evalDistanceBet.get(1))) {
-                Log.i(TAG, "waypointTest: off track, reset");
-                currentWaypoint = 0;
-                createTimeline("OFF TRACK", Timer.getCurrentTimeStamp());
-                evalDistanceBet = new ArrayList<>();
-                return;
-            }
-        }
-
-
-        if (disBetw < 100) {
-            Log.i(TAG, "waypointTest: close enough, next point");
+        if (disBetw < 150) {
+            Log.i(TAG, "WAYPOINT MATCH...");
 
             if (currentWaypoint == 0) {
-                Log.i(TAG, "waypointTest: STARTRACE");
+                Log.i(TAG, "waypointTest: CHECKPOINT, STARTRACE");
+                //raceTimesMe = new ArrayList<>();
                 raceStartTime = newTime;
+                lastCheckpointTime = newTime;
 
                 createTimeline("RACE STARTING", Timer.getCurrentTimeStamp());
-
                 Toast.makeText(getApplicationContext(),
                         "RACE STARTING" , Toast.LENGTH_LONG)
                         .show();
+                speakText("STARTING RACE");
+
             }
 
             //MADE CHECKPOINT BUT NOT START OR FINISH
             if (currentWaypoint > 0 && currentWaypoint < maxWaypoint) {
-
-                createTimeline("CHECKPOINT " + currentWaypoint + " OF " + maxWaypoint, Timer.getCurrentTimeStamp());
-
+                Log.i(TAG, "waypointTest: CHECKPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
+                createTimeline("CHECKPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1), Timer.getCurrentTimeStamp());
+                speakText("CHECKPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
                 newTimesMe.add(newTime - raceStartTime);
+                lastCheckpointTime = newTime;
                 if (newTimesBest.isEmpty()) {
                     Log.i(TAG, "waypointTest: no newTimesBest");
                 } else {
@@ -402,10 +398,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
             currentWaypoint += 1;
 
-
             //MADE CHECKPOINT, FINISH
             if (currentWaypoint >= maxWaypoint) {
-                Log.i(TAG, "waypointTest: FINISHED");
+                Log.i(TAG, "waypointTest: CHECKPOINT, FINISHED");
 
                 raceFinishTime = newTime;
                 long raceTime = raceFinishTime - raceStartTime;
@@ -432,10 +427,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 //createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
                 createTimeline("FINISHED!\n" + String.valueOf(raceTime/1000 + s), Timer.getCurrentTimeStamp());
+                speakText("FINISHED.  " + String.valueOf(raceTime/1000 + s) + " SECONDS.");
                 Log.i(TAG, "waypointTest: finished  " +  String.valueOf(raceTime/1000) + s);
 
                 //reset
                 currentWaypoint = 0;
+                lastCheckpointTime = 0;
             }
 
         }
