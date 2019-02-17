@@ -60,10 +60,15 @@ public final class Timer {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String getActiveTimeStringFromSeconds(int s) {
-        return String.format("%02d:%02d:%02d", activeMillis/(3600*1000),
-                activeMillis/(60*1000) % 60,
-                activeMillis/1000 % 60);
+    public static String getTimeStringFromSecondsToDisplay(int s) {
+//        return String.format("%02d:%02d:%02d", s/(3600*1000),
+//                s/(60*1000) % 60,
+//                s/1000 % 60);
+
+        return String.format("%02d:%02d:%02d", s/(3600*1000),
+                s/(60*1000) % 60,
+                s/1000 % 60);
+
     }
 
     public static String getCurrentTimeStamp() {

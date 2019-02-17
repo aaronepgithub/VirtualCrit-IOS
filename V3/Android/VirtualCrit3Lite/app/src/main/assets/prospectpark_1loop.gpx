@@ -24,13 +24,6 @@
     <desc>2.LAFREAK </desc>
     <cmt>2.LAFREAK </cmt>
   </wpt>
-  <wpt lon="-73.96926" lat="40.67116">
-    <name>Generic</name>
-    <sym>Dot</sym>
-    <type>Dot</type>
-    <desc>3.GRANDARMY</desc>
-    <cmt>3.GRANDARMY</cmt>
-  </wpt>
   <wpt lon="-73.97591346723641" lat="40.66285661312009">
     <name>Summit</name>
     <sym>Dot</sym>

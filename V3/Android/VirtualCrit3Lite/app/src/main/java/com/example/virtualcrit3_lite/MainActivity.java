@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private String settingsGPS = "OFF";
     private Boolean settingsAudio = false;
     private String settingsSport = "BIKE";
-    private int settingsSecondsPerRound = 300;
+    private int settingsSecondsPerRound = 1800;
     private int settingsMaxHeartrate = 185;
 
     //ROUND
@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private double geoAvgSpeed = 0.0;
     private float[] results = new float[2];
     private long oldTime = 0;
+    private long newTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
     private Boolean simGPS = false;
 
@@ -293,8 +294,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             e.printStackTrace();
         }
 
-// Get a List of waypoints
-//        ArrayList<Wpt> wpts = gpx.getWpts();
         assert gpx != null;
         wpts = gpx.getWpts();
         maxWaypoint = wpts.size();
@@ -331,12 +330,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
+    //TIMES FOR RACE
+    private ArrayList<Long> raceTimesMe = new ArrayList<>();
+
+    //CHECKPOINTS
+    private ArrayList<Long> newTimesBest = new ArrayList<>();
+    private ArrayList<Long> newTimesMe = new ArrayList<>();
+
     private ArrayList<Double> evalDistanceBet = new ArrayList<>();
     double oldDtw = 0;
     private void waypointTest(double gpsLa, double gpsLo) {
-        Log.i(TAG, "waypointTest: ");
-        Log.i(TAG, "waypointTest: current " + currentWaypoint);
-        Log.i(TAG, "waypointTest: max " + maxWaypoint);
+        //Log.i(TAG, "waypointTest: ");
+        //Log.i(TAG, "waypointTest: current " + currentWaypoint);
+        //Log.i(TAG, "waypointTest: max " + maxWaypoint);
         final int localWp = currentWaypoint;
 
 
@@ -346,8 +352,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
 
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
-
-
         Log.i(TAG, "waypointTest: disBetw  " + disBetw);
 
         if (disBetw > oldDtw) {
@@ -359,34 +363,23 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
-        if (evalDistanceBet.size() > 5 && currentWaypoint > 0) {
+        if (evalDistanceBet.size() > 10 && currentWaypoint > 0) {
             if ((evalDistanceBet.get(evalDistanceBet.size() - 1) > evalDistanceBet.get(1))) {
                 Log.i(TAG, "waypointTest: off track, reset");
                 currentWaypoint = 0;
-                createTimeline("OFF TRACK", "RETURN TO START");
+                createTimeline("OFF TRACK", Timer.getCurrentTimeStamp());
                 evalDistanceBet = new ArrayList<>();
                 return;
             }
         }
 
-        runOnUiThread(new Runnable() {
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void run() {
-//                TextView v1 = findViewById(R.id.value1);
-//                v1.setText(String.format("%.2f", disBetw));
-//                TextView v2 = findViewById(R.id.value2);
-//                v2.setText(String.valueOf(localWp));
-
-            }
-        });
 
         if (disBetw < 100) {
             Log.i(TAG, "waypointTest: close enough, next point");
 
             if (currentWaypoint == 0) {
                 Log.i(TAG, "waypointTest: STARTRACE");
-                raceStartTime = oldTime;
+                raceStartTime = newTime;
 
                 createTimeline("RACE STARTING", Timer.getCurrentTimeStamp());
 
@@ -395,33 +388,29 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         .show();
             }
 
+            //MADE CHECKPOINT BUT NOT START OR FINISH
             if (currentWaypoint > 0 && currentWaypoint < maxWaypoint) {
 
                 createTimeline("CHECKPOINT " + currentWaypoint + " OF " + maxWaypoint, Timer.getCurrentTimeStamp());
 
-                Toast.makeText(getApplicationContext(),
-                        "MOVE TO THE NEXT CHECKPOINT" , Toast.LENGTH_LONG)
-                        .show();
+                newTimesMe.add(newTime - raceStartTime);
+                if (newTimesBest.isEmpty()) {
+                    Log.i(TAG, "waypointTest: no newTimesBest");
+                } else {
+                    //compare vs newTimesBest at index(currentWayPoint)
+                }
             }
             currentWaypoint += 1;
 
-            runOnUiThread(new Runnable() {
-                @SuppressLint("DefaultLocale")
-                @Override
-                public void run() {
-//                    TextView v1 = findViewById(R.id.value1);
-//                    v1.setText(String.format("%.2f", disBetw));
-//                    TextView v2 = findViewById(R.id.value2);
-//                    v2.setText(String.valueOf(localWp));
 
-                }
-            });
-
+            //MADE CHECKPOINT, FINISH
             if (currentWaypoint >= maxWaypoint) {
-                Log.i(TAG, "\n\nwaypointTest: it's over, stop processing\n\n");
+                Log.i(TAG, "waypointTest: FINISHED");
 
-                raceFinishTime = oldTime;
+                raceFinishTime = newTime;
                 long raceTime = raceFinishTime - raceStartTime;
+                raceTimesMe.add(raceTime);
+                Log.i(TAG, "waypointTest: raceTimesMe\n " + raceTimesMe.toString());
 
                 Toast.makeText(getApplicationContext(),
                         "RACE FINISHED, TIME: " + (String.valueOf(raceTime/1000)) , Toast.LENGTH_LONG)
@@ -430,6 +419,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 setMessageText("RACE FINISHED: " + (String.valueOf(raceTime/1000)));
 
                 String s;
+                if (bestRaceTime == -1) {
+                    bestRaceTime = raceTime + 1;
+                }
+
                 if (raceTime < bestRaceTime) {
                     bestRaceTime = raceTime;
                     s = " SECONDS \n THIS IS NOW THE LEADING SCORE.";
@@ -437,25 +430,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     s = " SECONDS \n THE LEADING SCORE IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
                 }
 
-                createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
+                //createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
+                createTimeline("FINISHED!\n" + String.valueOf(raceTime/1000 + s), Timer.getCurrentTimeStamp());
                 Log.i(TAG, "waypointTest: finished  " +  String.valueOf(raceTime/1000) + s);
 
                 //reset
                 currentWaypoint = 0;
-
-                runOnUiThread(new Runnable() {
-                    @SuppressLint("DefaultLocale")
-                    @Override
-                    public void run() {
-//                        TextView v1 = findViewById(R.id.value1);
-//                        v1.setText("FINISH TIME:");
-//                        TextView v2 = findViewById(R.id.value2);
-//                        v2.setText("DISPLAY TIME");
-
-                    }
-                });
-
-
             }
 
         }
@@ -463,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-    private long bestRaceTime = 0;
+    private long bestRaceTime = -1;
 
 
 
@@ -552,7 +532,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String s4 = "\nSCORE:  " + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate));
         String s4x = "  [" + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
-        createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
+
+        if (roundHeartrate > 50) {
+            createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
+        } else {
+            createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
+        }
+
+//        createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
         setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
@@ -742,8 +729,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     int a2 = (currentRound - 1) * settingsSecondsPerRound;
                     int a3 = a1 - a2;
                     int togo = settingsSecondsPerRound - a3;
+                    String togoStr = Timer.getTimeStringFromSecondsToDisplay(togo * 1000);
                     Button rnd = (Button) findViewById(R.id.valueRoundButton);
-                    rnd.setText(String.format("%s REMAIN", String.valueOf(togo)));
+//                    rnd.setText(String.format("%s REMAIN", String.valueOf(togo)));
+                    rnd.setText(togoStr + " REMAIN");
 
                 }
             });
@@ -1075,11 +1064,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public void onLocationReceived(Location location) {
         //Log.i(TAG, "onLocationReceived");
 
-
-        Log.i(TAG, "onLocationReceived: passed the filter");
-
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
+        newTime = location.getTime();
         
 
         if (arrLats.size() < 5) {
@@ -1111,12 +1098,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 //OPT 1.  QUICKREAD GEO SPEED
                 final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                if (geoSpeedQuick > 35) {
-                    Log.i(TAG, "onLocationReceived: too fast, wait for the next one...");
+                if (geoSpeedQuick > 75) {
+                    //Log.i(TAG, "onLocationReceived: too fast, wait for the next one...");
 //                    oldLat = location.getLatitude();
 //                    oldLon = location.getLongitude();
 //                    oldTime = location.getTime();
-                    return;
+//                    return;
                 }
                 //Log.i(TAG, "onLocationReceived: QuickSpeedCalc: " + geoSpeedQuick);
 
@@ -1133,7 +1120,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
 
 
-                Log.i(TAG, "onLocationReceived: calling waypointTest");
+                //Log.i(TAG, "onLocationReceived: calling waypointTest");
                 waypointTest(location.getLatitude(), location.getLongitude());
 
                 //REPLACE results[0] with returned result
