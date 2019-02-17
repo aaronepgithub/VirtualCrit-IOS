@@ -425,9 +425,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 if (raceTime < bestRaceTime) {
                     bestRaceTime = raceTime;
-                    s = " SECONDS \n THIS IS NOW THE LEADING SCORE.";
+                    s = " SECONDS\nTHIS IS NOW THE LEADING SCORE.";
                 } else {
-                    s = " SECONDS \n THE LEADING SCORE IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
+                    s = " SECONDS\nTHE LEADING SCORE IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
                 }
 
                 //createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
