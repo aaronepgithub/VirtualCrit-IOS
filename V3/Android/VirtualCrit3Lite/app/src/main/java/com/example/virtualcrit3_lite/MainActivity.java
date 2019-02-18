@@ -339,20 +339,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private long lastCheckpointTime = 0;
 
     private void waypointTest(double gpsLa, double gpsLo) {
-        Log.i(TAG, "waypointTest: ");
+        //Log.i(TAG, "waypointTest: ");
         //Log.i(TAG, "waypointTest: current " + currentWaypoint);
         //Log.i(TAG, "waypointTest: max " + maxWaypoint);
         final int localWp = currentWaypoint;
 
 
         if (localWp >= maxWaypoint) {
-            Log.i(TAG, "waypointTest, LOCALWP >MAXWAYPOINT, SHOULDN'T HAPPEN, RETURN");
+            Log.i(TAG, "waypointTest, LOCALWP > MAXWAYPOINT, SHOULDN'T HAPPEN, RETURN");
             return;
         }
 
-        long offTrackChecker = 600000;
-        if (settingsSport == "RUN") {
-        offTrackChecker = 2400000;
+        //LOWER WITH MORE CHECKPOINTS
+        long offTrackChecker = 600000; //10 min
+        if (settingsSport.equals("RUN")) {
+        offTrackChecker = 1800000; //30 min
         }
         if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
             Log.i(TAG, "waypointTest: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
@@ -364,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
-        Log.i(TAG, " - " + disBetw + "DISTANCE BETWEEN");
+        Log.i(TAG, disBetw + "  DISTANCE BETWEEN");
 
         if (disBetw < 150) {
             Log.i(TAG, "WAYPOINT MATCH...");
@@ -420,15 +421,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 if (raceTime < bestRaceTime) {
                     bestRaceTime = raceTime;
-                    s = " SECONDS\nTHIS IS NOW THE LEADING SCORE.";
+                    s = " SECONDS\nMY FASTEST.";
                 } else {
-                    s = " SECONDS\nTHE LEADING SCORE IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
+                    s = " SECONDS\nMY FASTEST IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
                 }
 
                 //createTimeline("FINISHED!", (String.valueOf(raceTime/1000)) + s);
-                createTimeline("FINISHED!\n" + String.valueOf(raceTime/1000 + s), Timer.getCurrentTimeStamp());
+                createTimeline("FINISHED!\n" + String.valueOf(raceTime/1000 + "\n" + s), Timer.getCurrentTimeStamp());
                 speakText("FINISHED.  " + String.valueOf(raceTime/1000 + s) + " SECONDS.");
                 Log.i(TAG, "waypointTest: finished  " +  String.valueOf(raceTime/1000) + s);
+                Log.i(TAG, "waypointTest: formatted racetime: " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
 
                 //reset
                 currentWaypoint = 0;

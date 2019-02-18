@@ -59,6 +59,7 @@ public final class Timer {
                 activeMillis/1000 % 60);
     }
 
+    //from milli
     @SuppressLint("DefaultLocale")
     public static String getTimeStringFromSecondsToDisplay(int s) {
 //        return String.format("%02d:%02d:%02d", s/(3600*1000),
