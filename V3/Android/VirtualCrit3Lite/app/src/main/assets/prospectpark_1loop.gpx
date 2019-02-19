@@ -14,22 +14,22 @@
     <name>Straight</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>PARADEGROUND</desc>
+    <desc>PROSPECT PARK PARADE GROUND</desc>
     <cmt>1.PARADEGROUND</cmt>
   </wpt>
   <wpt lon="-73.96305193947745" lat="40.657701136600046">
     <name>Generic</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>LAFREAK </desc>
+    <desc>LAFREAK ICE SKATE CENTER</desc>
     <cmt>2.LAFREAK </cmt>
   </wpt>
-  <wpt lon="-73.97591346723641" lat="40.66285661312009">
+  <wpt lon="-73.969465" lat="40.671197">
     <name>Summit</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>AMPHITHEATER</desc>
-    <cmt>4.FINISH</cmt>
+    <desc>GRAND ARMY PLAZA</desc>
+    <cmt>3.GAP</cmt>
   </wpt>
   <trk>
     <name>PP LOOP SS</name>
