@@ -7,28 +7,28 @@
     <name>Generic</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>0.START</desc>
+    <desc>MOVIE ENTRANCE TO PROSPECT PARK</desc>
     <cmt>0.START</cmt>
   </wpt>
   <wpt lon="-73.97055" lat="40.651990000000005">
     <name>Straight</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>1.PARADEGROUND</desc>
+    <desc>PARADEGROUND</desc>
     <cmt>1.PARADEGROUND</cmt>
   </wpt>
   <wpt lon="-73.96305193947745" lat="40.657701136600046">
     <name>Generic</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>2.LAFREAK </desc>
+    <desc>LAFREAK </desc>
     <cmt>2.LAFREAK </cmt>
   </wpt>
   <wpt lon="-73.97591346723641" lat="40.66285661312009">
     <name>Summit</name>
     <sym>Dot</sym>
     <type>Dot</type>
-    <desc>4.FINISH</desc>
+    <desc>AMPHITHEATER</desc>
     <cmt>4.FINISH</cmt>
   </wpt>
   <trk>

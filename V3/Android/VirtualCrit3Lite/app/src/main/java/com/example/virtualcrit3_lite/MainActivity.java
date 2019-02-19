@@ -270,8 +270,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
-//    private double gpxLat1;
-//    private double gpxLon1;
     private int currentWaypoint = 0;
     private int maxWaypoint;
     private int currentTrackpoint = 0;
@@ -420,6 +418,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (localTp <= 1) {
                 Log.i(TAG, "TKTEST: CHECKPOINT, STARTRACE");
                 checkpoint25 = -1;
+                currentWaypoint = 0;
                 raceStartTime = newTime;
                 lastCheckpointTime = newTime;
 
@@ -434,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             //MADE CHECKPOINT BUT NOT START OR FINISH
             if (localTp > 5 && localTp < maxTrackpoint) {
                 Log.i(TAG, "TPTEST: CHECKPOINT " + currentTrackpoint + " OF " + (maxTrackpoint - 1));
-                createTimeline("CHECKPOINT " + currentTrackpoint + " OF " + (maxTrackpoint - 1), Timer.getCurrentTimeStamp());
+                //createTimeline("CHECKPOINT " + currentTrackpoint + " OF " + (maxTrackpoint - 1), Timer.getCurrentTimeStamp());
                 lastCheckpointTime = newTime;
                 addToCurrentTrackpoint = 10;
 
@@ -442,27 +441,29 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if (localTp >= (maxTrackpoint * .25) && localTp <= (maxTrackpoint * .35)) {
                     Log.i(TAG, "localTp >= (maxTrackpoint * .25)");
 
+
                     if (checkpoint25 == -1) {
                         Log.i(TAG, "trackpointTest: checkpoint25 == -1");
                         checkpoint25 = newTime - raceStartTime;
+
+                        if (checkpoint25 < checkpoint25Best && checkpoint25Best > 0) {
+                            Log.i(TAG, "trackpointTest: checkpoint25 < 25Best, " + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
+                            createTimeline("25% COMPLETE\n" + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
+                        }
+
+                        if (checkpoint25 > checkpoint25Best && checkpoint25Best > 0) {
+                            Log.i(TAG, "trackpointTest: checkpoint25 > checkpoint25Best " + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND");
+                            createTimeline("25% COMPLETE\n" + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND","");
+                        }
+
+                        if (checkpoint25Best < 0) {
+                            Log.i(TAG, "trackpointTest: checkpoint25Best < 0, BEST IS NOT SET");
+                        }
+
                     } else {
                         Log.i(TAG, "trackpointTest: checkpoint25 has already been set");
                     }
 
-
-                    if (checkpoint25 < checkpoint25Best && checkpoint25Best > 0) {
-                        Log.i(TAG, "trackpointTest: checkpoint25 < 25Best, " + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
-                        createTimeline("25%% COMPLETE\n" + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
-                    }
-
-                    if (checkpoint25 > checkpoint25Best && checkpoint25Best > 0) {
-                        Log.i(TAG, "trackpointTest: checkpoint25 > checkpoint25Best " + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND");
-                        createTimeline("25%% COMPLETE\n" + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND","");
-                    }
-
-                    if (checkpoint25Best < 0) {
-                        Log.i(TAG, "trackpointTest: checkpoint25Best < 0, BEST IS NOT SET");
-                    }
                 }
 
             }
@@ -471,103 +472,32 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "trackpointTest: currentTrackpoint:  " + currentTrackpoint);
         }
 
+        waypointTest(gpsLa, gpsLo);
 
     }
 
 
-//    private void waypointTest(double gpsLa, double gpsLo) {
-//        final int localWp = currentWaypoint;
-//        if (localWp >= maxWaypoint) {
-//            Log.i(TAG, "waypointTest, LOCALWP > MAXWAYPOINT, SHOULDN'T HAPPEN, RETURN");
-//            return;
-//        }
-//
-//        //LOWER WITH MORE CHECKPOINTS
-//        long offTrackChecker = 600000; //10 min
-//        if (settingsSport.equals("RUN")) {
-//        offTrackChecker = 1800000; //30 min
-//        }
-//        if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
-//            Log.i(TAG, "waypointTest: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
-//            createTimeline("OFF TRACK, START OVER", Timer.getCurrentTimeStamp());
-//            currentWaypoint = 0;
-//            lastCheckpointTime = 0;
-//            return;
-//        }
-//
-//        final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
-//        Log.i(TAG, disBetw + "  DISTANCE BETWEEN");
-//
-//        if (disBetw < 150) {
-//            Log.i(TAG, "WAYPOINT MATCH...");
-//
-//            if (currentWaypoint == 0) {
-//                Log.i(TAG, "waypointTest: CHECKPOINT, STARTRACE");
-//                //raceTimesMe = new ArrayList<>();
-//                raceStartTime = newTime;
-//                lastCheckpointTime = newTime;
-//
-//                createTimeline("RACE STARTING", Timer.getCurrentTimeStamp());
-//                Toast.makeText(getApplicationContext(),
-//                        "RACE STARTING" , Toast.LENGTH_LONG)
-//                        .show();
-//                speakText("STARTING RACE");
-//
-//            }
-//
-//            //MADE CHECKPOINT BUT NOT START OR FINISH
-//            if (currentWaypoint > 0 && currentWaypoint < maxWaypoint) {
-//                Log.i(TAG, "waypointTest: CHECKPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
-//                createTimeline("CHECKPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1), Timer.getCurrentTimeStamp());
-//                speakText("CHECKPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
-//                lastCheckpointTime = newTime;
-//
-//
-//
-//            }
-//            currentWaypoint += 1;
-//
-//            //MADE CHECKPOINT, FINISH
-//            if (currentWaypoint >= maxWaypoint) {
-//                Log.i(TAG, "waypointTest: CHECKPOINT, FINISHED");
-//
-//                raceFinishTime = newTime;
-//                long raceTime = raceFinishTime - raceStartTime;
-//                raceTimesMe.add(raceTime);
-//                Log.i(TAG, "waypointTest: raceTimesMe\n " + raceTimesMe.toString());
-//
-//                Toast.makeText(getApplicationContext(),
-//                        "RACE FINISHED, TIME: " + (String.valueOf(raceTime/1000)) , Toast.LENGTH_LONG)
-//                        .show();
-//
-//                setMessageText("RACE FINISHED: " + (String.valueOf(raceTime/1000)));
-//
-//                String s;
-//                if (bestRaceTime == -1) {
-//                    bestRaceTime = raceTime + 1;
-//                }
-//
-//                if (raceTime < bestRaceTime) {
-//                    bestRaceTime = raceTime;
-//                    s = "MY FASTEST TIME.";
-//                } else {
-////                    s = " SECONDS\nMY FASTEST IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
-//                    s = "MY FASTEST IS STILL " + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + "  SECONDS.";
-//                }
-//
-////                createTimeline("FINISHED!\n" + String.valueOf(raceTime/1000 + "\n" + s), Timer.getCurrentTimeStamp());
-////                speakText("FINISHED.  " + String.valueOf(raceTime/1000 + s) + " SECONDS.");
-//                Log.i(TAG, "waypointTest: finished  " +  String.valueOf(raceTime/1000) + s);
-//                Log.i(TAG, "waypointTest: formatted racetime: " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
-//                createTimeline("FINISHED!\n" + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-//                speakText("FINISHED, TIME IS.  " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
-//
-//                //reset
-//                currentWaypoint = 0;
-//                lastCheckpointTime = 0;
-//            }
-//        }
-//    }
+    private void waypointTest(double gpsLa, double gpsLo) {
+        Log.i(TAG, "WAYPOINT TEST");
+        final int localWp = currentWaypoint;
+        if (localWp >= maxWaypoint) {
+            Log.i(TAG, "waypointTest, LOCALWP > MAXWAYPOINT, SHOULDN'T HAPPEN, RETURN");
+            return;
+        }
+
+
+        final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
+
+        if (disBetw < 250 && currentTrackpoint > 1) {
+            Log.i(TAG, "WAYPOINT MATCH...");
+            Log.i(TAG, "waypointTest: WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
+            createTimeline("WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1) + "\n" + wpts.get(currentWaypoint).getDesc(), Timer.getCurrentTimeStamp());
+            speakText("WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
+            currentWaypoint += 1;
+        }
+    }
+
+
     private long bestRaceTime = -1;
 
 
