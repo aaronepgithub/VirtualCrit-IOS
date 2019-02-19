@@ -335,19 +335,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     //TIMES FOR RACE
-    private ArrayList<Long> raceTimesMe = new ArrayList<>();
+    private ArrayList<Long> raceTimesTim = new ArrayList<>();
 
     //CHECKPOINTS
-    private long checkpoint50 = 0;
-    private long checkpoint50Best = 0;
-
     private long checkpoint25 = 0;
-    private long checkpoint25Best = 0;
-
-
-
+    private long checkpoint25Best = 1;
     private long lastCheckpointTime = 0;
-
 
     private void trackpointTest(double gpsLa, double gpsLo) {
 
@@ -386,8 +379,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 raceFinishTime = newTime;
                 long raceTime = raceFinishTime - raceStartTime;
-                raceTimesMe.add(raceTime);
-                Log.i(TAG, "TPTEST: raceTimesMe\n " + raceTimesMe.toString());
+                raceTimesTim.add(raceTime);
+                Log.i(TAG, "TPTEST: raceTimesMe\n " + raceTimesTim.toString());
 
                 String s;
                 if (bestRaceTime == -1) {
@@ -396,27 +389,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 if (raceTime < bestRaceTime) {
                     bestRaceTime = raceTime;
-                    checkpoint50Best = checkpoint50;
                     checkpoint25Best = checkpoint25;
                     s = "MY FASTEST TIME.";
                 } else {
-//                    s = " SECONDS\nMY FASTEST IS STILL " + (bestRaceTime/1000) + "  SECONDS.";
                     s = "MY FASTEST IS STILL " + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + ".";
                 }
 
-//            createTimeline("FINISHED!\n" + String.valueOf(raceTime/1000 + "\n" + s), Timer.getCurrentTimeStamp());
-//            speakText("FINISHED.  " + String.valueOf(raceTime/1000 + s) + " SECONDS.");
-                //Log.i(TAG, "TPTEST: finished  " +  String.valueOf(raceTime/1000) + s);
                 Log.i(TAG, "TPTEST: FINISHED  : " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + ".  " + s);
                 createTimeline("FINISHED!\n" + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                setMessageText("RACE FINISHED: " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
+                speakText("FINISHED, TIME IS.  " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
 
                 Toast.makeText(getApplicationContext(),
                         "RACE FINISHED " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) , Toast.LENGTH_LONG)
                         .show();
-
-                setMessageText("RACE FINISHED: " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
-
-                speakText("FINISHED, TIME IS.  " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
 
 
                 //reset
@@ -426,22 +412,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
 
             Log.i(TAG, "trackpointTest: not finished yet, increment by 1, current tkpoint: " + currentTrackpoint);
-            //move to end
-//            currentTrackpoint += addToCurrentTrackpoint;
         }
-
-
-
-
 
         if (disBetw < 250) {
             Log.i(TAG, "TRACKPOINT MATCH: " + localTp + " DISTBTW: " + disBetw );
 
             if (localTp <= 1) {
                 Log.i(TAG, "TKTEST: CHECKPOINT, STARTRACE");
-                //raceTimesMe = new ArrayList<>();
-                checkpoint50 = 0;
-                checkpoint25 = 0;
+                checkpoint25 = -1;
                 raceStartTime = newTime;
                 lastCheckpointTime = newTime;
 
@@ -460,29 +438,26 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 lastCheckpointTime = newTime;
                 addToCurrentTrackpoint = 10;
 
-                //seconds to 50%
-//                if (localTp >= (maxTrackpoint * .5) && checkpoint50 < 1) {
-//                    Log.i(TAG, "trackpointTest: checkpoint50");
-//                    checkpoint50 = raceStartTime - newTime;
-//
-//                    if (checkpoint50 < checkpoint50Best) {
-//                        Log.i(TAG, "trackpointTest: best checkpoint50");
-//                        createTimeline((checkpoint50Best-checkpoint50) + " SECONDS AHEAD","");
-//                    } else {
-//                        createTimeline((checkpoint50-checkpoint50Best) + " SECONDS BEHIND","");
-//                    }
-//
-//                } else if (localTp >= (maxTrackpoint * .25) && checkpoint25 < 1) {
-//                    Log.i(TAG, "trackpointTest: checkpoint25");
-//                    checkpoint25 = raceStartTime - newTime;
-//
-//                    if (checkpoint25 < checkpoint25Best) {
-//                        Log.i(TAG, "trackpointTest: best checkpoint25");
-//                        createTimeline((checkpoint25Best-checkpoint25) + " SECONDS AHEAD","");
-//                    } else {
-//                        createTimeline((checkpoint25-checkpoint25Best) + " SECONDS BEHIND","");
-//                    }
-//                }
+
+                if (localTp >= (maxTrackpoint * .25) && localTp <= (maxTrackpoint * .35)) {
+                    Log.i(TAG, "localTp >= (maxTrackpoint * .25)");
+
+                    if (checkpoint25 == -1) {
+                        Log.i(TAG, "trackpointTest: checkpoint25 == -1");
+                        checkpoint25 = newTime - raceStartTime;
+                    } else {
+                        Log.i(TAG, "trackpointTest: checkpoint25 has already been set");
+                    }
+
+
+                    if (checkpoint25 < checkpoint25Best) {
+                        Log.i(TAG, "trackpointTest: checkpoint25 < checkpoint25Best "+ ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
+                        createTimeline(((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
+                    } else {
+                        Log.i(TAG, "trackpointTest: checkpoint25 > checkpoint25Best " + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND");
+                        createTimeline(((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND","");
+                    }
+                }
 
             }
 
