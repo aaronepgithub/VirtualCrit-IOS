@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 raceFinishTime = newTime;
                 long raceTime = raceFinishTime - raceStartTime;
                 raceTimesTim.add(raceTime);
-                Log.i(TAG, "TPTEST: raceTimesMe\n " + raceTimesTim.toString());
+                Log.i(TAG, "TPTEST: raceTimesTim\n " + raceTimesTim.toString());
 
                 String s;
                 if (bestRaceTime == -1) {
@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
                     if (checkpoint25 < checkpoint25Best && checkpoint25Best > 0) {
-                        Log.i(TAG, "trackpointTest: checkpoint25 < checkpoint25Best "+ ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
+                        Log.i(TAG, "trackpointTest: checkpoint25 < 25Best, " + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
                         createTimeline(((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
                     }
 
