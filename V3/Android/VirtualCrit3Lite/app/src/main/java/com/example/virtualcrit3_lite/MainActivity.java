@@ -452,12 +452,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     if (checkpoint25 < checkpoint25Best && checkpoint25Best > 0) {
                         Log.i(TAG, "trackpointTest: checkpoint25 < 25Best, " + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
-                        createTimeline(((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
+                        createTimeline("25%% COMPLETE\n" + ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
                     }
 
                     if (checkpoint25 > checkpoint25Best && checkpoint25Best > 0) {
                         Log.i(TAG, "trackpointTest: checkpoint25 > checkpoint25Best " + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND");
-                        createTimeline(((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND","");
+                        createTimeline("25%% COMPLETE\n" + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND","");
                     }
 
                     if (checkpoint25Best < 0) {
