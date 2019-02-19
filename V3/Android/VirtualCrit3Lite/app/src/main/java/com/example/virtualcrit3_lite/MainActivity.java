@@ -338,8 +338,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private ArrayList<Long> raceTimesTim = new ArrayList<>();
 
     //CHECKPOINTS
-    private long checkpoint25 = 0;
-    private long checkpoint25Best = 1;
+    private long checkpoint25 = -1;
+    private long checkpoint25Best = -1;
     private long lastCheckpointTime = 0;
 
     private void trackpointTest(double gpsLa, double gpsLo) {
@@ -450,12 +450,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
 
 
-                    if (checkpoint25 < checkpoint25Best) {
+                    if (checkpoint25 < checkpoint25Best && checkpoint25Best > 0) {
                         Log.i(TAG, "trackpointTest: checkpoint25 < checkpoint25Best "+ ((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD");
                         createTimeline(((checkpoint25Best-checkpoint25)/1000) + " SECONDS AHEAD","");
-                    } else {
+                    }
+
+                    if (checkpoint25 > checkpoint25Best && checkpoint25Best > 0) {
                         Log.i(TAG, "trackpointTest: checkpoint25 > checkpoint25Best " + ((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND");
                         createTimeline(((checkpoint25-checkpoint25Best)/1000) + " SECONDS BEHIND","");
+                    }
+
+                    if (checkpoint25Best < 0) {
+                        Log.i(TAG, "trackpointTest: checkpoint25Best < 0, BEST IS NOT SET");
                     }
                 }
 
