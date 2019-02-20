@@ -521,12 +521,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "waypointTest: Best minus Tim: " + (waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint)));
                 Log.i(TAG, "waypointTest: Tim minus Best: " + (waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint)));
 
-                if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
-                    s1 = ((waypointTimesBest.get(currentWaypoint)) / 1000) - ((waypointTimesTim.get(currentWaypoint)) / 1000) + " SECONDS AHEAD OF THE LEADER";
-                } else {
-                    s1 = ((waypointTimesTim.get(currentWaypoint)) / 1000) - ((waypointTimesBest.get(currentWaypoint)) / 1000)  + " SECONDS BEHIND THE LEADER";
+                if (currentWaypoint > 0) {
+
+                    if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
+                        s1 = ((waypointTimesBest.get(currentWaypoint)) / 1000) - ((waypointTimesTim.get(currentWaypoint)) / 1000) + " SECONDS AHEAD OF THE LEADER";
+                    } else {
+                        s1 = ((waypointTimesTim.get(currentWaypoint)) / 1000) - ((waypointTimesBest.get(currentWaypoint)) / 1000)  + " SECONDS BEHIND THE LEADER";
+                    }
+                    Log.i(TAG, "waypointTest: s1:  " + s1);
+
                 }
-                Log.i(TAG, "waypointTest: s1:  " + s1);
 
             }
 
@@ -759,6 +763,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double score = ds.child("fb_RND").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+
+                        if (score < 10) {
+                            Log.i(TAG, "onDataChange: score too low to publish");
+                            return;
+                        }
+
                         createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
                     }  //COMPLETED - READING EACH SNAP
                 }
@@ -782,6 +792,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
+
+                        if (score < 10) {
+                            Log.i(TAG, "onDataChange: score too low to publish");
+                            return;
+                        }
+
                         Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
                         //createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
                     }  //COMPLETED - READING EACH SNAP
