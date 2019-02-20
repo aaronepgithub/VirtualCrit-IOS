@@ -538,7 +538,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //WAYPOINT MATCH
         if (disBetw < 250) {
             Log.i(TAG, "WAYPOINT MATCH...");
-            Log.i(TAG, "waypointTest: WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
+            Log.i(TAG, "waypointTest: WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint));
 
             waypointTimesTim.add(newTime - raceStartTime);
             String s1 = "";
@@ -1273,13 +1273,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     return;
                 }
 
-                if (result < 4) {
+                if (result < 3) {
                     Log.i(TAG, "onLocationReceived: too small of a distance, ignore and wait for the next one");
                     oldLat = location.getLatitude();
                     oldLon = location.getLongitude();
                     oldLocation = location;
-                    oldTime = location.getTime();
-                    return;
+                    //oldTime = location.getTime();
+                    //return;
                     //result = 0;
                 }
 
