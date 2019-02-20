@@ -1273,14 +1273,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     return;
                 }
 
-                if (result < 3) {
+                if (result < 2) {
                     Log.i(TAG, "onLocationReceived: too small of a distance, ignore and wait for the next one");
                     oldLat = location.getLatitude();
                     oldLon = location.getLongitude();
                     oldLocation = location;
-                    //oldTime = location.getTime();
+                    oldTime = location.getTime();
                     //return;
-                    //result = 0;
+                    result = 0;
                 }
 
                 if (location.getAccuracy() > 75) {
