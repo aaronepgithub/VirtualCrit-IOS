@@ -1273,13 +1273,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     return;
                 }
 
-                if (result < 5) {
+                if (result < 4) {
                     Log.i(TAG, "onLocationReceived: too small of a distance, ignore and wait for the next one");
                     oldLat = location.getLatitude();
                     oldLon = location.getLongitude();
                     oldLocation = location;
-                    //oldTime = location.getTime();
+                    oldTime = location.getTime();
                     return;
+                    //result = 0;
                 }
 
                 if (location.getAccuracy() > 75) {
@@ -1288,16 +1289,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     oldLon = location.getLongitude();
                     oldLocation = location;
                     //oldTime = location.getTime();return;
+                    result = 0;
                 }
 
-                if (location.distanceTo(oldLocation) > 100) {
-                    Log.i(TAG, "onLocationReceived: distance to old location is too high, ignore and wait for the next one");
-                    oldLat = location.getLatitude();
-                    oldLon = location.getLongitude();
-                    oldLocation = location;
-                    //oldTime = location.getTime();
-                    return;
-                }
+//                if (location.distanceTo(oldLocation) > 100) {
+//                    Log.i(TAG, "onLocationReceived: distance to old location is too high, ignore and wait for the next one");
+//                    oldLat = location.getLatitude();
+//                    oldLon = location.getLongitude();
+//                    oldLocation = location;
+//                    result = 0;
+//                }
 
                 Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
                 Log.i(TAG, "onLocationReceived: location.hasAccuracy:  " + location.hasAccuracy());
