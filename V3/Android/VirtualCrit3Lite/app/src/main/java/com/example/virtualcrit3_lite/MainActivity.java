@@ -26,6 +26,7 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -89,6 +90,8 @@ import org.qap.ctimelineview.TimelineViewAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -274,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private int maxWaypoint;
     private int currentTrackpoint = 0;
     private int maxTrackpoint;
+    private String trkName = "NONE";
 
 
 
@@ -284,8 +288,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         AssetManager assetManager = getAssets();
         GpxParser parser;
         Gpx gpx = null;
+        resetRace();
         try {
-            InputStream inputStream = assetManager.open("prospectpark_1loop.gpx");
+
+
+//            InputStream inputStream = getContentResolver().openInputStream(selectedfile);
+            InputStream inputStream = assetManager.open("Prospect_Park_Brooklyn_Single_Loop.gpx");
+
+            if (selectedfile != null) {
+                inputStream = getContentResolver().openInputStream(selectedfile);
+            }
+
             parser = new GpxParser(inputStream);
             gpx = parser.parse();
 
@@ -301,14 +314,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         for (Wpt w : wpts) {
             Log.i("Name of waypoint ", w.getName());
-            Log.i("Description ",w.getDesc());
-            Log.i("Symbol of waypoint ",w.getSym());
+//            Log.i("Description ",w.getDesc());
+//            Log.i("Symbol of waypoint ",w.getSym());
             Log.i("Coordinates ",String.valueOf(w.getLatLon()));
         }
 
         trks = gpx.getTrks();
         trkpts = trks.get(0).getTrkseg();
-        String trkName = trks.get(0).getName();
+        trkName = trks.get(0).getName();
         Log.i(TAG, "startGPX: trkName  " + trkName);
         maxTrackpoint = trkpts.size();
         Log.i(TAG, "trkpts size: " + maxTrackpoint);
@@ -345,18 +358,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private long checkpoint25Best = -1;
     private long lastCheckpointTime = 0;
 
+    private Boolean isRaceStarted = false;
+
+    private void resetRace() {
+        Log.i(TAG, "resetRace: ");
+        currentTrackpoint = 0;
+        lastCheckpointTime = 0;
+        raceStartTime = 0;
+        isRaceStarted = false;
+
+    }
+
     private void trackpointTest(double gpsLa, double gpsLo) {
 
         //LOWER WITH MORE CHECKPOINTS
         long offTrackChecker = 600000; //10 min
         if (settingsSport.equals("RUN")) {
-            offTrackChecker = 1800000; //30 min
+            offTrackChecker = 1200000; //20 min
         }
         if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
             Log.i(TAG, "TPTEST: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
             createTimeline("OFF TRACK, START OVER", Timer.getCurrentTimeStamp());
-            currentTrackpoint = 0;
-            lastCheckpointTime = 0;
+            resetRace();
             return;
         }
 
@@ -364,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (localTp > maxTrackpoint - 1) {
             localTp = maxTrackpoint - 1;
         }
+
         final double disBetw = distance_between(gpsLa, gpsLo, trkpts.get(localTp).getLat(), trkpts.get(localTp).getLon());
         final double disBetwMax = distance_between(gpsLa, gpsLo, trkpts.get(maxTrackpoint-1).getLat(), trkpts.get(maxTrackpoint-1).getLon());
         Log.i(TAG, "\n" + disBetw + "  DISTANCE BETWEEN TP");
@@ -374,12 +398,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         int addToCurrentTrackpoint = 10;
 
         if (currentTrackpoint > 50 && disBetwMax < 500) {
-            Log.i(TAG, "trackpointTest: currentTrackpoint>20 and disBetwMax < 500");
+            Log.i(TAG, "trackpointTest: currentTrackpoint>50 and disBetwMax < 500");
             addToCurrentTrackpoint = 1;
 
             if (currentTrackpoint >= maxTrackpoint && disBetwMax < 250) {
-                Log.i(TAG, "TPTEST: CHECKPOINT, FINISHED");
-
+                Log.i(TAG, "FINISHED!");
+                isRaceStarted = false;
                 raceFinishTime = newTime;
                 long raceTime = raceFinishTime - raceStartTime;
                 raceTimesTim.add(raceTime);
@@ -415,8 +439,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
                 //reset
-                currentTrackpoint = 1;
-                lastCheckpointTime = 0;
+                resetRace();
                 return;
             }
 
@@ -427,8 +450,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "TRACKPOINT MATCH: " + localTp + " DISTBTW: " + disBetw );
 
             if (localTp <= 1) {
-                Log.i(TAG, "TKTEST: CHECKPOINT, STARTRACE");
-
+                Log.i(TAG, "STARTRACE!");
+                isRaceStarted = true;
                 speakText("THE RACE IS NOW STARTING!");
 
                 checkpoint25 = -1;
@@ -439,9 +462,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 lastCheckpointTime = newTime;
 
-                createTimeline("RACE STARTING", Timer.getCurrentTimeStamp());
+                createTimeline("RACE STARTING\n" + trkName, Timer.getCurrentTimeStamp());
+                setMessageText("RACE STARTING");
                 Toast.makeText(getApplicationContext(),
-                        "RACE STARTING" , Toast.LENGTH_LONG)
+                        "RACE STARTING: " + trkName , Toast.LENGTH_LONG)
                         .show();
 
 
@@ -489,7 +513,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "trackpointTest: currentTrackpoint:  " + currentTrackpoint);
         }
 
-        waypointTest(gpsLa, gpsLo);
+        
+        if (isRaceStarted == true) {
+            //Log.i(TAG, "trackpointTest: race has started, check for waypoints");
+            waypointTest(gpsLa, gpsLo);            
+        }
+
 
     }
 
@@ -507,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
 
         //WAYPOINT MATCH
-        if (disBetw < 250 && currentTrackpoint > 1) {
+        if (disBetw < 250) {
             Log.i(TAG, "WAYPOINT MATCH...");
             Log.i(TAG, "waypointTest: WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1));
 
@@ -521,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "waypointTest: Best minus Tim: " + (waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint)));
                 Log.i(TAG, "waypointTest: Tim minus Best: " + (waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint)));
 
-                if (currentWaypoint > 0) {
+                if (currentWaypoint >= 0) {
 
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
                         s1 = ((waypointTimesBest.get(currentWaypoint)) / 1000) - ((waypointTimesTim.get(currentWaypoint)) / 1000) + " SECONDS AHEAD OF THE LEADER";
@@ -534,8 +563,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             }
 
-            createTimeline("WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint - 1) + "\n" + wpts.get(currentWaypoint).getDesc() + "\n" + s1, Timer.getCurrentTimeStamp());
-            speakText("WAYPOINT " + wpts.get(currentWaypoint).getDesc() + ".  NUMBER " + currentWaypoint + " OF " + (maxWaypoint - 1) + ".  " + s1);
+            createTimeline("WAYPOINT " + (currentWaypoint+1) + " OF " + (maxWaypoint) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
+            speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint+1) + " OF " + (maxWaypoint) + ".  " + s1);
 
             currentWaypoint += 1;
         }
@@ -1180,6 +1209,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
+    private Location oldLocation;
 
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(Location location) {
@@ -1190,9 +1220,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         newTime = location.getTime();
         
 
-        if (arrLats.size() < 5) {
+        if (arrLats.size() < 15) {
+            Log.i(TAG, "onLocationReceived: starterlocations " + arrLons.size());
             oldLat = location.getLatitude();
             oldLon = location.getLongitude();
+            oldLocation = location;
             oldTime = location.getTime();
         } else {
             Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
@@ -1231,18 +1263,52 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 //TRY DIRECT CALC FORMULA
                 double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
-
+                Log.i(TAG, "RESULT: " + result);
                 if (result > 250) {
                     Log.i(TAG, "onLocationReceived: too big of a distance, ignore and wait for the next one...");
+                    oldLocation = location;
                     oldLat = location.getLatitude();
                     oldLon = location.getLongitude();
                     oldTime = location.getTime();
                     return;
                 }
 
+                if (result < 5) {
+                    Log.i(TAG, "onLocationReceived: too small of a distance, ignore and wait for the next one");
+                    oldLat = location.getLatitude();
+                    oldLon = location.getLongitude();
+                    oldLocation = location;
+                    //oldTime = location.getTime();
+                    return;
+                }
 
-                //Log.i(TAG, "onLocationReceived: calling waypointTest");
-//                waypointTest(location.getLatitude(), location.getLongitude());
+                if (location.getAccuracy() > 75) {
+                    Log.i(TAG, "onLocationReceived: accuracy is too high, ignore and wait for the next one");
+                    oldLat = location.getLatitude();
+                    oldLon = location.getLongitude();
+                    oldLocation = location;
+                    //oldTime = location.getTime();return;
+                }
+
+                if (location.distanceTo(oldLocation) > 100) {
+                    Log.i(TAG, "onLocationReceived: distance to old location is too high, ignore and wait for the next one");
+                    oldLat = location.getLatitude();
+                    oldLon = location.getLongitude();
+                    oldLocation = location;
+                    //oldTime = location.getTime();
+                    return;
+                }
+
+                Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
+                Log.i(TAG, "onLocationReceived: location.hasAccuracy:  " + location.hasAccuracy());
+                Log.i(TAG, "onLocationReceived: distance to oldLocation: " + location.distanceTo(oldLocation));
+
+
+//                float maxDistance = 100f;
+//                if (location.distanceTo(oldLocation) > maxDistance || location.getAccuracy()>MAX_ACCURACY) { //second point too far from first one
+//                    return;
+//                }
+
                 trackpointTest(location.getLatitude(), location.getLongitude());
 
                 //REPLACE results[0] with returned result
@@ -1262,6 +1328,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 
                 double geoSpeedLong = gd / ((double) gt / 1000 / 60 / 60);
 //                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+
+
                 //USING QUICK METHOD FOR DISPLAY PURPOSES
                 geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 
@@ -2039,6 +2107,23 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     public void clickRoundButton(View view) {
         Log.i(TAG, "clickRoundButton: ");
+
+        Intent intent = new Intent()
+                .setType("*/*")
+                .setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
+
+    }
+
+    private Uri selectedfile;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 123 && resultCode == RESULT_OK) {
+            selectedfile = data.getData(); //The uri with the location of the file
+        }
     }
 
     public void clickEditSport(View view) {

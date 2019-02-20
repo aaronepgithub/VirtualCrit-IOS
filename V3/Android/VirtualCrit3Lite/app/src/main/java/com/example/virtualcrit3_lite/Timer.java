@@ -2,6 +2,7 @@ package com.example.virtualcrit3_lite;
 
 import android.annotation.SuppressLint;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -62,9 +63,6 @@ public final class Timer {
     //from milli
     @SuppressLint("DefaultLocale")
     public static String getTimeStringFromSecondsToDisplay(int s) {
-//        return String.format("%02d:%02d:%02d", s/(3600*1000),
-//                s/(60*1000) % 60,
-//                s/1000 % 60);
 
         return String.format("%02d:%02d:%02d", s/(3600*1000),
                 s/(60*1000) % 60,
@@ -72,8 +70,14 @@ public final class Timer {
 
     }
 
-    public static String getCurrentTimeStamp() {
 
-        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+
+
+    public static String getCurrentTimeStamp() {
+//        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+
+        DateFormat dateFormat = new SimpleDateFormat("h:mm:ss a");
+        return dateFormat.format(new Date());
+
     }
 }
