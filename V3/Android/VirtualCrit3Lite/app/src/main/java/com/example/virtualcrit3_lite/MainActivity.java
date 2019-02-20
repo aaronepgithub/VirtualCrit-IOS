@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             offTrackChecker = 1800000; //30 min
         }
         if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
-            Log.i(TAG, "tpTEST: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
+            Log.i(TAG, "TPTEST: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
             createTimeline("OFF TRACK, START OVER", Timer.getCurrentTimeStamp());
             currentTrackpoint = 0;
             lastCheckpointTime = 0;
@@ -526,6 +526,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 } else {
                     s1 = ((waypointTimesTim.get(currentWaypoint)) / 1000) - ((waypointTimesBest.get(currentWaypoint)) / 1000)  + " SECONDS BEHIND THE LEADER";
                 }
+                Log.i(TAG, "waypointTest: s1:  " + s1);
 
             }
 
