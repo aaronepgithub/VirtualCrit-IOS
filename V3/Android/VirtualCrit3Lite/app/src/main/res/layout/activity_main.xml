@@ -47,12 +47,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
+    <!--mapbox:mapbox_cameraTargetLat="40.73581"-->
+    <!--mapbox:mapbox_cameraTargetLng="-73.99155"-->
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        mapbox:mapbox_cameraTargetLat="40.73581"
-        mapbox:mapbox_cameraTargetLng="-73.99155"
         mapbox:mapbox_cameraZoom="11"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/trMessageBar"/>

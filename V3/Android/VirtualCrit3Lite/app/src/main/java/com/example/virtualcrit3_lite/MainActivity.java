@@ -2,6 +2,7 @@ package com.example.virtualcrit3_lite;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.MediatorLiveData;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -81,6 +82,7 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
@@ -978,19 +980,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
+
             @Override
             public void onMapReady(@NonNull final MapboxMap mapboxMap) {
 
                 Log.i(TAG, "onMapReady");
 
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
                         enableLocationComponent(mapboxMap);
 
 
-                        //setMarker(style);
 
                         // Add the marker image to map
                         style.addImage("marker-icon-id",
@@ -998,7 +1001,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                         MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
                         GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
-                                Point.fromLngLat(-73.97827990290011, 40.661186990290176))
+                                Point.fromLngLat(-73.97738, 40.66068))
                         );
                         style.addSource(geoJsonSource);
 
@@ -1007,10 +1010,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                 PropertyFactory.iconImage("marker-icon-id")
                         );
                         style.addLayer(symbolLayer);
-
-                        //Point.fromLngLat(-73.97827990290011, 40.661186990290176)));
-
-
                     }
                 });
             }
@@ -1019,6 +1018,30 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
+    private void addAnotherMarker() {
+            mapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                    mapboxMap.getStyle().addImage("marker-icon-id",BitmapFactory.decodeResource(
+                            MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+                    GeoJsonSource geoJsonSource = new GeoJsonSource("source-id2", Feature.fromGeometry(
+//                            Point.fromLngLat(-73.97527990290011, 40.661186990290176)
+                            Point.fromLngLat(trkpts.get(trkpts.size()-1).getLon(), trkpts.get(trkpts.size()-1).getLat())
+                    )
+                    );
+                    Style style = mapboxMap.getStyle();
+                    style.addSource(geoJsonSource);
+
+                    SymbolLayer symbolLayer = new SymbolLayer("layer-id2", "source-id2");
+                    symbolLayer.withProperties(
+                            PropertyFactory.iconImage("marker-icon-id")
+                    );
+                    style.addLayer(symbolLayer);
+
+                }
+            });
+    }
 
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(MapboxMap mapboxMap) {
@@ -1210,11 +1233,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     private Location oldLocation;
+    private Location newLocation;
 
 
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(final Location location) {
         //Log.i(TAG, "onLocationReceived");
+        newLocation = location;
 
         arrLats.add(location.getLatitude());
         arrLons.add(location.getLongitude());
@@ -1314,7 +1339,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
                 displaySpeedValues();
 
-                trackpointTest(location.getLatitude(), location.getLongitude());
+                trackpointTest(newLocation.getLatitude(), newLocation.getLongitude());
 
             }
             oldLat = location.getLatitude();
@@ -1444,6 +1469,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     public void clickAudio(View view) {
         Log.i(TAG, "clickAudio  "  + settingsAudio);
+
+        //addAnotherMarker();
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
