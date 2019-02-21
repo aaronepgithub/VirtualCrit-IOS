@@ -369,12 +369,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-    private void trackpointTest(double gpsLa, double gpsLo) {
+    private void trackpointTest(final double gpsLa, final double gpsLo) {
 
         //LOWER WITH MORE CHECKPOINTS
-        long offTrackChecker = 600000; //10 min
+        long offTrackChecker = 1200000; //20 min
         if (settingsSport.equals("RUN")) {
-            offTrackChecker = 1200000; //20 min
+            offTrackChecker = 1800000; //30 min
         }
         if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
             Log.i(TAG, "TPTEST: TOO LONG BEWEEN CHECKPOINTS, OVER 10 MIN, OFFTRACK, RESET");
@@ -1211,8 +1211,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private Location oldLocation;
 
+
     @SuppressLint("DefaultLocale")
-    public void onLocationReceived(Location location) {
+    public void onLocationReceived(final Location location) {
         //Log.i(TAG, "onLocationReceived");
 
         arrLats.add(location.getLatitude());
@@ -1239,26 +1240,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     //mPrinter("NO DISTANCE TRAVELED - RETURN");
                     return;
                 }
-
-                //FIND RIGHT NUMBER TO GET RID OF THE SMALL MOVEMENTS AND MAKE ACTIVE TIME ACCURATE
-//                if (location.getSpeed() < .1) {
-//                    Log.i(TAG, "check - TOO SMALL");
-//                    oldLat = location.getLatitude();
-//                    oldLon = location.getLongitude();
-//                    oldTime = location.getTime();
-//                    return;
-//                }
-
                 //OPT 1.  QUICKREAD GEO SPEED
-                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                if (geoSpeedQuick > 75) {
-                    //Log.i(TAG, "onLocationReceived: too fast, wait for the next one...");
-//                    oldLat = location.getLatitude();
-//                    oldLon = location.getLongitude();
-//                    oldTime = location.getTime();
-//                    return;
-                }
-                //Log.i(TAG, "onLocationReceived: QuickSpeedCalc: " + geoSpeedQuick);
+//                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+//                if (geoSpeedQuick > 75) {
+//                    Log.i(TAG, "onLocationReceived: ");
+//                }
 
 
                 //TRY DIRECT CALC FORMULA
@@ -1274,35 +1260,27 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
 
                 if (result < 2) {
-                    Log.i(TAG, "onLocationReceived: too small of a distance, ignore and wait for the next one");
-                    oldLat = location.getLatitude();
-                    oldLon = location.getLongitude();
-                    oldLocation = location;
-                    oldTime = location.getTime();
-                    //return;
-                    result = 0;
+                    Log.i(TAG, "onLocationReceived: too small of a distance");
+                    return;
                 }
 
                 if (location.getAccuracy() > 75) {
-                    Log.i(TAG, "onLocationReceived: accuracy is too high, ignore and wait for the next one");
+                    Log.i(TAG, "onLocationReceived: accuracy is too high");
+                    Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
+                    return;
+                }
+
+                if (location.getTime() - oldLocation.getTime() > 20000) {
+                    Log.i(TAG, "onLocationReceived: too much time has passed, ignore and wait for the next one " + (location.getTime() - oldLocation.getTime()));
                     oldLat = location.getLatitude();
                     oldLon = location.getLongitude();
                     oldLocation = location;
-                    //oldTime = location.getTime();return;
-                    result = 0;
+                    return;
                 }
 
-//                if (location.distanceTo(oldLocation) > 100) {
-//                    Log.i(TAG, "onLocationReceived: distance to old location is too high, ignore and wait for the next one");
-//                    oldLat = location.getLatitude();
-//                    oldLon = location.getLongitude();
-//                    oldLocation = location;
-//                    result = 0;
-//                }
-
-                Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
-                Log.i(TAG, "onLocationReceived: location.hasAccuracy:  " + location.hasAccuracy());
-                Log.i(TAG, "onLocationReceived: distance to oldLocation: " + location.distanceTo(oldLocation));
+//                Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
+//                Log.i(TAG, "onLocationReceived: location.hasAccuracy:  " + location.hasAccuracy());
+//                Log.i(TAG, "onLocationReceived: distance to oldLocation: " + location.distanceTo(oldLocation));
 
 
 //                float maxDistance = 100f;
@@ -1310,7 +1288,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 //                    return;
 //                }
 
-                trackpointTest(location.getLatitude(), location.getLongitude());
+
 
                 //REPLACE results[0] with returned result
 //                if (simGPS.equals(true)) {
@@ -1325,12 +1303,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 double gd = result * 0.000621371;
                 geoDistance += gd;
                 long gt = (location.getTime() - oldTime);  //MILLI
-
-                
                 double geoSpeedLong = gd / ((double) gt / 1000 / 60 / 60);
 //                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-
-
                 //USING QUICK METHOD FOR DISPLAY PURPOSES
                 geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 
@@ -1339,6 +1313,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 double ttg = totalTimeGeo;  //IN MILLI
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
                 displaySpeedValues();
+
+                trackpointTest(location.getLatitude(), location.getLongitude());
 
             }
             oldLat = location.getLatitude();

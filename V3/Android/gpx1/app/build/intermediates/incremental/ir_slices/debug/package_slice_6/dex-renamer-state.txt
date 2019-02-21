@@ -1,0 +1,4 @@
+#Tue Feb 12 17:59:14 EST 2019
+base.0=/Users/aaronep/Desktop/DEV/VirtualCrit-IOS/V3/Android/gpx1/app/build/intermediates/transforms/dexMerger/debug/6
+path.0=classes.dex
+renamed.0=classes.dex
