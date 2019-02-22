@@ -15,11 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="HOME"
-        android:textStyle="italic"
+        android:text="SETTINGS"
+        android:textStyle="bold"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="@color/colorPrimary"
-
+        android:onClick="clickMessageBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,34 +50,49 @@
     <!--mapbox:mapbox_cameraTargetLat="40.73581"-->
     <!--mapbox:mapbox_cameraTargetLng="-73.99155"-->
 
+    <!--<com.mapbox.mapboxsdk.maps.MapView-->
+        <!--android:id="@+id/mapView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="500dp"-->
+        <!--mapbox:mapbox_cameraZoom="11"-->
+        <!--android:visibility="visible"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/trMessageBar"/>-->
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         mapbox:mapbox_cameraZoom="11"
-        android:visibility="gone"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/trMessageBar"/>
 
 
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
     <ScrollView
         android:id="@+id/svSettings"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="60dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="4dp"
-        android:visibility="visible"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapView">
+        app:layout_constraintTop_toBottomOf="@+id/trMessageBar">
 
+        <!--app:layout_constraintTop_toBottomOf="@+id/mapView"-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <!--NAME-->
@@ -90,28 +105,26 @@
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clickName"
                     android:text="NAME"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickName"/>
+                    android:textAlignment="viewStart" />
 
                 <TextView
                     android:id="@+id/valueName"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="TIM"
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#444">
-            </TableRow>
-
+                android:background="#444"></TableRow>
 
 
             <!--GPS-->
@@ -124,20 +137,20 @@
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clickGPS"
                     android:text="GPS"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickGPS"/>
+                    android:textAlignment="viewStart" />
 
                 <TextView
                     android:id="@+id/valueGPS"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="OFF"
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -149,20 +162,20 @@
                 <TextView
                     android:id="@+id/valueSpeedGPS"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="0.00 MPH"
                     android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/valueDistanceGPS"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="0.00 MILES"
                     android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -174,31 +187,80 @@
                 <TextView
                     android:id="@+id/valueActiveTimeGPS"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="00:00:00"
                     android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/valueAverageSpeedGPS"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="0.0 MPH"
                     android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
-
 
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#444">
-            </TableRow>
+                android:background="#444"></TableRow>
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:text="RACE SETTINGS"
+                android:textAlignment="viewStart"
+                android:textStyle="bold" />
+
+            <!--<TextView-->
+            <!--android:id="@+id/valueGPX"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:text="Prospect Park, Brooklyn, Single Loop"-->
+            <!--android:textStyle="italic"-->
+            <!--android:layout_marginBottom="2dp"-->
+            <!--android:layout_marginTop="4dp"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:textAlignment="viewStart" />-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/clickLoadGPX"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clickSelectGPX"
+                    android:text="SELECT"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/valueGPX"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="2"
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold|italic" />
+
+
+            </LinearLayout>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#444"></TableRow>
 
             <!--BLE-->
             <LinearLayout
@@ -210,36 +272,38 @@
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:onClick="clickBLE"
                     android:text="BLE"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickBLE"/>
+                    android:textAlignment="viewStart" />
 
                 <TextView
                     android:id="@+id/valueBluetoothDevice1"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
 
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/valueBluetoothDevice2"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
 
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/valueBluetoothDevice3"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
 
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
@@ -254,29 +318,27 @@
                 <TextView
                     android:id="@+id/valueHeartrateBLE"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="0 BPM"
                     android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/valueHeartrateAverageBLE"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:text="00 AVG"
                     android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
-
 
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#444">
-            </TableRow>
+                android:background="#444"></TableRow>
 
 
             <LinearLayout
@@ -288,20 +350,20 @@
                 <Button
                     android:id="@+id/valueRoundButton"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="5 MIN/RND"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickRoundButton"/>
+                    android:layout_weight="1"
+                    android:onClick="clickRoundButton"
+                    android:text="00:00:00 REMAIN"
+                    android:textAlignment="viewStart" />
 
                 <Button
                     android:id="@+id/valueAudio"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clickAudio"
                     android:text="AUDIO OFF"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickAudio"/>
+                    android:textAlignment="viewStart" />
 
             </LinearLayout>
 
@@ -314,28 +376,27 @@
                 <Button
                     android:id="@+id/valueEditSport"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clickEditSport"
                     android:text="BIKE"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickEditSport"/>
+                    android:textAlignment="viewStart" />
 
                 <Button
                     android:id="@+id/valueEditMaxHR"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clickEditMaxHR"
                     android:text="185 MAX HR"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickEditMaxHR"/>
+                    android:textAlignment="viewStart" />
 
             </LinearLayout>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#444">
-            </TableRow>
+                android:background="#444"></TableRow>
 
 
             <!--START, PAUSE, END-->
@@ -343,32 +404,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="18dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="3"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="timerStart"
                     android:text="START"
-                    android:textAlignment="viewStart"
-                    android:onClick="timerStart" />
+                    android:textAlignment="viewStart" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="3"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="clickPause"
                     android:text="PAUSE"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickPause" />
+                    android:textAlignment="viewStart" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="3"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="clickEnd"
                     android:text="END"
-                    android:textAlignment="viewStart"
-                    android:onClick="clickEnd"/>
+                    android:textAlignment="viewStart" />
             </LinearLayout>
 
             <!--TIMER-->
@@ -380,44 +441,66 @@
 
                 <Button
                     android:id="@+id/valueTimer"
-                    android:layout_weight="3"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
                     android:text="00:00:00"
-                    android:textStyle="bold"
                     android:textAlignment="center"
-                    android:layout_width="0dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/activeTimer"
-                    android:layout_weight="3"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
                     android:text="00:00:00"
-                    android:textStyle="bold"
                     android:textAlignment="center"
-                    android:visibility="gone"
-                    android:layout_width="0dp" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="3"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:onClick="clickEnd"
                     android:text="END"
-                    android:textAlignment="center"
-                    android:onClick="clickEnd"/>
+                    android:textAlignment="center" />
 
             </LinearLayout>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#444">
-            </TableRow>
+                android:background="#444"></TableRow>
 
+            <!--<com.mapbox.mapboxsdk.maps.MapView-->
+            <!--android:id="@+id/mapView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="500dp"-->
+            <!--mapbox:mapbox_cameraZoom="11"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:visibility="visible" />-->
 
         </LinearLayout>
 
 
+        <!--app:layout_constraintTop_toBottomOf="@+id/svSettings"-->
+
+
     </ScrollView>
+
+    <!--map-->
+    <LinearLayout
+        android:id="@+id/llViewMapperTest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+    </LinearLayout>
 
 
 
@@ -645,6 +728,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
         android:orientation="vertical"
+        android:background="@color/common_google_signin_btn_text_dark_pressed"
         android:visibility="gone">
 
         <ListView

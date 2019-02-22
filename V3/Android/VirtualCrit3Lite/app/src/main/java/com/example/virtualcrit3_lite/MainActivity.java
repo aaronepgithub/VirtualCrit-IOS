@@ -89,6 +89,7 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -287,10 +288,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 //    public void startGPX(View view) {
     public void startGPX() {
         Log.i(TAG, "startGPX");
+        resetRace();
+
         AssetManager assetManager = getAssets();
         GpxParser parser;
         Gpx gpx = null;
-        resetRace();
+
         try {
 
 
@@ -345,6 +348,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 "GPX LOADED" , Toast.LENGTH_SHORT)
                 .show();
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView t1 = (TextView) findViewById(R.id.valueGPX);
+                t1.setText(trkName);
+
+                setMessageText("GOTO THE START POINT");
+            }
+        });
+
+        addAnotherMarker();
+
     }
 
 
@@ -371,6 +386,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
+    private int distanceBetweenValue = 125;
+
     private void trackpointTest(final double gpsLa, final double gpsLo) {
 
         //LOWER WITH MORE CHECKPOINTS
@@ -390,6 +407,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             localTp = maxTrackpoint - 1;
         }
 
+        if (trkpts.size() == 0) {
+            Log.i(TAG, "trackpointTest: trkpts.size is 0, return");
+            return;
+        }
+
         final double disBetw = distance_between(gpsLa, gpsLo, trkpts.get(localTp).getLat(), trkpts.get(localTp).getLon());
         final double disBetwMax = distance_between(gpsLa, gpsLo, trkpts.get(maxTrackpoint-1).getLat(), trkpts.get(maxTrackpoint-1).getLon());
         Log.i(TAG, "\n" + disBetw + "  DISTANCE BETWEEN TP");
@@ -399,11 +421,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //CLOSE TO FINISH, NEW LOGIC
         int addToCurrentTrackpoint = 10;
 
-        if (currentTrackpoint > 50 && disBetwMax < 500) {
-            Log.i(TAG, "trackpointTest: currentTrackpoint>50 and disBetwMax < 500");
+        if (currentTrackpoint > 50 && disBetwMax < 300) {
+            Log.i(TAG, "trackpointTest: currentTrackpoint>50 and disBetwMax < 300");
             addToCurrentTrackpoint = 1;
 
-            if (currentTrackpoint >= maxTrackpoint && disBetwMax < 250) {
+            if (currentTrackpoint >= maxTrackpoint && disBetwMax < distanceBetweenValue) {
                 Log.i(TAG, "FINISHED!");
                 isRaceStarted = false;
                 raceFinishTime = newTime;
@@ -448,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "trackpointTest: not finished yet, increment by 1, current tkpoint: " + currentTrackpoint);
         }
 
-        if (disBetw < 250) {
+        if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "TRACKPOINT MATCH: " + localTp + " DISTBTW: " + disBetw );
 
             if (localTp <= 1) {
@@ -538,7 +560,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(localWp).getLat(), wpts.get(localWp).getLon());
 
         //WAYPOINT MATCH
-        if (disBetw < 250) {
+        if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "WAYPOINT MATCH...");
             Log.i(TAG, "waypointTest: WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint));
 
@@ -916,10 +938,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     //mTextMessage.setText(R.string.title_home);
                     //setMessageText("HOME");
                     //changeState(0);
-                    sv.setVisibility(View.VISIBLE);
+                    //sv.setVisibility(View.VISIBLE);
                     mTextMessage.setVisibility(View.VISIBLE);
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
+                    toggleMapVisibility();
                     return true;
                 case R.id.navigation_dashboard:
 //                    mTextMessage.setText(R.string.title_dashboard);
@@ -939,10 +962,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     mTextMessage.setVisibility(View.GONE);
                     tl.setVisibility(View.VISIBLE);
                     return true;
-                case R.id.navigation_map:
-//                    mTextMessage.setText(R.string.title_notifications);
-                    toggleMapVisibility();
-                    return true;
+//                case R.id.navigation_map:
+//                    toggleMapVisibility();
+//                    return true;
             }
             return false;
         }
@@ -993,54 +1015,69 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         // Map is set up and the style has loaded. Now you can add data or make other map adjustments
                         enableLocationComponent(mapboxMap);
 
+//                        // Add the marker image to map
+//                        style.addImage("marker-icon-id",
+//                                BitmapFactory.decodeResource(
+//                                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+//
+//                        GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
+//                                Point.fromLngLat(-73.97738, 40.66068))
+//                        );
+//                        style.addSource(geoJsonSource);
+//
+//                        SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
+//                        symbolLayer.withProperties(
+//                                PropertyFactory.iconImage("marker-icon-id")
+//                        );
+//                        style.addLayer(symbolLayer);
 
-
-                        // Add the marker image to map
-                        style.addImage("marker-icon-id",
-                                BitmapFactory.decodeResource(
-                                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
-
-                        GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
-                                Point.fromLngLat(-73.97738, 40.66068))
-                        );
-                        style.addSource(geoJsonSource);
-
-                        SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
-                        symbolLayer.withProperties(
-                                PropertyFactory.iconImage("marker-icon-id")
-                        );
-                        style.addLayer(symbolLayer);
                     }
                 });
             }
         });
-
     }
 
 
+
+    //TEST MULTIPLE MARKERS
+    private boolean isRaceLoaded = false;
+    private int raceNumber = 10;
     private void addAnotherMarker() {
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                    mapboxMap.getStyle().addImage("marker-icon-id",BitmapFactory.decodeResource(
-                            MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
-                    GeoJsonSource geoJsonSource = new GeoJsonSource("source-id2", Feature.fromGeometry(
-//                            Point.fromLngLat(-73.97527990290011, 40.661186990290176)
-                            Point.fromLngLat(trkpts.get(trkpts.size()-1).getLon(), trkpts.get(trkpts.size()-1).getLat())
-                    )
-                    );
-                    Style style = mapboxMap.getStyle();
-                    style.addSource(geoJsonSource);
+        raceNumber += 1;
+        if (trkpts.size() <= 1) {
+            Log.i(TAG, "addAnotherMarker: no course loaded");
+            return;}
 
-                    SymbolLayer symbolLayer = new SymbolLayer("layer-id2", "source-id2");
-                    symbolLayer.withProperties(
-                            PropertyFactory.iconImage("marker-icon-id")
-                    );
-                    style.addLayer(symbolLayer);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                mapboxMap.getStyle().addImage("marker-icon-id",BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
-                }
-            });
+                List<Feature> markerCoordinates = new ArrayList<>();
+                markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(trkpts.get(trkpts.size()-1).getLon(), trkpts.get(trkpts.size()-1).getLat()))); // FINISH
+                markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
+                markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(trkpts.get(1).getLon(), trkpts.get(1).getLat()))); // FIRST POINT
+
+                Style style = mapboxMap.getStyle();
+
+
+                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
+                        FeatureCollection.fromFeatures(markerCoordinates)));
+
+                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
+                symbolLayer.withProperties(
+                        PropertyFactory.iconImage("marker-icon-id")
+                );
+                style.addLayer(symbolLayer);
+                isRaceLoaded = true;
+
+            }
+        });
     }
 
     @SuppressWarnings( {"MissingPermission"})
@@ -1084,11 +1121,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void toggleMapVisibility() {
-        if(mapView.getVisibility() == View.GONE) {
-            mapView.setVisibility(View.VISIBLE);
-        } else {
-            mapView.setVisibility(View.GONE);
+        Log.i(TAG, "toggleMapVisibility: ");
+        ScrollView sv = (ScrollView) findViewById(R.id.svSettings);
 
+        if(sv.getVisibility() == View.GONE) {
+            sv.setVisibility(View.VISIBLE);
+        } else {
+            sv.setVisibility(View.GONE);
         }
     }
 
@@ -1127,12 +1166,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onResume() {
         super.onResume();
         mapView.onResume();
+
+        Log.i(TAG, "onResume: ");
+        loadSelectedGPX();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+
+        Log.i(TAG, "onPause: ");
     }
 
     public void clickName(View view) {
@@ -1413,8 +1458,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void startGPS() {
         Log.i(TAG, "startGPS: ");
+
+
         createTimeline("STARTING GPS", Timer.getCurrentTimeStamp());
-        //START GPS
 
 
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
@@ -1462,15 +1508,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
         }
 
-        //startGPX(getCurrentFocus());
-        startGPX();
+        //startGPX();
+        TextView t1 = findViewById(R.id.valueGPX);
+        Log.i(TAG, "startGPS: t1.getText: " + t1.getText().length());
+        if (t1.getText().length() == 0) {
+            startGPX();
+        }
+//        Prospect Park, Brooklyn, Single Loop
+
 
     }
 
     public void clickAudio(View view) {
         Log.i(TAG, "clickAudio  "  + settingsAudio);
 
-        //addAnotherMarker();
 
         runOnUiThread(new Runnable() {
             @Override
@@ -1604,20 +1655,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-    private int mapState = 1;
+//    private int mapState = 1;
     public void clickMessageBar(View view) {
         Log.i(TAG, "clickMessageBar: ");
-
-        if (mapState == 0) {
-            Log.i(TAG, "clickMessageBar: state 0");
-            mapView.setVisibility(View.GONE);
-            mapState = 1;
-        } else {
-            Log.i(TAG, "clickMessageBar: state 1");
-            mapView.setVisibility(View.VISIBLE);
-            mapState = 0;
-        }
-
+        //toggleMapVisibility();
     }
 
 
@@ -2113,11 +2154,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public void clickRoundButton(View view) {
         Log.i(TAG, "clickRoundButton: ");
 
-        Intent intent = new Intent()
-                .setType("*/*")
-                .setAction(Intent.ACTION_GET_CONTENT);
-
-        startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
+//        Intent intent = new Intent()
+//                .setType("*/*")
+//                .setAction(Intent.ACTION_GET_CONTENT);
+//
+//        startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
 
     }
 
@@ -2183,6 +2224,34 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
         setSharedPrefs();
+    }
+
+    //RUN THE GPX
+    public void clickLoadGPX(View view) {
+        Log.i(TAG, "clickLoadGPX: ");
+    }
+
+
+    public void clickSelectGPX(View view) {
+        Log.i(TAG, "clickSelectGPX: ");
+
+        Intent intent = new Intent()
+                .setType("*/*")
+                .setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
+        waitToLoadGPX = true;
+        Log.i(TAG, "clickSelectGPX: selected");
+
+    }
+
+    private Boolean waitToLoadGPX = false;
+    private void loadSelectedGPX() {
+        if (waitToLoadGPX) {
+            Log.i(TAG, "loadSelectedGPX: ");
+            waitToLoadGPX = false;
+            startGPX();
+        }
     }
 
 
