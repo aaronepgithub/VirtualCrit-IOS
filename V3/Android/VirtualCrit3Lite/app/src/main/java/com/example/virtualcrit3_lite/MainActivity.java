@@ -457,9 +457,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     waypointTimesBest = waypointTimesTim;
                     checkpoint25Best = checkpoint25;
 
-                    s = "MY FASTEST TIME.";
+                    s = "THE FASTEST TIME.";
                 } else {
-                    s = "MY FASTEST IS STILL " + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + ".";
+                    s = "THE FASTEST TIME IS STILL " + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + ".";
                 }
 
                 Log.i(TAG, "TPTEST: FINISHED  : " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + ".  " + s);
@@ -592,9 +592,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if (currentWaypoint >= 0) {
 
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
-                        s1 = ((waypointTimesBest.get(currentWaypoint)) / 1000) - ((waypointTimesTim.get(currentWaypoint)) / 1000) + " SECONDS AHEAD OF THE LEADER";
+                        long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
+                        int i = (int) l;
+                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " AHEAD OF THE LEADER";
                     } else {
-                        s1 = ((waypointTimesTim.get(currentWaypoint)) / 1000) - ((waypointTimesBest.get(currentWaypoint)) / 1000)  + " SECONDS BEHIND THE LEADER";
+                        long l = waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint);
+                        int i = (int) l;
+                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " BEHIND THE LEADER";
                     }
                     Log.i(TAG, "waypointTest: s1:  " + s1);
 
