@@ -658,13 +658,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     String raceName = ds.child("raceName").getValue(String.class);
                     String riderName = ds.child("riderName").getValue(String.class);
                     String raceWaypointTimes = ds.child("waypointTimes").getValue(String.class);
-                    Long raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Long.class);
+                    Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
-                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + String.valueOf(raceTimeToComplete/1000) + " SECONDS");
+                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + Timer.getTimeStringFromSecondsToDisplay(raceTimeToComplete) + ".");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "Race update for " + raceName + ".\n  New Race Leader is " + riderName + ", with a time of " + (raceTimeToComplete/1000) + " seconds.";
+                    String post = "Race update for:\n " + raceName + ".\nNew Race Leader is: " + riderName + ", with a time of " + Timer.getTimeStringFromSecondsToDisplay (raceTimeToComplete) + ".";
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
 
