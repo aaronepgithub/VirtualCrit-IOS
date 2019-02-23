@@ -98,6 +98,7 @@ import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -364,11 +365,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     //TIMES FOR RACE
+
+    //local version of best times by local user
     private ArrayList<Long> raceTimesTim = new ArrayList<>();
     //private ArrayList<Long> raceTimesBest = new ArrayList<>();
     private long bestRaceTime = -1;
+
     private ArrayList<Long> waypointTimesTim = new ArrayList<>();
     private ArrayList<Long> waypointTimesBest = new ArrayList<>();
+    private String waypointTimesTimString;
 
     //CHECKPOINTS
     private long checkpoint25 = -1;
@@ -435,6 +440,26 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "raceTimesTim\n " + raceTimesTim.toString());
                 Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
                 Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
+
+
+            //POST RACE CONVERT AND UN-CONVERT
+//                for (Long w : waypointTimesTim) {
+//                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
+//                }
+//                Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
+//
+//                    //convert to ArrayList of Strings
+//                ArrayList<String> str =
+//                        new  ArrayList<String>(Arrays.asList(waypointTimesTimString.split(",")));
+//                    //convert ArrayList of Strings to ArrayList of Longs
+//                ArrayList<Long> longs = new ArrayList<>();
+//                for (String s : str) {
+//                    Long l = null;
+//                    l = Long.valueOf(s);
+//                    longs.add(l);
+//                }
+//                Log.i(TAG, "trackpointTest: longs: " + longs.toString());
+            //END POST RACE CONVERT AND UN-CONVERT
 
                 String s;
                 if (bestRaceTime == -1) {
@@ -564,6 +589,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "WAYPOINT MATCH...");
             Log.i(TAG, "waypointTest: WAYPOINT " + currentWaypoint + " OF " + (maxWaypoint));
 
+            //EACH TIME IS ADDED
             waypointTimesTim.add(newTime - raceStartTime);
             String s1 = "";
             if (waypointTimesBest.isEmpty()) {
@@ -640,10 +666,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         double roundDistance = newDistance - oldDistance; //MILES
         roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
 
-        //SET ROUND VALUES
-        Rounds.getArrRoundSpeeds().add(roundSpeed);
-        Rounds.getArrRoundHeartrates().add(roundHeartrate);
-        Rounds.getArrRoundScores().add(returnScoreFromHeartrate(roundHeartrate));
 
         double pastRoundHeartrate = roundHeartrate;
 
