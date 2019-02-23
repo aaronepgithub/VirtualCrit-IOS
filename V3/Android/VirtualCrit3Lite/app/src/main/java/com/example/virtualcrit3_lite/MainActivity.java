@@ -664,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + Timer.getTimeStringFromSecondsToDisplay(raceTimeToComplete) + ".");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "Race update for:\n" + raceName + ".\n\nNew Race Leader is: " + riderName + ",  " + Timer.getTimeStringFromSecondsToDisplay (raceTimeToComplete) + ".";
+                    String post = "Race update for:\n" + raceName + ".\nNew Race Leader is: " + riderName + ",  " + Timer.getTimeStringFromSecondsToDisplay (raceTimeToComplete) + ".";
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
 
