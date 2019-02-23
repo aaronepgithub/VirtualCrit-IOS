@@ -560,11 +560,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
                         long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " AHEAD OF THE LEADER";
+                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " AHEAD";
                     } else {
                         long l = waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " BEHIND THE LEADER";
+                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " BEHIND";
                     }
                     Log.i(TAG, "waypointTest: s1:  " + s1);
 
