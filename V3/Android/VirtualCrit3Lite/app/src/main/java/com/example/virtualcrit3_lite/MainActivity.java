@@ -694,7 +694,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + String.valueOf(raceTimeToComplete/1000) + " SECONDS");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "Race update for " + raceName + "New Race Leader is " + riderName + ", with a time of " + (raceTimeToComplete/1000) + " seconds";
+                    String post = "Race update for " + raceName + ".\n  New Race Leader is " + riderName + ", with a time of " + (raceTimeToComplete/1000) + " seconds.";
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
 
@@ -1448,27 +1448,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 //TRY DIRECT CALC FORMULA
                 double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
                 Log.i(TAG, "RESULT: " + result);
-                if (result > 250) {
-                    Log.i(TAG, "onLocationReceived: too big of a distance, ignore and wait for the next one...");
-                    oldLocation = location;
-                    oldLat = location.getLatitude();
-                    oldLon = location.getLongitude();
-                    oldTime = location.getTime();
-                    return;
-                }
 
-                if (result < 2) {
-                    Log.i(TAG, "onLocationReceived: too small of a distance");
-                    return;
-                }
+//                if (result > 250) {
+//                    Log.i(TAG, "onLocationReceived: too big of a distance, ignore and wait for the next one...");
+//                    oldLocation = location;
+//                    oldLat = location.getLatitude();
+//                    oldLon = location.getLongitude();
+//                    oldTime = location.getTime();
+//                    return;
+//                }
 
-                if (location.getAccuracy() > 75) {
-                    Log.i(TAG, "onLocationReceived: accuracy is too high");
-                    Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
-                    return;
-                }
+//                if (result < 2) {
+//                    Log.i(TAG, "onLocationReceived: too small of a distance");
+//                    return;
+//                }
 
-                if (location.getTime() - oldLocation.getTime() > 20000) {
+//                if (location.getAccuracy() > 75) {
+//                    Log.i(TAG, "onLocationReceived: accuracy is too high");
+//                    Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
+//                    return;
+//                }
+
+                if (location.getTime() - oldLocation.getTime() > 30000) {
                     Log.i(TAG, "onLocationReceived: too much time has passed, ignore and wait for the next one " + (location.getTime() - oldLocation.getTime()));
                     oldLat = location.getLatitude();
                     oldLon = location.getLongitude();
