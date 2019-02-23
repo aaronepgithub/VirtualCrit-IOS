@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     s = "THE FASTEST TIME.";
                 } else {
-                    s = "THE FASTEST TIME IS STILL " + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + ".";
+                    s = "FASTEST [" + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + "]";
                 }
 
                 Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + ".  " + s);
