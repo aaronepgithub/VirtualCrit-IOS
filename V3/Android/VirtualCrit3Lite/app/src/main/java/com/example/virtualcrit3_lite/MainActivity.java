@@ -360,6 +360,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
 
         addAnotherMarker();
+        Log.i(TAG, "startGPX: requestRaceData");
+        requestRaceData();
 
     }
 
@@ -434,32 +436,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "FINISHED!");
                 isRaceStarted = false;
                 raceFinishTime = newTime;
+                //raceTime is the duration of the race
                 long raceTime = raceFinishTime - raceStartTime;
                 raceTimesTim.add(raceTime);
                 waypointTimesTim.add(raceTime);
+                waypointTimesTimString += String.valueOf(raceTime);
+                postRaceProcessing();
                 Log.i(TAG, "raceTimesTim\n " + raceTimesTim.toString());
                 Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
                 Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
-
-
-            //POST RACE CONVERT AND UN-CONVERT
-//                for (Long w : waypointTimesTim) {
-//                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
-//                }
-//                Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
-//
-//                    //convert to ArrayList of Strings
-//                ArrayList<String> str =
-//                        new  ArrayList<String>(Arrays.asList(waypointTimesTimString.split(",")));
-//                    //convert ArrayList of Strings to ArrayList of Longs
-//                ArrayList<Long> longs = new ArrayList<>();
-//                for (String s : str) {
-//                    Long l = null;
-//                    l = Long.valueOf(s);
-//                    longs.add(l);
-//                }
-//                Log.i(TAG, "trackpointTest: longs: " + longs.toString());
-            //END POST RACE CONVERT AND UN-CONVERT
 
                 String s;
                 if (bestRaceTime == -1) {
@@ -508,6 +493,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 raceStartTime = newTime;
 
                 waypointTimesTim = new ArrayList<>();
+                waypointTimesTimString = "";
 
                 lastCheckpointTime = newTime;
 
@@ -591,6 +577,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             //EACH TIME IS ADDED
             waypointTimesTim.add(newTime - raceStartTime);
+            waypointTimesTimString += String.valueOf(newTime - raceStartTime);
+            waypointTimesTimString += ",";
+
             String s1 = "";
             if (waypointTimesBest.isEmpty()) {
                 Log.i(TAG, "waypointTimesBest is empty");
@@ -621,7 +610,124 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
+    //POST RACE CONVERT AND UN-CONVERT
+//                for (Long w : waypointTimesTim) {
+//                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
+//                }
+//                Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
+//
+//                    //convert String to an ArrayList
+//                ArrayList<String> str =
+//                        new  ArrayList<String>(Arrays.asList(waypointTimesTimString.split(",")));
+//                    //convert ArrayList of Strings to ArrayList of Longs
+//                ArrayList<Long> longs = new ArrayList<>();
+//                for (String s : str) {
+//                    Long l = null;
+//                    l = Long.valueOf(s);
+//                    longs.add(l);
+//                }
+//                Log.i(TAG, "trackpointTest: longs: " + longs.toString());
+    //END POST RACE CONVERT AND UN-CONVERT
+    
+    
+    private void postRaceProcessing() {
+        Log.i(TAG, "postRaceProcessing: ");
+        Integer raceDate = Integer.valueOf(fbCurrentDate);
+        String raceName = trkName;
+        Long raceTimeToComplete = waypointTimesTim.get(waypointTimesTim.size()-1);
 
+//        for (Long w : waypointTimesTim) {
+//                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
+//                }
+        Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
+        
+        Race r = new Race(settingsName, raceName, raceTimeToComplete, raceDate, waypointTimesTimString);
+     
+        //WRITE RACE DATA
+        Log.i(TAG, "fbWrite Race Data: ");
+        String raceURL = "race/" + r.raceName;
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
+        // Creating new user node, which returns the unique key value
+        // new user node would be /users/$userid/
+        String userId = mDatabase.push().getKey();
+        // creating user object
+//        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate), (currentRound - 1));
+        // pushing user to 'users' node using the userId
+        mDatabase.child(userId).setValue(r)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        Log.i(TAG, "onSuccess: write RACE was successful");
+                        //fbWriteNewTotal();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Write failed
+                        Log.i(TAG, "onFailure: write RACE failed");
+                    }
+                });
+    }
+    
+    
+    private void requestRaceData() {
+
+        Log.i(TAG, "fbWrite Race Data: ");
+        String raceURL = "race/" + trkName;
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
+
+        //REQUEST RACE DATA
+        mDatabase.limitToFirst(1).orderByChild("raceTimeToComplete").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange: RACE");
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String raceName = ds.child("raceName").getValue(String.class);
+                    String riderName = ds.child("riderName").getValue(String.class);
+                    String raceWaypointTimes = ds.child("waypointTimes").getValue(String.class);
+                    Long raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Long.class);
+                    //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+
+                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + String.valueOf(raceTimeToComplete/1000) + " SECONDS");
+                    Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
+
+                    String post = "Race update for " + raceName + "New Race Leader is " + riderName + ", with a time of " + (raceTimeToComplete/1000) + " seconds";
+                    createTimeline(post, Timer.getCurrentTimeStamp());
+
+
+                    //CONVERT STRING TO ARR-BEST
+                    //convert string to ArrayList with splice
+                    ArrayList<String> str = new  ArrayList<String>(Arrays.asList(raceWaypointTimes.split(",")));
+                    //convert ArrayList of Strings to ArrayList of Longs
+                    ArrayList<Long> longs = new ArrayList<>();
+                    for (String s : str) {
+                        Long l = null;
+                        l = Long.valueOf(s);
+                        longs.add(l);
+                        }
+                    Log.i(TAG, "trackpointTest: longs: " + longs.toString());
+
+                    bestRaceTime = raceTimeToComplete;
+                    waypointTimesBest = longs;
+                    Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
+
+                    //END CONVERT
+
+
+                }  //COMPLETED - READING EACH SNAP
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.i(TAG, "Failed to read value - RACE", databaseError.toException());
+            }
+        });
+    }
+    
 
 
     public void speakText(String st) {
