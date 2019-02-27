@@ -67,6 +67,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
@@ -116,39 +117,31 @@ import es.atrapandocucarachas.gpxparser.model.Trkpt;
 import es.atrapandocucarachas.gpxparser.model.Wpt;
 import es.atrapandocucarachas.gpxparser.parser.GpxParser;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, PermissionsListener, OnMapReadyCallback {
 
     private final static String TAG = MainActivity.class.getSimpleName();
 
     private MapView mapView;
     private MapboxMap mapboxMap;
-
-    private GeoJsonSource source;
-    private FeatureCollection featureCollection;
-    private HashMap<String, View> viewMap;
-
+    // variables for adding location layer
+    private PermissionsManager permissionsManager;
+    private LocationComponent locationComponent;
 
 
     private TextToSpeech engine;
     private TextView mTextMessage;
     private Button mValueTimer;
-    private TextView mActiveTimer;
+
 
     //GPX
     private ArrayList<Wpt> wpts = new ArrayList<>();
-    private ArrayList<Trk> trks = new ArrayList<>();
     private ArrayList<Trkpt> trkpts = new ArrayList<>();
 
     private long raceStartTime = 0;
-    private long raceFinishTime = 0;
-
 
 
     //TIMER
     private long startTime = 0;
-    private long activeMillis = 0;
-    private long totalMillis = 0;
-    private long lastMillis = 0;
     private String fbCurrentDate = "00000000";
 
     //SETTINGS
@@ -157,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private Boolean settingsAudio = false;
     private String settingsSport = "BIKE";
     private int settingsSecondsPerRound = 1800;
+    //private int settingsSecondsPerRound = 30;
     private int settingsMaxHeartrate = 185;
 
     //ROUND
@@ -165,47 +159,43 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private double roundHeartrateTotal = 0;
     private double roundHeartrateCount = 0;
     private double roundHeartrate = 0;
-    private double roundSpeed = 0;
+    //private double roundSpeed = 0;
     private double bestRoundSpeed = 1;
     private double bestRoundHeartrate = 1;
     private double bestRoundScore = 1;
 
     //GPS
-    private LocationRequest mLocationRequest;
+    //private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
-    private Handler mServiceHandler;
-    private Location mLocation;
+    //private Handler mServiceHandler;
+    //private Location mLocation;
 
-    private ArrayList<Double> arrLats = new ArrayList<>();
-    private ArrayList<Double> arrLons = new ArrayList<>();
-    private double oldLat = 0.0;
-    private double oldLon = 0.0;
+    //    private ArrayList<Double> arrLats = new ArrayList<>();
+//    private ArrayList<Double> arrLons = new ArrayList<>();
+    private ArrayList<Location> arrLocations = new ArrayList<>();
+    //    private double oldLat = 0.0;
+//    private double oldLon = 0.0;
     private double geoSpeed = 0;
     private double geoDistance = 0.0;
     private double geoAvgSpeed = 0.0;
-    private float[] results = new float[2];
+    //    private float[] results = new float[2];
     private long oldTime = 0;
     private long newTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
-    private Boolean simGPS = false;
+
 
     //HR
-    private int currentHR = 0;
+    //private int currentHR = 0;
     private int totHR;
     private int countHR;
     private double averageHR = 0;
-    private Boolean showHR = true;
+    private Boolean showHR = false;
 
-    //BLE
-    private int REQUEST_ENABLE_BT = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private static final long SCAN_PERIOD = 3000;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mLEScanner;
-    private ScanSettings settings;
-    private List<ScanFilter> filters;
-    private BluetoothDevice deviceDiscovered;
     private ArrayList<BluetoothDevice> devicesDiscoveredHR = new ArrayList<>();
     private ArrayList<BluetoothDevice> devicesConnectedHR = new ArrayList<>();
     private BluetoothDevice deviceHR;
@@ -240,6 +230,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static final String Sport = "sportKey";
     public static final String MaxHR = "maxhrKey";
     SharedPreferences sharedpreferences;
+
+
+
+
 
     private void getSharedPrefs() {
         Log.i(TAG, "getSharedPrefs: ");
@@ -276,13 +270,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
     private int currentWaypoint = 0;
     private int maxWaypoint;
     private int currentTrackpoint = 0;
     private int maxTrackpoint;
     private String trkName = "NONE";
-
 
 
     //GPX
@@ -322,10 +314,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i("Name of waypoint ", w.getName());
 //            Log.i("Description ",w.getDesc());
 //            Log.i("Symbol of waypoint ",w.getSym());
-            Log.i("Coordinates ",String.valueOf(w.getLatLon()));
+            Log.i("Coordinates ", String.valueOf(w.getLatLon()));
         }
 
-        trks = gpx.getTrks();
+        ArrayList<Trk> trks = gpx.getTrks();
         trkpts = trks.get(0).getTrkseg();
         trkName = trks.get(0).getName();
         Log.i(TAG, "startGPX: trkName  " + trkName);
@@ -346,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         //SHOWALERT
         Toast.makeText(getApplicationContext(),
-                "GPX LOADED" , Toast.LENGTH_SHORT)
+                "GPX LOADED", Toast.LENGTH_SHORT)
                 .show();
 
         runOnUiThread(new Runnable() {
@@ -379,9 +371,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     //CHECKPOINTS
     private long lastCheckpointTime = 0;
-
+    private int distanceBetweenValue = 125;
     private Boolean isRaceStarted = false;
 
+
+    //RACE FCTNS
     private void resetRace() {
         Log.i(TAG, "resetRace: ");
         currentTrackpoint = 0;
@@ -391,15 +385,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-    private int distanceBetweenValue = 125;
-
     private void trackpointTest(final double gpsLa, final double gpsLo) {
 
-        //LOWER WITH MORE CHECKPOINTS
-        long offTrackChecker = 1200000; //20 min
-        if (settingsSport.equals("RUN")) {
-            offTrackChecker = 1800000; //30 min
-        }
+        long offTrackChecker = 600000; //10 min
+
         if (lastCheckpointTime > 0 && (newTime - lastCheckpointTime) > offTrackChecker) {
             Log.i(TAG, "TPTEST: TOO LONG BEWEEN CHECKPOINTS, OVER xx MIN, OFFTRACK, RESET");
             createTimeline("OFF TRACK, START OVER", Timer.getCurrentTimeStamp());
@@ -418,14 +407,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
 
         final double disBetw = distance_between(gpsLa, gpsLo, trkpts.get(localTp).getLat(), trkpts.get(localTp).getLon());
-        final double disBetwMax = distance_between(gpsLa, gpsLo, trkpts.get(maxTrackpoint-1).getLat(), trkpts.get(maxTrackpoint-1).getLon());
-//        Log.i(TAG, "\n" + disBetw + "  DISTANCE BETWEEN TP");
-//        Log.i(TAG, disBetwMax + "  DISTANCE BETWEEN TPMAX");
-//        Log.i(TAG, "LocalTP " + localTp);
+        final double disBetwMax = distance_between(gpsLa, gpsLo, trkpts.get(maxTrackpoint - 1).getLat(), trkpts.get(maxTrackpoint - 1).getLon());
 
-        //CLOSE TO FINISH, NEW LOGIC
+
         int addToCurrentTrackpoint = 10;
 
+        //CLOSE TO FINISH, NEW LOGIC TO EVALUATE ALL LOCATIONS
         if (currentTrackpoint > 50 && disBetwMax < 300) {
             Log.i(TAG, "trackpointTest: currentTrackpoint>50 and disBetwMax < 300");
             addToCurrentTrackpoint = 1;
@@ -433,14 +420,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (currentTrackpoint >= maxTrackpoint && disBetwMax < distanceBetweenValue) {
                 //Log.i(TAG, "FINISHED!");
                 isRaceStarted = false;
-                raceFinishTime = newTime;
+                long raceFinishTime = newTime;
                 //raceTime is the duration of the race
                 long raceTime = raceFinishTime - raceStartTime;
                 raceTimesTim.add(raceTime);
                 waypointTimesTim.add(raceTime);
                 waypointTimesTimString += String.valueOf(raceTime);
-                postRaceProcessing();
-                //Log.i(TAG, "raceTimesTim\n " + raceTimesTim.toString());
+                postRaceProcessing(raceTime);
+
                 Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
                 Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
 
@@ -456,16 +443,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     s = "THE FASTEST TIME.";
                 } else {
-                    s = "FASTEST [" + Timer.getTimeStringFromSecondsToDisplay((int) bestRaceTime) + "]";
+                    s = "FASTEST [" + Timer.getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + "]";
                 }
 
-                Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + ".  " + s);
-                createTimeline("FINISHED!\n" + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-                setMessageText("RACE FINISHED: " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime));
-                speakText("RACE IS NOW FINISHED, YOUR TIME IS.  " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) + ".  " + s);
+                Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+                createTimeline("FINISHED!\n" + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                setMessageText("RACE FINISHED: " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                speakText("RACE IS NOW FINISHED, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
 
                 Toast.makeText(getApplicationContext(),
-                        "RACE FINISHED " + Timer.getTimeStringFromSecondsToDisplay((int) raceTime) , Toast.LENGTH_LONG)
+                        "RACE FINISHED " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
                         .show();
 
 
@@ -496,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 createTimeline("RACE STARTING\n" + trkName, Timer.getCurrentTimeStamp());
                 setMessageText("RACE STARTING");
                 Toast.makeText(getApplicationContext(),
-                        "RACE STARTING: " + trkName , Toast.LENGTH_LONG)
+                        "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
                         .show();
 
 
@@ -515,16 +502,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "trackpointTest: currentTrackpoint:  " + currentTrackpoint);
         }
 
-        
+
         if (isRaceStarted == true) {
             //Log.i(TAG, "trackpointTest: race has started, check for waypoints");
-            waypointTest(gpsLa, gpsLo);            
+            waypointTest(gpsLa, gpsLo);
         }
 
 
     }
-
-
 
     private void waypointTest(double gpsLa, double gpsLo) {
         //Log.i(TAG, "WAYPOINT TEST");
@@ -560,11 +545,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
                         long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " AHEAD";
+                        s1 = Timer.getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD";
                     } else {
                         long l = waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = Timer.getTimeStringFromSecondsToDisplay(i) + " BEHIND";
+                        s1 = Timer.getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
                     }
                     Log.i(TAG, "waypointTest: s1:  " + s1);
 
@@ -572,47 +557,29 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             }
 
-            createTimeline("WAYPOINT " + (currentWaypoint+1) + " OF " + (maxWaypoint) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
-            speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint+1) + " OF " + (maxWaypoint) + ".  " + s1);
+            createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
+            speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint) + ".  " + s1);
 
             currentWaypoint += 1;
         }
     }
 
 
-    //POST RACE CONVERT AND UN-CONVERT
-//                for (Long w : waypointTimesTim) {
-//                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
-//                }
-//                Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
-//
-//                    //convert String to an ArrayList
-//                ArrayList<String> str =
-//                        new  ArrayList<String>(Arrays.asList(waypointTimesTimString.split(",")));
-//                    //convert ArrayList of Strings to ArrayList of Longs
-//                ArrayList<Long> longs = new ArrayList<>();
-//                for (String s : str) {
-//                    Long l = null;
-//                    l = Long.valueOf(s);
-//                    longs.add(l);
-//                }
-//                Log.i(TAG, "trackpointTest: longs: " + longs.toString());
-    //END POST RACE CONVERT AND UN-CONVERT
-    
-    
-    private void postRaceProcessing() {
+    private void postRaceProcessing(final long raceTime) {
         Log.i(TAG, "postRaceProcessing: ");
+
         Integer raceDate = Integer.valueOf(fbCurrentDate);
         String raceName = trkName;
-        Long raceTimeToComplete = waypointTimesTim.get(waypointTimesTim.size()-1);
+        //Long raceTimeToComplete = waypointTimesTim.get(waypointTimesTim.size()-1);
+        //Long raceTimeToComplete = raceTime;
 
 //        for (Long w : waypointTimesTim) {
 //                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
 //                }
         Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
-        
-        Race r = new Race(settingsName, raceName, raceTimeToComplete, raceDate, waypointTimesTimString);
-     
+
+        Race r = new Race(settingsName, raceName, raceTime, raceDate, waypointTimesTimString);
+
         //WRITE RACE DATA
         Log.i(TAG, "fbWrite Race Data: ");
         String raceURL = "race/" + r.raceName;
@@ -640,8 +607,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
                 });
     }
-    
-    
+
     private void requestRaceData() {
 
         Log.i(TAG, "fbWrite Race Data: ");
@@ -661,32 +627,29 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
-                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + Timer.getTimeStringFromSecondsToDisplay(raceTimeToComplete) + ".");
+                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + Timer.getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "Race update for:\n" + raceName + ".\nNew Race Leader is: " + riderName + ",  " + Timer.getTimeStringFromSecondsToDisplay (raceTimeToComplete) + ".";
+                    String post = "Race update for:\n" + raceName + ".\nNew Race Leader is: " + riderName + ",  " + Timer.getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
 
                     //CONVERT STRING TO ARR-BEST
                     //convert string to ArrayList with splice
-                    ArrayList<String> str = new  ArrayList<String>(Arrays.asList(raceWaypointTimes.split(",")));
+                    ArrayList<String> str = new ArrayList<String>(Arrays.asList(raceWaypointTimes.split(",")));
                     //convert ArrayList of Strings to ArrayList of Longs
                     ArrayList<Long> longs = new ArrayList<>();
                     for (String s : str) {
                         Long l = null;
                         l = Long.valueOf(s);
                         longs.add(l);
-                        }
+                    }
                     Log.i(TAG, "trackpointTest: longs: " + longs.toString());
 
                     bestRaceTime = raceTimeToComplete;
                     waypointTimesBest = longs;
                     Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
-
                     //END CONVERT
-
-
                 }  //COMPLETED - READING EACH SNAP
             }
 
@@ -697,9 +660,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
     }
-    
 
 
+    //TEXT TO SPEECH
     public void speakText(String st) {
         if (!settingsAudio) {
             return;
@@ -740,18 +703,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Log.i(TAG, "roundEndCalculate: ");
         double newDistance = geoDistance;
         double roundDistance = newDistance - oldDistance; //MILES
-        roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
-
-
+        double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
         double pastRoundHeartrate = roundHeartrate;
-
 
         Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
-//        createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
 
         if (roundSpeed > bestRoundSpeed) {
-            vibrator600();
+            //vibrator600();
             bestRoundSpeed = roundSpeed;
             //createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
         } else {
@@ -785,8 +744,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         } else {
             createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
         }
-
-//        createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
         setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
@@ -866,8 +823,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         String name = ds.child("fb_timName").getValue(String.class);
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
-                        createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+                        if (speed > 3) {
+                            createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                            speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+                        }
+//                        createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+//                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
                     }  //COMPLETED - READING EACH SNAP
                 }
 
@@ -918,9 +879,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         if (score < 10) {
                             Log.i(TAG, "onDataChange: score too low to publish");
                             return;
+                        } else {
+                            createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
                         }
 
-                        createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+
                     }  //COMPLETED - READING EACH SNAP
                 }
 
@@ -933,8 +896,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             //END READ ROUNDS FOR SCORE LEADER
 
             //REQUEST TOTALS SCORE LEADER
-            //String totalsURLlistener = "totals/"+ fbCurrentDate;
-            //DatabaseReference mDatabaseTotalsListener = FirebaseDatabase.getInstance().getReference(totalsURLlistener);
             mDatabaseTotalsListener.limitToLast(1).orderByChild("a_scoreHRTotal").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -969,43 +930,32 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }  //END - ROUND END CALCULATE
 
 
+    //TIMER
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
         @SuppressLint("DefaultLocale")
         @Override
         public void run() {
-            totalMillis = System.currentTimeMillis() - startTime;
-            Timer.setTotalMillis(totalMillis);
+            final long totalMillis = System.currentTimeMillis() - startTime;
+            //Timer.setTotalMillis(totalMillis);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mValueTimer.setText(Timer.getTotalTimeString());
+                    mValueTimer.setText(Timer.getTimeStringFromMilliSecondsToDisplay((int) totalMillis));
 
                     TextView t1 = findViewById(R.id.tvHeader1);
-                    t1.setText(Timer.getTotalTimeString());
+                    t1.setText(Timer.getTimeStringFromMilliSecondsToDisplay((int) totalMillis));
 
                     int a1 = (int) totalMillis / 1000;
                     int a2 = (currentRound - 1) * settingsSecondsPerRound;
                     int a3 = a1 - a2;
                     int togo = settingsSecondsPerRound - a3;
-                    String togoStr = Timer.getTimeStringFromSecondsToDisplay(togo * 1000);
+                    String togoStr = Timer.getTimeStringFromMilliSecondsToDisplay(togo);
                     Button rnd = (Button) findViewById(R.id.valueRoundButton);
-//                    rnd.setText(String.format("%s REMAIN", String.valueOf(togo)));
-                    rnd.setText(togoStr + " REMAIN");
-
+                    rnd.setText(String.format("%s REMAIN", togoStr));
                 }
             });
 
-            if (Timer.getStatus() == 0 && lastMillis > 0) {
-                activeMillis += (totalMillis - lastMillis);
-                Timer.setActiveMillis(activeMillis);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mActiveTimer.setText(Timer.getActiveTimeString());
-                    }
-                });
-            }
 
             if (totalMillis > (currentRound * settingsSecondsPerRound * 1000)) {
                 currentRound += 1;
@@ -1015,7 +965,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 //PROCESS NEW ROUND
             }
 
-            lastMillis = totalMillis;
+            //lastMillis = totalMillis;
             timerHandler.postDelayed(this, 1000);
         }
     };
@@ -1030,17 +980,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             ScrollView sv = findViewById(R.id.svSettings);
             LinearLayout ll = findViewById(R.id.llView);
             LinearLayout tl = findViewById(R.id.llTimeline);
+            //MapView mv = findViewById(R.id.mapView);
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-                    //setMessageText("HOME");
-                    //changeState(0);
-                    //sv.setVisibility(View.VISIBLE);
                     mTextMessage.setVisibility(View.VISIBLE);
+                    setMessageText("HOME");
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
-                    toggleMapVisibility();
+                    sv.setVisibility(View.GONE);
+//                    toggleMapVisibility();
                     return true;
                 case R.id.navigation_dashboard:
 //                    mTextMessage.setText(R.string.title_dashboard);
@@ -1060,14 +1009,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     mTextMessage.setVisibility(View.GONE);
                     tl.setVisibility(View.VISIBLE);
                     return true;
-//                case R.id.navigation_map:
-//                    toggleMapVisibility();
-//                    return true;
+                case R.id.navigation_settings:
+                    //toggleMapVisibility();
+                    setMessageText("SETTINGS");
+                    ll.setVisibility(View.GONE);
+                    tl.setVisibility(View.GONE);
+                    sv.setVisibility(View.VISIBLE);
+                    return true;
             }
             return false;
         }
     };
-
 
 
     @SuppressLint("DefaultLocale")
@@ -1075,13 +1027,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Mapbox.getInstance(this, "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
+//        Mapbox.getInstance(this, "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
+        Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_main);
 
         timerStart(getCurrentFocus());
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
-        mActiveTimer = findViewById(R.id.activeTimer);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -1097,49 +1049,37 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         int dayInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.DAY_OF_MONTH);
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
 
+//        boolean b = checkLocationPermissions();
+        //Log.i(TAG, "onCreate: checkLocationPermissions: " + checkLocationPermissions());
+
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-
-            @Override
-            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-
-                Log.i(TAG, "onMapReady");
-
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-                        enableLocationComponent(mapboxMap);
-
-//                        // Add the marker image to map
-//                        style.addImage("marker-icon-id",
-//                                BitmapFactory.decodeResource(
-//                                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+        mapView.getMapAsync(this);
+//        mapView.getMapAsync(new OnMapReadyCallback() {
 //
-//                        GeoJsonSource geoJsonSource = new GeoJsonSource("source-id", Feature.fromGeometry(
-//                                Point.fromLngLat(-73.97738, 40.66068))
-//                        );
-//                        style.addSource(geoJsonSource);
+//            //private MapboxMap mapboxMap;
 //
-//                        SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
-//                        symbolLayer.withProperties(
-//                                PropertyFactory.iconImage("marker-icon-id")
-//                        );
-//                        style.addLayer(symbolLayer);
-
-                    }
-                });
-            }
-        });
+//            @Override
+//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+//                this.mapboxMap = mapboxMap;
+//                Log.i(TAG, "onMapReady");
+//                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+//
+//                    @Override
+//                    public void onStyleLoaded(@NonNull Style style) {
+//                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
+//                        enableLocationComponent(style);
+//                    }
+//                });
+//            }
+//        });
     }
 
-
-
-    //TEST MULTIPLE MARKERS
+    //MULTIPLE MARKERS
     private boolean isRaceLoaded = false;
     private int raceNumber = 10;
+
+
     private void addAnotherMarker() {
 
         raceNumber += 1;
@@ -1149,8 +1089,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                mapboxMap.getStyle().addImage("marker-icon-id",BitmapFactory.decodeResource(
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id",BitmapFactory.decodeResource(
                         MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
                 List<Feature> markerCoordinates = new ArrayList<>();
@@ -1178,9 +1119,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
     }
 
-    @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(MapboxMap mapboxMap) {
-        Log.i(TAG, "enableLocationComponent: ");
+
+    private boolean res = true;
+    private boolean checkLocationPermissions() {
+        Log.i(TAG, "enableLocationPermissions: ");
 
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -1193,30 +1135,54 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 @Override
                 public void onDismiss(DialogInterface dialog) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    res = false;
                 }
             });
             builder.show();
         }
 
-        // Get an instance of the component
-        LocationComponent locationComponent = mapboxMap.getLocationComponent();
-
-        // Activate with options
-        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
-
-        // Enable to make component visible
-        locationComponent.setLocationComponentEnabled(true);
-
-        // Set the component's camera mode
-        locationComponent.setCameraMode(CameraMode.TRACKING);
-
-        // Set the component's render mode
-        locationComponent.setRenderMode(RenderMode.COMPASS);
-
-        //Make Visible
-        mapView.setVisibility(View.VISIBLE);
-
+        return res;
     }
+
+//    @SuppressWarnings( {"MissingPermission"})
+//    private void enableLocationComponent(MapboxMap mapboxMap) {
+//        Log.i(TAG, "enableLocationComponent: ");
+//
+//        // Make sure we have access coarse location enabled, if not, prompt the user to enable it
+//        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
+//            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("This app needs location access");
+//            builder.setMessage("Please grant so the app can capture distance and speed (for raceing), location (map display), and Bluetooth (finding devices))");
+//            builder.setPositiveButton(android.R.string.ok, null);
+//            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+//                }
+//            });
+//            builder.show();
+//        }
+//
+//        // Get an instance of the component
+//        LocationComponent locationComponent = mapboxMap.getLocationComponent();
+//
+//        // Activate with options
+//        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
+//
+//        // Enable to make component visible
+//        locationComponent.setLocationComponentEnabled(true);
+//
+//        // Set the component's camera mode
+//        locationComponent.setCameraMode(CameraMode.TRACKING);
+//
+//        // Set the component's render mode
+//        locationComponent.setRenderMode(RenderMode.COMPASS);
+//
+//        //Make Visible
+//        //mapView.setVisibility(View.VISIBLE);
+//
+//    }
 
     private void toggleMapVisibility() {
         Log.i(TAG, "toggleMapVisibility: ");
@@ -1281,6 +1247,60 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public void clickName(View view) {
         Log.i(TAG, "clickName: ");
         inputName();
+    }
+
+    public void clickEditSport(View view) {
+        Log.i(TAG, "clickEditSport: " + settingsSport);
+        switch (settingsSport) {
+            case "BIKE":
+                //b1.setText("RUN");
+                settingsSport = "RUN";
+                break;
+            case "RUN":
+                //b1.setText("ROW");
+                settingsSport = "ROW";
+                break;
+            case "ROW":
+                settingsSport = "BIKE";
+                //b1.setText("BIKE");
+                break;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button b1 = (Button) findViewById(R.id.valueEditSport);
+                b1.setText(settingsSport);
+            }
+        });
+        setSharedPrefs();
+    }
+
+    public void clickEditMaxHR(View view) {
+        Log.i(TAG, "clickEditMaxHR: ");
+        switch (settingsMaxHeartrate) {
+            case 185:
+                settingsMaxHeartrate = 190;
+                break;
+            case 190:
+                settingsMaxHeartrate = 195;
+                break;
+            case 195:
+                settingsMaxHeartrate = 200;
+                break;
+            case 200:
+                settingsMaxHeartrate = 185;
+                break;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button b1 = (Button) findViewById(R.id.valueEditMaxHR);
+                b1.setText(String.format("%s  MAX HR", String.valueOf(settingsMaxHeartrate)));
+            }
+        });
+        setSharedPrefs();
     }
 
     public void displayName(final String n) {
@@ -1376,136 +1396,79 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     private Location oldLocation;
-    private Location newLocation;
-
 
     @SuppressLint("DefaultLocale")
     public void onLocationReceived(final Location location) {
-        //Log.i(TAG, "onLocationReceived");
-        newLocation = location;
 
-        arrLats.add(location.getLatitude());
-        arrLons.add(location.getLongitude());
-        newTime = location.getTime();
-        
+        arrLocations.add(location);
+        double locationLat = location.getLatitude();
+        double locationLon = location.getLongitude();
+        long locationTime = location.getTime();
 
-        if (arrLats.size() < 15) {
-            Log.i(TAG, "onLocationReceived: starterlocations " + arrLons.size());
-            oldLat = location.getLatitude();
-            oldLon = location.getLongitude();
+        double oldLocationLat;
+        double oldLocationLon;
+        long oldLocationTime;
+
+
+        if (arrLocations.size() < 10) {
+            Log.i(TAG, "onLocationReceived: starterlocations " + arrLocations.size());
             oldLocation = location;
-            oldTime = location.getTime();
+
         } else {
-            Location.distanceBetween(oldLat, oldLon, location.getLatitude(), location.getLongitude(), results);
+            oldLocationLat = oldLocation.getLatitude();
+            oldLocationLon = oldLocation.getLongitude();
+            oldLocationTime = oldLocation.getTime();
 
-            if (results.length > 0) {
+            float[] results = new float[2];
 
-                if (results[0] == 0) {
-                    //mPrinter("NOTHING AT RESULTS[0] - RETURN");
-                    return;
-                }
-                if (results[0] * 0.000621371 <= 0) {
-                    //mPrinter("NO DISTANCE TRAVELED - RETURN");
-                    return;
-                }
-                //OPT 1.  QUICKREAD GEO SPEED
-//                final double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-//                if (geoSpeedQuick > 75) {
-//                    Log.i(TAG, "onLocationReceived: ");
-//                }
-
-
-                //TRY DIRECT CALC FORMULA
-                double result = distance_between(oldLat, oldLon, location.getLatitude(), location.getLongitude());
-                Log.i(TAG, "RESULT: " + result);
-
-//                if (result > 250) {
-//                    Log.i(TAG, "onLocationReceived: too big of a distance, ignore and wait for the next one...");
-//                    oldLocation = location;
-//                    oldLat = location.getLatitude();
-//                    oldLon = location.getLongitude();
-//                    oldTime = location.getTime();
-//                    return;
-//                }
-
-//                if (result < 2) {
-//                    Log.i(TAG, "onLocationReceived: too small of a distance");
-//                    return;
-//                }
-
-//                if (location.getAccuracy() > 75) {
-//                    Log.i(TAG, "onLocationReceived: accuracy is too high");
-//                    Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
-//                    return;
-//                }
-
-                if (location.getTime() - oldLocation.getTime() > 30000) {
-                    Log.i(TAG, "onLocationReceived: too much time has passed, ignore and wait for the next one " + (location.getTime() - oldLocation.getTime()));
-                    oldLat = location.getLatitude();
-                    oldLon = location.getLongitude();
-                    oldLocation = location;
-                    return;
-                }
-
-//                Log.i(TAG, "onLocationReceived: location.getAccuracy:  " + location.getAccuracy());
-//                Log.i(TAG, "onLocationReceived: location.hasAccuracy:  " + location.hasAccuracy());
-//                Log.i(TAG, "onLocationReceived: distance to oldLocation: " + location.distanceTo(oldLocation));
-
-
-//                float maxDistance = 100f;
-//                if (location.distanceTo(oldLocation) > maxDistance || location.getAccuracy()>MAX_ACCURACY) { //second point too far from first one
-//                    return;
-//                }
-
-
-
-                //REPLACE results[0] with returned result
-//                if (simGPS.equals(true)) {
-//                    result = result * 10;
-//                }
-//
-//                Log.i(TAG, String.format("onLocationReceived: results[0]: %s", results[0]));
-//                Log.i(TAG, String.format("onLocationReceived: result: %s", result));
-
-
-                //OPT 2.  GEO SPEED, ACCURATE VERSION
-                double gd = result * 0.000621371;
-                geoDistance += gd;
-                long gt = (location.getTime() - oldTime);  //MILLI
-                double geoSpeedLong = gd / ((double) gt / 1000 / 60 / 60);
-//                double geoSpeedQuick = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                //USING QUICK METHOD FOR DISPLAY PURPOSES
-                geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                
-
-                totalTimeGeo += (location.getTime() - oldTime);  //MILLI
-                double ttg = totalTimeGeo;  //IN MILLI
-                geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
-                displaySpeedValues();
-
-                trackpointTest(newLocation.getLatitude(), newLocation.getLongitude());
-
+            //QUICK TEST
+            Location.distanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon, results);
+            if (results[0] == 0) {
+                return;
             }
-            oldLat = location.getLatitude();
-            oldLon = location.getLongitude();
-            oldTime = location.getTime();
+            if (results[0] * 0.000621371 <= 0) {
+                return;
+            }
+
+            //MORE ACCURATE DISTANCE CALC
+            double result = distance_between(oldLocationLat, oldLocationLon, locationLat, locationLon);
+
+            if (locationTime - oldLocationTime > 30000) { //30 SECONDS
+                Log.i(TAG, "onLocationReceived: too much time has passed, ignore and wait for the next one " + (locationTime - oldLocationTime));
+                oldLocation = location;
+                return;
+            }
+
+
+            double gd = result * 0.000621371;
+            geoDistance += gd;
+            long gt = (location.getTime() - oldTime);  //MILLI
+
+            //MORE ACCURACE BUT NOT NECESSARY
+            //double geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+
+            //USING QUICK METHOD FOR DISPLAY PURPOSES
+            geoSpeed = (double) location.getSpeed() * 2.23694;  //meters/sec to mi/hr
+
+            totalTimeGeo += (locationTime - oldLocationTime);  //MILLI
+            double ttg = (double) totalTimeGeo;  //IN MILLI
+            geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+
+            displaySpeedValues();
+            trackpointTest(locationLat, locationLon);
+
+            oldLocation = location;
         }
     }
 
 
     private void displaySpeedValues() {
-        //PASS VALUES TO FCTN TO ABSTRACT GPS VS BLE
-        //Log.i(TAG, "displaySpeedValues: ");
 
-        long millis = totalTimeGeo;
-
-        @SuppressLint("DefaultLocale")
-        final String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+        final String hms = Timer.getTimeStringFromMilliSecondsToDisplay((int) totalTimeGeo);
 
         //UPDATE UI WITH SPEED AND DISTANCE
         runOnUiThread(new Runnable() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void run() {
                 TextView tvSpd = (TextView) findViewById(R.id.valueSpeedGPS);
@@ -1513,7 +1476,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 TextView t1 = findViewById(R.id.tvMiddle);
                 t1.setText(String.format("%.1f", geoSpeed));
 
-                if (showHR == false) {
+                if (!showHR) {
                     TextView p1 = findViewById(R.id.tvTop);
                     p1.setText(calcPace(geoSpeed));
 
@@ -1527,10 +1490,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 TextView tvDst = (TextView) findViewById(R.id.valueDistanceGPS);
                 tvDst.setText(String.format("%.1f MILES", geoDistance));
 
-                //PLACEHOLDER
+
                 TextView tx = findViewById(R.id.tvBottom);
                 tx.setText(String.format("%.2f", geoDistance));
-                //PLACEHOLDER
+
 
                 TextView tvTime = (TextView) findViewById(R.id.valueActiveTimeGPS);
                 tvTime.setText(hms);
@@ -1557,10 +1520,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void startGPS() {
         Log.i(TAG, "startGPS: ");
-
-
         createTimeline("STARTING GPS", Timer.getCurrentTimeStamp());
-
 
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -1695,9 +1655,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Log.i(TAG, "ReStart Timer");
             //WILL NOT ALLOW THIS...
             //mValueTimer.setText("00:00:00");
-            totalMillis = 0;
-            lastMillis = 0;
-            activeMillis = 0;
+//            totalMillis = 0;
+//            lastMillis = 0;
+//            activeMillis = 0;
             startTime = System.currentTimeMillis();
             timerHandler.postDelayed(timerRunnable, 0);
             manageTimer(0);
@@ -1705,7 +1665,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     }
-
 
     public void clickPause(View view) {
         Log.i(TAG, "clickPause: ");
@@ -1748,6 +1707,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
+
+
+    //BLUETOOTH
+
     public void clickBLE(View view) {
         Log.i(TAG, "clickBLE: SCAN FOR BLE DEVICES");
         onScanStart();
@@ -1764,7 +1727,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     public void onScanStart() {
         Log.i(TAG, "SCANNING HR");
-        deviceDiscovered = null;
+        //deviceDiscovered = null;
         //setMessageText("SCANNING HR");
 
         final BluetoothManager bluetoothManager =
@@ -1792,13 +1755,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Log.i(TAG, "CHECK FOR BT ENABLED");
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            //BLE
+            int REQUEST_ENABLE_BT = 1;
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
             mLEScanner = mBluetoothAdapter.getBluetoothLeScanner();
-            settings = new ScanSettings.Builder()
+            ScanSettings settings = new ScanSettings.Builder()
                     .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                     .build();
-            filters = new ArrayList<>();
+            List<ScanFilter> filters = new ArrayList<>();
             ScanFilter scanFilter = new ScanFilter.Builder()
                     .setServiceUuid(ParcelUuid.fromString("0000180D-0000-1000-8000-00805f9b34fb"))
                     .build();
@@ -1819,7 +1784,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     mLEScanner.stopScan(mScanCallback);
                     Log.i(TAG, "run: STOP SCANNING");
                     //setMessageText("-");
-                    deviceDiscovered = null;
+                    //deviceDiscovered = null;
                     postScanPopup();
                 }
             }, SCAN_PERIOD);
@@ -1828,8 +1793,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     } //END HR SCAN
 
 
-//SCAN RESULT CB HR
-
+    //SCAN RESULT CB HR
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -1988,8 +1952,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         deviceHR.connectGatt(this, true, mGattCallback);
         reconnect = false;
     }
-//
-//    // Various callback methods defined by the BLE API.
+
+    //Various callback methods defined by the BLE API.
     private final BluetoothGattCallback mGattCallback =
             new BluetoothGattCallback() {
                 @Override
@@ -2101,6 +2065,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             };
 
 
+    @SuppressLint("DefaultLocale")
     private void onNewHeartrate(final int h) {
         //Log.i(TAG, "onNewHeartrate: " + h);
 
@@ -2116,9 +2081,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             roundHeartrate = (double) roundHeartrateTotal / (double) roundHeartrateCount;
         }
 
+        showHR = true;
         setValueHR(String.format("%d", h));
-        currentHR = h;
-
     }
 
     //PORT VS LANDSCAPE
@@ -2143,14 +2107,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-    private void vibrator300() {
-        Log.i(TAG, "Vibrator300: ");
-        // Get instance of Vibrator from current Context
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-// Vibrate for 400 milliseconds
-        v.vibrate(300);
-    }
 
     private void vibrator600() {
         Log.i(TAG, "Vibrator600: ");
@@ -2173,7 +2129,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     //TIMELINE
-
     private ArrayList<TimelineRow> timelineRowsList = new ArrayList<>();
     private void createTimeline(String tlTitle, String tlDescription) {
 
@@ -2223,7 +2178,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
     }
-
     //END TIMELINE
 
 
@@ -2252,85 +2206,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     public void clickRoundButton(View view) {
         Log.i(TAG, "clickRoundButton: ");
-
-//        Intent intent = new Intent()
-//                .setType("*/*")
-//                .setAction(Intent.ACTION_GET_CONTENT);
-//
-//        startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
-
-    }
-
-    private Uri selectedfile;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 123 && resultCode == RESULT_OK) {
-            selectedfile = data.getData(); //The uri with the location of the file
-        }
-    }
-
-    public void clickEditSport(View view) {
-        Log.i(TAG, "clickEditSport: " + settingsSport);
-        switch (settingsSport) {
-            case "BIKE":
-                //b1.setText("RUN");
-                settingsSport = "RUN";
-                break;
-            case "RUN":
-                //b1.setText("ROW");
-                settingsSport = "ROW";
-                break;
-            case "ROW":
-                settingsSport = "BIKE";
-                //b1.setText("BIKE");
-                break;
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Button b1 = (Button) findViewById(R.id.valueEditSport);
-                b1.setText(settingsSport);
-            }
-        });
-        setSharedPrefs();
-    }
-
-    public void clickEditMaxHR(View view) {
-        Log.i(TAG, "clickEditMaxHR: ");
-        switch (settingsMaxHeartrate) {
-            case 185:
-                settingsMaxHeartrate = 190;
-                break;
-            case 190:
-                settingsMaxHeartrate = 195;
-                break;
-            case 195:
-                settingsMaxHeartrate = 200;
-                break;
-            case 200:
-                settingsMaxHeartrate = 185;
-                break;
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Button b1 = (Button) findViewById(R.id.valueEditMaxHR);
-                b1.setText(String.format("%s  MAX HR", String.valueOf(settingsMaxHeartrate)));
-            }
-        });
-        setSharedPrefs();
-    }
-
-    //RUN THE GPX
-    public void clickLoadGPX(View view) {
-        Log.i(TAG, "clickLoadGPX: ");
     }
 
 
+
+
+
+
+    //GPX
     public void clickSelectGPX(View view) {
         Log.i(TAG, "clickSelectGPX: ");
 
@@ -2344,6 +2227,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
+    private Uri selectedfile;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 123 && resultCode == RESULT_OK) {
+            selectedfile = data.getData(); //The uri with the location of the file
+        }
+    }
+
+
     private Boolean waitToLoadGPX = false;
     private void loadSelectedGPX() {
         if (waitToLoadGPX) {
@@ -2354,4 +2247,60 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+// Check if permissions are enabled and if not request
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
+// Activate the MapboxMap LocationComponent to show user location
+// Adding in LocationComponentOptions is also an optional parameter
+            locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.activateLocationComponent(this, loadedMapStyle);
+            locationComponent.setLocationComponentEnabled(true);
+// Set the component's camera mode
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+        } else {
+            permissionsManager = new PermissionsManager(this);
+            permissionsManager.requestLocationPermissions(this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
+        Toast.makeText(this, "Requires Permission to Use Location", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted) {
+        if (granted) {
+            enableLocationComponent(mapboxMap.getStyle());
+        } else {
+            Toast.makeText(this, "Waiting for Location Permission", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+
+
+    @Override
+    public void onMapReady(@NonNull MapboxMap mapboxMap) {
+
+        this.mapboxMap = mapboxMap;
+
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+
+//        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                enableLocationComponent(style);
+            }
+        });
+
+
+    }
 }

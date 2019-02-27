@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="SETTINGS"
+        android:text="HOME"
         android:textStyle="bold"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="@color/colorPrimary"
