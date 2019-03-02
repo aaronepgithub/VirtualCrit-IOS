@@ -1,6 +1,8 @@
 
 *.xcuserstate
-/Mapbox-iOS-SDK
+Mapbox-iOS-SDK/
+V3/Apple/VirtualCrit3/Pods/Mapbox-iOS-SDK/
 .DS_Store
-/gpx1
+gpx1/
 V3/Android/VirtualCrit3Lite/.idea/gradle.xml
+
