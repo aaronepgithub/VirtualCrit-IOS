@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private Boolean settingsAudio = false;
     private String settingsSport = "BIKE";
     private int settingsSecondsPerRound = 1800;
-    //private int settingsSecondsPerRound = 30;
     private int settingsMaxHeartrate = 185;
 
     //ROUND
@@ -159,27 +158,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private double roundHeartrateTotal = 0;
     private double roundHeartrateCount = 0;
     private double roundHeartrate = 0;
-    //private double roundSpeed = 0;
     private double bestRoundSpeed = 1;
     private double bestRoundHeartrate = 1;
     private double bestRoundScore = 1;
 
     //GPS
-    //private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
-    //private Handler mServiceHandler;
-    //private Location mLocation;
-
-    //    private ArrayList<Double> arrLats = new ArrayList<>();
-//    private ArrayList<Double> arrLons = new ArrayList<>();
     private ArrayList<Location> arrLocations = new ArrayList<>();
-    //    private double oldLat = 0.0;
-//    private double oldLon = 0.0;
     private double geoSpeed = 0;
     private double geoDistance = 0.0;
     private double geoAvgSpeed = 0.0;
-    //    private float[] results = new float[2];
     private long oldTime = 0;
     private long newTime = 0;
     private long totalTimeGeo = 0;  //GPS MOVING TIME IN MILLI
@@ -232,9 +221,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     SharedPreferences sharedpreferences;
 
 
-
-
-
     private void getSharedPrefs() {
         Log.i(TAG, "getSharedPrefs: ");
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -278,7 +264,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     //GPX
-//    public void startGPX(View view) {
     public void startGPX() {
         Log.i(TAG, "startGPX");
         resetRace();
@@ -535,11 +520,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (waypointTimesBest.isEmpty()) {
                 Log.i(TAG, "waypointTimesBest is empty");
             } else {
-//                Log.i(TAG, "waypointTimesTim, current time: " + waypointTimesTim.get(currentWaypoint));
-//                Log.i(TAG, "waypointTimesBest, current time: " + waypointTimesBest.get(currentWaypoint));
-//                Log.i(TAG, "waypointTest: Best minus Tim: " + (waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint)));
-//                Log.i(TAG, "waypointTest: Tim minus Best: " + (waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint)));
-
                 if (currentWaypoint >= 0) {
 
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
@@ -552,9 +532,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         s1 = Timer.getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
                     }
                     Log.i(TAG, "waypointTest: s1:  " + s1);
-
                 }
-
             }
 
             createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
@@ -570,12 +548,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         Integer raceDate = Integer.valueOf(fbCurrentDate);
         String raceName = trkName;
-        //Long raceTimeToComplete = waypointTimesTim.get(waypointTimesTim.size()-1);
-        //Long raceTimeToComplete = raceTime;
 
-//        for (Long w : waypointTimesTim) {
-//                    waypointTimesTimString = String.format("%s%s,", waypointTimesTimString, w);
-//                }
         Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
 
         Race r = new Race(settingsName, raceName, raceTime, raceDate, waypointTimesTimString);
@@ -922,11 +895,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
             });
             //END REQUEST TOTAL SCORE LEADER
-
-
         } //ADD VALUE EVENT ONCE
-
-
     }  //END - ROUND END CALCULATE
 
 
@@ -965,7 +934,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 //PROCESS NEW ROUND
             }
 
-            //lastMillis = totalMillis;
             timerHandler.postDelayed(this, 1000);
         }
     };
@@ -989,28 +957,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     sv.setVisibility(View.GONE);
-//                    toggleMapVisibility();
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
-                    //setMessageText("DASHBOARD");
-                    //changeState(1);
                     ll.setVisibility(View.VISIBLE);
                     sv.setVisibility(View.GONE);
                     mTextMessage.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_notifications:
-//                    mTextMessage.setText(R.string.title_notifications);
-                    //setMessageText("NOTIFICATIONS");
-                    //changeState(2);
                     ll.setVisibility(View.GONE);
                     sv.setVisibility(View.GONE);
                     mTextMessage.setVisibility(View.GONE);
                     tl.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_settings:
-                    //toggleMapVisibility();
                     setMessageText("SETTINGS");
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
@@ -1027,7 +987,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Mapbox.getInstance(this, "pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q");
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_main);
 
@@ -1055,24 +1014,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-//        mapView.getMapAsync(new OnMapReadyCallback() {
-//
-//            //private MapboxMap mapboxMap;
-//
-//            @Override
-//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//                this.mapboxMap = mapboxMap;
-//                Log.i(TAG, "onMapReady");
-//                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-//
-//                    @Override
-//                    public void onStyleLoaded(@NonNull Style style) {
-//                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments
-//                        enableLocationComponent(style);
-//                    }
-//                });
-//            }
-//        });
+
     }
 
     //MULTIPLE MARKERS
@@ -1085,18 +1027,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         raceNumber += 1;
         if (trkpts.size() <= 1) {
             Log.i(TAG, "addAnotherMarker: no course loaded");
-            return;}
+            return;
+        }
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull final MapboxMap mapboxMap) {
 
-                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id",BitmapFactory.decodeResource(
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
                         MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
                 List<Feature> markerCoordinates = new ArrayList<>();
                 markerCoordinates.add(Feature.fromGeometry(
-                        Point.fromLngLat(trkpts.get(trkpts.size()-1).getLon(), trkpts.get(trkpts.size()-1).getLat()))); // FINISH
+                        Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
                 markerCoordinates.add(Feature.fromGeometry(
                         Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
                 markerCoordinates.add(Feature.fromGeometry(
@@ -1121,6 +1064,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     private boolean res = true;
+
     private boolean checkLocationPermissions() {
         Log.i(TAG, "enableLocationPermissions: ");
 
@@ -1144,51 +1088,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return res;
     }
 
-//    @SuppressWarnings( {"MissingPermission"})
-//    private void enableLocationComponent(MapboxMap mapboxMap) {
-//        Log.i(TAG, "enableLocationComponent: ");
-//
-//        // Make sure we have access coarse location enabled, if not, prompt the user to enable it
-//        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
-//            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle("This app needs location access");
-//            builder.setMessage("Please grant so the app can capture distance and speed (for raceing), location (map display), and Bluetooth (finding devices))");
-//            builder.setPositiveButton(android.R.string.ok, null);
-//            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-//                }
-//            });
-//            builder.show();
-//        }
-//
-//        // Get an instance of the component
-//        LocationComponent locationComponent = mapboxMap.getLocationComponent();
-//
-//        // Activate with options
-//        locationComponent.activateLocationComponent(this, Objects.requireNonNull(mapboxMap.getStyle()));
-//
-//        // Enable to make component visible
-//        locationComponent.setLocationComponentEnabled(true);
-//
-//        // Set the component's camera mode
-//        locationComponent.setCameraMode(CameraMode.TRACKING);
-//
-//        // Set the component's render mode
-//        locationComponent.setRenderMode(RenderMode.COMPASS);
-//
-//        //Make Visible
-//        //mapView.setVisibility(View.VISIBLE);
-//
-//    }
 
     private void toggleMapVisibility() {
         Log.i(TAG, "toggleMapVisibility: ");
         ScrollView sv = (ScrollView) findViewById(R.id.svSettings);
 
-        if(sv.getVisibility() == View.GONE) {
+        if (sv.getVisibility() == View.GONE) {
             sv.setVisibility(View.VISIBLE);
         } else {
             sv.setVisibility(View.GONE);
@@ -1377,22 +1282,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-    double distance_between(Double lat1, Double lon1, Double lat2, Double lon2)
-    {
+    double distance_between(Double lat1, Double lon1, Double lat2, Double lon2) {
         double R = 6371; // km
-        double dLat = (lat2-lat1)*Math.PI/180;
-        double dLon = (lon2-lon1)*Math.PI/180;
-        lat1 = lat1*Math.PI/180;
-        lat2 = lat2*Math.PI/180;
+        double dLat = (lat2 - lat1) * Math.PI / 180;
+        double dLon = (lon2 - lon1) * Math.PI / 180;
+        lat1 = lat1 * Math.PI / 180;
+        lat2 = lat2 * Math.PI / 180;
 
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = R * c * 1000;
 
         return d;
     }
-
 
 
     private Location oldLocation;
@@ -1579,7 +1482,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     public void clickAudio(View view) {
-        Log.i(TAG, "clickAudio  "  + settingsAudio);
+        Log.i(TAG, "clickAudio  " + settingsAudio);
 
 
         runOnUiThread(new Runnable() {
@@ -1613,7 +1516,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     startGPS();
                     // Show Alert
                     Toast.makeText(getApplicationContext(),
-                            "GPS ON" , Toast.LENGTH_SHORT)
+                            "GPS ON", Toast.LENGTH_SHORT)
                             .show();
                 } else {
                     mGPS.setText("OFF");
@@ -1622,12 +1525,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     //STOP GPS
                     try {
                         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Log.i(TAG, "Error,  DIDN'T STOP LOCATION");
                     }
                     //SHOWALERT
                     Toast.makeText(getApplicationContext(),
-                            "GPS OFF" , Toast.LENGTH_SHORT)
+                            "GPS OFF", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -1686,27 +1589,26 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "manageTimer: Start");
                 Timer.setStatus(0);
                 Toast.makeText(getApplicationContext(),
-                        "START" , Toast.LENGTH_SHORT)
+                        "START", Toast.LENGTH_SHORT)
                         .show();
                 return;
             case 1:
                 Log.i(TAG, "manageTimer: Pause");
                 Timer.setStatus(1);
                 Toast.makeText(getApplicationContext(),
-                        "PAUSE" , Toast.LENGTH_SHORT)
+                        "PAUSE", Toast.LENGTH_SHORT)
                         .show();
                 return;
             case 2:
                 Log.i(TAG, "manageTimer: End");
                 Timer.setStatus(2);
                 Toast.makeText(getApplicationContext(),
-                        "COMPLETE" , Toast.LENGTH_SHORT)
+                        "COMPLETE", Toast.LENGTH_SHORT)
                         .show();
         }
 
 
     }
-
 
 
     //BLUETOOTH
@@ -1717,12 +1619,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
-//    private int mapState = 1;
+    //    private int mapState = 1;
     public void clickMessageBar(View view) {
         Log.i(TAG, "clickMessageBar: ");
         //toggleMapVisibility();
     }
-
 
 
     public void onScanStart() {
@@ -1771,7 +1672,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             // Show Alert
             Toast.makeText(getApplicationContext(),
-                    "SCANNING HR" , Toast.LENGTH_SHORT)
+                    "SCANNING HR", Toast.LENGTH_SHORT)
                     .show();
 
             //START SCAN
@@ -1838,12 +1739,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (devicesDiscoveredHR.size() == 0) {
             //setMessageText("NO DEVICES FOUND");
             Toast.makeText(getApplicationContext(),
-                    "NO FOUND DEVICES" , Toast.LENGTH_SHORT)
+                    "NO FOUND DEVICES", Toast.LENGTH_SHORT)
                     .show();
             return;
         }
 
-        for(final BluetoothDevice d : devicesDiscoveredHR) {
+        for (final BluetoothDevice d : devicesDiscoveredHR) {
             Log.i(TAG, "postScanPopup: attempt connect to " + d.getName());
             if (devicesConnectedHR.contains(d)) {
                 Log.i(TAG, "postScanPopup: already connected to " + d.getName());
@@ -1877,9 +1778,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
-
-    private void setBluetoothDeviceNames (final String x) {
+    private void setBluetoothDeviceNames(final String x) {
         Log.i(TAG, "setBluetoothDeviceNames: " + x);
         runOnUiThread(new Runnable() {
             @Override
@@ -1906,7 +1805,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
     }
 
-    private void setMessageText (final String x) {
+    private void setMessageText(final String x) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1915,7 +1814,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
     }
 
-    private void setValueHR (final String x) {
+    private void setValueHR(final String x) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1937,7 +1836,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
     }
-
 
 
     private void connectHR(BluetoothDevice d) {
@@ -2032,6 +1930,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
 
                 private int format = -1;
+
                 @Override
                 // Characteristic notification
                 public void onCharacteristicChanged(BluetoothGatt gatt,
@@ -2099,13 +1998,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             ortTview.setVisibility(View.GONE);
             ortTview2.setVisibility(View.GONE);
 
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
             ortTview.setVisibility(View.VISIBLE);
             ortTview2.setVisibility(View.VISIBLE);
         }
     }
-
 
 
     private void vibrator600() {
@@ -2127,9 +2025,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
     //TIMELINE
     private ArrayList<TimelineRow> timelineRowsList = new ArrayList<>();
+
     private void createTimeline(String tlTitle, String tlDescription) {
 
         // Create new timeline row (Row Id)
@@ -2191,7 +2089,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         double m = a * 60.0 * 1000.0;
         long mill = (long) m;
 
-        final String minutesPerMile = String.format(Locale.US,"%02d:%02d",
+        final String minutesPerMile = String.format(Locale.US, "%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(mill) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mill)),
                 TimeUnit.MILLISECONDS.toSeconds(mill) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mill)));
 
@@ -2209,10 +2107,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
-
-
-
     //GPX
     public void clickSelectGPX(View view) {
         Log.i(TAG, "clickSelectGPX: ");
@@ -2228,6 +2122,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private Uri selectedfile;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -2238,6 +2133,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     private Boolean waitToLoadGPX = false;
+
     private void loadSelectedGPX() {
         if (waitToLoadGPX) {
             Log.i(TAG, "loadSelectedGPX: ");
@@ -2247,8 +2143,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
-    @SuppressWarnings( {"MissingPermission"})
+    @SuppressWarnings({"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
 // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
@@ -2286,7 +2181,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
 
@@ -2294,7 +2188,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
 
-//        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
+            //        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 enableLocationComponent(style);
