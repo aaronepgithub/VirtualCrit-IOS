@@ -1,0 +1,6 @@
+framework module Pods_VirtualCrit3 {
+  umbrella header "Pods-VirtualCrit3-umbrella.h"
+
+  export *
+  module * { export * }
+}
