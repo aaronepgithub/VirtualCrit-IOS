@@ -110,6 +110,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var distanceAtRoundEnd: Double = 0
     var distanceRound: Double = 0
     var settingsSecondsPerRound: Int = 300
+    var distanceBestRound: Double = 0.2
     
     //EACH SECOND
     @objc func timerInterval() {
@@ -124,7 +125,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //PROCESS NEW ROUND
             distanceAtRoundEnd = distance
             distanceRound = distanceAtRoundEnd - distanceAtRoundStart
-            valueTimelineString.append("Round \(currentRound-1) Complete.  Distance Traveled: \(stringer2(dbl: distanceRound)).  [\(VirtualCrit3.getFormattedTime())]")
+            let roundSpeed: Double = distanceRound / (Double(settingsSecondsPerRound) / 60.0 / 60.0);
+            
+            if (distanceRound > distanceBestRound) {
+                distanceBestRound = distanceRound
+                valueTimelineString.append("Fastest Round\nRound \(currentRound-1) Complete\nSpeed: \(stringer1(dbl: roundSpeed)) MPH\n[\(VirtualCrit3.getFormattedTime())]  ")
+            } else {
+                valueTimelineString.append("Round \(currentRound-1) Complete.\nSpeed: \(stringer1(dbl: roundSpeed)) MPH\n[\(VirtualCrit3.getFormattedTime())]  ")
+            }
             
             //reset
             distanceAtRoundStart = distance

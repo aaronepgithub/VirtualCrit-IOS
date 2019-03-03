@@ -63,5 +63,9 @@
 	<string>Shows location on the map and used to calculate speed and distance for racing</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Shows location on the map and used to calculate speed and distance for racing</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

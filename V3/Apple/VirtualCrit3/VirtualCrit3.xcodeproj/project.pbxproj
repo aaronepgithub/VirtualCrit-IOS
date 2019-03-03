@@ -23,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		5822D696222ABA5A00DCD8F2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		584A038A222C3301009B8DB5 /* VirtualCrit3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VirtualCrit3.entitlements; sourceTree = "<group>"; };
 		58B970FF2229FCEA00BC3726 /* ISPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPoint.swift; sourceTree = "<group>"; };
 		58B971012229FD1E00BC3726 /* ISTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISTimeline.swift; sourceTree = "<group>"; };
 		58BBEE192222FD6C009B57C7 /* VirtualCrit3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualCrit3.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +74,7 @@
 		58BBEE1B2222FD6C009B57C7 /* VirtualCrit3 */ = {
 			isa = PBXGroup;
 			children = (
+				584A038A222C3301009B8DB5 /* VirtualCrit3.entitlements */,
 				58BBEE1C2222FD6C009B57C7 /* AppDelegate.swift */,
 				58BBEE222222FD6C009B57C7 /* Main.storyboard */,
 				58BEFF2E2229BDD3005D5313 /* SettingsTableViewController.swift */,
@@ -142,6 +144,9 @@
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -393,6 +398,7 @@
 			baseConfigurationReference = FDCC1F23891C82BC7C0B87E0 /* Pods-VirtualCrit3.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = VirtualCrit3/VirtualCrit3.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9483S2UTDX;
 				INFOPLIST_FILE = VirtualCrit3/Info.plist;
@@ -413,6 +419,7 @@
 			baseConfigurationReference = D1AD31962F109C070D9D8AE2 /* Pods-VirtualCrit3.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = VirtualCrit3/VirtualCrit3.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9483S2UTDX;
 				INFOPLIST_FILE = VirtualCrit3/Info.plist;

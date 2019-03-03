@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import CoreLocation
 
 var bpmValue : Int = 0
 var bpmAverage:Int = 0;var bpmTotals:Int = 0;var bpmCount:Int = 0;
@@ -15,7 +16,7 @@ var bpmEnabled: Bool = false
 
 
 
-class SettingsTableViewController: UITableViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
+class SettingsTableViewController: UITableViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UIDocumentInteractionControllerDelegate {
     
     var centralManager: CBCentralManager!
     var found_peripheral: CBPeripheral?
@@ -78,7 +79,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         switch cat {
         case "00":
             print("case 00")
-            
+        case "12":
+            print("case 12, load GPX")
+            getGPX()
         case "20":
             print("case 20, startBluetooth")
             startBluetooth()
@@ -90,6 +93,22 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
         
     }
+    
+    var docController:UIDocumentInteractionController!
+    
+    func getGPX() {
+        print("getGPX")
+//        let importMenu = UIDocumentMenuViewController(documentTypes: [], in: .import)
+let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"], in: .import)
+        importMenu.delegate = (self as UIDocumentMenuDelegate)
+        importMenu.modalPresentationStyle = .formSheet
+        present(importMenu, animated: true, completion: nil)
+        
+        
+    }
+    
+    
+    
     
     
     
@@ -378,26 +397,96 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         }
     }
     
+    var wpts = [CLLocationCoordinate2D]()
+    var trktps = [CLLocationCoordinate2D]()
+}
 
-    
-    func showInputDialog() {
+extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate, XMLParserDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        /// Handle your document
+        print("did pick document at url:  \(url)")
         
-        let alertController = UIAlertController(title: "Rider Name", message: "", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Connect", style: .default) { (_) in
-            print("connect")
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
-            print("cancel")
-        }
-        //adding the action to dialogbox
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        //finally presenting the dialog box
-        self.present(alertController, animated: true, completion: nil)
+        //if let path = Bundle.main.url(forResource: "Books", withExtension: "xml") {
+            if let parser = XMLParser(contentsOf: url) {
+                parser.delegate = self
+                parser.parse()
+            }
+        //}
+    }
+    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+        documentPicker.delegate = self
+        documentPicker.modalPresentationStyle = .overCurrentContext
+        present(documentPicker, animated: true, completion: nil)
+    }
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        /// Picker was cancelled! Duh 🤷🏻‍♀️
+        print("doc picker cancelled")
     }
     
     
-            
+    // 1
+//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+//
+//        if elementName == "book" {
+//            bookTitle = String()
+//            bookAuthor = String()
+//        }
+//
+//        self.elementName = elementName
+//    }
+    
 
+
+    
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+        //Only check for the lines that have a <trkpt> or <wpt> tag. The other lines don't have coordinates and thus don't interest us
+        
+        if elementName == "trk" {
+            //get name
+        }
+        
+        if elementName == "wpt" {
+            //Create a World map coordinate from the file
+            let lat = attributeDict["lat"]!
+            let lon = attributeDict["lon"]!
+            
+            print("wpt, \(lat), \(lon)")
+            wpts.append(CLLocationCoordinate2DMake(CLLocationDegrees(lat)!, CLLocationDegrees(lon)!))
+        }
+        
+        if elementName == "trkpt" {
+            //Create a World map coordinate from the file
+            let lat = attributeDict["lat"]!
+            let lon = attributeDict["lon"]!
+            
+            print("trkpt, \(lat), \(lon)")
+            trktps.append(CLLocationCoordinate2DMake(CLLocationDegrees(lat)!, CLLocationDegrees(lon)!))
+        }
+        
+        print("Size of wpts \(wpts.count), Size of trkpts \(trktps.count)")
+        
+    }
+    
+    
+//    // 2
+//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+//        if elementName == "book" {
+//            let book = Book(bookTitle: bookTitle, bookAuthor: bookAuthor)
+//            books.append(book)
+//        }
+//    }
+//
+//    // 3
+//    func parser(_ parser: XMLParser, foundCharacters string: String) {
+//        let data = string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+//
+//        if (!data.isEmpty) {
+//            if self.elementName == "title" {
+//                bookTitle += data
+//            } else if self.elementName == "author" {
+//                bookAuthor += data
+//            }
+//        }
+//    }
+    
 }
