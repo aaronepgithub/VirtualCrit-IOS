@@ -145,17 +145,43 @@ class TimelineViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        //print("TL will Disappear")
+        print("TL will Disappear")
+        stopTimer()
         //NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("TL will Appear")
+        startTimer()
         //        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
-        
-        
-        
     }
+    
+    
+    var timer = Timer()
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 3,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
+        print("Timer Started")
+    }
+    
+    @objc func timerInterval() {
+    
+        let count: Int = valueTimelineString.count
+        if (count > 0) {
+            for s in valueTimelineString {
+                print(s)
+                newRedPoint(titleString: s)
+            }
+            valueTimelineString.removeAll()
+        }
+    }
+    
+    func stopTimer() {
+        print("Timer Stopped")
+        timer.invalidate()
+    }
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,6 +215,9 @@ class TimelineViewController: UIViewController {
         timeline.contentInset = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
         timeline.points = myPoints
 
+        
+        //startTimer()
+        timerInterval()
         
     }
     

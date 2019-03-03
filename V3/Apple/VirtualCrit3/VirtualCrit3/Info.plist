@@ -60,6 +60,8 @@
 	<key>MGLMapboxAccessToken</key>
 	<string>pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Shows your location on the map and helps improve OpenStreetMap.</string>
+	<string>Shows location on the map and used to calculate speed and distance for racing</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Shows location on the map and used to calculate speed and distance for racing</string>
 </dict>
 </plist>

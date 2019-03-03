@@ -36,6 +36,15 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var bottomRight: UILabel!
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(false)
+        stopTimer()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("DASH will Appear")
+        startTimer()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +53,37 @@ class DashboardViewController: UIViewController {
         labelPACE.rotate(degrees: 90)
         labelMILES.rotate(degrees: 90)
         
+        timerInterval()
+        //startTimer()
+    }
+    
+    
+    var timer = Timer()
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 2,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
+        print("Timer Started")
+    }
+    
+    @objc func timerInterval() {
+        valuePACE.text = displayStrings.pace
+        valueMPH.text = displayStrings.speed
+        valueMILES.text = displayStrings.distance
+        topLeft.text = displayStrings.time
+        bottomLeft.text = "\(displayStrings.avgSpeed) MPH "
+        
+        
+        if (bpmEnabled) {
+            topRight.text = "\(bpmValue) BPM"
+            bottomRight.text = "\(bpmAverage) BPM"
+        } else {
+            topRight.text = "\(displayStrings.distance) MI"
+            bottomRight.text = "\(displayStrings.avgPace) PACE"
+        }
+    }
+    
+    func stopTimer() {
+        print("Timer Stopped")
+        timer.invalidate()
     }
     
 

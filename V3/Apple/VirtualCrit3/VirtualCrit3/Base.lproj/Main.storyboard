@@ -18,15 +18,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Map Messagebar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vzp-2v-dKi" userLabel="Map Message Bar">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ODp-A9-UUp">
                                 <rect key="frame" x="0.0" y="20" width="375" height="32"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0 MPH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="vzp-2v-dKi" userLabel="Map Speed">
+                                        <rect key="frame" x="0.0" y="0.0" width="185" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="pjB-I1-YN3"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0 MI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="eRW-Xh-1Wc" userLabel="Map Distance">
+                                        <rect key="frame" x="190" y="0.0" width="185" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="bsA-2F-M6H"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="pjB-I1-YN3"/>
+                                    <constraint firstAttribute="height" constant="32" id="GZE-DI-INc"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gr-lm-r1B" userLabel="Map View" customClass="MGLMapView">
                                 <rect key="frame" x="4" y="52" width="367" height="566"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,18 +54,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="vzp-2v-dKi" firstAttribute="leading" secondItem="CE3-UB-F0w" secondAttribute="leading" id="9ur-F5-til"/>
-                            <constraint firstItem="CE3-UB-F0w" firstAttribute="bottom" secondItem="7gr-lm-r1B" secondAttribute="bottom" id="IhN-Py-0ZX"/>
-                            <constraint firstItem="vzp-2v-dKi" firstAttribute="trailing" secondItem="CE3-UB-F0w" secondAttribute="trailing" id="KMi-Kn-dNn"/>
-                            <constraint firstItem="7gr-lm-r1B" firstAttribute="top" secondItem="vzp-2v-dKi" secondAttribute="bottom" id="S4Q-8b-V0c"/>
+                            <constraint firstItem="7gr-lm-r1B" firstAttribute="top" secondItem="ODp-A9-UUp" secondAttribute="bottom" id="P3c-2H-YTK"/>
+                            <constraint firstItem="ODp-A9-UUp" firstAttribute="top" secondItem="CE3-UB-F0w" secondAttribute="top" id="R2Z-OF-IXV"/>
+                            <constraint firstItem="CE3-UB-F0w" firstAttribute="trailing" secondItem="ODp-A9-UUp" secondAttribute="trailing" id="WbJ-TO-0L4"/>
+                            <constraint firstItem="7gr-lm-r1B" firstAttribute="bottom" secondItem="CE3-UB-F0w" secondAttribute="bottom" id="bic-PH-qof"/>
                             <constraint firstItem="CE3-UB-F0w" firstAttribute="trailing" secondItem="7gr-lm-r1B" secondAttribute="trailing" constant="4" id="ea2-Ps-IlS"/>
-                            <constraint firstItem="vzp-2v-dKi" firstAttribute="top" secondItem="CE3-UB-F0w" secondAttribute="top" id="qwM-Fc-gDT"/>
+                            <constraint firstItem="ODp-A9-UUp" firstAttribute="leading" secondItem="CE3-UB-F0w" secondAttribute="leading" id="kFv-c9-I5f"/>
                             <constraint firstItem="7gr-lm-r1B" firstAttribute="leading" secondItem="CE3-UB-F0w" secondAttribute="leading" constant="4" id="sUp-ts-AhZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="CE3-UB-F0w"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="second" id="I40-H4-Emp"/>
                     <connections>
+                        <outlet property="mapDistance" destination="eRW-Xh-1Wc" id="FkR-fk-Iab"/>
+                        <outlet property="mapSpeed" destination="vzp-2v-dKi" id="v3B-c5-8B1"/>
                         <outlet property="mapView" destination="7gr-lm-r1B" id="Ksk-Z1-XAB"/>
                         <outlet property="mapViewMessageBar" destination="vzp-2v-dKi" id="8u6-Z3-0hb"/>
                     </connections>
@@ -106,8 +125,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="ENABLE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uzB-Cp-uCW">
-                                                    <rect key="frame" x="296" y="12" width="63" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="ACTIVE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uzB-Cp-uCW">
+                                                    <rect key="frame" x="301.5" y="12" width="57.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -311,6 +330,11 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Settings" image="second" id="4rM-tW-9fH"/>
+                    <connections>
+                        <outlet property="valueBluetoothDeviceStatus" destination="wTV-01-xP0" id="SPM-0l-KmX"/>
+                        <outlet property="valueBluetoothName" destination="DV5-nh-Ul8" id="i58-Ga-EFu"/>
+                        <outlet property="valueBluetoothStatus" destination="xFh-Iu-bdo" id="RjI-ub-8zZ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyG-LH-7w6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
