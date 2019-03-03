@@ -322,13 +322,10 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
-            //self.out_Btn1.setTitle("RESCAN", for: .normal)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                //self.BLTE_tableViewOutlet.reloadData()
                 self.scanInProgress = false
                 
-                //SHOW DIALOG
                 if ((self.found_peripheral) != nil) {
                     print("connecting to peripheral \(String(describing: self.found_peripheral?.name))")
                 self.centralManager?.connect(self.found_peripheral!, options: nil)
@@ -338,14 +335,12 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 self.valueBluetoothName.text = bn
                 self.valueBluetoothDeviceStatus.text = "CONNECTING.."
                     
+                    valueTimelineString.append("Connecting to \(String(describing: bn)).    [\(VirtualCrit3.getFormattedTime())] ")
                     
                 } else {
                     print("nothing to connect to")
                     self.valueBluetoothDeviceStatus.text = "NONE FOUND"
                 }
-
-                
-                
             })
         })
     }
@@ -360,15 +355,47 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         if let firstSuchElement = arrPeripheral.first(where: { $0 == peripheral }) {
             print("\(String(describing: firstSuchElement?.name)) exists")
         } else {
-            found_peripheral = peripheral
-            arrPeripheral.append(peripheral)
-            //self.BLTE_tableViewOutlet.reloadData()
+            self.arrPeripheral.append(peripheral)
+            let bn = peripheral.name!
+            let alertController = UIAlertController(title: "\(bn)", message: "", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Connect", style: .default) { (_) in
+                print("connect")
+                self.found_peripheral = peripheral
+                //self.arrPeripheral.append(peripheral)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+                print("cancel")
+            }
+            //adding the action to dialogbox
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            //finally presenting the dialog box
+            self.present(alertController, animated: true, completion: nil)
+//            found_peripheral = peripheral
+//            arrPeripheral.append(peripheral)
+
         }
     }
     
 
     
-    
+    func showInputDialog() {
+        
+        let alertController = UIAlertController(title: "Rider Name", message: "", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Connect", style: .default) { (_) in
+            print("connect")
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+            print("cancel")
+        }
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     
             

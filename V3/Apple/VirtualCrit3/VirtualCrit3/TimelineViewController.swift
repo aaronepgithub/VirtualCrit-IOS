@@ -9,8 +9,17 @@
 import UIKit
 import MapKit
 
-var udString: String = "\n\nSESSION TIMELINE \n"
-var udArray = [String]()
+//var udString: String = "\n\nSESSION TIMELINE \n"
+//var udArray = [String]()
+
+func getFormattedTime() -> String {
+    let currentDateTime = Date()
+    let formatter = DateFormatter()
+    formatter.timeStyle = .medium
+    formatter.dateStyle = .none
+    return formatter.string(from: currentDateTime)
+}
+
 
 class TimelineViewController: UIViewController {
 
@@ -20,13 +29,13 @@ class TimelineViewController: UIViewController {
     @IBOutlet weak var timeline: ISTimeline!
     
     
-    func getFormattedTime() -> String {
-        let currentDateTime = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .none
-        return formatter.string(from: currentDateTime)
-    }
+//    func getFormattedTime() -> String {
+//        let currentDateTime = Date()
+//        let formatter = DateFormatter()
+//        formatter.timeStyle = .medium
+//        formatter.dateStyle = .none
+//        return formatter.string(from: currentDateTime)
+//    }
     
     var colorToUse: UIColor = UIColor.blue
     
@@ -129,10 +138,10 @@ class TimelineViewController: UIViewController {
     }
     func newRedPoint(titleString: String) {
         //print("newRedPoint")
-        let ti = getFormattedTime()
+        //let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
-        nextPt.description = ti
-        nextPt.touchUpInside = blueTouch
+        //nextPt.description = ti
+        //nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .red
         nextPt.lineColor = .red
         nextPt.fill = false
@@ -206,14 +215,12 @@ class TimelineViewController: UIViewController {
         //}
         
         
-        let st = getFormattedTime()
-        let myPoints = [
-            
-            ISPoint(title: "VIRTUAL CRIT HAS STARTED\n", description: "\(st)", touchUpInside: nil)
-        ]
-        
-        timeline.contentInset = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
-        timeline.points = myPoints
+//        let st = getFormattedTime()
+//        let myPoints = [
+//            ISPoint(title: "VIRTUAL CRIT HAS STARTED\n", description: "\(st)", touchUpInside: nil)
+//        ]
+//        timeline.contentInset = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
+//        timeline.points = myPoints
 
         
         //startTimer()

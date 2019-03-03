@@ -51,7 +51,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         startAtLaunch()
         
-        valueTimelineString.append("VIRTUAL CRIT IS STARTING, PROCEED TO THE START LINE")
+        valueTimelineString.append("VIRTUAL CRIT IS STARTING, PROCEED TO THE START LINE.    [\(VirtualCrit3.getFormattedTime())]")
         
     }
     
@@ -105,12 +105,31 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     
+    var currentRound: Int = 1
+    var distanceAtRoundStart: Double = 0
+    var distanceAtRoundEnd: Double = 0
+    var distanceRound: Double = 0
+    var settingsSecondsPerRound: Int = 300
+    
     //EACH SECOND
     @objc func timerInterval() {
         system.actualElapsedTime = getTimeIntervalSince(d1: system.startTime!, d2: Date())
         
         _ = "\(createTimeString(seconds: Int(round(system.actualElapsedTime)))) TOTAL TIME"
         //print(_)
+        
+        if (Int(system.actualElapsedTime) > (currentRound * settingsSecondsPerRound)) {
+            currentRound += 1
+            print("New Round, #\(currentRound)")
+            //PROCESS NEW ROUND
+            distanceAtRoundEnd = distance
+            distanceRound = distanceAtRoundEnd - distanceAtRoundStart
+            valueTimelineString.append("Round \(currentRound-1) Complete.  Distance Traveled: \(stringer2(dbl: distanceRound)).  [\(VirtualCrit3.getFormattedTime())]")
+            
+            //reset
+            distanceAtRoundStart = distance
+        }
+        
         
     }
     
@@ -243,6 +262,8 @@ extension MainViewController: CLLocationManagerDelegate {
                     //let la: Double = (self.locations.last?.coordinate.latitude)!
                     //let lo: Double = (self.locations.last?.coordinate.longitude)!
                     distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
+                    
+                    //CHECK FOR DISTANCE TO NEXT CHECKPOINT...
                     
                     //lastLocationTimeStamp = location.timestamp
 //                    var coords = [CLLocationCoordinate2D]()
