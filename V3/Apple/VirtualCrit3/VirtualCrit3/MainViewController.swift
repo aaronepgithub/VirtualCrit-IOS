@@ -53,7 +53,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         startAtLaunch()
         
-        valueTimelineString.append("VIRTUAL CRIT IS STARTING, PROCEED TO THE START LINE.    [\(VirtualCrit3.getFormattedTime())]")
+        valueTimelineString.append("VIRTUAL CRIT IS STARTING, PROCEED TO THE START LINE\n[\(VirtualCrit3.getFormattedTime())]")
         
         //add pp gpx
         let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
@@ -216,7 +216,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var raceDistanceAtStart: Double = 0
     var raceDistanceAtFinish: Double = 0
     var raceBestTime: Double = 10
-    var raceSpeed = 0
+    var raceSpeed: Double = 0
     
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
@@ -247,7 +247,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 raceDuration = raceFinishTime - raceStartTime
                 raceDistanceAtFinish = distance
                 
-                raceSpeed = (raceDistanceAtFinish - raceDistanceAtStart) / (raceDuration * 60 * 60)
+                raceSpeed = (raceDistanceAtFinish - raceDistanceAtStart) / (raceDuration * 60.0 * 60.0)
                 print ("racespeed:  \(raceSpeed)")
                 
                 let t = createTimeString(seconds: Int(raceDuration))
@@ -257,7 +257,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     b = "FASTEST TIME"
                 }
                 
-                valueTimelineString.append("RACE COMPLETE\n\(t)\n\(b)\n    [\(VirtualCrit3.getFormattedTime())]")
+                valueTimelineString.append("RACE COMPLETE\n\(t)\n\(b)\n[\(VirtualCrit3.getFormattedTime())]")
                 tabBarController?.tabBar.items?[0].badgeValue = ""
                 tabBarController?.tabBar.items?[2].badgeValue = ""
                 tabBarController?.tabBar.items?[3].badgeValue = ""
@@ -271,7 +271,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race started  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint += 1
                 raceStartTime = activeTime
-                valueTimelineString.append("RACE STARTED\n    [\(VirtualCrit3.getFormattedTime())]")
+                valueTimelineString.append("RACE STARTED\n[\(VirtualCrit3.getFormattedTime())]")
                 raceStatusDisplay = "RACE STARTED"
                 raceDistanceAtStart = distance
                 let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
@@ -285,7 +285,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
-            valueTimelineString.append("CHECKPOINT\n\(currentCritPoint) of \(wpts.count-1)\n    [\(VirtualCrit3.getFormattedTime())]")
+            valueTimelineString.append("CHECKPOINT\n\(currentCritPoint) of \(wpts.count-1)\n[\(VirtualCrit3.getFormattedTime())]")
             currentCritPoint += 1
             
         }
