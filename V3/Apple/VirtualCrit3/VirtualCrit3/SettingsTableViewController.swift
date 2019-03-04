@@ -399,6 +399,9 @@ let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"
     
     var wpts = [CLLocationCoordinate2D]()
     var trktps = [CLLocationCoordinate2D]()
+
+    var gpxName = ""
+    var currentParsingElement:String = ""
 }
 
 extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate, XMLParserDelegate {
@@ -406,12 +409,10 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
         /// Handle your document
         print("did pick document at url:  \(url)")
         
-        //if let path = Bundle.main.url(forResource: "Books", withExtension: "xml") {
-            if let parser = XMLParser(contentsOf: url) {
-                parser.delegate = self
-                parser.parse()
-            }
-        //}
+        if let parser = XMLParser(contentsOf: url) {
+            parser.delegate = self
+            parser.parse()
+        }
     }
     func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
@@ -419,7 +420,6 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
         present(documentPicker, animated: true, completion: nil)
     }
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        /// Picker was cancelled! Duh 🤷🏻‍♀️
         print("doc picker cancelled")
     }
     
@@ -441,10 +441,12 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         //Only check for the lines that have a <trkpt> or <wpt> tag. The other lines don't have coordinates and thus don't interest us
         
-        if elementName == "trk" {
+//        if elementName == "trk" {
             //get name
-        }
-        
+//            let na = attributeDict["name"]
+//            print("name: \(String(describing: na))")
+//        }
+        currentParsingElement = elementName
         if elementName == "wpt" {
             //Create a World map coordinate from the file
             let lat = attributeDict["lat"]!
@@ -466,6 +468,39 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
         print("Size of wpts \(wpts.count), Size of trkpts \(trktps.count)")
         
     }
+    
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        let foundedChar = string.trimmingCharacters(in:NSCharacterSet.whitespacesAndNewlines)
+        
+        if (!foundedChar.isEmpty) {
+            if currentParsingElement == "name" {
+                gpxName += foundedChar
+                print("gpxName:  \(gpxName)")
+            }
+//            else if currentParsingElement == "CountryCode" {
+//                countryCode += foundedChar
+//            }
+//            else if currentParsingElement == "CountryName" {
+//                countryName += foundedChar
+//            }
+//            else if currentParsingElement == "Latitude" {
+//                latitude += foundedChar
+//            }
+//            else if currentParsingElement == "Longitude" {
+//                longitude += foundedChar
+//            }
+        }
+        
+    }
+    
+    
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        if elementName == "name" {
+            print("Ended parsing name...")
+            print("gpxName:  \(gpxName)")
+        }
+    }
+    
     
     
 //    // 2
