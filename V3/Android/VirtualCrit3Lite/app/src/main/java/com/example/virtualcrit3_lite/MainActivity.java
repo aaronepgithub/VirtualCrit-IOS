@@ -1042,8 +1042,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
                 markerCoordinates.add(Feature.fromGeometry(
                         Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
-                markerCoordinates.add(Feature.fromGeometry(
-                        Point.fromLngLat(trkpts.get(1).getLon(), trkpts.get(1).getLat()))); // FIRST POINT
+
+                for (Wpt w : wpts) {
+                    Log.i("Name of waypoint ", w.getName());
+                    markerCoordinates.add(Feature.fromGeometry(
+                            Point.fromLngLat(w.getLon(), w.getLat())));
+                }
+
+
 
                 Style style = mapboxMap.getStyle();
 
