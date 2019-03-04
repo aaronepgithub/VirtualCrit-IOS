@@ -34,6 +34,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     @IBOutlet weak var valueBluetoothDeviceStatus: UILabel!
     
     
+    @IBOutlet weak var valueNameGPX: UILabel!
+    @IBOutlet weak var valueStatusGPX: UILabel!
+    
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("Central Manager State Updated: \(central.state)")
@@ -399,9 +402,24 @@ let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"
     
     var wpts = [CLLocationCoordinate2D]()
     var trktps = [CLLocationCoordinate2D]()
+    var gpxNames = [String]()
 
     var gpxName = ""
     var currentParsingElement:String = ""
+    
+    //GPX CRIT
+    
+    func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
+        print("Eval Location")
+        
+    }
+    
+    //END GPX CRIT
+    
+    
+    
+    
+    
 }
 
 extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate, XMLParserDelegate {
@@ -424,29 +442,21 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
     }
     
     
-    // 1
-//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-//
-//        if elementName == "book" {
-//            bookTitle = String()
-//            bookAuthor = String()
-//        }
-//
-//        self.elementName = elementName
-//    }
-    
-
-
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        //Only check for the lines that have a <trkpt> or <wpt> tag. The other lines don't have coordinates and thus don't interest us
         
-//        if elementName == "trk" {
-            //get name
-//            let na = attributeDict["name"]
-//            print("name: \(String(describing: na))")
-//        }
         currentParsingElement = elementName
+        
+        if elementName == "gpx" {
+            
+            wpts = []
+            trktps = []
+            gpxNames = []
+            
+            valueStatusGPX.text = "LOADING"
+            valueNameGPX.text = "..."
+        }
+        
         if elementName == "wpt" {
             //Create a World map coordinate from the file
             let lat = attributeDict["lat"]!
@@ -465,7 +475,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             trktps.append(CLLocationCoordinate2DMake(CLLocationDegrees(lat)!, CLLocationDegrees(lon)!))
         }
         
-        print("Size of wpts \(wpts.count), Size of trkpts \(trktps.count)")
+        //print("Size of wpts \(wpts.count), Size of trkpts \(trktps.count)")
         
     }
     
@@ -474,21 +484,11 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
         
         if (!foundedChar.isEmpty) {
             if currentParsingElement == "name" {
-                gpxName += foundedChar
+                gpxName = foundedChar
+                gpxNames.append(gpxName)
                 print("gpxName:  \(gpxName)")
             }
-//            else if currentParsingElement == "CountryCode" {
-//                countryCode += foundedChar
-//            }
-//            else if currentParsingElement == "CountryName" {
-//                countryName += foundedChar
-//            }
-//            else if currentParsingElement == "Latitude" {
-//                latitude += foundedChar
-//            }
-//            else if currentParsingElement == "Longitude" {
-//                longitude += foundedChar
-//            }
+
         }
         
     }
@@ -497,31 +497,17 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "name" {
             print("Ended parsing name...")
-            print("gpxName:  \(gpxName)")
+            print("Last in gpxnames: \(String(describing: gpxNames.last))")
+        }
+        
+        if elementName == "gpx" {
+            if gpxNames.count > 0 {
+            valueNameGPX.text = gpxNames.last
+            valueStatusGPX.text = "AWAITING ARRIVAL"
+            }
+
         }
     }
     
-    
-    
-//    // 2
-//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-//        if elementName == "book" {
-//            let book = Book(bookTitle: bookTitle, bookAuthor: bookAuthor)
-//            books.append(book)
-//        }
-//    }
-//
-//    // 3
-//    func parser(_ parser: XMLParser, foundCharacters string: String) {
-//        let data = string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//
-//        if (!data.isEmpty) {
-//            if self.elementName == "title" {
-//                bookTitle += data
-//            } else if self.elementName == "author" {
-//                bookAuthor += data
-//            }
-//        }
-//    }
     
 }

@@ -334,6 +334,8 @@
                         <outlet property="valueBluetoothDeviceStatus" destination="wTV-01-xP0" id="SPM-0l-KmX"/>
                         <outlet property="valueBluetoothName" destination="DV5-nh-Ul8" id="i58-Ga-EFu"/>
                         <outlet property="valueBluetoothStatus" destination="xFh-Iu-bdo" id="RjI-ub-8zZ"/>
+                        <outlet property="valueNameGPX" destination="jwo-Cm-ccV" id="jpu-Bi-Hdh"/>
+                        <outlet property="valueStatusGPX" destination="eH0-dB-RYF" id="XC8-dH-qiG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyG-LH-7w6" userLabel="First Responder" sceneMemberID="firstResponder"/>
