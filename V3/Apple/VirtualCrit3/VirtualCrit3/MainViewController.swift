@@ -23,6 +23,8 @@ struct displayStrings {
         static var avgPace: String = "0"
 }
 
+var useSimRide: Bool = false
+var raceStatusDisplay = "AWAITING START"
 var valueTimelineString = [String]()
 
 class MainViewController: UIViewController, MGLMapViewDelegate {
@@ -53,6 +55,30 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         valueTimelineString.append("VIRTUAL CRIT IS STARTING, PROCEED TO THE START LINE.    [\(VirtualCrit3.getFormattedTime())]")
         
+        //add pp gpx
+        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
+        wpts.append(w0)
+        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
+        wpts.append(w1)
+        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
+        wpts.append(w2)
+        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
+        wpts.append(w3)
+        let w4: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66331, longitude: -73.97495)
+        wpts.append(w4)
+
+        
+        let n0: String = "Prospect Park, Brooklyn, Single Loop"
+        gpxNames.append(n0)
+        let n1: String = "PARADE GROUND"
+        gpxNames.append(n1)
+        let n2: String = "LAFREAK CENTER"
+        gpxNames.append(n2)
+        let n3: String = "GRAND ARMY PLAZA"
+        gpxNames.append(n3)
+        let n4: String = "FINISH"
+        gpxNames.append(n4)
+        
     }
     
     // Use the default marker. See also: our view annotation or custom marker examples.
@@ -61,7 +87,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func addMarker(cll : CLLocationCoordinate2D) {
-        print("Adding Marker for CP")
+        print("Adding Marker")
 //        40.769189, -73.975280  CP
         
         let hello = MGLPointAnnotation()
@@ -100,8 +126,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         startTimer()
         startLocationUpdates()
         
-        let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
-        addMarker(cll: cord)
+//        let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
+//        addMarker(cll: cord)
     }
     
     
@@ -111,6 +137,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var distanceRound: Double = 0
     var settingsSecondsPerRound: Int = 300
     var distanceBestRound: Double = 0.2
+    
+    
     
     //EACH SECOND
     @objc func timerInterval() {
@@ -136,8 +164,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             //reset
             distanceAtRoundStart = distance
+        }  //end round logic
+        
+        //check for new race
+        if critStatus == 0 {
+            //new race, start over
+            //reset distance, timee, etc.
+            currentCritPoint = 0
+            
+            let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
+            addMarker(cll: cord)
+            critStatus = 1
+            
         }
         
+        
+        if useSimRide == true && system.actualElapsedTime > 20 {
+            simRide()
+        }
         
     }
     
@@ -161,6 +205,95 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         locationManager.stopUpdatingLocation()
         print("stopLocationUpdates")
     }
+    
+    
+    
+    //GPX CRIT
+    var currentCritPoint: Int = 0
+    var raceStartTime: Double = 0
+    var raceFinishTime: Double = 0
+    var raceDuration: Double = 0
+    var raceDistanceAtStart: Double = 0
+    var raceDistanceAtFinish: Double = 0
+    var raceBestTime: Double = 10
+    var raceSpeed = 0
+    
+    
+    func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
+        print("Eval Location")
+        
+        let c1 = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
+        let c2 = CLLocation(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
+        let distanceInMeters = c1.distance(from: c2)  //it is a double
+        
+        let i: Int = Int(distanceInMeters)
+        tabBarController?.tabBar.items?[0].badgeValue = "\(i)"
+        
+        //print("distanceInMeters:  \(distanceInMeters)")
+        //print("distanceInMeters Int:  \(distanceInMeters)")
+        if distanceInMeters < 100 {
+            print("inside 100, checkpoint")
+            print("currentCritPoint \(currentCritPoint), of \(wpts.count-1)")
+            tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
+            tabBarController?.tabBar.items?[3].badgeValue = "\(wpts.count-1)"
+            critStatus = 2
+            
+            //race complete
+            if wpts.count-1 == currentCritPoint {
+                print("race finished, reset  \(currentCritPoint) of \(wpts.count-1)")
+                currentCritPoint = 0
+                raceStatusDisplay = "RACE COMPLETE"
+                raceFinishTime = activeTime
+                raceDuration = raceFinishTime - raceStartTime
+                raceDistanceAtFinish = distance
+                
+                raceSpeed = (raceDistanceAtFinish - raceDistanceAtStart) / (raceDuration * 60 * 60)
+                print ("racespeed:  \(raceSpeed)")
+                
+                let t = createTimeString(seconds: Int(raceDuration))
+                var b = ""
+                if raceDuration < raceBestTime {
+                    raceBestTime = raceDuration
+                    b = "FASTEST TIME"
+                }
+                
+                valueTimelineString.append("RACE COMPLETE\n\(t)\n\(b)\n    [\(VirtualCrit3.getFormattedTime())]")
+                tabBarController?.tabBar.items?[0].badgeValue = ""
+                tabBarController?.tabBar.items?[2].badgeValue = ""
+                tabBarController?.tabBar.items?[3].badgeValue = ""
+                return
+                
+                //reset
+            }
+
+            
+            if currentCritPoint == 0 {
+                print("race started  \(currentCritPoint) of \(wpts.count-1)")
+                currentCritPoint += 1
+                raceStartTime = activeTime
+                valueTimelineString.append("RACE STARTED\n    [\(VirtualCrit3.getFormattedTime())]")
+                raceStatusDisplay = "RACE STARTED"
+                raceDistanceAtStart = distance
+                let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
+                addMarker(cll: cord)
+                return
+            }
+            
+            //other checkpoint
+            print("other checkpoint  \(currentCritPoint) of \(wpts.count-1)")
+            
+            let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
+            addMarker(cll: cord)
+            raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
+            valueTimelineString.append("CHECKPOINT\n\(currentCritPoint) of \(wpts.count-1)\n    [\(VirtualCrit3.getFormattedTime())]")
+            currentCritPoint += 1
+            
+        }
+        
+    }
+    
+    //END GPX CRIT
+    
     
     
 //UTIL
@@ -228,6 +361,76 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
     }
 
+    //start sim
+    var simCount = 1
+    func simRide() {
+        //print("simRide")
+        
+        if trktps.count - 1 == simCount {
+            print("startOver")
+            simCount = 1
+            return
+        }
+        
+        if simCount == 1 {
+            //let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
+            let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
+            addMarker(cll: cord)
+            tabBarController?.tabBar.items?[0].badgeValue = "1"
+        }
+        if simCount > 1 {
+            tabBarController?.tabBar.items?[0].badgeValue = "2"
+            activeTime += Double(simCount)
+        }
+        if simCount > 2 {
+            let c1 = CLLocation(latitude: trktps[simCount-1].latitude, longitude: trktps[simCount-1].longitude)
+            let c2 = CLLocation(latitude: trktps[simCount].latitude, longitude: trktps[simCount].longitude)
+            let distanceInMeters = c1.distance(from: c2)  //it is a double
+            
+            if distanceInMeters < 161 {  // 161 for production, 1/10th of a mile
+                //print("distance passes the test")
+                distance += distanceInMeters *  0.000621371 //Miles
+                
+                //EVALUATE WAYPOINT FOR CRIT.
+                let c3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: trktps[simCount].latitude, longitude: trktps[simCount].longitude)
+                evaluateLocation(loc: c3)
+                
+                
+                //lastLocationTimeStamp = location.timestamp
+                //                    var coords = [CLLocationCoordinate2D]()
+                //coords.append(self.locations.last!.coordinate)
+                let simSpeed = distanceInMeters
+                coords.append(c3)
+                if simSpeed > 0 {
+                    speedQuick = simSpeed * 2.23694
+                    pace = calcMinPerMile(mph: speedQuick)
+                    avgSpeed = Double(Double(distance) / Double(activeTime / 60 / 60))
+                    avgPace = calcMinPerMile(mph: avgSpeed)
+                    
+                    displayStrings.time = "\(createTimeString(seconds: Int(activeTime)))"
+                    displayStrings.distance = "\(stringer1(dbl: distance))"
+                    displayStrings.speed = "\(stringer1(dbl: speedQuick))"
+                    displayStrings.pace = "\(calcMinPerMile(mph: speedQuick))"
+                    displayStrings.avgSpeed = "\(stringer1(dbl: avgSpeed))"
+                    displayStrings.avgPace = "\(calcMinPerMile(mph: avgSpeed))"
+                    
+                    
+                    mapSpeed.text = "\(stringer1(dbl: speedQuick)) MPH"
+                    mapDistance.text = "\(stringer1(dbl: distance)) MI"
+                    
+                    print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
+                    
+                }
+                //print("sim speed: \(location.speed)")
+                
+            } //end dist check
+            
+        }  //end count2
+        
+        
+        simCount += 1
+    }
+    //end sim
 
 }
 
@@ -241,6 +444,8 @@ var avgPace: String = "00:00"
 var coords = [CLLocationCoordinate2D]()
 //locations[] is used for all location updates
 
+
+
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Loc did fail:  \(error)")
@@ -250,13 +455,19 @@ extension MainViewController: CLLocationManagerDelegate {
         //print("did update locations")
         
         
-        
-        
         for location in locations {
             let howRecent = location.timestamp.timeIntervalSinceNow
             guard location.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
             
+            if self.locations.count == 1 {
+                //let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
+                let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
+                addMarker(cll: cord)
+                tabBarController?.tabBar.items?[0].badgeValue = "1"
+            }
+            
             if self.locations.count > 1 {
+                tabBarController?.tabBar.items?[0].badgeValue = "2"
                 let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                 if ts < 20 {
                     activeTime += ts
@@ -271,7 +482,9 @@ extension MainViewController: CLLocationManagerDelegate {
                     //let lo: Double = (self.locations.last?.coordinate.longitude)!
                     distance += location.distance(from: self.locations.last!) *  0.000621371 //Miles
                     
-                    //CHECK FOR DISTANCE TO NEXT CHECKPOINT...
+                    //EVALUATE WAYPOINT FOR CRIT.
+                    evaluateLocation(loc: location.coordinate)
+                    
                     
                     //lastLocationTimeStamp = location.timestamp
 //                    var coords = [CLLocationCoordinate2D]()
@@ -297,18 +510,6 @@ extension MainViewController: CLLocationManagerDelegate {
                         
                         print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
 
-                        //gpsMovingSpeed.text = "\(stringer(dbl: geo.speed,len: 1)) MPH(G)"
-                        //print("\(speedQuick)  MPH")
-//                        gpsMovingPace.text = "\(String(describing: geo.pace)) PACE(G)"
-//                        gpsDistance.text = "\(stringer(dbl: geo.distance, len: 2)) MI(G)"
-//                        geo.avgSpeed = Double(Double(geo.distance) / Double(geo.elapsedTime / 60 / 60))
-//                        gpsAverageSpeed.text = "\(stringer(dbl: geo.avgSpeed, len: 1)) AVG(G)"
-//                        gpsAvergagePace.text = "\(calcMinPerMile(mph: geo.avgSpeed)) AVG(G)"
-                        
-//                        if activityType == "RUN" || activityType == "ROW" {
-//                            tabBarController?.tabBar.items?[3].badgeValue = "\(String(describing: geo.pace))"
-//                            tabBarController?.tabBar.items?[2].badgeValue = "\(stringer(dbl: geo.distance, len: 2)) MI"
-//                        }
                     }
                     
 //                    if location.course > 315 || location.course <= 45 {
@@ -337,6 +538,9 @@ extension MainViewController: CLLocationManagerDelegate {
             self.locations.append(location)
         }
     }
+    
+    
+    
     
     
 }

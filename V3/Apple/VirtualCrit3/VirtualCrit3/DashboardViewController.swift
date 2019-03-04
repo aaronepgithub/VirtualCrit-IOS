@@ -38,11 +38,12 @@ class DashboardViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
+        //print("DASH timer stopped")
         stopTimer()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("DASH will Appear")
+        //print("DASH timer started")
         startTimer()
     }
     
@@ -61,7 +62,7 @@ class DashboardViewController: UIViewController {
     var timer = Timer()
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 2,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
-        print("Timer Started")
+        print("DASH Timer Started")
     }
     
     @objc func timerInterval() {
@@ -82,7 +83,7 @@ class DashboardViewController: UIViewController {
     }
     
     func stopTimer() {
-        print("Timer Stopped")
+        print("DASH Timer Stopped")
         timer.invalidate()
     }
     

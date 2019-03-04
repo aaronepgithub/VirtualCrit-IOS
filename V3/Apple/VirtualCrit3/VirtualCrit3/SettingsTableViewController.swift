@@ -14,7 +14,13 @@ var bpmValue : Int = 0
 var bpmAverage:Int = 0;var bpmTotals:Int = 0;var bpmCount:Int = 0;
 var bpmEnabled: Bool = false
 
+var critStatus: Int = 1  //active
+var wpts = [CLLocationCoordinate2D]()
+var trktps = [CLLocationCoordinate2D]()
+var gpxNames = [String]()
 
+
+//create timer to display race updates
 
 class SettingsTableViewController: UITableViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UIDocumentInteractionControllerDelegate {
     
@@ -67,27 +73,27 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("SettingsTableVC did Load")
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
-        //add pp gpx
-        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
-        wpts.append(w0)
-        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
-        wpts.append(w1)
-        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
-        wpts.append(w2)
-        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
-        wpts.append(w3)
-
-        let n0: String = "Prospect Park, Brooklyn, Single Loop"
-        gpxNames.append(n0)
-        let n1: String = "PARADE GROUND"
-        gpxNames.append(n1)
-        let n2: String = "LAFREAK CENTER"
-        gpxNames.append(n2)
-        let n3: String = "GRAND ARMY PLAZA"
-        gpxNames.append(n3)
+//        //add pp gpx
+//        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
+//        wpts.append(w0)
+//        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
+//        wpts.append(w1)
+//        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
+//        wpts.append(w2)
+//        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
+//        wpts.append(w3)
+//
+//        let n0: String = "Prospect Park, Brooklyn, Single Loop"
+//        gpxNames.append(n0)
+//        let n1: String = "PARADE GROUND"
+//        gpxNames.append(n1)
+//        let n2: String = "LAFREAK CENTER"
+//        gpxNames.append(n2)
+//        let n3: String = "GRAND ARMY PLAZA"
+//        gpxNames.append(n3)
         
         
         
@@ -104,6 +110,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         switch cat {
         case "00":
             print("case 00")
+        case "11":
+            print("case 11, startSim")
+            useSimRide = true
         case "12":
             print("case 12, load GPX")
             getGPX()
@@ -124,19 +133,11 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     func getGPX() {
         print("getGPX")
 //        let importMenu = UIDocumentMenuViewController(documentTypes: [], in: .import)
-let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"], in: .import)
+        let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"], in: .import)
         importMenu.delegate = (self as UIDocumentMenuDelegate)
         importMenu.modalPresentationStyle = .formSheet
         present(importMenu, animated: true, completion: nil)
-        
-        
     }
-    
-    
-    
-    
-    
-    
     
     
     //didConnect
@@ -422,25 +423,10 @@ let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"
         }
     }
     
-    var wpts = [CLLocationCoordinate2D]()
-    var trktps = [CLLocationCoordinate2D]()
-    var gpxNames = [String]()
+
 
     var gpxName = ""
     var currentParsingElement:String = ""
-    
-    //GPX CRIT
-    
-    func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
-        print("Eval Location")
-        //trktps.first is the start point
-        
-    }
-    
-    //END GPX CRIT
-    
-    
-    
     
     
 }
@@ -536,6 +522,11 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
                 
             let firstCoords = trktps.first
             wpts.insert(firstCoords!, at: 0)
+                
+            let lastCoords = trktps.last
+                wpts.append(lastCoords!)
+                
+            critStatus = 0
             }
 
         }

@@ -154,26 +154,25 @@ class TimelineViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("TL will Disappear")
         stopTimer()
         //NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("TL will Appear")
         startTimer()
         //        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print("TL did Appear")
+        //print("TL did Appear")
         timerInterval()
     }
     
     var timer = Timer()
     func startTimer() {
+        print("TL Timer Started")
         timer = Timer.scheduledTimer(timeInterval: 3,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
-        print("Timer Started")
+        
     }
     
     @objc func timerInterval() {
@@ -189,7 +188,8 @@ class TimelineViewController: UIViewController {
     }
     
     func stopTimer() {
-        print("Timer Stopped")
+        //print("Timer Stopped")
+        print("TL Timer Stopped")
         timer.invalidate()
     }
     
