@@ -69,6 +69,28 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         super.viewDidLoad()
 
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        
+        //add pp gpx
+        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
+        wpts.append(w0)
+        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
+        wpts.append(w1)
+        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
+        wpts.append(w2)
+        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
+        wpts.append(w3)
+
+        let n0: String = "Prospect Park, Brooklyn, Single Loop"
+        gpxNames.append(n0)
+        let n1: String = "PARADE GROUND"
+        gpxNames.append(n1)
+        let n2: String = "LAFREAK CENTER"
+        gpxNames.append(n2)
+        let n3: String = "GRAND ARMY PLAZA"
+        gpxNames.append(n3)
+        
+        
+        
     }
 
    
@@ -411,6 +433,7 @@ let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         print("Eval Location")
+        //trktps.first is the start point
         
     }
     
@@ -451,6 +474,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             
             wpts = []
             trktps = []
+            //trktps.first is the start point
             gpxNames = []
             
             valueStatusGPX.text = "LOADING"
@@ -504,6 +528,14 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             if gpxNames.count > 0 {
             valueNameGPX.text = gpxNames.last
             valueStatusGPX.text = "AWAITING ARRIVAL"
+                
+            //update arrays
+            let lastName = gpxNames.last
+            gpxNames.insert(lastName ?? "NONE", at: 0)
+            gpxNames.removeLast()
+                
+            let firstCoords = trktps.first
+            wpts.insert(firstCoords!, at: 0)
             }
 
         }
