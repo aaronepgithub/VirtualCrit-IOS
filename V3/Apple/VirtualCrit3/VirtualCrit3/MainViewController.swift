@@ -355,6 +355,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var arrWaypointTimes = [Int]()
     var refHandleRace: UInt = 3
     var activeRaceName: String = ""
+    var activeRaceWaypointTimesArray = [Int]()
+    
     //REQUEST RACE DATA
     func requestRaceData(rn: String) {
         print("REQUEST RACE DATA")
@@ -385,10 +387,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     let rtc = dict["raceTimeToComplete"]!
                     
                     print("\(rider), \(race), \(rtc)... \(wayptTimes)")
-                    //valueTimelineString.append("NEW ROUND/SPEED LEADER, \(fbNAME), \(fbSPD) MPH")
-//                    if settingsAudioStatus == "ON" {
-//                        Utils.shared.say(sentence: "The Speed Leader is now, \(fbNAME),.  \(fbSPD) Miles Per Hour")
-//                    }
+                    
+                    valueTimelineString.append("RACE LEADER FOR \(race)\n\(rider)\n\(self.createTimeString(seconds: rtc as! Int))")
+
+                    //SPLICE UP THE WAYPOINT TIMES
+                    let wtimes: String = wayptTimes as! String
+                    let wtimesarr = wtimes.components(separatedBy: ",")
+                    for s in (wtimesarr) {
+                        print("\(s)")
+                        self.activeRaceWaypointTimesArray.append(Int(s)!)
+                    }
+                    print("activeRaceWaypointTimesArray:    \(self.activeRaceWaypointTimesArray)")
+
                 }
             }
         })
@@ -397,14 +407,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     
     //POST RACE PROCESSING
-    func postRaceProcessing(rt: Double) {
+    func postRaceProcessing(rt: Int) {
     print("post race processing")
         
         let raceDate: String = todaysDateString
         let raceName: String = gpxNames.first!
         let stringOfWaypointTimes: String = waypointTimesTimString
         let riderName: String = settingsName
-        let raceDur: Double = rt * 1000
+        let raceDur: Int = rt * 1000
         
         let racePost = [
             "raceName" : raceName,
@@ -502,7 +512,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 }
                 
                 waypointTimesTimString += String(Int(raceDuration) * 1000)
-                postRaceProcessing(rt: raceDuration)
+                postRaceProcessing(rt: Int(raceDuration))
                 valueTimelineString.append("RACE COMPLETE\n\(t)\n\(b)\n[\(VirtualCrit3.getFormattedTime())]")
                 
                 tabBarController?.tabBar.items?[2].badgeValue?.removeAll()
