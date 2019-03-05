@@ -543,7 +543,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-    private void postRaceProcessing(final long raceTime) {
+    private void postRaceProcessing(final long rt) {
         Log.i(TAG, "postRaceProcessing: ");
 
         Integer raceDate = Integer.valueOf(fbCurrentDate);
@@ -551,7 +551,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         Log.i(TAG, "trackpointTest: waypointTimesTimString: " + waypointTimesTimString);
 
-        Race r = new Race(settingsName, raceName, raceTime, raceDate, waypointTimesTimString);
+        Race r = new Race(settingsName, raceName, rt, raceDate, waypointTimesTimString);
+        Log.i(TAG, "postRaceProcessing: r  " + r.toString());
 
         //WRITE RACE DATA
         Log.i(TAG, "fbWrite Race Data: ");

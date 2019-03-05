@@ -341,9 +341,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         let fbSPD = dict["fb_SPD"]!
                         let fbNAME = dict["fb_timName"]!
                         print("name, \(fbNAME).  spd, \(fbSPD)")
-                        valueTimelineString.append("NEW SPEED PER ROUND LEADER, \(fbNAME). \(fbSPD) MPH")
+
+                        let d = dict["fb_SPD"] as? Double ?? 0.0
+                        
+                        valueTimelineString.append( "NEW SPEED PER ROUND LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MILES PER HOUR." )
                         if settingsAudioStatus == "ON" {
-                            Utils.shared.say(sentence: "The Speed per round Leader is now, \(fbNAME),.  \(fbSPD) Miles Per Hour")
+                            Utils.shared.say(sentence: "The Speed per round Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
                         }
                     }
                 }
