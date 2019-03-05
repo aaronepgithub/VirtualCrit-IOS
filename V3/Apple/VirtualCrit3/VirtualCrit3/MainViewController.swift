@@ -251,16 +251,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             ] as [String : Any]
         
         
-        
-        
-//        if settingsActivityType == "RUN" {
-//            let refDBRun  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run/\(todaysDateString)")
-//            refDBRun.childByAutoId().setValue(round_post)
-//        }
-//        if settingsActivityType == "ROW" {
-//            let refDBRow  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/row/\(todaysDateString)")
-//            refDBRow.childByAutoId().setValue(round_post)
-//        }
         let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)")
         refDB.childByAutoId().setValue(round_post) {
             (error:Error?, ref:DatabaseReference) in
@@ -270,9 +260,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("Round Data saved successfully!")
             }
         }
-        
-        
-        
         
         let totals_post = [
             "a_calcDurationPost" : (currentRound-1) * 5,
@@ -295,15 +282,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             "fb_timName" : settingsName,
             "fb_timTeam" : "Square Pizza"
             ] as [String : Any]
-
-//        if settingsActivityType == "RUN" {
-//            let refDBRunT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(todaysDateString)/\(settingsName)")
-//            refDBRunT.setValue(totals_post)
-//        }
-//        if settingsActivityType == "ROW" {
-//            let refDBRowT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/row/\(todaysDateString)/\(settingsName)")
-//            refDBRowT.setValue(totals_post)
-//        }
         
         let refDBT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(todaysDateString)/\(settingsName)")
         refDBT.setValue(totals_post) {
@@ -325,12 +303,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var refHandleRoundSpeed: UInt = 1
     func setFBListenRequest() {
         print("set listen request")
-            //request round, score, leader
+            //READ, ROUND, SCORE
             let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)/")
             //let ref = refDB.child(todaysDateString)
-        
-        
-        
             refHandle = refDB.queryLimited(toLast: 1).queryOrdered(byChild: "fb_RND").observe(DataEventType.value, with: { (snapshot) in
                 if ( snapshot.value is NSNull ) {
                     print("no snapshot")
@@ -350,7 +325,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             print("refhandle \(refHandle)")
             //end request round, score, leader
         
-        //ROUND, SPEED
+        //READ ROUND, SPEED
             let refDBSpd  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
             let refSpd = refDBSpd.child(todaysDateString)
 
@@ -366,13 +341,92 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         let fbSPD = dict["fb_SPD"]!
                         let fbNAME = dict["fb_timName"]!
                         print("name, \(fbNAME).  spd, \(fbSPD)")
-                        valueTimelineString.append("NEW ROUND/SPEED LEADER, \(fbNAME), \(fbSPD) MPH")
+                        valueTimelineString.append("NEW SPEED PER ROUND LEADER, \(fbNAME). \(fbSPD) MPH")
+                        if settingsAudioStatus == "ON" {
+                            Utils.shared.say(sentence: "The Speed per round Leader is now, \(fbNAME),.  \(fbSPD) Miles Per Hour")
+                        }
                     }
                 }
             })
             //end request round, speed, leader
         
     }
+    
+    var arrWaypointTimes = [Int]()
+    var refHandleRace: UInt = 3
+    var activeRaceName: String = ""
+    //REQUEST RACE DATA
+    func requestRaceData(rn: String) {
+        print("REQUEST RACE DATA")
+        if activeRaceName == rn {
+            print("already have this requested")
+            return
+        }
+        if activeRaceName != "" {
+            print("remove listener")
+            let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(activeRaceName)")
+            refDB.removeObserver(withHandle: refHandleRace)
+        }
+        activeRaceName = rn
+        let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(rn)")
+        
+        refHandleRace = refDB.queryLimited(toFirst: 1).queryOrdered(byChild: "raceTimeToComplete").observe(DataEventType.value, with: { (snapshot) in
+            if ( snapshot.value is NSNull ) {
+                print("no snapshot")
+            } else {
+                _ = snapshot.value as? [String : AnyObject] ?? [:]
+                for child in (snapshot.children) {
+                    print("race results, have a child")
+                    let snap = child as! DataSnapshot //each child is a snapshot
+                    let dict = snap.value as! NSDictionary // the value is a dict
+                    let rider = dict["riderName"]!
+                    let race = dict["raceName"]!
+                    let wayptTimes = dict["waypointTimes"]!
+                    let rtc = dict["raceTimeToComplete"]!
+                    
+                    print("\(rider), \(race), \(rtc)... \(wayptTimes)")
+                    //valueTimelineString.append("NEW ROUND/SPEED LEADER, \(fbNAME), \(fbSPD) MPH")
+//                    if settingsAudioStatus == "ON" {
+//                        Utils.shared.say(sentence: "The Speed Leader is now, \(fbNAME),.  \(fbSPD) Miles Per Hour")
+//                    }
+                }
+            }
+        })
+        
+    }
+    
+    
+    //POST RACE PROCESSING
+    func postRaceProcessing(rt: Double) {
+    print("post race processing")
+        
+        let raceDate: String = todaysDateString
+        let raceName: String = gpxNames.first!
+        let stringOfWaypointTimes: String = waypointTimesTimString
+        let riderName: String = settingsName
+        let raceDur: Double = rt * 1000
+        
+        let racePost = [
+            "raceName" : raceName,
+            "riderName" : riderName,
+            "raceTimeToComplete" : raceDur,
+            "waypointTimes" : stringOfWaypointTimes,
+            "raceDate" : raceDate
+            ] as [String : Any]
+        
+        
+        let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(raceName)")
+        refDB.childByAutoId().setValue(racePost) {
+            (error:Error?, ref:DatabaseReference) in
+            if let error = error {
+                print("RACE Data could not be saved: \(error).")
+            } else {
+                print("RACE Data saved successfully!")
+            }
+        }
+        
+    }
+    
     
     private let locationManager = LocationManager.shared
     private var locations: [CLLocation] = []
@@ -432,7 +486,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race finished, reset  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint = 0
                 raceStatusDisplay = "RACE COMPLETE"
-                raceFinishTime = activeTime
+                raceFinishTime = system.actualElapsedTime
                 raceDuration = raceFinishTime - raceStartTime
                 raceDistanceAtFinish = distance
                 remMarkers();
@@ -447,6 +501,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     b = "FASTEST TIME"
                 }
                 
+                waypointTimesTimString += String(Int(raceDuration) * 1000)
+                postRaceProcessing(rt: raceDuration)
                 valueTimelineString.append("RACE COMPLETE\n\(t)\n\(b)\n[\(VirtualCrit3.getFormattedTime())]")
                 
                 tabBarController?.tabBar.items?[2].badgeValue?.removeAll()
@@ -461,12 +517,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             if currentCritPoint == 0 {
                 print("race started  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint += 1
-                raceStartTime = activeTime
+                raceStartTime = system.actualElapsedTime
                 valueTimelineString.append("RACE STARTED\n[\(VirtualCrit3.getFormattedTime())]")
                 raceStatusDisplay = "RACE STARTED"
                 raceDistanceAtStart = distance
-                
-                
+                waypointTimesTimString = ""
+                requestRaceData(rn: gpxNames.first!)
                 
                 let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
                 addMarker(cll: cord)
@@ -481,6 +537,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
             valueTimelineString.append("CHECKPOINT\n\(currentCritPoint) of \(wpts.count-1)\n[\(VirtualCrit3.getFormattedTime())]")
             currentCritPoint += 1
+            
+            waypointTimesTimString += String((Int(system.actualElapsedTime-raceStartTime)) * 1000)
+            waypointTimesTimString += ","
             
         }
         
@@ -647,7 +706,6 @@ var pace: String = "00:00"
 var avgSpeed: Double = 0
 var avgPace: String = "00:00"
 var coords = [CLLocationCoordinate2D]()
-//locations[] is used for all location updates
 
 
 

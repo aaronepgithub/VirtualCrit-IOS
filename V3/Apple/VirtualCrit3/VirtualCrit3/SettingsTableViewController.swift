@@ -19,6 +19,7 @@ var critStatus: Int = 1  //active
 var wpts = [CLLocationCoordinate2D]()
 var trktps = [CLLocationCoordinate2D]()
 var gpxNames = [String]()
+var waypointTimesTimString = ""
 
 //settings
 var settingsName: String = "TIM"

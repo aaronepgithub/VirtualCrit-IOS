@@ -583,6 +583,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void requestRaceData() {
 
+//TODO...REMOVE OLD OBSERVERS
+
         Log.i(TAG, "fbWrite Race Data: ");
         String raceURL = "race/" + trkName;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
