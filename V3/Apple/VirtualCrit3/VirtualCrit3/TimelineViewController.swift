@@ -154,17 +154,19 @@ class TimelineViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(false)
         stopTimer()
         //NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
         startTimer()
         //        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //print("TL did Appear")
+        super.viewDidAppear(false)
         timerInterval()
     }
     

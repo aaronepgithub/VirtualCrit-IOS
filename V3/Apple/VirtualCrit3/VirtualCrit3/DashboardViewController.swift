@@ -43,7 +43,7 @@ class DashboardViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //print("DASH timer started")
+        super.viewWillAppear(false)
         startTimer()
     }
     
