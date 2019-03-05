@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import AudioToolbox
-//import Firebase
+import Firebase
 import SystemConfiguration
 import Mapbox
 
@@ -23,6 +23,7 @@ struct displayStrings {
         static var avgPace: String = "0"
 }
 
+var todaysDateString: String = "00000000"
 var useSimRide: Bool = false
 var raceStatusDisplay = "AWAITING START"
 var valueTimelineString = [String]()
@@ -30,9 +31,16 @@ var valueTimelineString = [String]()
 class MainViewController: UIViewController, MGLMapViewDelegate {
 
     @IBOutlet weak var mapViewMessageBar: UILabel!
-    
     @IBOutlet weak var mapSpeed: UILabel!
     @IBOutlet weak var mapDistance: UILabel!
+    
+    struct system {
+        static var startTime: Date?
+        static var stopTime: Date?
+        static var actualElapsedTime: Double = 0
+        static var timerIntervalValue: Double = 1
+    }
+    var timer = Timer()
     
     
     //var mapView: MGLMapView!
@@ -43,6 +51,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         print("viewDidLoad")
         
         system.startTime = Date()
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        todaysDateString = formatter.string(from: date)
         
         // Set the map view's delegate
         mapView.delegate = self
@@ -79,6 +91,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let n4: String = "FINISH"
         gpxNames.append(n4)
         
+        
+        setFBListenRequest()
     }
     
     // Use the default marker. See also: our view annotation or custom marker examples.
@@ -91,24 +105,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 //        40.769189, -73.975280  CP
         
         let hello = MGLPointAnnotation()
-//        hello.coordinate = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
         hello.coordinate = cll
         hello.title = "START"
-//        hello.subtitle = "CENTRAL PARK"
-        
-        // Add marker `hello` to the map.
         mapView.addAnnotation(hello)
     }
     
-    
-    struct system {
-        static var startTime: Date?
-        static var stopTime: Date?
-        static var actualElapsedTime: Double = 0
-        static var timerIntervalValue: Double = 1
+    func remMarkers() {
+        mapView.removeAnnotations(mapView.annotations!)
     }
     
-    var timer = Timer()
+    
+
 
     
     
@@ -135,8 +142,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var distanceAtRoundStart: Double = 0
     var distanceAtRoundEnd: Double = 0
     var distanceRound: Double = 0
-    var settingsSecondsPerRound: Int = 300
     var distanceBestRound: Double = 0.2
+    var round_speed: Double = 0
+    
+    var round_bpmAverage:Double = 0
+    var round_bpmScore: Double = 0
+    var round_bpmTotals:Int = 0
+    var round_bpmCount:Int = 0
+    var round_bestHR: Double = 0
     
     
     
@@ -150,21 +163,48 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if (Int(system.actualElapsedTime) > (currentRound * settingsSecondsPerRound)) {
             currentRound += 1
             print("New Round, #\(currentRound)")
+            
             //PROCESS NEW ROUND
             distanceAtRoundEnd = distance
             distanceRound = distanceAtRoundEnd - distanceAtRoundStart
-            let roundSpeed: Double = distanceRound / (Double(settingsSecondsPerRound) / 60.0 / 60.0);
+            round_speed = distanceRound / (Double(settingsSecondsPerRound) / 60.0 / 60.0);
             
             if (distanceRound > distanceBestRound) {
                 distanceBestRound = distanceRound
-                valueTimelineString.append("Fastest Round\nRound \(currentRound-1) Complete\nSpeed: \(stringer1(dbl: roundSpeed)) MPH\n[\(VirtualCrit3.getFormattedTime())]  ")
+                valueTimelineString.append("Fastest Round\nRound \(currentRound-1) Complete\nSpeed: \(stringer1(dbl: round_speed)) MPH\n[\(VirtualCrit3.getFormattedTime())]  ")
             } else {
-                valueTimelineString.append("Round \(currentRound-1) Complete.\nSpeed: \(stringer1(dbl: roundSpeed)) MPH\n[\(VirtualCrit3.getFormattedTime())]  ")
+                valueTimelineString.append("Round \(currentRound-1) Complete.\nSpeed: \(stringer1(dbl: round_speed)) MPH\n[\(VirtualCrit3.getFormattedTime())]  ")
             }
             
-            //reset
+            if (round_bpmTotals > 1000) {
+                let t: Double = Double(round_bpmTotals)
+                let c: Double = Double(round_bpmCount)
+                round_bpmAverage = t / c
+                round_bpmScore = getScoreFromHR(x: round_bpmAverage)
+                if (round_bpmAverage > round_bestHR) {
+                    round_bpmAverage = round_bestHR
+                }
+                valueTimelineString.append(
+                    "ROUND HR\nHR: \( stringer1(dbl: round_bpmAverage) ) [\(stringer1(dbl: round_bestHR))] \nROUND SCORE: \( stringer1(dbl: round_bpmScore) )"
+                )
+            }
+            
+            //RESET ROUND VARS
             distanceAtRoundStart = distance
-        }  //end round logic
+            round_bpmCount = 0
+            round_bpmTotals = 0
+            
+            postRoundData(rn: currentRound-1)
+            
+        }
+        //END ROUND COMPLETE LOGIC
+        
+        //EACH SECOND, PULL BPM FOR ROUND CALC
+        if bpmValue > 50 {
+            round_bpmCount += 1
+            round_bpmTotals += bpmValue
+        }
+
         
         //check for new race
         if critStatus == 0 {
@@ -182,6 +222,155 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if useSimRide == true && system.actualElapsedTime > 20 {
             simRide()
         }
+        
+    }
+    
+    func postRoundData(rn: Int) {
+        print("post round data \(rn)")
+        let round_post = [
+            "a_calcDurationPost" : rn*settingsSecondsPerRound,
+            "a_scoreRoundLast" : (round_bpmScore*1000).rounded()/1000,
+            "a_speedRoundLast" : (round_speed*1000).rounded()/1000,
+            "fb_CAD" : 0,
+            "fb_Date" : todaysDateString,
+            "fb_DateNow" : todaysDateString,
+            "fb_HR" : (round_bpmAverage*1000).rounded()/1000,
+            "fb_RND" : (round_bpmScore*1000).rounded()/1000,
+            "fb_SPD" : (round_speed*1000).rounded()/1000,
+            "fb_maxHRTotal" : settingsMaxHR,
+            "fb_scoreHRRound" : (round_bpmScore*1000).rounded()/1000,
+            "fb_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
+            "fb_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
+            "fb_timAvgCADtotal" : 0,
+            "fb_timAvgHRtotal" : (round_bpmScore*1000).rounded()/1000,
+            "fb_timAvgSPDtotal" : (round_speed*1000).rounded()/1000,
+            "fb_timDistanceTraveled" : distance,
+            "fb_timGroup" : settingsActivityType,
+            "fb_timName" : settingsName,
+            "fb_timTeam" : "Square Pizza"
+            ] as [String : Any]
+        
+        
+        
+        
+//        if settingsActivityType == "RUN" {
+//            let refDBRun  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/run/\(todaysDateString)")
+//            refDBRun.childByAutoId().setValue(round_post)
+//        }
+//        if settingsActivityType == "ROW" {
+//            let refDBRow  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/row/\(todaysDateString)")
+//            refDBRow.childByAutoId().setValue(round_post)
+//        }
+        let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)")
+        refDB.childByAutoId().setValue(round_post) {
+            (error:Error?, ref:DatabaseReference) in
+            if let error = error {
+                print("Round Data could not be saved: \(error).")
+            } else {
+                print("Round Data saved successfully!")
+            }
+        }
+        
+        
+        
+        
+        let totals_post = [
+            "a_calcDurationPost" : (currentRound-1) * 5,
+            "a_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
+            "a_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
+            "a_speedLast" : (round_speed*1000).rounded()/1000,
+            "a_speedTotal" : (round_speed*1000).rounded()/1000,
+            "fb_CAD" : 0,
+            "fb_Date" : todaysDateString,
+            "fb_DateNow" : todaysDateString,
+            "fb_maxHRTotal" : settingsMaxHR,
+            "fb_scoreHRRound" : (round_bpmScore*1000).rounded()/1000,
+            "fb_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
+            "fb_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
+            "fb_timAvgCADtotal" : 0,
+            "fb_timAvgHRtotal" : (round_bpmScore*1000).rounded()/1000,
+            "fb_timAvgSPDtotal" : (round_speed*1000).rounded()/1000,
+            "fb_timDistanceTraveled" : distance,
+            "fb_timGroup" : settingsActivityType,
+            "fb_timName" : settingsName,
+            "fb_timTeam" : "Square Pizza"
+            ] as [String : Any]
+
+//        if settingsActivityType == "RUN" {
+//            let refDBRunT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/run/\(todaysDateString)/\(settingsName)")
+//            refDBRunT.setValue(totals_post)
+//        }
+//        if settingsActivityType == "ROW" {
+//            let refDBRowT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/row/\(todaysDateString)/\(settingsName)")
+//            refDBRowT.setValue(totals_post)
+//        }
+        
+        let refDBT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(todaysDateString)/\(settingsName)")
+        refDBT.setValue(totals_post) {
+            (error:Error?, ref:DatabaseReference) in
+            if let error = error {
+                print("Totals Data could not be saved: \(error).")
+            } else {
+                print("Totals Data saved successfully!")
+            }
+        }
+        
+    
+    }
+    
+    
+    
+
+    var refHandle: UInt = 0
+    var refHandleRoundSpeed: UInt = 1
+    func setFBListenRequest() {
+        print("set listen request")
+            //request round, score, leader
+            let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)/")
+            //let ref = refDB.child(todaysDateString)
+        
+        
+        
+            refHandle = refDB.queryLimited(toLast: 1).queryOrdered(byChild: "fb_RND").observe(DataEventType.value, with: { (snapshot) in
+                if ( snapshot.value is NSNull ) {
+                    print("no snapshot")
+                } else {
+                    print("has snapshot")
+                    _ = snapshot.value as? [String : AnyObject] ?? [:]
+                    for child in (snapshot.children) {
+                        print("round-score, have a child")
+                        let snap = child as! DataSnapshot //each child is a snapshot
+                        let dict = snap.value as! NSDictionary // the value is a dict
+                        let fbRND = dict["fb_RND"]!
+                        let fbNAME = dict["fb_timName"]!
+                        print("name, \(fbNAME).  rnd, \(fbRND)")
+                    }
+                }
+            })
+            print("refhandle \(refHandle)")
+            //end request round, score, leader
+        
+        //ROUND, SPEED
+            let refDBSpd  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+            let refSpd = refDBSpd.child(todaysDateString)
+
+            refHandleRoundSpeed = refSpd.queryLimited(toLast: 1).queryOrdered(byChild: "fb_SPD").observe(DataEventType.value, with: { (snapshot) in
+                if ( snapshot.value is NSNull ) {
+                    print("no snapshot")
+                } else {
+                    _ = snapshot.value as? [String : AnyObject] ?? [:]
+                    for child in (snapshot.children) {
+                        print("round-speed, have a child")
+                        let snap = child as! DataSnapshot //each child is a snapshot
+                        let dict = snap.value as! NSDictionary // the value is a dict
+                        let fbSPD = dict["fb_SPD"]!
+                        let fbNAME = dict["fb_timName"]!
+                        print("name, \(fbNAME).  spd, \(fbSPD)")
+                        valueTimelineString.append("NEW ROUND/SPEED LEADER, \(fbNAME), \(fbSPD) MPH")
+                    }
+                }
+            })
+            //end request round, speed, leader
         
     }
     
@@ -220,7 +409,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
-        print("Eval Location")
+        //print("Eval Location")
         
         let c1 = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
         let c2 = CLLocation(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
@@ -246,8 +435,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 raceFinishTime = activeTime
                 raceDuration = raceFinishTime - raceStartTime
                 raceDistanceAtFinish = distance
+                remMarkers();
                 
-                raceSpeed = (raceDistanceAtFinish - raceDistanceAtStart) / (raceDuration * 60.0 * 60.0)
+                raceSpeed = (raceDistanceAtFinish - raceDistanceAtStart) / (raceDuration / 60.0 / 60.0)
                 print ("racespeed:  \(raceSpeed)")
                 
                 let t = createTimeString(seconds: Int(raceDuration))
@@ -258,9 +448,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 }
                 
                 valueTimelineString.append("RACE COMPLETE\n\(t)\n\(b)\n[\(VirtualCrit3.getFormattedTime())]")
-                tabBarController?.tabBar.items?[0].badgeValue = ""
-                tabBarController?.tabBar.items?[2].badgeValue = ""
-                tabBarController?.tabBar.items?[3].badgeValue = ""
+                
+                tabBarController?.tabBar.items?[2].badgeValue?.removeAll()
+                tabBarController?.tabBar.items?[3].badgeValue?.removeAll()
+                tabBarController?.tabBar.items?[0].badgeValue?.removeAll()
                 return
                 
                 //reset
@@ -274,6 +465,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 valueTimelineString.append("RACE STARTED\n[\(VirtualCrit3.getFormattedTime())]")
                 raceStatusDisplay = "RACE STARTED"
                 raceDistanceAtStart = distance
+                
+                
+                
                 let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
                 addMarker(cll: cord)
                 return
@@ -297,6 +491,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     
 //UTIL
+    
+    func getScoreFromHR(x: Double) -> Double {
+        if x == 0 {
+            return 0
+        } else {
+            let y = Double(settingsMaxHR)
+            let z = Double(100)
+            return (x / y) * z
+        }
+    }
+    
     func getFormattedTime(d: Date) -> String {
         let currentDateTime = d
         let formatter = DateFormatter()
@@ -418,7 +623,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     mapSpeed.text = "\(stringer1(dbl: speedQuick)) MPH"
                     mapDistance.text = "\(stringer1(dbl: distance)) MI"
                     
-                    print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
+                    //print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
                     
                 }
                 //print("sim speed: \(location.speed)")
@@ -476,7 +681,7 @@ extension MainViewController: CLLocationManagerDelegate {
             }
             if self.locations.count > 2 {
                 if location.distance(from: self.locations.last!) < 161 {  // 161 for production, 1/10th of a mile
-                    print("distance passes the test")
+                    //print("distance passes the test")
                     //var la: Double = 0;var lo: Double = 0;
                     //let la: Double = (self.locations.last?.coordinate.latitude)!
                     //let lo: Double = (self.locations.last?.coordinate.longitude)!
@@ -484,11 +689,7 @@ extension MainViewController: CLLocationManagerDelegate {
                     
                     //EVALUATE WAYPOINT FOR CRIT.
                     evaluateLocation(loc: location.coordinate)
-                    
-                    
-                    //lastLocationTimeStamp = location.timestamp
-//                    var coords = [CLLocationCoordinate2D]()
-                    //coords.append(self.locations.last!.coordinate)
+
                     coords.append(location.coordinate)
                     print("location.speed: \(location.speed)")
                     if location.speed > 0 {

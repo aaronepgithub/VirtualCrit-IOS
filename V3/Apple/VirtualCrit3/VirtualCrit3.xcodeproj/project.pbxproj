@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		482797B14064814661CF3098 /* Pods_VirtualCrit3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9EC9FCAD57EAFEC8B8640FB /* Pods_VirtualCrit3.framework */; };
 		5822D697222ABA5A00DCD8F2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5822D696222ABA5A00DCD8F2 /* LocationManager.swift */; };
+		5854F75E222EBA0A00E44350 /* TextToSpeech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5854F75D222EBA0A00E44350 /* TextToSpeech.swift */; };
+		5854F760222ED2A900E44350 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5854F75F222ED2A900E44350 /* GoogleService-Info.plist */; };
 		58B971002229FCEA00BC3726 /* ISPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B970FF2229FCEA00BC3726 /* ISPoint.swift */; };
 		58B971022229FD1E00BC3726 /* ISTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B971012229FD1E00BC3726 /* ISTimeline.swift */; };
 		58BBEE1D2222FD6C009B57C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BBEE1C2222FD6C009B57C7 /* AppDelegate.swift */; };
@@ -24,6 +26,8 @@
 /* Begin PBXFileReference section */
 		5822D696222ABA5A00DCD8F2 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		584A038A222C3301009B8DB5 /* VirtualCrit3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VirtualCrit3.entitlements; sourceTree = "<group>"; };
+		5854F75D222EBA0A00E44350 /* TextToSpeech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextToSpeech.swift; sourceTree = "<group>"; };
+		5854F75F222ED2A900E44350 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		58B970FF2229FCEA00BC3726 /* ISPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISPoint.swift; sourceTree = "<group>"; };
 		58B971012229FD1E00BC3726 /* ISTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISTimeline.swift; sourceTree = "<group>"; };
 		58BBEE192222FD6C009B57C7 /* VirtualCrit3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualCrit3.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +82,7 @@
 				58BBEE1C2222FD6C009B57C7 /* AppDelegate.swift */,
 				58BBEE222222FD6C009B57C7 /* Main.storyboard */,
 				58BBEE302222FF9C009B57C7 /* MainViewController.swift */,
+				5854F75D222EBA0A00E44350 /* TextToSpeech.swift */,
 				58BEFF2E2229BDD3005D5313 /* SettingsTableViewController.swift */,
 				58BEFF282229B7D4005D5313 /* DashboardViewController.swift */,
 				58BEFF2A2229B7EA005D5313 /* TimelineViewController.swift */,
@@ -87,6 +92,7 @@
 				58BBEE252222FD6E009B57C7 /* Assets.xcassets */,
 				58BBEE272222FD6E009B57C7 /* LaunchScreen.storyboard */,
 				58BBEE2A2222FD6E009B57C7 /* Info.plist */,
+				5854F75F222ED2A900E44350 /* GoogleService-Info.plist */,
 			);
 			path = VirtualCrit3;
 			sourceTree = "<group>";
@@ -177,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58BBEE292222FD6E009B57C7 /* LaunchScreen.storyboard in Resources */,
+				5854F760222ED2A900E44350 /* GoogleService-Info.plist in Resources */,
 				58BBEE262222FD6E009B57C7 /* Assets.xcassets in Resources */,
 				58BBEE242222FD6C009B57C7 /* Main.storyboard in Resources */,
 			);
@@ -251,6 +258,7 @@
 				5822D697222ABA5A00DCD8F2 /* LocationManager.swift in Sources */,
 				58BEFF2B2229B7EA005D5313 /* TimelineViewController.swift in Sources */,
 				58B971002229FCEA00BC3726 /* ISPoint.swift in Sources */,
+				5854F75E222EBA0A00E44350 /* TextToSpeech.swift in Sources */,
 				58BBEE312222FF9C009B57C7 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

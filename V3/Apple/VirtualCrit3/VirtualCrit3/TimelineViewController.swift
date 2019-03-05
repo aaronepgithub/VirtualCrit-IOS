@@ -37,33 +37,8 @@ class TimelineViewController: UIViewController {
 //        return formatter.string(from: currentDateTime)
 //    }
     
-    var colorToUse: UIColor = UIColor.blue
+    var colorToUse: UIColor = UIColor.red
     
-    @objc func updateTL(not: Notification) {
-        var str = ""
-        
-        if let userInfo = not.userInfo {
-            if let n1 = userInfo[AnyHashable("color")] {
-                colorToUse = UIColor.blue
-                if n1 as! String == "red" {colorToUse = UIColor.red}
-                if n1 as! String == "black" {colorToUse = UIColor.black}
-                if n1 as! String == "green" {colorToUse = UIColor.green}
-                if n1 as! String == "yellow" {colorToUse = UIColor.yellow}
-            }
-            
-            if let nt = userInfo[AnyHashable("title")] {
-                let txt = "\(nt as! String)\n"
-                str += txt
-            }
-            str += "\n"
-            self.newBluePoint(titleString: "\(str)")
-            //            let ti = getFormattedTime()
-            //            udString += "\(ti)\n\(str)\n"
-            //            if la != 0 {
-            //                udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-            //            }
-        }
-    }
     
     func newBluePoint(titleString: String) {
         //print("newBluePoint")
@@ -73,7 +48,7 @@ class TimelineViewController: UIViewController {
         nextPt.pointColor = colorToUse
         nextPt.lineColor = colorToUse
         nextPt.fill = true
-        nextPt.touchUpInside = blueTouch
+        //nextPt.touchUpInside = blueTouch
         self.timeline.points.insert(nextPt, at: 0)
         //        udString += "\(ti)\n\(titleString)\n"
         //        if la != 0 {
@@ -91,15 +66,11 @@ class TimelineViewController: UIViewController {
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = blueTouch
+        //nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .black
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        //        udString += "\(ti)\n\(titleString)\n"
-        //        if la != 0 {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
     }
     
     
@@ -108,28 +79,19 @@ class TimelineViewController: UIViewController {
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = blueTouch
+        //nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .black
         nextPt.lineColor = .black
         nextPt.fill = true
         self.timeline.points.insert(nextPt, at: 0)
-        //        udString += "\(ti)\n\(titleString)\n"
-        //        if la != 0 {
-        //            udString += "http://maps.apple.com/?ll=\(la),\(lo)\n"
-        //        }
     }
-    
-    
-    
-    
-    
     
     func newGreenPoint(titleString: String) {
         //print("newGreenPoint")
         let ti = getFormattedTime()
         let nextPt = ISPoint(title: titleString)
         nextPt.description = ti
-        nextPt.touchUpInside = blueTouch
+        //nextPt.touchUpInside = blueTouch
         nextPt.pointColor = .green
         nextPt.lineColor = .green
         nextPt.fill = true
@@ -142,27 +104,22 @@ class TimelineViewController: UIViewController {
         let nextPt = ISPoint(title: titleString)
         //nextPt.description = ti
         //nextPt.touchUpInside = blueTouch
-        nextPt.pointColor = .red
-        nextPt.lineColor = .red
+        nextPt.pointColor = colorToUse
+        nextPt.lineColor = colorToUse
         nextPt.fill = false
         self.timeline.points.insert(nextPt, at: 0)
     }
     
-    func blueTouch(point:ISPoint) {
-        print("blueTouch")
-    }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)
         stopTimer()
-        //NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         startTimer()
-        //        NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -183,6 +140,11 @@ class TimelineViewController: UIViewController {
         if (count > 0) {
             for s in valueTimelineString {
                 print(s)
+                if s.starts(with: "Round") {colorToUse = UIColor.blue}
+                if s.starts(with: "Fastest Round") {colorToUse = UIColor.blue}
+                if s.starts(with: "CHECKPOINT") {colorToUse = UIColor.green}
+                if s.starts(with: "RACE STARTED") {colorToUse = UIColor.black}
+                if s.starts(with: "VIRTUAL CRIT IS STARTING") {colorToUse = UIColor.purple}
                 newRedPoint(titleString: s)
             }
             valueTimelineString.removeAll()
@@ -200,36 +162,6 @@ class TimelineViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //NotificationCenter.default.addObserver(self, selector: #selector(updateTL(not:)), name: Notification.Name("tlUpdate"), object: nil)
-        
-        //func newTouchAction(point:ISPoint) {
-        //print("again, \(ISPoint.self)")
-        //            let nextPt = ISPoint(title: "Next Pt Title")
-        //            nextPt.description = "Really long text, Really long text, Really long text, Really long text, Really long text, Really long text"
-        //            nextPt.touchUpInside = nil
-        //            nextPt.pointColor = UIColor.red
-        //            nextPt.lineColor = UIColor.red
-        //            nextPt.fill = true
-        //            self.timeline.points.insert(nextPt, at: 0)
-        //}
-        
-        //let touchAction = { (point:ISPoint) in
-        //            print("point \(point.title)")
-        //            let newDesc = "New Description"
-        //            let newPoint =  ISPoint(title: "\(Date())", description: newDesc, pointColor: UIColor.black, lineColor: UIColor.black, touchUpInside: newTouchAction, fill: true)
-        //            self.timeline.points.insert(newPoint, at: 0)
-        //}
-        
-        
-//        let st = getFormattedTime()
-//        let myPoints = [
-//            ISPoint(title: "VIRTUAL CRIT HAS STARTED\n", description: "\(st)", touchUpInside: nil)
-//        ]
-//        timeline.contentInset = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
-//        timeline.points = myPoints
-
-        
-        //startTimer()
         timerInterval()
         
     }

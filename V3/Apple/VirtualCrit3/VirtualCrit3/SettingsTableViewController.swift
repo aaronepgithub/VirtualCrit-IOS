@@ -12,6 +12,7 @@ import CoreLocation
 
 var bpmValue : Int = 0
 var bpmAverage:Int = 0;var bpmTotals:Int = 0;var bpmCount:Int = 0;
+
 var bpmEnabled: Bool = false
 
 var critStatus: Int = 1  //active
@@ -19,8 +20,15 @@ var wpts = [CLLocationCoordinate2D]()
 var trktps = [CLLocationCoordinate2D]()
 var gpxNames = [String]()
 
+//settings
+var settingsName: String = "TIM"
+var settingsActivityType: String = "BIKE"
+var settingsAudioStatus: String = "ON"
+var settingsSecondsPerRound: Int = 1800
+var settingsGpsStatus: String = "ON"
+var settingsMaxHR: Int = 185
 
-//create timer to display race updates
+
 
 class SettingsTableViewController: UITableViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UIDocumentInteractionControllerDelegate {
     
@@ -42,6 +50,12 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     
     @IBOutlet weak var valueNameGPX: UILabel!
     @IBOutlet weak var valueStatusGPX: UILabel!
+    
+    @IBOutlet weak var valueRiderName: UILabel!
+    @IBOutlet weak var valueGpsActive: UILabel!
+    @IBOutlet weak var valueAudio: UILabel!
+    @IBOutlet weak var valueActivityType: UILabel!
+    
     
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -91,7 +105,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         timer.invalidate()
     }
     @objc func timerInterval() {
-//update race status
+        valueStatusGPX.text = raceStatusDisplay
     }
     
     
@@ -100,27 +114,6 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         super.viewDidLoad()
         print("SettingsTableVC did Load")
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        
-//        //add pp gpx
-//        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
-//        wpts.append(w0)
-//        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
-//        wpts.append(w1)
-//        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
-//        wpts.append(w2)
-//        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
-//        wpts.append(w3)
-//
-//        let n0: String = "Prospect Park, Brooklyn, Single Loop"
-//        gpxNames.append(n0)
-//        let n1: String = "PARADE GROUND"
-//        gpxNames.append(n1)
-//        let n2: String = "LAFREAK CENTER"
-//        gpxNames.append(n2)
-//        let n3: String = "GRAND ARMY PLAZA"
-//        gpxNames.append(n3)
-        
-        
         
     }
 
@@ -135,8 +128,30 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         switch cat {
         case "00":
             print("case 00")
-        case "11":
-            print("case 11, startSim")
+            getNameDialog()
+        case "01":
+            print("case 01, GPS")
+                        if valueGpsActive.text == "ON" {settingsGpsStatus = "OFF";valueGpsActive.text = "OFF";} else {settingsGpsStatus = "ON";valueGpsActive.text = "ON"}
+        case "02":
+            print("case 02, audio")
+            if valueAudio.text == "OFF" {settingsAudioStatus = "ON";valueAudio.text = "ON";print("audioStatus is ON");} else {settingsAudioStatus = "OFF";valueAudio.text = "OFF"}
+        case "03":
+            print("case 03, activity")
+            if (valueActivityType.text == "BIKE") {
+                settingsActivityType = "RUN"
+                valueActivityType.text = "RUN"
+            } else {
+                if (valueActivityType.text == "RUN") {
+                    settingsActivityType = "ROW";
+                    valueActivityType.text = "ROW"
+                } else {
+                    settingsActivityType = "BIKE";
+                    valueActivityType.text = "BIKE"
+                }
+            }
+
+        case "13":
+            print("case 13, startSim")
             useSimRide = true
         case "12":
             print("case 12, load GPX")
@@ -155,9 +170,37 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     
     var docController:UIDocumentInteractionController!
     
+    
+    func getNameDialog() {
+        
+        let alertController = UIAlertController(title: "Rider Name", message: "", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+            
+            let name = alertController.textFields?[0].text
+            self.valueRiderName.text = name!.uppercased()
+            settingsName = name!.uppercased()
+            print("riderName:  \(settingsName)")
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = settingsName
+        }
+        
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    
     func getGPX() {
         print("getGPX")
-//        let importMenu = UIDocumentMenuViewController(documentTypes: [], in: .import)
         let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"], in: .import)
         importMenu.delegate = (self as UIDocumentMenuDelegate)
         importMenu.modalPresentationStyle = .formSheet
