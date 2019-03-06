@@ -344,10 +344,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 
                         let d = dict["fb_SPD"] as? Double ?? 0.0
                         
-                        valueTimelineString.append( "NEW SPEED PER ROUND LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MILES PER HOUR." )
-                        if settingsAudioStatus == "ON" {
-                            Utils.shared.say(sentence: "The Speed per round Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
+                        if system.actualElapsedTime > 90 {
+                            if settingsAudioStatus == "ON" {
+                                Utils.shared.say(sentence: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
+                            }
                         }
+                        valueTimelineString.append( "NEW SPEED LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MPH" )
+
                     }
                 }
             })
@@ -358,14 +361,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var arrWaypointTimes = [Int]()
     var refHandleRace: UInt = 3
     var activeRaceName: String = ""
-    var activeRaceWaypointTimesArray = [Int]()
+    var activeRaceBestWaypointTimesArray = [Int]()
     
     //REQUEST RACE DATA
     func requestRaceData(rn: String) {
         print("REQUEST RACE DATA")
         if activeRaceName == rn {
             print("already have this requested")
-            return
+            //return
+            //need for leaderboard
         }
         if activeRaceName != "" {
             print("remove listener")
@@ -389,18 +393,21 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     let wayptTimes = dict["waypointTimes"]!
                     let rtc = dict["raceTimeToComplete"]!
                     
-                    print("\(rider), \(race), \(rtc)... \(wayptTimes)")
+                    print("\(rider), \(race), \(rtc)... BEST WAYPOINT TIMES \(wayptTimes)")
                     
-                    valueTimelineString.append("RACE LEADER FOR \(race)\n\(rider)\n\(self.createTimeString(seconds: rtc as! Int))")
+                    //let rtct = rtc as! Int
+                    let rtca = (rtc as! Int) / 1000
+                    valueTimelineString.append("RACE LEADER FOR \(race)\n\(rider)\n\(self.createTimeString(seconds: rtca))")
 
                     //SPLICE UP THE WAYPOINT TIMES
                     let wtimes: String = wayptTimes as! String
                     let wtimesarr = wtimes.components(separatedBy: ",")
+                    self.activeRaceBestWaypointTimesArray.removeAll()
                     for s in (wtimesarr) {
                         print("\(s)")
-                        self.activeRaceWaypointTimesArray.append(Int(s)!)
+                        self.activeRaceBestWaypointTimesArray.append(Int(s)!)
                     }
-                    print("activeRaceWaypointTimesArray:    \(self.activeRaceWaypointTimesArray)")
+                    print("activeRaceBestWaypointTimesArray:    \(self.activeRaceBestWaypointTimesArray)")
 
                 }
             }
@@ -476,7 +483,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
-        //print("Eval Location")
+        print("Eval Location, currentCritPoint: \(currentCritPoint)")
         
         let c1 = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
         let c2 = CLLocation(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
@@ -488,8 +495,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         //print("distanceInMeters:  \(distanceInMeters)")
         //print("distanceInMeters Int:  \(distanceInMeters)")
         if distanceInMeters < 100 {
-            print("inside 100, checkpoint")
-            print("currentCritPoint \(currentCritPoint), of \(wpts.count-1)")
+            print("inside 100, currentCritPoint is \(currentCritPoint)")
+            print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
             tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
             tabBarController?.tabBar.items?[3].badgeValue = "\(wpts.count-1)"
             critStatus = 2
@@ -531,7 +538,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race started  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint += 1
                 raceStartTime = system.actualElapsedTime
-                valueTimelineString.append("RACE STARTED\n[\(VirtualCrit3.getFormattedTime())]")
+                valueTimelineString.append("RACE STARTED\nHEAD TO \(gpxNames[currentCritPoint])\n[\(VirtualCrit3.getFormattedTime())]")
                 raceStatusDisplay = "RACE STARTED"
                 raceDistanceAtStart = distance
                 waypointTimesTimString = ""
@@ -545,14 +552,43 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //other checkpoint
             print("other checkpoint  \(currentCritPoint) of \(wpts.count-1)")
             
+//            if currentCritPoint == wpts.count-1 {
+//                print("next is finish, stop processing waypoints")
+//                valueTimelineString.append("HEAD TO THE FINISH LINE\n\(VirtualCrit3.getFormattedTime())")
+//                let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
+//                addMarker(cll: cord)
+//                currentCritPoint += 1
+//                return
+//            }
+            //compare
+            let w1 = (Int(system.actualElapsedTime-raceStartTime)) * 1000
+            let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint]
+            let wtimeCompare = (w1 - w2) / 1000
+            print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
+            var strComp = ""
+            if wtimeCompare > 0 {
+                strComp = "BEHIND BY \(createTimeString(seconds: wtimeCompare))"
+            } else {
+                strComp = "AHEAD BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
+            }
+            print(strComp)
+            
+            //disp name for next waypoint
+            let strJustHitWpName = "\nARRIVED AT \(gpxNames[currentCritPoint])"
+            let strNextWpName = "\nNEXT IS \(gpxNames[currentCritPoint+1])."
+            print("next name: \(strNextWpName)")
+            
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
             valueTimelineString.append("CHECKPOINT\n\(currentCritPoint) of \(wpts.count-1)\n[\(VirtualCrit3.getFormattedTime())]")
-            currentCritPoint += 1
-            
+            valueTimelineString.append("\(strComp)\(strJustHitWpName)\(strNextWpName)\n[\(VirtualCrit3.getFormattedTime())]")
+            print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
             waypointTimesTimString += String((Int(system.actualElapsedTime-raceStartTime)) * 1000)
             waypointTimesTimString += ","
+            print("waypointTimesTimString: \(waypointTimesTimString)")
+            print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
+            currentCritPoint += 1
             
         }
         

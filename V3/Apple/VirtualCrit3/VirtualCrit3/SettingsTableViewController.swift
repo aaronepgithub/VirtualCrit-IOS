@@ -588,6 +588,8 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             let lastName = gpxNames.last
             gpxNames.insert(lastName ?? "NONE", at: 0)
             gpxNames.removeLast()
+            
+            gpxNames.append("FINISH LINE")
                 
             let firstCoords = trktps.first
             wpts.insert(firstCoords!, at: 0)
@@ -596,6 +598,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
                 wpts.append(lastCoords!)
                 
             critStatus = 0
+            print("gpxNames \(gpxNames)")
             }
 
         }

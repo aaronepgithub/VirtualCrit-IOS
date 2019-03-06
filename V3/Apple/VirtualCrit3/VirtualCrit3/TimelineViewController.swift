@@ -101,6 +101,11 @@ class TimelineViewController: UIViewController {
     func newRedPoint(titleString: String) {
         //print("newRedPoint")
         //let ti = getFormattedTime()
+        if titleString.starts(with: "ROUND") {colorToUse = UIColor.blue}
+        if titleString.starts(with: "FASTEST") {colorToUse = UIColor.blue}
+        if titleString.starts(with: "CHECKPOINT") {colorToUse = UIColor.green}
+        if titleString.starts(with: "RACE STARTED") {colorToUse = UIColor.black}
+        if titleString.starts(with: "VIRTUAL CRIT IS STARTING") {colorToUse = UIColor.purple}
         let nextPt = ISPoint(title: titleString)
         //nextPt.description = ti
         //nextPt.touchUpInside = blueTouch
@@ -145,7 +150,7 @@ class TimelineViewController: UIViewController {
                 if s.starts(with: "CHECKPOINT") {colorToUse = UIColor.green}
                 if s.starts(with: "RACE STARTED") {colorToUse = UIColor.black}
                 if s.starts(with: "VIRTUAL CRIT IS STARTING") {colorToUse = UIColor.purple}
-                newRedPoint(titleString: s)
+                newRedPoint(titleString: s.uppercased())
             }
             valueTimelineString.removeAll()
         }
