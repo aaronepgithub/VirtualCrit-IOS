@@ -736,7 +736,6 @@ extension MainViewController: CLLocationManagerDelegate {
             guard location.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
             
             if self.locations.count == 1 {
-                //let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
                 let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
                 addMarker(cll: cord)
                 tabBarController?.tabBar.items?[0].badgeValue = "1"
