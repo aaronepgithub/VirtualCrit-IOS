@@ -516,11 +516,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 
                 let t = createTimeString(seconds: Int(raceDuration))
                 var b = ""
-                if raceDuration < raceBestTime {
-                    raceBestTime = raceDuration
+                if raceDuration * 1000 < raceBestTime {
+                    raceBestTime = raceDuration * 1000
                     b = "FASTEST TIME"
                 } else {
-                    let cmp = (raceDuration - raceBestTime) / 1000
+                    let cmp = (raceDuration - (raceBestTime / 1000))
                     b = "\(createTimeString(seconds: Int(cmp))) BEHIND THE LEADER"
                 }
                 
