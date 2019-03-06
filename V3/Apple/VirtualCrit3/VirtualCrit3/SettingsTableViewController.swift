@@ -106,7 +106,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         timer.invalidate()
     }
     @objc func timerInterval() {
-        print("SETTINGS TIMER INTERVAL")
+        //print("SETTINGS TIMER INTERVAL")
         valueStatusGPX.text = raceStatusDisplay
         
     }

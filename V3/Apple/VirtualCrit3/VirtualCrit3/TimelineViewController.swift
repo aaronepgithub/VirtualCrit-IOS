@@ -140,7 +140,6 @@ class TimelineViewController: UIViewController {
     }
     
     @objc func timerInterval() {
-    print("TL TIMER INTERVAL")
         let count: Int = valueTimelineString.count
         if (count > 0) {
             for s in valueTimelineString {

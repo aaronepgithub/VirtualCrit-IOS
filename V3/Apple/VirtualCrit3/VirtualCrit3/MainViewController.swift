@@ -15,12 +15,12 @@ import SystemConfiguration
 import Mapbox
 
 struct displayStrings {
-        static var time: String = "0"
-        static var distance: String = "0"
-        static var speed: String = "0"
-        static var avgSpeed: String = "0"
-        static var pace: String = "0"
-        static var avgPace: String = "0"
+    static var time: String = "00:00:00"
+        static var distance: String = "000.00"
+        static var speed: String = "00.0"
+        static var avgSpeed: String = "00.0"
+    static var pace: String = "00:00"
+    static var avgPace: String = "00:00"
 }
 
 var todaysDateString: String = "00000000"
@@ -726,7 +726,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     avgPace = calcMinPerMile(mph: avgSpeed)
                     
                     displayStrings.time = "\(createTimeString(seconds: Int(activeTime)))"
-                    displayStrings.distance = "\(stringer1(dbl: distance))"
+                    displayStrings.distance = "\(stringer2(dbl: distance))"
                     displayStrings.speed = "\(stringer1(dbl: speedQuick))"
                     displayStrings.pace = "\(calcMinPerMile(mph: speedQuick))"
                     displayStrings.avgSpeed = "\(stringer1(dbl: avgSpeed))"
@@ -734,7 +734,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     
                     
                     mapSpeed.text = "\(stringer1(dbl: speedQuick)) MPH"
-                    mapDistance.text = "\(stringer1(dbl: distance)) MI"
+                    mapDistance.text = "\(stringer2(dbl: distance)) MI"
                     
                     //print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
                     

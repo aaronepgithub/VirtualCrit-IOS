@@ -76,7 +76,6 @@ class DashboardViewController: UIViewController {
     
     @objc func timerInterval() {
         
-        print("DASH TIMER INTERVAL")
         valuePACE.text = displayStrings.pace
         valueMPH.text = displayStrings.speed
         valueMILES.text = displayStrings.distance
