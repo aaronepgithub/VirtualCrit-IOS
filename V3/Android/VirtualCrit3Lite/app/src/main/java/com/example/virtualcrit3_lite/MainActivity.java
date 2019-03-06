@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         assert gpx != null;
         wpts = gpx.getWpts();
-        maxWaypoint = wpts.size()-1;
+        maxWaypoint = wpts.size();  //add start and finish as waypoints
 
         Log.i(TAG, "NOW THE WAYPTS \n\n\n");
 
@@ -386,11 +386,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (disBetw < distanceBetweenValue) {
                 //race is starting
                 raceStartTime = System.currentTimeMillis();
-                currentTrackpoint += 1;
+
                 Log.i(TAG, "TRACKPOINT, STARTRACE!");
                 isRaceStarted = true;
                 speakText("THE RACE IS NOW STARTING!");
-                currentWaypoint = 0;
+                //currentWaypoint = 1;
                 waypointTimesTim = new ArrayList<>();
                 waypointTimesTimString = "";
                 lastCheckpointTime = System.currentTimeMillis();
@@ -404,14 +404,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             return;
         }
 
-        Log.i(TAG, "evaluateLocations: current waypoint and wpts.size: " + currentWaypoint + ", " + wpts.size());
-        if (currentWaypoint == wpts.size() && isRaceStarted) {
+        Log.i(TAG, "evaluateLocations: current waypoint and maxWP: " + currentWaypoint + ", " + maxWaypoint);
+        if (currentWaypoint == maxWaypoint && isRaceStarted) {
             //passed all waypoints, now looking for finish
             double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
             Log.i(TAG, "evaluateLocations: waiting to finish, distance: " + disBetwMax);
             if (disBetwMax < distanceBetweenValue) {
                 Log.i(TAG, "evaluateLocations: race finished");
                 isRaceStarted = false;
+                currentWaypoint = 0;
                 long raceFinishTime = System.currentTimeMillis();
                 //raceTime is the duration of the race
                 long raceTime = raceFinishTime - raceStartTime;
@@ -454,8 +455,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
 
         }
-
-        if (isRaceStarted) {
+        Log.i(TAG, "evaluateLocations, pre-wptest: currentWaypoint, maxWP " + currentWaypoint +", "+ maxWaypoint);
+        if (isRaceStarted && currentWaypoint < maxWaypoint) {
             Log.i(TAG, "trackpointTest: race has started, check for waypoints");
             waypointTest(gpsLa, gpsLo);
         }
@@ -592,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 //    }
 
     private void waypointTest(double gpsLa, double gpsLo) {
-        Log.i(TAG, "WAYPOINT TEST, currentWaypoint: " + currentWaypoint);
+        Log.i(TAG, "WAYPOINT TEST, currentWaypoint, maxWP: " + currentWaypoint + ", " + maxWaypoint);
 
         if (!isRaceStarted) {
             Log.i(TAG, "waypointTest: race not started, return");
@@ -608,7 +609,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Log.i(TAG, "waypointTest: waiting for waypoint match, distance: " + disBetw);
         //WAYPOINT MATCH
         if (disBetw < distanceBetweenValue) {
-            Log.i(TAG, "WAYPOINT MATCH " + currentWaypoint + " OF " + (maxWaypoint+1));
+            Log.i(TAG, "WAYPOINT MATCH " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
             Log.i(TAG, "waypointTest: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
             waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
@@ -634,8 +635,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
             }
 
-            createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint+1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
-            speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint+1) + ".  " + s1);
+            createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
+            speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s1);
 
             currentWaypoint += 1;
         }
