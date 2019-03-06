@@ -117,6 +117,8 @@ import es.atrapandocucarachas.gpxparser.model.Trkpt;
 import es.atrapandocucarachas.gpxparser.model.Wpt;
 import es.atrapandocucarachas.gpxparser.parser.GpxParser;
 
+import static com.example.virtualcrit3_lite.Timer.getTimeStringFromMilliSecondsToDisplay;
+
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, PermissionsListener, OnMapReadyCallback {
 
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -399,18 +401,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         //CLOSE TO FINISH, NEW LOGIC TO EVALUATE ALL LOCATIONS
         if (currentTrackpoint > 50 && disBetwMax < 300) {
-            Log.i(TAG, "trackpointTest: currentTrackpoint>50 and disBetwMax < 300");
+            Log.i(TAG, "trackpointTest: distance to finish:  " + disBetwMax);
             addToCurrentTrackpoint = 1;
 
             if (currentTrackpoint >= maxTrackpoint && disBetwMax < distanceBetweenValue) {
-                //Log.i(TAG, "FINISHED!");
+                Log.i(TAG, "RACE FINISHED!");
                 isRaceStarted = false;
-                long raceFinishTime = newTime;
+                long raceFinishTime = System.currentTimeMillis();
                 //raceTime is the duration of the race
                 long raceTime = raceFinishTime - raceStartTime;
+                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
                 raceTimesTim.add(raceTime);
                 waypointTimesTim.add(raceTime);
                 waypointTimesTimString += String.valueOf(raceTime);
+                Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
                 postRaceProcessing(raceTime);
 
                 Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
@@ -428,16 +432,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     s = "THE FASTEST TIME.";
                 } else {
-                    s = "FASTEST [" + Timer.getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + "]";
+                    s = "FASTEST [" + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + "]";
                 }
 
-                Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-                createTimeline("FINISHED!\n" + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-                setMessageText("RACE FINISHED: " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-                speakText("RACE IS NOW FINISHED, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-
+                Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+                createTimeline("FINISHED!\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                speakText("RACE IS NOW FINISHED, YOUR TIME IS.  " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+                Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
+                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
                 Toast.makeText(getApplicationContext(),
-                        "RACE FINISHED " + Timer.getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
+                        "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
                         .show();
 
 
@@ -458,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 speakText("THE RACE IS NOW STARTING!");
 
                 currentWaypoint = 0;
-                raceStartTime = newTime;
+                raceStartTime = System.currentTimeMillis();
 
                 waypointTimesTim = new ArrayList<>();
                 waypointTimesTimString = "";
@@ -510,10 +515,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //WAYPOINT MATCH
         if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "WAYPOINT MATCH " + currentWaypoint + " OF " + (maxWaypoint));
-
+            Log.i(TAG, "waypointTest: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
-            waypointTimesTim.add(newTime - raceStartTime);
-            waypointTimesTimString += String.valueOf(newTime - raceStartTime);
+            waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
+            waypointTimesTimString += String.valueOf(System.currentTimeMillis() - raceStartTime);
             waypointTimesTimString += ",";
 
             String s1 = "";
@@ -525,11 +530,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
                         long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = Timer.getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD";
+                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD";
                     } else {
                         long l = waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = Timer.getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
+                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
                     }
                     Log.i(TAG, "waypointTest: s1:  " + s1);
                 }
@@ -603,10 +608,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
-                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + Timer.getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
+                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "Race update for:\n" + raceName + ".\nNew Race Leader is: " + riderName + ",  " + Timer.getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
+                    String post = "Race update for:\n" + raceName + ".\nNew Race Leader is: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
 
@@ -913,18 +918,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mValueTimer.setText(Timer.getTimeStringFromMilliSecondsToDisplay((int) totalMillis));
+                    mValueTimer.setText(getTimeStringFromMilliSecondsToDisplay((int) totalMillis));
 
                     TextView t1 = findViewById(R.id.tvHeader1);
-                    t1.setText(Timer.getTimeStringFromMilliSecondsToDisplay((int) totalMillis));
+                    t1.setText(getTimeStringFromMilliSecondsToDisplay((int) totalMillis));
 
                     int a1 = (int) totalMillis / 1000;
                     int a2 = (currentRound - 1) * settingsSecondsPerRound;
                     int a3 = a1 - a2;
                     int togo = settingsSecondsPerRound - a3;
-                    String togoStr = Timer.getTimeStringFromMilliSecondsToDisplay(togo);
+                    //Log.i(TAG, "run: a3, togo:  " + a3 + ", " +togo);
+                    //String togoStr = Timer.getTimeStringFromSecondsToDisplay(togo);
                     Button rnd = (Button) findViewById(R.id.valueRoundButton);
-                    rnd.setText(String.format("%s REMAIN", togoStr));
+                    rnd.setText(getTimeStringFromMilliSecondsToDisplay(togo * 1000));
                 }
             });
 
@@ -1376,7 +1382,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void displaySpeedValues() {
 
-        final String hms = Timer.getTimeStringFromMilliSecondsToDisplay((int) totalTimeGeo);
+        final String hms = getTimeStringFromMilliSecondsToDisplay((int) totalTimeGeo);
 
         //UPDATE UI WITH SPEED AND DISTANCE
         runOnUiThread(new Runnable() {
