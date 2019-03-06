@@ -610,6 +610,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //WAYPOINT MATCH
         if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "WAYPOINT MATCH " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
+            setMessageText("RACE CHECKPOINT " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
             Log.i(TAG, "waypointTest: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
             waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
@@ -1025,7 +1026,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     //Log.i(TAG, "run: a3, togo:  " + a3 + ", " +togo);
                     //String togoStr = Timer.getTimeStringFromSecondsToDisplay(togo);
                     Button rnd = (Button) findViewById(R.id.valueRoundButton);
-                    rnd.setText(getTimeStringFromMilliSecondsToDisplay(togo * 1000));
+                    String s1 = getTimeStringFromMilliSecondsToDisplay(togo * 1000);
+                    String s2 = " ROUND";
+//                    rnd.setText(getTimeStringFromMilliSecondsToDisplay(togo * 1000));
+                    rnd.setText(s1+s2);
                 }
             });
 
@@ -1057,7 +1061,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setVisibility(View.VISIBLE);
-                    setMessageText("HOME");
+                    //setMessageText("HOME");
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     sv.setVisibility(View.GONE);
@@ -1106,6 +1110,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         getSharedPrefs();
 
         engine = new TextToSpeech(this, this);
+        //startGPS();
 
         int yearInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.YEAR);
         int monthInt = Calendar.getInstance(Locale.ENGLISH).get(Calendar.MONTH);
@@ -1118,6 +1123,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
 
     }
 
@@ -1535,6 +1541,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void startGPS() {
+
         Log.i(TAG, "startGPS: ");
         createTimeline("STARTING GPS", Timer.getCurrentTimeStamp());
 
@@ -1622,9 +1629,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             @Override
             public void run() {
                 TextView mGPS = findViewById(R.id.valueGPS);
+                Button bGPS = findViewById(R.id.clickGPSButton);
                 if (settingsGPS.equals("OFF")) {
                     mGPS.setText("ON");
                     settingsGPS = "ON";
+                    bGPS.setText("GPS STATUS");
                     Log.i(TAG, "clickGPS: ON");
                     startGPS();
                     // Show Alert
@@ -1634,6 +1643,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 } else {
                     mGPS.setText("OFF");
                     settingsGPS = "OFF";
+                    bGPS.setText("GPS STATUS");
                     Log.i(TAG, "clickGPS: OFF");
                     //STOP GPS
                     try {
