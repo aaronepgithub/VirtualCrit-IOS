@@ -116,6 +116,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         print("SettingsTableVC did Load")
+        valueRiderName.text = settingsName.uppercased()
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
     }
@@ -184,6 +185,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             self.valueRiderName.text = name!.uppercased()
             settingsName = name!.uppercased()
             print("riderName:  \(settingsName)")
+            UserDefaults.standard.set(settingsName, forKey: "udName")
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
@@ -583,7 +585,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
         
         if elementName == "gpx" {
             if gpxNames.count > 0 {
-            valueNameGPX.text = gpxNames.last
+            valueNameGPX.text = gpxNames.last?.uppercased()
             valueStatusGPX.text = "AWAITING ARRIVAL"
                 
             //update arrays

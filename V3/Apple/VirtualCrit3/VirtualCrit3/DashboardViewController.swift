@@ -35,6 +35,14 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var bottomLeft: UILabel!
     @IBOutlet weak var bottomRight: UILabel!
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+        } else {
+            print("Portrait")
+        }
+    }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(false)

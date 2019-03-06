@@ -56,6 +56,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         formatter.dateFormat = "yyyyMMdd"
         todaysDateString = formatter.string(from: date)
         
+        settingsName = UserDefaults.standard.string(forKey: "udName") ?? "TIM\(Int.random(in: 101 ... 999))"
+        print("settingsName: \(settingsName)")
         // Set the map view's delegate
         mapView.delegate = self
         
@@ -133,8 +135,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         startTimer()
         startLocationUpdates()
         
-//        let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
-//        addMarker(cll: cord)
+
+        
     }
     
     
