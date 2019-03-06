@@ -519,6 +519,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 if raceDuration < raceBestTime {
                     raceBestTime = raceDuration
                     b = "FASTEST TIME"
+                } else {
+                    let cmp = (raceDuration - raceBestTime) / 1000
+                    b = "\(createTimeString(seconds: Int(cmp))) BEHIND THE LEADER"
                 }
                 
                 waypointTimesTimString += String(Int(raceDuration) * 1000)
@@ -574,15 +577,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             print(strComp)
             
             //disp name for next waypoint
-            let strJustHitWpName = "\nARRIVED AT \(gpxNames[currentCritPoint])"
-            let strNextWpName = "\nNEXT IS \(gpxNames[currentCritPoint+1])."
+            let strJustHitWpName = "\nARRIVED AT \(gpxNames[currentCritPoint]),"
+            let strNextWpName = "\nNEXT IS \(gpxNames[currentCritPoint+1]).\n"
             print("next name: \(strNextWpName)")
             
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
             valueTimelineString.append("CHECKPOINT\n\(currentCritPoint) of \(wpts.count-1)\n[\(VirtualCrit3.getFormattedTime())]")
-            valueTimelineString.append("\(strComp)\(strJustHitWpName)\(strNextWpName)\n[\(VirtualCrit3.getFormattedTime())]")
+            valueTimelineString.append("\(strComp)\(strJustHitWpName)\(strNextWpName)[\(VirtualCrit3.getFormattedTime())]  ")
             print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
             waypointTimesTimString += String((Int(system.actualElapsedTime-raceStartTime)) * 1000)
             waypointTimesTimString += ","

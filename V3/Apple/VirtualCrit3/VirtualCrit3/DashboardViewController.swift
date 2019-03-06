@@ -44,6 +44,7 @@ class DashboardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        timerInterval()
         startTimer()
     }
     
@@ -66,6 +67,8 @@ class DashboardViewController: UIViewController {
     }
     
     @objc func timerInterval() {
+        
+        print("DASH TIMER INTERVAL")
         valuePACE.text = displayStrings.pace
         valueMPH.text = displayStrings.speed
         valueMILES.text = displayStrings.distance
