@@ -338,9 +338,31 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
 
+
         addAnotherMarker();
         Log.i(TAG, "startGPX: requestRaceData");
+
+        createTimeline("RACE LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
         requestRaceData();
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView mGPS = findViewById(R.id.valueGPS);
+                Button bGPS = findViewById(R.id.clickGPSButton);
+                if (settingsGPS.equals("OFF")) {
+                    mGPS.setText("ON");
+                    settingsGPS = "ON";
+                    bGPS.setText("GPS STATUS");
+                    Log.i(TAG, "clickGPS: ON");
+                    startGPS();
+                    // Show Alert
+                    Toast.makeText(getApplicationContext(),
+                            "GPS ON", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
 
     }
 
@@ -389,13 +411,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 Log.i(TAG, "TRACKPOINT, STARTRACE!");
                 isRaceStarted = true;
-                speakText("THE RACE IS NOW STARTING!");
+                speakText("THE RACE IS NOW STARTING!  HEAD TO " + wpts.get(currentWaypoint).getName());
                 //currentWaypoint = 1;
                 waypointTimesTim = new ArrayList<>();
                 waypointTimesTimString = "";
                 lastCheckpointTime = System.currentTimeMillis();
 
-                createTimeline("RACE STARTING\n" + trkName, Timer.getCurrentTimeStamp());
+
+
+                createTimeline("RACE STARTING\n" + trkName.toUpperCase() + ".  HEAD TO " + wpts.get(currentWaypoint).getName().toUpperCase(), Timer.getCurrentTimeStamp());
                 setMessageText("RACE STARTING");
                 Toast.makeText(getApplicationContext(),
                         "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
@@ -465,132 +489,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }  //end eval locations
 
 
-//    private void trackpointTest(final double gpsLa, final double gpsLo) {
-//
-////        long offTrackChecker = 600000; //10 min
-////
-////        if (lastCheckpointTime > 0 && (System.currentTimeMillis() - lastCheckpointTime) > offTrackChecker) {
-////            Log.i(TAG, "TPTEST: TOO LONG BEWEEN CHECKPOINTS, OVER xx MIN, OFFTRACK, RESET");
-////            createTimeline("OFF TRACK, START OVER", Timer.getCurrentTimeStamp());
-////            resetRace();
-////            return;
-////        }
-////
-////        int localTp = currentTrackpoint;
-////        if (localTp > maxTrackpoint - 1) {
-////            localTp = maxTrackpoint - 1;
-////        }
-////
-////        if (trkpts.size() == 0) {
-////            Log.i(TAG, "trackpointTest: trkpts.size is 0, return");
-////            return;
-////        }
-////
-////        final double disBetw = distance_between(gpsLa, gpsLo, trkpts.get(localTp).getLat(), trkpts.get(localTp).getLon());
-////        final double disBetwMax = distance_between(gpsLa, gpsLo, trkpts.get(maxTrackpoint - 1).getLat(), trkpts.get(maxTrackpoint - 1).getLon());
-////
-////
-////        int addToCurrentTrackpoint = 10;
-////
-////        CLOSE TO FINISH, NEW LOGIC TO EVALUATE ALL LOCATIONS
-////        if (currentTrackpoint > 50 && disBetwMax < 300) {
-////            Log.i(TAG, "trackpointTest: distance to finish:  " + disBetwMax);
-////            addToCurrentTrackpoint = 1;
-////
-////            if (currentTrackpoint >= maxTrackpoint && disBetwMax < distanceBetweenValue) {
-////                Log.i(TAG, "RACE FINISHED!");
-////                isRaceStarted = false;
-////                long raceFinishTime = System.currentTimeMillis();
-////                //raceTime is the duration of the race
-////                long raceTime = raceFinishTime - raceStartTime;
-////                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-////                raceTimesTim.add(raceTime);
-////                waypointTimesTim.add(raceTime);
-////                waypointTimesTimString += String.valueOf(raceTime);
-////                Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
-////                postRaceProcessing(raceTime);
-////
-////                Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
-////                Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
-////
-////                String s;
-////                if (bestRaceTime == -1) {
-////                    bestRaceTime = raceTime + 1;
-////                }
-////
-////                if (raceTime < bestRaceTime) {
-////                    bestRaceTime = raceTime;
-////                    //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
-////                    waypointTimesBest = waypointTimesTim;
-////
-////                    s = "THE FASTEST TIME.";
-////                } else {
-////                    s = "FASTEST [" + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + "]";
-////                }
-////
-////                Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-////                createTimeline("FINISHED!\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-////                setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-////                speakText("RACE IS NOW FINISHED, YOUR TIME IS.  " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-////                Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
-////                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-////                Toast.makeText(getApplicationContext(),
-////                        "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
-////                        .show();
-////
-////
-////                //reset
-////                resetRace();
-////                return;
-////            }
-////
-////            Log.i(TAG, "trackpointTest: not finished yet, increment by 1, current tkpoint: " + currentTrackpoint);
-////        }
-////
-////        if (disBetw < distanceBetweenValue) {
-////            //Log.i(TAG, "TRACKPOINT MATCH: " + localTp + " DISTBTW: " + disBetw );
-////
-//////            if (localTp <= 1) {
-////////                Log.i(TAG, "TRACKPOINT, STARTRACE!");
-////////                isRaceStarted = true;
-////////                speakText("THE RACE IS NOW STARTING!");
-////////                currentWaypoint = 0;
-////////                raceStartTime = System.currentTimeMillis();
-//////
-////////                waypointTimesTim = new ArrayList<>();
-////////                waypointTimesTimString = "";
-////////                lastCheckpointTime = System.currentTimeMillis();
-////////
-////////                createTimeline("RACE STARTING\n" + trkName, Timer.getCurrentTimeStamp());
-////////                setMessageText("RACE STARTING");
-////////                Toast.makeText(getApplicationContext(),
-////////                        "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
-////////                        .show();
-//////
-//////
-//////            }
-////
-////            //MADE CHECKPOINT BUT NOT START OR FINISH
-////            if (localTp > 5 && localTp < maxTrackpoint) {
-////                Log.i(TAG, "TRACKPOINT " + currentTrackpoint + " OF " + (maxTrackpoint - 1));
-////                //createTimeline("CHECKPOINT " + currentTrackpoint + " OF " + (maxTrackpoint - 1), Timer.getCurrentTimeStamp());
-////                lastCheckpointTime = System.currentTimeMillis();
-////                addToCurrentTrackpoint = 10;
-////
-////            }
-////
-////            currentTrackpoint += addToCurrentTrackpoint;
-////            Log.i(TAG, "trackpointTest: currentTrackpoint:  " + currentTrackpoint);
-////        }
-//
-//
-////        if (isRaceStarted == true) {
-////            //Log.i(TAG, "trackpointTest: race has started, check for waypoints");
-////            waypointTest(gpsLa, gpsLo);
-////        }
-//
-//
-//    }
 
     private void waypointTest(double gpsLa, double gpsLo) {
         Log.i(TAG, "WAYPOINT TEST, currentWaypoint, maxWP: " + currentWaypoint + ", " + maxWaypoint);
@@ -626,18 +524,36 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     if ((waypointTimesBest.get(currentWaypoint) > waypointTimesTim.get(currentWaypoint))) {
                         long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD";
+                        if (i < 2000) {
+                            s1 = "EVEN WITH THE LEADER";
+                        } else {
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD";
+                        }
+
                     } else {
                         long l = waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint);
                         int i = (int) l;
-                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
+                        if (i < 2000) {
+                            s1 = "EVEN WITH THE LEADER";
+                        } else {
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
+                        }
+
                     }
                     Log.i(TAG, "waypointTest: s1:  " + s1);
                 }
             }
 
-            createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1, Timer.getCurrentTimeStamp());
-            speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s1);
+            if ((currentWaypoint + 1) == wpts.size()) {
+                Log.i(TAG, "waypointTest: next stop is finish");
+
+                createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
+                speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s1 + ".  HEAD TO FINISH");
+            } else {
+                createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1 + "\nHEAD TO " + wpts.get(currentWaypoint+1).getName(), Timer.getCurrentTimeStamp());
+                speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s1 + ".  HEAD TO " + wpts.get(currentWaypoint+1).getName());
+            }
+
 
             currentWaypoint += 1;
         }
@@ -685,11 +601,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void requestRaceData() {
 
-//TODO...REMOVE OLD OBSERVERS
+//TODO...REMOVE OLD OBSERVERS IF DIFFERENT RACE IS LOADED
 
-        Log.i(TAG, "fbWrite Race Data: ");
+        Log.i(TAG, "fb request race data for " + trkName);
         String raceURL = "race/" + trkName;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
+
 
         //REQUEST RACE DATA
         mDatabase.limitToFirst(1).orderByChild("raceTimeToComplete").addValueEventListener(new ValueEventListener() {
@@ -707,7 +624,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "Race update for:\n" + raceName + ".\nNew Race Leader is: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
+                    String post = "RACE UPDATE:\n" + raceName.toUpperCase() + ".\nRACE LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
+                    speakText("RACE LEADER IS " + riderName + ".  FOR " + raceName);
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
 
@@ -1079,7 +997,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     tl.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_settings:
-                    setMessageText("SETTINGS");
+                    //setMessageText("SETTINGS");
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
@@ -1134,6 +1052,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void addAnotherMarker() {
 
+
         raceNumber += 1;
         if (trkpts.size() <= 1) {
             Log.i(TAG, "addAnotherMarker: no course loaded");
@@ -1163,6 +1082,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 Style style = mapboxMap.getStyle();
 
+                if (raceNumber > 10) {
+                    Log.i(TAG, "onMapReady: remove source and layer");
+                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
+                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
+
+                }
 
                 style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
                         FeatureCollection.fromFeatures(markerCoordinates)));
@@ -1907,21 +1832,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             @Override
             public void run() {
                 TextView tv1 = MainActivity.this.findViewById(R.id.valueBluetoothDevice1);
-                TextView tv2 = MainActivity.this.findViewById(R.id.valueBluetoothDevice2);
-                TextView tv3 = MainActivity.this.findViewById(R.id.valueBluetoothDevice3);
+//                TextView tv2 = MainActivity.this.findViewById(R.id.valueBluetoothDevice2);
+//                TextView tv3 = MainActivity.this.findViewById(R.id.valueBluetoothDevice3);
                 if (tv1.getText().equals("")) {
                     Log.i(TAG, "setBluetoothDeviceNames: tv1");
                     tv1.setText(x);
                     return;
                 }
-                if (tv2.getText().equals("")) {
-
-                    tv2.setText(x);
-                    return;
-                }
-                if (tv3.getText().equals("")) {
-                    tv3.setText(x);
-                }
+//                if (tv2.getText().equals("")) {
+//
+//                    tv2.setText(x);
+//                    return;
+//                }
+//                if (tv3.getText().equals("")) {
+//                    tv3.setText(x);
+//                }
                 Log.i(TAG, "setBluetoothDeviceNames: all name slots taken");
 
             }
