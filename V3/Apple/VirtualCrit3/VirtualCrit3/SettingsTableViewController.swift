@@ -236,10 +236,6 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                     peripheral.discoverCharacteristics([transferCharacteristicUUID], for: service)
                 }
                 
-//                if (service.uuid == CBUUID(string: CSC_Service)) {
-//                    let transferCharacteristicUUID = CBUUID.init(string: CSC_Char)
-//                    peripheral.discoverCharacteristics([transferCharacteristicUUID], for: service)
-//                }
             }
         }
     }
@@ -257,17 +253,11 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                     print("didDiscoverChar HR for \(peripheral.name!)")
                     valueBluetoothDeviceStatus.text = "AWAITING DATA"
                 }
-//                if characteristic.uuid == CBUUID(string: CSC_Char) {
-//                    peripheral.setNotifyValue(true, for: characteristic)
-//                    print("didDiscoverChar CSC for \(peripheral.name!)")
-//                }
+
             }
         }
     }
     
-//    var bpmValue : Int = 0
-//    var bpmAverage:Int = 0;var bpmTotals:Int = 0;var bpmCount:Int = 0;
-//    var bpmEnabled: Bool = false
     
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
@@ -291,11 +281,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 bpmValue = Int(UInt16(array[2] * 0xFF) + UInt16(array[1]))
                 //hr = stringer(dbl: Double(bpmValue), len: 0)
             }
-            //usingBTforHeartrate = true
-            //current.currentHR = bpmValue
-            //current.currentScore = getScoreFromHR(x: Double(current.currentHR))
-            //let str: String = "\(current.currentHR):\(stringer(dbl: current.currentScore, len: 0))"
-            //out_Btn1.setTitle(str, for: .normal)
+
             bpmCount += 1
             bpmTotals += bpmValue
             bpmAverage = bpmTotals / bpmCount
@@ -304,43 +290,6 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             valueBluetoothStatus.text = "HEARTRATE VALUE: \(bpmValue)"
             
         }
-        
-        
-//        func decodeCSC(withData data : Data) {
-//            let WHEEL_REVOLUTION_FLAG               : UInt8 = 0x01
-//            let CRANK_REVOLUTION_FLAG               : UInt8 = 0x02
-//            let value = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count))
-//            let flag = value[0]
-//            if flag & WHEEL_REVOLUTION_FLAG == 1 {
-//                //print("SPD value[1]");print(value[1])
-//                if value[1] > 0 {
-//                    //out_Btn2.setTitle(String(value[1]), for: .normal)
-//                    usingBTforSpeed = true
-//                }
-//                processWheelData(withData: data)
-//                if flag & CRANK_REVOLUTION_FLAG == 2 {
-//                    if value[7] > 0 {
-//                        //out_Btn3.setTitle(String(value[7]), for: .normal)
-//                        usingBTforCadence = true
-//                    }
-//                    //print("CAD value[7]");print(value[7])
-//                    processCrankData(withData: data, andCrankRevolutionIndex: 7)
-//                }
-//            } else {
-//                if flag & CRANK_REVOLUTION_FLAG == 2 {
-//                    if value[1] > 0 {
-//                        //out_Btn3.setTitle(String(value[1]), for: .normal)
-//                        usingBTforCadence = true
-//                    }
-//                    //print("CAD value[1]");print(value[1])
-//                    processCrankData(withData: data, andCrankRevolutionIndex: 1)
-//                }
-//            }
-//        }
-        
-    
-        
-        
         
         
         if characteristic.uuid == CBUUID(string: HR_Char) {
@@ -355,19 +304,6 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             decodeHRValue(withData: characteristic.value!)
         }
         
-//        if characteristic.uuid == CBUUID(string: CSC_Char) {
-//            guard characteristic.value != nil else {
-//                print("Characteristic Value is nil on this go-round")
-//                return
-//            }
-//
-//            if error != nil {
-//                print("Error updating value for characteristic: \(characteristic) - \(String(describing: error?.localizedDescription))")
-//                return
-//            }
-//
-//            decodeCSC(withData: characteristic.value!)
-//        }
     }
     
     
@@ -453,8 +389,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 self.valueBluetoothName.text = bn
                 self.valueBluetoothDeviceStatus.text = "CONNECTING.."
                     
-                    valueTimelineString.append("Connecting to \(String(describing: bn)).    [\(VirtualCrit3.getFormattedTime())] ")
-                    
+                    addValueToTimelineString(s: "Connecting to \(String(describing: bn)).")
                 } else {
                     print("nothing to connect to")
                     self.valueBluetoothDeviceStatus.text = "NONE FOUND"
@@ -558,7 +493,6 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             trktps.append(CLLocationCoordinate2DMake(CLLocationDegrees(lat)!, CLLocationDegrees(lon)!))
         }
         
-        //print("Size of wpts \(wpts.count), Size of trkpts \(trktps.count)")
         
     }
     

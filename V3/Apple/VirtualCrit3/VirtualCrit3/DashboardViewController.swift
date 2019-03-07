@@ -87,7 +87,8 @@ class DashboardViewController: UIViewController {
             topRight.text = "\(bpmValue) BPM"
             bottomRight.text = "\(bpmAverage) BPM"
         } else {
-            topRight.text = "\(displayStrings.distance) MI"
+//            topRight.text = "\(displayStrings.distance) MI"
+            topRight.text = "\(getFormattedTime())"
             bottomRight.text = "\(displayStrings.avgPace) PACE"
         }
     }

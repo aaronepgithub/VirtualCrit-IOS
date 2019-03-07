@@ -98,7 +98,7 @@ class TimelineViewController: UIViewController {
         self.timeline.points.insert(nextPt, at: 0)
 
     }
-    func newRedPoint(titleString: String) {
+    func newRedPoint(titleString: String, dateString: String) {
         //print("newRedPoint")
         //let ti = getFormattedTime()
         if titleString.starts(with: "ROUND") {colorToUse = UIColor.blue}
@@ -107,7 +107,7 @@ class TimelineViewController: UIViewController {
         if titleString.starts(with: "RACE STARTED") {colorToUse = UIColor.black}
         if titleString.starts(with: "VIRTUAL CRIT IS STARTING") {colorToUse = UIColor.purple}
         let nextPt = ISPoint(title: titleString)
-        //nextPt.description = ti
+        nextPt.description = dateString
         //nextPt.touchUpInside = blueTouch
         nextPt.pointColor = colorToUse
         nextPt.lineColor = colorToUse
@@ -142,6 +142,11 @@ class TimelineViewController: UIViewController {
     @objc func timerInterval() {
         let count: Int = valueTimelineString.count
         if (count > 0) {
+            var d: String = ""
+            for t in valueTimelineStringDate {
+                print(t)
+                d = t
+            }
             for s in valueTimelineString {
                 print(s)
                 if s.starts(with: "Round") {colorToUse = UIColor.blue}
@@ -149,7 +154,7 @@ class TimelineViewController: UIViewController {
                 if s.starts(with: "CHECKPOINT") {colorToUse = UIColor.green}
                 if s.starts(with: "RACE STARTED") {colorToUse = UIColor.black}
                 if s.starts(with: "VIRTUAL CRIT IS STARTING") {colorToUse = UIColor.purple}
-                newRedPoint(titleString: s.uppercased())
+                newRedPoint(titleString: s.uppercased(), dateString: d)
             }
             valueTimelineString.removeAll()
         }
