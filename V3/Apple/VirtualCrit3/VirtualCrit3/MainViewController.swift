@@ -221,6 +221,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //new race, start over
             //reset distance, timee, etc.
             currentCritPoint = 0
+            print("reset race from critStatus at 0, currentCritPoint is 0")
             
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
             addMarker(cll: cord)
@@ -231,6 +232,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if critStatus == 10 {
             if gpxNames.first != nil {
                 critStatus = 0
+                print("critStatus is 10, requestRaceData for \(gpxNames.first!)")
                 requestRaceData(rn: gpxNames.first!)
             }
 
@@ -507,7 +509,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
-        print("Eval Location, currentCritPoint: \(currentCritPoint)")
+        //print("Eval Location, currentCritPoint: \(currentCritPoint)")
         if wpts.count == 0 {
             print("no race loaded")
             return
@@ -532,6 +534,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             if wpts.count-1 == currentCritPoint {
                 print("race finished, reset  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint = 0
+                print("race finished, currentCritPoint is 0")
                 raceStatusDisplay = "RACE COMPLETE"
                 raceFinishTime = system.actualElapsedTime
                 raceDuration = raceFinishTime - raceStartTime
@@ -572,7 +575,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race started  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint += 1
                 raceStartTime = system.actualElapsedTime
-                addValueToTimelineString(s: "RACE STARTED\n\(gpxNames.first!)\nHEAD TO \(gpxNames[currentCritPoint])")
+                addValueToTimelineString(s: "RACE STARTED\n\(gpxNames.first!),\nHEAD TO \(gpxNames[currentCritPoint])")
                 raceStatusDisplay = "RACE STARTED"
                 speakThis(spk: "RACE HAS STARTED.  GOTO \(gpxNames[currentCritPoint])")
                 raceDistanceAtStart = distance
@@ -585,7 +588,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             }
             
             //other checkpoint
-            print("other checkpoint  \(currentCritPoint) of \(wpts.count-1)")
+            print("race not at Start or Finish  \(currentCritPoint) of \(wpts.count-1)")
             
             //compare
             let w1 = (Int(system.actualElapsedTime-raceStartTime)) * 1000
@@ -601,7 +604,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             print(strComp)
             
             //disp name for next waypoint
-            let strJustHitWpName = "\nARRIVED AT \(gpxNames[currentCritPoint])"
+            let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPoint])"
             let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPoint+1]).\n"
             print("next name: \(strNextWpName)")
             
