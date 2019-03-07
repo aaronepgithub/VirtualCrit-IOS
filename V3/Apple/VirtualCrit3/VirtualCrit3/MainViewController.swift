@@ -244,7 +244,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         
         if useSimRide == true && system.actualElapsedTime > 20 {
-            simRide()
+//            simRide()
         }
         
     }
@@ -594,18 +594,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //other checkpoint
             print("race not at Start or Finish  \(currentCritPoint) of \(wpts.count-1)")
             
-            //compare
-            let w1 = (Int(system.actualElapsedTime-raceStartTime)) * 1000
-            let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint]
-            let wtimeCompare = (w1 - w2) / 1000
-            print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
             var strComp = ""
-            if wtimeCompare > 0 {
-                strComp = "BEHIND BY \(createTimeString(seconds: wtimeCompare))"
-            } else {
-                strComp = "AHEAD BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
+            
+            if activeRaceBestWaypointTimesArray.count > 0 {
+                //compare
+                let w1 = (Int(system.actualElapsedTime-raceStartTime)) * 1000
+                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint]
+                let wtimeCompare = (w1 - w2) / 1000
+                print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
+                
+                if wtimeCompare > 0 {
+                    strComp = "BEHIND BY \(createTimeString(seconds: wtimeCompare))"
+                } else {
+                    strComp = "AHEAD BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
+                }
+                print(strComp)
+                print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
             }
-            print(strComp)
+            
             
             //disp name for next waypoint
             let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPoint])"
@@ -623,7 +629,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             waypointTimesTimString += String((Int(system.actualElapsedTime-raceStartTime)) * 1000)
             waypointTimesTimString += ","
             print("waypointTimesTimString: \(waypointTimesTimString)")
-            print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
+            
             currentCritPoint += 1
             
         }
@@ -834,8 +840,12 @@ extension MainViewController: CLLocationManagerDelegate {
 
                     coords.append(location.coordinate)
                     print("location.speed: \(location.speed)")
-                    if location.speed > 0 {
+
+                    if location.speed > 0 || useSimRide == true {
                         speedQuick = location.speed * 2.23694
+                        if useSimRide == true {
+                            speedQuick = 5.0
+                        }
                         pace = calcMinPerMile(mph: speedQuick)
                         avgSpeed = Double(Double(distance) / Double(activeTime / 60 / 60))
                         avgPace = calcMinPerMile(mph: avgSpeed)

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:xc_ppgpx.gpx">
+   </FileRef>
+   <FileRef
       location = "group:VirtualCrit3.xcodeproj">
    </FileRef>
    <FileRef
