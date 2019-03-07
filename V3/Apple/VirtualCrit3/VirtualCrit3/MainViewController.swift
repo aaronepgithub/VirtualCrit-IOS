@@ -37,6 +37,7 @@ func addValueToTimelineString(s: String) {
     valueTimelineStringDate.append(t)
 }
 
+
 class MainViewController: UIViewController, MGLMapViewDelegate {
 
     @IBOutlet weak var mapViewMessageBar: UILabel!
@@ -76,7 +77,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         startAtLaunch()
         
-        addValueToTimelineString(s: "VIRTUAL CRIT IS STARTING, PROCEED TO THE START LINE")
+        addValueToTimelineString(s: "VIRTUAL CRIT IS STARTING, LOAD A RACE AND GO")
         
         //add pp gpx
         let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
@@ -227,6 +228,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
         }
         
+        if critStatus == 10 {
+            if gpxNames.first != nil {
+                critStatus = 0
+                requestRaceData(rn: gpxNames.first!)
+            }
+
+        }
+        
         
         if useSimRide == true && system.actualElapsedTime > 20 {
             simRide()
@@ -354,9 +363,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         let d = dict["fb_SPD"] as? Double ?? 0.0
                         
                         if system.actualElapsedTime > 90 {
-                            if settingsAudioStatus == "ON" {
-                                Utils.shared.say(sentence: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
-                            }
+                            self.speakThis(spk: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
+//                            if settingsAudioStatus == "ON" {
+//                                Utils.shared.say(sentence: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
+//                            }
                         }
                         addValueToTimelineString(s: "NEW SPEED LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MPH")
 
@@ -365,6 +375,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             })
             //end request round, speed, leader
         
+    }
+    
+    func speakThis(spk: String) {
+        if settingsAudioStatus == "ON" {
+            Utils.shared.say(sentence: spk)
+        }
     }
     
     var arrWaypointTimes = [Int]()
@@ -405,8 +421,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     
                     //let rtct = rtc as! Int
                     let rtca = (rtc as! Int) / 1000
-                    addValueToTimelineString(s:"RACE LEADER FOR \(race).\n\(rider): \(self.createTimeString(seconds: rtca))")
-
+                    addValueToTimelineString(s:"RACE LEADER FOR: \(race), \n\(rider): \(self.createTimeString(seconds: rtca))")
+                    self.speakThis(spk: "RACE LEADER FOR: \(race), \n\(rider): \(self.createTimeString(seconds: rtca))")
                     //SPLICE UP THE WAYPOINT TIMES
                     let wtimes: String = wayptTimes as! String
                     let wtimesarr = wtimes.components(separatedBy: ",")
@@ -492,7 +508,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         print("Eval Location, currentCritPoint: \(currentCritPoint)")
-        if wpts.count == 0 {return}
+        if wpts.count == 0 {
+            print("no race loaded")
+            return
+        }
         let c1 = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
         let c2 = CLLocation(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
         let distanceInMeters = c1.distance(from: c2)  //it is a double
@@ -535,10 +554,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 waypointTimesTimString += String(Int(raceDuration) * 1000)
                 postRaceProcessing(rt: Int(raceDuration))
                 addValueToTimelineString(s: "RACE COMPLETE\n\(t)\n\(b)")
+                speakThis(spk: "RACE COMPLETE\n\(t)\n\(b)")
                 
-                tabBarController?.tabBar.items?[2].badgeValue?.removeAll()
-                tabBarController?.tabBar.items?[3].badgeValue?.removeAll()
-                tabBarController?.tabBar.items?[0].badgeValue?.removeAll()
+//                tabBarController?.tabBar.items?[2].badgeValue?.removeAll()
+//                tabBarController?.tabBar.items?[3].badgeValue?.removeAll()
+//                tabBarController?.tabBar.items?[0].badgeValue?.removeAll()
+                self.tabBarController?.viewControllers?[0].tabBarItem.badgeValue = nil
+                self.tabBarController?.viewControllers?[2].tabBarItem.badgeValue = nil
+                self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
                 return
                 
                 //reset
@@ -549,11 +572,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race started  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint += 1
                 raceStartTime = system.actualElapsedTime
-                addValueToTimelineString(s: "RACE STARTED,\nHEAD TO \(gpxNames[currentCritPoint])")
+                addValueToTimelineString(s: "RACE STARTED\n\(gpxNames.first!)\nHEAD TO \(gpxNames[currentCritPoint])")
                 raceStatusDisplay = "RACE STARTED"
+                speakThis(spk: "RACE HAS STARTED.  GOTO \(gpxNames[currentCritPoint])")
                 raceDistanceAtStart = distance
                 waypointTimesTimString = ""
-                requestRaceData(rn: gpxNames.first!)
+//                requestRaceData(rn: gpxNames.first!)
                 
                 let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
                 addMarker(cll: cord)
@@ -578,14 +602,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             //disp name for next waypoint
             let strJustHitWpName = "\nARRIVED AT \(gpxNames[currentCritPoint])"
-            let strNextWpName = "\nNEXT IS \(gpxNames[currentCritPoint+1]).\n"
+            let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPoint+1]).\n"
             print("next name: \(strNextWpName)")
             
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
             let cp: String = "[ \(currentCritPoint) of \(wpts.count-1) ], "
-            addValueToTimelineString(s: "\(strComp)\(strJustHitWpName) \(cp) \(strNextWpName)")
+            addValueToTimelineString(s: "\(strJustHitWpName) \(cp) \(strNextWpName) \(strComp)  ")
+            speakThis(spk: "\(strJustHitWpName), \(strNextWpName), \(strComp)")
+            
             print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
             waypointTimesTimString += String((Int(system.actualElapsedTime-raceStartTime)) * 1000)
             waypointTimesTimString += ","
@@ -692,10 +718,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
             addMarker(cll: cord)
-            tabBarController?.tabBar.items?[0].badgeValue = "1"
+            //tabBarController?.tabBar.items?[0].badgeValue = "1"
         }
         if simCount > 1 {
-            tabBarController?.tabBar.items?[0].badgeValue = "2"
+            //tabBarController?.tabBar.items?[0].badgeValue = "2"
             activeTime += Double(simCount)
         }
         if simCount > 2 {
@@ -777,11 +803,11 @@ extension MainViewController: CLLocationManagerDelegate {
             if self.locations.count == 1 {
                 let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
                 addMarker(cll: cord)
-                tabBarController?.tabBar.items?[0].badgeValue = "1"
+                //tabBarController?.tabBar.items?[0].badgeValue = "1"
             }
             
             if self.locations.count > 1 {
-                tabBarController?.tabBar.items?[0].badgeValue = "2"
+                //tabBarController?.tabBar.items?[0].badgeValue = "2"
                 let ts = Double((location.timestamp.timeIntervalSince(self.locations.last!.timestamp)))
                 if ts < 20 {
                     activeTime += ts

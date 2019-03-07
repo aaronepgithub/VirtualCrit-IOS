@@ -341,18 +341,12 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                         print("set Notify Value to False")
                         return
                     }
-//                    if characteristic.uuid == CBUUID.init(string: CSC_Char) {
-//                        peripheral.setNotifyValue(false, for: characteristic)
-//                        print("set Notify Value to False")
-//                        return
-//                    }
                     
                 }
             }
         }
         centralManager.cancelPeripheralConnection(peripheral)
         print("Cancel Connection")
-        //self.BLTE_tableViewOutlet.reloadData()
     }
     
     
@@ -367,13 +361,10 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             print("Central Manager is already scanning!!")
             return
         } else {
-//            self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: CSC_Service), CBUUID.init(string: HR_Service)], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
             self.centralManager.scanForPeripherals(withServices: [CBUUID.init(string: HR_Service)], options: [CBCentralManagerScanOptionAllowDuplicatesKey:true])
-            
             valueBluetoothDeviceStatus.text = "SCANNING..."
         }
         
-        //self.out_Btn1.setTitle("...", for: .normal)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             self.centralManager.stopScan()
             print("Stop Scanning")
@@ -536,8 +527,14 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             let lastCoords = trktps.last
                 wpts.append(lastCoords!)
                 
-            critStatus = 0
+            
             print("gpxNames \(gpxNames)")
+                if (gpxNames.first != nil) {
+                    addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
+                    critStatus = 10
+                }
+                
+
             }
 
         }
