@@ -206,6 +206,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     
     func getGPX() {
         print("getGPX")
+        currentCritPoint = 0
         let importMenu = UIDocumentMenuViewController(documentTypes: ["public.xml","xml"], in: .import)
         importMenu.delegate = (self as UIDocumentMenuDelegate)
         importMenu.modalPresentationStyle = .formSheet

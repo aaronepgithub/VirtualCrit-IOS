@@ -28,6 +28,7 @@ var useSimRide: Bool = false
 var raceStatusDisplay = "AWAITING START"
 var valueTimelineString = [String]()
 var valueTimelineStringDate = [String]()
+var currentCritPoint: Int = 0
 
 func addValueToTimelineString(s: String) {
     print("addValueToTimelineString")
@@ -479,7 +480,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     
     //GPX CRIT
-    var currentCritPoint: Int = 0
+    
     var raceStartTime: Double = 0
     var raceFinishTime: Double = 0
     var raceDuration: Double = 0
@@ -491,7 +492,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         print("Eval Location, currentCritPoint: \(currentCritPoint)")
-        
+        if wpts.count == 0 {return}
         let c1 = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
         let c2 = CLLocation(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
         let distanceInMeters = c1.distance(from: c2)  //it is a double
