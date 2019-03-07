@@ -123,7 +123,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func remMarkers() {
-        mapView.removeAnnotations(mapView.annotations!)
+        if mapView.annotations != nil {
+            mapView.removeAnnotations(mapView.annotations!)
+        }
+        
     }
     
     
@@ -232,6 +235,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if critStatus == 10 {
             if gpxNames.first != nil {
                 critStatus = 0
+                remMarkers()
                 print("critStatus is 10, requestRaceData for \(gpxNames.first!)")
                 requestRaceData(rn: gpxNames.first!)
             }
