@@ -103,7 +103,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let n4: String = "FINISH"
         gpxNames.append(n4)
         
-        
         setFBListenRequest()
     }
     
@@ -184,11 +183,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             distanceRound = distanceAtRoundEnd - distanceAtRoundStart
             round_speed = distanceRound / (Double(settingsSecondsPerRound) / 60.0 / 60.0);
             
+            //REMOVE CLUTTER
             if (distanceRound > distanceBestRound) {
                 distanceBestRound = distanceRound
-                addValueToTimelineString(s: "Fastest Round\nRound \(currentRound-1) Complete\nSpeed: \(stringer1(dbl: round_speed)) MPH")
+                //addValueToTimelineString(s: "Fastest Round\nRound \(currentRound-1) Complete\nSpeed: \(stringer1(dbl: round_speed)) MPH")
             } else {
-                addValueToTimelineString(s: "Round \(currentRound-1) Complete.\nSpeed: \(stringer1(dbl: round_speed)) MPH")
+                //addValueToTimelineString(s: "Round \(currentRound-1) Complete.\nSpeed: \(stringer1(dbl: round_speed)) MPH")
             }
             
             if (round_bpmTotals > 1000) {
@@ -199,7 +199,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 if (round_bpmAverage > round_bestHR) {
                     round_bpmAverage = round_bestHR
                 }
-                addValueToTimelineString(s: "ROUND HR\nHR: \( stringer1(dbl: round_bpmAverage) ) [\(stringer1(dbl: round_bestHR))] \nROUND SCORE: \( stringer1(dbl: round_bpmScore) )")
+                //addValueToTimelineString(s: "ROUND HR\nHR: \( stringer1(dbl: round_bpmAverage) ) [\(stringer1(dbl: round_bestHR))] \nROUND SCORE: \( stringer1(dbl: round_bpmScore) )")
             }
             
             //RESET ROUND VARS
@@ -366,15 +366,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         let fbNAME = dict["fb_timName"]!
                         print("name, \(fbNAME).  spd, \(fbSPD)")
 
-                        let d = dict["fb_SPD"] as? Double ?? 0.0
+//                        let d = dict["fb_SPD"] as? Double ?? 0.0
+                        //REMOVE CLUTTER
+//                        if system.actualElapsedTime > 90 {
+//                            self.speakThis(spk: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
+//                            addValueToTimelineString(s: "NEW SPEED LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MPH")
+//                        }
                         
-                        if system.actualElapsedTime > 90 {
-                            self.speakThis(spk: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
-//                            if settingsAudioStatus == "ON" {
-//                                Utils.shared.say(sentence: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
-//                            }
-                        }
-                        addValueToTimelineString(s: "NEW SPEED LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MPH")
 
                     }
                 }
@@ -392,6 +390,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var arrWaypointTimes = [Int]()
     var refHandleRace: UInt = 3
     var activeRaceName: String = ""
+    var activeRaceLeadersName: String = ""
     var activeRaceBestWaypointTimesArray = [Int]()
     
     //REQUEST RACE DATA
@@ -427,8 +426,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     
                     //let rtct = rtc as! Int
                     let rtca = (rtc as! Int) / 1000
-                    addValueToTimelineString(s:"RACE LEADER FOR: \(race), \n\(rider): \(self.createTimeString(seconds: rtca))")
-                    self.speakThis(spk: "RACE LEADER FOR: \(race), \n\(rider): \(self.createTimeString(seconds: rtca))")
+                    addValueToTimelineString(s:"RACE UPDATE FOR \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
+                    self.speakThis(spk: "RACE UPDATE FOR: \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
                     //SPLICE UP THE WAYPOINT TIMES
                     let wtimes: String = wayptTimes as! String
                     let wtimesarr = wtimes.components(separatedBy: ",")
@@ -437,6 +436,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         print("\(s)")
                         self.activeRaceBestWaypointTimesArray.append(Int(s)!)
                     }
+                    self.activeRaceLeadersName = rider as! String
                     print("activeRaceBestWaypointTimesArray:    \(self.activeRaceBestWaypointTimesArray)")
 
                 }
@@ -508,7 +508,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var raceDuration: Double = 0
     var raceDistanceAtStart: Double = 0
     var raceDistanceAtFinish: Double = 0
-    var raceBestTime: Double = 10
+    //var raceBestTime: Double = 0
     var raceSpeed: Double = 0
     
     
@@ -525,8 +525,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let i: Int = Int(distanceInMeters)
         tabBarController?.tabBar.items?[0].badgeValue = "\(i)"
         
-        //print("distanceInMeters:  \(distanceInMeters)")
-        //print("distanceInMeters Int:  \(distanceInMeters)")
         if distanceInMeters < 100 {
             print("inside 100, currentCritPoint is \(currentCritPoint)")
             print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
@@ -541,7 +539,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race finished, currentCritPoint is 0")
                 raceStatusDisplay = "RACE COMPLETE"
                 raceFinishTime = system.actualElapsedTime
-                raceDuration = raceFinishTime - raceStartTime
+                raceDuration = raceFinishTime - raceStartTime  //seconds
                 raceDistanceAtFinish = distance
                 remMarkers();
                 
@@ -550,22 +548,26 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 
                 let t = createTimeString(seconds: Int(raceDuration))
                 var b = ""
-                if raceDuration * 1000 < raceBestTime {
-                    raceBestTime = raceDuration * 1000
-                    b = "FASTEST TIME"
-                } else {
-                    let cmp = (raceDuration - (raceBestTime / 1000))
-                    b = "\(createTimeString(seconds: Int(cmp))) BEHIND THE LEADER"
+                
+                if activeRaceBestWaypointTimesArray.count > 0 {
+                    let rbt = activeRaceBestWaypointTimesArray.last
+                    if (Int(raceDuration * 1000)) < rbt! {
+                        //rbt = raceDuration * 1000
+                        b = "FASTEST TIME"
+                    } else {
+                        let cmp = ((Int(raceDuration)) - (rbt! / 1000))
+                        b = "\(createTimeString(seconds: Int(cmp))) BEHIND THE LEADER, \(activeRaceLeadersName)"
+                    }
                 }
+                
+
                 
                 waypointTimesTimString += String(Int(raceDuration) * 1000)
                 postRaceProcessing(rt: Int(raceDuration))
                 addValueToTimelineString(s: "RACE COMPLETE\n\(t)\n\(b)")
                 speakThis(spk: "RACE COMPLETE\n\(t)\n\(b)")
                 
-//                tabBarController?.tabBar.items?[2].badgeValue?.removeAll()
-//                tabBarController?.tabBar.items?[3].badgeValue?.removeAll()
-//                tabBarController?.tabBar.items?[0].badgeValue?.removeAll()
+
                 self.tabBarController?.viewControllers?[0].tabBarItem.badgeValue = nil
                 self.tabBarController?.viewControllers?[2].tabBarItem.badgeValue = nil
                 self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
@@ -579,9 +581,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("race started  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint += 1
                 raceStartTime = system.actualElapsedTime
-                addValueToTimelineString(s: "RACE STARTED\n\(gpxNames.first!),\nHEAD TO \(gpxNames[currentCritPoint])")
+                
+                if gpxNames.count == 0 {
+                    print("no gpx names, exit")
+                    return
+                }
+                
+                var stLeaderInfo: String = ""
+                if activeRaceBestWaypointTimesArray.count > 0 {
+                    let stLeaderName: String = activeRaceLeadersName
+                    let stLeaderTime: String = createTimeString(seconds: activeRaceBestWaypointTimesArray.last! / 1000)
+                    stLeaderInfo = "\nTHE FASTEST IS \(stLeaderName) at \(stLeaderTime)"
+                }
+                
+                addValueToTimelineString(s: "RACE STARTED\n\(gpxNames.first!),\nHEAD TO \(gpxNames[currentCritPoint])\(stLeaderInfo)")
                 raceStatusDisplay = "RACE STARTED"
-                speakThis(spk: "RACE HAS STARTED.  GOTO \(gpxNames[currentCritPoint])")
+                speakThis(spk: "RACE HAS STARTED.  GOTO \(gpxNames[currentCritPoint]).  \(stLeaderInfo)")
                 raceDistanceAtStart = distance
                 waypointTimesTimString = ""
 //                requestRaceData(rn: gpxNames.first!)
@@ -598,15 +613,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             if activeRaceBestWaypointTimesArray.count > 0 {
                 //compare
-                let w1 = (Int(system.actualElapsedTime-raceStartTime)) * 1000
-                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint]
-                let wtimeCompare = (w1 - w2) / 1000
+                let w1: Int = Int((system.actualElapsedTime-raceStartTime) * 1000)
+                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint] //milli
+                let wtimeCompare = (w1 - w2) / 1000  //seconds
                 print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
                 
                 if wtimeCompare > 0 {
-                    strComp = "BEHIND BY \(createTimeString(seconds: wtimeCompare))"
+                    strComp = "BEHIND \(activeRaceLeadersName) BY \(createTimeString(seconds: wtimeCompare))"
                 } else {
-                    strComp = "AHEAD BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
+                    strComp = "AHEAD \(activeRaceLeadersName) BY \(createTimeString(seconds: (w2-w1)))"
                 }
                 print(strComp)
                 print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
