@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_mylocation"
         android:title="Map" />
 
     <item
         android:id="@+id/navigation_settings"
-        android:icon="@drawable/mapbox_info_icon_default"
+        android:icon="@drawable/ic_settings"
         android:title="Settings" />
 
     <item
@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_timeline"
         android:title="@string/title_notifications" />
 
 
