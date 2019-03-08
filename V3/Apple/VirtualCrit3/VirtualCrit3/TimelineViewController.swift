@@ -144,11 +144,11 @@ class TimelineViewController: UIViewController {
         if (count > 0) {
             var d: String = ""
             for t in valueTimelineStringDate {
-                print(t)
+                //print(t)
                 d = t
             }
             for s in valueTimelineString {
-                print(s)
+                //print(s)
                 if s.starts(with: "Round") {colorToUse = UIColor.blue}
                 if s.starts(with: "Fastest Round") {colorToUse = UIColor.blue}
                 if s.starts(with: "CHECKPOINT") {colorToUse = UIColor.green}
@@ -157,6 +157,7 @@ class TimelineViewController: UIViewController {
                 newRedPoint(titleString: s.uppercased(), dateString: d)
             }
             valueTimelineString.removeAll()
+            valueTimelineStringDate.removeAll()
         }
     }
     

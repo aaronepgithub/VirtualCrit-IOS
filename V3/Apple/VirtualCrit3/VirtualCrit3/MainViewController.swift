@@ -31,7 +31,7 @@ var valueTimelineStringDate = [String]()
 var currentCritPoint: Int = 0
 
 func addValueToTimelineString(s: String) {
-    print("addValueToTimelineString")
+    //print("addValueToTimelineString")
     let t = getFormattedTime()
     valueTimelineString.append("\(s) \n")
     valueTimelineStringDate.append(t)
@@ -244,7 +244,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         
         if useSimRide == true && system.actualElapsedTime > 20 {
-//            simRide()
+            simRide()
         }
         
     }
@@ -608,43 +608,42 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             //other checkpoint
             print("race not at Start or Finish  \(currentCritPoint) of \(wpts.count-1)")
-            
             var strComp = ""
+            
+            let timeToCurrentCritPointMilli: Int = (Int(system.actualElapsedTime-raceStartTime)) * 1000
+            waypointTimesTimString += String(timeToCurrentCritPointMilli)
+            waypointTimesTimString += ","
+            
             
             if activeRaceBestWaypointTimesArray.count > 0 {
                 //compare
-                let w1: Int = Int((system.actualElapsedTime-raceStartTime) * 1000)
-                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint] //milli
+                let w1: Int = timeToCurrentCritPointMilli
+                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint-1] //milli
                 let wtimeCompare = (w1 - w2) / 1000  //seconds
                 print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
                 
                 if wtimeCompare > 0 {
                     strComp = "BEHIND \(activeRaceLeadersName) BY \(createTimeString(seconds: wtimeCompare))"
                 } else {
-                    strComp = "AHEAD \(activeRaceLeadersName) BY \(createTimeString(seconds: (w2-w1)))"
+                    strComp = "AHEAD \(activeRaceLeadersName) BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
                 }
                 print(strComp)
                 print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
+                print("waypointTimesTimString: \(waypointTimesTimString)")
             }
             
             
             //disp name for next waypoint
             let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPoint])"
             let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPoint+1]).\n"
-            print("next name: \(strNextWpName)")
-            
+            //print("\(strNextWpName)")
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
             let cp: String = "[ \(currentCritPoint) of \(wpts.count-1) ], "
             addValueToTimelineString(s: "\(strJustHitWpName) \(cp) \(strNextWpName) \(strComp)  ")
             speakThis(spk: "\(strJustHitWpName), \(strNextWpName), \(strComp)")
-            
-            print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
-            waypointTimesTimString += String((Int(system.actualElapsedTime-raceStartTime)) * 1000)
-            waypointTimesTimString += ","
-            print("waypointTimesTimString: \(waypointTimesTimString)")
-            
+            //print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
             currentCritPoint += 1
             
         }
@@ -746,10 +745,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
             addMarker(cll: cord)
-            //tabBarController?.tabBar.items?[0].badgeValue = "1"
         }
         if simCount > 1 {
-            //tabBarController?.tabBar.items?[0].badgeValue = "2"
             activeTime += Double(simCount)
         }
         if simCount > 2 {
