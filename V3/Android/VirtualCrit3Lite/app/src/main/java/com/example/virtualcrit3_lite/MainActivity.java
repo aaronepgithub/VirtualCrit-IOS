@@ -118,6 +118,7 @@ import es.atrapandocucarachas.gpxparser.model.Wpt;
 import es.atrapandocucarachas.gpxparser.parser.GpxParser;
 
 import static com.example.virtualcrit3_lite.Timer.getTimeStringFromMilliSecondsToDisplay;
+import static com.example.virtualcrit3_lite.Timer.getTimeStringFromMilliSecondsToDisplayToSpeak;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, PermissionsListener, OnMapReadyCallback {
 
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     //SETTINGS
     private String settingsName = "TIM";
     private String settingsGPS = "OFF";
-    private Boolean settingsAudio = false;
+    private Boolean settingsAudio = true;
     private String settingsSport = "BIKE";
     private int settingsSecondsPerRound = 1800;
     private int settingsMaxHeartrate = 185;
@@ -371,6 +372,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private ArrayList<Long> raceTimesTim = new ArrayList<>();
     private long bestRaceTime = -1;
+    private String bestRacerName = "";
 
     private ArrayList<Long> waypointTimesTim = new ArrayList<>();
     private ArrayList<Long> waypointTimesBest = new ArrayList<>();
@@ -417,9 +419,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 waypointTimesTimString = "";
                 lastCheckpointTime = System.currentTimeMillis();
 
+                String startString = "";
+                if (bestRaceTime > 10000) {
+                    startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
+                }
 
 
-                createTimeline("RACE STARTING\n" + trkName.toUpperCase() + ".  HEAD TO " + wpts.get(currentWaypoint).getName().toUpperCase(), Timer.getCurrentTimeStamp());
+                createTimeline("RACE STARTING\n" + trkName.toUpperCase() + "\nHEAD TO " + wpts.get(currentWaypoint).getName().toUpperCase() + startString, Timer.getCurrentTimeStamp());
                 setMessageText("RACE STARTING");
                 Toast.makeText(getApplicationContext(),
                         "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
@@ -451,24 +457,26 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
 
                 String s;
+                String ss;
                 if (bestRaceTime == -1) {
                     bestRaceTime = raceTime + 1;
                 }
 
-                if (raceTime < bestRaceTime) {
+                if (raceTime < bestRaceTime && bestRaceTime > 10000){
                     bestRaceTime = raceTime;
                     //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
                     waypointTimesBest = waypointTimesTim;
-
-                    s = "THE FASTEST TIME.";
+                    s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
+                    ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
                 } else {
-                    s = "FASTEST [" + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + "]";
+                    s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                    ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
                 }
-
                 Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-                createTimeline("FINISHED!\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+
+                createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
                 setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-                speakText("RACE IS NOW FINISHED, YOUR TIME IS.  " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+                speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
                 Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
                 Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
                 Toast.makeText(getApplicationContext(),
@@ -516,6 +524,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             waypointTimesTimString += ",";
 
             String s1 = "";
+            String s2 = "";
             if (waypointTimesBest.isEmpty()) {
                 Log.i(TAG, "waypointTimesBest is empty");
             } else {
@@ -525,9 +534,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
                         int i = (int) l;
                         if (i < 2000) {
-                            s1 = "EVEN WITH THE LEADER";
+                            s1 = "EVEN WITH THE LEADER" + bestRacerName;
+                            s2 = "EVEN WITH THE LEADER" + bestRacerName;
                         } else {
-                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD";
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
+                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
                         }
 
                     } else {
@@ -535,8 +546,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         int i = (int) l;
                         if (i < 2000) {
                             s1 = "EVEN WITH THE LEADER";
+                            s2 = "EVEN WITH THE LEADER";
                         } else {
                             s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
+                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND";
                         }
 
                     }
@@ -548,10 +561,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.i(TAG, "waypointTest: next stop is finish");
 
                 createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
-                speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s1 + ".  HEAD TO FINISH");
+                speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "...  " + s2 + ".  HEAD TO FINISH");
             } else {
                 createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1 + "\nHEAD TO " + wpts.get(currentWaypoint+1).getName(), Timer.getCurrentTimeStamp());
-                speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s1 + ".  HEAD TO " + wpts.get(currentWaypoint+1).getName());
+                speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + ".  " + s2 + ".  HEAD TO " + wpts.get(currentWaypoint+1).getName());
             }
 
 
@@ -601,7 +614,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     private void requestRaceData() {
 
-//TODO...REMOVE OLD OBSERVERS IF DIFFERENT RACE IS LOADED
 
         Log.i(TAG, "fb request race data for " + trkName);
         String raceURL = "race/" + trkName;
@@ -643,6 +655,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     bestRaceTime = raceTimeToComplete;
                     waypointTimesBest = longs;
+                    bestRacerName = riderName.toUpperCase();
                     Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
                     //END CONVERT
                 }  //COMPLETED - READING EACH SNAP
@@ -734,12 +747,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         String s4x = "  [" + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
         //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
 
-        if (roundHeartrate > 50) {
-            createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
-        } else {
-            createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
-        }
-        setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
+//        if (roundHeartrate > 50) {
+//            createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
+//        } else {
+//            createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
+//        }
+//        setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
         Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 
         if (roundHeartrateCount == 0) {
@@ -819,8 +832,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
                         if (speed > 3) {
-                            createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-                            speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+                            //createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                            //speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
                         }
 //                        createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
 //                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
@@ -871,12 +884,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         Double score = ds.child("fb_RND").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
 
-                        if (score < 10) {
-                            Log.i(TAG, "onDataChange: score too low to publish");
-                            return;
-                        } else {
-                            createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
-                        }
+//                        if (score < 10) {
+//                            Log.i(TAG, "onDataChange: score too low to publish");
+//                            return;
+//                        } else {
+//                            createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+//                        }
 
 
                     }  //COMPLETED - READING EACH SNAP
@@ -943,11 +956,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     int togo = settingsSecondsPerRound - a3;
                     //Log.i(TAG, "run: a3, togo:  " + a3 + ", " +togo);
                     //String togoStr = Timer.getTimeStringFromSecondsToDisplay(togo);
-                    Button rnd = (Button) findViewById(R.id.valueRoundButton);
+                    //Button rnd = (Button) findViewById(R.id.valueRoundButton);
                     String s1 = getTimeStringFromMilliSecondsToDisplay(togo * 1000);
                     String s2 = " ROUND";
 //                    rnd.setText(getTimeStringFromMilliSecondsToDisplay(togo * 1000));
-                    rnd.setText(s1+s2);
+                    //rnd.setText(s1+s2);
                 }
             });
 

@@ -279,15 +279,24 @@
                     android:text="BLE"
                     android:textAlignment="center" />
 
-                <TextView
-                    android:id="@+id/valueBluetoothDevice1"
+                <Button
+                    android:id="@+id/valueEditMaxHR"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:textAlignment="viewStart"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:onClick="clickEditMaxHR"
+                    android:text="185 MAX HR"
+                    android:textAlignment="center" />
+
+                <!--<TextView-->
+                    <!--android:id="@+id/valueBluetoothDevice1"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_marginStart="12dp"-->
+                    <!--android:layout_marginEnd="12dp"-->
+                    <!--android:textAlignment="viewStart"-->
+                    <!--android:textStyle="bold" />-->
 
                 <!--<TextView-->
                     <!--android:id="@+id/valueBluetoothDevice2"-->
@@ -309,6 +318,24 @@
 
 
             </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="18dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/valueBluetoothDevice1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:textAlignment="viewStart"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
 
             <LinearLayout
@@ -349,14 +376,14 @@
                 android:layout_marginBottom="18dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/valueRoundButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="clickRoundButton"
-                    android:text="00:00:00 REMAIN"
-                    android:textAlignment="center" />
+                <!--<Button-->
+                    <!--android:id="@+id/valueRoundButton"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:onClick="clickRoundButton"-->
+                    <!--android:text="00:00:00 REMAIN"-->
+                    <!--android:textAlignment="center" />-->
 
                 <Button
                     android:id="@+id/valueAudio"
@@ -364,16 +391,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="clickAudio"
-                    android:text="AUDIO OFF"
+                    android:text="AUDIO ON"
                     android:textAlignment="center" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/valueEditSport"
@@ -384,16 +403,33 @@
                     android:text="BIKE"
                     android:textAlignment="center" />
 
-                <Button
-                    android:id="@+id/valueEditMaxHR"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="clickEditMaxHR"
-                    android:text="185 MAX HR"
-                    android:textAlignment="center" />
-
             </LinearLayout>
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginBottom="18dp"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/valueEditSport"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:onClick="clickEditSport"-->
+                    <!--android:text="BIKE"-->
+                    <!--android:textAlignment="center" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/valueEditMaxHR"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:onClick="clickEditMaxHR"-->
+                    <!--android:text="185 MAX HR"-->
+                    <!--android:textAlignment="center" />-->
+
+            <!--</LinearLayout>-->
 
             <TableRow
                 android:layout_width="match_parent"
