@@ -381,8 +381,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 let bn = self.found_peripheral?.name!
                 self.valueBluetoothName.text = bn
                 self.valueBluetoothDeviceStatus.text = "CONNECTING.."
-                    
-                    addValueToTimelineString(s: "Connecting to \(String(describing: bn)).")
+                    addValueToTimelineString(s: "Connecting to \(bn!)")
+//                    addValueToTimelineString(s: "Connecting to \(String(describing: bn)).")
                 } else {
                     print("nothing to connect to")
                     self.valueBluetoothDeviceStatus.text = "NONE FOUND"
