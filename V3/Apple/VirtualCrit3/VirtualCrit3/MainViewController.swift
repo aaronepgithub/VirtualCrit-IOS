@@ -625,7 +625,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 if wtimeCompare > 0 {
                     strComp = "BEHIND \(activeRaceLeadersName) BY \(createTimeString(seconds: wtimeCompare))"
                 } else {
-                    strComp = "AHEAD \(activeRaceLeadersName) BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
+                    strComp = "AHEAD OF \(activeRaceLeadersName) BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
                 }
                 print(strComp)
                 print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
@@ -688,7 +688,19 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let m:Int = (seconds/60) % 60
         let s:Int = seconds % 60
         let a = String(format: "%u:%02u:%02u", h,m,s)
-        return a
+        let b = String(format: "%02u:%02u", m,s)
+        let c = String(format: "%02u", s)
+        var ret = ""
+        if s > 0 {
+            ret = c
+        }
+        if m > 0 {
+            ret = b
+        }
+        if h > 0 {
+            ret = a
+        }
+        return ret
     }
     
     func getTimeIntervalSince(d1: Date, d2: Date) -> Double {
