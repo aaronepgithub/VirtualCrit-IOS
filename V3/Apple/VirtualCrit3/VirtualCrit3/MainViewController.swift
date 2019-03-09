@@ -688,20 +688,29 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let m:Int = (seconds/60) % 60
         let s:Int = seconds % 60
         let a = String(format: "%u:%02u:%02u", h,m,s)
-        let b = String(format: "%02u:%02u", m,s)
-        let c = String(format: "%02u", s)
-        var ret = ""
-        if s > 0 {
-            ret = c
-        }
-        if m > 0 {
-            ret = b
-        }
-        if h > 0 {
-            ret = a
-        }
-        return ret
+        return a
     }
+    
+//    func createTimeStringForSpeaking(seconds: Int)->String //"00:00:00"
+//    {
+//        let h:Int = seconds / 3600
+//        let m:Int = (seconds/60) % 60
+//        let s:Int = seconds % 60
+//        let a = String(format: "%u:%02u:%02u", h,m,s)
+//        let b = String(format: "%02u:%02u", m,s)
+//        let c = String(format: "%02u", s)
+//        var ret = ""
+//        if s > 0 {
+//            ret = c
+//        }
+//        if m > 0 {
+//            ret = b
+//        }
+//        if h > 0 {
+//            ret = a
+//        }
+//        return ret
+//    }
     
     func getTimeIntervalSince(d1: Date, d2: Date) -> Double {
         return d2.timeIntervalSince(d1 as Date)
