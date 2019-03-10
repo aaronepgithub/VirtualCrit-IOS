@@ -353,8 +353,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
 
+        if (trkpts.size() > 0) {
+            addAnotherMarker(trkpts.get(0).getLat(), trkpts.get(0).getLon());
+        }
 
-        addAnotherMarker(trkpts.get(0).getLat(), trkpts.get(0).getLon());
 
         Log.i(TAG, "startGPX: requestRaceData");
         createTimeline("RACE LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
@@ -530,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //WAYPOINT MATCH
         if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "WAYPOINT MATCH " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
-            if (currentWaypoint < maxWaypoint) {
+            if ((currentWaypoint+1) < maxWaypoint) {
                 addAnotherMarker(wpts.get(currentWaypoint+1).getLat(), wpts.get(currentWaypoint+1).getLon());
             }
 
@@ -1107,8 +1109,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 List<Feature> markerCoordinates = new ArrayList<>();
 //                markerCoordinates.add(Feature.fromGeometry(
 //                        Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
-                markerCoordinates.add(Feature.fromGeometry(
-                        Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
+//                markerCoordinates.add(Feature.fromGeometry(
+//                        Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
 
 //                for (Wpt w : wpts) {
 //                    Log.i("Name of waypoint ", w.getName());
@@ -2443,7 +2445,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Log.i(TAG, "TRACKPOINT, STARTRACE!");
                     isRaceStarted = true;
                     speakText("THE RACE IS NOW STARTING!  HEAD TO " + wpts.get(currentWaypoint).getName());
-                    addAnotherMarker(wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
+                    addAnotherMarker(wpts.get(0).getLat(), wpts.get(0).getLon());
                     //currentWaypoint = 1;
                     waypointTimesTim = new ArrayList<>();
                     waypointTimesTimString = "";
