@@ -364,11 +364,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             @Override
             public void run() {
                 TextView mGPS = findViewById(R.id.valueGPS);
-                Button bGPS = findViewById(R.id.clickGPSButton);
+                //Button bGPS = findViewById(R.id.clickGPSButton);
                 if (settingsGPS.equals("OFF")) {
                     mGPS.setText("ON");
                     settingsGPS = "ON";
-                    bGPS.setText("GPS STATUS");
+                    //bGPS.setText("GPS STATUS");
                     Log.i(TAG, "clickGPS: ON");
                     //startGPS();
                     // Show Alert
