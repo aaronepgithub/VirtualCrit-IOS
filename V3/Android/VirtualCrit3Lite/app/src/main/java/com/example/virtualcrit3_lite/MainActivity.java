@@ -1241,9 +1241,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onDestroy();
 
         if (locationEngine != null) {
+            Log.i(TAG, "onDestroy: removeLocationUpdates");
             locationEngine.removeLocationUpdates(callback);
         }
         //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+
+        //Close the Text to Speech Library
+        if(engine !=null){
+            Log.i(TAG, "onDestroy: shutdown tts");
+            engine.stop();
+            engine.shutdown();
+        }
 
         mapView.onDestroy();
     }
