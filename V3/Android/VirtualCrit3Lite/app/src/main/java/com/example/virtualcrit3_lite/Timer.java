@@ -54,7 +54,7 @@ public final class Timer {
             h = String.valueOf(hrs) + " HOURS, ";
         }
         if (min > 0) {
-            m = String.valueOf(min) + " MINUTES AND";
+            m = String.valueOf(min) + " MINUTES, ";
         }
         if (sec > 0) {
             se = String.valueOf(sec) + " SECONDS";
