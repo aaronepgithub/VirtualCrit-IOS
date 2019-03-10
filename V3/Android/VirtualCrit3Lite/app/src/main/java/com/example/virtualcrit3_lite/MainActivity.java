@@ -584,7 +584,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             currentWaypoint += 1;
 
-            addAnotherMarker(wpts.get(currentWaypoint+1).getLat(), wpts.get(currentWaypoint+1).getLon());
+            addAnotherMarker(wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
 
         }
     }
@@ -2533,7 +2533,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             long oldLocationTime;
 
 
-            if (arrLocations.size() < 10) {
+            if (arrLocations.size() <= 3) {
                 Log.i(TAG, "onMapboxLocationReceived: starterlocations " + arrLocations.size());
                 oldLocation = location;
 
