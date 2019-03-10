@@ -530,6 +530,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         //WAYPOINT MATCH
         if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "WAYPOINT MATCH " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
+            if (currentWaypoint < maxWaypoint) {
+                addAnotherMarker(wpts.get(currentWaypoint+1).getLat(), wpts.get(currentWaypoint+1).getLon());
+            }
+
             setMessageText("RACE CHECKPOINT " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
             Log.i(TAG, "waypointTest: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
@@ -573,6 +577,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             if ((currentWaypoint + 1) == wpts.size()) {
                 Log.i(TAG, "waypointTest: next stop is finish");
+                addAnotherMarker(trkpts.get(trkpts.size()-1).getLat(), trkpts.get(trkpts.size()-1).getLon());
 
                 createTimeline("WAYPOINT " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "\n" + wpts.get(currentWaypoint).getName() + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
                 speakText("WAYPOINT " + wpts.get(currentWaypoint).getName() + ".  NUMBER " + (currentWaypoint + 1) + " OF " + (maxWaypoint + 1) + "...  " + s2 + ".  HEAD TO FINISH");
@@ -584,7 +589,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             currentWaypoint += 1;
 
-            addAnotherMarker(wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
+
 
         }
     }
@@ -1084,7 +1089,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
-    private void addAnotherMarker(double markerLat, double markerLon) {
+    private void addAnotherMarker(final double markerLat, final double markerLon) {
 
         raceNumber += 1;
         if (trkpts.size() <= 1) {
@@ -1100,16 +1105,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
 
                 List<Feature> markerCoordinates = new ArrayList<>();
-                markerCoordinates.add(Feature.fromGeometry(
-                        Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
+//                markerCoordinates.add(Feature.fromGeometry(
+//                        Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
                 markerCoordinates.add(Feature.fromGeometry(
                         Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
 
-                for (Wpt w : wpts) {
-                    Log.i("Name of waypoint ", w.getName());
-                    markerCoordinates.add(Feature.fromGeometry(
-                            Point.fromLngLat(w.getLon(), w.getLat())));
-                }
+//                for (Wpt w : wpts) {
+//                    Log.i("Name of waypoint ", w.getName());
+//                    markerCoordinates.add(Feature.fromGeometry(
+//                            Point.fromLngLat(w.getLon(), w.getLat())));
+//                }
+
+                markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(markerLon, markerLat))); // START
 
 
 
@@ -2435,6 +2443,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Log.i(TAG, "TRACKPOINT, STARTRACE!");
                     isRaceStarted = true;
                     speakText("THE RACE IS NOW STARTING!  HEAD TO " + wpts.get(currentWaypoint).getName());
+                    addAnotherMarker(wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
                     //currentWaypoint = 1;
                     waypointTimesTim = new ArrayList<>();
                     waypointTimesTimString = "";
