@@ -331,9 +331,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
 
         //SHOWALERT
-        Toast.makeText(getApplicationContext(),
-                "GPX LOADED", Toast.LENGTH_SHORT)
-                .show();
+//        Toast.makeText(getApplicationContext(),
+//                "GPX LOADED", Toast.LENGTH_SHORT)
+//                .show();
 
         runOnUiThread(new Runnable() {
             @Override
@@ -1620,6 +1620,10 @@ private Boolean collectCritPoints = false;
                 TextView t1 = (TextView) findViewById(R.id.valueCritBuilderName);
                 t1.setText(critBuilderLatLngNames.get(0));
                 setMessageText("GOTO THE START POINT");
+
+                TextView mGPS = findViewById(R.id.valueGPS);
+                mGPS.setText("ON");
+
             }
         });
         addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
