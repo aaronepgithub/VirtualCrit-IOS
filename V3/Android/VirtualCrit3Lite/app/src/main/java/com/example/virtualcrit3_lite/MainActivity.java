@@ -2,6 +2,7 @@ package com.example.virtualcrit3_lite;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.TabActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -33,6 +34,7 @@ import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -45,6 +47,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1172,7 +1175,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-private Boolean collectCrtiPoints = true;
+private Boolean collectCrtiPoints = false;
 
 //    Set up the LocationEngine and the parameters for querying the device's location
 
@@ -2192,6 +2195,13 @@ private Boolean collectCrtiPoints = true;
         }
     }
 
+    public void clickStartCritBuilder(View view) {
+        Log.i(TAG, "clickStartCritBuilder: ");
+
+        collectCrtiPoints = true;
+
+    }
+
 
     private class MainActivityLocationCallback
             implements LocationEngineCallback<LocationEngineResult> {
@@ -2301,6 +2311,7 @@ private Boolean collectCrtiPoints = true;
             Log.i(TAG, "mapboxEvaluateLocations: ");
 
             if (trkpts.isEmpty() || trkpts.size() < 3) {return;}
+
             double startLa = trkpts.get(0).getLat();
             double startLo = trkpts.get(0).getLon();
             double finishLa = trkpts.get(trkpts.size()-1).getLat();
