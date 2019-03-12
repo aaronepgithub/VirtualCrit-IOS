@@ -12,14 +12,18 @@ public class Race {
     public Long raceTimeToComplete;
     public Integer raceDate;
     public String waypointTimes;
+    public String llPoints;
+    public String llNames;
 
 
-    public Race(String riderName, String raceName, Long raceTimeToComplete, Integer raceDate, String waypointTimes) {
+    public Race(String riderName, String raceName, Long raceTimeToComplete, Integer raceDate, String waypointTimes, String llPoints, String llNames) {
         this.raceName = raceName;
         this.riderName = riderName;
         this.raceTimeToComplete = raceTimeToComplete;
         this.raceDate = raceDate;
         this.waypointTimes = waypointTimes;
+        this.llPoints = llPoints;
+        this.llNames = llNames;
     }
 
 }
