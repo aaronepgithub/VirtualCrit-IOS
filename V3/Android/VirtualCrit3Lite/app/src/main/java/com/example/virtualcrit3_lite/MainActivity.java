@@ -351,8 +351,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
         Log.i(TAG, "startGPX: requestRaceData");
-        createTimeline("RACE LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
-        requestRaceData();
+        createTimeline("CRIT LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
+        requestRaceData(trkName);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -505,6 +505,91 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 //    }  //end eval locations
 
 
+    //START WAYPOINTTEST CB
+    private void waypointTestCB(double gpsLa, double gpsLo) {
+        Log.i(TAG, "waypointTestCB, currentWaypointCB, max: " + currentWaypointCB + ", " + maxWaypointCB);
+
+        if (!isRaceStarted) {
+            Log.i(TAG, "waypointTest CB: race not started, return");
+        }
+
+        if (currentWaypointCB >= maxWaypointCB) {
+            Log.i(TAG, "waypointTestCB, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
+            return;
+        }
+
+
+        final double disBetw = distance_between(gpsLa, gpsLo, critBuilderLatLng.get(currentWaypointCB).getLatitude(), critBuilderLatLng.get(currentWaypointCB).getLongitude());
+        Log.i(TAG, "waypointTestCB: waiting for waypoint match, distance: " + disBetw);
+        //WAYPOINT MATCH
+        if (disBetw < 1000) {
+            setMessageText(String.valueOf((int) disBetw));
+        }
+
+        if (disBetw < distanceBetweenValue) {
+            Log.i(TAG, "WAYPOINT MATCH CB " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+            if ((currentWaypointCB+1) < maxWaypointCB) {
+                addAnotherMarker(critBuilderLatLng.get(currentWaypointCB+1).getLatitude(), critBuilderLatLng.get(currentWaypointCB+1).getLongitude());
+            }
+
+            setMessageText("CB RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+            Log.i(TAG, "waypointTest CB: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
+            //EACH TIME IS ADDED
+            waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
+            waypointTimesTimString += String.valueOf(System.currentTimeMillis() - raceStartTime);
+            waypointTimesTimString += ",";
+
+            String s1 = "";
+            String s2 = "";
+            if (waypointTimesBest.isEmpty()) {
+                Log.i(TAG, "waypointTimesBest is empty");
+            } else {
+                if (currentWaypointCB >= 0) {
+
+                    if ((waypointTimesBest.get(currentWaypointCB) > waypointTimesTim.get(currentWaypointCB))) {
+                        long l = waypointTimesBest.get(currentWaypointCB) - waypointTimesTim.get(currentWaypointCB);
+                        int i = (int) l;
+                        if (i < 2000) {
+                            s1 = "EVEN WITH THE LEADER" + bestRacerName;
+                            s2 = "EVEN WITH THE LEADER" + bestRacerName;
+                        } else {
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
+                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
+                        }
+
+                    } else {
+                        long l = waypointTimesTim.get(currentWaypointCB) - waypointTimesBest.get(currentWaypointCB);
+                        int i = (int) l;
+                        if (i < 2000) {
+                            s1 = "EVEN WITH THE LEADER";
+                            s2 = "EVEN WITH THE LEADER";
+                        } else {
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
+                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND";
+                        }
+
+                    }
+                    Log.i(TAG, "waypointTest: s1:  " + s1);
+                }
+            }
+
+            if ((currentWaypointCB + 1) == critBuilderLatLng.size()) {
+                Log.i(TAG, "waypointTest: next stop is finish");
+                addAnotherMarker(critBuilderLatLng.get(critBuilderLatLng.size()-1).getLatitude(), critBuilderLatLng.get(critBuilderLatLng.size()-1).getLongitude());
+
+                createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB+1) + "\n" + critBuilderLatLngNames.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
+                speakText("WAYPOINT " + critBuilderLatLngNames.get(currentWaypointCB+1) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB+1) + "...  " + s2 + ".  HEAD TO FINISH");
+            } else {
+                createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypoint+1) + "\n" + critBuilderLatLngNames.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO " + critBuilderLatLngNames.get(currentWaypointCB+1), Timer.getCurrentTimeStamp());
+                speakText("WAYPOINT " + critBuilderLatLngNames.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypoint + 1) + ".  " + s2 + ".  HEAD TO " + critBuilderLatLngNames.get(currentWaypointCB+1));
+            }
+
+
+            currentWaypointCB += 1;
+        }
+    }
+    //END WAYPOINTTEST CB
+
 
     private void waypointTest(double gpsLa, double gpsLo) {
         Log.i(TAG, "WAYPOINT TEST, currentWaypoint, maxWP: " + currentWaypoint + ", " + maxWaypoint);
@@ -522,6 +607,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         final double disBetw = distance_between(gpsLa, gpsLo, wpts.get(currentWaypoint).getLat(), wpts.get(currentWaypoint).getLon());
         Log.i(TAG, "waypointTest: waiting for waypoint match, distance: " + disBetw);
         //WAYPOINT MATCH
+        if (disBetw < 1000) {
+            setMessageText(String.valueOf((int) disBetw));
+        }
+
         if (disBetw < distanceBetweenValue) {
             Log.i(TAG, "WAYPOINT MATCH " + (currentWaypoint+1) + " OF " + (maxWaypoint+1));
             if ((currentWaypoint+1) < maxWaypoint) {
@@ -582,9 +671,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
             currentWaypoint += 1;
-
-
-
         }
     }
 
@@ -628,11 +714,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 });
     }
 
-    private void requestRaceData() {
+    private void requestRaceData(String raceDataName) {
 
 
-        Log.i(TAG, "fb request race data for " + trkName);
-        String raceURL = "race/" + trkName;
+        Log.i(TAG, "fb request race data for " + raceDataName);
+        String raceURL = "race/" + raceDataName;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
 
 
@@ -1087,10 +1173,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private void addAnotherMarker(final double markerLat, final double markerLon) {
 
         raceNumber += 1;
-        if (trkpts.size() <= 1) {
-            Log.i(TAG, "addAnotherMarker: no course loaded");
-            return;
-        }
+        Log.i(TAG, "addAnotherMarker: ");
+//        if (trkpts.size() <= 1) {
+//            Log.i(TAG, "addAnotherMarker: no course loaded");
+//            return;
+//        }
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -1162,10 +1249,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 //String string = String.format(Locale.US, "User clicked at: %s", point.toString());
                 //Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
 
-                if (collectCrtiPoints) {
+                if (collectCritPoints) {
                     critBuilderLatLng.add(point);
+                    addAnotherMarker(point.getLatitude(), point.getLongitude());
                     //get name from input
                     inputWaypointName();
+                    
                 }
 
                 return false;
@@ -1175,7 +1264,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-private Boolean collectCrtiPoints = false;
+private Boolean collectCritPoints = false;
 
 //    Set up the LocationEngine and the parameters for querying the device's location
 
@@ -1422,7 +1511,7 @@ private Boolean collectCrtiPoints = false;
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog dialog;
-        builder1.setTitle("ENTER NAME FOR SELECTED POINT");
+        builder1.setTitle("CRIT BUILDER");
 
 
 // Set up the input
@@ -1432,29 +1521,95 @@ private Boolean collectCrtiPoints = false;
 
 
 // Set up the buttons
-        builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String wayName = input.getText().toString().toUpperCase();
-                critBuilderLatLngNames.add(wayName);
+
+        if (critBuilderLatLngNames.size() > 0) {
+            builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    input.setText("CHECKPOINT " + critBuilderLatLngNames.size() + ": ");
+                    String wayName = input.getText().toString().toUpperCase();
+                    critBuilderLatLngNames.add(wayName);
+                }
+            });
+
+        }
+        if (critBuilderLatLngNames.size() == 0){
+            builder1.setNeutralButton("START", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Random r = new Random();
+                    int i1 = r.nextInt(99999 - 10001);
+
+                    input.setText("VIRTUAL CRIT ID " + i1);
+                    String wayName = input.getText().toString().toUpperCase();
+
+                    //remove old to start new
+                    critBuilderLatLngNames = new ArrayList<>();
+                    critBuilderLatLng = new ArrayList<>();
+                    critBuilderLatLngNames.add(wayName);
+                }
+            });
+        }
 
 
-            }
-        });
-        builder1.setNegativeButton("FINISH", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                critBuilderLatLngNames.add("FINISH");
-                collectCrtiPoints = false;
-                Log.i(TAG, "collectCritPointName: FINISHED, POINTS:  " + critBuilderLatLngNames + critBuilderLatLng);
-                dialog.cancel();
-            }
-        });
+        if (critBuilderLatLngNames.size() > 2) {
+            builder1.setNegativeButton("FINISH", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    critBuilderLatLngNames.add("FINISH");
+                    collectCritPoints = false;
+                    Log.i(TAG, "collectCritPointName: FINISHED, POINTS:  " + critBuilderLatLngNames + critBuilderLatLng);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Button b1 = (Button) findViewById(R.id.clickButtonStartCritBuilder);
+                            b1.setText("BUILDER");
+                            TextView t1 = (TextView) findViewById(R.id.valueCritBuilderName);
+                            t1.setText(critBuilderLatLngNames.get(0));
+                            startGpxFromCritBuilder();
+                        }
+                    });
+
+                    dialog.cancel();
+                }
+            });
+        }
+
 
         builder1.show();
 
     }
 
+    private int maxWaypointCB;
+    private int currentWaypointCB = 0;
+    private Boolean isCritBuilderActive = false;
+
+    public void startGpxFromCritBuilder() {
+        Log.i(TAG, "startGpxFromCritBuilder: ");
+        isCritBuilderActive = true;
+        maxWaypointCB = critBuilderLatLng.size();
+
+        //SHOWALERT
+        Toast.makeText(getApplicationContext(),
+                "CRITBUILDER LOADED", Toast.LENGTH_SHORT)
+                .show();
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView t1 = (TextView) findViewById(R.id.valueCritBuilderName);
+                t1.setText(critBuilderLatLngNames.get(0));
+                setMessageText("GOTO THE START POINT");
+            }
+        });
+        addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
+        createTimeline("CRIT LOADED: " + critBuilderLatLngNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+
+        requestRaceData(critBuilderLatLngNames.get(0));
+
+    }
 
     private void setRandomUsernameOnStart() {
         Random r = new Random();
@@ -2145,6 +2300,7 @@ private Boolean collectCrtiPoints = false;
         if (waitToLoadGPX) {
             Log.i(TAG, "loadSelectedGPX: ");
             waitToLoadGPX = false;
+            isCritBuilderActive = false;
             startGPX();
         }
     }
@@ -2197,8 +2353,18 @@ private Boolean collectCrtiPoints = false;
 
     public void clickStartCritBuilder(View view) {
         Log.i(TAG, "clickStartCritBuilder: ");
+        collectCritPoints = true;
 
-        collectCrtiPoints = true;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button b1 = (Button) findViewById(R.id.clickButtonStartCritBuilder);
+                b1.setText("...");
+                TextView t1 = (TextView) findViewById(R.id.valueCritBuilderName);
+                t1.setText("SET POINTS ON MAP");
+            }
+        });
+
 
     }
 
@@ -2302,6 +2468,115 @@ private Boolean collectCrtiPoints = false;
             });
 
         }
+
+
+
+
+        private void mapboxEvaluateLocationsCritBuilder(final double gpsLa, final double gpsLo) {
+            //start la,lo
+            Log.i(TAG, "mapboxEvaluateLocationsCritBuilder: ");
+
+            if (critBuilderLatLng.isEmpty() || critBuilderLatLng.size() < 3) {return;}
+
+            double startLa = critBuilderLatLng.get(0).getLatitude();
+            double startLo = critBuilderLatLng.get(0).getLongitude();
+            double finishLa = critBuilderLatLng.get(critBuilderLatLng.size()-1).getLatitude();
+            double finishLo = critBuilderLatLng.get(critBuilderLatLng.size()-1).getLongitude();
+
+            if (currentWaypointCB == 0 && !isRaceStarted) {
+                //we are waiting for start
+                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
+                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to start, distance: " + disBetw);
+                if (disBetw < distanceBetweenValue) {
+                    //race is starting
+                    raceStartTime = System.currentTimeMillis();
+
+                    Log.i(TAG, "CRITBUILDER, STARTRACE!");
+                    isRaceStarted = true;
+                    speakText("THE RACE IS NOW STARTING!  HEAD TO " + critBuilderLatLngNames.get(currentWaypointCB));
+                    addAnotherMarker(startLa, startLo);
+                    waypointTimesTim = new ArrayList<>();
+                    waypointTimesTimString = "";
+                    lastCheckpointTime = System.currentTimeMillis();
+
+                    String startString = "";
+                    if (bestRaceTime > 10000) {
+                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
+                    }
+
+
+                    createTimeline("RACE STARTING\n" + critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE STARTING");
+                    Toast.makeText(getApplicationContext(),
+                            "RACE STARTING: " + critBuilderLatLngNames.get(0).toUpperCase(), Toast.LENGTH_LONG)
+                            .show();
+
+                    currentWaypointCB += 1;
+                }
+                return;
+            }
+
+            Log.i(TAG, "mapboxEvaluateLocationsCB: current currentWaypointCB and maxcWaypointCB: " + currentWaypointCB + ", " + maxWaypointCB);
+            if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
+                //passed all waypoints, now looking for finish
+                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
+                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to finish, distance: " + disBetwMax);
+                if (disBetwMax < distanceBetweenValue) {
+                    Log.i(TAG, "mapboxEvaluateLocationsCB: race finished");
+                    isRaceStarted = false;
+                    currentWaypointCB = 0;
+                    long raceFinishTime = System.currentTimeMillis();
+                    //raceTime is the duration of the race
+                    long raceTime = raceFinishTime - raceStartTime;
+                    Log.i(TAG, "CB raceTime: " + raceTime);
+                    raceTimesTim.add(raceTime);
+                    waypointTimesTim.add(raceTime);
+                    waypointTimesTimString += String.valueOf(raceTime);
+                    Log.i(TAG, "CB waypointTimesTimString:  " + waypointTimesTimString);
+                    postRaceProcessing(raceTime);
+
+                    Log.i(TAG, "CB waypointTimesTim:  " + waypointTimesTim.toString());
+                    Log.i(TAG, "CB waypointTimesBest:  " + waypointTimesBest.toString());
+
+                    String s;
+                    String ss;
+                    if (bestRaceTime == -1) {
+                        bestRaceTime = raceTime + 1;
+                    }
+
+                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
+                        bestRaceTime = raceTime;
+                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
+                        waypointTimesBest = waypointTimesTim;
+                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
+                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
+                    } else {
+                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
+                    }
+                    Log.i(TAG, "CB TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+
+                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
+                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
+                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
+                    Toast.makeText(getApplicationContext(),
+                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
+                            .show();
+                    //reset
+                    resetRace();
+                }
+
+            }
+            Log.i(TAG, "CB evaluateLocations, pre-wptest: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
+            if (isRaceStarted && currentWaypoint < maxWaypoint) {
+                Log.i(TAG, "CB WAYPOINT TEST: race has started, check for waypoints");
+                waypointTestCB(gpsLa, gpsLo);
+            }
+
+
+        }  //end eval locations CB
 
 
 
@@ -2472,7 +2747,14 @@ private Boolean collectCrtiPoints = false;
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
 
                 mapBoxDisplaySpeedValues();
-                mapboxEvaluateLocations(locationLat, locationLon);
+
+                if (isCritBuilderActive) {
+                    mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
+                } else {
+                    mapboxEvaluateLocations(locationLat, locationLon);
+                }
+
+
 
                 oldLocation = location;
             }
