@@ -1163,7 +1163,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     critBuilderLatLng.add(point);
                     //get name from input
                     inputWaypointName();
-
                 }
 
                 return false;
