@@ -38,6 +38,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.LoginFilter;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,6 +85,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.text.LocalGlyphRasterizer;
 
 import org.qap.ctimelineview.TimelineRow;
 import org.qap.ctimelineview.TimelineViewAdapter;
@@ -1414,6 +1416,41 @@ private Boolean collectCritPoints = false;
         }
     }
 
+
+    public void inputLoadCritName() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog dialog;
+        builder.setTitle("CRIT ID TO LOAD");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String s = input.getText().toString();
+                Log.i(TAG, "onClick: CRITID: " + s);
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i(TAG, "onClick: CRITID, CANCEL");
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+
+
     public void inputName() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2350,6 +2387,11 @@ private Boolean collectCritPoints = false;
         //2. request race data
         //3.  create the waypoints, etc
         //use evaluate locations from cb
+
+        TextView t1 = (TextView) findViewById(R.id.valueCritIdName);
+        String s = t1.getText().toString();
+        Log.i(TAG, "startGpxFromID: s: " + s);
+
     }
 
 

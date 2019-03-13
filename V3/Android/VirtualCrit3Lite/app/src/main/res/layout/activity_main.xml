@@ -292,7 +292,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/clickButtonLoadFromOldBuilder"
+                    android:id="@+id/clickButtonLoadFromId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -301,13 +301,14 @@
                     android:textAlignment="center" />
 
                 <TextView
-                    android:id="@+id/valueCritBuilderLoadName"
+                    android:id="@+id/valueCritIdName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
                     android:layout_weight="2"
                     android:textAlignment="viewStart"
+                    android:text=""
                     android:textStyle="bold|italic" />
             </LinearLayout>
             <!--LOAD FROM OLD BUILDER-->
