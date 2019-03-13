@@ -2701,12 +2701,17 @@ private Boolean collectCritPoints = false;
 
                 //MORE ACCURATE DISTANCE CALC
                 double result = mapBoxDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
-                if (result  < 5) {
+
+
+                Log.i(TAG, "onMapboxLocationReceived: result bet old and new: " + result);
+                Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
+                if (result  < 10 || (locationTime - oldLocationTime) < 2001) {
+                    Log.i(TAG, "onMapboxLocationReceived: too quick, too short, just wait");
                     return;
                 }
 
-                if (locationTime - oldLocationTime > 30000) { //30 SECONDS
-                    Log.i(TAG, "onLocationReceived: too much time has passed, ignore and wait for the next one " + (locationTime - oldLocationTime));
+                if (locationTime - oldLocationTime > 20000 || result > 50) { //20 SECONDS or 50 meters
+                    Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
                     oldLocation = location;
                     return;
                 }
@@ -2728,15 +2733,15 @@ private Boolean collectCritPoints = false;
                 geoAvgSpeed = geoDistance / (ttg / 1000.0 / 60.0 / 60.0);
 
                 mapBoxDisplaySpeedValues();
-
-                if (isCritBuilderActive) {
-                    Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
-                    mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
-                } else {
-                    Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
-                    mapboxEvaluateLocations(locationLat, locationLon);
-                }
                 oldLocation = location;
+            }
+
+            if (isCritBuilderActive) {
+                Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
+                mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
+            } else {
+                Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
+                mapboxEvaluateLocations(locationLat, locationLon);
             }
         }
 
