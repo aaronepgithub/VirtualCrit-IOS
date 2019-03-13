@@ -647,8 +647,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     public void onSuccess(Void aVoid) {
                         // Write was successful!
                         Log.i(TAG, "onSuccess: write RACE was successful");
-                        lln = "";
-                        llp = "";
+//                        lln = "";
+//                        llp = "";
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -2328,6 +2328,7 @@ private Boolean collectCritPoints = false;
         critBuilderLatLngNames = new ArrayList<>();
         critBuilderLatLng = new ArrayList<>();
         collectCritPoints = true;
+        lln = "";llp = "";
 
         runOnUiThread(new Runnable() {
             @Override
