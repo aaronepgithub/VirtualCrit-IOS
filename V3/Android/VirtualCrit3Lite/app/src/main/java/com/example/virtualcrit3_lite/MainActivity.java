@@ -392,7 +392,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
         if (critPointLocationNames.size() > 0) {
-            addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -405,34 +404,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     settingsGPS = "ON";
                 }
             });
+            addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
             createTimeline("CRIT LOADED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
             requestRaceData(critPointLocationNames.get(0));
-
+            Log.i(TAG, "startGPX: ");
         }
 
-
-        //Log.i(TAG, "startGPX: requestRaceData");
-//        createTimeline("CRIT LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
-//        requestRaceData(trkName);
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                TextView mGPS = findViewById(R.id.valueGPS);
-//                //Button bGPS = findViewById(R.id.clickGPSButton);
-//                if (settingsGPS.equals("OFF")) {
-//                    mGPS.setText("ON");
-//                    settingsGPS = "ON";
-//                    //bGPS.setText("GPS STATUS");
-//                    Log.i(TAG, "clickGPS: ON");
-//                    //startGPS();
-//                    // Show Alert
-//                    Toast.makeText(getApplicationContext(),
-//                            "GPS ON", Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//            }
-//        });
 
     }
 
@@ -713,8 +690,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     String dwnloadPoints = ds.child("llPoints").getValue(String.class);
                     String dwnloadNames = ds.child("llNames").getValue(String.class);
+
+
+                    if (dwnloadNames == null) {
+                        dwnloadNames = "NONE";
+                        dwnloadPoints = "NONE";
+                    }
+
                     Log.i(TAG, "onDataChange: dwnloadPoints " + dwnloadPoints);
                     Log.i(TAG, "onDataChange: dwnloadNames " + dwnloadNames);
+                    //THEN NEED TO CREATE THEM
 
                     //CONVERT STRING TO ARR-BEST
                     //convert string to ArrayList with splice
@@ -1585,13 +1570,14 @@ private Boolean collectCritPoints = false;
 
                 TextView mGPS = findViewById(R.id.valueGPS);
                 mGPS.setText("ON");
+                settingsGPS = "ON";
 
             }
         });
         addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
         createTimeline("CRIT LOADED: " + critBuilderLatLngNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
-
         requestRaceData(critBuilderLatLngNames.get(0));
+        Log.i(TAG, "startGpxFromCritBuilder: critPointLocation arrays... " + critPointLocationNames + critPointLocationLons + critPointLocationLats);
 
     }
 
@@ -2357,10 +2343,12 @@ private Boolean collectCritPoints = false;
 
     }
 
-    public void clickLoadFromOldCritBuilder(View view) {
-        Log.i(TAG, "clickLoadFromOldCritBuilder: ");
-        //get name and pull waypoints down from fb
-
+    public void startGpxFromID(View view) {
+        Log.i(TAG, "startGpxFromID: ");
+        //1.  get id
+        //2. request race data
+        //3.  create the waypoints, etc
+        //use evaluate locations from cb
     }
 
 
@@ -2379,28 +2367,19 @@ private Boolean collectCritPoints = false;
         @Override
         public void onSuccess(LocationEngineResult result) {
             MainActivity activity = activityWeakReference.get();
-            Log.i(TAG, "onSuccess: Loc CB");
 
             if (activity != null) {
-                Log.i(TAG, "onSuccess: new location");
                 Location location = result.getLastLocation();
 
                 if (location == null) {
-                    Log.i(TAG, "onSuccess: location == null,return");
                     return;
                 }
 
-
-// Create a Toast which displays the new location's coordinates
-//                Toast.makeText(activity, String.format(activity.getString(R.string.new_location),
-//                        String.valueOf(result.getLastLocation().getLatitude()), String.valueOf(result.getLastLocation().getLongitude())),
-//                        Toast.LENGTH_SHORT).show();
 
                 onMapboxLocationReceived(location);
 
 // Pass the new location to the Maps SDK's LocationComponent
                 if (activity.mapboxMap != null && result.getLastLocation() != null) {
-                    Log.i(TAG, "onSuccess: activity.mapboxMap != null && result.getLastLocation() != null");
                     activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
                 }
 
@@ -2542,11 +2521,11 @@ private Boolean collectCritPoints = false;
                     }
 
                     if (raceTime < bestRaceTime && bestRaceTime > 10000){
-                        bestRaceTime = raceTime;
                         //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
                         waypointTimesBest = waypointTimesTim;
                         s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
                         ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
+                        bestRaceTime = raceTime;
                     } else {
                         s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
                         ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
@@ -2750,13 +2729,12 @@ private Boolean collectCritPoints = false;
                 mapBoxDisplaySpeedValues();
 
                 if (isCritBuilderActive) {
+                    Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
                     mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
                 } else {
+                    Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
                     mapboxEvaluateLocations(locationLat, locationLon);
                 }
-
-
-
                 oldLocation = location;
             }
         }
