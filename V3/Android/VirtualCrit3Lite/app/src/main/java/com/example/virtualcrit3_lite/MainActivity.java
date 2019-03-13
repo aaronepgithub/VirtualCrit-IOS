@@ -136,10 +136,29 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
     //GPX
+
+    private ArrayList<Double> critPointLocationLats = new ArrayList<>();
+    private ArrayList<Double> critPointLocationLons = new ArrayList<>();
+    private ArrayList<String> critPointLocationNames = new ArrayList<>();
+
+    private String llp = "";
+    private String lln = "";
+
+
+    private void resetCritPointLocationArrays() {
+        critPointLocationLats = new ArrayList<>();
+        critPointLocationLons = new ArrayList<>();
+        critPointLocationNames = new ArrayList<>();
+    }
+
     private ArrayList<Wpt> wpts = new ArrayList<>();
     private ArrayList<Trkpt> trkpts = new ArrayList<>();
     private ArrayList<LatLng> critBuilderLatLng = new ArrayList<>();
     private ArrayList<String> critBuilderLatLngNames = new ArrayList<>();
+
+    private ArrayList<Long> waypointTimesTim = new ArrayList<>();
+    private ArrayList<Long> waypointTimesBest = new ArrayList<>();
+    private String waypointTimesTimString;
 
     private long raceStartTime = 0;
 
@@ -263,15 +282,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
-    private ArrayList<Double> critPointLocationLats = new ArrayList<>();
-    private ArrayList<Double> critPointLocationLons = new ArrayList<>();
-    private ArrayList<String> critPointLocationNames = new ArrayList<>();
 
-    private void resetCritPointLocationArrays() {
-        critPointLocationLats = new ArrayList<>();
-        critPointLocationLons = new ArrayList<>();
-        critPointLocationNames = new ArrayList<>();
-    }
 
     private int currentWaypoint = 0;
     private int maxWaypoint;
@@ -354,10 +365,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         //reset arrays
         resetCritPointLocationArrays();
+        lln = "";llp = "";
         //add start point/name
         critPointLocationLats.add(trkpts.get(0).getLat());
         critPointLocationLons.add(trkpts.get(0).getLon());
         critPointLocationNames.add(trks.get(0).getName());
+        lln += trks.get(0).getName() + ",";
+        llp += trkpts.get(0).getLat() + "," + trkpts.get(0).getLon() + ":";
         //add waypoints/names
         for (Wpt w : wpts) {
             Log.i("Name of waypoint ", w.getName());
@@ -365,7 +379,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             critPointLocationLats.add(w.getLat());
             critPointLocationLons.add(w.getLon());
             critPointLocationNames.add(w.getName());
+            lln += w.getName() + ",";
+            llp += w.getLat() + "," + w.getLon() + ":";
         }
+
+        //add finish
+        critPointLocationLats.add(trkpts.get(trkpts.size()-1).getLat());
+        critPointLocationLons.add(trkpts.get(trkpts.size()-1).getLon());
+        critPointLocationNames.add("FINISH");
+        lln += "FINISH";
+        llp += trkpts.get(trkpts.size()-1).getLat() + "," + trkpts.get(trkpts.size()-1).getLon();
+
 
         if (critPointLocationNames.size() > 0) {
             addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
@@ -383,8 +407,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             });
             createTimeline("CRIT LOADED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
             requestRaceData(critPointLocationNames.get(0));
-
-
 
         }
 
@@ -421,13 +443,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private long bestRaceTime = -1;
     private String bestRacerName = "";
 
-    private ArrayList<Long> waypointTimesTim = new ArrayList<>();
-    private ArrayList<Long> waypointTimesBest = new ArrayList<>();
-    private String waypointTimesTimString;
+
 
     //CHECKPOINTS
     private long lastCheckpointTime = 0;
-    private int distanceBetweenValue = 150;
+    private int distanceBetweenValue = 100;
     private Boolean isRaceStarted = false;
 
 
@@ -619,8 +639,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-    private String llp = "";
-    private String lln = "";
+
 
     private void postRaceProcessing(final long rt) {
         Log.i(TAG, "postRaceProcessing: ");
@@ -1511,6 +1530,16 @@ private Boolean collectCritPoints = false;
                     isCritBuilderActive = true;
                     lln += "FINISH";
                     Log.i(TAG, "collectCritPointName: FINISHED, POINTS:  " + critBuilderLatLngNames + critBuilderLatLng);
+
+                    resetCritPointLocationArrays();
+                    critPointLocationNames.addAll(critBuilderLatLngNames);
+                    for (LatLng l : critBuilderLatLng) {
+                        critPointLocationLats.add(l.getLatitude());
+                        critPointLocationLats.add(l.getLongitude());
+                    }
+
+
+
 
                     runOnUiThread(new Runnable() {
                         @Override
