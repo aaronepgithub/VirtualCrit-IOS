@@ -167,8 +167,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private double bestRoundScore = 1;
 
     //GPS
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationCallback mLocationCallback;
+//    private FusedLocationProviderClient mFusedLocationClient;
+//    private LocationCallback mLocationCallback;
     private ArrayList<Location> arrLocations = new ArrayList<>();
     private double geoSpeed = 0;
     private double geoDistance = 0.0;
@@ -263,8 +263,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
 
+    private ArrayList<Double> critPointLocationLats = new ArrayList<>();
+    private ArrayList<Double> critPointLocationLons = new ArrayList<>();
+    private ArrayList<String> critPointLocationNames = new ArrayList<>();
 
-
+    private void resetCritPointLocationArrays() {
+        critPointLocationLats = new ArrayList<>();
+        critPointLocationLons = new ArrayList<>();
+        critPointLocationNames = new ArrayList<>();
+    }
 
     private int currentWaypoint = 0;
     private int maxWaypoint;
@@ -302,14 +309,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         wpts = gpx.getWpts();
         maxWaypoint = wpts.size();  //add start and finish as waypoints
 
-        Log.i(TAG, "NOW THE WAYPTS \n\n\n");
+        //Log.i(TAG, "NOW THE WAYPTS \n\n\n");
 
-        for (Wpt w : wpts) {
-            Log.i("Name of waypoint ", w.getName());
+        //for (Wpt w : wpts) {
+            //Log.i("Name of waypoint ", w.getName());
 //            Log.i("Description ",w.getDesc());
 //            Log.i("Symbol of waypoint ",w.getSym());
-            Log.i("Coordinates ", String.valueOf(w.getLatLon()));
-        }
+            //Log.i("Coordinates ", String.valueOf(w.getLatLon()));
+        //}
 
         ArrayList<Trk> trks = gpx.getTrks();
         trkpts = trks.get(0).getTrkseg();
@@ -320,58 +327,90 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         //Log.i(TAG, "NOW THE TRKSEGS \n\n\n");
 
-        for (Trk t : trks) {
-            //Log.i(TAG, "TrkSegs, for loop");
+//        for (Trk t : trks) {
+//            //Log.i(TAG, "TrkSegs, for loop");
+//        }
+
+
+//        for (Trkpt tk : trkpts) {
+//            //Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
+//        }
+
+
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                TextView t1 = (TextView) findViewById(R.id.valueGPX);
+//                t1.setText(trkName);
+//                setMessageText("GOTO THE START POINT");
+//            }
+//        });
+
+//        if (trkpts.size() > 0) {
+//            addAnotherMarker(trkpts.get(0).getLat(), trkpts.get(0).getLon());
+//        }
+
+
+
+        //reset arrays
+        resetCritPointLocationArrays();
+        //add start point/name
+        critPointLocationLats.add(trkpts.get(0).getLat());
+        critPointLocationLons.add(trkpts.get(0).getLon());
+        critPointLocationNames.add(trks.get(0).getName());
+        //add waypoints/names
+        for (Wpt w : wpts) {
+            Log.i("Name of waypoint ", w.getName());
+            //Log.i("Coordinates ", String.valueOf(w.getLatLon()));
+            critPointLocationLats.add(w.getLat());
+            critPointLocationLons.add(w.getLon());
+            critPointLocationNames.add(w.getName());
         }
 
-        //Log.i(TAG, "NOW THE TRKPTS \n\n\n");
+        if (critPointLocationNames.size() > 0) {
+            addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView t1 = (TextView) findViewById(R.id.valueGPX);
+                    t1.setText(critPointLocationNames.get(0));
+                    setMessageText("GOTO THE START POINT");
 
-        for (Trkpt tk : trkpts) {
-            //Log.i(TAG, "Trkpt: Lat" + String.valueOf(tk.getLatLon()));
-        }
-
-        //SHOWALERT
-//        Toast.makeText(getApplicationContext(),
-//                "GPX LOADED", Toast.LENGTH_SHORT)
-//                .show();
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView t1 = (TextView) findViewById(R.id.valueGPX);
-                t1.setText(trkName);
-
-                setMessageText("GOTO THE START POINT");
-            }
-        });
-
-        if (trkpts.size() > 0) {
-            addAnotherMarker(trkpts.get(0).getLat(), trkpts.get(0).getLon());
-        }
-
-
-        Log.i(TAG, "startGPX: requestRaceData");
-        createTimeline("CRIT LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
-        requestRaceData(trkName);
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView mGPS = findViewById(R.id.valueGPS);
-                //Button bGPS = findViewById(R.id.clickGPSButton);
-                if (settingsGPS.equals("OFF")) {
+                    TextView mGPS = findViewById(R.id.valueGPS);
                     mGPS.setText("ON");
                     settingsGPS = "ON";
-                    //bGPS.setText("GPS STATUS");
-                    Log.i(TAG, "clickGPS: ON");
-                    //startGPS();
-                    // Show Alert
-                    Toast.makeText(getApplicationContext(),
-                            "GPS ON", Toast.LENGTH_SHORT)
-                            .show();
                 }
-            }
-        });
+            });
+            createTimeline("CRIT LOADED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+            requestRaceData(critPointLocationNames.get(0));
+
+
+
+        }
+
+
+        //Log.i(TAG, "startGPX: requestRaceData");
+//        createTimeline("CRIT LOADED: " + trkName.toUpperCase(), Timer.getCurrentTimeStamp());
+//        requestRaceData(trkName);
+
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                TextView mGPS = findViewById(R.id.valueGPS);
+//                //Button bGPS = findViewById(R.id.clickGPSButton);
+//                if (settingsGPS.equals("OFF")) {
+//                    mGPS.setText("ON");
+//                    settingsGPS = "ON";
+//                    //bGPS.setText("GPS STATUS");
+//                    Log.i(TAG, "clickGPS: ON");
+//                    //startGPS();
+//                    // Show Alert
+//                    Toast.makeText(getApplicationContext(),
+//                            "GPS ON", Toast.LENGTH_SHORT)
+//                            .show();
+//                }
+//            }
+//        });
 
     }
 
@@ -403,106 +442,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
 
-
-//    private void evaluateLocations(final double gpsLa, final double gpsLo) {
-//        //start la,lo
-//        double startLa = trkpts.get(0).getLat();
-//        double startLo = trkpts.get(0).getLon();
-//        double finishLa = trkpts.get(trkpts.size()-1).getLat();
-//        double finishLo = trkpts.get(trkpts.size()-1).getLon();
-//
-//        if (currentWaypoint == 0 && !isRaceStarted) {
-//            //we are waiting for start
-//            double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
-//            Log.i(TAG, "evaluateLocations: waiting to start, distance: " + disBetw);
-//            if (disBetw < distanceBetweenValue) {
-//                //race is starting
-//                raceStartTime = System.currentTimeMillis();
-//
-//                Log.i(TAG, "TRACKPOINT, STARTRACE!");
-//                isRaceStarted = true;
-//                speakText("THE RACE IS NOW STARTING!  HEAD TO " + wpts.get(currentWaypoint).getName());
-//                //currentWaypoint = 1;
-//                waypointTimesTim = new ArrayList<>();
-//                waypointTimesTimString = "";
-//                lastCheckpointTime = System.currentTimeMillis();
-//
-//                String startString = "";
-//                if (bestRaceTime > 10000) {
-//                    startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
-//                }
-//
-//
-//                createTimeline("RACE STARTING\n" + trkName.toUpperCase() + "\nHEAD TO " + wpts.get(currentWaypoint).getName().toUpperCase() + startString, Timer.getCurrentTimeStamp());
-//                setMessageText("RACE STARTING");
-//                Toast.makeText(getApplicationContext(),
-//                        "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
-//                        .show();
-//            }
-//            return;
-//        }
-//
-//        Log.i(TAG, "evaluateLocations: current waypoint and maxWP: " + currentWaypoint + ", " + maxWaypoint);
-//        if (currentWaypoint == maxWaypoint && isRaceStarted) {
-//            //passed all waypoints, now looking for finish
-//            double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
-//            Log.i(TAG, "evaluateLocations: waiting to finish, distance: " + disBetwMax);
-//            if (disBetwMax < distanceBetweenValue) {
-//                Log.i(TAG, "evaluateLocations: race finished");
-//                isRaceStarted = false;
-//                currentWaypoint = 0;
-//                long raceFinishTime = System.currentTimeMillis();
-//                //raceTime is the duration of the race
-//                long raceTime = raceFinishTime - raceStartTime;
-//                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                raceTimesTim.add(raceTime);
-//                waypointTimesTim.add(raceTime);
-//                waypointTimesTimString += String.valueOf(raceTime);
-//                Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
-//                postRaceProcessing(raceTime);
-//
-//                Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
-//                Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
-//
-//                String s;
-//                String ss;
-//                if (bestRaceTime == -1) {
-//                    bestRaceTime = raceTime + 1;
-//                }
-//
-//                if (raceTime < bestRaceTime && bestRaceTime > 10000){
-//                    bestRaceTime = raceTime;
-//                    //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
-//                    waypointTimesBest = waypointTimesTim;
-//                    s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
-//                    ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
-//                } else {
-//                    s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
-//                    ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
-//                }
-//                Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-//
-//                createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-//                setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-//                speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
-//                Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
-//                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                Toast.makeText(getApplicationContext(),
-//                        "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
-//                        .show();
-//                //reset
-//                resetRace();
-//            }
-//
-//        }
-//        Log.i(TAG, "evaluateLocations, pre-wptest: currentWaypoint, maxWP " + currentWaypoint +", "+ maxWaypoint);
-//        if (isRaceStarted && currentWaypoint < maxWaypoint) {
-//            Log.i(TAG, "trackpointTest: race has started, check for waypoints");
-//            waypointTest(gpsLa, gpsLo);
-//        }
-//
-//
-//    }  //end eval locations
 
 
     //START WAYPOINTTEST CB
@@ -949,11 +888,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         Double speed = ds.child("fb_SPD").getValue(Double.class);
                         Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
                         if (speed > 3) {
-                            //createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-                            //speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+                            //createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+                            //speakText("Fastest is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
                         }
-//                        createTimeline("FASTEST CRIT\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-//                        speakText("Fastest Crit is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+//                        createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+//                        speakText("Fastest  is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
                     }  //COMPLETED - READING EACH SNAP
                 }
 
@@ -1267,18 +1206,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if (collectCritPoints) {
                     critBuilderLatLng.add(point);
                     addAnotherMarker(point.getLatitude(), point.getLongitude());
-
                     llp += point.getLatitude() + "," + point.getLongitude() + ";";
-
                     //get name from input
                     inputWaypointName();
-                    
                 }
-
                 return false;
             }
         });
-
     }
 
 
@@ -1530,7 +1464,6 @@ private Boolean collectCritPoints = false;
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog dialog;
         builder1.setTitle("CRIT BUILDER");
-
 
 // Set up the input
         final EditText input = new EditText(this);
@@ -2323,7 +2256,6 @@ private Boolean collectCritPoints = false;
             Log.i(TAG, "loadSelectedGPX: ");
             waitToLoadGPX = false;
             //isCritBuilderActive = false;
-
             startGPX();
         }
     }
@@ -2380,7 +2312,6 @@ private Boolean collectCritPoints = false;
         //remove old to start new
         critBuilderLatLngNames = new ArrayList<>();
         critBuilderLatLng = new ArrayList<>();
-
         collectCritPoints = true;
 
         runOnUiThread(new Runnable() {
@@ -2390,6 +2321,7 @@ private Boolean collectCritPoints = false;
                 b1.setText("...");
                 TextView t1 = (TextView) findViewById(R.id.valueCritBuilderName);
                 t1.setText("SET POINTS ON MAP");
+                //mapboxMap.addOnMapClickListener, inputWaypointName
             }
         });
 
@@ -2398,7 +2330,7 @@ private Boolean collectCritPoints = false;
 
     public void clickLoadFromOldCritBuilder(View view) {
         Log.i(TAG, "clickLoadFromOldCritBuilder: ");
-
+        //get name and pull waypoints down from fb
 
     }
 
@@ -2738,7 +2670,7 @@ private Boolean collectCritPoints = false;
             long oldLocationTime;
 
 
-            if (arrLocations.size() <= 3) {
+            if (arrLocations.size() <= 2) {
                 Log.i(TAG, "onMapboxLocationReceived: starterlocations " + arrLocations.size());
                 oldLocation = location;
 
@@ -2747,19 +2679,22 @@ private Boolean collectCritPoints = false;
                 oldLocationLon = oldLocation.getLongitude();
                 oldLocationTime = oldLocation.getTime();
 
-                float[] results = new float[2];
+                //float[] results = new float[2];
 
                 //QUICK TEST
-                Location.distanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon, results);
-                if (results[0] == 0) {
-                    return;
-                }
-                if (results[0] * 0.000621371 <= 0) {
-                    return;
-                }
+//                Location.distanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon, results);
+//                if (results[0] == 0) {
+//                    return;
+//                }
+//                if (results[0] * 0.000621371 <= 0) {
+//                    return;
+//                }
 
                 //MORE ACCURATE DISTANCE CALC
                 double result = mapBoxDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
+                if (result  < 5) {
+                    return;
+                }
 
                 if (locationTime - oldLocationTime > 30000) { //30 SECONDS
                     Log.i(TAG, "onLocationReceived: too much time has passed, ignore and wait for the next one " + (locationTime - oldLocationTime));
@@ -2770,9 +2705,10 @@ private Boolean collectCritPoints = false;
 
                 double gd = result * 0.000621371;
                 geoDistance += gd;
-                long gt = (location.getTime() - oldTime);  //MILLI
+
 
                 //MORE ACCURACE BUT NOT NECESSARY
+                //long gt = (location.getTime() - oldTime);  //MILLI
                 //double geoSpeed = gd / ((double) gt / 1000 / 60 / 60);
 
                 //USING QUICK METHOD FOR DISPLAY PURPOSES
