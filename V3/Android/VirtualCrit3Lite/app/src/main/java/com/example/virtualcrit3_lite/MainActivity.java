@@ -1533,14 +1533,14 @@ private Boolean collectCritPoints = false;
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final String s = input.getText().toString();
-                Log.i(TAG, "onClick: CRITID: " + s);
+                final String s = input.getText().toString().toUpperCase();
+                Log.i(TAG, "onClick: CRITID: " + s.toUpperCase());
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                     TextView b1 = (TextView) findViewById(R.id.valueCritIdName);
-                    b1.setText(s);
+                    b1.setText(s.toUpperCase());
                     }
                 });
 
@@ -2847,7 +2847,7 @@ private Boolean collectCritPoints = false;
                     waypointTimesTim.add(raceTime);
                     waypointTimesTimString += String.valueOf(raceTime);
                     Log.i(TAG, "CB waypointTimesTimString:  " + waypointTimesTimString);
-                    trkName = critBuilderLatLngNames.get(0);
+                    trkName = critBuilderLatLngNames.get(0).toUpperCase();
                     postRaceProcessing(raceTime);
 
                     Log.i(TAG, "CB waypointTimesTim:  " + waypointTimesTim.toString());
