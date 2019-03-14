@@ -458,26 +458,26 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     }
 
     if (currentWaypointCB >= maxWaypointCB) {
-        Log.i(TAG, "waypointTestCB, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
+        Log.i(TAG, "waypointTestCBID, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
         return;
     }
 
 
     final double disBetw = distance_between(gpsLa, gpsLo, latTemp.get(currentWaypointCB), lonTemp.get(currentWaypointCB));
-    Log.i(TAG, "waypointTestCB: waiting for waypoint match, distance: " + disBetw);
+    Log.i(TAG, "waypointTestCBID: waiting for waypoint match, distance: " + disBetw);
     //WAYPOINT MATCH
     if (disBetw < 1000) {
         setMessageText(String.valueOf((int) disBetw));
     }
 
     if (disBetw < distanceBetweenValue) {
-        Log.i(TAG, "WAYPOINT MATCH CB " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+        Log.i(TAG, "WAYPOINT MATCH CBID " + (currentWaypointCB) + " OF " + (maxWaypointCB));
         if ((currentWaypointCB+1) < maxWaypointCB) {
             addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
         }
 
-        setMessageText("CB RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
-        Log.i(TAG, "waypointTest CB: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
+        setMessageText("CBID RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+        Log.i(TAG, "waypointTest CBID: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
         //EACH TIME IS ADDED
         waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
         waypointTimesTimString += String.valueOf(System.currentTimeMillis() - raceStartTime);
@@ -497,8 +497,8 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     long l = waypointTimesBest.get(currentWaypointCB-1) - waypointTimesTim.get(currentWaypointCB-1);
                     int i = (int) l;
                     if (i < 2000) {
-                        s1 = "EVEN WITH THE LEADER" + bestRacerName;
-                        s2 = "EVEN WITH THE LEADER" + bestRacerName;
+                        s1 = "EVEN WITH THE LEADER " + bestRacerName;
+                        s2 = "EVEN WITH THE LEADER " + bestRacerName;
                     } else {
                         s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
                         s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
@@ -508,11 +508,11 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     long l = waypointTimesTim.get(currentWaypointCB-1) - waypointTimesBest.get(currentWaypointCB-1);
                     int i = (int) l;
                     if (i < 2000) {
-                        s1 = "EVEN WITH THE LEADER";
-                        s2 = "EVEN WITH THE LEADER";
+                        s1 = "EVEN WITH THE LEADER " + bestRacerName;
+                        s2 = "EVEN WITH THE LEADER " + bestRacerName;
                     } else {
-                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
-                        s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND";
+                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND "+ bestRacerName;
+                        s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND "+ bestRacerName;
                     }
 
                 }
@@ -567,7 +567,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 addAnotherMarker(critBuilderLatLng.get(currentWaypointCB+1).getLatitude(), critBuilderLatLng.get(currentWaypointCB+1).getLongitude());
             }
 
-            setMessageText("CB RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+            setMessageText("CB RACE CHECKPOINT " + (currentWaypointCB+1) + " OF " + (maxWaypointCB));
             Log.i(TAG, "waypointTest CB: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
             waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
@@ -588,8 +588,8 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         long l = waypointTimesBest.get(currentWaypointCB-1) - waypointTimesTim.get(currentWaypointCB-1);
                         int i = (int) l;
                         if (i < 2000) {
-                            s1 = "EVEN WITH THE LEADER" + bestRacerName;
-                            s2 = "EVEN WITH THE LEADER" + bestRacerName;
+                            s1 = "EVEN WITH THE LEADER " + bestRacerName;
+                            s2 = "EVEN WITH THE LEADER " + bestRacerName;
                         } else {
                             s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
                             s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
@@ -599,11 +599,11 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         long l = waypointTimesTim.get(currentWaypointCB-1) - waypointTimesBest.get(currentWaypointCB-1);
                         int i = (int) l;
                         if (i < 2000) {
-                            s1 = "EVEN WITH THE LEADER";
-                            s2 = "EVEN WITH THE LEADER";
+                            s1 = "EVEN WITH THE LEADER" + bestRacerName;
+                            s2 = "EVEN WITH THE LEADER" + bestRacerName;
                         } else {
-                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
-                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND";
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND "+ bestRacerName;
+                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND "+ bestRacerName;
                         }
 
                     }
@@ -675,8 +675,8 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         long l = waypointTimesBest.get(currentWaypoint) - waypointTimesTim.get(currentWaypoint);
                         int i = (int) l;
                         if (i < 2000) {
-                            s1 = "EVEN WITH THE LEADER" + bestRacerName;
-                            s2 = "EVEN WITH THE LEADER" + bestRacerName;
+                            s1 = "EVEN WITH THE LEADER " + bestRacerName;
+                            s2 = "EVEN WITH THE LEADER " + bestRacerName;
                         } else {
                             s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
                             s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
@@ -686,11 +686,11 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         long l = waypointTimesTim.get(currentWaypoint) - waypointTimesBest.get(currentWaypoint);
                         int i = (int) l;
                         if (i < 2000) {
-                            s1 = "EVEN WITH THE LEADER";
-                            s2 = "EVEN WITH THE LEADER";
+                            s1 = "EVEN WITH THE LEADER " + bestRacerName;
+                            s2 = "EVEN WITH THE LEADER " + bestRacerName;
                         } else {
-                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND";
-                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND";
+                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND " + bestRacerName;
+                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND " + bestRacerName;
                         }
 
                     }
@@ -746,8 +746,6 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     public void onSuccess(Void aVoid) {
                         // Write was successful!
                         Log.i(TAG, "onSuccess: write RACE was successful");
-//                        lln = "";
-//                        llp = "";
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -802,20 +800,24 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
                     //CONVERT STRING TO ARR-BEST
                     //convert string to ArrayList with splice
-                    ArrayList<String> str = new ArrayList<String>(Arrays.asList(raceWaypointTimes.split(",")));
-                    //convert ArrayList of Strings to ArrayList of Longs
-                    ArrayList<Long> longs = new ArrayList<>();
-                    for (String s : str) {
-                        Long l = null;
-                        l = Long.valueOf(s);
-                        longs.add(l);
-                    }
-                    Log.i(TAG, "trackpointTest: longs: " + longs.toString());
+                    if (raceWaypointTimes != null) {
+                        ArrayList<String> str = new ArrayList<String>(Arrays.asList(raceWaypointTimes.split(",")));
+                        //convert ArrayList of Strings to ArrayList of Longs
+                        ArrayList<Long> longs = new ArrayList<>();
+                        for (String s : str) {
+                            Long l = null;
+                            l = Long.valueOf(s);
+                            longs.add(l);
+                        }
+                        Log.i(TAG, "trackpointTest: longs: " + longs.toString());
 
-                    bestRaceTime = raceTimeToComplete;
-                    waypointTimesBest = longs;
-                    bestRacerName = riderName.toUpperCase();
-                    Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
+                        bestRaceTime = raceTimeToComplete;
+                        waypointTimesBest = longs;
+                        bestRacerName = riderName.toUpperCase();
+                        Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
+                    }
+
+
                     //END CONVERT
                 }  //COMPLETED - READING EACH SNAP
             }
@@ -1309,7 +1311,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 if (collectCritPoints) {
                     critBuilderLatLng.add(point);
                     addAnotherMarker(point.getLatitude(), point.getLongitude());
-                    llp += point.getLatitude() + "," + point.getLongitude() + ";";
+                    llp += point.getLatitude() + "," + point.getLongitude() + ":";
                     //get name from input
                     inputWaypointName();
                 }
@@ -1627,8 +1629,8 @@ private Boolean collectCritPoints = false;
                 public void onClick(DialogInterface dialog, int which) {
                     //input.setText("CHECKPOINT " + critBuilderLatLngNames.size() + ": ");
                     String wayName = input.getText().toString().toUpperCase();
-                    critBuilderLatLngNames.add("CHECKPOINT " + " " + wayName);
-                    lln += ("CHECKPOINT " + " " + wayName + ",");
+                    critBuilderLatLngNames.add("CKP" + wayName);
+                    lln += ("CKP" + wayName + ",");
                 }
             });
 
@@ -1639,12 +1641,17 @@ private Boolean collectCritPoints = false;
                 public void onClick(DialogInterface dialog, int which) {
 
                     Random r = new Random();
-                    int i1 = r.nextInt(99999 - 10001);
+                    int i1 = r.nextInt(9999 - 1001);
 
-                    input.setText("VC" + i1);
+                    //input.setText("VC" + i1);
                     String wayName = input.getText().toString().toUpperCase();
                     critBuilderLatLngNames.add(wayName);
-                    lln += wayName + ",";
+                    if (wayName == "") {
+                        lln += (i1 + ",");
+                    } else {
+                        lln += (wayName + ",");
+                    }
+
                 }
             });
         }
@@ -1680,6 +1687,9 @@ private Boolean collectCritPoints = false;
                             t1.setText(critBuilderLatLngNames.get(0));
                         }
                     });
+
+                    trkName = critBuilderLatLngNames.get(0);
+                    postRaceProcessing(0);
                     startGpxFromCritBuilder();
 
                     dialog.cancel();
@@ -2525,20 +2535,10 @@ private Boolean collectCritPoints = false;
 
     public void startGpxFromID(View view) {
         Log.i(TAG, "startGpxFromID: ");
-        //1.  get id
-
-
-
 
         TextView t1 = (TextView) findViewById(R.id.valueCritIdName);
         String s = t1.getText().toString();
-
-
-        //2. request race data
-
         requestRaceData(s);
-
-
     }
 
 //    private ArrayList<Double> latTemp = new ArrayList<Double>();
