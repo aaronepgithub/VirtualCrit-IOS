@@ -1330,7 +1330,8 @@ private Boolean collectCritPoints = false;
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+//                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .setPriority(LocationEngineRequest.PRIORITY_BALANCED_POWER_ACCURACY)
                 .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();
 
         locationEngine.requestLocationUpdates(request, callback, getMainLooper());
