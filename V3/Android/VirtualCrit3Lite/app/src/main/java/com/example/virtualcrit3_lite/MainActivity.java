@@ -1642,14 +1642,16 @@ private Boolean collectCritPoints = false;
 
                     Random r = new Random();
                     int i1 = r.nextInt(9999 - 1001);
-
                     //input.setText("VC" + i1);
-                    String wayName = input.getText().toString().toUpperCase();
-                    critBuilderLatLngNames.add(wayName);
-                    if (wayName == "") {
-                        lln += (i1 + ",");
+                    String wayName = "VC";
+                    wayName = input.getText().toString().toUpperCase();
+
+                    if (wayName.equals("")) {
+                        lln += ("VC,");
+                        critBuilderLatLngNames.add("VC");
                     } else {
                         lln += (wayName + ",");
+                        critBuilderLatLngNames.add(wayName);
                     }
 
                 }
