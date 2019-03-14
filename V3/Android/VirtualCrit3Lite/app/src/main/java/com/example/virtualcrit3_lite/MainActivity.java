@@ -522,7 +522,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
         if ((currentWaypointCB + 1) == namesTemp.size()) {
             Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB);
-            addAnotherMarker(latTemp.get(critBuilderLatLng.size()-1), lonTemp.get(critBuilderLatLng.size()-1));
+            addAnotherMarker(latTemp.get(latTemp.size()-1), lonTemp.get(lonTemp.size()-1));
 
             createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
             speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "...  " + s2 + ".  HEAD TO FINISH");
