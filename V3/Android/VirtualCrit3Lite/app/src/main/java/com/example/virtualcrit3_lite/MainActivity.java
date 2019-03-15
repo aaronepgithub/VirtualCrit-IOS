@@ -415,9 +415,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
             });
             addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
-            createTimeline("CRIT LOADED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+            createTimeline("CRIT GPX LOADED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
             requestRaceData(critPointLocationNames.get(0));
-            Log.i(TAG, "startGPX: ");
+            Log.i(TAG, "startGPX, GENERATE CRITID");
+            postRaceProcessing(0);
         }
 
 
@@ -772,7 +773,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 Log.i(TAG, "onDataChange: RACE");
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String raceName = ds.child("raceName").getValue(String.class);
+                    final String raceName = ds.child("raceName").getValue(String.class);
                     String riderName = ds.child("riderName").getValue(String.class);
                     String raceWaypointTimes = ds.child("waypointTimes").getValue(String.class);
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
@@ -781,8 +782,8 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "RACE UPDATE:\n" + raceName.toUpperCase() + ".\nRACE LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
-                    speakText("RACE LEADER IS " + riderName + ".  FOR " + raceName);
+                    String post = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
+                    speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
                     createTimeline(post, Timer.getCurrentTimeStamp());
 
                     String dwnloadPoints = ds.child("llPoints").getValue(String.class);
@@ -794,6 +795,16 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
                     if (dwnloadPoints != null && dwnloadNames != null) {
                         convertPointsNamesToCrit(dwnloadPoints, dwnloadNames);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextView tv1 = (TextView) findViewById(R.id.valueCritIdName);
+                                tv1.setText(raceName.toUpperCase());
+                                setMessageText(raceName.toUpperCase() + " IS ACTIVE");
+                                //createTimeline("ACTIVE CRIT: " + raceName.toUpperCase(), Timer.getCurrentTimeStamp());
+                            }
+                        });
                     }
 
 
@@ -1517,47 +1528,6 @@ private Boolean collectCritPoints = false;
     }
 
 
-    public void inputLoadCritName(View view) {
-        Log.i(TAG, "inputLoadCritName: ");
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        AlertDialog dialog;
-        builder.setTitle("CRIT ID TO LOAD");
-
-// Set up the input
-        final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-
-// Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String s = input.getText().toString().toUpperCase();
-                Log.i(TAG, "onClick: CRITID: " + s.toUpperCase());
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    TextView b1 = (TextView) findViewById(R.id.valueCritIdName);
-                    b1.setText(s.toUpperCase());
-                    }
-                });
-
-
-            }
-        });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.i(TAG, "onClick: CRITID, CANCEL");
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
 
 
 
@@ -1735,7 +1705,7 @@ private Boolean collectCritPoints = false;
             }
         });
         addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
-        createTimeline("CRIT LOADED: " + critBuilderLatLngNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+        //createTimeline("CRIT LOADED: " + critBuilderLatLngNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
         requestRaceData(critBuilderLatLngNames.get(0));
         Log.i(TAG, "startGpxFromCritBuilder: critPointLocation arrays... " + critPointLocationNames + critPointLocationLons + critPointLocationLats);
 
@@ -2539,14 +2509,56 @@ private Boolean collectCritPoints = false;
     public void startGpxFromID(View view) {
         Log.i(TAG, "startGpxFromID: ");
 
-        TextView t1 = (TextView) findViewById(R.id.valueCritIdName);
-        String s = t1.getText().toString();
-        requestRaceData(s);
+
+        //GET ID NAME
+        Log.i(TAG, "GET CRIT ID TO LOAD: ");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog dialog;
+        builder.setTitle("CRIT ID TO LOAD");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final String s = input.getText().toString().toUpperCase();
+                Log.i(TAG, "onClick: CRITID: " + s.toUpperCase());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView b1 = (TextView) findViewById(R.id.valueCritIdName);
+                        b1.setText(s.toUpperCase());
+                    }
+                });
+
+                requestRaceData(s);
+
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i(TAG, "onClick: CRITID, CANCEL");
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+        //AFTER GETTING NAME
+
+//        TextView t1 = (TextView) findViewById(R.id.valueCritIdName);
+//        String s = t1.getText().toString();
+//        requestRaceData(s);
     }
 
-//    private ArrayList<Double> latTemp = new ArrayList<Double>();
-//    private ArrayList<Double> lonTemp = new ArrayList<Double>();
-//    private ArrayList<String> namesTemp = new ArrayList<String>();
+
 
     private void convertPointsNamesToCrit(String p, String n) {
         Log.i(TAG, "convertPointsNamesToCrit: n, p: " + n + "\n" + p);
