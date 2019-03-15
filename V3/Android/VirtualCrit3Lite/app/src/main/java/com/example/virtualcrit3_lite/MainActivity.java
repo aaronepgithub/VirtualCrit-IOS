@@ -403,6 +403,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         lln += "FINISH";
         llp += trkpts.get(trkpts.size()-1).getLat() + "," + trkpts.get(trkpts.size()-1).getLon();
 
+        latTemp = critPointLocationLats;
+        lonTemp = critPointLocationLons;
+        addMapboxLine();
 
         if (critPointLocationNames.size() > 0) {
             runOnUiThread(new Runnable() {
@@ -1245,6 +1248,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     //start add line
     private void addMapboxLine() {
         Log.i(TAG, "addMapboxLine: ");
+        mbLineId += 1;
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -1264,14 +1268,23 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 // Create the LineString from the list of coordinates and then make a GeoJSON
 // FeatureCollection so we can add the line to our map as a layer.
                 Style style = mapboxMap.getStyle();
-                style.addSource(new GeoJsonSource("line-source",
+
+//REMOVE IF THERE...
+                if (mbLineId > 11) {
+                    style.removeSource("line-source"+ String.valueOf(mbLineId-1));
+                    style.removeLayer("linelayer" + String.valueOf(mbLineId-1));
+                }
+
+
+
+                style.addSource(new GeoJsonSource("line-source" + mbLineId,
                         FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
                                 LineString.fromLngLats(routeCoordinates)
                         )})));
 
                 // The layer properties for our line. This is where we make the line dotted, set the
 // color, etc.
-                style.addLayer(new LineLayer("linelayer", "line-source").withProperties(
+                style.addLayer(new LineLayer("linelayer" + mbLineId, "line-source" + mbLineId).withProperties(
                         PropertyFactory.lineDasharray(new Float[] {0.01f, 2f}),
                         PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
                         PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
@@ -1279,20 +1292,17 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         PropertyFactory.lineColor(Color.parseColor("#e55e5e"))
                 ));
             }
-
         });
+
+        addAllMarkers();
     }
     //end add line
 
-
-    private void addAnotherMarker(final double markerLat, final double markerLon) {
+    //start add all markers
+    private void addAllMarkers() {
 
         raceNumber += 1;
-        Log.i(TAG, "addAnotherMarker: ");
-//        if (trkpts.size() <= 1) {
-//            Log.i(TAG, "addAnotherMarker: no course loaded");
-//            return;
-//        }
+        Log.i(TAG, "addAllMarkers: ");
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -1307,11 +1317,53 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 //                markerCoordinates.add(Feature.fromGeometry(
 //                        Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
 
-//                for (Wpt w : wpts) {
-//                    Log.i("Name of waypoint ", w.getName());
-//                    markerCoordinates.add(Feature.fromGeometry(
-//                            Point.fromLngLat(w.getLon(), w.getLat())));
-//                }
+                for (LatLng n : critBuilderLatLng) {
+                    markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(n.getLongitude(), n.getLatitude())));
+                }
+
+                Style style = mapboxMap.getStyle();
+
+                if (raceNumber > 10) {
+                    Log.i(TAG, "onMapReady: remove source and layer");
+                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
+                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
+
+                }
+
+                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
+                        FeatureCollection.fromFeatures(markerCoordinates)));
+
+                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
+                symbolLayer.withProperties(
+                        PropertyFactory.iconImage("marker-icon-id")
+                );
+                style.addLayer(symbolLayer);
+                isRaceLoaded = true;
+
+            }
+
+        });
+    }
+    //end add all markers
+
+    //add marker only for CB
+    private void addAnotherMarkerCB(final double markerLat, final double markerLon) {
+
+
+
+        raceNumber += 1;
+        Log.i(TAG, "addAnotherMarkerCB: ");
+
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+                List<Feature> markerCoordinates = new ArrayList<>();
 
                 markerCoordinates.add(Feature.fromGeometry(
                         Point.fromLngLat(markerLon, markerLat))); // START
@@ -1341,8 +1393,53 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
         });
     }
+    //end add marker only for cb
 
 
+
+    private void addAnotherMarker(final double markerLat, final double markerLon) {
+
+        Log.i(TAG, "addAnotherMarker: ");
+//        raceNumber += 1;
+//
+//
+//        mapView.getMapAsync(new OnMapReadyCallback() {
+//            @Override
+//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+//
+//                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+//                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+//
+//                List<Feature> markerCoordinates = new ArrayList<>();
+//
+//                markerCoordinates.add(Feature.fromGeometry(
+//                        Point.fromLngLat(markerLon, markerLat))); // START
+//
+//
+//
+//                Style style = mapboxMap.getStyle();
+//
+//                if (raceNumber > 10) {
+//                    Log.i(TAG, "onMapReady: remove source and layer");
+//                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
+//                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
+//
+//                }
+//
+//                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
+//                        FeatureCollection.fromFeatures(markerCoordinates)));
+//
+//                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
+//                symbolLayer.withProperties(
+//                        PropertyFactory.iconImage("marker-icon-id")
+//                );
+//                style.addLayer(symbolLayer);
+//                isRaceLoaded = true;
+//
+//            }
+//
+//        });
+    }
 
 
     @Override
@@ -1366,7 +1463,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
                 if (collectCritPoints) {
                     critBuilderLatLng.add(point);
-                    addAnotherMarker(point.getLatitude(), point.getLongitude());
+                    addAnotherMarkerCB(point.getLatitude(), point.getLongitude());
                     llp += point.getLatitude() + "," + point.getLongitude() + ":";
                     //get name from input
                     inputWaypointName();
@@ -1785,12 +1882,31 @@ private Boolean collectCritPoints = false;
         });
         addAnotherMarker(latTemp.get(0), lonTemp.get(0));
         createTimeline("CRIT LOADED: " + namesTemp.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+        createRouteCoords();
 
+    }
 
+    //FROM latTemp, lonTemp
+    public void createRouteCoords() {
+        Log.i(TAG, "createRouteCoords: ADD TO critBuilderLatLng");
+
+        if (namesTemp.size() < 3) {return;}
+
+        critBuilderLatLng = new ArrayList<>();
+        for (Double n : latTemp) {
+            int i = latTemp.indexOf(n);
+            LatLng e = new LatLng();
+            e.setLatitude(latTemp.get(i));
+            e.setLongitude(lonTemp.get(i));
+            critBuilderLatLng.add(e);
+        }
+        Log.i(TAG, "createRouteCoords: critBuilderLatLng\n" + critBuilderLatLng.toString());
+        addMapboxLine();
 
     }
 
 
+    private int mbLineId = 10;
 
     private void setRandomUsernameOnStart() {
         Random r = new Random();
