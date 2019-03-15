@@ -71,6 +71,7 @@ import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -82,6 +83,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMap.OnMapClickListener;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
@@ -1239,6 +1242,48 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     private int raceNumber = 10;
 
 
+    //start add line
+    private void addMapboxLine() {
+        Log.i(TAG, "addMapboxLine: ");
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+
+                List<Point> routeCoordinates = new ArrayList<>();
+                
+
+                for (LatLng x : critBuilderLatLng) {
+                    routeCoordinates.add(Point.fromLngLat(x.getLongitude(), x.getLatitude()));
+                }
+
+                // Create the LineString from the list of coordinates and then make a GeoJSON
+// FeatureCollection so we can add the line to our map as a layer.
+                Style style = mapboxMap.getStyle();
+                style.addSource(new GeoJsonSource("line-source",
+                        FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
+                                LineString.fromLngLats(routeCoordinates)
+                        )})));
+
+                // The layer properties for our line. This is where we make the line dotted, set the
+// color, etc.
+                style.addLayer(new LineLayer("linelayer", "line-source").withProperties(
+                        PropertyFactory.lineDasharray(new Float[] {0.01f, 2f}),
+                        PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                        PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                        PropertyFactory.lineWidth(5f),
+                        PropertyFactory.lineColor(Color.parseColor("#e55e5e"))
+                ));
+            }
+
+        });
+    }
+    //end add line
+
 
     private void addAnotherMarker(final double markerLat, final double markerLon) {
 
@@ -1641,6 +1686,10 @@ private Boolean collectCritPoints = false;
                     lln += "FINISH";
                     Log.i(TAG, "collectCritPointName: FINISHED, POINTS:  " + critBuilderLatLngNames + critBuilderLatLng);
 
+                    //CREATE LINE
+                    Log.i(TAG, "onClick: create line from builder");
+                    addMapboxLine();
+                    
                     resetCritPointLocationArrays();
                     critPointLocationNames.addAll(critBuilderLatLngNames);
                     for (LatLng l : critBuilderLatLng) {
