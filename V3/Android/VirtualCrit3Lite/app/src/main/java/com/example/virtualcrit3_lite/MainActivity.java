@@ -1352,12 +1352,13 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
             if ((int) totalMillis / 1000 % 10 == 0) {
                 Log.i(TAG, "run: move marker, tc size: " + trackerCoords.size());
                 if (trackerCoords.size() > 2) {
-                    if (!isDestroyed) {
-                        setMapboxStreets();
-                    }
-                    if (!isPaused) {
-                        setMapboxStreets();
-                    }
+//                    if (!isDestroyed) {
+//                        setMapboxStreets();
+//                    }
+//                    if (!isPaused) {
+//                        setMapboxStreets();
+//                    }
+                    setMapboxStreets();
                 }
             }
 
@@ -1705,9 +1706,9 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     //set streets style
     private void setMapboxStreets() {
 
-        if (isPaused) {
-            return;
-        }
+//        if (isPaused) {
+//            return;
+//        }
 
         Log.i(TAG, "setMapboxStreets: ");
         Log.i(TAG, "addMapboxLine for user tracking: ");
@@ -1938,8 +1939,8 @@ private Boolean collectCritPoints = false;
     protected void onDestroy() {
         super.onDestroy();
 
-        mService.removeLocationUpdates();
-        isDestroyed = true;
+//        mService.removeLocationUpdates();
+//        isDestroyed = true;
 
 //        if (locationEngine != null) {
 //            Log.i(TAG, "onDestroy: removeLocationUpdates");
