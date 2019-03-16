@@ -598,6 +598,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         latTemp = critPointLocationLats;
         lonTemp = critPointLocationLons;
+
+
+
         addMapboxLine();
 
         if (critPointLocationNames.size() > 0) {
@@ -2297,6 +2300,12 @@ private Boolean collectCritPoints = false;
             e.setLongitude(lonTemp.get(i));
             critBuilderLatLng.add(e);
         }
+
+        Crit.critBuilderLatLngNames = new ArrayList<>();
+        Crit.critBuilderLatLngNames = namesTemp;
+        Crit.critBuilderLatLng = new ArrayList<>();
+        Crit.critBuilderLatLng = critBuilderLatLng;
+
         Log.i(TAG, "createRouteCoords: critBuilderLatLng\n" + critBuilderLatLng.toString());
         addMapboxLine();
 
@@ -2332,12 +2341,6 @@ private Boolean collectCritPoints = false;
 
 
 
-
-//    private void startGPS() {
-//        Log.i(TAG, "startGPS: ");
-//        createTimeline("STARTING GPS", Timer.getCurrentTimeStamp());
-//    }
-
     public void clickAudio(View view) {
         Log.i(TAG, "clickAudio  " + settingsAudio);
 
@@ -2363,39 +2366,6 @@ private Boolean collectCritPoints = false;
     public void clickGPS(View view) {
 
         Log.i(TAG, "clickGPS: ");
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                TextView mGPS = findViewById(R.id.valueGPS);
-//                Button bGPS = findViewById(R.id.clickGPSButton);
-//                if (settingsGPS.equals("OFF")) {
-//                    mGPS.setText("ON");
-//                    settingsGPS = "ON";
-//                    bGPS.setText("GPS STATUS");
-//                    Log.i(TAG, "clickGPS: ON");
-//                    startGPS();
-//                    // Show Alert
-//                    Toast.makeText(getApplicationContext(),
-//                            "GPS ON", Toast.LENGTH_SHORT)
-//                            .show();
-//                } else {
-//                    mGPS.setText("OFF");
-//                    settingsGPS = "OFF";
-//                    bGPS.setText("GPS STATUS");
-//                    Log.i(TAG, "clickGPS: OFF");
-//                    //STOP GPS
-//                    try {
-//                        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-//                    } catch (Exception e) {
-//                        Log.i(TAG, "Error,  DIDN'T STOP LOCATION");
-//                    }
-//                    //SHOWALERT
-//                    Toast.makeText(getApplicationContext(),
-//                            "GPS OFF", Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//            }
-//        });
     }
 
     private Boolean isTimerStarted = false;
