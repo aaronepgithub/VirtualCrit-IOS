@@ -126,6 +126,7 @@ public class LocationUpdatesService extends Service {
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 onNewLocation(locationResult.getLastLocation());
+                Log.i(TAG, "onLocationResult: NEW LOCATION");
             }
         };
 
@@ -331,6 +332,7 @@ public class LocationUpdatesService extends Service {
      * Sets the location request parameters.
      */
     private void createLocationRequest() {
+        Log.i(TAG, "createLocationRequest: ");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
