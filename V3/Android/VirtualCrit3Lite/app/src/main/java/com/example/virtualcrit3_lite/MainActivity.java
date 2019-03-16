@@ -3112,335 +3112,337 @@ private Boolean collectCritPoints = false;
 //
 //
 //
-//        //mapboxEvaluateLocationsCritID start
-//        private void mapboxEvaluateLocationsCritID(final double gpsLa, final double gpsLo) {
-//            //start la,lo
-//            Log.i(TAG, "mapboxEvaluateLocationsCritID: ");
-//
-//            if (namesTemp.isEmpty() || latTemp.size() < 3 || lonTemp.size() < 3) {return;}
-//
-//            double startLa = latTemp.get(0);
-//            double startLo = lonTemp.get(0);
-//            double finishLa = latTemp.get(latTemp.size()-1);
-//            double finishLo = lonTemp.get(lonTemp.size()-1);
-//            maxWaypointCB = namesTemp.size();
-//
-//            if (currentWaypointCB == 0 && !isRaceStarted) {
-//                //we are waiting for start
-//                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
-//                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to start, distance: " + disBetw);
-//                if (disBetw < distanceBetweenValue) {
-//                    //race is starting
-//                    raceStartTime = System.currentTimeMillis();
-//
-//                    Log.i(TAG, "CRITBUILDERID, STARTRACE!");
-//                    isRaceStarted = true;
-//                    speakText("THE RACE HAS STARTED  HEAD TO " + namesTemp.get(currentWaypointCB+1));
-//                    addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
-//                    waypointTimesTim = new ArrayList<>();
-//                    waypointTimesTimString = "";
-//                    lastCheckpointTime = System.currentTimeMillis();
-//
-//                    String startString = "";
-//                    if (bestRaceTime > 10000) {
-//                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
-//                    }
-//
-//
-//                    createTimeline("RACE STARTING\n" + namesTemp.get(0).toUpperCase() + "\nHEAD TO " + namesTemp.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
-//                    setMessageText("RACE STARTING");
-//                    Toast.makeText(getApplicationContext(),
-//                            "RACE STARTING: " + namesTemp.get(0).toUpperCase(), Toast.LENGTH_LONG)
-//                            .show();
-//
-//                    currentWaypointCB += 1;
-//                }
-//                return;
-//            }
-//
-//            Log.i(TAG, "mapboxEvaluateLocationsCBID: current currentWaypointCB and maxcWaypointCB: " + currentWaypointCB + ", " + maxWaypointCB);
-//            if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
-//                //passed all waypoints, now looking for finish
-//                Log.i(TAG, "mapboxEvaluateLocationsCritBuilderID: passed all waypoints, now looking for finish");
-//                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
-//                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to finish, distance: " + disBetwMax);
-//                if (disBetwMax < distanceBetweenValue) {
-//                    Log.i(TAG, "mapboxEvaluateLocationsCB: race finished");
-//                    isRaceStarted = false;
-//                    currentWaypointCB = 0;
-//                    long raceFinishTime = System.currentTimeMillis();
-//                    //raceTime is the duration of the race
-//                    long raceTime = raceFinishTime - raceStartTime;
-//                    Log.i(TAG, "CB raceTime: " + raceTime);
-//                    raceTimesTim.add(raceTime);
-//                    waypointTimesTim.add(raceTime);
-//                    waypointTimesTimString += String.valueOf(raceTime);
-//                    Log.i(TAG, "CB waypointTimesTimString:  " + waypointTimesTimString);
-//                    trkName = namesTemp.get(0);
-//                    postRaceProcessing(raceTime);
-//
-//                    Log.i(TAG, "CBID waypointTimesTim:  " + waypointTimesTim.toString());
-//                    Log.i(TAG, "CBID waypointTimesBest:  " + waypointTimesBest.toString());
-//
-//                    String s;
-//                    String ss;
-//                    if (bestRaceTime == -1) {
-//                        bestRaceTime = raceTime + 1;
-//                    }
-//
-//                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
-//                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
-//                        waypointTimesBest = waypointTimesTim;
-//                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
-//                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
-//                        bestRaceTime = raceTime;
-//                    } else {
-//                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
-//                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
-//                    }
-//                    Log.i(TAG, "CBID TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-//
-//                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-//                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-//                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
-//                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
-//                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                    Toast.makeText(getApplicationContext(),
-//                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
-//                            .show();
-//                    //reset
-//                    resetRace();
-//                }
-//
-//            }
-//            Log.i(TAG, "CB evaluateLocations, pre-wptest: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
-//            if (isRaceStarted && currentWaypointCB < maxWaypointCB) {
-//                Log.i(TAG, "CB WAYPOINT TEST: race has started, check for waypoints");
-//                waypointTestCBID(gpsLa, gpsLo);
-//            }
-//
-//
-//        }
+        //mapboxEvaluateLocationsCritID start
+        private void mapboxEvaluateLocationsCritID(final double gpsLa, final double gpsLo) {
+            //start la,lo
+            Log.i(TAG, "mapboxEvaluateLocationsCritID: ");
+
+            if (namesTemp.isEmpty() || latTemp.size() < 3 || lonTemp.size() < 3) {return;}
+
+            double startLa = latTemp.get(0);
+            double startLo = lonTemp.get(0);
+            double finishLa = latTemp.get(latTemp.size()-1);
+            double finishLo = lonTemp.get(lonTemp.size()-1);
+            maxWaypointCB = namesTemp.size();
+
+            if (currentWaypointCB == 0 && !isRaceStarted) {
+                //we are waiting for start
+                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
+                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to start, distance: " + disBetw);
+                if (disBetw < distanceBetweenValue) {
+                    //race is starting
+                    raceStartTime = System.currentTimeMillis();
+
+                    Log.i(TAG, "CRITBUILDERID, STARTRACE!");
+                    isRaceStarted = true;
+                    speakText("THE RACE HAS STARTED  HEAD TO " + namesTemp.get(currentWaypointCB+1));
+                    addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
+                    waypointTimesTim = new ArrayList<>();
+                    waypointTimesTimString = "";
+                    lastCheckpointTime = System.currentTimeMillis();
+
+                    String startString = "";
+                    if (bestRaceTime > 10000) {
+                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
+                    }
+
+
+                    createTimeline("RACE STARTING\n" + namesTemp.get(0).toUpperCase() + "\nHEAD TO " + namesTemp.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE STARTING");
+                    Toast.makeText(getApplicationContext(),
+                            "RACE STARTING: " + namesTemp.get(0).toUpperCase(), Toast.LENGTH_LONG)
+                            .show();
+
+                    currentWaypointCB += 1;
+                }
+                return;
+            }
+
+            Log.i(TAG, "mapboxEvaluateLocationsCBID: current currentWaypointCB and maxcWaypointCB: " + currentWaypointCB + ", " + maxWaypointCB);
+            if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
+                //passed all waypoints, now looking for finish
+                Log.i(TAG, "mapboxEvaluateLocationsCritBuilderID: passed all waypoints, now looking for finish");
+                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
+                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to finish, distance: " + disBetwMax);
+                if (disBetwMax < distanceBetweenValue) {
+                    Log.i(TAG, "mapboxEvaluateLocationsCB: race finished");
+                    isRaceStarted = false;
+                    currentWaypointCB = 0;
+                    long raceFinishTime = System.currentTimeMillis();
+                    //raceTime is the duration of the race
+                    long raceTime = raceFinishTime - raceStartTime;
+                    Log.i(TAG, "CB raceTime: " + raceTime);
+                    raceTimesTim.add(raceTime);
+                    waypointTimesTim.add(raceTime);
+                    waypointTimesTimString += String.valueOf(raceTime);
+                    Log.i(TAG, "CB waypointTimesTimString:  " + waypointTimesTimString);
+                    trkName = namesTemp.get(0);
+                    postRaceProcessing(raceTime);
+
+                    Log.i(TAG, "CBID waypointTimesTim:  " + waypointTimesTim.toString());
+                    Log.i(TAG, "CBID waypointTimesBest:  " + waypointTimesBest.toString());
+
+                    String s;
+                    String ss;
+                    if (bestRaceTime == -1) {
+                        bestRaceTime = raceTime + 1;
+                    }
+
+                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
+                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
+                        waypointTimesBest = waypointTimesTim;
+                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
+                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
+                        bestRaceTime = raceTime;
+                    } else {
+                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
+                    }
+                    Log.i(TAG, "CBID TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+
+                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
+                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
+                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
+                    Toast.makeText(getApplicationContext(),
+                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
+                            .show();
+                    //reset
+                    resetRace();
+                }
+
+            }
+            Log.i(TAG, "CB evaluateLocations, pre-wptest: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
+            if (isRaceStarted && currentWaypointCB < maxWaypointCB) {
+                Log.i(TAG, "CB WAYPOINT TEST: race has started, check for waypoints");
+                waypointTestCBID(gpsLa, gpsLo);
+            }
+
+
+        }
 //        //mapboxEvaluateLocationsCritID end
 //
 //
 //
-//        private void mapboxEvaluateLocationsCritBuilder(final double gpsLa, final double gpsLo) {
-//            //start la,lo
-//            Log.i(TAG, "mapboxEvaluateLocationsCritBuilder: ");
-//
-//            if (critBuilderLatLng.isEmpty() || critBuilderLatLng.size() < 3) {return;}
-//
-//            double startLa = critBuilderLatLng.get(0).getLatitude();
-//            double startLo = critBuilderLatLng.get(0).getLongitude();
-//            double finishLa = critBuilderLatLng.get(critBuilderLatLng.size()-1).getLatitude();
-//            double finishLo = critBuilderLatLng.get(critBuilderLatLng.size()-1).getLongitude();
-//
-//            if (currentWaypointCB == 0 && !isRaceStarted) {
-//                //we are waiting for start
-//                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
-//                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to start, distance: " + disBetw);
-//                if (disBetw < distanceBetweenValue) {
-//                    //race is starting
-//                    raceStartTime = System.currentTimeMillis();
-//
-//                    Log.i(TAG, "CRITBUILDER, STARTRACE!");
-//                    isRaceStarted = true;
-//                    speakText("THE RACE HAS STARTED  HEAD TO " + critBuilderLatLngNames.get(currentWaypointCB+1));
-//                    addAnotherMarker(critBuilderLatLng.get(currentWaypointCB+1).getLatitude(), critBuilderLatLng.get(currentWaypointCB+1).getLongitude());
-//                    waypointTimesTim = new ArrayList<>();
-//                    waypointTimesTimString = "";
-//                    lastCheckpointTime = System.currentTimeMillis();
-//
-//                    String startString = "";
-//                    if (bestRaceTime > 10000) {
-//                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
-//                    }
-//
-//
-//                    createTimeline("RACE STARTING\n" + critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
-//                    setMessageText("RACE STARTING");
-//                    Toast.makeText(getApplicationContext(),
-//                            "RACE STARTING: " + critBuilderLatLngNames.get(0).toUpperCase(), Toast.LENGTH_LONG)
-//                            .show();
-//
-//                    currentWaypointCB += 1;
-//                }
-//                return;
-//            }
-//
-//            Log.i(TAG, "mapboxEvaluateLocationsCB: current currentWaypointCB and maxcWaypointCB: " + currentWaypointCB + ", " + maxWaypointCB);
-//            if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
-//                //passed all waypoints, now looking for finish
-//                Log.i(TAG, "mapboxEvaluateLocationsCritBuilder: passed all waypoints, now looking for finish");
-//                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
-//                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to finish, distance: " + disBetwMax);
-//                if (disBetwMax < distanceBetweenValue) {
-//                    Log.i(TAG, "mapboxEvaluateLocationsCB: race finished");
-//                    isRaceStarted = false;
-//                    currentWaypointCB = 0;
-//                    long raceFinishTime = System.currentTimeMillis();
-//                    //raceTime is the duration of the race
-//                    long raceTime = raceFinishTime - raceStartTime;
-//                    Log.i(TAG, "CB raceTime: " + raceTime);
-//                    raceTimesTim.add(raceTime);
-//                    waypointTimesTim.add(raceTime);
-//                    waypointTimesTimString += String.valueOf(raceTime);
-//                    Log.i(TAG, "CB waypointTimesTimString:  " + waypointTimesTimString);
-//                    trkName = critBuilderLatLngNames.get(0).toUpperCase();
-//                    postRaceProcessing(raceTime);
-//
-//                    Log.i(TAG, "CB waypointTimesTim:  " + waypointTimesTim.toString());
-//                    Log.i(TAG, "CB waypointTimesBest:  " + waypointTimesBest.toString());
-//
-//                    String s;
-//                    String ss;
-//                    if (bestRaceTime == -1) {
-//                        bestRaceTime = raceTime + 1;
-//                    }
-//
-//                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
-//                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
-//                        waypointTimesBest = waypointTimesTim;
-//                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
-//                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
-//                        bestRaceTime = raceTime;
-//                    } else {
-//                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
-//                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
-//                    }
-//                    Log.i(TAG, "CB TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-//
-//                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-//                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-//                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
-//                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
-//                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                    Toast.makeText(getApplicationContext(),
-//                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
-//                            .show();
-//                    //reset
-//                    resetRace();
-//                }
-//
-//            }
-//            Log.i(TAG, "CB evaluateLocations, pre-wptest: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
-//            if (isRaceStarted && currentWaypointCB < maxWaypointCB) {
-//                Log.i(TAG, "CB WAYPOINT TEST: race has started, check for waypoints");
-//                waypointTestCB(gpsLa, gpsLo);
-//            }
-//
-//
-//        }  //end eval locations CB
-//
-//
+        private void mapboxEvaluateLocationsCritBuilder(final double gpsLa, final double gpsLo) {
+            //start la,lo
+            Log.i(TAG, "mapboxEvaluateLocationsCritBuilder: ");
+
+            if (critBuilderLatLng.isEmpty() || critBuilderLatLng.size() < 3) {return;}
+
+            double startLa = critBuilderLatLng.get(0).getLatitude();
+            double startLo = critBuilderLatLng.get(0).getLongitude();
+            double finishLa = critBuilderLatLng.get(critBuilderLatLng.size()-1).getLatitude();
+            double finishLo = critBuilderLatLng.get(critBuilderLatLng.size()-1).getLongitude();
+
+            if (currentWaypointCB == 0 && !isRaceStarted) {
+                //we are waiting for start
+                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
+                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to start, distance: " + disBetw);
+                if (disBetw < distanceBetweenValue) {
+                    //race is starting
+                    raceStartTime = System.currentTimeMillis();
+
+                    Log.i(TAG, "CRITBUILDER, STARTRACE!");
+                    isRaceStarted = true;
+                    speakText("THE RACE HAS STARTED  HEAD TO " + critBuilderLatLngNames.get(currentWaypointCB+1));
+                    addAnotherMarker(critBuilderLatLng.get(currentWaypointCB+1).getLatitude(), critBuilderLatLng.get(currentWaypointCB+1).getLongitude());
+                    waypointTimesTim = new ArrayList<>();
+                    waypointTimesTimString = "";
+                    lastCheckpointTime = System.currentTimeMillis();
+
+                    String startString = "";
+                    if (bestRaceTime > 10000) {
+                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
+                    }
+
+
+                    createTimeline("RACE STARTING\n" + critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE STARTING");
+                    Toast.makeText(getApplicationContext(),
+                            "RACE STARTING: " + critBuilderLatLngNames.get(0).toUpperCase(), Toast.LENGTH_LONG)
+                            .show();
+
+                    currentWaypointCB += 1;
+                }
+                return;
+            }
+
+            Log.i(TAG, "mapboxEvaluateLocationsCB: current currentWaypointCB and maxcWaypointCB: " + currentWaypointCB + ", " + maxWaypointCB);
+            if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
+                //passed all waypoints, now looking for finish
+                Log.i(TAG, "mapboxEvaluateLocationsCritBuilder: passed all waypoints, now looking for finish");
+                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
+                Log.i(TAG, "mapboxEvaluateLocationsCB: waiting to finish, distance: " + disBetwMax);
+                if (disBetwMax < distanceBetweenValue) {
+                    Log.i(TAG, "mapboxEvaluateLocationsCB: race finished");
+                    isRaceStarted = false;
+                    currentWaypointCB = 0;
+                    long raceFinishTime = System.currentTimeMillis();
+                    //raceTime is the duration of the race
+                    long raceTime = raceFinishTime - raceStartTime;
+                    Log.i(TAG, "CB raceTime: " + raceTime);
+                    raceTimesTim.add(raceTime);
+                    waypointTimesTim.add(raceTime);
+                    waypointTimesTimString += String.valueOf(raceTime);
+                    Log.i(TAG, "CB waypointTimesTimString:  " + waypointTimesTimString);
+                    trkName = critBuilderLatLngNames.get(0).toUpperCase();
+                    postRaceProcessing(raceTime);
+
+                    Log.i(TAG, "CB waypointTimesTim:  " + waypointTimesTim.toString());
+                    Log.i(TAG, "CB waypointTimesBest:  " + waypointTimesBest.toString());
+
+                    String s;
+                    String ss;
+                    if (bestRaceTime == -1) {
+                        bestRaceTime = raceTime + 1;
+                    }
+
+                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
+                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
+                        waypointTimesBest = waypointTimesTim;
+                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
+                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
+                        bestRaceTime = raceTime;
+                    } else {
+                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
+                    }
+                    Log.i(TAG, "CB TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+
+                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
+                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
+                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
+                    Toast.makeText(getApplicationContext(),
+                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
+                            .show();
+                    //reset
+                    resetRace();
+                }
+
+            }
+            Log.i(TAG, "CB evaluateLocations, pre-wptest: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
+            if (isRaceStarted && currentWaypointCB < maxWaypointCB) {
+                Log.i(TAG, "CB WAYPOINT TEST: race has started, check for waypoints");
+                waypointTestCB(gpsLa, gpsLo);
+            }
+
+
+        }  //end eval locations CB
 //
 //
-//        private void mapboxEvaluateLocations(final double gpsLa, final double gpsLo) {
-//            //start la,lo
-//            Log.i(TAG, "mapboxEvaluateLocations: ");
-//
-//            if (trkpts.isEmpty() || trkpts.size() < 3) {return;}
-//
-//            double startLa = trkpts.get(0).getLat();
-//            double startLo = trkpts.get(0).getLon();
-//            double finishLa = trkpts.get(trkpts.size()-1).getLat();
-//            double finishLo = trkpts.get(trkpts.size()-1).getLon();
-//
-//            if (currentWaypoint == 0 && !isRaceStarted) {
-//                //we are waiting for start
-//                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
-//                Log.i(TAG, "mapboxEvaluateLocations: waiting to start, distance: " + disBetw);
-//                if (disBetw < distanceBetweenValue) {
-//                    //race is starting
-//                    raceStartTime = System.currentTimeMillis();
-//
-//                    Log.i(TAG, "TRACKPOINT, STARTRACE!");
-//                    isRaceStarted = true;
-//                    speakText("THE RACE IS NOW STARTING!  HEAD TO " + wpts.get(currentWaypoint).getName());
-//                    addAnotherMarker(wpts.get(0).getLat(), wpts.get(0).getLon());
-//                    //currentWaypoint = 1;
-//                    waypointTimesTim = new ArrayList<>();
-//                    waypointTimesTimString = "";
-//                    lastCheckpointTime = System.currentTimeMillis();
-//
-//                    String startString = "";
-//                    if (bestRaceTime > 10000) {
-//                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
-//                    }
 //
 //
-//                    createTimeline("RACE STARTING\n" + trkName.toUpperCase() + "\nHEAD TO " + wpts.get(currentWaypoint).getName().toUpperCase() + startString, Timer.getCurrentTimeStamp());
-//                    setMessageText("RACE STARTING");
-//                    Toast.makeText(getApplicationContext(),
-//                            "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
-//                            .show();
-//                }
-//                return;
-//            }
-//
-//            Log.i(TAG, "mapboxEvaluateLocations: current waypoint and maxWP: " + currentWaypoint + ", " + maxWaypoint);
-//            if (currentWaypoint == maxWaypoint && isRaceStarted) {
-//                //passed all waypoints, now looking for finish
-//                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
-//                Log.i(TAG, "mapboxEvaluateLocations: waiting to finish, distance: " + disBetwMax);
-//                if (disBetwMax < distanceBetweenValue) {
-//                    Log.i(TAG, "mapboxEvaluateLocations: race finished");
-//                    isRaceStarted = false;
-//                    currentWaypoint = 0;
-//                    long raceFinishTime = System.currentTimeMillis();
-//                    //raceTime is the duration of the race
-//                    long raceTime = raceFinishTime - raceStartTime;
-//                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                    raceTimesTim.add(raceTime);
-//                    waypointTimesTim.add(raceTime);
-//                    waypointTimesTimString += String.valueOf(raceTime);
-//                    Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
-//                    postRaceProcessing(raceTime);
-//
-//                    Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
-//                    Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
-//
-//                    String s;
-//                    String ss;
-//                    if (bestRaceTime == -1) {
-//                        bestRaceTime = raceTime + 1;
-//                    }
-//
-//                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
-//                        bestRaceTime = raceTime;
-//                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
-//                        waypointTimesBest = waypointTimesTim;
-//                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
-//                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
-//                    } else {
-//                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
-//                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
-//                    }
-//                    Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-//
-//                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-//                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-//                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
-//                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
-//                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                    Toast.makeText(getApplicationContext(),
-//                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
-//                            .show();
-//                    //reset
-//                    resetRace();
-//                }
-//
-//            }
-//            Log.i(TAG, "evaluateLocations, pre-wptest: currentWaypoint, maxWP " + currentWaypoint +", "+ maxWaypoint);
-//            if (isRaceStarted && currentWaypoint < maxWaypoint) {
-//                Log.i(TAG, "trackpointTest: race has started, check for waypoints");
-//                waypointTest(gpsLa, gpsLo);
-//            }
-//
-//
-//        }  //end eval locations
-//
+        private void mapboxEvaluateLocations(final double gpsLa, final double gpsLo) {
+            //start la,lo
+            Log.i(TAG, "mapboxEvaluateLocations: ");
+
+            if (trkpts.isEmpty() || trkpts.size() < 3) {return;}
+
+            double startLa = trkpts.get(0).getLat();
+            double startLo = trkpts.get(0).getLon();
+            double finishLa = trkpts.get(trkpts.size()-1).getLat();
+            double finishLo = trkpts.get(trkpts.size()-1).getLon();
+
+            if (currentWaypoint == 0 && !isRaceStarted) {
+                //we are waiting for start
+                double disBetw = distance_between(gpsLa, gpsLo, startLa, startLo);
+                Log.i(TAG, "mapboxEvaluateLocations: waiting to start, distance: " + disBetw);
+                if (disBetw < distanceBetweenValue) {
+                    //race is starting
+                    raceStartTime = System.currentTimeMillis();
+
+                    Log.i(TAG, "TRACKPOINT, STARTRACE!");
+                    isRaceStarted = true;
+                    speakText("THE RACE IS NOW STARTING!  HEAD TO " + wpts.get(currentWaypoint).getName());
+                    addAnotherMarker(wpts.get(0).getLat(), wpts.get(0).getLon());
+                    //currentWaypoint = 1;
+                    waypointTimesTim = new ArrayList<>();
+                    waypointTimesTimString = "";
+                    lastCheckpointTime = System.currentTimeMillis();
+
+                    String startString = "";
+                    if (bestRaceTime > 10000) {
+                        startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
+                    }
+
+
+                    createTimeline("RACE STARTING\n" + trkName.toUpperCase() + "\nHEAD TO " + wpts.get(currentWaypoint).getName().toUpperCase() + startString, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE STARTING");
+                    Toast.makeText(getApplicationContext(),
+                            "RACE STARTING: " + trkName, Toast.LENGTH_LONG)
+                            .show();
+                }
+                return;
+            }
+
+            Log.i(TAG, "mapboxEvaluateLocations: current waypoint and maxWP: " + currentWaypoint + ", " + maxWaypoint);
+            if (currentWaypoint == maxWaypoint && isRaceStarted) {
+                //passed all waypoints, now looking for finish
+                double disBetwMax = distance_between(gpsLa, gpsLo, finishLa, finishLo);
+                Log.i(TAG, "mapboxEvaluateLocations: waiting to finish, distance: " + disBetwMax);
+                if (disBetwMax < distanceBetweenValue) {
+                    Log.i(TAG, "mapboxEvaluateLocations: race finished");
+                    isRaceStarted = false;
+                    currentWaypoint = 0;
+                    long raceFinishTime = System.currentTimeMillis();
+                    //raceTime is the duration of the race
+                    long raceTime = raceFinishTime - raceStartTime;
+                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
+                    raceTimesTim.add(raceTime);
+                    waypointTimesTim.add(raceTime);
+                    waypointTimesTimString += String.valueOf(raceTime);
+                    Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
+                    postRaceProcessing(raceTime);
+
+                    Log.i(TAG, "waypointTimesTim:  " + waypointTimesTim.toString());
+                    Log.i(TAG, "waypointTimesBest:  " + waypointTimesBest.toString());
+
+                    String s;
+                    String ss;
+                    if (bestRaceTime == -1) {
+                        bestRaceTime = raceTime + 1;
+                    }
+
+                    if (raceTime < bestRaceTime && bestRaceTime > 10000){
+                        bestRaceTime = raceTime;
+                        //Log.i(TAG, "new best racetime: waypointTimesBest = waypointTimesTim;");
+                        waypointTimesBest = waypointTimesTim;
+                        s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
+                        ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
+                    } else {
+                        s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                        ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
+                    }
+                    Log.i(TAG, "TRACKPOINT, RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+
+                    createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
+                    setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                    speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
+                    Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
+                    Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
+                    Toast.makeText(getApplicationContext(),
+                            "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
+                            .show();
+                    //reset
+                    resetRace();
+                }
+
+            }
+            Log.i(TAG, "evaluateLocations, pre-wptest: currentWaypoint, maxWP " + currentWaypoint +", "+ maxWaypoint);
+            if (isRaceStarted && currentWaypoint < maxWaypoint) {
+                Log.i(TAG, "trackpointTest: race has started, check for waypoints");
+                waypointTest(gpsLa, gpsLo);
+            }
+
+
+        }  //end eval locations
+
+
+
         private Location oldLocation;
         @SuppressLint("DefaultLocale")
         public void onMapboxLocationReceived(final Location location) {
