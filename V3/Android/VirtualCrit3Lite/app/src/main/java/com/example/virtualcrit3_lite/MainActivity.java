@@ -1352,7 +1352,12 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
             if ((int) totalMillis / 1000 % 10 == 0) {
                 Log.i(TAG, "run: move marker, tc size: " + trackerCoords.size());
                 if (trackerCoords.size() > 2) {
-                    setMapboxStreets();
+                    if (!isDestroyed) {
+                        setMapboxStreets();
+                    }
+                    if (!isPaused) {
+                        setMapboxStreets();
+                    }
                 }
             }
 
@@ -1694,6 +1699,11 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     private ArrayList<LatLng> trackerCoords = new ArrayList<>();
     //set streets style
     private void setMapboxStreets() {
+
+        if (isPaused) {
+            return;
+        }
+
         Log.i(TAG, "setMapboxStreets: ");
         Log.i(TAG, "addMapboxLine for user tracking: ");
         albumID += 1;
@@ -1915,11 +1925,16 @@ private Boolean collectCritPoints = false;
         mapView.onLowMemory();
     }
 
+
+    private Boolean isDestroyed = false;
+    private Boolean isPaused = false;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         mService.removeLocationUpdates();
+        isDestroyed = true;
 
 //        if (locationEngine != null) {
 //            Log.i(TAG, "onDestroy: removeLocationUpdates");
@@ -1954,12 +1969,14 @@ private Boolean collectCritPoints = false;
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
                 new IntentFilter(LocationUpdatesService.ACTION_BROADCAST));
 
+        isPaused = false;
 
     }
 
     @Override
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver);
+        isPaused = true;
         super.onPause();
         mapView.onPause();
 
