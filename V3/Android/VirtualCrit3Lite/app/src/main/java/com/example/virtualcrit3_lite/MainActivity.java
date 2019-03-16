@@ -83,6 +83,8 @@ import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -266,8 +268,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         public void onReceive(Context context, Intent intent) {
             Location location = intent.getParcelableExtra(LocationUpdatesService.EXTRA_LOCATION);
             if (location != null) {
-                Toast.makeText(MainActivity.this, Utils.getLocationText(location),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, Utils.getLocationText(location), Toast.LENGTH_SHORT).show();
 
                 //PROCESS ONLOCATION....
                 Log.i(TAG, "onReceive: MainActivityLocation, calling LocationReceived: " + location.getProvider() + ":  " + location.getLatitude() + "," + location.getLongitude());
@@ -1348,6 +1349,13 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
             }
 
+            if ((int) totalMillis / 1000 % 10 == 0) {
+                Log.i(TAG, "run: move marker, tc size: " + trackerCoords.size());
+                if (trackerCoords.size() > 2) {
+                    setMapboxStreets();
+                }
+            }
+
             timerHandler.postDelayed(this, 1000);
         }
     };
@@ -1436,11 +1444,45 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
 
 //        boolean b = checkLocationPermissions();
-        //Log.i(TAG, "onCreate: checkLocationPermissions: " + checkLocationPermissions());
+//        Log.i(TAG, "onCreate: checkLocationPermissions: " + checkLocationPermissions());
 
         mapView = findViewById(R.id.mapView);
-        //mapView.onCreate(savedInstanceState);
+        mapView.onCreate(savedInstanceState);
         //mapView.getMapAsync(this);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        Log.i(TAG, "onStyleLoaded: ");
+
+
+                        mapboxMap.addOnMapClickListener(new OnMapClickListener() {
+                            @Override
+                            public boolean onMapClick(@NonNull LatLng point) {
+                                Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
+                                //String string = String.format(Locale.US, "User clicked at: %s", point.toString());
+                                //Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
+
+                                if (collectCritPoints) {
+                                    critBuilderLatLng.add(point);
+                                    addAnotherMarkerCB(point.getLatitude(), point.getLongitude());
+                                    llp += point.getLatitude() + "," + point.getLongitude() + ":";
+                                    //get name from input
+                                    inputWaypointName();
+                                }
+                                return false;
+                            }
+                        });
+
+
+
+                    }
+                });
+            }
+        });
 
 
     }
@@ -1453,53 +1495,53 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     //start add line
     private void addMapboxLine() {
         Log.i(TAG, "addMapboxLine: ");
-//        mbLineId += 1;
-//
-//        mapView.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//
-//                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
-//                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
-//
-//
-//                List<Point> routeCoordinates = new ArrayList<>();
-//
-//
-//                for (LatLng x : critBuilderLatLng) {
-//                    routeCoordinates.add(Point.fromLngLat(x.getLongitude(), x.getLatitude()));
-//                }
-//
-//                // Create the LineString from the list of coordinates and then make a GeoJSON
-//// FeatureCollection so we can add the line to our map as a layer.
-//                Style style = mapboxMap.getStyle();
-//
-////REMOVE IF THERE...
-//                if (mbLineId > 11) {
-//                    style.removeSource("line-source"+ String.valueOf(mbLineId-1));
-//                    style.removeLayer("linelayer" + String.valueOf(mbLineId-1));
-//                }
-//
-//
-//
-//                style.addSource(new GeoJsonSource("line-source" + mbLineId,
-//                        FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
-//                                LineString.fromLngLats(routeCoordinates)
-//                        )})));
-//
-//                // The layer properties for our line. This is where we make the line dotted, set the
-//// color, etc.
-//                style.addLayer(new LineLayer("linelayer" + mbLineId, "line-source" + mbLineId).withProperties(
-//                        PropertyFactory.lineDasharray(new Float[] {0.01f, 2f}),
-//                        PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-//                        PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
-//                        PropertyFactory.lineWidth(5f),
-//                        PropertyFactory.lineColor(Color.parseColor("#e55e5e"))
-//                ));
-//            }
-//        });
-//
-//        addAllMarkers();
+        mbLineId += 1;
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+
+                List<Point> routeCoordinates = new ArrayList<>();
+
+
+                for (LatLng x : critBuilderLatLng) {
+                    routeCoordinates.add(Point.fromLngLat(x.getLongitude(), x.getLatitude()));
+                }
+
+                // Create the LineString from the list of coordinates and then make a GeoJSON
+// FeatureCollection so we can add the line to our map as a layer.
+                Style style = mapboxMap.getStyle();
+
+//REMOVE IF THERE...
+                if (mbLineId > 11) {
+                    style.removeSource("line-source"+ String.valueOf(mbLineId-1));
+                    style.removeLayer("linelayer" + String.valueOf(mbLineId-1));
+                }
+
+
+
+                style.addSource(new GeoJsonSource("line-source" + mbLineId,
+                        FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
+                                LineString.fromLngLats(routeCoordinates)
+                        )})));
+
+                // The layer properties for our line. This is where we make the line dotted, set the
+// color, etc.
+                style.addLayer(new LineLayer("linelayer" + mbLineId, "line-source" + mbLineId).withProperties(
+                        PropertyFactory.lineDasharray(new Float[] {0.01f, 2f}),
+                        PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                        PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                        PropertyFactory.lineWidth(5f),
+                        PropertyFactory.lineColor(Color.parseColor("#e55e5e"))
+                ));
+            }
+        });
+
+        addAllMarkers();
     }
     //end add line
 
@@ -1508,47 +1550,49 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
         raceNumber += 1;
         Log.i(TAG, "addAllMarkers: ");
-//
-//        mapView.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//
-//                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
-//                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
-//
-//                List<Feature> markerCoordinates = new ArrayList<>();
-////                markerCoordinates.add(Feature.fromGeometry(
-////                        Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
-////                markerCoordinates.add(Feature.fromGeometry(
-////                        Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
-//
-//                for (LatLng n : critBuilderLatLng) {
-//                    markerCoordinates.add(Feature.fromGeometry(
-//                        Point.fromLngLat(n.getLongitude(), n.getLatitude())));
-//                }
-//
-//                Style style = mapboxMap.getStyle();
-//
-//                if (raceNumber > 10) {
-//                    Log.i(TAG, "onMapReady: remove source and layer");
-//                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
-//                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
-//
-//                }
-//
-//                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
-//                        FeatureCollection.fromFeatures(markerCoordinates)));
-//
-//                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
-//                symbolLayer.withProperties(
-//                        PropertyFactory.iconImage("marker-icon-id")
-//                );
-//                style.addLayer(symbolLayer);
-//                isRaceLoaded = true;
-//
-//            }
-//
-//        });
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+                List<Feature> markerCoordinates = new ArrayList<>();
+//                markerCoordinates.add(Feature.fromGeometry(
+//                        Point.fromLngLat(trkpts.get(trkpts.size() - 1).getLon(), trkpts.get(trkpts.size() - 1).getLat()))); // FINISH
+//                markerCoordinates.add(Feature.fromGeometry(
+//                        Point.fromLngLat(trkpts.get(0).getLon(), trkpts.get(0).getLat()))); // START
+
+                for (LatLng n : critBuilderLatLng) {
+                    markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(n.getLongitude(), n.getLatitude())));
+                }
+
+                Style style = mapboxMap.getStyle();
+
+                if (raceNumber > 10) {
+                    Log.i(TAG, "onMapReady: remove source and layer");
+                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
+                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
+
+                }
+
+                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
+                        FeatureCollection.fromFeatures(markerCoordinates)));
+
+                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
+                symbolLayer.withProperties(
+                        PropertyFactory.iconImage("marker-icon-id")
+                );
+                style.addLayer(symbolLayer);
+                isRaceLoaded = true;
+
+            }
+
+        });
+
+
     }
     //end add all markers
 
@@ -1559,44 +1603,44 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
         raceNumber += 1;
         Log.i(TAG, "addAnotherMarkerCB: ");
-//
-//
-//        mapView.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//
-//                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
-//                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
-//
-//                List<Feature> markerCoordinates = new ArrayList<>();
-//
-//                markerCoordinates.add(Feature.fromGeometry(
-//                        Point.fromLngLat(markerLon, markerLat))); // START
-//
-//
-//
-//                Style style = mapboxMap.getStyle();
-//
-//                if (raceNumber > 10) {
-//                    Log.i(TAG, "onMapReady: remove source and layer");
-//                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
-//                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
-//
-//                }
-//
-//                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
-//                        FeatureCollection.fromFeatures(markerCoordinates)));
-//
-//                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
-//                symbolLayer.withProperties(
-//                        PropertyFactory.iconImage("marker-icon-id")
-//                );
-//                style.addLayer(symbolLayer);
-//                isRaceLoaded = true;
-//
-//            }
-//
-//        });
+
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+                List<Feature> markerCoordinates = new ArrayList<>();
+
+                markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(markerLon, markerLat))); // START
+
+
+
+                Style style = mapboxMap.getStyle();
+
+                if (raceNumber > 10) {
+                    Log.i(TAG, "onMapReady: remove source and layer");
+                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
+                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
+
+                }
+
+                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
+                        FeatureCollection.fromFeatures(markerCoordinates)));
+
+                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
+                symbolLayer.withProperties(
+                        PropertyFactory.iconImage("marker-icon-id")
+                );
+                style.addLayer(symbolLayer);
+                isRaceLoaded = true;
+
+            }
+
+        });
     }
     //end add marker only for cb
 
@@ -1605,79 +1649,149 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     private void addAnotherMarker(final double markerLat, final double markerLon) {
 
         Log.i(TAG, "addAnotherMarker: ");
-//        raceNumber += 1;
-//
-//
-//        mapView.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        raceNumber += 1;
+
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+
+                List<Feature> markerCoordinates = new ArrayList<>();
+
+                markerCoordinates.add(Feature.fromGeometry(
+                        Point.fromLngLat(markerLon, markerLat))); // START
+
+
+
+                Style style = mapboxMap.getStyle();
+
+                if (raceNumber > 10) {
+                    Log.i(TAG, "onMapReady: remove source and layer");
+                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
+                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
+
+                }
+
+                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
+                        FeatureCollection.fromFeatures(markerCoordinates)));
+
+                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
+                symbolLayer.withProperties(
+                        PropertyFactory.iconImage("marker-icon-id")
+                );
+                style.addLayer(symbolLayer);
+                isRaceLoaded = true;
+
+            }
+
+        });
+    }
+
+    private int albumID = 100;
+    private ArrayList<LatLng> trackerCoords = new ArrayList<>();
+    //set streets style
+    private void setMapboxStreets() {
+        Log.i(TAG, "setMapboxStreets: ");
+        Log.i(TAG, "addMapboxLine for user tracking: ");
+        albumID += 1;
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
 //
 //                Objects.requireNonNull(mapboxMap.getStyle()).addImage("marker-icon-id", BitmapFactory.decodeResource(
 //                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
-//
-//                List<Feature> markerCoordinates = new ArrayList<>();
-//
-//                markerCoordinates.add(Feature.fromGeometry(
-//                        Point.fromLngLat(markerLon, markerLat))); // START
-//
-//
-//
-//                Style style = mapboxMap.getStyle();
-//
-//                if (raceNumber > 10) {
-//                    Log.i(TAG, "onMapReady: remove source and layer");
-//                    style.removeSource("source-id2" + String.valueOf(raceNumber-1));
-//                    style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
-//
-//                }
-//
-//                style.addSource(new GeoJsonSource("source-id2" + String.valueOf(raceNumber),
-//                        FeatureCollection.fromFeatures(markerCoordinates)));
-//
-//                SymbolLayer symbolLayer = new SymbolLayer("layer-id2" + String.valueOf(raceNumber), "source-id2" + String.valueOf(raceNumber));
-//                symbolLayer.withProperties(
-//                        PropertyFactory.iconImage("marker-icon-id")
-//                );
-//                style.addLayer(symbolLayer);
-//                isRaceLoaded = true;
-//
-//            }
-//
-//        });
+
+
+                List<Point> routeCoordinates = new ArrayList<>();
+
+
+                for (LatLng x : trackerCoords) {
+                    routeCoordinates.add(Point.fromLngLat(x.getLongitude(), x.getLatitude()));
+                }
+
+                // Create the LineString from the list of coordinates and then make a GeoJSON
+// FeatureCollection so we can add the line to our map as a layer.
+                Style style = mapboxMap.getStyle();
+
+//REMOVE IF THERE...
+                if (albumID > 105) {
+                    style.removeSource("line-source"+ String.valueOf(albumID-1));
+                    style.removeLayer("linelayer" + String.valueOf(albumID-1));
+                }
+
+
+
+                style.addSource(new GeoJsonSource("line-source" + albumID,
+                        FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
+                                LineString.fromLngLats(routeCoordinates)
+                        )})));
+
+                // The layer properties for our line. This is where we make the line dotted, set the
+// color, etc.
+                style.addLayer(new LineLayer("linelayer" + albumID, "line-source" + albumID).withProperties(
+                        PropertyFactory.lineDasharray(new Float[] {0.001f, 1f}),
+                        PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                        PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                        PropertyFactory.lineWidth(3f),
+                        PropertyFactory.lineColor(Color.parseColor("#FF0000"))
+                ));
+
+//                mapbox:mapbox_cameraTargetLat="40.672216"
+//                mapbox:mapbox_cameraTargetLng="-73.970615"
+                CameraPosition position = new CameraPosition.Builder()
+//                        .target(new LatLng(51.50550, -0.07520)) // Sets the new camera position
+                        .target(trackerCoords.get(trackerCoords.size()-1)) // Sets the new camera position
+//                        .zoom(17) // Sets the zoom
+//                        .bearing(180) // Rotate the camera
+                        .tilt(30) // Set the camera tilt
+                        .build(); // Creates a CameraPosition from the builder
+
+                mapboxMap.animateCamera(CameraUpdateFactory
+                        .newCameraPosition(position), 7000);
+
+            }
+        });
     }
 
 
-//    @Override
-//    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-//        this.mapboxMap = mapboxMap;
-//
-//        mapboxMap.setStyle(Style.MAPBOX_STREETS,
-//                new Style.OnStyleLoaded() {
-//                    @Override
-//                    public void onStyleLoaded(@NonNull Style style) {
-//                        //enableLocationComponent(style);
-//                    }
-//                });
-//
-//        mapboxMap.addOnMapClickListener(new OnMapClickListener() {
-//            @Override
-//            public boolean onMapClick(@NonNull LatLng point) {
-//                Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
-//                //String string = String.format(Locale.US, "User clicked at: %s", point.toString());
-//                //Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
-//
-//                if (collectCritPoints) {
-//                    critBuilderLatLng.add(point);
-//                    addAnotherMarkerCB(point.getLatitude(), point.getLongitude());
-//                    llp += point.getLatitude() + "," + point.getLongitude() + ":";
-//                    //get name from input
-//                    inputWaypointName();
-//                }
-//                return false;
-//            }
-//        });
-//    }
-//
+
+
+
+
+    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        this.mapboxMap = mapboxMap;
+
+        mapboxMap.setStyle(Style.MAPBOX_STREETS,
+                new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        //enableLocationComponent(style);
+                    }
+                });
+
+        mapboxMap.addOnMapClickListener(new OnMapClickListener() {
+            @Override
+            public boolean onMapClick(@NonNull LatLng point) {
+                Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
+                //String string = String.format(Locale.US, "User clicked at: %s", point.toString());
+                //Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
+
+                if (collectCritPoints) {
+                    critBuilderLatLng.add(point);
+                    addAnotherMarkerCB(point.getLatitude(), point.getLongitude());
+                    llp += point.getLatitude() + "," + point.getLongitude() + ":";
+                    //get name from input
+                    inputWaypointName();
+                }
+                return false;
+            }
+        });
+    }
+
 
 private Boolean collectCritPoints = false;
 
@@ -1698,8 +1812,8 @@ private Boolean collectCritPoints = false;
 //
 
 
-    private boolean res = true;
-
+//    private boolean res = true;
+//
 //    private boolean checkLocationPermissions() {
 //        Log.i(TAG, "enableLocationPermissions: ");
 //
@@ -1804,6 +1918,8 @@ private Boolean collectCritPoints = false;
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        mService.removeLocationUpdates();
 
 //        if (locationEngine != null) {
 //            Log.i(TAG, "onDestroy: removeLocationUpdates");
@@ -3514,21 +3630,29 @@ private Boolean collectCritPoints = false;
 
                 mapBoxDisplaySpeedValues();
                 oldLocation = location;
+
+
+                LatLng e = new LatLng();
+                e.setLatitude(oldLocationLat);
+                e.setLongitude(oldLocationLon);
+                trackerCoords.add(e);
+
+
             }
 
 
             if (isCritBuilderIDActive) {
                 Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
-                //mapboxEvaluateLocationsCritID(locationLat, locationLon);
+                mapboxEvaluateLocationsCritID(locationLat, locationLon);
                 return;
             }
 
             if (isCritBuilderActive) {
                 Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
-                //mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
+                mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
             } else {
                 Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
-                //mapboxEvaluateLocations(locationLat, locationLon);
+                mapboxEvaluateLocations(locationLat, locationLon);
             }
 
 
