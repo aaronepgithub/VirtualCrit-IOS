@@ -8,6 +8,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -17,7 +18,124 @@ public final class Timer {
     private static int status = 99;
 
     private static Location timerLocation;
-    private static Double timerDistance = 0.0;
+    private static Location timerOldLocation;
+    private static double timerGeoDistance = 0.0;
+    private static double timerGeoSpeed;
+    private static double timerGeoAvgSpeed;
+    private static double timerTotalTimeGeo = 0.0;
+    private static ArrayList<Location> timerAllLocations = new ArrayList<>();
+
+//from service
+    public static Location getTimerLocation() {
+        return timerLocation;
+    }
+
+    public static Location getTimerOldLocation() {
+        return timerOldLocation;
+    }
+
+    public static double getGeoSpeed() {
+        return timerGeoSpeed;
+    }
+    public static double getGeoAvgSpeed() {
+        return timerGeoAvgSpeed;
+    }
+    public static double gettimerTotalTimeGeo() {
+        return timerTotalTimeGeo;
+    }
+    public static double getTimerGeoDistance() {
+        return timerGeoDistance;
+    }
+
+    static void setTimerLocation(Location timerLocation) {
+        Log.i(TAG, "Location from Service: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
+        Timer.timerLocation = timerLocation;
+        calculateValues();
+    }
+
+    private static void calculateValues() {
+        Log.i(TAG, "calculateValues: timerLocation " + timerLocation.getProvider());
+
+        Timer.timerAllLocations.add(timerLocation);
+        double locationLat = timerLocation.getLatitude();
+        double locationLon = timerLocation.getLongitude();
+        long locationTime = timerLocation.getTime();
+
+        double oldLocationLat;
+        double oldLocationLon;
+        long oldLocationTime;
+
+
+        if (timerOldLocation == null) {
+            Log.i(TAG, "timerOldLocation: is null ");
+            timerOldLocation = timerLocation;
+
+        } else {
+            oldLocationLat = timerOldLocation.getLatitude();
+            oldLocationLon = timerOldLocation.getLongitude();
+            oldLocationTime = timerOldLocation.getTime();
+
+
+            //MORE ACCURATE DISTANCE CALC
+            double result = timerDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
+
+
+            Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
+            //Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
+            if (result  < 1 || (locationTime - oldLocationTime) < 1001) {
+                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
+                return;
+            }
+
+            if (locationTime - oldLocationTime > 30000 || result > 150) { //30 SECONDS or 150 meters
+                Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
+                timerOldLocation = timerLocation;
+                return;
+            }
+
+
+            double gd = result * 0.000621371;
+            timerGeoDistance += gd;
+
+
+            //MORE ACCURACE BUT NOT NECESSARY
+            long gt = (timerLocation.getTime() - timerOldLocation.getTime());  //MILLI
+            timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+
+            //USING QUICK METHOD FOR DISPLAY PURPOSES
+            //timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
+
+            timerTotalTimeGeo += (locationTime - oldLocationTime);  //MILLI
+            double ttg = (double) timerTotalTimeGeo;  //IN MILLI
+            timerGeoAvgSpeed = timerGeoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+            timerOldLocation = timerLocation;
+
+            Log.i(TAG, "onTimerLocationReceived: timer Speed, AvgSpeed, Distance, totalTime: " + timerGeoSpeed + ", " + timerGeoAvgSpeed + ", " + timerGeoDistance + ", " + timerTotalTimeGeo);
+        }
+
+
+    }
+
+    private static double timerDistanceBetween(Double lat1, Double lon1, Double lat2, Double lon2) {
+        double R = 6371; // km
+        double dLat = (lat2 - lat1) * Math.PI / 180;
+        double dLon = (lon2 - lon1) * Math.PI / 180;
+        lat1 = lat1 * Math.PI / 180;
+        lat2 = lat2 * Math.PI / 180;
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c * 1000;
+
+        return d;
+    }
+
+
+
+
+
+
 
     public static int getStatus() {
         return status;
@@ -70,10 +188,6 @@ public final class Timer {
         return h + m + se;
 
 
-//        return String.format("%02d:%02d:%02d", s/(3600*1000),
-//                s/(60*1000) % 60,
-//                s/1000 % 60);
-
     }
 
 
@@ -84,31 +198,10 @@ public final class Timer {
 
     }
 
-    public static Location getTimerLocation() {
-        return timerLocation;
-    }
 
-    public static void setTimerLocation(Location timerLocation) {
-        Log.i(TAG, "setTimerLocation: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
-        Timer.timerLocation = timerLocation;
-        double a = Timer.getTimerDistance();
-        setTimerDistance(a += timerLocation.getAltitude());
-        Log.i(TAG, "Timer.getTimerDistance" + Timer.getTimerDistance());
-    }
 
-    private Location timerOldLocation;
-    private double timerGeoDistance;
-    private double timerGeoSpeed;
-    private double timerGeoAvgSpeed;
-    private double timerTotalTimeGeo;
 
-    public static Double getTimerDistance() {
-        return timerDistance;
-    }
 
-    public static void setTimerDistance(Double timerDistance) {
-        Timer.timerDistance = timerDistance;
-    }
 
 //    @SuppressLint("DefaultLocale")
 //    private static void onTimerLocationReceived(Location location) {
@@ -176,19 +269,6 @@ public final class Timer {
 //    }
 
 
-    double timerDistanceBetween(Double lat1, Double lon1, Double lat2, Double lon2) {
-        double R = 6371; // km
-        double dLat = (lat2 - lat1) * Math.PI / 180;
-        double dLon = (lon2 - lon1) * Math.PI / 180;
-        lat1 = lat1 * Math.PI / 180;
-        lat2 = lat2 * Math.PI / 180;
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = R * c * 1000;
-
-        return d;
-    }
 
 }

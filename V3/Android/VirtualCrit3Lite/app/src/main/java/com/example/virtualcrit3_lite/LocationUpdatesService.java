@@ -320,8 +320,11 @@ public class LocationUpdatesService extends Service {
         // Notify anyone listening for broadcasts about the new location.
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra(EXTRA_LOCATION, location);
+
         Log.i(TAG, "onNewLocation: Timer.setLocation");
         Timer.setTimerLocation(location);
+
+
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
         // Update notification content if running as a foreground service.

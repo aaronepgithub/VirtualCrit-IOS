@@ -272,7 +272,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 //PROCESS ONLOCATION....
                 Log.i(TAG, "onReceive: MainActivityLocation, calling LocationReceived: " + location.getProvider() + ":  " + location.getLatitude() + "," + location.getLongitude());
-                onMapboxLocationReceived(location);
+                //onMapboxLocationReceived(location);
+                onTimerLocationReceived();
 
             }
         }
@@ -3209,9 +3210,7 @@ private Boolean collectCritPoints = false;
 //
         private void mapBoxDisplaySpeedValues() {
 
-            final String hms = getTimeStringFromMilliSecondsToDisplay((int) totalTimeGeo);
 
-;
             //UPDATE UI WITH SPEED AND DISTANCE
             mn.runOnUiThread(new Runnable() {
                 @SuppressLint("DefaultLocale")
@@ -3228,6 +3227,12 @@ private Boolean collectCritPoints = false;
                     TextView t4 = findViewById(R.id.tvFooter1);
                     TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
                     TextView t2 = findViewById(R.id.tvHeader2);
+
+                    geoSpeed = Timer.getGeoSpeed();
+                    geoAvgSpeed = Timer.getGeoAvgSpeed();
+                    geoDistance = Timer.getTimerGeoDistance();
+                    final String hms = getTimeStringFromMilliSecondsToDisplay((int) Timer.gettimerTotalTimeGeo());
+
 
                     tvSpd.setText(String.format("%.1f MPH", geoSpeed));
                     t1.setText(String.format("%.1f", geoSpeed));
@@ -3592,6 +3597,32 @@ private Boolean collectCritPoints = false;
 
         }  //end eval locations
 
+
+        public void onTimerLocationReceived() {
+            Log.i(TAG, "onTimerLocationReceived: ");
+
+            mapBoxDisplaySpeedValues();
+
+            LatLng e = new LatLng();
+            e.setLatitude(Timer.getTimerOldLocation().getLatitude());
+            e.setLongitude(Timer.getTimerOldLocation().getLongitude());
+            trackerCoords.add(e);
+
+            if (isCritBuilderIDActive) {
+                Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
+                mapboxEvaluateLocationsCritID(Timer.getTimerOldLocation().getLatitude(), Timer.getTimerOldLocation().getLongitude());
+                return;
+            }
+
+            if (isCritBuilderActive) {
+                Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
+                mapboxEvaluateLocationsCritBuilder(Timer.getTimerOldLocation().getLatitude(), Timer.getTimerOldLocation().getLongitude());
+            } else {
+                Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
+                mapboxEvaluateLocations(Timer.getTimerOldLocation().getLatitude(), Timer.getTimerOldLocation().getLongitude());
+            }
+
+        }
 
 
         private Location oldLocation;
