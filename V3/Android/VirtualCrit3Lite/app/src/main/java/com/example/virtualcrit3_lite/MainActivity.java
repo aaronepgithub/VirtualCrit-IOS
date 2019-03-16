@@ -1429,12 +1429,17 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 //            }
 //        }
 
-        timerStart(getCurrentFocus());
+
+
         mTextMessage = (TextView) findViewById(R.id.message);
         mValueTimer = findViewById(R.id.valueTimer);
 
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+//        timerStart(getCurrentFocus());
+        timerStart2();
 
         createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
         setRandomUsernameOnStart();
@@ -2389,6 +2394,18 @@ private Boolean collectCritPoints = false;
 //                }
 //            }
 //        });
+    }
+
+    private Boolean isTimerStarted = false;
+    public void timerStart2() {
+        if (!isTimerStarted) {
+            isTimerStarted = true;
+            Log.i(TAG, "Start Timer - First Time");
+            //mValueTimer.setText("00:00:00");
+            startTime = System.currentTimeMillis();
+            timerHandler.postDelayed(timerRunnable, 0);
+            manageTimer(0);
+        }
     }
 
     public void timerStart(View view) {
