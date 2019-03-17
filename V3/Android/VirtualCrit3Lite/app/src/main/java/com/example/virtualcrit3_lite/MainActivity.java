@@ -1574,7 +1574,8 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
             @Override
             public void onMapReady(@NonNull final MapboxMap mapboxMap) {
 
-                mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
+//                mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         Log.i(TAG, "onStyleLoaded: ");
@@ -3693,7 +3694,6 @@ private Boolean collectCritPoints = false;
             Log.i(TAG, "onTimerLocationReceived: ");
 
             mapBoxDisplaySpeedValues();
-
             LatLng e = new LatLng();
             e.setLatitude(Timer.getTimerOldLocation().getLatitude());
             e.setLongitude(Timer.getTimerOldLocation().getLongitude());

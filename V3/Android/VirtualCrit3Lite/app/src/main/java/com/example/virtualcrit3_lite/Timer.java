@@ -26,7 +26,7 @@ public final class Timer {
     private static double timerGeoSpeed;
     private static double timerGeoAvgSpeed;
     private static double timerTotalTimeGeo = 0.0;
-    private static ArrayList<Location> timerAllLocations = new ArrayList<>();
+    public static ArrayList<Location> timerAllLocations = new ArrayList<>();
 
 
 //NOTIFY TIMER TO EXECUTE ON MAIN ACTIVITY
