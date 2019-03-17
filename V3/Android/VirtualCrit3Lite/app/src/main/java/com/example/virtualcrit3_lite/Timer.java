@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.security.auth.login.LoginException;
+
 
 public final class Timer {
 
@@ -25,6 +27,17 @@ public final class Timer {
     private static double timerGeoAvgSpeed;
     private static double timerTotalTimeGeo = 0.0;
     private static ArrayList<Location> timerAllLocations = new ArrayList<>();
+
+
+//NOTIFY TIMER TO EXECUTE ON MAIN ACTIVITY
+    private static ArrayList<String> stringForSpeak = new ArrayList<>();
+    private static ArrayList<String> stringForSetMessage = new ArrayList<>();
+    private static LatLng locationForNextMarker;
+    private static ArrayList<String> stringForTimeline = new ArrayList<>();
+    private static ArrayList<String> stringForTimelineTime = new ArrayList<>();
+    private static String stringForPostRaceProcessing = "";
+
+
 
     //LOCATION PROVIDED BY SERVICE TO SETTIMERLOCATION
     public static Location getTimerLocation() {
@@ -81,11 +94,11 @@ public final class Timer {
             double result = timerDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
 
 
-            Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
+            //Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
             //Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
             if (result  < 1 || (locationTime - oldLocationTime) < 1001) {
-                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
-                return;
+//                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
+//                return;
             }
 
             if (locationTime - oldLocationTime > 30000 || result > 150) { //30 SECONDS or 150 meters
@@ -113,6 +126,7 @@ public final class Timer {
         }
 
         if (Crit.critBuilderLatLng.size() > 0) {
+            Log.i(TAG, "calculateValues: EVALUATE LOCATION");
             evaluateLocation(locationLat, locationLon);
         }
 
@@ -134,11 +148,19 @@ public final class Timer {
 
     private static int currentWaypointCB = 0;
     private static int maxWaypointCB = 0;
-    private static Boolean isRaceStarted = false;
+    public static Boolean isRaceStarted = false;
+
+    public static Boolean isTimeToPostRaceData = false;
+    public static Race publishMe;
+
     private static long raceStartTime = 0;
     private static long raceFinishTime = 0;
     private static ArrayList<Long> waypointTimesTim = new ArrayList<>();
+
     private static String waypointTimesTimString;
+    private static String waypointNamesString;
+    private static String waypointPointsString;
+
 
     private static ArrayList<Long> waypointTimesBest = new ArrayList<>();
     private static long bestRaceTime = -1;
@@ -157,11 +179,12 @@ public final class Timer {
         double startLo = Crit.critBuilderLatLng.get(0).getLongitude();
         double finishLa = Crit.critBuilderLatLng.get(Crit.critBuilderLatLng.size()-1).getLatitude();
         double finishLo = Crit.critBuilderLatLng.get(Crit.critBuilderLatLng.size()-1).getLongitude();
-        maxWaypointCB = Crit.critBuilderLatLng.size();
+        maxWaypointCB = Crit.critBuilderLatLng.size() - 1;
         raceName = Crit.critBuilderLatLngNames.get(0);
 
 
         //TEST FOR START
+        Log.i(TAG, "evaluateLocation");
         if (currentWaypointCB == 0 && !isRaceStarted) {
             //NOT YET AT START
             double disBetw = timerDistanceBetween(gpsLa, gpsLo, startLa, startLo);
@@ -171,9 +194,15 @@ public final class Timer {
                 Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
                 isRaceStarted = true;
-                //speakText("THE RACE HAS STARTED  HEAD TO " + namesTemp.get(currentWaypointCB+1));
 
+                //speakText("THE RACE HAS STARTED  HEAD TO " + namesTemp.get(currentWaypointCB+1));
                 //addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
+
+                stringForSpeak.add("THE RACE HAS STARTED  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1));
+                locationForNextMarker = Crit.critBuilderLatLng.get(currentWaypointCB+1);
+                stringForSetMessage.add("RACE STARTED");
+
+
                 waypointTimesTim = new ArrayList<>();
                 waypointTimesTimString = "";
 
@@ -181,9 +210,12 @@ public final class Timer {
                 if (bestRaceTime > 10000) {
                     startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
                 }
+                stringForTimeline.add("RACE STARTING\n" + Crit.critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString);
+                stringForTimelineTime.add(Timer.getCurrentTimeStamp());
+                Log.i(TAG, "stringForTimeline " + stringForTimeline);
 
 //                createTimeline("RACE STARTING\n" + namesTemp.get(0).toUpperCase() + "\nHEAD TO " + namesTemp.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
-//                setMessageText("RACE STARTING");
+
 //                Toast.makeText(getApplicationContext(),
 //                        "RACE STARTING: " + namesTemp.get(0).toUpperCase(), Toast.LENGTH_LONG)
 //                        .show();
@@ -196,7 +228,6 @@ public final class Timer {
 
         //TEST FOR FINISH
         if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
-
             double disBetwMax = timerDistanceBetween(gpsLa, gpsLo, finishLa, finishLo);
             Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
 
@@ -217,8 +248,13 @@ public final class Timer {
                 Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
 
                 //trkName = namesTemp.get(0);
-            //TODO:  POST RACE PROCESSING, SEND TO FB
                 //postRaceProcessing(raceTime);
+
+                publishMe = new Race(Crit.getRacerName(), Crit.getRaceName(), raceTime, Crit.getRaceDate(), waypointTimesTimString, Timer.getWaypointPointsString(), Timer.getWaypointNamesString());
+                isTimeToPostRaceData = true;
+
+                //Race r = new Race(settingsName, raceName, raceTime, raceDate, waypointTimesTimString, llp, lln);
+
                 //Log.i(TAG, "CBID waypointTimesTim:  " + waypointTimesTim.toString());
                 //Log.i(TAG, "CBID waypointTimesBest:  " + waypointTimesBest.toString());
                 String s;
@@ -238,7 +274,17 @@ public final class Timer {
 
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
 
-                //TODO: TIMELINE, MESSAGE, SPEAK
+                final String sss = "RACE COMPLETE, YOUR TIME IS.  \" + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + \".  \" + ss";
+                stringForSpeak.add(sss);
+
+                //stringForSpeak.add("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
+                stringForPostRaceProcessing = raceName;
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n");
+                stringForTimelineTime.add(Timer.getCurrentTimeStamp());
+                stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+
+
+
 //                createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
 //                setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 //                speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
@@ -261,7 +307,7 @@ public final class Timer {
 
         //NOT START OR FINISH
         if (isRaceStarted && currentWaypointCB < maxWaypointCB) {
-            Log.i(TAG, "NOT START OR FINISH: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
+            Log.i(TAG, "NOT START OR FINISH, START WAYPOINT TEST: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
             waypointTest(gpsLa, gpsLo);
         }
 
@@ -274,7 +320,7 @@ public final class Timer {
 
     //START WAYPOINTTEST
     private static void waypointTest(double gpsLa, double gpsLo) {
-        Log.i(TAG, "waypointTest, currentWaypointCB, max: " + currentWaypointCB + ", " + maxWaypointCB);
+        Log.i(TAG, "waypointTest, current, max: " + currentWaypointCB + ", " + maxWaypointCB);
 
         if (!isRaceStarted) {
             Log.i(TAG, "waypointTest, race not started, return");
@@ -285,21 +331,31 @@ public final class Timer {
             return;
         }
 
-        final double disBetw = timerDistanceBetween(gpsLa, gpsLo, Crit.critBuilderLatLng.get(currentWaypointCB).getLatitude(), Crit.critBuilderLatLng.get(currentWaypointCB).getLatitude());
-        Log.i(TAG, "waypointTest, waiting for waypoint match, distance: " + disBetw);
+        final double disBetw = timerDistanceBetween(gpsLa, gpsLo, Crit.critBuilderLatLng.get(currentWaypointCB).getLatitude(), Crit.critBuilderLatLng.get(currentWaypointCB).getLongitude());
+        Log.i(TAG, "WAYPOINT TEST, WAIT FOR MATCH: " + disBetw);
 
         //WAYPOINT MATCH
-//        if (disBetw < 1000) {
-//            setMessageText(String.valueOf((int) disBetw));
-//        }
+        if (disBetw < 1000) {
+            stringForSetMessage.add(String.valueOf((int) disBetw));
+        }
+
 
         if (disBetw < 100) {
             Log.i(TAG, "WAYPOINT MATCH! " + (currentWaypointCB) + " OF " + (maxWaypointCB));
-            if ((currentWaypointCB+1) < maxWaypointCB) {
-                //addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
+            Log.i(TAG, "WAYPOINT MATCH NAME: " + Crit.critBuilderLatLngNames.get(currentWaypointCB));
+            final int next = currentWaypointCB + 1;
+
+            Log.i(TAG, "NEW CURRENT WAYPOINTCB : " + currentWaypointCB);
+
+
+
+            if ((currentWaypointCB) < maxWaypointCB) {
+                Log.i(TAG, "waypointTest: currentWaypointCB < maxWaypointCB..." + (currentWaypointCB) + "  maxWaypointCB  " + maxWaypointCB);
+                locationForNextMarker = Crit.critBuilderLatLng.get(next);
+                Log.i(TAG, "waypointTest: WAYPOINT MATCH, NEXT NAME: " + Crit.critBuilderLatLngNames.get(next));
             }
 
-//            setMessageText("CBID RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+            stringForSetMessage.add("RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
             Log.i(TAG, "waypointTest, raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
             waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
@@ -318,6 +374,7 @@ public final class Timer {
 
                     if ((waypointTimesBest.get(currentWaypointCB-1) > waypointTimesTim.get(currentWaypointCB-1))) {
                         long l = waypointTimesBest.get(currentWaypointCB-1) - waypointTimesTim.get(currentWaypointCB-1);
+                        Log.i(TAG, "waypointTest: long l " + l);
                         int i = (int) l;
                         if (i < 2000) {
                             s1 = "EVEN WITH THE LEADER " + bestRacerName;
@@ -343,20 +400,26 @@ public final class Timer {
                 }
             }
 
-            if ((currentWaypointCB + 1) == Crit.critBuilderLatLngNames.size()) {
-                Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB);
-//                addAnotherMarker(latTemp.get(latTemp.size()-1), lonTemp.get(lonTemp.size()-1));
-//                createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
-//                speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "...  " + s2 + ".  HEAD TO FINISH");
-            } else {
-                Log.i(TAG, "waypointTestCB: not finish, next wp cb, currentWaypointCB "+ currentWaypointCB);
-//                createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO " + namesTemp.get(currentWaypointCB+1), Timer.getCurrentTimeStamp());
-//                speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + ".  " + s2 + ".  HEAD TO " + namesTemp.get(currentWaypointCB+1));
-            }
+            if (currentWaypointCB == (maxWaypointCB-1)) {
+                Log.i(TAG, "waypointTest: NEXT WAYPOINT IS FINISH " + Crit.critBuilderLatLngNames.get(next));
+                Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB + " of " + maxWaypointCB);
+                locationForNextMarker = Crit.critBuilderLatLng.get(currentWaypointCB);
+                stringForTimelineTime.add(Timer.getCurrentTimeStamp());
+                stringForTimeline.add("WAYPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB) + "\n" + Crit.critBuilderLatLngNames.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH");
+                stringForSpeak.add("WAYPOINT " + Crit.critBuilderLatLngNames.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB) + " OF " + (maxWaypointCB) + "...  " + s2 + ".  HEAD TO FINISH");
 
-            Log.i(TAG, "waypointTest, current " + currentWaypointCB);
+            } else {
+
+                Log.i(TAG, "waypointTest: NEXT WAYPOINT IS NOT FINISH, currentwaypoint: " + currentWaypointCB);
+                stringForTimelineTime.add(Timer.getCurrentTimeStamp());
+                stringForTimeline.add("WAYPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB) + "\n" + Crit.critBuilderLatLngNames.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO " + Crit.critBuilderLatLngNames.get(next));
+                stringForSpeak.add("WAYPOINT " + Crit.critBuilderLatLngNames.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB) + " OF " + (maxWaypointCB) + ".  " + s2 + ".  HEAD TO " + Crit.critBuilderLatLngNames.get(next));
+
+            }
+            Log.i(TAG, "waypointTestCB, END OF MATCH PROCESSING " + currentWaypointCB);
+
             currentWaypointCB += 1;
-            Log.i(TAG, "waypointTestCB, current " + currentWaypointCB);
+
         }
     }
     //END WAYPOINTTEST
@@ -474,4 +537,68 @@ public final class Timer {
     }
 
 
+    public static ArrayList<String> getStringForSpeak() {
+        return stringForSpeak;
+    }
+
+    public static void setStringForSpeak(ArrayList<String> stringForSpeak) {
+        Timer.stringForSpeak = stringForSpeak;
+    }
+
+    public static ArrayList<String> getStringForTimeline() {
+        return stringForTimeline;
+    }
+
+    public static void setStringForTimeline(ArrayList<String> stringForTimeline) {
+        Timer.stringForTimeline = stringForTimeline;
+    }
+
+    public static ArrayList<String> getStringForTimelineTime() {
+        return stringForTimelineTime;
+    }
+
+    public static void setStringForTimelineTime(ArrayList<String> stringForTimelineTime) {
+        Timer.stringForTimelineTime = stringForTimelineTime;
+    }
+
+
+    public static ArrayList<String> getStringForSetMessage() {
+        return stringForSetMessage;
+    }
+
+    public static void setStringForSetMessage(ArrayList<String> stringForSetMessage) {
+        Timer.stringForSetMessage = stringForSetMessage;
+    }
+
+    public static String getStringForPostRaceProcessing() {
+        return stringForPostRaceProcessing;
+    }
+
+    public static void setStringForPostRaceProcessing(String stringForPostRaceProcessing) {
+        Timer.stringForPostRaceProcessing = stringForPostRaceProcessing;
+    }
+
+    public static LatLng getLocationForNextMarker() {
+        return locationForNextMarker;
+    }
+
+    public static void setLocationForNextMarker(LatLng locationForNextMarker) {
+        Timer.locationForNextMarker = locationForNextMarker;
+    }
+
+    public static String getWaypointNamesString() {
+        return waypointNamesString;
+    }
+
+    public static void setWaypointNamesString(String waypointNamesString) {
+        Timer.waypointNamesString = waypointNamesString;
+    }
+
+    public static String getWaypointPointsString() {
+        return waypointPointsString;
+    }
+
+    public static void setWaypointPointsString(String waypointPointsString) {
+        Timer.waypointPointsString = waypointPointsString;
+    }
 }
