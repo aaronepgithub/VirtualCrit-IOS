@@ -1027,6 +1027,11 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         bestRaceTime = raceTimeToComplete;
                         waypointTimesBest = longs;
                         bestRacerName = riderName.toUpperCase();
+
+                        Timer.setBestRacerName(riderName.toUpperCase());
+                        Timer.setBestRaceTime(raceTimeToComplete);
+                        Timer.setWaypointTimesBest(longs);
+
                         Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
                     }
 
@@ -3568,6 +3573,7 @@ private Boolean collectCritPoints = false;
         }  //end eval locations
 
 
+    //FROM BROADCAST RECEIVER
         public void onTimerLocationReceived() {
             Log.i(TAG, "onTimerLocationReceived: ");
 

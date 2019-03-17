@@ -11,5 +11,5 @@ public final class Crit {
     public static ArrayList<LatLng> critBuilderLatLng = new ArrayList<>();
     public static ArrayList<String> critBuilderLatLngNames = new ArrayList<>();
 
-    
+
 }

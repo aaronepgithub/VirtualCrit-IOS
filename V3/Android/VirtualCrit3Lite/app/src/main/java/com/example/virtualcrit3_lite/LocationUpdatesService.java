@@ -321,6 +321,7 @@ public class LocationUpdatesService extends Service {
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra(EXTRA_LOCATION, location);
 
+        //SEND LOCATION TO TIMER.SETTIMERLOCATION
         Log.i(TAG, "onNewLocation: Timer.setLocation");
         Timer.setTimerLocation(location);
 
