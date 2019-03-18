@@ -1880,6 +1880,10 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
 
 
 
+                if (System.currentTimeMillis() - startTime < 15000) {
+                    return;
+                }
+
                 style.addSource(new GeoJsonSource("line-source" + albumID,
                         FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
                                 LineString.fromLngLats(routeCoordinates)
