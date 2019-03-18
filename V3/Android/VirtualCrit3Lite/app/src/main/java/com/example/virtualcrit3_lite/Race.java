@@ -19,8 +19,8 @@ public class Race {
 
 
     public Race(String riderName, String raceName, Long raceTimeToComplete, Integer raceDate, String waypointTimes, String llPoints, String llNames) {
-        this.raceName = raceName;
-        this.riderName = riderName;
+        this.raceName = raceName.toUpperCase();
+        this.riderName = riderName.toUpperCase();
 
 
         if (raceTimeToComplete > 0) {
@@ -34,7 +34,7 @@ public class Race {
         this.raceDate = raceDate;
         this.waypointTimes = waypointTimes;
         this.llPoints = llPoints;
-        this.llNames = llNames;
+        this.llNames = llNames.toUpperCase();
     }
 
 }

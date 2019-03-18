@@ -343,8 +343,8 @@ public final class Timer {
         Log.i(TAG, "WAYPOINT TEST, WAIT FOR MATCH: " + disBetw);
 
         //WAYPOINT MATCH
-        if (disBetw < 1000) {
-            stringForSetMessage.add(String.valueOf((int) disBetw));
+        if (disBetw < 2000) {
+            stringForSetMessage.add(String.valueOf((int) disBetw) + "MTG");
         }
 
 

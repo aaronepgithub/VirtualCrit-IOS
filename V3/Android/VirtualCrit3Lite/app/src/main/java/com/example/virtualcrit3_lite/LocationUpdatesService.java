@@ -325,7 +325,7 @@ public class LocationUpdatesService extends Service {
         Log.i(TAG, "onNewLocation: Timer.setLocation");
         Timer.setTimerLocation(location);
 
-
+        //BROADCAST TO MAIN ACTIVITY
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
         // Update notification content if running as a foreground service.
