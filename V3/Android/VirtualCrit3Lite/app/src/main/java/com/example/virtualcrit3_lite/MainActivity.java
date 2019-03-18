@@ -1427,7 +1427,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     if (!isPaused) {
                         setMapboxStreets();
                     }
-                    //setMapboxStreets();
+
                 }
 
                 //check for paused
@@ -1442,7 +1442,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                             setMessageText(str);
                         }
                         Timer.setStringForSetMessage(new ArrayList<String>());
-                        Log.i(TAG, "post: size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
+                        //Log.i(TAG, "post: size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
                     } else {
                         Log.i(TAG, "run: NO MESAGE TO SET");
                     }
@@ -1451,9 +1451,12 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     if (Timer.getStringForSpeak().size() > 0) {
                         Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
                         ArrayList<String> s1 = Timer.getStringForSpeak();
+                        String ns = "";
                         for (String str1 : s1) {
-                            speakText(str1);
+                            //speakText(str1);
+                            ns += str1 + ".  ";
                         }
+                        speakText(ns);
                         Timer.setStringForSpeak(new ArrayList<String>());
                     }
 
@@ -2068,13 +2071,8 @@ private Boolean collectCritPoints = false;
         super.onDestroy();
 
 //        mService.removeLocationUpdates();
-//        isDestroyed = true;
+        isDestroyed = true;
 
-//        if (locationEngine != null) {
-//            Log.i(TAG, "onDestroy: removeLocationUpdates");
-//            locationEngine.removeLocationUpdates(callback);
-//        }
-        //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
         //Close the Text to Speech Library
         if(engine !=null){
