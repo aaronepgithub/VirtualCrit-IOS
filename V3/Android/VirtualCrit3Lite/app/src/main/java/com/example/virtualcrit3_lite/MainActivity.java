@@ -657,97 +657,101 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         raceStartTime = 0;
         isRaceStarted = false;
 
+        Timer.raceStartTime = 0;
+        Timer.isRaceStarted = false;
+        Timer.currentWaypointCB = 0;
+
     }
 
 
 //START WPTEST CBID
-private void waypointTestCBID(double gpsLa, double gpsLo) {
-    Log.i(TAG, "waypointTestCBID, currentWaypointCB, max: " + currentWaypointCB + ", " + maxWaypointCB);
-
-    if (!isRaceStarted) {
-        Log.i(TAG, "waypointTest CBID: race not started, return");
-    }
-
-    if (currentWaypointCB >= maxWaypointCB) {
-        Log.i(TAG, "waypointTestCBID, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
-        return;
-    }
-
-
-    final double disBetw = distance_between(gpsLa, gpsLo, latTemp.get(currentWaypointCB), lonTemp.get(currentWaypointCB));
-    Log.i(TAG, "waypointTestCBID: waiting for waypoint match, distance: " + disBetw);
-    //WAYPOINT MATCH
-    if (disBetw < 2000) {
-        setMessageText(String.valueOf((int) disBetw));
-    }
-
-    if (disBetw < distanceBetweenValue) {
-        Log.i(TAG, "WAYPOINT MATCH CBID " + (currentWaypointCB) + " OF " + (maxWaypointCB));
-        if ((currentWaypointCB+1) < maxWaypointCB) {
-            addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
-        }
-
-        setMessageText("CBID RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
-        Log.i(TAG, "waypointTest CBID: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
-        //EACH TIME IS ADDED
-        waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
-        waypointTimesTimString += String.valueOf(System.currentTimeMillis() - raceStartTime);
-        waypointTimesTimString += ",";
-
-        String s1 = "";
-        String s2 = "";
-        if (waypointTimesBest.isEmpty()) {
-            Log.i(TAG, "waypointTimesBest is empty");
-        } else {
-            if (currentWaypointCB > 0) {
-
-                Log.i(TAG, "waypointTestCB: waypointTimesBest, " + waypointTimesBest);
-                Log.i(TAG, "waypointTestCB: waypointTimesTim, " + waypointTimesTim);
-
-                if ((waypointTimesBest.get(currentWaypointCB-1) > waypointTimesTim.get(currentWaypointCB-1))) {
-                    long l = waypointTimesBest.get(currentWaypointCB-1) - waypointTimesTim.get(currentWaypointCB-1);
-                    int i = (int) l;
-                    if (i < 2000) {
-                        s1 = "EVEN WITH THE LEADER " + bestRacerName;
-                        s2 = "EVEN WITH THE LEADER " + bestRacerName;
-                    } else {
-                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
-                        s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
-                    }
-
-                } else {
-                    long l = waypointTimesTim.get(currentWaypointCB-1) - waypointTimesBest.get(currentWaypointCB-1);
-                    int i = (int) l;
-                    if (i < 2000) {
-                        s1 = "EVEN WITH THE LEADER " + bestRacerName;
-                        s2 = "EVEN WITH THE LEADER " + bestRacerName;
-                    } else {
-                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND "+ bestRacerName;
-                        s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND "+ bestRacerName;
-                    }
-
-                }
-                Log.i(TAG, "waypointTest: s1:  " + s1);
-            }
-        }
-
-        if ((currentWaypointCB + 1) == namesTemp.size()) {
-            Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB);
-            addAnotherMarker(latTemp.get(latTemp.size()-1), lonTemp.get(lonTemp.size()-1));
-
-            createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
-            speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "...  " + s2 + ".  HEAD TO FINISH");
-        } else {
-            Log.i(TAG, "waypointTestCB: not finish, next wp cb, currentWaypointCB "+ currentWaypointCB);
-            createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO " + namesTemp.get(currentWaypointCB+1), Timer.getCurrentTimeStamp());
-            speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + ".  " + s2 + ".  HEAD TO " + namesTemp.get(currentWaypointCB+1));
-        }
-
-        Log.i(TAG, "waypointTestCB: current " + currentWaypointCB);
-        currentWaypointCB += 1;
-        Log.i(TAG, "waypointTestCB: current " + currentWaypointCB);
-    }
-}
+//private void waypointTestCBID(double gpsLa, double gpsLo) {
+//    Log.i(TAG, "waypointTestCBID, currentWaypointCB, max: " + currentWaypointCB + ", " + maxWaypointCB);
+//
+//    if (!isRaceStarted) {
+//        Log.i(TAG, "waypointTest CBID: race not started, return");
+//    }
+//
+//    if (currentWaypointCB >= maxWaypointCB) {
+//        Log.i(TAG, "waypointTestCBID, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
+//        return;
+//    }
+//
+//
+//    final double disBetw = distance_between(gpsLa, gpsLo, latTemp.get(currentWaypointCB), lonTemp.get(currentWaypointCB));
+//    Log.i(TAG, "waypointTestCBID: waiting for waypoint match, distance: " + disBetw);
+//    //WAYPOINT MATCH
+//    if (disBetw < 2000) {
+//        setMessageText(String.valueOf((int) disBetw));
+//    }
+//
+//    if (disBetw < distanceBetweenValue) {
+//        Log.i(TAG, "WAYPOINT MATCH CBID " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+//        if ((currentWaypointCB+1) < maxWaypointCB) {
+//            addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
+//        }
+//
+//        setMessageText("CBID RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+//        Log.i(TAG, "waypointTest CBID: raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
+//        //EACH TIME IS ADDED
+//        waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
+//        waypointTimesTimString += String.valueOf(System.currentTimeMillis() - raceStartTime);
+//        waypointTimesTimString += ",";
+//
+//        String s1 = "";
+//        String s2 = "";
+//        if (waypointTimesBest.isEmpty()) {
+//            Log.i(TAG, "waypointTimesBest is empty");
+//        } else {
+//            if (currentWaypointCB > 0) {
+//
+//                Log.i(TAG, "waypointTestCB: waypointTimesBest, " + waypointTimesBest);
+//                Log.i(TAG, "waypointTestCB: waypointTimesTim, " + waypointTimesTim);
+//
+//                if ((waypointTimesBest.get(currentWaypointCB-1) > waypointTimesTim.get(currentWaypointCB-1))) {
+//                    long l = waypointTimesBest.get(currentWaypointCB-1) - waypointTimesTim.get(currentWaypointCB-1);
+//                    int i = (int) l;
+//                    if (i < 2000) {
+//                        s1 = "EVEN WITH THE LEADER " + bestRacerName;
+//                        s2 = "EVEN WITH THE LEADER " + bestRacerName;
+//                    } else {
+//                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
+//                        s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
+//                    }
+//
+//                } else {
+//                    long l = waypointTimesTim.get(currentWaypointCB-1) - waypointTimesBest.get(currentWaypointCB-1);
+//                    int i = (int) l;
+//                    if (i < 2000) {
+//                        s1 = "EVEN WITH THE LEADER " + bestRacerName;
+//                        s2 = "EVEN WITH THE LEADER " + bestRacerName;
+//                    } else {
+//                        s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND "+ bestRacerName;
+//                        s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND "+ bestRacerName;
+//                    }
+//
+//                }
+//                Log.i(TAG, "waypointTest: s1:  " + s1);
+//            }
+//        }
+//
+//        if ((currentWaypointCB + 1) == namesTemp.size()) {
+//            Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB);
+//            addAnotherMarker(latTemp.get(latTemp.size()-1), lonTemp.get(lonTemp.size()-1));
+//
+//            createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH", Timer.getCurrentTimeStamp());
+//            speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "...  " + s2 + ".  HEAD TO FINISH");
+//        } else {
+//            Log.i(TAG, "waypointTestCB: not finish, next wp cb, currentWaypointCB "+ currentWaypointCB);
+//            createTimeline("WAYPOINT " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + "\n" + namesTemp.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO " + namesTemp.get(currentWaypointCB+1), Timer.getCurrentTimeStamp());
+//            speakText("WAYPOINT " + namesTemp.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB + 1) + " OF " + (maxWaypointCB) + ".  " + s2 + ".  HEAD TO " + namesTemp.get(currentWaypointCB+1));
+//        }
+//
+//        Log.i(TAG, "waypointTestCB: current " + currentWaypointCB);
+//        currentWaypointCB += 1;
+//        Log.i(TAG, "waypointTestCB: current " + currentWaypointCB);
+//    }
+//}
 //END WPTEST CBIT
 
 
@@ -1441,7 +1445,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 }
             }
 
-            if ((int) totalMillis / 1000 % 4 == 0) {
+            if ((int) totalMillis / 1000 % 2 == 0) {
                 //EVERY 4, TIMELINE AND SET MESSAGE
                 Log.i(TAG, "run: 4 SECOND UPDATE PUBLISH");
                 Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
@@ -3180,6 +3184,8 @@ private Boolean collectCritPoints = false;
     public void clickStartCritBuilder(View view) {
         Log.i(TAG, "clickStartCritBuilder: ");
 
+        resetRace();
+
         //remove old to start new
         critBuilderLatLngNames = new ArrayList<>();
         critBuilderLatLng = new ArrayList<>();
@@ -3231,7 +3237,7 @@ private Boolean collectCritPoints = false;
                         b1.setText(s.toUpperCase());
                     }
                 });
-
+                resetRace();
                 requestRaceData(s);
 
             }

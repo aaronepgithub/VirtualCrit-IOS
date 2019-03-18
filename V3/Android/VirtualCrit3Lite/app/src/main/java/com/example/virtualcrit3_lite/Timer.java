@@ -154,14 +154,15 @@ public final class Timer {
 
     }
 
-    private static int currentWaypointCB = 0;
-    private static int maxWaypointCB = 0;
+    public static int currentWaypointCB = 0;
     public static Boolean isRaceStarted = false;
+    public static long raceStartTime = 0;
+    private static int maxWaypointCB = 0;
 
     public static Boolean isTimeToPostRaceData = false;
     public static Race publishMe;
 
-    private static long raceStartTime = 0;
+
     private static long raceFinishTime = 0;
     private static ArrayList<Long> waypointTimesTim = new ArrayList<>();
 
@@ -198,6 +199,10 @@ public final class Timer {
             double disBetw = timerDistanceBetween(gpsLa, gpsLo, startLa, startLo);
             Log.i(TAG, "TEST FOR START: " + disBetw);
 
+            if (disBetw < 1000) {
+                stringForSetMessage.add(String.valueOf((int) disBetw) + " TOGO");
+            }
+
             if (disBetw < 100) {  //WITHIN 100 METERS OF TARGET
                 Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
@@ -208,7 +213,7 @@ public final class Timer {
 
                 stringForSpeak.add("THE RACE HAS STARTED.  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1));
                 locationForNextMarker = Crit.critBuilderLatLng.get(currentWaypointCB+1);
-                stringForSetMessage.add("RACE STARTED");
+                stringForSetMessage.add(raceName + " RACE STARTED");
 
 
                 waypointTimesTim = new ArrayList<>();
@@ -238,6 +243,10 @@ public final class Timer {
         if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
             double disBetwMax = timerDistanceBetween(gpsLa, gpsLo, finishLa, finishLo);
             Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
+
+            if (disBetwMax < 1000) {
+                stringForSetMessage.add(String.valueOf((int) disBetwMax) + " TOGO");
+            }
 
             if (disBetwMax < 100) {  //WITHIN 100 METERS
                 Log.i(TAG, "RACE FINISHED!");
@@ -272,22 +281,22 @@ public final class Timer {
                 }
                 if (raceTime < bestRaceTime && bestRaceTime > 10000){
                     waypointTimesBest = waypointTimesTim;
-                    s = "THE NEW FASTEST TIME BY " + getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
+                    s = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplay((int) ((int) bestRaceTime - (int) raceTime));
                     ss = "THE NEW FASTEST TIME BY " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) ((int) bestRaceTime - (int) raceTime));
                     bestRaceTime = raceTime;
                 } else {
-                    s = "THE FASTEST TIME IS " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                    s = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
                     ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
                 }
 
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
 
                 //final String sss = "RACE COMPLETE, YOUR TIME IS.  \" + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + \".  \" + ss";
-                stringForSpeak.add("RACE COMPLETE");
+                stringForSpeak.add("RACE COMPLETE. " + s);
 
                 //stringForSpeak.add("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n");
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 
@@ -314,7 +323,7 @@ public final class Timer {
 
 
         //NOT START OR FINISH
-        if (isRaceStarted && currentWaypointCB < maxWaypointCB) {
+        if (isRaceStarted && currentWaypointCB > 0 && currentWaypointCB < maxWaypointCB) {
             Log.i(TAG, "NOT START OR FINISH, START WAYPOINT TEST: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
             waypointTest(gpsLa, gpsLo);
         }
@@ -343,8 +352,8 @@ public final class Timer {
         Log.i(TAG, "WAYPOINT TEST, WAIT FOR MATCH: " + disBetw);
 
         //WAYPOINT MATCH
-        if (disBetw < 2000) {
-            stringForSetMessage.add(String.valueOf((int) disBetw) + "MTG");
+        if (disBetw < 1000) {
+            stringForSetMessage.add(String.valueOf((int) disBetw) + " TOGO");
         }
 
 
