@@ -1,5 +1,7 @@
 package com.example.virtualcrit3_lite;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,7 +21,16 @@ public class Race {
     public Race(String riderName, String raceName, Long raceTimeToComplete, Integer raceDate, String waypointTimes, String llPoints, String llNames) {
         this.raceName = raceName;
         this.riderName = riderName;
-        this.raceTimeToComplete = raceTimeToComplete;
+
+
+        if (raceTimeToComplete > 0) {
+            this.raceTimeToComplete = raceTimeToComplete;
+        } else {
+            int l = 2147483646;
+            this.raceTimeToComplete = (long) l;
+        }
+        Log.i(TAG, "Race: raceTimeToComplete: " + this.raceTimeToComplete);
+
         this.raceDate = raceDate;
         this.waypointTimes = waypointTimes;
         this.llPoints = llPoints;

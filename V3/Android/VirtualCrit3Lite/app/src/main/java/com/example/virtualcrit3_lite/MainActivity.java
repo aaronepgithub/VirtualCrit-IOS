@@ -624,7 +624,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //            postRaceProcessing(0);
 
             Integer rd = Integer.valueOf(fbCurrentDate);
-            long longTime = 999999999;
+            long longTime = 0;
             Race postR = new Race(settingsName, trkName,longTime, rd, waypointTimesTimString, llp, lln);
             Log.i(TAG, "after startGPX: postRaceProcessing " + postR.toString());
             postRaceProcessing(postR);
@@ -1028,12 +1028,21 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
-                    Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
+                    String post = "";
+                    if (raceTimeToComplete == null) {
+                        Log.i(TAG, "onDataChange: no racetime");
+
+                    } else {
+                        Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
+                        post = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
+                        speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
+                        createTimeline(post, Timer.getCurrentTimeStamp());
+                    }
+
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
-                    speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
-                    createTimeline(post, Timer.getCurrentTimeStamp());
+
+
 
                     String dwnloadPoints = ds.child("llPoints").getValue(String.class);
                     String dwnloadNames = ds.child("llNames").getValue(String.class);
@@ -1411,14 +1420,14 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
             if ((int) totalMillis / 1000 % 10 == 0) {
                 Log.i(TAG, "run: 10 SECOND REFRESH");
                 //Log.i(TAG, "run: move marker, tc size: " + trackerCoords.size());
-                if (trackerCoords.size() > 2) {
+                if (Timer.trackerCoords.size() > 2) {
 //                    if (!isDestroyed) {
 //                        setMapboxStreets();
 //                    }
-//                    if (!isPaused) {
-//                        setMapboxStreets();
-//                    }
-                    setMapboxStreets();
+                    if (!isPaused) {
+                        setMapboxStreets();
+                    }
+                    //setMapboxStreets();
                 }
 
                 //check for paused
@@ -1438,7 +1447,9 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                         Log.i(TAG, "run: NO MESAGE TO SET");
                     }
 
+
                     if (Timer.getStringForSpeak().size() > 0) {
+                        Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
                         ArrayList<String> s1 = Timer.getStringForSpeak();
                         for (String str1 : s1) {
                             speakText(str1);
@@ -1813,7 +1824,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
     }
 
     private int albumID = 100;
-    private ArrayList<LatLng> trackerCoords = new ArrayList<>();
+//    private ArrayList<LatLng> trackerCoords = new ArrayList<>();
     //set streets style
     private void setMapboxStreets() {
 
@@ -1836,7 +1847,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 List<Point> routeCoordinates = new ArrayList<>();
 
 
-                for (LatLng x : trackerCoords) {
+                for (LatLng x : Timer.trackerCoords) {
                     routeCoordinates.add(Point.fromLngLat(x.getLongitude(), x.getLatitude()));
                 }
 
@@ -1874,7 +1885,7 @@ private void waypointTestCBID(double gpsLa, double gpsLo) {
                 if (!collectCritPoints) {
                     CameraPosition position = new CameraPosition.Builder()
 //                        .target(new LatLng(51.50550, -0.07520)) // Sets the new camera position
-                            .target(trackerCoords.get(trackerCoords.size()-1)) // Sets the new camera position
+                            .target(Timer.trackerCoords.get(Timer.trackerCoords.size()-1)) // Sets the new camera position
 //                        .zoom(17) // Sets the zoom
 //                        .bearing(180) // Rotate the camera
                             .tilt(30) // Set the camera tilt
@@ -2328,7 +2339,7 @@ private Boolean collectCritPoints = false;
 
                     Integer rd = Integer.valueOf(fbCurrentDate);
                     //have to make this 0
-                    long longTime = 900000000;
+                    long longTime = 0;
                     Race postR = new Race(settingsName, trkName,longTime, rd, waypointTimesTimString, llp, lln);
                     Log.i(TAG, "afterStartGPXFromCritBuilder: postRaceProcessing ");
                     postRaceProcessing(postR);
@@ -3362,7 +3373,7 @@ private Boolean collectCritPoints = false;
         //mapboxEvaluateLocationsCritID start
         private void mapboxEvaluateLocationsCritID(final double gpsLa, final double gpsLo) {
 //            //start la,lo
-            Log.i(TAG, "DON'T PROCESS - mapboxEvaluateLocationsCritID: ");
+            //Log.i(TAG, "DON'T PROCESS - mapboxEvaluateLocationsCritID: ");
 //
 //            if (namesTemp.isEmpty() || latTemp.size() < 3 || lonTemp.size() < 3) {return;}
 //
@@ -3694,10 +3705,11 @@ private Boolean collectCritPoints = false;
             Log.i(TAG, "onTimerLocationReceived: ");
 
             mapBoxDisplaySpeedValues();
-            LatLng e = new LatLng();
-            e.setLatitude(Timer.getTimerOldLocation().getLatitude());
-            e.setLongitude(Timer.getTimerOldLocation().getLongitude());
-            trackerCoords.add(e);
+
+//            LatLng e = new LatLng();
+//            e.setLatitude(Timer.getTimerOldLocation().getLatitude());
+//            e.setLongitude(Timer.getTimerOldLocation().getLongitude());
+//            Timer.trackerCoords.add(e);
 
             if (isCritBuilderIDActive) {
                 Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
@@ -3789,10 +3801,10 @@ private Boolean collectCritPoints = false;
                 oldLocation = location;
 
 
-                LatLng e = new LatLng();
-                e.setLatitude(oldLocationLat);
-                e.setLongitude(oldLocationLon);
-                trackerCoords.add(e);
+//                LatLng e = new LatLng();
+//                e.setLatitude(oldLocationLat);
+//                e.setLongitude(oldLocationLon);
+//                trackerCoords.add(e);
 
 
             }

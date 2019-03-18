@@ -27,6 +27,7 @@ public final class Timer {
     private static double timerGeoAvgSpeed;
     private static double timerTotalTimeGeo = 0.0;
     public static ArrayList<Location> timerAllLocations = new ArrayList<>();
+    public static ArrayList<LatLng> trackerCoords = new ArrayList<>();
 
 
 //NOTIFY TIMER TO EXECUTE ON MAIN ACTIVITY
@@ -71,6 +72,13 @@ public final class Timer {
         Log.i(TAG, "calculateValues: timerLocation " + timerLocation.getProvider());
 
         Timer.timerAllLocations.add(timerLocation);
+
+        LatLng e = new LatLng();
+        e.setLatitude(timerLocation.getLatitude());
+        e.setLongitude(timerLocation.getLongitude());
+        Timer.trackerCoords.add(e);
+
+
         double locationLat = timerLocation.getLatitude();
         double locationLon = timerLocation.getLongitude();
         long locationTime = timerLocation.getTime();
@@ -198,7 +206,7 @@ public final class Timer {
                 //speakText("THE RACE HAS STARTED  HEAD TO " + namesTemp.get(currentWaypointCB+1));
                 //addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
 
-                stringForSpeak.add("THE RACE HAS STARTED  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1));
+                stringForSpeak.add("THE RACE HAS STARTED.  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1));
                 locationForNextMarker = Crit.critBuilderLatLng.get(currentWaypointCB+1);
                 stringForSetMessage.add("RACE STARTED");
 
