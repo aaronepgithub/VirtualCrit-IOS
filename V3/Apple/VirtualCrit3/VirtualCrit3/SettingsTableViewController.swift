@@ -20,6 +20,7 @@ var wpts = [CLLocationCoordinate2D]()
 var trktps = [CLLocationCoordinate2D]()
 var gpxNames = [String]()
 var waypointTimesTimString = ""
+var tempName: String = "PP"
 
 //settings
 var settingsName: String = "TIM"
@@ -57,6 +58,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     @IBOutlet weak var valueAudio: UILabel!
     @IBOutlet weak var valueActivityType: UILabel!
     
+    @IBOutlet weak var valueCritID: UILabel!
     
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -154,13 +156,16 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 }
             }
 
-        case "13":
-            print("case 13, startSim")
+        case "14":
+            print("case 14, startSim")
             useSimRide = true
         case "12":
             print("case 12, load GPX")
             useSimRide = false
             getGPX()
+        case "13":
+            print("case 13, get critid")
+            getCritId()
         case "20":
             print("case 20, startBluetooth")
             startBluetooth()
@@ -175,6 +180,33 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     
     var docController:UIDocumentInteractionController!
     
+    func getCritId() {
+        let alertController = UIAlertController(title: "CRIT ID", message: "", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+            
+            let name = alertController.textFields?[0].text
+            
+            tempName = name!.uppercased()
+            self.valueCritID.text = "CRIT ID: \(tempName)"
+            
+            print("critid:  \(tempName)")
+            critStatus = 100
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "..."
+        }
+        
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     func getNameDialog() {
         

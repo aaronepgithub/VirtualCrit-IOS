@@ -25,6 +25,8 @@ struct displayStrings {
 
 var llNames: String = ""
 var llPoints: String = ""
+var finalNamesArr = [String]()
+var finalPointsArr = [CLLocationCoordinate2D]()
 
 
 var todaysDateString: String = "00000000"
@@ -236,6 +238,23 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
         }
         
+        if critStatus == 100 {
+            //get name from UI
+            //set crit status to 101
+            //requestRaceData(rn: FROM UI)
+            print("status == 100")
+            requestRaceData(rn: tempName)
+            //after processing, set crit status to 101
+            
+        }
+        if critStatus == 101 {
+            print("status == 101")
+            gpxNames = finalNamesArr
+            wpts = finalPointsArr
+            critStatus = 0
+            remMarkers()
+        }
+        
         if critStatus == 10 {
             if gpxNames.first != nil {
                 critStatus = 0
@@ -423,25 +442,81 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     let dict = snap.value as! NSDictionary // the value is a dict
                     let rider = dict["riderName"]!
                     let race = dict["raceName"]!
-                    let wayptTimes = dict["waypointTimes"]!
+                    let wayptTimes = dict["waypointTimes"] ?? [:]
                     let rtc = dict["raceTimeToComplete"]!
+                    
+                    let tempLLN = dict["llNames"]!
+                    let tempLLP = dict["llPoints"]!
                     
                     print("\(rider), \(race), \(rtc)... BEST WAYPOINT TIMES \(wayptTimes)")
                     
+                    if self.arrWaypointTimes.count > 0 {
+                        //SPLICE UP THE WAYPOINT TIMES
+                        let wtimes: String = wayptTimes as! String
+                        let wtimesarr = wtimes.components(separatedBy: ",")
+                        self.activeRaceBestWaypointTimesArray.removeAll()
+                        for s in (wtimesarr) {
+                            print("\(s)")
+                            self.activeRaceBestWaypointTimesArray.append(Int(s)!)
+                        }
+                    } else {
+                        self.activeRaceBestWaypointTimesArray.removeAll()
+                    }
                     //let rtct = rtc as! Int
                     let rtca = (rtc as! Int) / 1000
-                    addValueToTimelineString(s:"RACE UPDATE FOR \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
-                    self.speakThis(spk: "RACE UPDATE FOR: \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
-                    //SPLICE UP THE WAYPOINT TIMES
-                    let wtimes: String = wayptTimes as! String
-                    let wtimesarr = wtimes.components(separatedBy: ",")
-                    self.activeRaceBestWaypointTimesArray.removeAll()
-                    for s in (wtimesarr) {
-                        print("\(s)")
-                        self.activeRaceBestWaypointTimesArray.append(Int(s)!)
+                    if rtca > 2140000 {
+                        addValueToTimelineString(s:"\(race) IS NOW LOADED.")
+                        self.speakThis(spk: "\(race) IS NOW LOADED.")
+                    } else {
+                        addValueToTimelineString(s:"RACE UPDATE FOR \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
+                        self.speakThis(spk: "RACE UPDATE FOR: \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
                     }
+                    
+
+                    
+
+                    
+
+                    //llN
+                    finalNamesArr = [String]()
+                    let lln: String = tempLLN as! String
+                    let llNamesArr = lln.components(separatedBy: ",")
+                    finalNamesArr.removeAll()
+                    for sn in (llNamesArr) {
+                        print("\(sn)")
+                        finalNamesArr.append(sn)
+                    }
+                    
+                    //llP
+                    let llp: String = tempLLP as! String
+                    let llPointsArr = llp.components(separatedBy: ":")
+                    
+                    
+
+                    
+                    finalPointsArr = [CLLocationCoordinate2D]()
+                    for sp in (llPointsArr) {
+                        print("sp: \(sp)")
+                        var temp = sp.components(separatedBy: ",")
+                        var tempLats = [String]()
+                        var tempLons = [String]()
+                        tempLats.append(temp[0])
+                        tempLons.append(temp[1])
+                        
+                        let d1: Double = Double(tempLats[0])!
+                        let d2: Double = Double(tempLons[0])!
+                        
+                        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: d1, longitude: d2)
+                        finalPointsArr.append(w0)
+                    }
+                    
+                    print("NAMES: \(finalNamesArr)")
+                    print("POINTS:  \(finalPointsArr)")
+                    
                     self.activeRaceLeadersName = rider as! String
                     print("activeRaceBestWaypointTimesArray:    \(self.activeRaceBestWaypointTimesArray)")
+                    
+                    critStatus = 101
 
                 }
             }
@@ -466,8 +541,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             "raceTimeToComplete" : raceDur,
             "waypointTimes" : stringOfWaypointTimes,
             "raceDate" : raceDate,
-            "llNames" : "ADD NAMES STRING",
-            "llPoints" : "ADD POINTS STRING"
+            "llNames" : llNames,
+            "llPoints" : llPoints
             ] as [String : Any]
         
         //"40.66484,-73.98081:40.664550000000006,-73.98022:40.6646,-73.97686:40.66123,-73.97968:40.65216,-73.97128000000001:40.651990000000005,-73.97055:40.67116,-73.96926:40.66138,-73.97760000000001:40.661150000000006,-73.97796000000001:40.66104,-73.9795:40.66557,-73.98931:40.659670000000006,-73.99517:40.65964,-73.99512"
