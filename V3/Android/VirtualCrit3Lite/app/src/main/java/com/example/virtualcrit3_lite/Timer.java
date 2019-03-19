@@ -136,6 +136,7 @@ public final class Timer {
         if (Crit.critBuilderLatLng.size() > 0) {
             Log.i(TAG, "calculateValues: EVALUATE LOCATION");
             evaluateLocation(locationLat, locationLon);
+            //stringForSetMessage.add(".");
         }
 
 //        if (isCritBuilderIDActive) {
@@ -183,6 +184,7 @@ public final class Timer {
 
     private static void evaluateLocation(final double gpsLa, final double gpsLo) {
         Log.i(TAG, "EVALUATE LOCATION");
+        stringForSetMessage.add(".");
 
         double startLa = Crit.critBuilderLatLng.get(0).getLatitude();
         double startLo = Crit.critBuilderLatLng.get(0).getLongitude();
@@ -200,7 +202,7 @@ public final class Timer {
             Log.i(TAG, "TEST FOR START: " + disBetw);
 
             if (disBetw < 1000) {
-                stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS TOGO");
+                stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
             }
 
             if (disBetw < 100) {  //WITHIN 100 METERS OF TARGET
@@ -243,7 +245,7 @@ public final class Timer {
             Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
 
             if (disBetwMax < 1000) {
-                stringForSetMessage.add(String.valueOf((int) disBetwMax) + " METERS TOGO");
+                stringForSetMessage.add(String.valueOf((int) disBetwMax) + " METERS REMAIN");
             }
 
             if (disBetwMax < 100) {  //WITHIN 100 METERS
@@ -341,7 +343,7 @@ public final class Timer {
 
         //WAYPOINT MATCH
         if (disBetw < 1000) {
-            stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS TOGO");
+            stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
         }
 
 

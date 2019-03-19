@@ -1032,7 +1032,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
                     String post = "";
-                    if (raceTimeToComplete == null) {
+                    if (raceTimeToComplete == null || raceTimeToComplete == 2147483646) {
                         Log.i(TAG, "onDataChange: no racetime");
 
                     } else {
@@ -1448,15 +1448,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 if (Timer.getStringForSetMessage().size() > 0) {
                     final ArrayList<String> s = Timer.getStringForSetMessage();
-                    StringBuilder sx = new StringBuilder();
-                    for (String str : s) {
-                        sx.append(str);
-                        sx.append(".  ");
-                    }
-                    setMessageText(sx.toString());
+//                    StringBuilder sx = new StringBuilder();
+//                    for (String str : s) {
+//                        sx.append(str);
+//                        sx.append(" ");
+//                    }
+                    setMessageText(s.get(s.size()-1));
                     Timer.setStringForSetMessage(new ArrayList<String>());
                 } else {
                     Log.i(TAG, "run: NO MESAGE TO SET");
+                    setMessageText(".");
                 }
 
                 Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
@@ -1547,6 +1548,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     };
 
 
+    private void checkAndSetPermissions() {
+        Log.i(TAG, "checkAndSetPermissions: ");
+        // Make sure we have access coarse location enabled, if not, prompt the user to enable it
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("This app needs location access");
+            builder.setMessage("Please grant location access so this app can detect peripherals and use GPS to calculate speed and distance.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                }
+            });
+            builder.show();
+        }
+        
+        
+    }
+    
     @SuppressLint("StaticFieldLeak")
     static MainActivity mn;
 
@@ -1559,13 +1581,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_main);
 
+        Log.i(TAG, "onCreate: checkAndSetPermissions");
+        //checkAndSetPermissions();
+
         myReceiver = new MyReceiver();
         // Check that the user hasn't revoked permissions by going to Settings.
-//        if (Utils.requestingLocationUpdates(this)) {
-//            if (!checkPermissions()) {
-//                requestPermissions();
-//            }
-//        }
+        if (Utils.requestingLocationUpdates(this)) {
+            if (!checkPermissions()) {
+                requestPermissions();
+            }
+        }
 
 
 
@@ -3195,6 +3220,10 @@ private Boolean collectCritPoints = false;
                 b1.setText("...");
                 TextView t1 = (TextView) findViewById(R.id.valueCritBuilderName);
                 t1.setText("SET POINTS ON MAP");
+
+                TextView t2 = (TextView) findViewById(R.id.valueCritIdName);
+                t2.setText("SET POINTS ON MAP");
+
                 //mapboxMap.addOnMapClickListener, inputWaypointName
             }
         });
