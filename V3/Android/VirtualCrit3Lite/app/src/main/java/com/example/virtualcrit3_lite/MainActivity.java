@@ -220,45 +220,50 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //    /**
 //     * Callback received when a permissions request has been completed.
 //     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        Log.i(TAG, "onRequestPermissionResult");
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.length <= 0) {
-                // If user interaction was interrupted, the permission request is cancelled and you
-                // receive empty arrays.
-                Log.i(TAG, "User interaction was cancelled.");
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted.
-                mService.requestLocationUpdates();
-            } else {
-                // Permission denied.
-                setButtonsState(false);
-                Snackbar.make(
-                        findViewById(R.id.activity_main),
-                        R.string.permission_denied_explanation,
-                        Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.settings, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
-                                Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
-            }
-        }
-    }
+    //NOT WORKING!!!
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+//                                           @NonNull int[] grantResults) {
+//        Log.i(TAG, "onRequestPermissionResult");
+//        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+//            if (grantResults.length <= 0) {
+//                // If user interaction was interrupted, the permission request is cancelled and you
+//                // receive empty arrays.
+//                Log.i(TAG, "User interaction was cancelled.");
+//            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // Permission was granted.
+//                mService.requestLocationUpdates();
+//            } else {
+//                // Permission denied.
+//                setButtonsState(false);
+//                Snackbar.make(
+//                        findViewById(R.id.activity_main),
+//                        R.string.permission_denied_explanation,
+//                        Snackbar.LENGTH_INDEFINITE)
+//                        .setAction(R.string.settings, new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                // Build intent that displays the App settings screen.
+//                                Intent intent = new Intent();
+//                                intent.setAction(
+//                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                                Uri uri = Uri.fromParts("package",
+//                                        BuildConfig.APPLICATION_ID, null);
+//                                intent.setData(uri);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                startActivity(intent);
+//                            }
+//                        })
+//                        .show();
+//            }
+//        }
+//    }
+
+
+
 
     /**
      * Receiver for broadcasts sent by {@link LocationUpdatesService}.
@@ -1034,6 +1039,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     String post = "";
                     if (raceTimeToComplete == null || raceTimeToComplete == 2147483646) {
                         Log.i(TAG, "onDataChange: no racetime");
+                        post = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START";
+                        speakText(raceName.toUpperCase() + "  IS LOADED, PROCEED TO START");
+                        createTimeline(post, Timer.getCurrentTimeStamp());
 
                     } else {
                         Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
