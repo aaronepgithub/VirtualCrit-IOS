@@ -200,7 +200,7 @@ public final class Timer {
             Log.i(TAG, "TEST FOR START: " + disBetw);
 
             if (disBetw < 1000) {
-                stringForSetMessage.add(String.valueOf((int) disBetw) + " TOGO");
+                stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS TOGO");
             }
 
             if (disBetw < 100) {  //WITHIN 100 METERS OF TARGET
@@ -223,21 +223,19 @@ public final class Timer {
                 if (bestRaceTime > 10000) {
                     startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
                 }
+
+                if (bestRaceTime == 2147483646) {
+                    startString = "YOU ARE THE FIRST CRIT RACER FOR " + raceName;
+                }
                 stringForTimeline.add("RACE STARTING\n" + Crit.critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 Log.i(TAG, "stringForTimeline " + stringForTimeline);
-
-//                createTimeline("RACE STARTING\n" + namesTemp.get(0).toUpperCase() + "\nHEAD TO " + namesTemp.get(currentWaypointCB + 1).toUpperCase() + startString, Timer.getCurrentTimeStamp());
-
-//                Toast.makeText(getApplicationContext(),
-//                        "RACE STARTING: " + namesTemp.get(0).toUpperCase(), Toast.LENGTH_LONG)
-//                        .show();
 
                 currentWaypointCB += 1;
             }
             return;
         }
-        //END TEST FOR START, NOW...
+        //END TEST FOR START
 
         //TEST FOR FINISH
         if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
@@ -245,7 +243,7 @@ public final class Timer {
             Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
 
             if (disBetwMax < 1000) {
-                stringForSetMessage.add(String.valueOf((int) disBetwMax) + " TOGO");
+                stringForSetMessage.add(String.valueOf((int) disBetwMax) + " METERS TOGO");
             }
 
             if (disBetwMax < 100) {  //WITHIN 100 METERS
@@ -301,16 +299,6 @@ public final class Timer {
                 stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 
 
-
-//                createTimeline("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s, Timer.getCurrentTimeStamp());
-//                setMessageText("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
-//                speakText("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
-//                Log.i(TAG, "trackpointTest: waypointTimesTim: " + waypointTimesTim.toString());
-//                Log.i(TAG, "trackpointTest: raceTime: " + raceTime);
-//                Toast.makeText(getApplicationContext(),
-//                        "RACE FINISHED " + getTimeStringFromMilliSecondsToDisplay((int) raceTime), Toast.LENGTH_LONG)
-//                        .show();
-
                 //RESET
                 Log.i(TAG, "RESET RACE: ");
                 currentWaypointCB = 0;
@@ -353,7 +341,7 @@ public final class Timer {
 
         //WAYPOINT MATCH
         if (disBetw < 1000) {
-            stringForSetMessage.add(String.valueOf((int) disBetw) + " TOGO");
+            stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS TOGO");
         }
 
 
@@ -587,13 +575,13 @@ public final class Timer {
         Timer.stringForSetMessage = stringForSetMessage;
     }
 
-    public static String getStringForPostRaceProcessing() {
-        return stringForPostRaceProcessing;
-    }
-
-    public static void setStringForPostRaceProcessing(String stringForPostRaceProcessing) {
-        Timer.stringForPostRaceProcessing = stringForPostRaceProcessing;
-    }
+//    public static String getStringForPostRaceProcessing() {
+//        return stringForPostRaceProcessing;
+//    }
+//
+//    public static void setStringForPostRaceProcessing(String stringForPostRaceProcessing) {
+//        Timer.stringForPostRaceProcessing = stringForPostRaceProcessing;
+//    }
 
     public static LatLng getLocationForNextMarker() {
         return locationForNextMarker;

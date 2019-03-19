@@ -150,13 +150,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private Button mRequestLocationUpdatesButton;
     private Button mRemoveLocationUpdatesButton;
 
-//    public void clickGpsStart(View view) {
-//        Log.i(TAG, "clickGpsStart: ");
-//    }
-//
-//    public void clickGpsStop(View view) {
-//        Log.i(TAG, "clickGpsStop: ");
-//    }
+    public void clickGpsStart(View view) {
+        Log.i(TAG, "clickGpsStart: ");
+    }
+
+    public void clickGpsStop(View view) {
+        Log.i(TAG, "clickGpsStop: ");
+    }
 
     // Monitors the state of the connection to the service.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -1381,7 +1381,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         @Override
         public void run() {
             final long totalMillis = System.currentTimeMillis() - startTime;
-            //Timer.setTotalMillis(totalMillis);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1394,9 +1393,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     int a2 = (currentRound - 1) * settingsSecondsPerRound;
                     int a3 = a1 - a2;
                     int togo = settingsSecondsPerRound - a3;
-                    //Log.i(TAG, "run: a3, togo:  " + a3 + ", " +togo);
-                    //String togoStr = Timer.getTimeStringFromSecondsToDisplay(togo);
-                    //Button rnd = (Button) findViewById(R.id.valueRoundButton);
                     String s1 = getTimeStringFromMilliSecondsToDisplay(togo * 1000);
                     String s2 = " ROUND";
 //                    rnd.setText(getTimeStringFromMilliSecondsToDisplay(togo * 1000));
@@ -1446,8 +1442,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
 
             if ((int) totalMillis / 1000 % 2 == 0) {
-                //EVERY 4, TIMELINE AND SET MESSAGE
-                Log.i(TAG, "run: 4 SECOND UPDATE PUBLISH");
+                //EVERY 2, TIMELINE AND SET MESSAGE
+                Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
                 Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
                 if (Timer.getStringForSetMessage().size() > 0) {
