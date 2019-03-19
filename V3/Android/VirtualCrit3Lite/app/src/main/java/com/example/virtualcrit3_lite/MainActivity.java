@@ -3410,8 +3410,15 @@ private Boolean collectCritPoints = false;
                     TextView tvAvgSpd = (TextView) findViewById(R.id.valueAverageSpeedGPS);
                     TextView t2 = findViewById(R.id.tvHeader2);
 
-                    geoSpeed = Timer.getGeoSpeed();
-                    geoAvgSpeed = Timer.getGeoAvgSpeed();
+                    //geoSpeed = Timer.getGeoSpeed();
+
+                    if (!Double.isNaN(Timer.getGeoSpeed()) || Timer.getGeoSpeed() < 0) {
+                        geoSpeed = Timer.getGeoSpeed();
+                    }
+                    if (!Double.isNaN(Timer.getGeoAvgSpeed()) || Timer.getGeoAvgSpeed() < 0) {
+                        geoAvgSpeed = Timer.getGeoAvgSpeed();
+                    }
+
                     geoDistance = Timer.getTimerGeoDistance();
                     final String hms = getTimeStringFromMilliSecondsToDisplay((int) Timer.gettimerTotalTimeGeo());
 
