@@ -1409,96 +1409,109 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 //PROCESS NEW ROUND
             }
 
+            if ((int) totalMillis / 1000 == 5) {
+                Log.i(TAG, "at 5 sec: auto request permissions");
+                checkAndSetPermissions();
+                //mService.requestLocationUpdates();
+
+            }
+
             if ((int) totalMillis / 1000 == 10) {
                 Log.i(TAG, "at 10 sec: auto request updates");
+                //checkAndSetPermissions();
                 mService.requestLocationUpdates();
 
             }
 
-            //EVERY 10 SECONDS
-            //REALLY ONLY NEED TO DO THINGS WHILE PAUSED?
 
-            if ((int) totalMillis / 1000 % 12 == 0) {
-                //EVERY 15, UPDATE MAP
-                Log.i(TAG, "run: 12 SECOND UPDATE MAP");
-                if (Timer.trackerCoords.size() > 2) {
-                    if (!isPaused) {
-                        setMapboxStreets();
+            if ((int) totalMillis / 1000 > 12) {
+                //EVERY 10 SECONDS
+                //REALLY ONLY NEED TO DO THINGS WHILE PAUSED?
+
+                if ((int) totalMillis / 1000 % 12 == 0) {
+                    //EVERY 15, UPDATE MAP
+                    Log.i(TAG, "run: 12 SECOND UPDATE MAP");
+                    if (Timer.trackerCoords.size() > 2) {
+                        if (!isPaused) {
+                            setMapboxStreets();
+                        }
+
                     }
-
                 }
-            }
 
-            if ((int) totalMillis / 1000 % 3 == 0) {
-                //EVERY 3, PUBLISH TO FB IF NEEDED
-                Log.i(TAG, "run: 3 SECOND UPDATE FB PUBLISH");
-                if (Timer.isTimeToPostRaceData) {
-                    Log.i(TAG, "run: TIME TO PUBLISH DATA");
-                    Log.i(TAG, "run: is RaceStarted, publish");
-                    final Race r = Timer.publishMe;
-                    postRaceProcessing(r);
-                    Timer.isTimeToPostRaceData = false;
+                if ((int) totalMillis / 1000 % 3 == 0) {
+                    //EVERY 3, PUBLISH TO FB IF NEEDED
+                    Log.i(TAG, "run: 3 SECOND UPDATE FB PUBLISH");
+                    if (Timer.isTimeToPostRaceData) {
+                        Log.i(TAG, "run: TIME TO PUBLISH DATA");
+                        Log.i(TAG, "run: is RaceStarted, publish");
+                        final Race r = Timer.publishMe;
+                        postRaceProcessing(r);
+                        Timer.isTimeToPostRaceData = false;
+                    }
                 }
-            }
 
-            if ((int) totalMillis / 1000 % 2 == 0) {
-                //EVERY 2, TIMELINE AND SET MESSAGE
-                Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
-                Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
+                if ((int) totalMillis / 1000 % 2 == 0) {
+                    //EVERY 2, TIMELINE AND SET MESSAGE
+                    Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
+                    Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
-                if (Timer.getStringForSetMessage().size() > 0) {
-                    final ArrayList<String> s = Timer.getStringForSetMessage();
+                    if (Timer.getStringForSetMessage().size() > 0) {
+                        final ArrayList<String> s = Timer.getStringForSetMessage();
 //                    StringBuilder sx = new StringBuilder();
 //                    for (String str : s) {
 //                        sx.append(str);
 //                        sx.append(" ");
 //                    }
-                    setMessageText(s.get(s.size()-1));
-                    Timer.setStringForSetMessage(new ArrayList<String>());
-                } else {
-                    Log.i(TAG, "run: NO MESAGE TO SET");
-                    setMessageText(".");
-                }
-
-                Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
-                if (Timer.getStringForTimeline().size() > 0) {
-                    Log.i(TAG, "run: PUBLISH TIMELINE");
-                    final ArrayList<String> s2 = Timer.getStringForTimeline();
-                    final ArrayList<String> s3 = Timer.getStringForTimelineTime();
-                    int i = 0;
-                    StringBuilder sxx = new StringBuilder();
-                    for (String str2 : s2) {
-                        sxx.append(str2);
+                        setMessageText(s.get(s.size()-1));
+                        Timer.setStringForSetMessage(new ArrayList<String>());
+                    } else {
+                        Log.i(TAG, "run: NO MESAGE TO SET");
+                        setMessageText(".");
                     }
-                    createTimeline(sxx.toString(), s3.get(0));
 
-                    Timer.setStringForTimeline(new ArrayList<String>());
-                    Timer.setStringForTimelineTime(new ArrayList<String>());
-                } else {
-                    Log.i(TAG, "run: NO TIMELINE TO CREATE");
+                    Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
+                    if (Timer.getStringForTimeline().size() > 0) {
+                        Log.i(TAG, "run: PUBLISH TIMELINE");
+                        final ArrayList<String> s2 = Timer.getStringForTimeline();
+                        final ArrayList<String> s3 = Timer.getStringForTimelineTime();
+                        int i = 0;
+                        StringBuilder sxx = new StringBuilder();
+                        for (String str2 : s2) {
+                            sxx.append(str2);
+                        }
+                        createTimeline(sxx.toString(), s3.get(0));
+
+                        Timer.setStringForTimeline(new ArrayList<String>());
+                        Timer.setStringForTimelineTime(new ArrayList<String>());
+                    } else {
+                        Log.i(TAG, "run: NO TIMELINE TO CREATE");
+                    }
+
+
+
+
                 }
 
+                if ((int) totalMillis / 1000 % 15 == 0) {
+                    Log.i(TAG, "run: 15 SECOND UPDATE REFRESH FOR SPEAKER");
+                    //FOR SPEAKER
+                    if (Timer.getStringForSpeak().size() > 0) {
+                        Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
+                        final ArrayList<String> s1 = Timer.getStringForSpeak();
+                        StringBuilder ns = new StringBuilder();
+                        for (String str1 : s1) {
+                            //speakText(str1);
+                            ns.append(str1).append(".  ");
+                        }
+                        speakText(ns.toString());
+                        Timer.setStringForSpeak(new ArrayList<String>());
+                    }
 
-
-
+                }
             }
 
-            if ((int) totalMillis / 1000 % 15 == 0) {
-                Log.i(TAG, "run: 15 SECOND UPDATE REFRESH FOR SPEAKER");
-                //FOR SPEAKER
-                if (Timer.getStringForSpeak().size() > 0) {
-                    Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
-                    final ArrayList<String> s1 = Timer.getStringForSpeak();
-                    StringBuilder ns = new StringBuilder();
-                    for (String str1 : s1) {
-                        //speakText(str1);
-                        ns.append(str1).append(".  ");
-                    }
-                    speakText(ns.toString());
-                    Timer.setStringForSpeak(new ArrayList<String>());
-                }
 
-            }
 
             timerHandler.postDelayed(this, 1000);
         }
@@ -1582,7 +1595,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         setContentView(R.layout.activity_main);
 
         Log.i(TAG, "onCreate: checkAndSetPermissions");
-        //checkAndSetPermissions();
+
 
         myReceiver = new MyReceiver();
         // Check that the user hasn't revoked permissions by going to Settings.
