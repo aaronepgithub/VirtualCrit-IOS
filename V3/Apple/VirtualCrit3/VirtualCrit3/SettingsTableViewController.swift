@@ -464,6 +464,9 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             //trktps.first is the start point
             gpxNames = []
             
+            llNames = ""
+            llPoints = ""
+            
             valueStatusGPX.text = "LOADING"
             valueNameGPX.text = "..."
         }
@@ -472,6 +475,9 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             //Create a World map coordinate from the file
             let lat = attributeDict["lat"]!
             let lon = attributeDict["lon"]!
+            
+            let s11: String = lat + "," + lon
+            llPoints += s11
             
             print("wpt, \(lat), \(lon)")
             wpts.append(CLLocationCoordinate2DMake(CLLocationDegrees(lat)!, CLLocationDegrees(lon)!))
@@ -497,6 +503,8 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
                 gpxName = foundedChar
                 gpxNames.append(gpxName)
                 print("gpxName:  \(gpxName)")
+                
+                llNames = llNames + gpxName
             }
 
         }
@@ -516,8 +524,9 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             valueStatusGPX.text = "AWAITING ARRIVAL"
                 
             //update arrays
-            let lastName = gpxNames.last
+            let lastName = gpxNames.last  //which is the route name
             gpxNames.insert(lastName ?? "NONE", at: 0)
+
             gpxNames.removeLast()
             
             gpxNames.append("FINISH LINE")
@@ -525,11 +534,30 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             let firstCoords = trktps.first
             wpts.insert(firstCoords!, at: 0)
                 
+                var s1 = ""
+                s1 = String (trktps.first!.latitude)
+                s1 += ","
+                s1 += String (trktps.first!.longitude)
+                s1 += ":"
+                
+                llPoints = s1 + llPoints
+                llNames = lastName ?? "NONE" + "," + llNames
+
+                
             let lastCoords = trktps.last
                 wpts.append(lastCoords!)
                 
+
+                llPoints = String (trktps.last!.latitude)
+                llPoints = llPoints + ","
+                llPoints = llPoints + String (trktps.last!.longitude)
+                llNames = llNames + " FINISH"
+
+                
             
-            print("gpxNames \(gpxNames)")
+            print("gpxNames \(gpxNames) \n")
+            print("llNames \(llNames)")
+            print("llPoints \(llPoints)")
                 if (gpxNames.first != nil) {
                     addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
                     critStatus = 10
