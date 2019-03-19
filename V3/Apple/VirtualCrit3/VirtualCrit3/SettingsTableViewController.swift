@@ -476,10 +476,9 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             let lat = attributeDict["lat"]!
             let lon = attributeDict["lon"]!
             
-            let s11: String = lat + "," + lon
-            llPoints += s11
-            
             print("wpt, \(lat), \(lon)")
+            print("add points to mid")
+            llPoints = "\(llPoints)\(lat),\(lon):"
             wpts.append(CLLocationCoordinate2DMake(CLLocationDegrees(lat)!, CLLocationDegrees(lon)!))
         }
         
@@ -504,7 +503,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
                 gpxNames.append(gpxName)
                 print("gpxName:  \(gpxName)")
                 
-                llNames = llNames + gpxName
+
             }
 
         }
@@ -533,29 +532,26 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
                 
             let firstCoords = trktps.first
             wpts.insert(firstCoords!, at: 0)
+                llPoints = "\(wpts.first!.latitude),\(wpts.first!.longitude):\(llPoints)"
+
                 
-                var s1 = ""
-                s1 = String (trktps.first!.latitude)
-                s1 += ","
-                s1 += String (trktps.first!.longitude)
-                s1 += ":"
-                
-                llPoints = s1 + llPoints
-                llNames = lastName ?? "NONE" + "," + llNames
 
                 
             let lastCoords = trktps.last
                 wpts.append(lastCoords!)
-                
+                llPoints = "\(llPoints)\(wpts.last!.latitude),\(wpts.last!.longitude)"
 
-                llPoints = String (trktps.last!.latitude)
-                llPoints = llPoints + ","
-                llPoints = llPoints + String (trktps.last!.longitude)
-                llNames = llNames + " FINISH"
+
 
                 
             
-            print("gpxNames \(gpxNames) \n")
+            print("gpxNames \(gpxNames) \n\n\n")
+                
+            
+                for na: String in gpxNames {
+                    llNames = "\(llNames)\(na),"
+                }
+                
             print("llNames \(llNames)")
             print("llPoints \(llPoints)")
                 if (gpxNames.first != nil) {
