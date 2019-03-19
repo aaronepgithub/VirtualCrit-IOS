@@ -1419,7 +1419,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             if ((int) totalMillis / 1000 == 5) {
                 Log.i(TAG, "at 5 sec: auto request permissions");
-                checkAndSetPermissions();
+                //checkAndSetPermissions();
                 //mService.requestLocationUpdates();
 
             }
