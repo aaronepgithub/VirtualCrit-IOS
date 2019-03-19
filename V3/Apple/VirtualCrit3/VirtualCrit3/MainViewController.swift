@@ -464,7 +464,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     }
                     //let rtct = rtc as! Int
                     let rtca = (rtc as! Int) / 1000
-                    if rtca > 2140000 {
+                    if rtca > (12 * 60 * 60) { //12 hours
                         addValueToTimelineString(s:"\(race) IS NOW LOADED.")
                         self.speakThis(spk: "\(race) IS NOW LOADED.")
                     } else {
@@ -480,6 +480,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     //llN
                     finalNamesArr = [String]()
                     let lln: String = tempLLN as! String
+                    llNames = lln
                     let llNamesArr = lln.components(separatedBy: ",")
                     finalNamesArr.removeAll()
                     for sn in (llNamesArr) {
@@ -487,13 +488,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         finalNamesArr.append(sn)
                     }
                     
+                    
+                    
                     //llP
                     let llp: String = tempLLP as! String
+                    llPoints = llp
                     let llPointsArr = llp.components(separatedBy: ":")
-                    
-                    
 
-                    
                     finalPointsArr = [CLLocationCoordinate2D]()
                     for sp in (llPointsArr) {
                         print("sp: \(sp)")
@@ -534,6 +535,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let stringOfWaypointTimes: String = waypointTimesTimString
         let riderName: String = settingsName
         let raceDur: Int = rt * 1000
+        
+        if (raceName.isEmpty || riderName.isEmpty || waypointTimesTimString.isEmpty || llNames.isEmpty || llPoints.isEmpty) {
+            print("missing values, don't post")
+            return
+        }
         
         let racePost = [
             "raceName" : raceName,
