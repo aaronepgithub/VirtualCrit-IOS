@@ -1419,7 +1419,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             if ((int) totalMillis / 1000 == 5) {
                 Log.i(TAG, "at 5 sec: auto request permissions");
-                //checkAndSetPermissions();
+                checkAndSetPermissions();
                 //mService.requestLocationUpdates();
 
             }
@@ -1593,6 +1593,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             //or
             //requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
 
+        } else {
+            Log.i(TAG, "LOCATION IS ALREADY ENABLED");
         }
         
         
@@ -1610,16 +1612,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "onCreate: checkAndSetPermissions");
+        //Log.i(TAG, "onCreate: checkAndSetPermissions");
 
 
         myReceiver = new MyReceiver();
         // Check that the user hasn't revoked permissions by going to Settings.
-        if (Utils.requestingLocationUpdates(this)) {
-            if (!checkPermissions()) {
-                requestPermissions();
-            }
-        }
+//        if (Utils.requestingLocationUpdates(this)) {
+//            if (!checkPermissions()) {
+//                requestPermissions();
+//            }
+//        }
 
 
 
