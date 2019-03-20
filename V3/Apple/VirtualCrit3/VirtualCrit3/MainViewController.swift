@@ -137,19 +137,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             cordArrAnnotation.append(h)
             coordArr.append(c)
         }
-        
+        //ADD WAYPOINT MARKERS
         mapView.addAnnotations(cordArrAnnotation)
-        
 
-
-        // Add a polyline with the new coordinates.
-        //let polyline = MGLPolyline(coordinates: &coordinates, count: UInt(coordinates.count))
-        //let polyline = MGLPolyline(coordinates, count: coordinates.count)
+        //ADD ROUTE POLYLINE
         let polyline = MGLPolyline(coordinates: coordArr, count: UInt(coordArr.count))
         mapView.addAnnotation(polyline)
         
         
     }
+    
+
+    func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: Any!) -> CGFloat {
+        return 2.0
+    }
+
+    
     
     func remMarkers() {
         if mapView.annotations != nil {
@@ -160,8 +163,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 //        if mapView.annotations?.count != nil, let existingAnnotations = mapView.annotations {
 //            mapView.removeAnnotations(existingAnnotations)
 //        }
-        
-        
         
     }
     
@@ -522,7 +523,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     
                     
                     //llP
-                    let llp: String = tempLLP as! String
+                    var llp: String = tempLLP as! String
+                    if llp.last! == ":" {
+                        llp = String(llp.dropLast())
+                    }
                     llPoints = llp
                     let llPointsArr = llp.components(separatedBy: ":")
 
