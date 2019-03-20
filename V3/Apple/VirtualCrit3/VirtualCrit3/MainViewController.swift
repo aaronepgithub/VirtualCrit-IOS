@@ -118,19 +118,50 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func addMarker(cll : CLLocationCoordinate2D) {
-        print("Adding Marker")
+        print("Adding Markers")
 //        40.769189, -73.975280  CP
         
-        let hello = MGLPointAnnotation()
-        hello.coordinate = cll
-        hello.title = "START"
-        mapView.addAnnotation(hello)
+//        let hello = MGLPointAnnotation()
+//        hello.coordinate = cll
+//        hello.title = "START"
+//        mapView.addAnnotation(hello)
+        
+        
+        
+        var cordArrAnnotation = [MGLPointAnnotation]()
+        var coordArr =  [CLLocationCoordinate2D]()
+        for c: CLLocationCoordinate2D in wpts {
+            let h = MGLPointAnnotation()
+            h.coordinate = c
+            h.title = " "
+            cordArrAnnotation.append(h)
+            coordArr.append(c)
+        }
+        
+        mapView.addAnnotations(cordArrAnnotation)
+        
+
+
+        // Add a polyline with the new coordinates.
+        //let polyline = MGLPolyline(coordinates: &coordinates, count: UInt(coordinates.count))
+        //let polyline = MGLPolyline(coordinates, count: coordinates.count)
+        let polyline = MGLPolyline(coordinates: coordArr, count: UInt(coordArr.count))
+        mapView.addAnnotation(polyline)
+        
+        
     }
     
     func remMarkers() {
         if mapView.annotations != nil {
             mapView.removeAnnotations(mapView.annotations!)
         }
+        
+        // Remove any existing polyline(s) from the map.
+//        if mapView.annotations?.count != nil, let existingAnnotations = mapView.annotations {
+//            mapView.removeAnnotations(existingAnnotations)
+//        }
+        
+        
         
     }
     
@@ -692,8 +723,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 waypointTimesTimString = ""
 //                requestRaceData(rn: gpxNames.first!)
                 
-                let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
-                addMarker(cll: cord)
+                //let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint].latitude, longitude: wpts[currentCritPoint].longitude)
+                //addMarker(cll: cord)
                 return
             }
             
@@ -728,8 +759,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPoint])"
             let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPoint+1]).\n"
             //print("\(strNextWpName)")
-            let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
-            addMarker(cll: cord)
+            //let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
+            //addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
             let cp: String = "[ \(currentCritPoint) of \(wpts.count-1) ], "
             addValueToTimelineString(s: "\(strJustHitWpName) \(cp) \(strNextWpName) \(strComp)  ")
@@ -938,8 +969,8 @@ extension MainViewController: CLLocationManagerDelegate {
             guard location.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
             
             if self.locations.count == 1 {
-                let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
-                addMarker(cll: cord)
+//                let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
+//                addMarker(cll: cord)
                 //tabBarController?.tabBar.items?[0].badgeValue = "1"
             }
             
