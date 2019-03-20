@@ -146,10 +146,12 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             if (valueActivityType.text == "BIKE") {
                 settingsActivityType = "RUN"
                 valueActivityType.text = "RUN"
+                showUserTrackingPath = 1
             } else {
                 if (valueActivityType.text == "RUN") {
                     settingsActivityType = "ROW";
                     valueActivityType.text = "ROW"
+                    showUserTrackingPath = 2
                 } else {
                     settingsActivityType = "BIKE";
                     valueActivityType.text = "BIKE"

@@ -28,6 +28,7 @@ var llPoints: String = ""
 var finalNamesArr = [String]()
 var finalPointsArr = [CLLocationCoordinate2D]()
 
+var showUserTrackingPath: Int = 0
 
 var todaysDateString: String = "00000000"
 var useSimRide: Bool = false
@@ -117,6 +118,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         return nil
     }
     
+    func addUserTrackingPath() {
+        print("addUserTrackingPath")
+        //rem all older markers
+        remMarkers()
+        
+        //ADD ROUTE POLYLINE
+        let polyline = MGLPolyline(coordinates: coords, count: UInt(coords.count))
+        mapView.addAnnotation(polyline)
+        
+        showUserTrackingPath = 0
+    }
+    
     func addMarker(cll : CLLocationCoordinate2D) {
         print("Adding Markers")
 //        40.769189, -73.975280  CP
@@ -144,16 +157,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let polyline = MGLPolyline(coordinates: coordArr, count: UInt(coordArr.count))
         mapView.addAnnotation(polyline)
         
-        
-    }
-    
-
-    func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: Any!) -> CGFloat {
-        return 2.0
+        showUserTrackingPath = 0
     }
 
-    
-    
+
     func remMarkers() {
         if mapView.annotations != nil {
             mapView.removeAnnotations(mapView.annotations!)
@@ -300,6 +307,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         if useSimRide == true && system.actualElapsedTime > 20 {
             simRide()
+        }
+        
+        if showUserTrackingPath == 1 {
+            remMarkers()
+            addUserTrackingPath()
+        }
+        if showUserTrackingPath == 2 {
+            if coords.count > 0 {
+                remMarkers()
+            addMarker(cll: coords[0])
+            }
+
         }
         
     }
