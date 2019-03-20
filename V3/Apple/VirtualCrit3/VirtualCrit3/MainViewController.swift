@@ -121,6 +121,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     func addUserTrackingPath() {
         print("addUserTrackingPath")
         //rem all older markers
+        if coords.count < 2 {
+            return
+        }
+        if wpts.count < 2 {
+            return
+        }
+        
         remMarkers()
         
         //ADD ROUTE POLYLINE
@@ -132,6 +139,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func addMarker(cll : CLLocationCoordinate2D) {
         print("Adding Markers")
+        
+        if wpts.count < 2 {
+            return
+        }
 //        40.769189, -73.975280  CP
         
 //        let hello = MGLPointAnnotation()
