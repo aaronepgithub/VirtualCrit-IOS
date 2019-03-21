@@ -251,8 +251,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             coordsForBuilderCrit.append(coordinate)
         }
         print("\(coordinate.latitude), \(coordinate.longitude)")
-        
-        
         mapView.addAnnotation(annotation)
 
     }
@@ -367,6 +365,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //after processing, set crit status to 101
             
         }
+        
+        if critStatus == 105 {
+            print("critStatus is 105, postRaceProcessingPreRace")
+            postRaceProcessingPreRace()
+        }
+        
         if critStatus == 101 {
             print("status == 101")
             gpxNames = finalNamesArr
@@ -702,6 +706,61 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
     }
+
+    
+    //POST RACE FOR BUILDER OR LOAD GPX
+    func postRaceProcessingPreRace() {
+        print("post race processing - PRERACE")
+        let rt: Int = 2147483646
+        
+        let raceDate: String = todaysDateString
+        let raceName: String = gpxNames.first!
+        //let stringOfWaypointTimes: String = waypointTimesTimString
+        let riderName: String = settingsName
+        let raceDur = rt
+        
+        if (raceName.isEmpty || riderName.isEmpty || llNames.isEmpty || llPoints.isEmpty) {
+            print("missing values, don't post")
+            return
+        }
+        
+        let racePost = [
+            "raceName" : raceName,
+            "riderName" : riderName,
+            "raceTimeToComplete" : raceDur,
+//            "waypointTimes" : stringOfWaypointTimes,
+            "raceDate" : raceDate,
+            "llNames" : llNames,
+            "llPoints" : llPoints
+            ] as [String : Any]
+        
+        //"40.66484,-73.98081:40.664550000000006,-73.98022:40.6646,-73.97686:40.66123,-73.97968:40.65216,-73.97128000000001:40.651990000000005,-73.97055:40.67116,-73.96926:40.66138,-73.97760000000001:40.661150000000006,-73.97796000000001:40.66104,-73.9795:40.66557,-73.98931:40.659670000000006,-73.99517:40.65964,-73.99512"
+        
+        //"TOSPECTRUM,LEFT,RIGHT,STRAIGHT,LEFT,STRAIGHT,LEFT,RIGHT,RIGHT,STRAIGHT,LEFT,LEFT,FINISH"
+        
+        let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(raceName)")
+        refDB.childByAutoId().setValue(racePost) {
+            (error:Error?, ref:DatabaseReference) in
+            if let error = error {
+                print("PRE RACE Data could not be saved: \(error).")
+            } else {
+                print("PRE RACE Data saved successfully!")
+            }
+        }
+        
+        remMarkers()
+        
+        if gpxNames.count > 0 && wpts.count > 0 {
+            addMarker(cll: wpts[0])
+        }
+        
+        speakThis(spk: "\(self.gpxNames.first) IS NOW LOADED, PROCEED TO START")
+
+        critStatus = 0
+        
+    }
+    //END POST RACE FOR BUILDER OR LOAD GPX
+    
     
     
     private let locationManager = LocationManager.shared
@@ -752,8 +811,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let i: Int = Int(distanceInMeters)
         tabBarController?.tabBar.items?[0].badgeValue = "\(i)"
         
-        if distanceInMeters < 100 {
-            print("inside 100, currentCritPoint is \(currentCritPoint)")
+        if distanceInMeters < 150 {
+            print("inside 150, currentCritPoint is \(currentCritPoint)")
             print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
             tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
             tabBarController?.tabBar.items?[3].badgeValue = "\(wpts.count-1)"

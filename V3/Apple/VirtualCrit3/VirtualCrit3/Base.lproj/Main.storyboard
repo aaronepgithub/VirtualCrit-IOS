@@ -286,7 +286,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CRIT BUILDER (FROM MAP)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8EE-yN-RjH">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CRIT BUILDER (FROM MAP)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8EE-yN-RjH">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -404,6 +404,7 @@
                         <outlet property="valueBluetoothDeviceStatus" destination="wTV-01-xP0" id="SPM-0l-KmX"/>
                         <outlet property="valueBluetoothName" destination="DV5-nh-Ul8" id="i58-Ga-EFu"/>
                         <outlet property="valueBluetoothStatus" destination="xFh-Iu-bdo" id="RjI-ub-8zZ"/>
+                        <outlet property="valueCritBuilderFromMap" destination="8EE-yN-RjH" id="4yT-cw-0MO"/>
                         <outlet property="valueCritID" destination="gEe-eo-6gf" id="0dU-YO-JH3"/>
                         <outlet property="valueGpsActive" destination="uzB-Cp-uCW" id="ZER-bF-pqu"/>
                         <outlet property="valueNameGPX" destination="jwo-Cm-ccV" id="jpu-Bi-Hdh"/>

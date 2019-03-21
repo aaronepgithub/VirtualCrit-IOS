@@ -49,6 +49,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     @IBOutlet weak var valueBluetoothStatus: UILabel!
     @IBOutlet weak var valueBluetoothDeviceStatus: UILabel!
     
+    @IBOutlet weak var valueCritBuilderFromMap: UILabel!
     
     @IBOutlet weak var valueNameGPX: UILabel!
     @IBOutlet weak var valueStatusGPX: UILabel!
@@ -102,6 +103,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 2,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
         print("SETTINGS Timer Started")
+        
+            
     }
     func stopTimer() {
         print("SETTINGS Timer Stopped")
@@ -166,17 +169,22 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             print("case 14, builder, collectCoordsInProgress: \(collectCoordsInProgress)")
             //CHANGE UI ON CLICK
             if collectCoordsInProgress == true {
+                //is true, set to false
                 print("set to false")
                 collectCoordsInProgress = false
                 //COLLECT FINISHED, CREATE THE CRIT
                 //CREATE NAMES AND WPTS...
                 print("COLLECT FINISHED, CREATE THE CRIT")
+                valueCritBuilderFromMap.text = "COLLECTION COMPLETE"
                 critBuilderCollectionComplete()
             } else {
+                //is false, set to true
                 print("set to true")
+                getNameDialogForCB()
                 collectCoordsInProgress = true
                 coordsForBuilderCrit.removeAll()
-                print("CLEAR ARR, COLLECTION IS OVER")
+                valueCritBuilderFromMap.text = "LONG PRESS ON MAP TO CREATE, CLICK BACK HERE WHEN FINISHED"
+                print("CLEAR ARR, COLLECTION HAS STARTED")
             }
             
 
@@ -220,15 +228,19 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         var i: Int = 1
         for c in coordsForBuilderCrit {
             wpts.append(c)
-            gpxNames.append("CHECKPOINT \(i)")
+            if i == 1 && cbName.count > 0 {
+            gpxNames.append(self.cbName)
+            llNames = self.cbName
+            } else {
+            gpxNames.append("IOSBUILDER\(i)")
+            llNames = "\(llNames)CHECKPOINT \(i),"
+            }
+            
             
             llPoints = "\(llPoints)\(c.latitude),\(c.longitude):"
-            llNames = "CHECKPOINT \(i),"
+            
             i += 1
         }
-        
-        //remove last colon
-        //remove last comma
 
         if llPoints.last! == ":" {
             llPoints = String(llPoints.dropLast())
@@ -240,15 +252,26 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         
         print("llNames \(llNames)")
         print("llPoints \(llPoints)")
+        
+        if gpxNames.count == 0 {return}
+        
         if (gpxNames.first != nil) {
             addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
-            critStatus = 10
+            
+            
+            
+
+            tempName = gpxNames.first!
+            if (tempName.count > 0) {
+                valueCritBuilderFromMap.text = "CRIT BUILDER: \(tempName)"
+            }
+            critStatus = 105
         }
         
-        
-    
-        
+
     }
+    
+    
     
     func getCritId() {
         let alertController = UIAlertController(title: "CRIT ID", message: "", preferredStyle: .alert)
@@ -277,6 +300,40 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         //finally presenting the dialog box
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    //START GET CB NAME
+    var cbName = ""
+    func getNameDialogForCB() {
+        
+        valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
+        
+        let alertController = UIAlertController(title: "ENTER CRIT NAME", message: " CLICK BACK HERE WHEN FINISHED", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+            
+            let name = alertController.textFields?[0].text
+            //self.valueRiderName.text = name!.uppercased()
+            self.cbName = name!.uppercased()
+            print("cbName:  \(self.cbName)")
+            //UserDefaults.standard.set(settingsName, forKey: "udName")
+            //self.valueCritBuilderFromMap.text = self.cbName
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = settingsName
+        }
+        
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    //END GET CB NAME
     
     func getNameDialog() {
         
@@ -656,7 +713,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             print("llPoints \(llPoints)")
                 if (gpxNames.first != nil) {
                     addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
-                    critStatus = 10
+                    critStatus = 105
                 }
                 
 
