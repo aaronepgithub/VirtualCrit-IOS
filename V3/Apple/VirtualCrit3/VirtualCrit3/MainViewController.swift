@@ -36,7 +36,7 @@ var collectCoordsInProgress: Bool = false
 
 var todaysDateString: String = "00000000"
 var useSimRide: Bool = false
-var raceStatusDisplay = "AWAITING START"
+var raceStatusDisplay = "NOT LOADED"
 var valueTimelineString = [String]()
 var valueTimelineStringDate = [String]()
 var currentCritPoint: Int = 0
@@ -96,28 +96,28 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         addValueToTimelineString(s: "VIRTUAL CRIT IS STARTING, LOAD A RACE AND GO")
         
         //add pp gpx
-        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
-        wpts.append(w0)
-        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
-        wpts.append(w1)
-        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
-        wpts.append(w2)
-        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
-        wpts.append(w3)
-        let w4: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66331, longitude: -73.97495)
-        wpts.append(w4)
-
-        
-        let n0: String = "Prospect Park, Brooklyn, Single Loop"
-        gpxNames.append(n0)
-        let n1: String = "PARADE GROUND"
-        gpxNames.append(n1)
-        let n2: String = "LAFREAK CENTER"
-        gpxNames.append(n2)
-        let n3: String = "GRAND ARMY PLAZA"
-        gpxNames.append(n3)
-        let n4: String = "FINISH"
-        gpxNames.append(n4)
+//        let w0: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66068, longitude: -73.97738)
+//        wpts.append(w0)
+//        let w1: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.652033131581746, longitude: -73.9708172236974)
+//        wpts.append(w1)
+//        let w2: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.657608465972885, longitude: -73.96300766854665)
+//        wpts.append(w2)
+//        let w3: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.671185505128406, longitude: -73.96951606153863)
+//        wpts.append(w3)
+//        let w4: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.66331, longitude: -73.97495)
+//        wpts.append(w4)
+//
+//
+//        let n0: String = "Prospect Park, Brooklyn, Single Loop"
+//        gpxNames.append(n0)
+//        let n1: String = "PARADE GROUND"
+//        gpxNames.append(n1)
+//        let n2: String = "LAFREAK CENTER"
+//        gpxNames.append(n2)
+//        let n3: String = "GRAND ARMY PLAZA"
+//        gpxNames.append(n3)
+//        let n4: String = "FINISH"
+//        gpxNames.append(n4)
         
         setFBListenRequest()
     }
