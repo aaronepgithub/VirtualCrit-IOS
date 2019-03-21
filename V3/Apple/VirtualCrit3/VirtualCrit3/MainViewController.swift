@@ -754,7 +754,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             addMarker(cll: wpts[0])
         }
         
-        speakThis(spk: "\(self.gpxNames.first) IS NOW LOADED, PROCEED TO START")
+        speakThis(spk: "\(String(describing: gpxNames.first)) IS NOW LOADED, PROCEED TO START")
 
         critStatus = 0
         
@@ -796,7 +796,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //var raceBestTime: Double = 0
     var raceSpeed: Double = 0
 
-    
+    var checkDistanceValue: Int = 150
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         //print("Eval Location, currentCritPoint: \(currentCritPoint)")
@@ -811,7 +811,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let i: Int = Int(distanceInMeters)
         tabBarController?.tabBar.items?[0].badgeValue = "\(i)"
         
-        if distanceInMeters < 150 {
+        if currentCritPoint > 0 {
+            checkDistanceValue = checkDistanceValue * 2
+        }
+        if wpts.count-1 == currentCritPoint {
+            checkDistanceValue = 150
+        }
+        if currentCritPoint == 0 {
+            checkDistanceValue = 0
+        }
+        
+        if distanceInMeters < checkDistanceValue {
             print("inside 150, currentCritPoint is \(currentCritPoint)")
             print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
             tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
