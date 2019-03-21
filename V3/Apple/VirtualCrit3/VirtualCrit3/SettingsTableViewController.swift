@@ -146,21 +146,45 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             if (valueActivityType.text == "BIKE") {
                 settingsActivityType = "RUN"
                 valueActivityType.text = "RUN"
-                showUserTrackingPath = 1
+                //showUserTrackingPath = 1
             } else {
                 if (valueActivityType.text == "RUN") {
                     settingsActivityType = "ROW";
                     valueActivityType.text = "ROW"
-                    showUserTrackingPath = 2
+                    //showUserTrackingPath = 2
                 } else {
                     settingsActivityType = "BIKE";
                     valueActivityType.text = "BIKE"
                 }
             }
+            
+        case "04":
+            print("case 04, show user track")
+            showUserTrackingPath = 1
 
         case "14":
-            print("case 14, startSim")
+            print("case 14, builder, collectCoordsInProgress: \(collectCoordsInProgress)")
+            //CHANGE UI ON CLICK
+            if collectCoordsInProgress == true {
+                print("set to false")
+                collectCoordsInProgress = false
+                //COLLECT FINISHED, CREATE THE CRIT
+                //CREATE NAMES AND WPTS...
+                print("COLLECT FINISHED, CREATE THE CRIT")
+                critBuilderCollectionComplete()
+            } else {
+                print("set to true")
+                collectCoordsInProgress = true
+                coordsForBuilderCrit.removeAll()
+                print("CLEAR ARR, COLLECTION IS OVER")
+            }
+            
+
+            
+        case "15":
+            print("case 15, startSim")
             useSimRide = true
+            
         case "12":
             print("case 12, load GPX")
             useSimRide = false
@@ -181,6 +205,50 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     }
     
     var docController:UIDocumentInteractionController!
+    
+    func critBuilderCollectionComplete() {
+//        coordsForBuilderCrit
+        let numberOfLocations = coordsForBuilderCrit.count
+        if numberOfLocations < 4 {return}
+        
+        //clear old
+        wpts.removeAll()
+        gpxNames.removeAll()
+        llPoints = ""
+        llNames = ""
+        
+        var i: Int = 1
+        for c in coordsForBuilderCrit {
+            wpts.append(c)
+            gpxNames.append("CHECKPOINT \(i)")
+            
+            llPoints = "\(llPoints)\(c.latitude),\(c.longitude):"
+            llNames = "CHECKPOINT \(i),"
+            i += 1
+        }
+        
+        //remove last colon
+        //remove last comma
+
+        if llPoints.last! == ":" {
+            llPoints = String(llPoints.dropLast())
+        }
+        if llNames.last! == "," {
+            llNames = String(llNames.dropLast())
+        }
+        
+        
+        print("llNames \(llNames)")
+        print("llPoints \(llPoints)")
+        if (gpxNames.first != nil) {
+            addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
+            critStatus = 10
+        }
+        
+        
+    
+        
+    }
     
     func getCritId() {
         let alertController = UIAlertController(title: "CRIT ID", message: "", preferredStyle: .alert)
@@ -580,8 +648,6 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
                 
             
             print("gpxNames \(gpxNames) \n\n\n")
-                
-            
                 for na: String in gpxNames {
                     llNames = "\(llNames)\(na),"
                 }

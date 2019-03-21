@@ -30,6 +30,10 @@ var finalPointsArr = [CLLocationCoordinate2D]()
 
 var showUserTrackingPath: Int = 0
 
+
+var coordsForBuilderCrit = [CLLocationCoordinate2D]()
+var collectCoordsInProgress: Bool = false
+
 var todaysDateString: String = "00000000"
 var useSimRide: Bool = false
 var raceStatusDisplay = "AWAITING START"
@@ -82,6 +86,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         mapView.showsUserLocation = true
         mapView.setUserTrackingMode(.follow, animated: true)
         
+        // Add a gesture recognizer to the map view
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        mapView.addGestureRecognizer(longPress)
+
+        
         startAtLaunch()
         
         addValueToTimelineString(s: "VIRTUAL CRIT IS STARTING, LOAD A RACE AND GO")
@@ -120,11 +129,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func addUserTrackingPath() {
         print("addUserTrackingPath")
+        mapView.delegate = self
+        
         //rem all older markers
         if coords.count < 2 {
+            print("no coords, return")
+            showUserTrackingPath = 0
             return
         }
         if wpts.count < 2 {
+            print("no wpts, return")
+            showUserTrackingPath = 0
             return
         }
         
@@ -134,6 +149,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let polyline = MGLPolyline(coordinates: coords, count: UInt(coords.count))
         mapView.addAnnotation(polyline)
         
+        //add crit markers back
+        if wpts.count > 0 {
+        addMarker(cll: wpts[0])
+        }
+
+        
         showUserTrackingPath = 0
     }
     
@@ -141,6 +162,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         print("Adding Markers")
         
         if wpts.count < 2 {
+            print("no wpts, return")
+            showUserTrackingPath = 0
             return
         }
 //        40.769189, -73.975280  CP
@@ -185,7 +208,54 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     
+    func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+        // Set the alpha for all shape annotations to 1 (full opacity)
+        return 1
+    }
+    
+    func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+        // Set the line width for polyline annotations
+        return 1.0
+    }
+    
+    func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+        // Give our polyline a unique color by checking for its `title` property
+        if (annotation.title == "Crema to Council Crest" && annotation is MGLPolyline) {
+            // Mapbox cyan
+            return UIColor(red: 59/255, green: 178/255, blue: 208/255, alpha: 1)
+        } else {
+            return .red
+        }
+    }
+    
 
+
+    
+    @objc func didLongPress(_ sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else { return }
+        
+        // Converts point where user did a long press to map coordinates
+        let point = sender.location(in: mapView)
+        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+        
+        // Create a basic point annotation and add it to the map
+        let annotation = MGLPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "CRITPOINT"
+        
+        
+        //CLEAR ARRAY TO START
+        //IF A ROUTE IS COMPLETE, THEN CLEAR
+        //IF USER IS FINISHED, SET BOOL TO FALSE
+        if collectCoordsInProgress == true {
+            coordsForBuilderCrit.append(coordinate)
+        }
+        print("\(coordinate.latitude), \(coordinate.longitude)")
+        
+        
+        mapView.addAnnotation(annotation)
+
+    }
 
     
     
@@ -321,16 +391,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
         if showUserTrackingPath == 1 {
-            remMarkers()
+            //remMarkers()
             addUserTrackingPath()
         }
-        if showUserTrackingPath == 2 {
-            if coords.count > 0 {
-                remMarkers()
-            addMarker(cll: coords[0])
-            }
-
-        }
+//        if showUserTrackingPath == 2 {
+//            if coords.count > 0 {
+//                remMarkers()
+//            addMarker(cll: coords[0])
+//            }
+//
+//        }
         
     }
     
@@ -483,6 +553,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         print("REQUEST RACE DATA")
         if activeRaceName == rn {
             print("already have this being observed")
+            critStatus = 0
             return
         }
         if activeRaceName != "" {
