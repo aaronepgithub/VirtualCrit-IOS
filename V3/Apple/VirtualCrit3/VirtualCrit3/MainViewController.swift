@@ -752,9 +752,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         if gpxNames.count > 0 && wpts.count > 0 {
             addMarker(cll: wpts[0])
+            
+        speakThis(spk: "\(gpxNames.first ?? "") IS NOW LOADED, PROCEED TO START")
         }
         
-        speakThis(spk: "\(String(describing: gpxNames.first)) IS NOW LOADED, PROCEED TO START")
+
 
         critStatus = 0
         
