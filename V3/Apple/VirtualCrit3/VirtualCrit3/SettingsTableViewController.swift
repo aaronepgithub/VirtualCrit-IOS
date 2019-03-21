@@ -113,6 +113,10 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     @objc func timerInterval() {
         //print("SETTINGS TIMER INTERVAL")
         valueStatusGPX.text = raceStatusDisplay
+        if (gpxNames.first != nil) {
+        valueGpsActive.text = gpxNames.first ?? ""
+        }
+        
         
     }
     
@@ -175,7 +179,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 //COLLECT FINISHED, CREATE THE CRIT
                 //CREATE NAMES AND WPTS...
                 print("COLLECT FINISHED, CREATE THE CRIT")
-                valueCritBuilderFromMap.text = "COLLECTION COMPLETE"
+                //valueCritBuilderFromMap.text = "COLLECTION COMPLETE"
                 critBuilderCollectionComplete()
             } else {
                 //is false, set to true
@@ -183,7 +187,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 getNameDialogForCB()
                 collectCoordsInProgress = true
                 coordsForBuilderCrit.removeAll()
-                valueCritBuilderFromMap.text = "LONG PRESS ON MAP TO CREATE, CLICK BACK HERE WHEN FINISHED"
+                valueCritBuilderFromMap.text = "CLICK HERE WHEN COMPLETE"
                 print("CLEAR ARR, COLLECTION HAS STARTED")
             }
             
@@ -217,7 +221,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     func critBuilderCollectionComplete() {
 //        coordsForBuilderCrit
         let numberOfLocations = coordsForBuilderCrit.count
-        if numberOfLocations < 4 {return}
+        if numberOfLocations < 2 {return}
         
         //clear old
         wpts.removeAll()
@@ -228,15 +232,24 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         var i: Int = 1
         for c in coordsForBuilderCrit {
             wpts.append(c)
-            if i == 1 && cbName.count > 0 {
-            gpxNames.append(self.cbName)
-            llNames = self.cbName
+            
+            if cbName.count == 0 {return}
+            
+            if i == 1 {
+                gpxNames.append(self.cbName)
+                llNames = "\(self.cbName),"
             } else {
-            gpxNames.append("IOSBUILDER\(i)")
-            llNames = "\(llNames)CHECKPOINT \(i),"
+                
+                if i == (gpxNames.count) {
+                    gpxNames.append("FINISH")
+                    llNames = "FINISH"
+                } else {
+                    gpxNames.append("CKPT\(i)")
+                    llNames = "\(llNames)CKPT \(i),"
+                }
+                
+
             }
-            
-            
             llPoints = "\(llPoints)\(c.latitude),\(c.longitude):"
             
             i += 1
@@ -263,8 +276,12 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
 
             tempName = gpxNames.first!
             if (tempName.count > 0) {
-                valueCritBuilderFromMap.text = "CRIT BUILDER: \(tempName)"
+                valueCritBuilderFromMap.text = "CRIT BUILDER (FROM MAP)"
             }
+            
+            valueNameGPX.text = tempName
+            valueStatusGPX.text = "AWAITING ARRIVAL"
+            
             critStatus = 105
         }
         
@@ -281,9 +298,13 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             let name = alertController.textFields?[0].text
             
             tempName = name!.uppercased()
-            self.valueCritID.text = "CRIT ID: \(tempName)"
+            self.valueCritID.text = "CRIT ID (ENTER CRIT ID)"
             
             print("critid:  \(tempName)")
+            
+            self.valueNameGPX.text = tempName
+            self.valueStatusGPX.text = "AWAITING ARRIVAL"
+            
             critStatus = 100
         }
         
@@ -305,9 +326,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     var cbName = ""
     func getNameDialogForCB() {
         
-        valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
         
-        let alertController = UIAlertController(title: "ENTER CRIT NAME", message: " CLICK BACK HERE WHEN FINISHED", preferredStyle: .alert)
+        
+        let alertController = UIAlertController(title: "ENTER CRIT NAME", message: "TO ENTER CHECKPOINTS, VIEW MAP AND HOLD YOUR FINGER ON EACH POINT UNTIL MARKER APPEARS.  RETURN TO SETTINGS AND CLICK HERE WHEN FINISHED.\n\nENTER CRIT NAME", preferredStyle: .alert)
         
         let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
             
@@ -316,7 +337,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             self.cbName = name!.uppercased()
             print("cbName:  \(self.cbName)")
             //UserDefaults.standard.set(settingsName, forKey: "udName")
-            //self.valueCritBuilderFromMap.text = self.cbName
+            self.valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
@@ -659,8 +680,8 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
         if (!foundedChar.isEmpty) {
             if currentParsingElement == "name" {
                 gpxName = foundedChar
-                gpxNames.append(gpxName)
-                print("gpxName:  \(gpxName)")
+                gpxNames.append(gpxName.uppercased())
+                print("gpxName:  \(gpxName.uppercased())")
                 
 
             }
@@ -673,7 +694,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "name" {
             print("Ended parsing name...")
-            print("Last in gpxnames: \(String(describing: gpxNames.last))")
+            print("Last in gpxnames: \(String(describing: gpxNames.last?.uppercased()))")
         }
         
         if elementName == "gpx" {
@@ -682,7 +703,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             valueStatusGPX.text = "AWAITING ARRIVAL"
                 
             //update arrays
-            let lastName = gpxNames.last  //which is the route name
+                let lastName = gpxNames.last?.uppercased()  //which is the route name
             gpxNames.insert(lastName ?? "NONE", at: 0)
 
             gpxNames.removeLast()
@@ -706,7 +727,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             
             print("gpxNames \(gpxNames) \n\n\n")
                 for na: String in gpxNames {
-                    llNames = "\(llNames)\(na),"
+                    llNames = "\(llNames)\(na.uppercased()),"
                 }
                 
             print("llNames \(llNames)")
