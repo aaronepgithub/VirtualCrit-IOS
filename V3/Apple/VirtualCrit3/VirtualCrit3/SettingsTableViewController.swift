@@ -114,7 +114,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         //print("SETTINGS TIMER INTERVAL")
         valueStatusGPX.text = raceStatusDisplay
         if (gpxNames.first != nil) {
-        valueGpsActive.text = gpxNames.first ?? ""
+        valueNameGPX.text = gpxNames.first ?? ""
         }
         
         
