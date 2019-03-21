@@ -149,6 +149,35 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <!--SHOW USER TRACKLINE-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/clickShowUserTrackline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClickShowUserTrackline"
+                    android:text="SHOW TRACK"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/valueShowTrack"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text=""
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

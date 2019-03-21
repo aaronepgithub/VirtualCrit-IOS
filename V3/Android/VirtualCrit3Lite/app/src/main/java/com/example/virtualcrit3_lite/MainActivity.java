@@ -217,6 +217,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
+
+
+    public void onClickShowUserTrackline(View view) {
+
+        if (doSetUserTrackingLine) {
+            doSetUserTrackingLine = false;
+        } else {
+            doSetUserTrackingLine = true;
+            setMapboxStreets();
+        }
+    }
+
 //    /**
 //     * Callback received when a permissions request has been completed.
 //     */
@@ -1433,19 +1445,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
             if ((int) totalMillis / 1000 > 12) {
-                //EVERY 10 SECONDS
+                //EVERY 12 SECONDS
                 //REALLY ONLY NEED TO DO THINGS WHILE PAUSED?
+                Log.i(TAG, "run: 12 SECOND UPDATE");
 
-                if ((int) totalMillis / 1000 % 12 == 0) {
-                    //EVERY 15, UPDATE MAP
-                    Log.i(TAG, "run: 12 SECOND UPDATE MAP");
-                    if (Timer.trackerCoords.size() > 2) {
-                        if (!isPaused) {
-                            setMapboxStreets();
-                        }
-
-                    }
-                }
+//                if ((int) totalMillis / 1000 % 12 == 0) {
+//                    //EVERY 12, UPDATE MAP
+//                    Log.i(TAG, "run: 12 SECOND UPDATE MAP");
+//                    if (Timer.trackerCoords.size() > 2) {
+//                        if (!isPaused) {
+//                            setMapboxStreets();
+//                        }
+//
+//                    }
+//                }
 
                 if ((int) totalMillis / 1000 % 3 == 0) {
                     //EVERY 3, PUBLISH TO FB IF NEEDED
@@ -1517,6 +1530,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
 
                 }
+
+                if ((int) totalMillis / 1000 == 30) {
+                    Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                    if (Timer.timerAllLocations.size() > 5) {
+                        //TRY TO ENABLE MAPBOX LOCATIONS
+                        Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATIONS");
+                        attemptToEnableMapboxLocationComponent();
+                    }
+                }
+
             }
 
 
@@ -1696,6 +1719,45 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     //MULTIPLE MARKERS
     private boolean isRaceLoaded = false;
     private int raceNumber = 10;
+
+
+    private boolean haveAttemptedToLoadMapboxLocationComponent = true;
+    //START attemptToEnableMapboxLocationComponent
+    private void attemptToEnableMapboxLocationComponent() {
+        Log.i(TAG, "attemptToEnableMapboxLocationComponent");
+        if (!haveAttemptedToLoadMapboxLocationComponent) {
+            Log.i(TAG, "attemptToEnableMapboxLocationComponent: DON'T TRY AGAIN, OR MABYE TRY NEXT MINUTE...");
+        }
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+                Style style = mapboxMap.getStyle();
+                // Get an instance of the component
+                LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
+                // Activate with options
+                //locationComponent.activateLocationComponent(this, style);
+                locationComponent.activateLocationComponent(mn, Objects.requireNonNull(style));
+
+                // Enable to make component visible
+                locationComponent.setLocationComponentEnabled(true);
+
+                // Set the component's camera mode
+                locationComponent.setCameraMode(CameraMode.TRACKING);
+
+                // Set the component's render mode
+                locationComponent.setRenderMode(RenderMode.COMPASS);
+
+                haveAttemptedToLoadMapboxLocationComponent = false;
+
+            }
+        });
+
+    }
+    //END attemptToEnableMapboxLocationComponent
 
 
     //start add line
@@ -1896,18 +1958,28 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         });
     }
 
-    private int albumID = 100;
+    private int trkID = 750;
 //    private ArrayList<LatLng> trackerCoords = new ArrayList<>();
     //set streets style
+
+    private boolean doSetUserTrackingLine = false;
     private void setMapboxStreets() {
 
-//        if (isPaused) {
-//            return;
-//        }
+        trkID += 1;
+
+        if (!doSetUserTrackingLine) {
+            Log.i(TAG, "setMapboxStreets: doSetUserTrackingLine is false");
+            return;
+        }
+
+        if (Timer.trackerCoords.size() < 10) {
+            Log.i(TAG, "setMapboxStreets: NOT ENOUG CORDS");
+            return;
+        }
 
         Log.i(TAG, "setMapboxStreets: ");
         Log.i(TAG, "addMapboxLine for user tracking: ");
-        albumID += 1;
+        //albumID += 1;
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -1929,10 +2001,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Style style = mapboxMap.getStyle();
 
 //REMOVE IF THERE...
-                if (albumID > 105) {
-                    style.removeSource("line-source"+ String.valueOf(albumID-1));
-                    style.removeLayer("linelayer" + String.valueOf(albumID-1));
-                }
+//                if (!doSetUserTrackingLine) {
+//                    style.removeSource("line-source"+ String.valueOf(trkID-1));
+//                    style.removeLayer("linelayer" + String.valueOf(trkID-1));
+//                }
 
 
 
@@ -1940,14 +2012,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     return;
                 }
 
-                style.addSource(new GeoJsonSource("line-source" + albumID,
+                style.addSource(new GeoJsonSource("line-source" + trkID,
                         FeatureCollection.fromFeatures(new Feature[] {Feature.fromGeometry(
                                 LineString.fromLngLats(routeCoordinates)
                         )})));
 
                 // The layer properties for our line. This is where we make the line dotted, set the
 // color, etc.
-                style.addLayer(new LineLayer("linelayer" + albumID, "line-source" + albumID).withProperties(
+                style.addLayer(new LineLayer("linelayer" + trkID, "line-source" + trkID).withProperties(
                         PropertyFactory.lineDasharray(new Float[] {0.001f, 1f}),
                         PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
                         PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
@@ -1976,6 +2048,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             }
         });
+
+        doSetUserTrackingLine = false;
     }
 
 
