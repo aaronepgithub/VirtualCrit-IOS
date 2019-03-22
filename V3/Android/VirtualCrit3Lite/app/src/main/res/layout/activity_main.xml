@@ -60,9 +60,9 @@
         android:visibility="visible"
         mapbox:mapbox_cameraTargetLat="40.672216"
         mapbox:mapbox_cameraTargetLng="-73.970615"
-        mapbox:mapbox_cameraTilt="60"
         app:layout_constraintTop_toBottomOf="@+id/trMessageBar"/>
 
+    <!--mapbox:mapbox_cameraTilt="60"-->
 
     <ScrollView
         android:id="@+id/svSettings"
