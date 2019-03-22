@@ -239,21 +239,15 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 gpxNames.append(self.cbName)
                 llNames = "\(self.cbName),"
             } else {
-                
-                if i == (gpxNames.count-1) {
-                    gpxNames.append("FINISH")
-                    llNames = "FINISH"
-                } else {
-                    gpxNames.append("CKPT\(i)")
-                    llNames = "\(llNames)CKPT \(i),"
-                }
-                
-
+                gpxNames.append("CKPT")
+                llNames = "\(llNames)CKPT,"
             }
             llPoints = "\(llPoints)\(c.latitude),\(c.longitude):"
             
             i += 1
         }
+        
+        print("llNames: \(llNames)")
 
         if llPoints.last! == ":" {
             llPoints = String(llPoints.dropLast())
@@ -263,8 +257,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         }
         
         
-        print("llNames \(llNames)")
-        print("llPoints \(llPoints)")
+        print("llNames -  \(llNames)")
+        print("llPoints -  \(llPoints)")
         
         if gpxNames.count == 0 {return}
         

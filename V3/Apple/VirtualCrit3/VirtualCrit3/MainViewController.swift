@@ -799,7 +799,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //var raceBestTime: Double = 0
     var raceSpeed: Double = 0
 
-    var checkDistanceValue: Double = 100.0
+    var checkDistanceValue: Double = 125.0
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         //print("Eval Location, currentCritPoint: \(currentCritPoint)")
@@ -929,7 +929,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             //disp name for next waypoint
             let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPointTemp])"
-            let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPointTemp+1]).\n"
+            var strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPointTemp+1]).\n"
+            if currentCritPointTemp+1 == gpxNames.count {
+                strNextWpName = "\nHEAD TO THE FINISH LINE.\n"
+            }
             //print("\(strNextWpName)")
             //let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             //addMarker(cll: cord)
