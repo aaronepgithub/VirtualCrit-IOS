@@ -3417,6 +3417,11 @@ private Boolean collectCritPoints = false;
                 TextView t2 = (TextView) findViewById(R.id.valueCritIdName);
                 t2.setText("SET POINTS ON MAP");
 
+                TextView t3 = (TextView) findViewById(R.id.valueActiveCritName);
+                t3.setText("SET POINTS ON MAP");
+
+                makeToast("SET POINTS ON MAP TO CREATE CRIT");
+
                 //mapboxMap.addOnMapClickListener, inputWaypointName
             }
         });
