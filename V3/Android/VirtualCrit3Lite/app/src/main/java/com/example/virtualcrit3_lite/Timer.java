@@ -197,6 +197,8 @@ public final class Timer {
 
 
         //TEST FOR START
+        String postStart1 = "";
+        String postStart2 = "";
         Log.i(TAG, "evaluateLocation");
         if (currentWaypointCB == 0 && !isRaceStarted) {
             //NOT YET AT START
@@ -214,24 +216,30 @@ public final class Timer {
 
                 //speakText("THE RACE HAS STARTED  HEAD TO " + namesTemp.get(currentWaypointCB+1));
                 //addAnotherMarker(latTemp.get(currentWaypointCB+1), lonTemp.get(currentWaypointCB+1));
-
-                stringForSpeak.add("THE RACE HAS STARTED.  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1));
+                postStart1 = "ARRIVED AT THE START.  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1) + ".\n";
+//                stringForSpeak.add("THE RACE HAS STARTED.  HEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB+1));
                 locationForNextMarker = Crit.critBuilderLatLng.get(currentWaypointCB+1);
-                stringForSetMessage.add(raceName + " RACE STARTED");
+
+//                stringForSpeak.add(postStart1);
+//                stringForSetMessage.add(raceName + ":  ARRIVED AT START");
 
 
                 waypointTimesTim = new ArrayList<>();
                 waypointTimesTimString = "";
 
-                String startString = "";
+                //String startString = "";
                 if (bestRaceTime > 10000) {
-                    startString = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
+                    postStart2 = "\nTHE LEADER IS " + bestRacerName + " AT " + getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime);
                 }
 
                 if (bestRaceTime == 2147483646) {
-                    startString = "YOU ARE THE FIRST CRIT RACER FOR " + raceName;
+                    postStart2 = "YOU ARE THE FIRST CRIT RACER FOR " + raceName;
                 }
-                stringForTimeline.add("RACE STARTING\n" + Crit.critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString);
+
+//                stringForTimeline.add("RACE STARTING\n" + Crit.critBuilderLatLngNames.get(0).toUpperCase() + "\nHEAD TO " + Crit.critBuilderLatLngNames.get(currentWaypointCB + 1).toUpperCase() + startString);
+                stringForSpeak.add(postStart1 + postStart2);
+                stringForSetMessage.add(raceName + ":  ARRIVED AT START");
+                stringForTimeline.add(postStart1 + postStart2);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 Log.i(TAG, "stringForTimeline " + stringForTimeline);
 
@@ -294,7 +302,7 @@ public final class Timer {
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
 
                 //final String sss = "RACE COMPLETE, YOUR TIME IS.  \" + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + \".  \" + ss";
-                stringForSpeak.add("RACE COMPLETE. " + s);
+                stringForSpeak.add("RACE COMPLETE. " + ss);
 
                 //stringForSpeak.add("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
                 stringForPostRaceProcessing = raceName;

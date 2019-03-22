@@ -1048,39 +1048,50 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
-                    String post = "";
+                    if (raceName == null) {return;}
+
+                    String post1 = "";
+                    String post2 = "";
+
+                    if (Objects.equals(Crit.getRaceName(), raceName)) {
+                        Log.i(TAG, "onDataChange: same race name");
+                    } else {
+                        Crit.setRaceName(raceName);
+                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
+                        //speakText(post);
+                        //createTimeline(post, Timer.getCurrentTimeStamp());
+                    }
+
+
                     if (raceTimeToComplete == null || raceTimeToComplete == 2147483646) {
-                        Log.i(TAG, "onDataChange: no racetime");
-                        if (Objects.equals(Crit.getRaceName(), raceName)) {
-                            Log.i(TAG, "onDataChange: same race name");
-                        } else {
-                            post = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START";
-                            speakText(raceName.toUpperCase() + "  IS LOADED, PROCEED TO START");
-                            createTimeline(post, Timer.getCurrentTimeStamp());
-                        }
+                        Log.i(TAG, "onDataChange: no racetime, first racer");
                     } else {
                         Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
-                        post = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
-                        speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
-                        createTimeline(post, Timer.getCurrentTimeStamp());
+//                        post2 = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
+                        post2 = "THE CRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".\n";
+                        //speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
+                        //speakText(post2);
+                        //createTimeline(post, Timer.getCurrentTimeStamp());
                     }
 
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
+                    String post3 = post1 + post2;
+                    speakText(post3);
+                    createTimeline(post3, Timer.getCurrentTimeStamp());
 
 
 
                     String dwnloadPoints = ds.child("llPoints").getValue(String.class);
                     String dwnloadNames = ds.child("llNames").getValue(String.class);
 
-                    if (Objects.equals(Crit.getRaceName(), raceName)) {
-                        Log.i(TAG, "onDataChange: same race name");
-                    } else {
-                        Crit.setRaceName(raceName);
-                        setMessageText(raceName.toUpperCase() + " IS ACTIVE");
-                        createTimeline("NEW ACTIVE CRIT: " + raceName.toUpperCase(), Timer.getCurrentTimeStamp());
-                        //speakText("THE ACTIVE CRIT IS NOW " + raceName);
-                    }
+//                    if (Objects.equals(Crit.getRaceName(), raceName)) {
+//                        Log.i(TAG, "onDataChange: same race name");
+//                    } else {
+////                        Crit.setRaceName(raceName);
+//                        setMessageText(raceName.toUpperCase() + " IS ACTIVE");
+//                        createTimeline("NEW ACTIVE CRIT: " + raceName.toUpperCase(), Timer.getCurrentTimeStamp());
+//                    }
 
 
                     Log.i(TAG, "onDataChange: dwnloadPoints " + dwnloadPoints);
@@ -1155,6 +1166,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             return;
         }
         engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
+
+        Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
     }
 
 
