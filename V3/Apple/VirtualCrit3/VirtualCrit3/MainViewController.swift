@@ -798,7 +798,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //var raceBestTime: Double = 0
     var raceSpeed: Double = 0
 
-    var checkDistanceValue: Double = 150.0
+    var checkDistanceValue: Double = 100.0
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         //print("Eval Location, currentCritPoint: \(currentCritPoint)")
@@ -814,19 +814,19 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         tabBarController?.tabBar.items?[0].badgeValue = "\(i)"
         
         if currentCritPoint == 0 {
-            checkDistanceValue = 150
+            checkDistanceValue = 100
         }
         if wpts.count-1 == currentCritPoint {
-            checkDistanceValue = 150
+            checkDistanceValue = 100
         } else {
-            checkDistanceValue = checkDistanceValue * 2
+            checkDistanceValue = checkDistanceValue * 1.5
         }
 
 
 
         
         if distanceInMeters < checkDistanceValue {
-            print("inside 150, currentCritPoint is \(currentCritPoint)")
+            print("inside 100, currentCritPoint is \(currentCritPoint)")
             print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
             tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
             tabBarController?.tabBar.items?[3].badgeValue = "\(wpts.count-1)"
@@ -910,6 +910,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             print("race not at Start or Finish  \(currentCritPoint) of \(wpts.count-1)")
             var strComp = ""
             
+            let currentCritPointTemp = currentCritPoint
+            currentCritPoint += 1
+            
+            
             let timeToCurrentCritPointMilli: Int = (Int(system.actualElapsedTime-raceStartTime)) * 1000
             waypointTimesTimString += String(timeToCurrentCritPointMilli)
             waypointTimesTimString += ","
@@ -918,7 +922,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             if activeRaceBestWaypointTimesArray.count > 0 {
                 //compare
                 let w1: Int = timeToCurrentCritPointMilli
-                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPoint-1] //milli
+                let w2: Int = activeRaceBestWaypointTimesArray[currentCritPointTemp-1] //milli
                 let wtimeCompare = (w1 - w2) / 1000  //seconds
                 print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
                 
@@ -934,17 +938,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             
             //disp name for next waypoint
-            let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPoint])"
-            let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPoint+1]).\n"
+            let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPointTemp])"
+            let strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPointTemp+1]).\n"
             //print("\(strNextWpName)")
             //let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[currentCritPoint+1].latitude, longitude: wpts[currentCritPoint+1].longitude)
             //addMarker(cll: cord)
-            raceStatusDisplay = "CHECKPOINT \(currentCritPoint) of \(wpts.count-1)"
-            let cp: String = "[ \(currentCritPoint) of \(wpts.count-1) ], "
+            raceStatusDisplay = "CHECKPOINT \(currentCritPointTemp) of \(wpts.count-1)"
+            let cp: String = "[ \(currentCritPointTemp) of \(wpts.count-1) ], "
             addValueToTimelineString(s: "\(strJustHitWpName) \(cp) \(strNextWpName) \(strComp)  ")
             speakThis(spk: "\(strJustHitWpName), \(strNextWpName), \(strComp)")
             //print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
-            currentCritPoint += 1
+//did this earlier to avoid race
+//            currentCritPoint += 1
             
         }
         
