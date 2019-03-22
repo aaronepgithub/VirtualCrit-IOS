@@ -345,11 +345,11 @@
                     android:layout_weight="2"
                     android:textAlignment="viewStart"
                     android:text=""
+                    android:visibility="gone"
                     android:textStyle="bold|italic" />
             </LinearLayout>
 
-
-            <!--LOAD FROM OLD BUILDER-->
+            <!--ACTIVE CRIT-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -368,7 +368,6 @@
                     android:text=""
                     android:textStyle="bold|italic" />
             </LinearLayout>
-            <!--ACTIVE CRIT-->
 
             <!--ACTIVE CRIT END-->
 

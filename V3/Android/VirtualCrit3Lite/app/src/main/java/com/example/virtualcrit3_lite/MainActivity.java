@@ -87,6 +87,7 @@ import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.OnCameraTrackingChangedListener;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -624,9 +625,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    TextView t1 = (TextView) findViewById(R.id.valueGPX);
-                    t1.setText(critPointLocationNames.get(0));
-                    setMessageText("GOTO THE START POINT");
+//                    TextView t1 = (TextView) findViewById(R.id.valueGPX);
+//                    t1.setText(critPointLocationNames.get(0));
+//                    setMessageText("GOTO THE START POINT");
 
                     TextView mGPS = findViewById(R.id.valueGPS);
                     mGPS.setText("ON");
@@ -634,7 +635,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
             });
             addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
-            createTimeline("CRIT GPX LOADED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+            createTimeline("CRIT GPX PROCESSED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
             requestRaceData(critPointLocationNames.get(0));
 //            Log.i(TAG, "startGPX, GENERATE CRITID");
 //            postRaceProcessing(0);
@@ -1110,6 +1111,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                 TextView tv2 = (TextView) findViewById(R.id.valueActiveCritName);
                                 tv2.setText(raceName.toUpperCase());
 
+                                TextView mGPS = findViewById(R.id.valueGPS);
+                                mGPS.setText("ON");
+                                settingsGPS = "ON";
+
                                 //setMessageText(raceName.toUpperCase() + " IS ACTIVE");
                                 //createTimeline("ACTIVE CRIT: " + raceName.toUpperCase(), Timer.getCurrentTimeStamp());
                             }
@@ -1569,8 +1574,22 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //TRY TO ENABLE MAPBOX LOCATIONS
                         Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
                         attemptToEnableMapboxLocationComponent();
+                        makeToast("ATTEMPT LOCATION TRACKING");
                     }
                 }
+
+                if ((int) totalMillis / 1000 > 60 && (int) totalMillis / 1000 % 100 == 0)  {
+                    Log.i(TAG, "run: IF TRACKING IS BROKE, TRY TO ENABLE ENABLE MAPBOX LOCATIONS");
+                    if (isTrackingDisabled) {
+                        //TRY TO ENABLE MAPBOX LOCATIONS
+                        Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                        attemptToEnableMapboxLocationComponent();
+                        makeToast("ATTEMPT LOCATION TRACKING AGAIN");
+//                        isTrackingDisabled = false;
+                    }
+                }
+
+
 
             }
 
@@ -1751,6 +1770,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     //MULTIPLE MARKERS
     private boolean isRaceLoaded = false;
     private int raceNumber = 10;
+    private boolean isTrackingDisabled = false;
 
 
     private boolean haveAttemptedToLoadMapboxLocationComponent = true;
@@ -1779,17 +1799,38 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 // Set the component's camera mode
                 locationComponent.setCameraMode(CameraMode.TRACKING);
+                isTrackingDisabled = false;
 
                 // Set the component's render mode
                 locationComponent.setRenderMode(RenderMode.COMPASS);
 
                 haveAttemptedToLoadMapboxLocationComponent = false;
 
+                locationComponent.addOnCameraTrackingChangedListener(new OnCameraTrackingChangedListener() {
+                    @Override
+                    public void onCameraTrackingDismissed() {
+                        Log.i(TAG, "onCameraTrackingDismissed: ");
+                        // Tracking has been dismissed
+                        // Set the component's camera mode
+                        isTrackingDisabled = true;
+                    }
+
+                    @Override
+                    public void onCameraTrackingChanged(int currentMode) {
+                        Log.i(TAG, "onCameraTrackingChanged: ");
+                        // CameraMode has been updated
+                    }
+                });
+
+
+
             }
         });
 
     }
     //END attemptToEnableMapboxLocationComponent
+
+
 
 
     //start add line
@@ -2296,6 +2337,8 @@ private Boolean collectCritPoints = false;
                 new IntentFilter(LocationUpdatesService.ACTION_BROADCAST));
 
         isPaused = false;
+
+
 
     }
 
@@ -3304,6 +3347,7 @@ private Boolean collectCritPoints = false;
             startGPX();
         }
     }
+
 
 
 //    @SuppressWarnings({"MissingPermission"})
