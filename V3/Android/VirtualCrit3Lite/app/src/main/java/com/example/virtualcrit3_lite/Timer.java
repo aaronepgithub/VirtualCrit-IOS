@@ -20,7 +20,7 @@ public final class Timer {
     private final static String TAG = Timer.class.getSimpleName();
     private static int status = 99;
 
-    private static int checkDistanceValue = 150;
+    private static int checkDistanceValue = 100;
 
     private static Location timerLocation;
     private static Location timerOldLocation;
@@ -207,7 +207,7 @@ public final class Timer {
                 stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
             }
 
-            if (disBetw < checkDistanceValue) {  //WITHIN 150 METERS OF TARGET
+            if (disBetw < checkDistanceValue) {  //WITHIN 100 METERS OF TARGET
                 Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
                 isRaceStarted = true;
@@ -349,7 +349,7 @@ public final class Timer {
         }
 
 
-        if (disBetw < checkDistanceValue * 2) {
+        if (disBetw < checkDistanceValue * 1.5) {
             Log.i(TAG, "WAYPOINT MATCH! " + (currentWaypointCB) + " OF " + (maxWaypointCB));
             Log.i(TAG, "WAYPOINT MATCH NAME: " + Crit.critBuilderLatLngNames.get(currentWaypointCB));
             final int next = currentWaypointCB + 1;

@@ -1051,10 +1051,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     String post = "";
                     if (raceTimeToComplete == null || raceTimeToComplete == 2147483646) {
                         Log.i(TAG, "onDataChange: no racetime");
-                        post = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START";
-                        speakText(raceName.toUpperCase() + "  IS LOADED, PROCEED TO START");
-                        createTimeline(post, Timer.getCurrentTimeStamp());
-
+                        if (Objects.equals(Crit.getRaceName(), raceName)) {
+                            Log.i(TAG, "onDataChange: same race name");
+                        } else {
+                            post = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START";
+                            speakText(raceName.toUpperCase() + "  IS LOADED, PROCEED TO START");
+                            createTimeline(post, Timer.getCurrentTimeStamp());
+                        }
                     } else {
                         Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
                         post = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
@@ -1069,7 +1072,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     String dwnloadPoints = ds.child("llPoints").getValue(String.class);
                     String dwnloadNames = ds.child("llNames").getValue(String.class);
-                    Crit.setRaceName(raceName);
+
+                    if (Objects.equals(Crit.getRaceName(), raceName)) {
+                        Log.i(TAG, "onDataChange: same race name");
+                    } else {
+                        Crit.setRaceName(raceName);
+                        setMessageText(raceName.toUpperCase() + " IS ACTIVE");
+                        createTimeline("NEW ACTIVE CRIT: " + raceName.toUpperCase(), Timer.getCurrentTimeStamp());
+                        //speakText("THE ACTIVE CRIT IS NOW " + raceName);
+                    }
+
 
                     Log.i(TAG, "onDataChange: dwnloadPoints " + dwnloadPoints);
                     Log.i(TAG, "onDataChange: dwnloadNames " + dwnloadNames);
@@ -1084,7 +1096,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                             public void run() {
                                 TextView tv1 = (TextView) findViewById(R.id.valueCritIdName);
                                 tv1.setText(raceName.toUpperCase());
-                                setMessageText(raceName.toUpperCase() + " IS ACTIVE");
+                                TextView tv2 = (TextView) findViewById(R.id.valueActiveCritName);
+                                tv2.setText(raceName.toUpperCase());
+
+                                //setMessageText(raceName.toUpperCase() + " IS ACTIVE");
                                 //createTimeline("ACTIVE CRIT: " + raceName.toUpperCase(), Timer.getCurrentTimeStamp());
                             }
                         });
@@ -1114,6 +1129,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         Timer.setWaypointTimesBest(longs);
 
                         Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
+                    } else {
+                        waypointTimesBest = new ArrayList<>();
+                        Timer.setWaypointTimesBest(new ArrayList<Long>());
+                        Timer.setBestRaceTime(2147483646);
                     }
 
 
@@ -2565,7 +2584,7 @@ private Boolean collectCritPoints = false;
             }
         });
         addAnotherMarker(latTemp.get(0), lonTemp.get(0));
-        createTimeline("CRIT LOADED: " + namesTemp.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
+        //createTimeline("CRIT LOADED: " + namesTemp.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
         createRouteCoords();
 
     }
@@ -2648,7 +2667,6 @@ private Boolean collectCritPoints = false;
     }
 
     public void clickGPS(View view) {
-
         Log.i(TAG, "clickGPS: ");
     }
 

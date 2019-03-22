@@ -335,14 +335,6 @@
                 android:layout_marginBottom="18dp"
                 android:orientation="horizontal">
 
-                <!--<Button-->
-                    <!--android:id="@+id/clickButtonLoadFromId"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:onClick="startGpxFromID"-->
-                    <!--android:text="CRITID"-->
-                    <!--android:textAlignment="center" />-->
 
                 <TextView
                     android:id="@+id/valueCritIdName"
@@ -355,9 +347,30 @@
                     android:text=""
                     android:textStyle="bold|italic" />
             </LinearLayout>
+
+
             <!--LOAD FROM OLD BUILDER-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
 
 
+                <TextView
+                    android:id="@+id/valueActiveCritName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="2"
+                    android:textAlignment="viewStart"
+                    android:text=""
+                    android:textStyle="bold|italic" />
+            </LinearLayout>
+            <!--ACTIVE CRIT-->
+
+            <!--ACTIVE CRIT END-->
 
             <TableRow
                 android:layout_width="match_parent"
