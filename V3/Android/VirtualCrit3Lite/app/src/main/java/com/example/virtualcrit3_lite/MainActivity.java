@@ -1479,7 +1479,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             if ((int) totalMillis / 1000 > 12) {
                 //EVERY 12 SECONDS
                 //REALLY ONLY NEED TO DO THINGS WHILE PAUSED?
-                Log.i(TAG, "run: 12 SECOND UPDATE");
+//                Log.i(TAG, "run: 12 SECOND UPDATE");
 
 //                if ((int) totalMillis / 1000 % 12 == 0) {
 //                    //EVERY 12, UPDATE MAP
@@ -1494,7 +1494,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 if ((int) totalMillis / 1000 % 3 == 0) {
                     //EVERY 3, PUBLISH TO FB IF NEEDED
-                    Log.i(TAG, "run: 3 SECOND UPDATE FB PUBLISH");
+                    //Log.i(TAG, "run: 3 SECOND UPDATE FB PUBLISH");
                     if (Timer.isTimeToPostRaceData) {
                         Log.i(TAG, "run: TIME TO PUBLISH DATA");
                         Log.i(TAG, "run: is RaceStarted, publish");
@@ -1506,8 +1506,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 if ((int) totalMillis / 1000 % 2 == 0) {
                     //EVERY 2, TIMELINE AND SET MESSAGE
-                    Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
-                    Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
+                    //Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
+                    //Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
                     if (Timer.getStringForSetMessage().size() > 0) {
                         final ArrayList<String> s = Timer.getStringForSetMessage();
@@ -1519,13 +1519,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         setMessageText(s.get(s.size()-1));
                         Timer.setStringForSetMessage(new ArrayList<String>());
                     } else {
-                        Log.i(TAG, "run: NO MESAGE TO SET");
+                        //Log.i(TAG, "run: NO MESAGE TO SET");
                         setMessageText(".");
                     }
 
-                    Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
+                    //Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
                     if (Timer.getStringForTimeline().size() > 0) {
-                        Log.i(TAG, "run: PUBLISH TIMELINE");
+                        //Log.i(TAG, "run: PUBLISH TIMELINE");
                         final ArrayList<String> s2 = Timer.getStringForTimeline();
                         final ArrayList<String> s3 = Timer.getStringForTimelineTime();
                         int i = 0;
@@ -1538,7 +1538,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         Timer.setStringForTimeline(new ArrayList<String>());
                         Timer.setStringForTimelineTime(new ArrayList<String>());
                     } else {
-                        Log.i(TAG, "run: NO TIMELINE TO CREATE");
+                        //Log.i(TAG, "run: NO TIMELINE TO CREATE");
                     }
 
 
@@ -1547,7 +1547,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
 
                 if ((int) totalMillis / 1000 % 15 == 0) {
-                    Log.i(TAG, "run: 15 SECOND UPDATE REFRESH FOR SPEAKER");
+                    //Log.i(TAG, "run: 15 SECOND UPDATE REFRESH FOR SPEAKER");
                     //FOR SPEAKER
                     if (Timer.getStringForSpeak().size() > 0) {
                         Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
@@ -1564,7 +1564,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
 
                 if ((int) totalMillis / 1000 == 30) {
-                    Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                    //Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
                     if (Timer.timerAllLocations.size() > 1) {
                         //TRY TO ENABLE MAPBOX LOCATIONS
                         Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATIONS");
@@ -2120,6 +2120,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
 
+
+
 private Boolean collectCritPoints = false;
 
 //    Set up the LocationEngine and the parameters for querying the device's location
@@ -2164,6 +2166,12 @@ private Boolean collectCritPoints = false;
 //        return res;
 //    }
 
+
+    private void makeToast(String s) {
+        Toast.makeText(getApplicationContext(),
+                s, Toast.LENGTH_SHORT)
+                .show();
+    }
 
     private void toggleMapVisibility() {
         Log.i(TAG, "toggleMapVisibility: ");
