@@ -558,6 +558,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if activeRaceName == rn {
             print("already have this being observed")
             critStatus = 0
+            currentCritPoint = 0
             return
         }
         if activeRaceName != "" {
@@ -813,17 +814,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let i: Int = Int(distanceInMeters)
         tabBarController?.tabBar.items?[0].badgeValue = "\(i)"
         
-        if currentCritPoint == 0 {
-            checkDistanceValue = 100
-        }
-        if wpts.count-1 == currentCritPoint {
-            checkDistanceValue = 100
-        } else {
-            checkDistanceValue = checkDistanceValue * 1.5
-        }
-
-
-
         
         if distanceInMeters < checkDistanceValue {
             print("inside 100, currentCritPoint is \(currentCritPoint)")

@@ -240,7 +240,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 llNames = "\(self.cbName),"
             } else {
                 
-                if i == (gpxNames.count) {
+                if i == (gpxNames.count-1) {
                     gpxNames.append("FINISH")
                     llNames = "FINISH"
                 } else {
@@ -269,10 +269,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         if gpxNames.count == 0 {return}
         
         if (gpxNames.first != nil) {
-            addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
-            
-            
-            
+//            addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
 
             tempName = gpxNames.first!
             if (tempName.count > 0) {
