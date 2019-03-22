@@ -1564,10 +1564,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
 
                 if ((int) totalMillis / 1000 == 30) {
-                    //Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                    Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
                     if (Timer.timerAllLocations.size() > 1) {
                         //TRY TO ENABLE MAPBOX LOCATIONS
-                        Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATIONS");
+                        Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
                         attemptToEnableMapboxLocationComponent();
                     }
                 }
