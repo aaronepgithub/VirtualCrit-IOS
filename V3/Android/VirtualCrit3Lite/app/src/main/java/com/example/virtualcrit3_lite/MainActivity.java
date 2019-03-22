@@ -1973,7 +1973,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
 
         if (Timer.trackerCoords.size() < 10) {
-            Log.i(TAG, "setMapboxStreets: NOT ENOUG CORDS");
+            Log.i(TAG, "setMapboxStreets: NOT ENOUGH CORDS");
             return;
         }
 
