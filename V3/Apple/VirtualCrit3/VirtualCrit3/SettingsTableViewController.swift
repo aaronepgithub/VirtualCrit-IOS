@@ -115,6 +115,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         valueStatusGPX.text = raceStatusDisplay
         if (gpxNames.first != nil) {
         valueNameGPX.text = gpxNames.first ?? ""
+            if (wpts.count < 2) {
+                valueNameGPX.text = "-"
+            }
         }
         
         
@@ -247,6 +250,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             i += 1
         }
         
+        gpxNames[gpxNames.count-1] = "FINISH"
+        
         print("llNames: \(llNames)")
 
         if llPoints.last! == ":" {
@@ -255,6 +260,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         if llNames.last! == "," {
             llNames = String(llNames.dropLast())
         }
+        llNames = llNames + " FINISH"
         
         
         print("llNames -  \(llNames)")
