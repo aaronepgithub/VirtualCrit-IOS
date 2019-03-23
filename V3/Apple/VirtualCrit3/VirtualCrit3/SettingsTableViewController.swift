@@ -296,6 +296,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             self.valueNameGPX.text = tempName
             self.valueStatusGPX.text = "AWAITING ARRIVAL"
             
+            print("critStatus is 100, after getCritId")
             critStatus = 100
         }
         
@@ -706,18 +707,11 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             let firstCoords = trktps.first
             wpts.insert(firstCoords!, at: 0)
                 llPoints = "\(wpts.first!.latitude),\(wpts.first!.longitude):\(llPoints)"
-
-                
-
-                
+ 
             let lastCoords = trktps.last
                 wpts.append(lastCoords!)
                 llPoints = "\(llPoints)\(wpts.last!.latitude),\(wpts.last!.longitude)"
 
-
-
-                
-            
             print("gpxNames \(gpxNames) \n\n\n")
                 for na: String in gpxNames {
                     llNames = "\(llNames)\(na.uppercased()),"
@@ -726,8 +720,9 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             print("llNames \(llNames)")
             print("llPoints \(llPoints)")
                 if (gpxNames.first != nil) {
-                    addValueToTimelineString(s: "RACE LOADED:\n\(gpxNames.first ?? "")\nPROCEED TO START\n")
+                    addValueToTimelineString(s: "\(gpxNames.first ?? "") IS LOADED.")
                     critStatus = 105
+                    print("critStatus is 105, after loading GPX file")
                 }
                 
 

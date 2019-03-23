@@ -199,12 +199,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if mapView.annotations != nil {
             mapView.removeAnnotations(mapView.annotations!)
         }
-        
-        // Remove any existing polyline(s) from the map.
-//        if mapView.annotations?.count != nil, let existingAnnotations = mapView.annotations {
-//            mapView.removeAnnotations(existingAnnotations)
-//        }
-        
     }
     
     
@@ -357,9 +351,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
         if critStatus == 100 {
-            //get name from UI
-            //set crit status to 101
-            //requestRaceData(rn: FROM UI)
+
             print("status == 100")
             requestRaceData(rn: tempName)
             //after processing, set crit status to 101
@@ -386,8 +378,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("critStatus is 10, requestRaceData for \(gpxNames.first!)")
                 requestRaceData(rn: gpxNames.first!)
             }
-
         }
+        
+//        if critStatus == 130 {
+//            print("status == 130")
+//            if gpxNames.first != nil {
+//                critStatus = 0
+//                remMarkers()
+//                print("critStatus is 130, after builder, requestRaceData for \(gpxNames.first!)")
+//                requestRaceData(rn: gpxNames.first!)
+//            }
+//        }
         
         
         if useSimRide == true && system.actualElapsedTime > 20 {
@@ -602,13 +603,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     }
                     //let rtct = rtc as! Int
                     let rtca = (rtc as! Int) / 1000
-                    if rtca > (12 * 60 * 60) { //12 hours
-                        addValueToTimelineString(s:"\(race) IS NOW LOADED.")
-                        self.speakThis(spk: "\(race) IS NOW LOADED.")
+                    
+                    
+                    if rtca > (12 * 60 * 60) { //12 hours, new race
+                        addValueToTimelineString(s:"\(race) IS LOADED.")
+                        self.speakThis(spk: "\(race) IS LOADED.")
                     } else {
-                        addValueToTimelineString(s:"RACE UPDATE FOR \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
-                        self.speakThis(spk: "RACE UPDATE FOR: \(race).  THE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
+                        var nl: String = ""
+                        if raceStatusDisplay == "NOT LOADED" {
+                            nl = "\(race) IS LOADED.  "
+                        } else {
+                            nl = "RACE UPDATE FOR \(race).  "
+                        }
+                        addValueToTimelineString(s:"\(nl)\nTHE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
+                        self.speakThis(spk: "\(nl)\nTHE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
                     }
+                    
+                    raceStatusDisplay = "LOADED"
+                    
                     
 
                     
@@ -711,6 +723,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     //POST RACE FOR BUILDER OR LOAD GPX
     func postRaceProcessingPreRace() {
+        //critStatus=105, post builder
         print("post race processing - PRERACE")
         let rt: Int = 2147483646
         
@@ -724,6 +737,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             print("missing values, don't post")
             return
         }
+        
+        
         
         let racePost = [
             "raceName" : raceName,
@@ -754,12 +769,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if gpxNames.count > 0 && wpts.count > 0 {
             addMarker(cll: wpts[0])
             
-        speakThis(spk: "\(gpxNames.first ?? "") IS NOW LOADED, PROCEED TO START")
+        speakThis(spk: "\(gpxNames.first ?? "") IS PROCESSING")
         }
         
-
-
-        critStatus = 0
+        tempName = raceName
+        critStatus = 100
+        print("set crtiStatus to 100 after postRaceProcessingPreRace, set tempName to raceName from Builder - which was just posted.  After getting the request back, should be just like an entered critid")
+        
+//          activeRaceName = raceName
+//        critStatus = 130
+//        print("set critStatus to 130 after -postRaceProcessingPreRace- for \(activeRaceName)")
         
     }
     //END POST RACE FOR BUILDER OR LOAD GPX
