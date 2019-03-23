@@ -20,7 +20,7 @@ public final class Timer {
     private final static String TAG = Timer.class.getSimpleName();
     private static int status = 99;
 
-    private static int checkDistanceValue = 100;
+    private static int checkDistanceValue = 125;
 
     private static Location timerLocation;
     private static Location timerOldLocation;
@@ -304,6 +304,13 @@ public final class Timer {
                     ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
                 }
 
+                if ( ((int) bestRaceTime - (int) raceTime) > (60*60*1000) ) {
+                    Log.i(TAG, "evaluateLocation: greater than an hour, don't show");
+                    s = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                    ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
+                }
+
+
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
 
                 //final String sss = "RACE COMPLETE, YOUR TIME IS.  \" + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + \".  \" + ss";
@@ -362,7 +369,7 @@ public final class Timer {
         }
 
 
-        if (disBetw < checkDistanceValue * 1.5) {
+        if (disBetw < checkDistanceValue) {
             Log.i(TAG, "WAYPOINT MATCH! " + (currentWaypointCB) + " OF " + (maxWaypointCB));
             Log.i(TAG, "WAYPOINT MATCH NAME: " + Crit.critBuilderLatLngNames.get(currentWaypointCB));
             final int next = currentWaypointCB + 1;
@@ -402,8 +409,10 @@ public final class Timer {
                             s1 = "EVEN WITH THE LEADER " + bestRacerName;
                             s2 = "EVEN WITH THE LEADER " + bestRacerName;
                         } else {
-                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
-                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
+                            if (i < (1 * 60 * 60 * 1000)) {
+                                s1 = getTimeStringFromMilliSecondsToDisplay(i) + " AHEAD OF " + bestRacerName;
+                                s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " AHEAD OF " + bestRacerName;
+                            }
                         }
 
                     } else {
@@ -413,8 +422,10 @@ public final class Timer {
                             s1 = "EVEN WITH THE LEADER " + bestRacerName;
                             s2 = "EVEN WITH THE LEADER " + bestRacerName;
                         } else {
-                            s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND "+ bestRacerName;
-                            s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND "+ bestRacerName;
+                            if (i < (1 * 60 * 60 * 1000)) {
+                                s1 = getTimeStringFromMilliSecondsToDisplay(i) + " BEHIND "+ bestRacerName;
+                                s2 = Timer.getTimeStringFromMilliSecondsToDisplayToSpeak(i) + " BEHIND "+ bestRacerName;
+                            }
                         }
 
                     }

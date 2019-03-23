@@ -957,9 +957,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
                 
                 if wtimeCompare > 0 {
-                    strComp = "BEHIND \(activeRaceLeadersName) BY \(createTimeString(seconds: wtimeCompare))"
+                    strComp = "BEHIND \(activeRaceLeadersName) BY \(createTimeString(seconds: wtimeCompare)).\n"
                 } else {
-                    strComp = "AHEAD OF \(activeRaceLeadersName) BY \(createTimeString(seconds: ((w2-w1) / 1000)))"
+                    strComp = "AHEAD OF \(activeRaceLeadersName) BY \(createTimeString(seconds: ((w2-w1) / 1000))).\n"
                 }
                 print(strComp)
                 print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
@@ -971,7 +971,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             
             //disp name for next waypoint
-            let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPointTemp])"
+            let strJustHitWpName = "ARRIVED AT \(gpxNames[currentCritPointTemp]) "
             var strNextWpName = "\nNEXT IS: \(gpxNames[currentCritPointTemp+1]).\n"
             
             if currentCritPointTemp+1 == gpxNames.count {
@@ -983,7 +983,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //addMarker(cll: cord)
             raceStatusDisplay = "CHECKPOINT \(currentCritPointTemp) of \(wpts.count-1)"
             let cp: String = "[ \(currentCritPointTemp) of \(wpts.count-1) ], "
-            addValueToTimelineString(s: "\(tempstr)\n\(strJustHitWpName) \(cp) \(strNextWpName) \(strComp)  ")
+            addValueToTimelineString(s: "\(strJustHitWpName)\(cp)\(strNextWpName)\(strComp)")
             speakThis(spk: "\(strJustHitWpName), \(strNextWpName), \(strComp)")
             //print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
 //did this earlier to avoid race
