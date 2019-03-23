@@ -299,6 +299,11 @@ public final class Timer {
                     ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
                 }
 
+                if (bestRaceTime == 2147483646) {
+                    s = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
+                    ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
+                }
+
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
 
                 //final String sss = "RACE COMPLETE, YOUR TIME IS.  \" + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + \".  \" + ss";
@@ -306,7 +311,7 @@ public final class Timer {
 
                 //stringForSpeak.add("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n" + s);
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n\n" + s);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 
