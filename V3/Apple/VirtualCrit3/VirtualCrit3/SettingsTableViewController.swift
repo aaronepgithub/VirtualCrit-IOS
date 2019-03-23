@@ -324,17 +324,19 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
             
             let name = alertController.textFields?[0].text
-            //self.valueRiderName.text = name!.uppercased()
             self.cbName = name!.uppercased()
             print("cbName:  \(self.cbName)")
-            //UserDefaults.standard.set(settingsName, forKey: "udName")
+            
             self.valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
+            
+            //change to map tab
+            self.tabBarController?.selectedIndex = 0
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
         
         alertController.addTextField { (textField) in
-            textField.placeholder = settingsName
+            textField.placeholder = "CRIT NAME"
         }
         
         //adding the action to dialogbox
