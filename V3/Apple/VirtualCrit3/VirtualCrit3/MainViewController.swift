@@ -754,6 +754,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     //POST RACE FOR BUILDER OR LOAD GPX
     func postRaceProcessingPreRace() {
+        
+        //CLEAR LOCAL BEST WAYPOINT TIMES, RACE LEADER, AND BEST TIME
+        activeRaceBestWaypointTimesArray.removeAll()
+        activeRaceLeadersName = ""
+        raceDuration = 0.0
+        
         //critStatus=105, post builder
         print("post race processing - PRERACE")
         let rt: Int = 2147483646
