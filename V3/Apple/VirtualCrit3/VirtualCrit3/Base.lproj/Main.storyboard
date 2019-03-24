@@ -64,7 +64,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="CE3-UB-F0w"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" image="second" id="I40-H4-Emp"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="icon_nav" id="I40-H4-Emp"/>
                     <connections>
                         <outlet property="mapDistance" destination="eRW-Xh-1Wc" id="FkR-fk-Iab"/>
                         <outlet property="mapSpeed" destination="vzp-2v-dKi" id="v3B-c5-8B1"/>
@@ -325,14 +325,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="CLICK TO SCAN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DV5-nh-Ul8">
-                                                    <rect key="frame" x="15" y="5" width="124.5" height="20.5"/>
+                                                    <rect key="frame" x="16" y="5" width="124.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="HEARTRATE MONITOR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xFh-Iu-bdo">
-                                                    <rect key="frame" x="15" y="25.5" width="129" height="14.5"/>
+                                                    <rect key="frame" x="16" y="25.5" width="129" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
@@ -349,14 +349,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="MAXIMUM HEARTRATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZRS-EQ-W6Y">
-                                                    <rect key="frame" x="15" y="12" width="181" height="20.5"/>
+                                                    <rect key="frame" x="16" y="12" width="181" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="185" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="beW-uZ-j1a">
-                                                    <rect key="frame" x="331.5" y="12" width="28.5" height="20.5"/>
+                                                    <rect key="frame" x="330.5" y="12" width="28.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -373,14 +373,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="STATUS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xdf-Va-W8f">
-                                                    <rect key="frame" x="15" y="12" width="62.5" height="20.5"/>
+                                                    <rect key="frame" x="16" y="12" width="62.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="DISCONNECTED" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wTV-01-xP0">
-                                                    <rect key="frame" x="231" y="12" width="129" height="20.5"/>
+                                                    <rect key="frame" x="230" y="12" width="129" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -397,7 +397,7 @@
                             <outlet property="delegate" destination="icg-fh-Ljk" id="uQd-cy-ziU"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Settings" image="second" id="4rM-tW-9fH"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="icon_settings" id="4rM-tW-9fH"/>
                     <connections>
                         <outlet property="valueActivityType" destination="ybU-xw-not" id="hMg-d4-1KR"/>
                         <outlet property="valueAudio" destination="H2T-2Z-0Mh" id="X1Y-hf-5aJ"/>
@@ -535,7 +535,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ieS-nV-w42"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Dashboard" image="second" id="AM4-n3-VXP"/>
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="icon_dash" id="AM4-n3-VXP"/>
                     <connections>
                         <outlet property="bottomLeft" destination="6Vg-uZ-4nw" id="VQe-Th-Fek"/>
                         <outlet property="bottomRight" destination="7kP-F0-rqv" id="4PY-u6-sS0"/>
@@ -575,7 +575,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="0YG-rm-oH1"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Timeline" image="first" id="DcK-Kh-tOk"/>
+                    <tabBarItem key="tabBarItem" title="Timeline" image="icon_timeline" id="DcK-Kh-tOk"/>
                     <connections>
                         <outlet property="timeline" destination="AJ0-bz-87f" id="UTQ-rh-fto"/>
                     </connections>
@@ -606,7 +606,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
+        <image name="icon_dash" width="36" height="36"/>
+        <image name="icon_nav" width="36" height="36"/>
+        <image name="icon_settings" width="36" height="36"/>
+        <image name="icon_timeline" width="36" height="36"/>
     </resources>
 </document>

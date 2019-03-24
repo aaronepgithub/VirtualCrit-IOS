@@ -198,7 +198,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             
         case "15":
             print("case 15, startSim")
-            useSimRide = true
+            //useSimRide = true
             
         case "12":
             print("case 12, load GPX")

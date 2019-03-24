@@ -67,6 +67,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //var mapView: MGLMapView!
     @IBOutlet weak var mapView: MGLMapView!
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(false)
+        // Allow the map to display the user's location
+        print("viewDidAppear,  showsUserLocation,setUserTrackingMode")
+        mapView.showsUserLocation = true
+        mapView.setUserTrackingMode(.follow, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
