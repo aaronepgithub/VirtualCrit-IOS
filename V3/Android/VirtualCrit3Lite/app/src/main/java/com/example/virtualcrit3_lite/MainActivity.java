@@ -686,6 +686,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
 
+    private ValueEventListener valueEventListener;
 
     private void requestRaceData(String raceDataName) {
 
@@ -694,9 +695,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         String raceURL = "race/" + raceDataName;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
 
+        //remove all listners
+        if (valueEventListener != null) {
+            Log.i(TAG, "requestRaceData: remove old listner first");
+            mDatabase.removeEventListener(valueEventListener);            
+        }
+
 
         //REQUEST RACE DATA
-        mDatabase.limitToFirst(1).orderByChild("raceTimeToComplete").addValueEventListener(new ValueEventListener() {
+        valueEventListener = mDatabase.limitToFirst(1).orderByChild("raceTimeToComplete").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "onDataChange: RACE");
@@ -1188,6 +1195,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         StringBuilder sxx = new StringBuilder();
                         for (String str2 : s2) {
                             sxx.append(str2);
+                        }
+
+                        if (Objects.equals(s2.get(0), "")) {
+                            return;
                         }
                         createTimeline(sxx.toString(), s3.get(0));
 
@@ -2828,6 +2839,11 @@ private Boolean collectCritPoints = false;
     private ArrayList<TimelineRow> timelineRowsList = new ArrayList<>();
 
     private void createTimeline(String tlTitle, String tlDescription) {
+
+        if (tlTitle.length() < 5) {
+            Log.i(TAG, "createTimeline: too small, don't post");
+            return;
+        }
 
         // Create new timeline row (Row Id)
         TimelineRow myRow = new TimelineRow(0);
