@@ -122,6 +122,15 @@ public final class Timer {
 
             //MORE ACCURACE BUT NOT NECESSARY
             long gt = (timerLocation.getTime() - timerOldLocation.getTime());  //MILLI
+
+
+            if ((gd / ((double) gt / 1000 / 60 / 60)) < 0) {
+                Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
+                timerOldLocation = timerLocation;
+                timerGeoDistance = timerGeoDistance - gd;
+                return;
+            }
+
             timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
 
             //USING QUICK METHOD FOR DISPLAY PURPOSES
