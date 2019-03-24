@@ -123,15 +123,17 @@ public final class Timer {
             //MORE ACCURACE BUT NOT NECESSARY
             long gt = (timerLocation.getTime() - timerOldLocation.getTime());  //MILLI
 
-
-            if ((gd / ((double) gt / 1000 / 60 / 60)) < 0) {
-                Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
-                timerOldLocation = timerLocation;
-                timerGeoDistance = timerGeoDistance - gd;
-                return;
-            }
+//            if ((gd / ((double) gt / 1000 / 60 / 60)) < 0) {
+//                Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
+//                timerOldLocation = timerLocation;
+//                timerGeoDistance = timerGeoDistance - gd;
+//                return;
+//            }
 
             timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+            if (timerGeoSpeed < 0) {
+                timerGeoSpeed = 0;
+            }
 
             //USING QUICK METHOD FOR DISPLAY PURPOSES
             //timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
