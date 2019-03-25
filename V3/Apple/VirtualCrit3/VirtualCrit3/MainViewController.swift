@@ -677,7 +677,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     raceStatusDisplay = "LOADED"
                     
                     
-
+//                    print("remove old FB data")
+//                    let refDBrm  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+//                    refDBrm.removeValue()
+//                    
+//                    let refDBrmTotals  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals")
+//                    refDBrmTotals.removeValue()
+                    
+                    
                     
 
                     
@@ -779,6 +786,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //POST RACE FOR BUILDER OR LOAD GPX
     func postRaceProcessingPreRace() {
         
+
+        
         //CLEAR LOCAL BEST WAYPOINT TIMES, RACE LEADER, AND BEST TIME
         activeRaceBestWaypointTimesArray.removeAll()
         activeRaceLeadersName = ""
@@ -824,6 +833,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("PRE RACE Data saved successfully!")
             }
         }
+        
+
+
+
         
         remMarkers()
         
