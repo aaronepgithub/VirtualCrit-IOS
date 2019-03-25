@@ -88,9 +88,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         super.viewDidAppear(false)
         // Allow the map to display the user's location
         print("viewDidAppear,  showsUserLocation,setUserTrackingMode")
+        isPaused = false
         mapView.showsUserLocation = true
         mapView.setUserTrackingMode(.follow, animated: true)
-        isPaused = false
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -661,6 +662,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     if rtca > (12 * 60 * 60) { //12 hours, new race
                         addValueToTimelineString(s:"\(race) IS LOADED.")
                         self.speakThis(spk: "\(race) IS LOADED.")
+                        self.ifNotPaused(s: "\(race) IS LOADED.")
                     } else {
                         var nl: String = ""
                         if raceStatusDisplay == "NOT LOADED" {
@@ -789,7 +791,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let raceDate: String = todaysDateString
         let raceName: String = gpxNames.first!
         //let stringOfWaypointTimes: String = waypointTimesTimString
-        let riderName: String = settingsName
+        let riderName: String = "NEW"
         let raceDur = rt
         
         if (raceName.isEmpty || riderName.isEmpty || llNames.isEmpty || llPoints.isEmpty) {
