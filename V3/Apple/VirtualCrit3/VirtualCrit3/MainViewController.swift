@@ -62,11 +62,27 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         static var timerIntervalValue: Double = 1
     }
     var timer = Timer()
-    
+    var isPaused: Bool = false
     
     //var mapView: MGLMapView!
     @IBOutlet weak var mapView: MGLMapView!
     
+    func ifNotPaused(s: String) {
+        print("ifNotPaused")
+        if isPaused == false {
+            //show checkpoint match
+            let alertController = UIAlertController(title: "CHECKPOINT", message: s, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            self.present(alertController, animated: true, completion: nil)
+            
+            let when = DispatchTime.now() + 3
+            DispatchQueue.main.asyncAfter(deadline: when){
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        }
+        
+        
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
@@ -74,6 +90,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         print("viewDidAppear,  showsUserLocation,setUserTrackingMode")
         mapView.showsUserLocation = true
         mapView.setUserTrackingMode(.follow, animated: true)
+        isPaused = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(false)
+        isPaused = true
     }
     
     override func viewDidLoad() {
@@ -911,6 +933,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 postRaceProcessing(rt: Int(raceDuration))
                 addValueToTimelineString(s: "RACE COMPLETE\n\(t)\n\(b)")
                 speakThis(spk: "RACE COMPLETE\n\(t)\n\(b)")
+                ifNotPaused(s: "RACE COMPLETE\n\(t)\n\(b)")
                 
 
                 self.tabBarController?.viewControllers?[0].tabBarItem.badgeValue = nil
@@ -942,6 +965,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 addValueToTimelineString(s: "RACE STARTED\n\(gpxNames.first!),\nHEAD TO \(gpxNames[currentCritPoint])\(stLeaderInfo)")
                 raceStatusDisplay = "RACE STARTED"
                 speakThis(spk: "RACE HAS STARTED.  GOTO \(gpxNames[currentCritPoint]).  \(stLeaderInfo)")
+                ifNotPaused(s: "RACE HAS STARTED.  GOTO \(gpxNames[currentCritPoint]).  \(stLeaderInfo)")
                 raceDistanceAtStart = distance
                 waypointTimesTimString = ""
 //                requestRaceData(rn: gpxNames.first!)
@@ -1000,9 +1024,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             let cp: String = "[ \(currentCritPointTemp) of \(wpts.count-1) ], "
             addValueToTimelineString(s: "\(strJustHitWpName)\(cp)\(strNextWpName)\(strComp)")
             speakThis(spk: "\(strJustHitWpName), \(strNextWpName), \(strComp)")
-            //print("\(strComp)\(strNextWpName)\n\(VirtualCrit3.getFormattedTime())")
-//did this earlier to avoid race
-//            currentCritPoint += 1
+            
+            ifNotPaused(s: "\(strJustHitWpName)\(cp)\(strNextWpName)\(strComp)")
+
             
         }
         
