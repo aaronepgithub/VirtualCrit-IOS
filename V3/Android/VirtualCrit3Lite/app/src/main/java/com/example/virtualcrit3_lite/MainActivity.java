@@ -606,7 +606,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             Integer rd = Integer.valueOf(fbCurrentDate);
             long longTime = 0;
-            Race postR = new Race(settingsName, trkName.toUpperCase(),longTime, rd, waypointTimesTimString, llp, lln);
+            Race postR = new Race("NEW", trkName.toUpperCase(),longTime, rd, waypointTimesTimString, llp, lln);
             Log.i(TAG, "after startGPX: postRaceProcessing " + postR.toString());
             postRaceProcessing(postR);
 
@@ -2196,7 +2196,7 @@ private Boolean collectCritPoints = false;
                     Integer rd = Integer.valueOf(fbCurrentDate);
                     //have to make this 0
                     long longTime = 0;
-                    Race postR = new Race(settingsName, trkName.toUpperCase(),longTime, rd, waypointTimesTimString, llp, lln);
+                    Race postR = new Race("NEW", trkName.toUpperCase(),longTime, rd, waypointTimesTimString, llp, lln);
                     Log.i(TAG, "afterStartGPXFromCritBuilder: postRaceProcessing ");
                     postRaceProcessing(postR);
                     dialog.cancel();
