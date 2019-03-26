@@ -316,6 +316,7 @@ public final class Timer {
 
                 //ADD FLAY STRING
                 String lm = Crit.getLeaderMessage();
+                //String lmLowerCase = Crit.getLeaderMessage();
 
 
 

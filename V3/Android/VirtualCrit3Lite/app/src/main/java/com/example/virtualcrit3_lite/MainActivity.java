@@ -779,6 +779,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         lm = "";
                     }
 
+
                     if (raceName == null) {
                         Log.i(TAG, "onDataChange: raceName is null");
                         return;
@@ -787,7 +788,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     String post1 = "";
                     String post2 = "";
-                    String post2b = "\n" + lm;
+                    //String post2b = "\n" + lm;
 
 
                     if (Objects.equals(Crit.getRaceName(), raceName)) {
@@ -804,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     } else {
                         Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
 //                        post2 = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
-                        post2 = "THE CRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".\n";
+                        post2 = "UPDATE:  THE CRIT LEADER IS " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".\n" + lm;
                         //speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
                         //speakText(post2);
                         //createTimeline(post, Timer.getCurrentTimeStamp());
@@ -812,7 +813,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post3 = post1 + post2 + post2b;
+                    String post3 = post1 + post2;
                     speakText(post3);
                     createTimeline(post3, Timer.getCurrentTimeStamp());
 
