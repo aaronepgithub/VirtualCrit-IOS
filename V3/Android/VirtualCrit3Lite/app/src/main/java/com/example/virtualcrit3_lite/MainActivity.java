@@ -525,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private int maxTrackpoint;
     private String trkName = "NONE";
 
+    private Boolean isCritGPXActive = true;
 
     //GPX
     public void startGPX() {
@@ -533,6 +534,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         isCritBuilderActive = false;
         isCritBuilderIDActive = false;
+        isCritGPXActive = true;
 
         AssetManager assetManager = getAssets();
         GpxParser parser;
@@ -600,8 +602,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         lonTemp = critPointLocationLons;
 
 
-
-        addMapboxLine();
+//do this when getting back data from fb
+        //addMapboxLine();
+        
         if (critPointLocationNames.size() > 0) {
             runOnUiThread(new Runnable() {
                 @Override
@@ -612,9 +615,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     settingsGPS = "ON";
                 }
             });
-            addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
+            //addAnotherMarker(critPointLocationLats.get(0), critPointLocationLons.get(0));
+            Crit.setRaceName(critPointLocationNames.get(0));
             createTimeline("CRIT GPX PROCESSED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
-            requestRaceData(critPointLocationNames.get(0));
+            //requestRaceData(critPointLocationNames.get(0));
 //            Log.i(TAG, "startGPX, GENERATE CRITID");
 //            postRaceProcessing(0);
 
@@ -667,7 +671,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //Integer raceDate = Integer.valueOf(fbCurrentDate);
 //        String raceName = trkName;
         Integer raceDate = r.raceDate;
-        String raceName = r.raceName;
+        final String raceName = r.raceName;
 
         //Race r = new Race(settingsName, raceName, rt, raceDate, waypointTimesTimString, llp, lln);
         Log.i(TAG, "postRaceProcessing: r");
@@ -688,6 +692,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     public void onSuccess(Void aVoid) {
                         // Write was successful!
                         Log.i(TAG, "onSuccess: write RACE was successful");
+
+                        if (isCritGPXActive) {
+                            Log.i(TAG, "onSuccess: critGPXActive == true, requestRaceData for " + raceName);
+                            requestRaceData(raceName);
+                            isCritGPXActive = false;
+                        }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -720,32 +731,39 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         valueEventListener = mDatabase.limitToFirst(1).orderByChild("raceTimeToComplete").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange: RACE");
+                Log.i(TAG, "onDataChange: READ RACE DATA");
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.i(TAG, "onDataChange: have race data snapshot");
                     final String raceName = ds.child("raceName").getValue(String.class);
                     String riderName = ds.child("riderName").getValue(String.class);
                     String raceWaypointTimes = ds.child("waypointTimes").getValue(String.class);
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
-                    //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+
+
 
                     String lm = ds.child("leaderMessage").getValue(String.class);
                     if (lm != null) {
                         Crit.setLeaderMessage(lm);
+                        Log.i(TAG, "onDataChange: leadermessage: " + lm);
                     }
 
-                    if (raceName == null) {return;}
+                    if (raceName == null) {
+                        Log.i(TAG, "onDataChange: raceName is null");
+                        return;
+                    }
+                    Log.i(TAG, "onDataChange: raceName " + raceName);
 
                     String post1 = "";
                     String post2 = "";
 
+
                     if (Objects.equals(Crit.getRaceName(), raceName)) {
                         Log.i(TAG, "onDataChange: same race name");
+                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
                     } else {
                         Crit.setRaceName(raceName);
                         post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
-                        //speakText(post);
-                        //createTimeline(post, Timer.getCurrentTimeStamp());
                     }
 
 
@@ -776,6 +794,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     Log.i(TAG, "onDataChange: dwnloadNames " + dwnloadNames);
 
                     if (dwnloadPoints != null && dwnloadNames != null) {
+                        Log.i(TAG, "onDataChange: calling convertPointNamesToCrit, to call startFrom Id");
                         convertPointsNamesToCrit(dwnloadPoints, dwnloadNames);
                         Timer.setWaypointNamesString(dwnloadNames);
                         Timer.setWaypointPointsString(dwnloadPoints);
@@ -2168,7 +2187,12 @@ private Boolean collectCritPoints = false;
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog dialog;
-        builder1.setTitle("CRIT BUILDER");
+        builder1.setTitle("CRIT BUILDER, ENTER CHECKPOINT NAMES (OPTIONAL)");
+        if (critBuilderLatLngNames.size() == 0) {
+            builder1.setTitle("CRIT BUILDER, ENTER THE CRIT NAME");
+//            builder1.setMessage("THIS IS THE CRIT NAME");
+        }
+
 
 // Set up the input
         final EditText input = new EditText(this);
@@ -2203,7 +2227,7 @@ private Boolean collectCritPoints = false;
 
                     if (wayName.equals("")) {
                         lln += ("VC,");
-                        critBuilderLatLngNames.add("VC");
+                        critBuilderLatLngNames.add("VC" + fbCurrentDate);
                     } else {
                         lln += (wayName + ",");
                         critBuilderLatLngNames.add(wayName);
