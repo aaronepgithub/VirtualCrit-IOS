@@ -679,8 +679,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         } else {
                             nl = "RACE UPDATE FOR \(race).  "
                         }
-                        addValueToTimelineString(s:"\(nl)\nTHE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
-                        self.speakThis(spk: "\(nl)\nTHE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))")
+                        addValueToTimelineString(s:"\(nl)\nTHE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca))\n\(lm)")
+                        self.speakThis(spk: "\(nl)\nTHE LEADER IS \n\(rider), AT \(self.createTimeString(seconds: rtca)).  \(lm)")
                     }
                     
                     raceStatusDisplay = "LOADED"
