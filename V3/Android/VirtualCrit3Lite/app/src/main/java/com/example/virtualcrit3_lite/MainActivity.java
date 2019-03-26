@@ -729,6 +729,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     Integer raceTimeToComplete = ds.child("raceTimeToComplete").getValue(Integer.class);
                     //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 
+                    String lm = ds.child("leaderMessage").getValue(String.class);
+                    if (lm != null) {
+                        Crit.setLeaderMessage(lm);
+                    }
+
                     if (raceName == null) {return;}
 
                     String post1 = "";
