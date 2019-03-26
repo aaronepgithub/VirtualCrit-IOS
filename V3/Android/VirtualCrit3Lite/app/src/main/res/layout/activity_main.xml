@@ -171,7 +171,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="THANKS FOR TRYING BUT YOU CAN'T BEAT ME."
+                    android:text="Thanks for trying, but you can't beat me."
                     android:textAlignment="viewStart"
                     android:textStyle="bold" />
             </LinearLayout>

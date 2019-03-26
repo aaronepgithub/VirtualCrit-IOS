@@ -904,10 +904,21 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //var raceBestTime: Double = 0
     var raceSpeed: Double = 0
 
-    var checkDistanceValue: Double = 125.0
+    var checkDistanceValue: Double = 150.0
     
     func evaluateLocation(loc: CLLocationCoordinate2D) -> () {
         //print("Eval Location, currentCritPoint: \(currentCritPoint)")
+        
+        if settingsActivityType == "BIKE" {
+            checkDistanceValue = 150.0
+        }
+        if settingsActivityType == "RUN" {
+            checkDistanceValue = 100.0
+        }
+        if settingsActivityType == "ROW" {
+            checkDistanceValue = 50.0
+        }
+        
         if wpts.count == 0 {
             print("no race loaded")
             return

@@ -29,7 +29,7 @@ var settingsAudioStatus: String = "ON"
 var settingsSecondsPerRound: Int = 1800
 var settingsGpsStatus: String = "ON"
 var settingsMaxHR: Int = 185
-var settingsLeaderMessage: String = "NICE TRY BUT YOU CAN'T BEAT ME."
+var settingsLeaderMessage: String = "Nice Try, but you can't beat me."
 
 
 
@@ -131,7 +131,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         super.viewDidLoad()
         print("SettingsTableVC did Load")
         valueRiderName.text = settingsName.uppercased()
-        settingsLeaderMessage = "I AM \(settingsName.uppercased()). YOU CAN'T BEAT ME."
+        settingsLeaderMessage = "I am \(settingsName). You can't beat me."
         valueLeaderMessage.text = settingsLeaderMessage
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
@@ -369,8 +369,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
             
             let ld = alertController.textFields?[0].text
-            self.valueLeaderMessage.text = ld!.uppercased()
-            settingsLeaderMessage = ld!.uppercased()
+            self.valueLeaderMessage.text = ld!
+            settingsLeaderMessage = ld!
             print("settingsLeaderMessage:  \(settingsLeaderMessage)")
             UserDefaults.standard.set(settingsLeaderMessage, forKey: "udLeaderMessage")
             

@@ -2149,7 +2149,7 @@ private Boolean collectCritPoints = false;
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                settingsLeaderMessage = input.getText().toString().toUpperCase();
+                settingsLeaderMessage = input.getText().toString();
 
                 final String s = settingsLeaderMessage;
                 runOnUiThread(new Runnable() {

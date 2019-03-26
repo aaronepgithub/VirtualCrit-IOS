@@ -14,7 +14,7 @@ public final class Crit {
     private static String racerName = "TIM";
     private static Integer raceDate = 0;
     private static String raceName = "RACE";
-    private static String leaderMessage = "SORRY, YOU CAN'T BEAT ME";
+    private static String leaderMessage = "Sorry, you can't beat me.";
 
 
     public static String getRacerName() {
