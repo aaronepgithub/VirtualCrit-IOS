@@ -14,6 +14,7 @@ public final class Crit {
     private static String racerName = "TIM";
     private static Integer raceDate = 0;
     private static String raceName = "RACE";
+    private static String leaderMessage = "SORRY, YOU CAN'T BEAT ME";
 
 
     public static String getRacerName() {
@@ -38,5 +39,13 @@ public final class Crit {
 
     public static void setRaceName(String raceName) {
         Crit.raceName = raceName;
+    }
+
+    public static String getLeaderMessage() {
+        return leaderMessage;
+    }
+
+    public static void setLeaderMessage(String leaderMessage) {
+        Crit.leaderMessage = leaderMessage;
     }
 }

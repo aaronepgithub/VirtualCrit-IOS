@@ -20,7 +20,7 @@ public final class Timer {
     private final static String TAG = Timer.class.getSimpleName();
     private static int status = 99;
 
-    private static int checkDistanceValue = 125;
+    private static int checkDistanceValue = 150;
 
     private static Location timerLocation;
     private static Location timerOldLocation;
@@ -220,7 +220,7 @@ public final class Timer {
                 stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
             }
 
-            if (disBetw < checkDistanceValue) {  //WITHIN 100 METERS OF TARGET
+            if (disBetw < checkDistanceValue) {  //WITHIN 150 METERS OF TARGET
                 Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
                 isRaceStarted = true;
@@ -269,7 +269,7 @@ public final class Timer {
                 stringForSetMessage.add(String.valueOf((int) disBetwMax) + " METERS REMAIN");
             }
 
-            if (disBetwMax < checkDistanceValue) {  //WITHIN 100 METERS
+            if (disBetwMax < checkDistanceValue) {
                 Log.i(TAG, "RACE FINISHED!");
                 isRaceStarted = false;
                 currentWaypointCB = 0;
@@ -285,16 +285,9 @@ public final class Timer {
 
                 Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
 
-                //trkName = namesTemp.get(0);
-                //postRaceProcessing(raceTime);
-
                 publishMe = new Race(Crit.getRacerName(), Crit.getRaceName(), raceTime, Crit.getRaceDate(), waypointTimesTimString, Timer.getWaypointPointsString(), Timer.getWaypointNamesString());
                 isTimeToPostRaceData = true;
 
-                //Race r = new Race(settingsName, raceName, raceTime, raceDate, waypointTimesTimString, llp, lln);
-
-                //Log.i(TAG, "CBID waypointTimesTim:  " + waypointTimesTim.toString());
-                //Log.i(TAG, "CBID waypointTimesBest:  " + waypointTimesBest.toString());
                 String s;
                 String ss;
                 if (bestRaceTime == -1) {
@@ -321,15 +314,15 @@ public final class Timer {
                     ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
                 }
 
+                //ADD FLAY STRING
+                String lm = Crit.getLeaderMessage();
+
+
 
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-
-                //final String sss = "RACE COMPLETE, YOUR TIME IS.  \" + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + \".  \" + ss";
-                stringForSpeak.add("RACE COMPLETE. " + ss);
-
-                //stringForSpeak.add("RACE COMPLETE, YOUR TIME IS.  " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) raceTime) + ".  " + ss);
+                stringForSpeak.add("RACE COMPLETE. " + ss + lm);
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n\n" + s);
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n\n" + s + lm);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 

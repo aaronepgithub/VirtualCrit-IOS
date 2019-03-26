@@ -16,11 +16,13 @@ public class Race {
     public String waypointTimes;
     public String llPoints;
     public String llNames;
+    public String leaderMessage;
 
 
     public Race(String riderName, String raceName, Long raceTimeToComplete, Integer raceDate, String waypointTimes, String llPoints, String llNames) {
         this.raceName = raceName.toUpperCase();
         this.riderName = riderName.toUpperCase();
+        this.leaderMessage = Crit.getLeaderMessage();
 
 
         if (raceTimeToComplete > 0) {

@@ -149,6 +149,34 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+
+            <!--SHOW/EDIT RACE FINISH STRING-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/clickLeaderMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onclickLeaderMessage"
+                    android:text="EDIT"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/valueLeaderMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="THANKS FOR TRYING BUT YOU CAN'T BEAT ME."
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
             <!--SHOW USER TRACKLINE-->
             <LinearLayout
                 android:layout_width="match_parent"

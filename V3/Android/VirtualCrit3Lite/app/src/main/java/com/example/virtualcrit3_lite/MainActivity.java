@@ -230,6 +230,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
+    public void onclickLeaderMessage(View view) {
+        Log.i(TAG, "onclickLeaderMessage: ");
+//        Crit.getLeaderMessage();
+//        Crit.setLeaderMessage("...");
+        inputFinishMessage();
+    }
+
 //    /**
 //     * Callback received when a permissions request has been completed.
 //     */
@@ -393,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private String settingsGPS = "OFF";
     private Boolean settingsAudio = true;
     private String settingsSport = "BIKE";
+    private String settingsLeaderMessage = "SORRY, YOU CAN'T BEAT ME.";
     private int settingsSecondsPerRound = 1800;
     private int settingsMaxHeartrate = 185;
 
@@ -462,6 +470,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public static final String Name = "nameKey";
     public static final String Sport = "sportKey";
     public static final String MaxHR = "maxhrKey";
+    public static final String LeaderMsg = "leadermsgKey";
     SharedPreferences sharedpreferences;
 
 
@@ -472,11 +481,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         settingsName = sharedpreferences.getString(Name, settingsName);
         settingsSport = sharedpreferences.getString(Sport, settingsSport);
         settingsMaxHeartrate = sharedpreferences.getInt(MaxHR, settingsMaxHeartrate);
+        settingsLeaderMessage = sharedpreferences.getString(LeaderMsg, settingsLeaderMessage);
 
         Log.i(TAG, "getSharedPrefs: " + settingsName + settingsMaxHeartrate + settingsSport);
 
         displayName(settingsName);
         Crit.setRacerName(settingsName);
+        Crit.setLeaderMessage(settingsLeaderMessage);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -484,6 +495,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 b1.setText(String.format("%s  MAX HR", String.valueOf(settingsMaxHeartrate)));
                 Button b2 = (Button) findViewById(R.id.valueEditSport);
                 b2.setText(settingsSport);
+                TextView t2 = (TextView) findViewById(R.id.valueLeaderMessage);
+                t2.setText(settingsLeaderMessage);
             }
         });
 
@@ -495,6 +508,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         SharedPreferences.Editor editor = sharedpreferences.edit();
 
         editor.putString(Name, settingsName);
+        editor.putString(LeaderMsg, settingsLeaderMessage);
         editor.putString(Sport, settingsSport);
         editor.putInt(MaxHR, settingsMaxHeartrate);
         editor.commit();
@@ -2050,7 +2064,50 @@ private Boolean collectCritPoints = false;
     }
 
 
+    //GET FINISHMESSAGE
+    public void inputFinishMessage() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog dialog;
+        builder.setTitle("FINISH MESSAGE");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                settingsLeaderMessage = input.getText().toString().toUpperCase();
+
+                final String s = settingsLeaderMessage;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView mMsg = findViewById(R.id.valueLeaderMessage);
+                        mMsg.setText(s);
+                    }
+                });
+
+                setSharedPrefs();
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //settingsName = "TIM";
+                setSharedPrefs();
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+    //END FINISH MESSAGE
 
 
     public void inputName() {
