@@ -2187,10 +2187,11 @@ private Boolean collectCritPoints = false;
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog dialog;
-        builder1.setTitle("CRIT BUILDER, ENTER CHECKPOINT NAMES (OPTIONAL)");
+        builder1.setTitle("CRIT BUILDER, ENTER CHECKPOINT NAMES");
+        builder1.setTitle("OPTIONAL");
         if (critBuilderLatLngNames.size() == 0) {
             builder1.setTitle("CRIT BUILDER, ENTER THE CRIT NAME");
-//            builder1.setMessage("THIS IS THE CRIT NAME");
+            builder1.setMessage("3 CHECKPOINTS MINIMUM");
         }
 
 
