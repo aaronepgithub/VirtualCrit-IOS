@@ -232,8 +232,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     public void onclickLeaderMessage(View view) {
         Log.i(TAG, "onclickLeaderMessage: ");
-//        Crit.getLeaderMessage();
-//        Crit.setLeaderMessage("...");
         inputFinishMessage();
     }
 
@@ -775,8 +773,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     String lm = ds.child("leaderMessage").getValue(String.class);
                     if (lm != null) {
-                        Crit.setLeaderMessage(lm);
                         Log.i(TAG, "onDataChange: leadermessage: " + lm);
+                        Timer.setBestRacerLeaderMessage(lm);
+                    } else {
+                        lm = "";
                     }
 
                     if (raceName == null) {
@@ -787,6 +787,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     String post1 = "";
                     String post2 = "";
+                    String post2b = "\n" + lm;
 
 
                     if (Objects.equals(Crit.getRaceName(), raceName)) {
@@ -794,7 +795,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
                     } else {
                         Crit.setRaceName(raceName);
-                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
+                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.";
                     }
 
 
@@ -811,7 +812,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
-                    String post3 = post1 + post2;
+                    String post3 = post1 + post2 + post2b;
                     speakText(post3);
                     createTimeline(post3, Timer.getCurrentTimeStamp());
 
@@ -870,6 +871,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         Timer.setBestRacerName(riderName.toUpperCase());
                         Timer.setBestRaceTime(raceTimeToComplete);
                         Timer.setWaypointTimesBest(longs);
+                        Timer.setBestRacerLeaderMessage(lm);
 
                         Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
                     } else {
@@ -2150,7 +2152,7 @@ private Boolean collectCritPoints = false;
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 settingsLeaderMessage = input.getText().toString();
-
+                Crit.setLeaderMessage(settingsLeaderMessage);
                 final String s = settingsLeaderMessage;
                 runOnUiThread(new Runnable() {
                     @Override

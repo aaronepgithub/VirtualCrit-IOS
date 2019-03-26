@@ -187,6 +187,7 @@ public final class Timer {
     private static ArrayList<Long> waypointTimesBest = new ArrayList<>();
     private static long bestRaceTime = -1;
     private static String bestRacerName = "";
+    private static String bestRacerLeaderMessage = "";
     private static String raceName = "";
 
     private static ArrayList<Long> raceTimesTim = new ArrayList<>();
@@ -636,5 +637,13 @@ public final class Timer {
 
     public static void setWaypointPointsString(String waypointPointsString) {
         Timer.waypointPointsString = waypointPointsString;
+    }
+
+    public static String getBestRacerLeaderMessage() {
+        return bestRacerLeaderMessage;
+    }
+
+    public static void setBestRacerLeaderMessage(String bestRacerLeaderMessage) {
+        Timer.bestRacerLeaderMessage = bestRacerLeaderMessage;
     }
 }
