@@ -50,6 +50,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     @IBOutlet weak var valueBluetoothStatus: UILabel!
     @IBOutlet weak var valueBluetoothDeviceStatus: UILabel!
     
+    @IBOutlet weak var valueLeaderMessage: UILabel!
     @IBOutlet weak var valueCritBuilderFromMap: UILabel!
     
     @IBOutlet weak var valueNameGPX: UILabel!
@@ -131,6 +132,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         print("SettingsTableVC did Load")
         valueRiderName.text = settingsName.uppercased()
         settingsLeaderMessage = "I AM \(settingsName.uppercased()). YOU CAN'T BEAT ME."
+        valueLeaderMessage.text = settingsLeaderMessage
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
     }
@@ -197,9 +199,13 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             }
             
 
-            
         case "15":
-            print("case 15, startSim")
+            print("case 15, change leader message")
+            getLeaderMessageDialog()
+            
+            
+        case "16":
+            print("case 16, startSim")
             //useSimRide = true
             
         case "12":
@@ -356,8 +362,35 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         self.present(alertController, animated: true, completion: nil)
     }
     
-    //END GET CB NAME
+    func getLeaderMessageDialog() {
+        
+        let alertController = UIAlertController(title: "LEADER MESSAGE", message: "OTHERS WILL HEAR IF THEY FAIL TO DEFEAT YOU.", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+            
+            let ld = alertController.textFields?[0].text
+            self.valueLeaderMessage.text = ld!.uppercased()
+            settingsLeaderMessage = ld!.uppercased()
+            print("settingsLeaderMessage:  \(settingsLeaderMessage)")
+            UserDefaults.standard.set(settingsLeaderMessage, forKey: "udLeaderMessage")
+            
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = settingsLeaderMessage
+        }
+        
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
     
+    //END GET CB NAME
     func getNameDialog() {
         
         let alertController = UIAlertController(title: "Rider Name", message: "", preferredStyle: .alert)
@@ -368,9 +401,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             self.valueRiderName.text = name!.uppercased()
             settingsName = name!.uppercased()
             print("riderName:  \(settingsName)")
-            settingsLeaderMessage = "I AM \(settingsName.uppercased()). YOU CAN'T BEAT ME."
             UserDefaults.standard.set(settingsName, forKey: "udName")
-            UserDefaults.standard.set(settingsLeaderMessage, forKey: "udLeaderMessage")
+
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

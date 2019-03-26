@@ -943,15 +943,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 
                 let t = createTimeString(seconds: Int(raceDuration))
                 var b = ""
+                let l = activeRaceLeaderMessage
                 
                 if activeRaceBestWaypointTimesArray.count > 0 {
                     let rbt = activeRaceBestWaypointTimesArray.last
                     if (Int(raceDuration * 1000)) < rbt! {
                         //rbt = raceDuration * 1000
-                        b = "FASTEST TIME"
+                        b = "FASTEST TIME\n\(settingsLeaderMessage)"
                     } else {
                         let cmp = ((Int(raceDuration)) - (rbt! / 1000))
-                        b = "\(createTimeString(seconds: Int(cmp))) BEHIND THE LEADER, \(activeRaceLeadersName)"
+                        b = "\(createTimeString(seconds: Int(cmp))) BEHIND THE LEADER, \(activeRaceLeadersName)\n\(l)"
                     }
                 }
                 
