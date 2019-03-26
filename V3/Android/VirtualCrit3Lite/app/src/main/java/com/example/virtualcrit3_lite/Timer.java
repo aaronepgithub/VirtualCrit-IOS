@@ -320,9 +320,9 @@ public final class Timer {
 
 
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-                stringForSpeak.add("RACE COMPLETE. " + ss + lm);
+                stringForSpeak.add("RACE COMPLETE. " + ss + ".  " + lm);
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n\n" + s + lm);
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n\n" + s  + ".\n" + lm);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 
