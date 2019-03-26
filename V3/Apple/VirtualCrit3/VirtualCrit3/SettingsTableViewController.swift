@@ -29,6 +29,7 @@ var settingsAudioStatus: String = "ON"
 var settingsSecondsPerRound: Int = 1800
 var settingsGpsStatus: String = "ON"
 var settingsMaxHR: Int = 185
+var settingsLeaderMessage: String = "NICE TRY BUT YOU CAN'T BEAT ME."
 
 
 
@@ -129,6 +130,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         super.viewDidLoad()
         print("SettingsTableVC did Load")
         valueRiderName.text = settingsName.uppercased()
+        settingsLeaderMessage = "I AM \(settingsName.uppercased()). YOU CAN'T BEAT ME."
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
     }
@@ -366,7 +368,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             self.valueRiderName.text = name!.uppercased()
             settingsName = name!.uppercased()
             print("riderName:  \(settingsName)")
+            settingsLeaderMessage = "I AM \(settingsName.uppercased()). YOU CAN'T BEAT ME."
             UserDefaults.standard.set(settingsName, forKey: "udName")
+            UserDefaults.standard.set(settingsLeaderMessage, forKey: "udLeaderMessage")
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }

@@ -110,7 +110,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         todaysDateString = formatter.string(from: date)
         
         settingsName = UserDefaults.standard.string(forKey: "udName") ?? "TIM\(Int.random(in: 101 ... 999))"
-        print("settingsName: \(settingsName)")
+        settingsLeaderMessage = UserDefaults.standard.string(forKey: "udLeaderMessage") ?? "I AM \(settingsName).  YOU CAN'T BEAT ME."
+
+        print("settingsName: \(settingsName) \n\(settingsLeaderMessage)")
         // Set the map view's delegate
         mapView.delegate = self
         
@@ -592,6 +594,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var activeRaceName: String = ""
     var activeRaceLeadersName: String = ""
     var activeRaceBestWaypointTimesArray = [Int]()
+    var activeRaceLeaderMessage: String = ""
     
     //REQUEST RACE DATA
     func requestRaceData(rn: String) {
@@ -623,6 +626,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     let race = dict["raceName"]!
                     let wayptTimes = dict["waypointTimes"] ?? [:]
                     let rtc = dict["raceTimeToComplete"]!
+                    
+                    let lm = dict["leaderMessage"] ?? [:]
+                    if let lmString: String = lm as? String {
+                        self.activeRaceLeaderMessage = lmString
+                        print("lmString: \(lmString)")
+                    }
                     
                     let tempLLN = dict["llNames"]!
                     let tempLLP = dict["llPoints"]!
@@ -750,6 +759,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let stringOfWaypointTimes: String = waypointTimesTimString
         let riderName: String = settingsName
         let raceDur: Int = rt * 1000
+        let leaderMessage: String = settingsLeaderMessage
         
         if (raceName.isEmpty || riderName.isEmpty || waypointTimesTimString.isEmpty || llNames.isEmpty || llPoints.isEmpty) {
             print("missing values, don't post")
@@ -758,6 +768,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         let racePost = [
             "raceName" : raceName,
+            "leaderMessage" : leaderMessage,
             "riderName" : riderName,
             "raceTimeToComplete" : raceDur,
             "waypointTimes" : stringOfWaypointTimes,
@@ -802,6 +813,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         //let stringOfWaypointTimes: String = waypointTimesTimString
         let riderName: String = "NEW"
         let raceDur = rt
+        let leaderMessage: String = "WAITING FOR SOMEONE TO FINISH"
         
         if (raceName.isEmpty || riderName.isEmpty || llNames.isEmpty || llPoints.isEmpty) {
             print("missing values, don't post")
@@ -812,6 +824,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         let racePost = [
             "raceName" : raceName,
+            "leaderMessage" : leaderMessage,
             "riderName" : riderName,
             "raceTimeToComplete" : raceDur,
 //            "waypointTimes" : stringOfWaypointTimes,
