@@ -20,7 +20,7 @@ public final class Timer {
     private final static String TAG = Timer.class.getSimpleName();
     private static int status = 99;
 
-    private static int checkDistanceValue = 150;
+    public static int checkDistanceValue = 150;
 
     private static Location timerLocation;
     private static Location timerOldLocation;

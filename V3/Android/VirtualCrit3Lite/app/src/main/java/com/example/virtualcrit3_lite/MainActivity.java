@@ -1498,7 +1498,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 locationComponent.setLocationComponentEnabled(true);
 
                 // Set the component's camera mode
-                locationComponent.setCameraMode(CameraMode.TRACKING);
+//                locationComponent.setCameraMode(CameraMode.TRACKING);
+                locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
                 isTrackingDisabled = false;
 
                 // Set the component's render mode
@@ -2022,16 +2023,21 @@ private Boolean collectCritPoints = false;
             case "BIKE":
                 //b1.setText("RUN");
                 settingsSport = "RUN";
+                Timer.checkDistanceValue = 100;
                 break;
             case "RUN":
                 //b1.setText("ROW");
                 settingsSport = "ROW";
+                Timer.checkDistanceValue = 50;
                 break;
             case "ROW":
                 settingsSport = "BIKE";
+                Timer.checkDistanceValue = 150;
                 //b1.setText("BIKE");
                 break;
         }
+
+
 
         runOnUiThread(new Runnable() {
             @Override
