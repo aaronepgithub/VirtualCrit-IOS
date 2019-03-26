@@ -796,7 +796,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
                     } else {
                         Crit.setRaceName(raceName);
-                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.";
+                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
                     }
 
 
