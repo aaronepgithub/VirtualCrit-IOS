@@ -1498,8 +1498,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 locationComponent.setLocationComponentEnabled(true);
 
                 // Set the component's camera mode
-//                locationComponent.setCameraMode(CameraMode.TRACKING);
-                locationComponent.setCameraMode(CameraMode.TRACKING_GPS);
+                locationComponent.setCameraMode(CameraMode.TRACKING);
+//                locationComponent.setCameraMode(CameraMode.TRACKING_GPS);
                 isTrackingDisabled = false;
 
                 // Set the component's render mode
