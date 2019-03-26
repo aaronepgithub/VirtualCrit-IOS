@@ -711,6 +711,37 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
 
+    private ArrayList<String> listOfCrits = new ArrayList<>();
+
+    private void listOnlineCrits() {
+        String r1 = "race";
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(r1);
+        listOfCrits = new ArrayList<>();
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot oneTimeDS) {
+
+                for (DataSnapshot oneDS : oneTimeDS.getChildren()) {
+                    //Log.i(TAG, "onDataChange: have oneTime snapshot");
+                    final String oT = oneDS.toString();
+                    final String otKey = Objects.requireNonNull(oneDS.getKey()).toUpperCase();
+                    //Log.i(TAG, "onDataChange: otKey " + otKey);
+                    listOfCrits.add(otKey);
+                }
+
+                Log.i(TAG, "onDataChange: allCrits " + listOfCrits.toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i(TAG, "onCancelled: db error getting list");
+            }
+        });
+    }
+
+
     private ValueEventListener valueEventListener;
 
     private void requestRaceData(String raceDataName) {
@@ -1173,7 +1204,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Log.i(TAG, "at 10 sec: auto request updates");
                 //checkAndSetPermissions();
                 mService.requestLocationUpdates();
+                setMessageText("STARTING LOCATION TRACKING");
+            }
 
+            if ((int) totalMillis / 1000 == 5) {
+                Log.i(TAG, "at 5 sec: auto request updates");
+                setMessageText("STARTING LOCATION TRACKING");
+                makeToast("STARTING LOCATION TRACKING");
             }
 
 
@@ -2409,6 +2446,7 @@ private Boolean collectCritPoints = false;
     public void clickAudio(View view) {
         Log.i(TAG, "clickAudio  " + settingsAudio);
 
+        listOnlineCrits();
 
         runOnUiThread(new Runnable() {
             @Override
