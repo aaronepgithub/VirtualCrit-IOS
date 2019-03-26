@@ -525,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private int maxTrackpoint;
     private String trkName = "NONE";
 
-    private Boolean isCritGPXActive = true;
+    private Boolean isCritGPXActive = false;
 
     //GPX
     public void startGPX() {
@@ -760,7 +760,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     if (Objects.equals(Crit.getRaceName(), raceName)) {
                         Log.i(TAG, "onDataChange: same race name");
-                        post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
+                        //post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
                     } else {
                         Crit.setRaceName(raceName);
                         post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
@@ -2325,7 +2325,7 @@ private Boolean collectCritPoints = false;
 
             }
         });
-        addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
+        //addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
         //createTimeline("CRIT LOADED: " + critBuilderLatLngNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
         requestRaceData(critBuilderLatLngNames.get(0).toUpperCase());
         Log.i(TAG, "startGpxFromCritBuilder: critPointLocation arrays... " + critPointLocationNames + critPointLocationLons + critPointLocationLats);

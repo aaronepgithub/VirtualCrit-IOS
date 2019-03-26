@@ -142,7 +142,6 @@ public final class Timer {
             double ttg = (double) timerTotalTimeGeo;  //IN MILLI
             timerGeoAvgSpeed = timerGeoDistance / (ttg / 1000.0 / 60.0 / 60.0);
             timerOldLocation = timerLocation;
-
             Log.i(TAG, "onTimerLocationReceived: timer Speed, AvgSpeed, Distance, totalTime: " + timerGeoSpeed + ", " + timerGeoAvgSpeed + ", " + timerGeoDistance + ", " + timerTotalTimeGeo);
         }
 

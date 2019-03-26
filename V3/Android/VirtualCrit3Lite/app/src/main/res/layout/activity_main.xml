@@ -176,87 +176,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-
-            <!--SHOW USER TRACKLINE-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/clickShowUserTrackline"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="onClickShowUserTrackline"
-                    android:text="SHOW TRACK"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:id="@+id/valueShowTrack"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text=""
-                    android:textAlignment="viewStart"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/valueSpeedGPS"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="0.00 MPH"
-                    android:textAlignment="center"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/valueDistanceGPS"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="0.00 MILES"
-                    android:textAlignment="center"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/valueActiveTimeGPS"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="00:00:00"
-                    android:textAlignment="center"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/valueAverageSpeedGPS"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="0.0 MPH"
-                    android:textAlignment="center"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -307,14 +226,14 @@
 
 
                 <!--<TextView-->
-                    <!--android:id="@+id/valueGPX"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginStart="12dp"-->
-                    <!--android:layout_marginEnd="12dp"-->
-                    <!--android:layout_weight="2"-->
-                    <!--android:textAlignment="viewStart"-->
-                    <!--android:textStyle="bold|italic" />-->
+                <!--android:id="@+id/valueGPX"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="12dp"-->
+                <!--android:layout_marginEnd="12dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:textAlignment="viewStart"-->
+                <!--android:textStyle="bold|italic" />-->
             </LinearLayout>
 
             <!--CRITBUILDER-->
@@ -326,13 +245,13 @@
                 android:orientation="horizontal">
 
                 <!--<Button-->
-                    <!--android:id="@+id/clickButtonStartCritBuilder"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:onClick="clickStartCritBuilder"-->
-                    <!--android:text="BUILDER"-->
-                    <!--android:textAlignment="center" />-->
+                <!--android:id="@+id/clickButtonStartCritBuilder"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="clickStartCritBuilder"-->
+                <!--android:text="BUILDER"-->
+                <!--android:textAlignment="center" />-->
 
                 <TextView
                     android:id="@+id/valueGPX"
@@ -398,6 +317,92 @@
             </LinearLayout>
 
             <!--ACTIVE CRIT END-->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#444"></TableRow>
+
+            <!--SHOW USER TRACKLINE-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/clickShowUserTrackline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClickShowUserTrackline"
+                    android:text="SHOW TRACK"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/valueShowTrack"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="SHOW WHERE YOU HAVE BEEN"
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/valueSpeedGPS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0.00 MPH"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/valueDistanceGPS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0.00 MILES"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/valueActiveTimeGPS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="00:00:00"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/valueAverageSpeedGPS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0.0 MPH"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+
 
             <TableRow
                 android:layout_width="match_parent"
