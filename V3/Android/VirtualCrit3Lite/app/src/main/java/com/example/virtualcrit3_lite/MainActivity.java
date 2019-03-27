@@ -900,7 +900,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (!settingsAudio) {
             return;
         }
-        engine.speak(st, TextToSpeech.QUEUE_FLUSH, null, null);
+        engine.speak(st, TextToSpeech.QUEUE_ADD, null, null);
 
         Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
     }
@@ -1245,18 +1245,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
                 }
 
-                if ((int) totalMillis / 1000 % 2 == 0) {
-                    //EVERY 2, TIMELINE AND SET MESSAGE
+                if ((int) totalMillis / 1000 % 5 == 0) {
+                    //EVERY 5, TIMELINE AND SET MESSAGE
                     //Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
                     //Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
                     if (Timer.getStringForSetMessage().size() > 0) {
                         final ArrayList<String> s = Timer.getStringForSetMessage();
-//                    StringBuilder sx = new StringBuilder();
-//                    for (String str : s) {
-//                        sx.append(str);
-//                        sx.append(" ");
-//                    }
                         setMessageText(s.get(s.size()-1));
                         Timer.setStringForSetMessage(new ArrayList<String>());
                     } else {
@@ -1269,19 +1264,21 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //Log.i(TAG, "run: PUBLISH TIMELINE");
                         final ArrayList<String> s2 = Timer.getStringForTimeline();
                         final ArrayList<String> s3 = Timer.getStringForTimelineTime();
-                        int i = 0;
-                        StringBuilder sxx = new StringBuilder();
-                        for (String str2 : s2) {
-                            sxx.append(str2);
-                        }
-
-                        if (Objects.equals(s2.get(0), "")) {
-                            return;
-                        }
-                        createTimeline(sxx.toString(), s3.get(0));
-
                         Timer.setStringForTimeline(new ArrayList<String>());
                         Timer.setStringForTimelineTime(new ArrayList<String>());
+
+                        //StringBuilder sxx = new StringBuilder();
+                        for (String str2 : s2) {
+                            //sxx.append(str2);
+                            createTimeline(str2, s3.get(0));
+                        }
+
+//                        if (Objects.equals(s2.get(0), "")) {
+//                            return;
+//                        }
+//                        createTimeline(sxx.toString(), s3.get(0));
+
+
                     } else {
                         //Log.i(TAG, "run: NO TIMELINE TO CREATE");
                     }
@@ -1291,19 +1288,21 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 }
 
-                if ((int) totalMillis / 1000 % 15 == 0) {
-                    //Log.i(TAG, "run: 15 SECOND UPDATE REFRESH FOR SPEAKER");
+                //ASSUME TTS QUEUE WILL WORK
+                if ((int) totalMillis / 1000 % 5 == 0) {
+                    //Log.i(TAG, "run: 5 SECOND UPDATE REFRESH FOR SPEAKER");
                     //FOR SPEAKER
                     if (Timer.getStringForSpeak().size() > 0) {
                         Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
                         final ArrayList<String> s1 = Timer.getStringForSpeak();
-                        StringBuilder ns = new StringBuilder();
-                        for (String str1 : s1) {
-                            //speakText(str1);
-                            ns.append(str1).append(".  ");
-                        }
-                        speakText(ns.toString());
                         Timer.setStringForSpeak(new ArrayList<String>());
+                        //StringBuilder ns = new StringBuilder();
+                        for (String str1 : s1) {
+                            speakText(str1 + ".  ");
+                            //ns.append(str1).append(".  ");
+                        }
+                        //speakText(ns.toString());
+
                     }
 
                 }

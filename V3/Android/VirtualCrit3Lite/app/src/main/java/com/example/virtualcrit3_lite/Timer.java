@@ -321,12 +321,14 @@ public final class Timer {
 
 
                 Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
-                stringForSpeak.add("RACE COMPLETE. " + ss + ".  " + lm);
+//                stringForSpeak.add("RACE COMPLETE. " + ss + ".  " + lm);
+                stringForSpeak.add("RACE COMPLETE. " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + "\n\n" + s  + ".\n" + lm);
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 
+                //MAYBE CALL A ONETIME READ...
 
                 //RESET
                 Log.i(TAG, "RESET RACE: ");
