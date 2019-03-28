@@ -41,6 +41,8 @@ var valueTimelineString = [String]()
 var valueTimelineStringDate = [String]()
 var currentCritPoint: Int = 0
 
+var loadedRaceName: String = ""
+
 func addValueToTimelineString(s: String) {
     //print("addValueToTimelineString")
     let t = getFormattedTime()
@@ -375,8 +377,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         if critStatus == 0 {
             //new race, start over
             //reset distance, timee, etc.
-            currentCritPoint = 0
-            print("reset race from critStatus at 0, currentCritPoint is 0")
+            if loadedRaceName.count > 2 {
+                print("loadedRaceName is not empty so reset")
+                currentCritPoint = 0
+                print("reset race from critStatus at 0, currentCritPoint is 0")
+            } else {
+                print("just a fb update, currentCrit point is \(currentCritPoint)")
+            }
+            
+            
             
             if wpts.count < 2 {
                 print("crit doesn't exist, return")
@@ -406,12 +415,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
         if critStatus == 101 {
-            print("status == 101")
+            print("status == 101, set critStatus to 0")
             gpxNames = finalNamesArr
             wpts = finalPointsArr
             critStatus = 0
             remMarkers()
         }
+
         
         if critStatus == 10 {
             if gpxNames.first != nil {
@@ -628,10 +638,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     let rtc = dict["raceTimeToComplete"]!
                     
                     let lm = dict["leaderMessage"] ?? [:]
+
                     if let lmString: String = lm as? String {
                         self.activeRaceLeaderMessage = lmString
                         print("lmString: \(lmString)")
                     }
+                    if self.activeRaceLeaderMessage == "[:]" {
+                        self.activeRaceLeaderMessage = "FIRST TIMER"
+                    }
+                    
+                    
+                    let rc: String = (race as? String)!
+                    print("rc: \(rc), loadedRaceName: \(loadedRaceName)")
+                    if rc == loadedRaceName {
+                        print("rc == loadedRaceName, first fb observe msg so set loadedRaceName to null, loadedRaceName will be set again after a new crit is loaded")
+                        loadedRaceName = ""
+                    }
+                    
+
                     
                     let tempLLN = dict["llNames"]!
                     let tempLLP = dict["llPoints"]!
@@ -652,19 +676,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     }
 
                     
-//                    if self.arrWaypointTimes.count > 0 {
-//                        //SPLICE UP THE WAYPOINT TIMES
-//
-//                        let wtimesarr = wtimes.components(separatedBy: ",")
-//                        self.activeRaceBestWaypointTimesArray.removeAll()
-//                        for s in (wtimesarr) {
-//                            print("\(s)")
-//                            self.activeRaceBestWaypointTimesArray.append(Int(s)!)
-//                        }
-//                    } else {
-//                        self.activeRaceBestWaypointTimesArray.removeAll()
-//                    }
-                    //let rtct = rtc as! Int
                     let rtca = (rtc as! Int) / 1000
                     
                     
@@ -684,20 +695,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     }
                     
                     raceStatusDisplay = "LOADED"
-                    
-                    
+
 //                    print("remove old FB data")
 //                    let refDBrm  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
 //                    refDBrm.removeValue()
 //                    
 //                    let refDBrmTotals  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals")
 //                    refDBrmTotals.removeValue()
-                    
-                    
-                    
-
-                    
-
+ 
                     //llN
                     finalNamesArr = [String]()
                     let lln: String = tempLLN as! String
@@ -741,7 +746,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     self.activeRaceLeadersName = rider as! String
                     print("activeRaceBestWaypointTimesArray:    \(self.activeRaceBestWaypointTimesArray)")
                     
+                    print("setting critStatus to 101, which will cause a reset on a fb download")
                     critStatus = 101
+                
+                    
 
                 }
             }
@@ -932,7 +940,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         
         if distanceInMeters < checkDistanceValue {
-            print("inside 100, currentCritPoint is \(currentCritPoint)")
+            print("match, currentCritPoint is \(currentCritPoint)")
             print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
             tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
             tabBarController?.tabBar.items?[3].badgeValue = "\(wpts.count-1)"
@@ -1176,7 +1184,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     //start sim
     var simCount = 1
     func simRide() {
-        //print("simRide")
+        print("simRide")
         
         if trktps.count - 1 == simCount {
             print("startOver")
@@ -1185,6 +1193,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
         if simCount == 1 {
+            if wpts.count == 0 {return}
             //let cord:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 40.769189, longitude: -73.975280)
             let cord: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: wpts[0].latitude, longitude: wpts[0].longitude)
             addMarker(cll: cord)
@@ -1294,7 +1303,7 @@ extension MainViewController: CLLocationManagerDelegate {
                     evaluateLocation(loc: location.coordinate)
 
                     coords.append(location.coordinate)
-                    print("location.speed: \(location.speed)")
+                    //print("location.speed: \(location.speed)")
 
                     if location.speed > 0 || useSimRide == true {
                         speedQuick = location.speed * 2.23694

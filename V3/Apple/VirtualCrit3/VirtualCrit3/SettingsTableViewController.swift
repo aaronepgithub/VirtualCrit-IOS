@@ -285,6 +285,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             }
             
             valueNameGPX.text = tempName
+            loadedRaceName = tempName
             valueStatusGPX.text = "AWAITING ARRIVAL"
             
             critStatus = 105
@@ -309,7 +310,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             
             self.valueNameGPX.text = tempName
             self.valueStatusGPX.text = "AWAITING ARRIVAL"
-            
+            loadedRaceName = tempName
             print("critStatus is 100, after getCritId")
             critStatus = 100
         }
@@ -763,6 +764,7 @@ extension SettingsTableViewController: UIDocumentMenuDelegate, UIDocumentPickerD
             print("llPoints \(llPoints)")
                 if (gpxNames.first != nil) {
                     addValueToTimelineString(s: "\(gpxNames.first ?? "") IS LOADED.")
+                    loadedRaceName = "\(gpxNames.first ?? ""))"
                     critStatus = 105
                     print("critStatus is 105, after loading GPX file")
                 }
