@@ -64,6 +64,8 @@ public final class Timer {
         return timerGeoDistance;
     }
 
+    public static String metersTogo = "";
+
     static void setTimerLocation(Location timerLocation) {
         Log.i(TAG, "Location from Service: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
         Timer.timerLocation = timerLocation;
@@ -218,6 +220,7 @@ public final class Timer {
 
             if (disBetw < 1000) {
                 stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
+                metersTogo = String.valueOf((int) disBetw) + " MTG";
             }
 
             if (disBetw < checkDistanceValue) {  //WITHIN 150 METERS OF TARGET
