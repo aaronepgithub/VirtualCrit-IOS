@@ -250,8 +250,8 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
                 gpxNames.append(self.cbName)
                 llNames = "\(self.cbName),"
             } else {
-                gpxNames.append("CKPT")
-                llNames = "\(llNames)CKPT,"
+                gpxNames.append("Checkpoint")
+                llNames = "\(llNames)Checkpoint,"
             }
             llPoints = "\(llPoints)\(c.latitude),\(c.longitude):"
             
