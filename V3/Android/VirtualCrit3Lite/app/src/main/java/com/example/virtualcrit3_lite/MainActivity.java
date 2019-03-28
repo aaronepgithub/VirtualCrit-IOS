@@ -2254,8 +2254,8 @@ private Boolean collectCritPoints = false;
                 public void onClick(DialogInterface dialog, int which) {
                     //input.setText("CHECKPOINT " + critBuilderLatLngNames.size() + ": ");
                     String wayName = input.getText().toString().toUpperCase();
-                    critBuilderLatLngNames.add("CKP" + wayName);
-                    lln += ("CKP" + wayName + ",");
+                    critBuilderLatLngNames.add("Checkpoint " + wayName);
+                    lln += ("Checkpoint " + wayName + ",");
                 }
             });
 
