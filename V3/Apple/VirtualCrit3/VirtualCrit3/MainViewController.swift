@@ -405,6 +405,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             print("status == 100")
             requestRaceData(rn: tempName)
             addValueToTimelineString(s: "LOADING \(tempName)")
+            activeRaceBestWaypointTimesArray.removeAll()
             //after processing, set crit status to 101
             
         }
@@ -869,10 +870,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         tempName = raceName
         critStatus = 100
         print("set crtiStatus to 100 after postRaceProcessingPreRace, set tempName to raceName from Builder - which was just posted.  After getting the request back, should be just like an entered critid")
-        
-//          activeRaceName = raceName
-//        critStatus = 130
-//        print("set critStatus to 130 after -postRaceProcessingPreRace- for \(activeRaceName)")
         
     }
     //END POST RACE FOR BUILDER OR LOAD GPX
