@@ -742,7 +742,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private ValueEventListener valueEventListener;
 
+
     private void requestRaceData(String raceDataName) {
+
 
 
         Log.i(TAG, "fb request race data for " + raceDataName);
@@ -935,229 +937,229 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @SuppressLint("DefaultLocale")
     private void roundEndCalculate() {
-        Log.i(TAG, "roundEndCalculate: ");
-        double newDistance = geoDistance;
-        double roundDistance = newDistance - oldDistance; //MILES
-        double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
-        double pastRoundHeartrate = roundHeartrate;
-
-        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
-        Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
-
-        if (roundSpeed > bestRoundSpeed) {
-            //vibrator600();
-            bestRoundSpeed = roundSpeed;
-            //createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
-        } else {
-            //vibrator300();
-            Log.i(TAG, "roundEndCalculate: not the best");
-        }
-        if (returnScoreFromHeartrate(roundHeartrate) > bestRoundScore) {
-            bestRoundScore = returnScoreFromHeartrate(roundHeartrate);
-//            createTimeline("HIGHEST SCORE" + "  [" + String.format("%.2f", bestRoundScore) + "]", "");
-        } else {
-            Log.i(TAG, "roundEndCalculate: not the best");
-        }
-        if (roundHeartrate > bestRoundHeartrate) {
-            bestRoundHeartrate = roundHeartrate;
-//            createTimeline("MY HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
-            //createTimeline("MY HIGHEST SCORE" + "\n[" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
-        } else {
-            Log.i(TAG, "roundEndCalculate: not the best");
-        }
-        String s1 = "COMPLETED ROUND: " + (currentRound - 1);
-        String s2 = "\nSPEED: " + String.format("%.2f MPH", roundSpeed);
-        String s2x = "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]";
-        String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate);
-        String s3x = "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]";
-        String s4 = "\nSCORE:  " + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate));
-        String s4x = "  [" + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
-        //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
-
-//        if (roundHeartrate > 50) {
-//            createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
+        Log.i(TAG, "roundEndCalculate: removed...");
+//        double newDistance = geoDistance;
+//        double roundDistance = newDistance - oldDistance; //MILES
+//        double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
+//        double pastRoundHeartrate = roundHeartrate;
+//
+//        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
+//        Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
+//
+//        if (roundSpeed > bestRoundSpeed) {
+//            //vibrator600();
+//            bestRoundSpeed = roundSpeed;
+//            //createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
 //        } else {
-//            createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
+//            //vibrator300();
+//            Log.i(TAG, "roundEndCalculate: not the best");
 //        }
-//        setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
-        Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
-
-        if (roundHeartrateCount == 0) {
-            showHR = false;
-        } else {
-            showHR = true;
-        }
-
-        //after...
-        oldDistance = newDistance;
-        roundHeartrateTotal = 0;
-        roundHeartrateCount = 0;
-        roundHeartrate = 0;
+//        if (returnScoreFromHeartrate(roundHeartrate) > bestRoundScore) {
+//            bestRoundScore = returnScoreFromHeartrate(roundHeartrate);
+////            createTimeline("HIGHEST SCORE" + "  [" + String.format("%.2f", bestRoundScore) + "]", "");
+//        } else {
+//            Log.i(TAG, "roundEndCalculate: not the best");
+//        }
+//        if (roundHeartrate > bestRoundHeartrate) {
+//            bestRoundHeartrate = roundHeartrate;
+////            createTimeline("MY HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
+//            //createTimeline("MY HIGHEST SCORE" + "\n[" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
+//        } else {
+//            Log.i(TAG, "roundEndCalculate: not the best");
+//        }
+//        String s1 = "COMPLETED ROUND: " + (currentRound - 1);
+//        String s2 = "\nSPEED: " + String.format("%.2f MPH", roundSpeed);
+//        String s2x = "  [" + String.format("%.2f MPH", bestRoundSpeed) + "]";
+//        String s3 = "\nHR:  " + String.format("%.1f BPM", roundHeartrate);
+//        String s3x = "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]";
+//        String s4 = "\nSCORE:  " + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate));
+//        String s4x = "  [" + String.format("%.0f%%", returnScoreFromHeartrate(bestRoundHeartrate)) + "]";
+//        //createTimeline("ROUND "+ currentRound + ":\nSPEED: " + String.format("%.2f MPH", roundSpeed)+ "\nHR:  " + String.format("%.1f BPM", roundHeartrate), Timer.getCurrentTimeStamp());
+//
+////        if (roundHeartrate > 50) {
+////            createTimeline(s1 + s2 + s2x + s3 + s3x + s4 + s4x, Timer.getCurrentTimeStamp());
+////        } else {
+////            createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
+////        }
+////        setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
+//        Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
+//
+//        if (roundHeartrateCount == 0) {
+//            showHR = false;
+//        } else {
+//            showHR = true;
+//        }
+//
+//        //after...
+//        oldDistance = newDistance;
+//        roundHeartrateTotal = 0;
+//        roundHeartrateCount = 0;
+//        roundHeartrate = 0;
 
         //ROUNDS
         //WRITE END OF ROUND DATA
-        Log.i(TAG, "fbWriteNewRound: ");
-        String roundURL = "rounds/" + fbCurrentDate;
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
-        // Creating new user node, which returns the unique key value
-        // new user node would be /users/$userid/
-        String userId = mDatabase.push().getKey();
-        // creating user object
-        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate), (currentRound - 1));
-        // pushing user to 'users' node using the userId
-        mDatabase.child(userId).setValue(round)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Write was successful!
-                        Log.i(TAG, "onSuccess: write ROUNDS was successful");
-                        //fbWriteNewTotal();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Write failed
-                        Log.i(TAG, "onFailure: write ROUNDS failed");
-                    }
-                });
+//        Log.i(TAG, "fbWriteNewRound: ");
+//        String roundURL = "rounds/" + fbCurrentDate;
+//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
+//        // Creating new user node, which returns the unique key value
+//        // new user node would be /users/$userid/
+//        String userId = mDatabase.push().getKey();
+//        // creating user object
+//        Round round = new Round(settingsName, roundSpeed, roundHeartrate, returnScoreFromHeartrate(pastRoundHeartrate), (currentRound - 1));
+//        // pushing user to 'users' node using the userId
+//        mDatabase.child(userId).setValue(round)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        // Write was successful!
+//                        Log.i(TAG, "onSuccess: write ROUNDS was successful");
+//                        //fbWriteNewTotal();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        // Write failed
+//                        Log.i(TAG, "onFailure: write ROUNDS failed");
+//                    }
+//                });
 
         //TOTALS
-        Log.i(TAG, "fbWriteNewTotal: ");
-        //WRITE UPDATE TOTAL DATA
-        String totalsURL = "totals/" + fbCurrentDate + "/" + settingsName;
-        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
-        DecimalFormat df = new DecimalFormat("#.##");
-        Total total = new Total(settingsName, Double.valueOf(df.format(returnScoreFromHeartrate(averageHR))), Double.valueOf(df.format(geoAvgSpeed)));
-        mDatabaseTotals.setValue(total)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Write was successful!
-                        Log.i(TAG, "onSuccess: write TOTALS was successful");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Write failed
-                        Log.i(TAG, "onFailure: write TOTALS failed");
-                    }
-                });
-
-
-        if ((currentRound - 1) == 1) {
-
-            //REQUEST ROUND SPD LEADER
-            mDatabase.limitToLast(1).orderByChild("fb_SPD").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "onDataChange: ROUNDS");
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String name = ds.child("fb_timName").getValue(String.class);
-                        Double speed = ds.child("fb_SPD").getValue(Double.class);
-                        Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
-                        if (speed > 3) {
-                            //createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-                            //speakText("Fastest is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
-                        }
-//                        createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-//                        speakText("Fastest  is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
-                    }  //COMPLETED - READING EACH SNAP
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
-                }
-            });
-            //END READ ROUNDS FOR SPEED LEADER
-
-
-            //REQUEST TOTAL SPD LEADER
-            String totalsURLlistener = "totals/" + fbCurrentDate;
-            DatabaseReference mDatabaseTotalsListener = FirebaseDatabase.getInstance().getReference(totalsURLlistener);
-            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_speedTotal").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "onDataChange: TOTAL SPEED");
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String name = ds.child("fb_timName").getValue(String.class);
-                        Double speed = ds.child("a_speedTotal").getValue(Double.class);
-                        Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
-                        //createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
-                    }  //COMPLETED - READING EACH SNAP
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
-                }
-            });
-            //END READ TOTALS FOR SPEED LEADER
-
-            //REQUEST ROUND SCORE LEADER
-            mDatabase.limitToLast(1).orderByChild("fb_RND").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "onDataChange: ROUND SCORES");
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String name = ds.child("fb_timName").getValue(String.class);
-                        Double score = ds.child("fb_RND").getValue(Double.class);
-                        Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
-
+//        Log.i(TAG, "fbWriteNewTotal: ");
+//        //WRITE UPDATE TOTAL DATA
+//        String totalsURL = "totals/" + fbCurrentDate + "/" + settingsName;
+//        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        Total total = new Total(settingsName, Double.valueOf(df.format(returnScoreFromHeartrate(averageHR))), Double.valueOf(df.format(geoAvgSpeed)));
+//        mDatabaseTotals.setValue(total)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        // Write was successful!
+//                        Log.i(TAG, "onSuccess: write TOTALS was successful");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        // Write failed
+//                        Log.i(TAG, "onFailure: write TOTALS failed");
+//                    }
+//                });
+//
+//
+//        if ((currentRound - 1) == 1) {
+//
+//            //REQUEST ROUND SPD LEADER
+//            mDatabase.limitToLast(1).orderByChild("fb_SPD").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.i(TAG, "onDataChange: ROUNDS");
+//
+//                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                        String name = ds.child("fb_timName").getValue(String.class);
+//                        Double speed = ds.child("fb_SPD").getValue(Double.class);
+//                        Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+//                        if (speed > 3) {
+//                            //createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+//                            //speakText("Fastest is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+//                        }
+////                        createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+////                        speakText("Fastest  is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
+//                    }  //COMPLETED - READING EACH SNAP
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // Failed to read value
+//                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
+//                }
+//            });
+//            //END READ ROUNDS FOR SPEED LEADER
+//
+//
+//            //REQUEST TOTAL SPD LEADER
+//            String totalsURLlistener = "totals/" + fbCurrentDate;
+//            DatabaseReference mDatabaseTotalsListener = FirebaseDatabase.getInstance().getReference(totalsURLlistener);
+//            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_speedTotal").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.i(TAG, "onDataChange: TOTAL SPEED");
+//
+//                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                        String name = ds.child("fb_timName").getValue(String.class);
+//                        Double speed = ds.child("a_speedTotal").getValue(Double.class);
+//                        Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+//                        //createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
+//                    }  //COMPLETED - READING EACH SNAP
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // Failed to read value
+//                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
+//                }
+//            });
+//            //END READ TOTALS FOR SPEED LEADER
+//
+//            //REQUEST ROUND SCORE LEADER
+//            mDatabase.limitToLast(1).orderByChild("fb_RND").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.i(TAG, "onDataChange: ROUND SCORES");
+//
+//                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                        String name = ds.child("fb_timName").getValue(String.class);
+//                        Double score = ds.child("fb_RND").getValue(Double.class);
+//                        Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+//
+////                        if (score < 10) {
+////                            Log.i(TAG, "onDataChange: score too low to publish");
+////                            return;
+////                        } else {
+////                            createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+////                        }
+//
+//
+//                    }  //COMPLETED - READING EACH SNAP
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // Failed to read value
+//                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
+//                }
+//            });
+//            //END READ ROUNDS FOR SCORE LEADER
+//
+//            //REQUEST TOTALS SCORE LEADER
+//            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_scoreHRTotal").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.i(TAG, "onDataChange: TOTAL SCORE");
+//
+//                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                        String name = ds.child("fb_timName").getValue(String.class);
+//                        Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
+//
 //                        if (score < 10) {
 //                            Log.i(TAG, "onDataChange: score too low to publish");
 //                            return;
-//                        } else {
-//                            createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
 //                        }
-
-
-                    }  //COMPLETED - READING EACH SNAP
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
-                }
-            });
-            //END READ ROUNDS FOR SCORE LEADER
-
-            //REQUEST TOTALS SCORE LEADER
-            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_scoreHRTotal").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG, "onDataChange: TOTAL SCORE");
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String name = ds.child("fb_timName").getValue(String.class);
-                        Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
-
-                        if (score < 10) {
-                            Log.i(TAG, "onDataChange: score too low to publish");
-                            return;
-                        }
-
-                        Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
-                        //createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
-                    }  //COMPLETED - READING EACH SNAP
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Failed to read value
-                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
-                }
-            });
-            //END REQUEST TOTAL SCORE LEADER
-        } //ADD VALUE EVENT ONCE
+//
+//                        Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+//                        //createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
+//                    }  //COMPLETED - READING EACH SNAP
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // Failed to read value
+//                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
+//                }
+//            });
+//            //END REQUEST TOTAL SCORE LEADER
+//        } //ADD VALUE EVENT ONCE
     }  //END - ROUND END CALCULATE
 
 
@@ -1192,8 +1194,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 currentRound += 1;
                 Log.i(TAG, "round " + (currentRound - 1) + " complete");
                 //setMessageText("ROUND " + (currentRound));
-                roundEndCalculate();
+                //roundEndCalculate();
                 //PROCESS NEW ROUND
+                //no longer doing rounds...
             }
 
             if ((int) totalMillis / 1000 == 5) {
@@ -1323,7 +1326,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //TRY TO ENABLE MAPBOX LOCATIONS
                         Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
                         attemptToEnableMapboxLocationComponent();
-                        makeToast("ATTEMPT LOCATION TRACKING AGAIN");
+                        //makeToast("ATTEMPT LOCATION TRACKING AGAIN");
 //                        isTrackingDisabled = false;
                     }
                 }
@@ -1352,7 +1355,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setVisibility(View.VISIBLE);
+//                    mTextMessage.setVisibility(View.VISIBLE);
+                    mTextMessage.setVisibility(View.GONE);
                     //setMessageText("HOME");
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
@@ -1375,6 +1379,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
+                    mTextMessage.setVisibility(View.VISIBLE);
                     return true;
             }
             return false;
@@ -2448,7 +2453,7 @@ private Boolean collectCritPoints = false;
     public void clickAudio(View view) {
         Log.i(TAG, "clickAudio  " + settingsAudio);
 
-        listOnlineCrits();
+        //listOnlineCrits();
 
         runOnUiThread(new Runnable() {
             @Override
@@ -3301,7 +3306,8 @@ private Boolean collectCritPoints = false;
 
                     try {
 //                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
-                        mn.getSupportActionBar().setTitle(String.format("%.1f MPH", geoSpeed) + "  (" + settingsName + ")  " + String.format("%.1f MILES", geoDistance));
+
+                        mn.getSupportActionBar().setTitle(String.format("%.1f MPH", geoSpeed) + "  (" + Timer.metersTogo + ")  " + String.format("%.1f MILES", geoDistance));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

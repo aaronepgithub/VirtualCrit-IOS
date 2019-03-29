@@ -110,7 +110,7 @@ public final class Timer {
             //Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
             if (result  < 1 || (locationTime - oldLocationTime) < 1001) {
 //                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
-//                return;
+                return;
             }
 
             if (locationTime - oldLocationTime > 30000 || result > 150) { //30 SECONDS or 150 meters
@@ -135,6 +135,9 @@ public final class Timer {
             timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
             if (timerGeoSpeed < 0) {
                 timerGeoSpeed = 0;
+            }
+            if (timerGeoSpeed > 40) {
+                timerGeoSpeed = 40;
             }
 
             //USING QUICK METHOD FOR DISPLAY PURPOSES
@@ -218,7 +221,7 @@ public final class Timer {
             double disBetw = timerDistanceBetween(gpsLa, gpsLo, startLa, startLo);
             Log.i(TAG, "TEST FOR START: " + disBetw);
 
-            if (disBetw < 1000) {
+            if (disBetw < 100000) {
                 stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
                 metersTogo = String.valueOf((int) disBetw) + " MTG";
             }
