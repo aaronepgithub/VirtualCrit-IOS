@@ -155,7 +155,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 //        let n4: String = "FINISH"
 //        gpxNames.append(n4)
         
-        setFBListenRequest()
+        //setFBListenRequest()
     }
     
     // Use the default marker. See also: our view annotation or custom marker examples.
@@ -361,7 +361,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             round_bpmCount = 0
             round_bpmTotals = 0
             
-            postRoundData(rn: currentRound-1)
+            //postRoundData(rn: currentRound-1)
             
         }
         //END ROUND COMPLETE LOGIC
@@ -462,137 +462,137 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
     }
     
-    func postRoundData(rn: Int) {
-        print("post round data \(rn)")
-        let round_post = [
-            "a_calcDurationPost" : rn*settingsSecondsPerRound,
-            "a_scoreRoundLast" : (round_bpmScore*1000).rounded()/1000,
-            "a_speedRoundLast" : (round_speed*1000).rounded()/1000,
-            "fb_CAD" : 0,
-            "fb_Date" : todaysDateString,
-            "fb_DateNow" : todaysDateString,
-            "fb_HR" : (round_bpmAverage*1000).rounded()/1000,
-            "fb_RND" : (round_bpmScore*1000).rounded()/1000,
-            "fb_SPD" : (round_speed*1000).rounded()/1000,
-            "fb_maxHRTotal" : settingsMaxHR,
-            "fb_scoreHRRound" : (round_bpmScore*1000).rounded()/1000,
-            "fb_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
-            "fb_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
-            "fb_timAvgCADtotal" : 0,
-            "fb_timAvgHRtotal" : (round_bpmScore*1000).rounded()/1000,
-            "fb_timAvgSPDtotal" : (round_speed*1000).rounded()/1000,
-            "fb_timDistanceTraveled" : distance,
-            "fb_timGroup" : settingsActivityType,
-            "fb_timName" : settingsName,
-            "fb_timTeam" : "Square Pizza"
-            ] as [String : Any]
-        
-        
-        let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)")
-        refDB.childByAutoId().setValue(round_post) {
-            (error:Error?, ref:DatabaseReference) in
-            if let error = error {
-                print("Round Data could not be saved: \(error).")
-            } else {
-                print("Round Data saved successfully!")
-            }
-        }
-        
-        let totals_post = [
-            "a_calcDurationPost" : (currentRound-1) * 5,
-            "a_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
-            "a_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
-            "a_speedLast" : (round_speed*1000).rounded()/1000,
-            "a_speedTotal" : (round_speed*1000).rounded()/1000,
-            "fb_CAD" : 0,
-            "fb_Date" : todaysDateString,
-            "fb_DateNow" : todaysDateString,
-            "fb_maxHRTotal" : settingsMaxHR,
-            "fb_scoreHRRound" : (round_bpmScore*1000).rounded()/1000,
-            "fb_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
-            "fb_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
-            "fb_timAvgCADtotal" : 0,
-            "fb_timAvgHRtotal" : (round_bpmScore*1000).rounded()/1000,
-            "fb_timAvgSPDtotal" : (round_speed*1000).rounded()/1000,
-            "fb_timDistanceTraveled" : distance,
-            "fb_timGroup" : settingsActivityType,
-            "fb_timName" : settingsName,
-            "fb_timTeam" : "Square Pizza"
-            ] as [String : Any]
-        
-        let refDBT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(todaysDateString)/\(settingsName)")
-        refDBT.setValue(totals_post) {
-            (error:Error?, ref:DatabaseReference) in
-            if let error = error {
-                print("Totals Data could not be saved: \(error).")
-            } else {
-                print("Totals Data saved successfully!")
-            }
-        }
-        
-    
-    }
+//    func postRoundData(rn: Int) {
+//        print("post round data \(rn)")
+//        let round_post = [
+//            "a_calcDurationPost" : rn*settingsSecondsPerRound,
+//            "a_scoreRoundLast" : (round_bpmScore*1000).rounded()/1000,
+//            "a_speedRoundLast" : (round_speed*1000).rounded()/1000,
+//            "fb_CAD" : 0,
+//            "fb_Date" : todaysDateString,
+//            "fb_DateNow" : todaysDateString,
+//            "fb_HR" : (round_bpmAverage*1000).rounded()/1000,
+//            "fb_RND" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_SPD" : (round_speed*1000).rounded()/1000,
+//            "fb_maxHRTotal" : settingsMaxHR,
+//            "fb_scoreHRRound" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_timAvgCADtotal" : 0,
+//            "fb_timAvgHRtotal" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_timAvgSPDtotal" : (round_speed*1000).rounded()/1000,
+//            "fb_timDistanceTraveled" : distance,
+//            "fb_timGroup" : settingsActivityType,
+//            "fb_timName" : settingsName,
+//            "fb_timTeam" : "Square Pizza"
+//            ] as [String : Any]
+//
+//
+//        let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)")
+//        refDB.childByAutoId().setValue(round_post) {
+//            (error:Error?, ref:DatabaseReference) in
+//            if let error = error {
+//                print("Round Data could not be saved: \(error).")
+//            } else {
+//                print("Round Data saved successfully!")
+//            }
+//        }
+//
+//        let totals_post = [
+//            "a_calcDurationPost" : (currentRound-1) * 5,
+//            "a_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
+//            "a_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
+//            "a_speedLast" : (round_speed*1000).rounded()/1000,
+//            "a_speedTotal" : (round_speed*1000).rounded()/1000,
+//            "fb_CAD" : 0,
+//            "fb_Date" : todaysDateString,
+//            "fb_DateNow" : todaysDateString,
+//            "fb_maxHRTotal" : settingsMaxHR,
+//            "fb_scoreHRRound" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_scoreHRRoundLast" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_scoreHRTotal" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_timAvgCADtotal" : 0,
+//            "fb_timAvgHRtotal" : (round_bpmScore*1000).rounded()/1000,
+//            "fb_timAvgSPDtotal" : (round_speed*1000).rounded()/1000,
+//            "fb_timDistanceTraveled" : distance,
+//            "fb_timGroup" : settingsActivityType,
+//            "fb_timName" : settingsName,
+//            "fb_timTeam" : "Square Pizza"
+//            ] as [String : Any]
+//
+//        let refDBT  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/totals/\(todaysDateString)/\(settingsName)")
+//        refDBT.setValue(totals_post) {
+//            (error:Error?, ref:DatabaseReference) in
+//            if let error = error {
+//                print("Totals Data could not be saved: \(error).")
+//            } else {
+//                print("Totals Data saved successfully!")
+//            }
+//        }
+//
+//
+//    }
     
     
     
 
     var refHandle: UInt = 0
     var refHandleRoundSpeed: UInt = 1
-    func setFBListenRequest() {
-        print("set listen request")
-            //READ, ROUND, SCORE
-            let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)/")
-            //let ref = refDB.child(todaysDateString)
-            refHandle = refDB.queryLimited(toLast: 1).queryOrdered(byChild: "fb_RND").observe(DataEventType.value, with: { (snapshot) in
-                if ( snapshot.value is NSNull ) {
-                    print("no snapshot")
-                } else {
-                    print("has snapshot")
-                    _ = snapshot.value as? [String : AnyObject] ?? [:]
-                    for child in (snapshot.children) {
-                        print("round-score, have a child")
-                        let snap = child as! DataSnapshot //each child is a snapshot
-                        let dict = snap.value as! NSDictionary // the value is a dict
-                        let fbRND = dict["fb_RND"]!
-                        let fbNAME = dict["fb_timName"]!
-                        print("name, \(fbNAME).  rnd, \(fbRND)")
-                    }
-                }
-            })
-            print("refhandle \(refHandle)")
-            //end request round, score, leader
-        
-        //READ ROUND, SPEED
-            let refDBSpd  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
-            let refSpd = refDBSpd.child(todaysDateString)
-
-            refHandleRoundSpeed = refSpd.queryLimited(toLast: 1).queryOrdered(byChild: "fb_SPD").observe(DataEventType.value, with: { (snapshot) in
-                if ( snapshot.value is NSNull ) {
-                    print("no snapshot")
-                } else {
-                    _ = snapshot.value as? [String : AnyObject] ?? [:]
-                    for child in (snapshot.children) {
-                        print("round-speed, have a child")
-                        let snap = child as! DataSnapshot //each child is a snapshot
-                        let dict = snap.value as! NSDictionary // the value is a dict
-                        let fbSPD = dict["fb_SPD"]!
-                        let fbNAME = dict["fb_timName"]!
-                        print("name, \(fbNAME).  spd, \(fbSPD)")
-
-//                        let d = dict["fb_SPD"] as? Double ?? 0.0
-                        //REMOVE CLUTTER
-//                        if system.actualElapsedTime > 90 {
-//                            self.speakThis(spk: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
-//                            addValueToTimelineString(s: "NEW SPEED LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MPH")
-//                        }
-                        
-
-                    }
-                }
-            })
-            //end request round, speed, leader
-        
-    }
+//    func setFBListenRequest() {
+//        print("set listen request")
+//            //READ, ROUND, SCORE
+//            let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds/\(todaysDateString)/")
+//            //let ref = refDB.child(todaysDateString)
+//            refHandle = refDB.queryLimited(toLast: 1).queryOrdered(byChild: "fb_RND").observe(DataEventType.value, with: { (snapshot) in
+//                if ( snapshot.value is NSNull ) {
+//                    print("no snapshot")
+//                } else {
+//                    print("has snapshot")
+//                    _ = snapshot.value as? [String : AnyObject] ?? [:]
+//                    for child in (snapshot.children) {
+//                        print("round-score, have a child")
+//                        let snap = child as! DataSnapshot //each child is a snapshot
+//                        let dict = snap.value as! NSDictionary // the value is a dict
+//                        let fbRND = dict["fb_RND"]!
+//                        let fbNAME = dict["fb_timName"]!
+//                        print("name, \(fbNAME).  rnd, \(fbRND)")
+//                    }
+//                }
+//            })
+//            print("refhandle \(refHandle)")
+//            //end request round, score, leader
+//
+//        //READ ROUND, SPEED
+//            let refDBSpd  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/rounds")
+//            let refSpd = refDBSpd.child(todaysDateString)
+//
+//            refHandleRoundSpeed = refSpd.queryLimited(toLast: 1).queryOrdered(byChild: "fb_SPD").observe(DataEventType.value, with: { (snapshot) in
+//                if ( snapshot.value is NSNull ) {
+//                    print("no snapshot")
+//                } else {
+//                    _ = snapshot.value as? [String : AnyObject] ?? [:]
+//                    for child in (snapshot.children) {
+//                        print("round-speed, have a child")
+//                        let snap = child as! DataSnapshot //each child is a snapshot
+//                        let dict = snap.value as! NSDictionary // the value is a dict
+//                        let fbSPD = dict["fb_SPD"]!
+//                        let fbNAME = dict["fb_timName"]!
+//                        print("name, \(fbNAME).  spd, \(fbSPD)")
+//
+////                        let d = dict["fb_SPD"] as? Double ?? 0.0
+//                        //REMOVE CLUTTER
+////                        if system.actualElapsedTime > 90 {
+////                            self.speakThis(spk: "The Speed Leader is now, \(fbNAME),.  \(self.stringer1(dbl: d)) Miles Per Hour")
+////                            addValueToTimelineString(s: "NEW SPEED LEADER\n\(fbNAME)\n\(self.stringer1(dbl: d)) MPH")
+////                        }
+//
+//
+//                    }
+//                }
+//            })
+//            //end request round, speed, leader
+//
+//    }
     
     func speakThis(spk: String) {
         if settingsAudioStatus == "ON" {
@@ -601,7 +601,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     var arrWaypointTimes = [Int]()
-    var refHandleRace: UInt = 3
+    var refHandleRace: UInt = 0
     var activeRaceName: String = ""
     var activeRaceLeadersName: String = ""
     var activeRaceBestWaypointTimesArray = [Int]()
@@ -618,6 +618,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         if activeRaceName != "" {
             print("remove listener")
+            let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(activeRaceName)")
+            refDB.removeObserver(withHandle: refHandleRace)
+        }
+        if refHandleRace.description.count > 0 {
+            print("remove listener, because refHandleRace.description.count > 0")
             let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(activeRaceName)")
             refDB.removeObserver(withHandle: refHandleRace)
         }
@@ -684,6 +689,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         addValueToTimelineString(s:"\(race) IS LOADED.")
                         self.speakThis(spk: "\(race) IS LOADED.")
                         self.ifNotPaused(s: "\(race) IS LOADED.")
+                        self.tabBarController?.viewControllers?[0].tabBarItem.badgeValue = nil
+                        self.tabBarController?.viewControllers?[2].tabBarItem.badgeValue = nil
+                        self.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
                     } else {
                         var nl: String = ""
                         if raceStatusDisplay == "NOT LOADED" {
