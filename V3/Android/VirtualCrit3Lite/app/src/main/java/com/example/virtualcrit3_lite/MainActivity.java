@@ -741,10 +741,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
     private ValueEventListener valueEventListener;
+    private String oldRaceDataName;
 
 
     private void requestRaceData(String raceDataName) {
-
 
 
         Log.i(TAG, "fb request race data for " + raceDataName);
@@ -756,6 +756,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Log.i(TAG, "requestRaceData: remove old listner first");
             mDatabase.removeEventListener(valueEventListener);            
         }
+        if (oldRaceDataName != null) {
+            Log.i(TAG, "requestRaceData: remove old listner for: " + oldRaceDataName);
+            String raceURLremove = "race/" + oldRaceDataName;
+            DatabaseReference mDatabaseRemove = FirebaseDatabase.getInstance().getReference(raceURLremove);
+            mDatabaseRemove.removeEventListener(valueEventListener);
+        }
+
+        oldRaceDataName = raceDataName;
 
 
         //REQUEST RACE DATA
@@ -1356,7 +1364,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             switch (item.getItemId()) {
                 case R.id.navigation_home:
 //                    mTextMessage.setVisibility(View.VISIBLE);
-                    mTextMessage.setVisibility(View.GONE);
+                    //mTextMessage.setVisibility(View.GONE);
                     //setMessageText("HOME");
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
@@ -1365,13 +1373,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 case R.id.navigation_dashboard:
                     ll.setVisibility(View.VISIBLE);
                     sv.setVisibility(View.GONE);
-                    mTextMessage.setVisibility(View.GONE);
+                    //mTextMessage.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     return true;
                 case R.id.navigation_notifications:
                     ll.setVisibility(View.GONE);
                     sv.setVisibility(View.GONE);
-                    mTextMessage.setVisibility(View.GONE);
+                    //mTextMessage.setVisibility(View.GONE);
                     tl.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_settings:
@@ -1379,7 +1387,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     sv.setVisibility(View.VISIBLE);
-                    mTextMessage.setVisibility(View.VISIBLE);
+                    //mTextMessage.setVisibility(View.VISIBLE);
                     return true;
             }
             return false;
@@ -3307,7 +3315,7 @@ private Boolean collectCritPoints = false;
                     try {
 //                    getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
 
-                        mn.getSupportActionBar().setTitle(String.format("%.1f MPH", geoSpeed) + "  (" + Timer.metersTogo + ")  " + String.format("%.1f MILES", geoDistance));
+                        mn.getSupportActionBar().setTitle(String.format("%.1f MPH", geoSpeed) + "   " + Timer.metersTogo + "   " + String.format("%.1f MILES", geoDistance));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
