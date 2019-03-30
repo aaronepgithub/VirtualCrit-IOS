@@ -50,7 +50,7 @@ import com.google.android.gms.tasks.Task;
 public class LocationUpdatesService extends Service {
 
     private static final String PACKAGE_NAME =
-            "com.google.android.gms.location.sample.locationupdatesforegroundservice";
+            "com.virtualcrit.locationupdatesforegroundservice";
 
     private static final String TAG = LocationUpdatesService.class.getSimpleName();
 
