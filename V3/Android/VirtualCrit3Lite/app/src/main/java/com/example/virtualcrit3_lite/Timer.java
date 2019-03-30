@@ -220,10 +220,10 @@ public final class Timer {
             //NOT YET AT START
             double disBetw = timerDistanceBetween(gpsLa, gpsLo, startLa, startLo);
             Log.i(TAG, "TEST FOR START: " + disBetw);
+            metersTogo = String.valueOf((int) disBetw) + " MTG";
 
             if (disBetw < 100000) {
                 stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
-                metersTogo = String.valueOf((int) disBetw) + " MTG";
             }
 
             if (disBetw < checkDistanceValue) {  //WITHIN 150 METERS OF TARGET
@@ -270,6 +270,7 @@ public final class Timer {
         if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
             double disBetwMax = timerDistanceBetween(gpsLa, gpsLo, finishLa, finishLo);
             Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
+            metersTogo = String.valueOf((int) disBetwMax) + " MTG";
 
             if (disBetwMax < 1000) {
                 stringForSetMessage.add(String.valueOf((int) disBetwMax) + " METERS REMAIN");
@@ -375,6 +376,7 @@ public final class Timer {
 
         final double disBetw = timerDistanceBetween(gpsLa, gpsLo, Crit.critBuilderLatLng.get(currentWaypointCB).getLatitude(), Crit.critBuilderLatLng.get(currentWaypointCB).getLongitude());
         Log.i(TAG, "WAYPOINT TEST, WAIT FOR MATCH: " + disBetw);
+        metersTogo = String.valueOf((int) disBetw) + " MTG";
 
         //WAYPOINT MATCH
         if (disBetw < 1000) {
