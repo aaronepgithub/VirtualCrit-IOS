@@ -626,6 +626,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(activeRaceName)")
             refDB.removeObserver(withHandle: refHandleRace)
         }
+        
+        
         activeRaceName = rn
         let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(rn)")
         
