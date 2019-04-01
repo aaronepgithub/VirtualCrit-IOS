@@ -1328,16 +1328,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     }
                 }
 
-                if ((int) totalMillis / 1000 > 60 && (int) totalMillis / 1000 % 100 == 0)  {
-                    Log.i(TAG, "run: IF TRACKING IS BROKE, TRY TO ENABLE ENABLE MAPBOX LOCATIONS");
-                    if (isTrackingDisabled) {
-                        //TRY TO ENABLE MAPBOX LOCATIONS
-                        Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
-                        attemptToEnableMapboxLocationComponent();
-                        //makeToast("ATTEMPT LOCATION TRACKING AGAIN");
-//                        isTrackingDisabled = false;
-                    }
-                }
+//                if ((int) totalMillis / 1000 > 60 && (int) totalMillis / 1000 % 100 == 0)  {
+//                    Log.i(TAG, "run: IF TRACKING IS BROKE, TRY TO ENABLE ENABLE MAPBOX LOCATIONS");
+//                    if (isTrackingDisabled) {
+//                        //TRY TO ENABLE MAPBOX LOCATIONS
+//                        Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+//                        attemptToEnableMapboxLocationComponent();
+//                    }
+//                }
 
 
 
@@ -1369,6 +1367,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     ll.setVisibility(View.GONE);
                     tl.setVisibility(View.GONE);
                     sv.setVisibility(View.GONE);
+
+                    if (isTrackingDisabled) {
+                        Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                        attemptToEnableMapboxLocationComponent();
+                    }
+
                     return true;
                 case R.id.navigation_dashboard:
                     ll.setVisibility(View.VISIBLE);
@@ -2954,10 +2958,20 @@ private Boolean collectCritPoints = false;
             ortTview.setVisibility(View.GONE);
             ortTview2.setVisibility(View.GONE);
 
+            if (isTrackingDisabled) {
+                Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                attemptToEnableMapboxLocationComponent();
+            }
+
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
             ortTview.setVisibility(View.VISIBLE);
             ortTview2.setVisibility(View.VISIBLE);
+
+            if (isTrackingDisabled) {
+                Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                attemptToEnableMapboxLocationComponent();
+            }
         }
     }
 
