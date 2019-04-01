@@ -32,7 +32,9 @@ var showUserTrackingPath: Int = 0
 
 
 var coordsForBuilderCrit = [CLLocationCoordinate2D]()
+var coordsForBuilderCritNames = [String]()
 var collectCoordsInProgress: Bool = false
+var collectCoordsIsComplete: Bool = false
 
 var todaysDateString: String = "00000000"
 var useSimRide: Bool = false
@@ -273,11 +275,25 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         annotation.coordinate = coordinate
         annotation.title = "CRITPOINT"
         
+        //cbName = ""
+        print("calling getNameDialogForCB")
+        getNameDialogForCB()
+        
+        
         
         //CLEAR ARRAY TO START
         //IF A ROUTE IS COMPLETE, THEN CLEAR
         //IF USER IS FINISHED, SET BOOL TO FALSE
+        
+
+        
+        
         if collectCoordsInProgress == true {
+            if coordsForBuilderCritNames.count == 0 {
+                print("starting over, remove markers")
+                remMarkers()
+                coordsForBuilderCrit.removeAll()
+            }
             coordsForBuilderCrit.append(coordinate)
         }
         print("\(coordinate.latitude), \(coordinate.longitude)")
@@ -285,6 +301,69 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 
     }
 
+    //START GET CB NAME ON MAIN
+    var cbn: String = "CHECKPOINT"
+    func getNameDialogForCB() {
+        
+        var msgTxt: String = ""
+        if coordsForBuilderCritNames.count == 0 {
+            msgTxt = "ENTER THE CRIT NAME"}
+        else {
+            msgTxt = "ENTER CHECKPOINT NAME"
+        }
+        let alertController = UIAlertController(title: msgTxt, message: " ", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            
+            let name = alertController.textFields?[0].text
+            print("name: \(String(describing: name))")
+            self.cbn = name!.uppercased()
+            print ("self.cbn: \(self.cbn)")
+            
+            if self.cbn == "" || self.cbn.count < 2 {
+                self.cbn = "CHECKPOINT"
+                print ("self.cbn2: \(self.cbn)")
+                if coordsForBuilderCritNames.count == 0 {
+                    self.cbn = "VC\(todaysDateString)"
+                    print ("self.cbn2b: \(self.cbn)")
+                }
+            }
+            
+
+            
+            print ("self.cbn3: \(self.cbn)")
+            coordsForBuilderCritNames.append(self.cbn)
+            //self.valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
+            
+            
+
+        }
+        
+        let cancelAction = UIAlertAction(title: "FINISH", style: .cancel) { (_) in
+            //change to SETTINGS WHEN FINISHED tab
+            collectCoordsInProgress = false
+            //stay true until after processed on settings tab
+//            let name = alertController.textFields?[0].text
+//            self.cbName = name!.uppercased()
+//            print("cbName:  \(self.cbName)")
+//            coordsForBuilderCritNames.append(self.cbName)
+            coordsForBuilderCritNames.append("FINISH")
+            collectCoordsIsComplete = true
+            self.tabBarController?.selectedIndex = 1
+        }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "CHECKPOINT NAME"
+        }
+        
+        //adding the action to dialogbox
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        //finally presenting the dialog box
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     
     
     func startTimer() {

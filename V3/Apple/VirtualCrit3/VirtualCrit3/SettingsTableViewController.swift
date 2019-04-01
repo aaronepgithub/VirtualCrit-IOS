@@ -122,6 +122,14 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
             }
         }
         
+        if collectCoordsIsComplete == true {
+            collectCoordsInProgress = false
+            collectCoordsIsComplete = false
+            print("calling critBuilderCollectionComplete")
+            critBuilderCollectionComplete()
+        }
+
+        
         
     }
     
@@ -179,24 +187,36 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         case "14":
             print("case 14, builder, collectCoordsInProgress: \(collectCoordsInProgress)")
             //CHANGE UI ON CLICK
-            if collectCoordsInProgress == true {
-                //is true, set to false
-                print("set to false")
-                collectCoordsInProgress = false
-                //COLLECT FINISHED, CREATE THE CRIT
-                //CREATE NAMES AND WPTS...
-                print("COLLECT FINISHED, CREATE THE CRIT")
-                //valueCritBuilderFromMap.text = "COLLECTION COMPLETE"
-                critBuilderCollectionComplete()
-            } else {
-                //is false, set to true
-                print("set to true")
-                getNameDialogForCB()
-                collectCoordsInProgress = true
-                coordsForBuilderCrit.removeAll()
-                valueCritBuilderFromMap.text = "CLICK HERE WHEN COMPLETE"
-                print("CLEAR ARR, COLLECTION HAS STARTED")
-            }
+            
+            collectCoordsInProgress = true
+            coordsForBuilderCrit.removeAll()
+            coordsForBuilderCritNames.removeAll()
+            valueCritBuilderFromMap.text = "CLICK HERE WHEN COMPLETE"
+            print("CLEAR ARR, COLLECTION HAS STARTED")
+            getNameDialogForCB()
+//
+//
+//            if collectCoordsInProgress == true {
+//                //is true, set to false
+////                print("set to false")
+////                collectCoordsInProgress = false
+//                //COLLECT FINISHED, CREATE THE CRIT
+//                //CREATE NAMES AND WPTS...
+////                print("COLLECT FINISHED, CREATE THE CRIT")
+//                //valueCritBuilderFromMap.text = "COLLECTION COMPLETE"
+////                critBuilderCollectionComplete()
+//                //CHANGE LOGIC, USE TIMER TO CHECK VAR AND AUTO CHANGE TAB ON FINISH DIALOG
+//            } else {
+//                //is false, set to true
+//                print("set to true")
+//
+//                collectCoordsInProgress = true
+//                coordsForBuilderCrit.removeAll()
+//                coordsForBuilderCritNames.removeAll()
+//                valueCritBuilderFromMap.text = "CLICK HERE WHEN COMPLETE"
+//                print("CLEAR ARR, COLLECTION HAS STARTED")
+//                getNameDialogForCB()
+//            }
             
 
         case "15":
@@ -231,6 +251,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     
     func critBuilderCollectionComplete() {
 //        coordsForBuilderCrit
+        print("critBuilderCollectionComplete")
         let numberOfLocations = coordsForBuilderCrit.count
         if numberOfLocations < 2 {return}
         
@@ -240,27 +261,32 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         llPoints = ""
         llNames = ""
         
-        var i: Int = 1
+        for n in coordsForBuilderCritNames {
+            gpxNames.append(n)
+            llNames = "\(llNames)\(n),"
+        }
+        
+        //var i: Int = 1
         for c in coordsForBuilderCrit {
             wpts.append(c)
             
-            if cbName.count == 0 {return}
-            
-            if i == 1 {
-                gpxNames.append(self.cbName)
-                llNames = "\(self.cbName),"
-            } else {
-                gpxNames.append("Checkpoint")
-                llNames = "\(llNames)Checkpoint,"
-            }
+            //if cbName.count == 0 {return}
+//            if i == 1 {
+//                gpxNames.append(self.cbName)
+//                llNames = "\(self.cbName),"
+//            } else {
+//                gpxNames.append("Checkpoint")
+//                llNames = "\(llNames)Checkpoint,"
+//            }
             llPoints = "\(llPoints)\(c.latitude),\(c.longitude):"
             
-            i += 1
+//            i += 1
         }
         
-        gpxNames[gpxNames.count-1] = "FINISH"
+        //gpxNames[gpxNames.count-1] = "FINISH"
         
-        print("llNames: \(llNames)")
+//        print("llNames: \(llNames)")
+//        print("llPoints: \(llPoints)")
 
         if llPoints.last! == ":" {
             llPoints = String(llPoints.dropLast())
@@ -268,7 +294,7 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         if llNames.last! == "," {
             llNames = String(llNames.dropLast())
         }
-        llNames = llNames + " FINISH"
+        //llNames = llNames + " FINISH"
         
         
         print("llNames -  \(llNames)")
@@ -333,17 +359,11 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     var cbName = ""
     func getNameDialogForCB() {
         
+        let alertController = UIAlertController(title: "STARTING CRIT BUILDER", message: "TO ENTER CHECKPOINTS, HOLD YOUR FINGER ON EACH POINT ON THE MAP UNTIL MARKER APPEARS.", preferredStyle: .alert)
         
-        
-        let alertController = UIAlertController(title: "ENTER CRIT NAME", message: "TO ENTER CHECKPOINTS, VIEW MAP AND HOLD YOUR FINGER ON EACH POINT UNTIL MARKER APPEARS.  RETURN TO SETTINGS AND CLICK HERE WHEN FINISHED.\n\nENTER CRIT NAME", preferredStyle: .alert)
-        
-        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+        let confirmAction = UIAlertAction(title: "OK", style: .default) { (_) in
             
-            let name = alertController.textFields?[0].text
-            self.cbName = name!.uppercased()
-            print("cbName:  \(self.cbName)")
-            
-            self.valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
+            self.valueCritBuilderFromMap.text = "CRIT BUILDER STARTED"
             
             //change to map tab
             self.tabBarController?.selectedIndex = 0
@@ -351,9 +371,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
         
-        alertController.addTextField { (textField) in
-            textField.placeholder = "CRIT NAME"
-        }
+//        alertController.addTextField { (textField) in
+//            textField.placeholder = "CRIT NAME"
+//        }
         
         //adding the action to dialogbox
         alertController.addAction(confirmAction)
