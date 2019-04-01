@@ -165,6 +165,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         return nil
     }
     
+    var changeTrackingColor: Bool = false
+    
     func addUserTrackingPath() {
         print("addUserTrackingPath")
         mapView.delegate = self
@@ -247,17 +249,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
-        return 1.0
+        return 3.0
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         // Give our polyline a unique color by checking for its `title` property
-        if (annotation.title == "Crema to Council Crest" && annotation is MGLPolyline) {
-            // Mapbox cyan
-            return UIColor(red: 59/255, green: 178/255, blue: 208/255, alpha: 1)
+        
+        if showUserTrackingPath == 1 {
+            return .blue
         } else {
             return .red
         }
+        
+//        if (annotation.title == "Crema to Council Crest" && annotation is MGLPolyline) {
+//            // Mapbox cyan
+//            return UIColor(red: 59/255, green: 178/255, blue: 208/255, alpha: 1)
+//        } else {
+//            return .red
+//        }
     }
     
 
