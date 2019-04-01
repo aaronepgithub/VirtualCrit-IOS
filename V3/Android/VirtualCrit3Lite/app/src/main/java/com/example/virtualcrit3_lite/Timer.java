@@ -108,17 +108,33 @@ public final class Timer {
 
             //Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
             //Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
-            if (result  < 1 || (locationTime - oldLocationTime) < 1001) {
-//                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
+            if (result  < 1 || (locationTime - oldLocationTime) < 2001) {
+                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
+                //evaluateLocation(locationLat, locationLon);
+//                return;
+                Log.i(TAG, "calculateValues: Crit.critBuilderLatLng.size() " + Crit.critBuilderLatLng.size());
+                if (Crit.critBuilderLatLng.size() > 0) {
+                    Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+                    evaluateLocation(locationLat, locationLon);
+                    //stringForSetMessage.add(".");
+                }
                 return;
             }
 
-            if (locationTime - oldLocationTime > 30000 || result > 150) { //30 SECONDS or 150 meters
+            if (locationTime - oldLocationTime > 7000 || result > 150) { //7 SECONDS or 150 meters
                 Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
                 timerOldLocation = timerLocation;
+//                evaluateLocation(locationLat, locationLon);
+                if (Crit.critBuilderLatLng.size() > 0) {
+                    Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+                    evaluateLocation(locationLat, locationLon);
+                    //stringForSetMessage.add(".");
+                }
                 return;
+//                return;
             }
 
+            Log.i(TAG, "calculateValues: checks cleared, calc values");
             double gd = result * 0.000621371;
             timerGeoDistance += gd;
 
