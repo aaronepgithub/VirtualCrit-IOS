@@ -25,7 +25,7 @@ public final class Timer {
     private static Location timerLocation;
     private static Location timerOldLocation;
     private static double timerGeoDistance = 0.0;
-    private static double timerGeoSpeed;
+    private static double timerGeoSpeed = 0.0;
     private static double timerGeoAvgSpeed;
     private static double timerTotalTimeGeo = 0.0;
     public static ArrayList<Location> timerAllLocations = new ArrayList<>();
@@ -152,14 +152,18 @@ public final class Timer {
 
             //timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
             //USING QUICK METHOD FOR DISPLAY PURPOSES
+            double os = timerGeoSpeed;
 
-            if (timerLocation.getAccuracy() < 15) {
+            if (timerLocation.getAccuracy() < 20) {
                 timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 if (timerGeoSpeed < 0) {
                     timerGeoSpeed = 0;
                 }
                 if (timerGeoSpeed > 40) {
                     timerGeoSpeed = 40;
+                }
+                if (timerGeoSpeed == 0) {
+                    timerGeoSpeed = os;
                 }
             }
 
