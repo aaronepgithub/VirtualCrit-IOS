@@ -1227,6 +1227,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 makeToast("STARTING LOCATION TRACKING");
             }
 
+            if ((int) totalMillis / 1000 == 15) {
+                makeToast("STARTING LOCATION TRACKING");
+            }
+
 
             if ((int) totalMillis / 1000 > 12) {
                 //EVERY 12 SECONDS
@@ -1318,13 +1322,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 }
 
-                if ((int) totalMillis / 1000 == 30) {
-                    Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                if ((int) totalMillis / 1000 == 26) {
+                    Log.i(TAG, "run: 26 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
                     if (Timer.timerAllLocations.size() > 1) {
                         //TRY TO ENABLE MAPBOX LOCATIONS
                         Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
                         attemptToEnableMapboxLocationComponent();
-                        makeToast("ATTEMPT LOCATION TRACKING");
+                        makeToast("START FOLLOWING USER");
                     }
                 }
 
@@ -1465,7 +1469,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //        timerStart(getCurrentFocus());
         timerStart2();
 
-        createTimeline("LET'S GET STARTED", Timer.getCurrentTimeStamp());
+        createTimeline("LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
         setRandomUsernameOnStart();
         getSharedPrefs();
 
