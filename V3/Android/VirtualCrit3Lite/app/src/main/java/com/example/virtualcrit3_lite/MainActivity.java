@@ -1218,17 +1218,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Log.i(TAG, "at 10 sec: auto request updates");
                 //checkAndSetPermissions();
                 mService.requestLocationUpdates();
-                setMessageText("STARTING LOCATION TRACKING");
+//                setMessageText("STARTING LOCATION TRACKING");
+//                makeToast("STARTING LOCATION TRACKING");
             }
 
             if ((int) totalMillis / 1000 == 5) {
                 Log.i(TAG, "at 5 sec: auto request updates");
-                setMessageText("STARTING LOCATION TRACKING");
-                makeToast("STARTING LOCATION TRACKING");
+                setMessageText("REQUESTING LOCATION TRACKING");
+                makeToast("REQUESTING LOCATION TRACKING");
             }
 
             if ((int) totalMillis / 1000 == 15) {
                 makeToast("STARTING LOCATION TRACKING");
+                setMessageText("STARTING LOCATION TRACKING");
             }
 
 
@@ -1322,13 +1324,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 }
 
-                if ((int) totalMillis / 1000 == 26) {
-                    Log.i(TAG, "run: 26 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                if ((int) totalMillis / 1000 == 30) {
+                    Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
                     if (Timer.timerAllLocations.size() > 1) {
                         //TRY TO ENABLE MAPBOX LOCATIONS
                         Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
                         attemptToEnableMapboxLocationComponent();
                         makeToast("START FOLLOWING USER");
+                        setMessageText("START FOLLOWING USER");
                     }
                 }
 
