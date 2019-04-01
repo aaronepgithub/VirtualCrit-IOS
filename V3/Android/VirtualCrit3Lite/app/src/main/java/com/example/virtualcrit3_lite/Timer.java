@@ -121,7 +121,7 @@ public final class Timer {
                 return;
             }
 
-            if (locationTime - oldLocationTime > 7000 || result > 150) { //7 SECONDS or 150 meters
+            if (locationTime - oldLocationTime > 10000 || result > 150) { //10 SECONDS or 150 meters
                 Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
                 timerOldLocation = timerLocation;
 //                evaluateLocation(locationLat, locationLon);
@@ -133,6 +133,8 @@ public final class Timer {
                 return;
 //                return;
             }
+
+
 
             Log.i(TAG, "calculateValues: checks cleared, calc values");
             double gd = result * 0.000621371;
@@ -148,13 +150,21 @@ public final class Timer {
 //                return;
 //            }
 
-            timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
-            if (timerGeoSpeed < 0) {
-                timerGeoSpeed = 0;
+            //timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+            //USING QUICK METHOD FOR DISPLAY PURPOSES
+
+            if (timerLocation.getAccuracy() < 15) {
+                timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                if (timerGeoSpeed < 0) {
+                    timerGeoSpeed = 0;
+                }
+                if (timerGeoSpeed > 40) {
+                    timerGeoSpeed = 40;
+                }
             }
-            if (timerGeoSpeed > 40) {
-                timerGeoSpeed = 40;
-            }
+
+
+
 
             //USING QUICK METHOD FOR DISPLAY PURPOSES
             //timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
