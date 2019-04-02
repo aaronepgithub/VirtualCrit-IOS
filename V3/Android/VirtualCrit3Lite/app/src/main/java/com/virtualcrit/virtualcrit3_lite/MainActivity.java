@@ -31,6 +31,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ParcelUuid;
@@ -1205,16 +1206,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                makeToast("STARTING LOCATION TRACKING");
             }
 
-            if ((int) totalMillis / 1000 == 5) {
+            if ((int) totalMillis / 1000 == 3) {
                 Log.i(TAG, "at 5 sec: auto request updates");
-                setMessageText("REQUESTING LOCATION TRACKING");
-                makeToast("REQUESTING LOCATION TRACKING");
-            }
-
-            if ((int) totalMillis / 1000 == 15) {
-                makeToast("STARTING LOCATION TRACKING");
                 setMessageText("STARTING LOCATION TRACKING");
+                //makeToastLong("STARTING LOCATION TRACKING");
+                showToast("START LOCATION TRACKING");
             }
+//            if ((int) totalMillis / 1000 == 10) {
+//                Log.i(TAG, "at 5 sec: auto request updates");
+//                setMessageText("STARTING LOCATION TRACKING");
+//                makeToastLong("STARTING LOCATION TRACKING");
+//            }
+
 
 
             if ((int) totalMillis / 1000 > 12) {
@@ -1313,8 +1316,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //TRY TO ENABLE MAPBOX LOCATIONS
                         Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
                         attemptToEnableMapboxLocationComponent();
-                        makeToast("START FOLLOWING USER");
-                        setMessageText("START FOLLOWING USER");
+                        makeToastLong("START FOLLOWING USER, UPDATING MAP");
+                        setMessageText("START FOLLOWING USER, UPDATING MAP");
                     }
                 }
 
@@ -1920,6 +1923,35 @@ private Boolean collectCritPoints = false;
                 .show();
     }
 
+    private void makeToastLong(String s) {
+        Toast.makeText(getApplicationContext(),
+                s, Toast.LENGTH_LONG)
+                .show();
+    }
+
+    private Toast mToastToShow;
+    public void showToast(String s) {
+        // Set the toast and duration
+        int toastDurationInMilliSeconds = 27000;
+        mToastToShow = Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG);
+
+        // Set the countdown to display the toast
+        CountDownTimer toastCountDown;
+        toastCountDown = new CountDownTimer(toastDurationInMilliSeconds, 1000 /*Tick duration*/) {
+            public void onTick(long millisUntilFinished) {
+                mToastToShow.show();
+            }
+            public void onFinish() {
+                mToastToShow.cancel();
+            }
+        };
+
+        // Show the toast and starts the countdown
+        mToastToShow.show();
+        toastCountDown.start();
+    }
+
+
     private void toggleMapVisibility() {
         Log.i(TAG, "toggleMapVisibility: ");
         ScrollView sv = (ScrollView) findViewById(R.id.svSettings);
@@ -2165,7 +2197,7 @@ private Boolean collectCritPoints = false;
                     @Override
                     public void run() {
                         TextView mMsg = findViewById(R.id.valueLeaderMessage);
-                        mMsg.setText(s);
+                        mMsg.setText(s.toUpperCase());
                     }
                 });
 
