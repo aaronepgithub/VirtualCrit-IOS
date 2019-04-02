@@ -1,9 +1,6 @@
-package com.example.virtualcrit3_lite;
+package com.virtualcrit.virtualcrit3_lite;
 
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 public class Race {
 

@@ -1,6 +1,4 @@
-package com.example.virtualcrit3_lite;
-
-import android.location.Location;
+package com.virtualcrit.virtualcrit3_lite;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import java.util.ArrayList;

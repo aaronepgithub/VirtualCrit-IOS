@@ -1,4 +1,4 @@
-package com.example.virtualcrit3_lite;
+package com.virtualcrit.virtualcrit3_lite;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

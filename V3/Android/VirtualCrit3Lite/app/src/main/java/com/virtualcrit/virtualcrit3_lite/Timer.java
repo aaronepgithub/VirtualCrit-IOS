@@ -1,9 +1,8 @@
-package com.example.virtualcrit3_lite;
+package com.virtualcrit.virtualcrit3_lite;
 
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
@@ -11,8 +10,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.security.auth.login.LoginException;
 
 
 public final class Timer {
