@@ -1211,6 +1211,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 setMessageText("STARTING LOCATION TRACKER");
                 //makeToastLong("STARTING LOCATION TRACKING");
                 showToast("STARTING LOCATION TRACKER");
+//                makeToastLong("STARTING LOCATION TRACKER");
             }
             if ((int) totalMillis / 1000 == 3) {
                 Log.i(TAG, "at 3 sec: auto request updates");
