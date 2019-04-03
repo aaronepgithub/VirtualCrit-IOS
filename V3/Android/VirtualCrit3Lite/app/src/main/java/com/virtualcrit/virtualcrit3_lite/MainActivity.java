@@ -1206,17 +1206,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                makeToast("STARTING LOCATION TRACKING");
             }
 
-            if ((int) totalMillis / 1000 == 3) {
+            if ((int) totalMillis / 1000 == 7) {
                 Log.i(TAG, "at 5 sec: auto request updates");
-                setMessageText("STARTING LOCATION TRACKING");
+                setMessageText("STARTING LOCATION TRACKER");
                 //makeToastLong("STARTING LOCATION TRACKING");
-                showToast("START LOCATION TRACKING");
+                showToast("STARTING LOCATION TRACKER");
             }
-//            if ((int) totalMillis / 1000 == 10) {
-//                Log.i(TAG, "at 5 sec: auto request updates");
-//                setMessageText("STARTING LOCATION TRACKING");
-//                makeToastLong("STARTING LOCATION TRACKING");
-//            }
+            if ((int) totalMillis / 1000 == 3) {
+                Log.i(TAG, "at 3 sec: auto request updates");
+                setMessageText("LOADING MAP");
+                makeToastLong("LOADING MAP");
+            }
 
 
 
@@ -1932,7 +1932,7 @@ private Boolean collectCritPoints = false;
     private Toast mToastToShow;
     public void showToast(String s) {
         // Set the toast and duration
-        int toastDurationInMilliSeconds = 27000;
+        int toastDurationInMilliSeconds = 12000;
         mToastToShow = Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG);
 
         // Set the countdown to display the toast
