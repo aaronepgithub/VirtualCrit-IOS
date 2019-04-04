@@ -266,7 +266,7 @@ public final class Timer {
                 stringForSetMessage.add(String.valueOf((int) disBetw) + " METERS REMAIN");
             }
 
-            if (disBetw < checkDistanceValue) {  //WITHIN 150 METERS OF TARGET
+            if (disBetw < checkDistanceValue) {  //WITHIN xx METERS OF TARGET
                 Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
                 isRaceStarted = true;
@@ -363,7 +363,8 @@ public final class Timer {
 
                 //ADD FLAY STRING
                 String lm = Crit.getLeaderMessage();
-                //String lmLowerCase = Crit.getLeaderMessage();
+
+
                 String xText = "";
                 String xSpeak = "";
                 if (Timer.getBestRaceTime() < raceTime && bestRaceTime < 2147000000 && Timer.getBestRacerLeaderMessage() != null && Timer.getBestRacerName() != null && !Timer.getBestRacerName().equals("NEW")) {

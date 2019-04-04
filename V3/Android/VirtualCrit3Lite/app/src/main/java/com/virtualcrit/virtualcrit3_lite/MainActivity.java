@@ -845,7 +845,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     } else {
                         Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
 //                        post2 = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
-                        post2 = "\nUPDATE:  THE CRIT LEADER IS " + riderName + ".\n" + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".\n\n" + lm;
+                        post2 = "UPDATE:  THE CRIT LEADER IS " + riderName + ".\n" + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".\n\n" + lm;
                         //speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
                         //speakText(post2);
                         //createTimeline(post, Timer.getCurrentTimeStamp());
