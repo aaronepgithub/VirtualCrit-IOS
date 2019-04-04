@@ -18,6 +18,7 @@ public final class Timer {
     private static int status = 99;
 
     public static int checkDistanceValue = 150;
+    public static String checkSettingsSport = "BIKE";
 
     private static Location timerLocation;
     private static Location timerOldLocation;
@@ -230,6 +231,18 @@ public final class Timer {
     private static void evaluateLocation(final double gpsLa, final double gpsLo) {
         Log.i(TAG, "EVALUATE LOCATION");
         stringForSetMessage.add(".");
+
+        switch (checkSettingsSport) {
+            case "BIKE":
+                checkDistanceValue = 150;
+                break;
+            case "RUN":
+                checkDistanceValue = 100;
+                break;
+            case "ROW":
+                checkDistanceValue = 50;
+                break;
+        }
 
         double startLa = Crit.critBuilderLatLng.get(0).getLatitude();
         double startLo = Crit.critBuilderLatLng.get(0).getLongitude();

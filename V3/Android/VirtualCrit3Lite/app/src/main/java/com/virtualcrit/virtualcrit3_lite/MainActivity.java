@@ -164,11 +164,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
      * Returns the current state of the permissions needed.
      */
     private boolean checkPermissions() {
+        Log.i(TAG, "checkPermissions: ");
         return  PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     private void requestPermissions() {
+        Log.i(TAG, "requestPermissions: ");
+
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         boolean shouldProvideRationale =
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_FINE_LOCATION);
@@ -265,7 +271,46 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //    }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "onRequestPermissionResult " + requestCode + " " + Arrays.toString(permissions) + " " + Arrays.toString(grantResults));
+        //permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length <= 0) {
+                // If user interaction was interrupted, the permission request is cancelled and you
+                // receive empty arrays.
+                Log.i(TAG, "User interaction was cancelled.");
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted.
+                mService.requestLocationUpdates();
+            } else {
+                // Permission denied.
+                Log.i(TAG, "onRequestPermissionsResult: permission denied");
+//                setButtonsState(false);
+//                Snackbar.make(
+//                        findViewById(R.id.activity_main),
+//                        R.string.permission_denied_explanation,
+//                        Snackbar.LENGTH_INDEFINITE)
+//                        .setAction(R.string.settings, new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                // Build intent that displays the App settings screen.
+//                                Intent intent = new Intent();
+//                                intent.setAction(
+//                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                                Uri uri = Uri.fromParts("package",
+//                                        BuildConfig.APPLICATION_ID, null);
+//                                intent.setData(uri);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                startActivity(intent);
+//                            }
+//                        })
+//                        .show();
+            }
+        }
+    }
 
     /**
      * Receiver for broadcasts sent by {@link LocationUpdatesService}.
@@ -464,6 +509,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         settingsSport = sharedpreferences.getString(Sport, settingsSport);
         settingsMaxHeartrate = sharedpreferences.getInt(MaxHR, settingsMaxHeartrate);
         settingsLeaderMessage = sharedpreferences.getString(LeaderMsg, settingsLeaderMessage);
+        Timer.checkSettingsSport = settingsSport;
 
         Log.i(TAG, "getSharedPrefs: " + settingsName + settingsMaxHeartrate + settingsSport);
 
@@ -1191,33 +1237,57 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 //no longer doing rounds...
             }
 
-            if ((int) totalMillis / 1000 == 5) {
-                Log.i(TAG, "at 5 sec: auto request permissions");
-                checkAndSetPermissions();
-                //mService.requestLocationUpdates();
-
-            }
-
-            if ((int) totalMillis / 1000 == 10) {
-                Log.i(TAG, "at 10 sec: auto request updates");
-                //checkAndSetPermissions();
-                mService.requestLocationUpdates();
-//                setMessageText("STARTING LOCATION TRACKING");
-//                makeToast("STARTING LOCATION TRACKING");
-            }
-
-            if ((int) totalMillis / 1000 == 7) {
-                Log.i(TAG, "at 5 sec: auto request updates");
-                setMessageText("STARTING LOCATION TRACKER");
-                //makeToastLong("STARTING LOCATION TRACKING");
-                showToast("STARTING LOCATION TRACKER");
-//                makeToastLong("STARTING LOCATION TRACKER");
-            }
+            //LOC UPDATES REQUEST START
+            //MIGHT ADD BACK TO CHECK FOLLWING UPDATING PERMISSIONS
+            //TRY TO START AFTER UPDATING PERMISSIONS
+            //TRY TO AUTO START LOC TRACKER AFTER LOC SERVICE...
             if ((int) totalMillis / 1000 == 3) {
-                Log.i(TAG, "at 3 sec: auto request updates");
-                setMessageText("LOADING MAP");
-                makeToastLong("LOADING MAP");
+                Log.i(TAG, "at 3 sec: auto request permissions, need map style before calling request");
+                //checkAndSetPermissions();
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "onCreate: permission granted, request location updates here onCreate");
+                    mService.requestLocationUpdates();
+                } else {
+                    Log.i(TAG, "run: requestPermissions");
+                    requestPermissions();
+                }
+                
             }
+
+            if ((int) totalMillis / 1000 % 3 == 0) {
+                //Log.i(TAG, "run: 3 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                if (!isFistTimeLocationComponentEnabled) {
+                    Log.i(TAG, "run: still false, try again, will enable location component after we have locations...");
+                    if (Timer.timerAllLocations.size() > 0) {
+                        //TRY TO ENABLE MAPBOX LOCATIONS
+                        Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
+
+                        if (isStyleLoaded) {
+                            attemptToEnableMapboxLocationComponent();
+                            makeToastLong("START FOLLOWING USER, UPDATING MAP");
+                            setMessageText("START FOLLOWING USER, UPDATING MAP");
+                        }
+                    }
+                }
+            }
+//
+//            if ((int) totalMillis / 1000 == 5) {
+//                Log.i(TAG, "at 5 sec: auto request updates, should try this at a callback following setting...");
+//                mService.requestLocationUpdates();
+//            }
+            //LOC UPDATES REQUEST STOP
+
+//TOAST CAUSES A PROBLEM?
+//            if ((int) totalMillis / 1000 == 5) {
+//                Log.i(TAG, "at 5 sec: long toast");
+//                setMessageText("STARTING LOCATION TRACKER");
+//                showToast("STARTING LOCATION TRACKER");
+//            }
+//            if ((int) totalMillis / 1000 == 3) {
+//                Log.i(TAG, "at 3 sec: auto request updates");
+//                setMessageText("LOADING MAP");
+//                makeToastLong("LOADING MAP");
+//            }
 
 
 
@@ -1251,7 +1321,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 if ((int) totalMillis / 1000 % 5 == 0) {
                     //EVERY 5, TIMELINE AND SET MESSAGE
-                    //Log.i(TAG, "run: 2 SECOND UPDATE PUBLISH");
+                    //Log.i(TAG, "run: 5 SECOND UPDATE PUBLISH");
                     //Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
                     if (Timer.getStringForSetMessage().size() > 0) {
@@ -1311,16 +1381,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 }
 
-                if ((int) totalMillis / 1000 == 30) {
-                    Log.i(TAG, "run: 30 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
-                    if (Timer.timerAllLocations.size() > 1) {
-                        //TRY TO ENABLE MAPBOX LOCATIONS
-                        Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
-                        attemptToEnableMapboxLocationComponent();
-                        makeToastLong("START FOLLOWING USER, UPDATING MAP");
-                        setMessageText("START FOLLOWING USER, UPDATING MAP");
-                    }
-                }
+
 
 //                if ((int) totalMillis / 1000 > 60 && (int) totalMillis / 1000 % 100 == 0)  {
 //                    Log.i(TAG, "run: IF TRACKING IS BROKE, TRY TO ENABLE ENABLE MAPBOX LOCATIONS");
@@ -1456,12 +1517,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-//        timerStart(getCurrentFocus());
-        timerStart2();
 
-        createTimeline("LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
-        setRandomUsernameOnStart();
-        getSharedPrefs();
 
         engine = new TextToSpeech(this, this);
         //startGPS();
@@ -1472,8 +1528,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
         Crit.setRaceDate(Integer.valueOf(fbCurrentDate));
 
-//        boolean b = checkLocationPermissions();
-//        Log.i(TAG, "onCreate: checkLocationPermissions: " + checkLocationPermissions());
+
+
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -1487,8 +1543,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         Log.i(TAG, "onStyleLoaded: ");
-
-
+                        isStyleLoaded = true;
                         mapboxMap.addOnMapClickListener(new OnMapClickListener() {
                             @Override
                             public boolean onMapClick(@NonNull LatLng point) {
@@ -1506,13 +1561,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                 return false;
                             }
                         });
-
-
-
                     }
                 });
             }
         });
+
+
+        Log.i(TAG, "onCreate: callingTimerStart2");
+        timerStart2();
+
+        createTimeline("LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
+        setRandomUsernameOnStart();
+        getSharedPrefs();
 
 
     }
@@ -1521,6 +1581,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private boolean isRaceLoaded = false;
     private int raceNumber = 10;
     private boolean isTrackingDisabled = false;
+    private boolean isFistTimeLocationComponentEnabled = false;
+    private boolean isStyleLoaded = false;
 
 
     private boolean haveAttemptedToLoadMapboxLocationComponent = true;
@@ -1556,6 +1618,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 locationComponent.setRenderMode(RenderMode.COMPASS);
 
                 haveAttemptedToLoadMapboxLocationComponent = false;
+                isFistTimeLocationComponentEnabled = true;
 
                 locationComponent.addOnCameraTrackingChangedListener(new OnCameraTrackingChangedListener() {
                     @Override
@@ -2004,6 +2067,7 @@ private Boolean collectCritPoints = false;
                 Context.BIND_AUTO_CREATE);
 
 
+        Log.i(TAG, "onStart: try to auto requestLocationUpdates, not using the timer");
 
     }
 
@@ -2039,6 +2103,8 @@ private Boolean collectCritPoints = false;
     protected void onDestroy() {
         super.onDestroy();
         timerHandler.removeCallbacks(timerRunnable);
+
+
         mService.removeLocationUpdates();
         isDestroyed = true;
 
@@ -2116,7 +2182,7 @@ private Boolean collectCritPoints = false;
                 break;
         }
 
-
+        Timer.checkSettingsSport = settingsSport;
 
         runOnUiThread(new Runnable() {
             @Override
@@ -2571,9 +2637,9 @@ private Boolean collectCritPoints = false;
             case 0:
                 Log.i(TAG, "manageTimer: Start");
                 Timer.setStatus(0);
-                Toast.makeText(getApplicationContext(),
-                        "START", Toast.LENGTH_SHORT)
-                        .show();
+//                Toast.makeText(getApplicationContext(),
+//                        "STARTING", Toast.LENGTH_SHORT)
+//                        .show();
                 return;
             case 1:
                 Log.i(TAG, "manageTimer: Pause");
