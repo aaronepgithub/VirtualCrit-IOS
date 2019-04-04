@@ -364,16 +364,20 @@ public final class Timer {
                 //ADD FLAY STRING
                 String lm = Crit.getLeaderMessage();
                 //String lmLowerCase = Crit.getLeaderMessage();
+                String x = "";
+                if (Timer.getBestRaceTime() < raceTime && bestRaceTime < 2147000000 && Timer.getBestRacerLeaderMessage() != null && Timer.getBestRacerName() != null && !Timer.getBestRacerName().equals("NEW")) {
+                    x = "Sorry, " + Timer.getBestRacerName() + " is the leader and says..." + Timer.getBestRacerLeaderMessage() + ".";
+                }
 
 
 
-                Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s);
+                Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s + ", " + x);
 //                stringForSpeak.add("RACE COMPLETE. " + ss + ".  " + lm);
-                stringForSpeak.add("RACE COMPLETE. " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                stringForSpeak.add("RACE COMPLETE. " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + x);
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + x);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
-                stringForSetMessage.add("RACE FINISHED: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
+                stringForSetMessage.add("RACE COMPLETE: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 
                 //MAYBE CALL A ONETIME READ...
 
