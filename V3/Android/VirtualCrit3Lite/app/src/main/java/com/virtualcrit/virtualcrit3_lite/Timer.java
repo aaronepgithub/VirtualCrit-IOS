@@ -364,18 +364,20 @@ public final class Timer {
                 //ADD FLAY STRING
                 String lm = Crit.getLeaderMessage();
                 //String lmLowerCase = Crit.getLeaderMessage();
-                String x = "";
+                String xText = "";
+                String xSpeak = "";
                 if (Timer.getBestRaceTime() < raceTime && bestRaceTime < 2147000000 && Timer.getBestRacerLeaderMessage() != null && Timer.getBestRacerName() != null && !Timer.getBestRacerName().equals("NEW")) {
-                    x = "Sorry, " + Timer.getBestRacerName() + " is the leader and says..." + Timer.getBestRacerLeaderMessage() + ".";
+                    xText = "\nSorry, " + Timer.getBestRacerName() + " is still the leader and has a message for you.\n" + Timer.getBestRacerLeaderMessage();
+                    xSpeak = "Sorry, " + Timer.getBestRacerName() + " is still the leader and has a message for you.  " + Timer.getBestRacerLeaderMessage() + ".";
                 }
 
 
 
-                Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s + ", " + x);
+                Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s + ", " + xText);
 //                stringForSpeak.add("RACE COMPLETE. " + ss + ".  " + lm);
-                stringForSpeak.add("RACE COMPLETE. " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + x);
+                stringForSpeak.add("RACE COMPLETE. " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + xSpeak);
                 stringForPostRaceProcessing = raceName;
-                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + x);
+                stringForTimeline.add("RACE COMPLETE\n" + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + xText);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForSetMessage.add("RACE COMPLETE: " + getTimeStringFromMilliSecondsToDisplay((int) raceTime));
 

@@ -2304,6 +2304,7 @@ private Boolean collectCritPoints = false;
             public void onClick(DialogInterface dialog, int which) {
                 settingsName = input.getText().toString().toUpperCase();
                 displayName(settingsName);
+                Crit.setRacerName(settingsName);
                 setSharedPrefs();
                 try {
                     getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
@@ -2320,6 +2321,7 @@ private Boolean collectCritPoints = false;
                 int i1 = r.nextInt(9999 - 1001);
                 settingsName = settingsName + i1;
                 displayName(settingsName);
+                Crit.setRacerName(settingsName);
                 setSharedPrefs();
                 try {
                     getSupportActionBar().setTitle("VIRTUAL CRIT (" + settingsName + ")");
@@ -2545,6 +2547,7 @@ private Boolean collectCritPoints = false;
         int i1 = r.nextInt(9999 - 1001);
         settingsName = "TIM" + i1;
         displayName(settingsName);
+        Crit.setRacerName(settingsName);
 
     }
 
