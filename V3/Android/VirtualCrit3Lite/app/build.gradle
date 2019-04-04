@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.1.2'
-    implementation 'com.balsikandar.android:crashreporter:1.0.9'
+    debugImplementation 'com.balsikandar.android:crashreporter:1.0.9'
 
 
 }
