@@ -104,12 +104,12 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
     var timer = Timer()
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 2,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
-        print("SETTINGS Timer Started")
+        //print("SETTINGS Timer Started")
         
             
     }
     func stopTimer() {
-        print("SETTINGS Timer Stopped")
+        //print("SETTINGS Timer Stopped")
         timer.invalidate()
     }
     @objc func timerInterval() {

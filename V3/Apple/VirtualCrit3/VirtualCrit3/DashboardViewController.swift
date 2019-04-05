@@ -37,9 +37,9 @@ class DashboardViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
+            //print("Landscape")
         } else {
-            print("Portrait")
+            //print("Portrait")
         }
     }
     
@@ -71,7 +71,7 @@ class DashboardViewController: UIViewController {
     var timer = Timer()
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 2,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
-        print("DASH Timer Started")
+        //print("DASH Timer Started")
     }
     
     @objc func timerInterval() {
@@ -94,7 +94,7 @@ class DashboardViewController: UIViewController {
     }
     
     func stopTimer() {
-        print("DASH Timer Stopped")
+        //print("DASH Timer Stopped")
         timer.invalidate()
     }
     

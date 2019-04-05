@@ -173,12 +173,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         //rem all older markers
         if coords.count < 2 {
-            print("no coords, return")
+            //print("no coords, return")
             showUserTrackingPath = 0
             return
         }
         if wpts.count < 2 {
-            print("no wpts, return")
+            //print("no wpts, return")
             showUserTrackingPath = 0
             return
         }
@@ -199,10 +199,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func addMarker(cll : CLLocationCoordinate2D) {
-        print("Adding Markers")
+        //print("Adding Markers")
         
         if wpts.count < 2 {
-            print("no wpts, return")
+            //print("no wpts, return")
             showUserTrackingPath = 0
             return
         }
@@ -285,7 +285,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         annotation.title = "CRITPOINT"
         
         //cbName = ""
-        print("calling getNameDialogForCB")
+        //print("calling getNameDialogForCB")
         getNameDialogForCB()
         
         
@@ -305,7 +305,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             }
             coordsForBuilderCrit.append(coordinate)
         }
-        print("\(coordinate.latitude), \(coordinate.longitude)")
+        //print("\(coordinate.latitude), \(coordinate.longitude)")
         mapView.addAnnotation(annotation)
 
     }
@@ -325,22 +325,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let confirmAction = UIAlertAction(title: "OK", style: .default) { (_) in
             
             let name = alertController.textFields?[0].text
-            print("name: \(String(describing: name))")
+            //print("name: \(String(describing: name))")
             self.cbn = name!.uppercased()
-            print ("self.cbn: \(self.cbn)")
+            //print ("self.cbn: \(self.cbn)")
             
             if self.cbn == "" || self.cbn.count < 2 {
                 self.cbn = "CHECKPOINT"
-                print ("self.cbn2: \(self.cbn)")
+                //print ("self.cbn2: \(self.cbn)")
                 if coordsForBuilderCritNames.count == 0 {
                     self.cbn = "VC\(todaysDateString)"
-                    print ("self.cbn2b: \(self.cbn)")
+                    //print ("self.cbn2b: \(self.cbn)")
                 }
             }
             
 
             
-            print ("self.cbn3: \(self.cbn)")
+            //print ("self.cbn3: \(self.cbn)")
             coordsForBuilderCritNames.append(self.cbn)
             //self.valueCritBuilderFromMap.text = "CLICK HERE WHEN FINISHED"
             
@@ -418,7 +418,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         if (Int(system.actualElapsedTime) > (currentRound * settingsSecondsPerRound)) {
             currentRound += 1
-            print("New Round, #\(currentRound)")
+            //print("New Round, #\(currentRound)")
             
             //PROCESS NEW ROUND
             distanceAtRoundEnd = distance
@@ -466,9 +466,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //new race, start over
             //reset distance, timee, etc.
             if loadedRaceName.count > 2 {
-                print("loadedRaceName is not empty so reset")
+                //print("loadedRaceName is not empty so reset")
                 currentCritPoint = 0
-                print("reset race from critStatus at 0, currentCritPoint is 0")
+                //print("reset race from critStatus at 0, currentCritPoint is 0")
             } else {
                 print("just a fb update, currentCrit point is \(currentCritPoint)")
             }
@@ -476,7 +476,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             
             
             if wpts.count < 2 {
-                print("crit doesn't exist, return")
+                //print("crit doesn't exist, return")
                 raceStatusDisplay = "CRIT DOESN'T EXIST"
                 //activeRaceName = "NONE"
                 return
@@ -490,7 +490,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         if critStatus == 100 {
 
-            print("status == 100")
+            //print("status == 100")
             requestRaceData(rn: tempName)
             addValueToTimelineString(s: "LOADING \(tempName)")
             activeRaceBestWaypointTimesArray.removeAll()
@@ -499,12 +499,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
         if critStatus == 105 {
-            print("critStatus is 105, postRaceProcessingPreRace")
+            //print("critStatus is 105, postRaceProcessingPreRace")
             postRaceProcessingPreRace()
         }
         
         if critStatus == 101 {
-            print("status == 101, set critStatus to 0")
+            //print("status == 101, set critStatus to 0")
             gpxNames = finalNamesArr
             wpts = finalPointsArr
             critStatus = 0
@@ -516,7 +516,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             if gpxNames.first != nil {
                 critStatus = 0
                 remMarkers()
-                print("critStatus is 10, requestRaceData for \(gpxNames.first!)")
+                //print("critStatus is 10, requestRaceData for \(gpxNames.first!)")
                 requestRaceData(rn: gpxNames.first!)
             }
         }
@@ -699,18 +699,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     func requestRaceData(rn: String) {
         print("REQUEST RACE DATA")
         if activeRaceName == rn {
-            print("already have this being observed")
+            //print("already have this being observed")
             critStatus = 0
             currentCritPoint = 0
             return
         }
         if activeRaceName != "" {
-            print("remove listener")
+            //print("remove listener")
             let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(activeRaceName)")
             refDB.removeObserver(withHandle: refHandleRace)
         }
         if refHandleRace.description.count > 0 {
-            print("remove listener, because refHandleRace.description.count > 0")
+            //print("remove listener, because refHandleRace.description.count > 0")
             let refDB  = Database.database().reference(fromURL: "https://virtualcrit-47b94.firebaseio.com/race/\(activeRaceName)")
             refDB.removeObserver(withHandle: refHandleRace)
         }
@@ -737,7 +737,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 
                     if let lmString: String = lm as? String {
                         self.activeRaceLeaderMessage = lmString
-                        print("lmString: \(lmString)")
+                        //print("lmString: \(lmString)")
                     }
                     if self.activeRaceLeaderMessage == "[:]" {
                         self.activeRaceLeaderMessage = "FIRST TIMER"
@@ -745,9 +745,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     
                     
                     let rc: String = (race as? String)!
-                    print("rc: \(rc), loadedRaceName: \(loadedRaceName)")
+                    //print("rc: \(rc), loadedRaceName: \(loadedRaceName)")
                     if rc == loadedRaceName {
-                        print("rc == loadedRaceName, first fb observe msg so set loadedRaceName to null, loadedRaceName will be set again after a new crit is loaded")
+                        //print("rc == loadedRaceName, first fb observe msg so set loadedRaceName to null, loadedRaceName will be set again after a new crit is loaded")
                         loadedRaceName = ""
                     }
                     
@@ -1035,17 +1035,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         
         if distanceInMeters < checkDistanceValue {
-            print("match, currentCritPoint is \(currentCritPoint)")
-            print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
+            //print("match, currentCritPoint is \(currentCritPoint)")
+            //print("currentCritPoint \(currentCritPoint) of \(wpts.count-1)")
             tabBarController?.tabBar.items?[2].badgeValue = "\(currentCritPoint)"
             tabBarController?.tabBar.items?[3].badgeValue = "\(wpts.count-1)"
             critStatus = 2
             
             //race complete
             if wpts.count-1 == currentCritPoint {
-                print("race finished, reset  \(currentCritPoint) of \(wpts.count-1)")
+                //print("race finished, reset  \(currentCritPoint) of \(wpts.count-1)")
                 currentCritPoint = 0
-                print("race finished, currentCritPoint is 0")
+                //print("race finished, currentCritPoint is 0")
                 raceStatusDisplay = "RACE COMPLETE"
                 raceFinishTime = system.actualElapsedTime
                 raceDuration = raceFinishTime - raceStartTime  //seconds
@@ -1119,7 +1119,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             }
             
             //other checkpoint
-            print("race not at Start or Finish  \(currentCritPoint) of \(wpts.count-1)")
+            //print("race not at Start or Finish  \(currentCritPoint) of \(wpts.count-1)")
             var strComp = ""
             
             let currentCritPointTemp = currentCritPoint
@@ -1136,16 +1136,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 let w1: Int = timeToCurrentCritPointMilli
                 let w2: Int = activeRaceBestWaypointTimesArray[currentCritPointTemp-1] //milli
                 let wtimeCompare = (w1 - w2) / 1000  //seconds
-                print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
+                //print("W1, W2, wtimeCompare \(w1),\(w2),\(wtimeCompare)")
                 
                 if wtimeCompare > 0 {
                     strComp = "BEHIND \(activeRaceLeadersName) BY \(createTimeString(seconds: wtimeCompare)).\n"
                 } else {
                     strComp = "AHEAD OF \(activeRaceLeadersName) BY \(createTimeString(seconds: ((w2-w1) / 1000))).\n"
                 }
-                print(strComp)
-                print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
-                print("waypointTimesTimString: \(waypointTimesTimString)")
+                //print(strComp)
+                //print("activeRaceBestWaypointTimesArray: \(activeRaceBestWaypointTimesArray)")
+                //print("waypointTimesTimString: \(waypointTimesTimString)")
                 
                 tempstr = "ME VS THE BEST \(w1), \(w2) = \((w1-w2) / 1000)"
                 print("tempstr: \(tempstr)")
@@ -1420,7 +1420,7 @@ extension MainViewController: CLLocationManagerDelegate {
                         mapSpeed.text = "\(stringer1(dbl: speedQuick)) MPH"
                         mapDistance.text = "\(stringer1(dbl: distance)) MI"
                         
-                        print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
+                        //print("Speed: \(stringer1(dbl: speedQuick)), Distance: \(stringer1(dbl: distance))")
 
                     }
                     

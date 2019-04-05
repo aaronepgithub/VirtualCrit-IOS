@@ -134,7 +134,7 @@ class TimelineViewController: UIViewController {
     
     var timer = Timer()
     func startTimer() {
-        print("TL Timer Started")
+        //print("TL Timer Started")
         timer = Timer.scheduledTimer(timeInterval: 3,target: self,selector: #selector(timerInterval),userInfo: nil,repeats: true)
         
     }
@@ -163,7 +163,7 @@ class TimelineViewController: UIViewController {
     
     func stopTimer() {
         //print("Timer Stopped")
-        print("TL Timer Stopped")
+        //print("TL Timer Stopped")
         timer.invalidate()
     }
     
