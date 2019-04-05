@@ -444,34 +444,6 @@
                     android:text="185 MAX HR"
                     android:textAlignment="center" />
 
-                <!--<TextView-->
-                    <!--android:id="@+id/valueBluetoothDevice1"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="2"-->
-                    <!--android:layout_marginStart="12dp"-->
-                    <!--android:layout_marginEnd="12dp"-->
-                    <!--android:textAlignment="viewStart"-->
-                    <!--android:textStyle="bold" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/valueBluetoothDevice2"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="2"-->
-                    <!--android:visibility="invisible"-->
-                    <!--android:textAlignment="viewStart"-->
-                    <!--android:textStyle="bold" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/valueBluetoothDevice3"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="2"-->
-                    <!--android:visibility="invisible"-->
-                    <!--android:textAlignment="viewStart"-->
-                    <!--android:textStyle="bold" />-->
-
 
             </LinearLayout>
 
@@ -703,6 +675,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#444"></TableRow>
+
+
+
+
+            <!--T&C LINK-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnLinkTandC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:textAlignment="viewStart"
+                    android:onClick="clickLinkTandC"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#444"></TableRow>
+            <!--T&C LINK-->
+
 
             <!--<com.mapbox.mapboxsdk.maps.MapView-->
             <!--android:id="@+id/mapView"-->

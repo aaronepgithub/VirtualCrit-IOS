@@ -238,6 +238,9 @@ class SettingsTableViewController: UITableViewController, CBCentralManagerDelega
         case "20":
             print("case 20, startBluetooth")
             startBluetooth()
+        case "40":
+            print("case 40, launch T&C")
+            UIApplication.shared.openURL(URL(string: "https://www.virtualcrit.com/tandc.html")!)
         default:
             print("default")
          
