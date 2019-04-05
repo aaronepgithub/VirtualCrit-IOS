@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    
+
     public void clickLinkTandC(View view) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.virtualcrit.com/tandc.html")));
     }
