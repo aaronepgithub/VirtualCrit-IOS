@@ -15,17 +15,31 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>3.0.2</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth is used to connect to Heart Rate Monitors and present the date within the application.  No data is stored or used for other purposes.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Location is used to show the location on the map along with distance to the race checkpoints.  In addition, speed and distance are calculated and displayed to the user.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location is used to show the location on the map along with distance to the race checkpoints.  In addition, speed and distance are calculated and displayed to the user.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is used to show the location on the map along with distance to the race checkpoints.  In addition, speed and distance are calculated and displayed to the user.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 		<string>bluetooth-central</string>
 		<string>location</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -57,15 +71,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoiYWFyb25lcHMiLCJhIjoiY2pzNHJwZTNvMDg1MjQzb2JrcGpuYjF6NyJ9.sCgbrB62gmXDCjfC4zXm-Q</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Shows location on the map and used to calculate speed and distance for racing</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Shows location on the map and used to calculate speed and distance for racing</string>
-	<key>UIFileSharingEnabled</key>
-	<true/>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
 </dict>
 </plist>
