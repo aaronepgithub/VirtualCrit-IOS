@@ -39,7 +39,7 @@ public class Round {
     public Round(String fb_timName, Double fb_SPD, Double fb_HR, Double fb_RND, int RoundNumber) {
 
 
-        Log.i(TAG, "Round: " + fb_timName+"  "+ fb_SPD+"  "+fb_RND);
+        //Log.i(TAG, "Round: " + fb_timName+"  "+ fb_SPD+"  "+fb_RND);
 
         this.a_calcDurationPost = RoundNumber;
         this.a_scoreRoundLast = fb_RND;

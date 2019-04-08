@@ -28,7 +28,7 @@ public class Race {
             int l = 2147483646;
             this.raceTimeToComplete = (long) l;
         }
-        Log.i(TAG, "Race: raceTimeToComplete: " + this.raceTimeToComplete);
+        ////Log.i(TAG, "Race: raceTimeToComplete: " + this.raceTimeToComplete);
 
         this.raceDate = raceDate;
         this.waypointTimes = waypointTimes;

@@ -65,13 +65,13 @@ public final class Timer {
     public static String metersTogo = "";
 
     static void setTimerLocation(Location timerLocation) {
-        Log.i(TAG, "Location from Service: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
+        ////Log.i(TAG, "Location from Service: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
         Timer.timerLocation = timerLocation;
         calculateValues();
     }
 
     private static void calculateValues() {
-        Log.i(TAG, "calculateValues: timerLocation " + timerLocation.getProvider());
+        ////Log.i(TAG, "calculateValues: timerLocation " + timerLocation.getProvider());
 
         Timer.timerAllLocations.add(timerLocation);
 
@@ -91,7 +91,7 @@ public final class Timer {
 
 
         if (timerOldLocation == null) {
-            Log.i(TAG, "timerOldLocation: is null ");
+            ////Log.i(TAG, "timerOldLocation: is null ");
             timerOldLocation = timerLocation;
 
         } else {
@@ -104,15 +104,15 @@ public final class Timer {
             double result = timerDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
 
 
-            //Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
-            //Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
+            //////Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
+            //////Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
             if (result  < 1 || (locationTime - oldLocationTime) < 2001) {
-                Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
+                ////Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
                 //evaluateLocation(locationLat, locationLon);
 //                return;
-                Log.i(TAG, "calculateValues: Crit.critBuilderLatLng.size() " + Crit.critBuilderLatLng.size());
+                ////Log.i(TAG, "calculateValues: Crit.critBuilderLatLng.size() " + Crit.critBuilderLatLng.size());
                 if (Crit.critBuilderLatLng.size() > 0) {
-                    Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+                    ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
                     evaluateLocation(locationLat, locationLon);
                     //stringForSetMessage.add(".");
                 }
@@ -120,11 +120,11 @@ public final class Timer {
             }
 
             if (locationTime - oldLocationTime > 10000 || result > 150) { //10 SECONDS or 150 meters
-                Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
+                ////Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
                 timerOldLocation = timerLocation;
 //                evaluateLocation(locationLat, locationLon);
                 if (Crit.critBuilderLatLng.size() > 0) {
-                    Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+                    ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
                     evaluateLocation(locationLat, locationLon);
                     //stringForSetMessage.add(".");
                 }
@@ -134,7 +134,7 @@ public final class Timer {
 
 
 
-            Log.i(TAG, "calculateValues: checks cleared, calc values");
+            ////Log.i(TAG, "calculateValues: checks cleared, calc values");
             double gd = result * 0.000621371;
             timerGeoDistance += gd;
 
@@ -142,7 +142,7 @@ public final class Timer {
             long gt = (timerLocation.getTime() - timerOldLocation.getTime());  //MILLI
 
 //            if ((gd / ((double) gt / 1000 / 60 / 60)) < 0) {
-//                Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
+//                ////Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
 //                timerOldLocation = timerLocation;
 //                timerGeoDistance = timerGeoDistance - gd;
 //                return;
@@ -175,25 +175,25 @@ public final class Timer {
             double ttg = (double) timerTotalTimeGeo;  //IN MILLI
             timerGeoAvgSpeed = timerGeoDistance / (ttg / 1000.0 / 60.0 / 60.0);
             timerOldLocation = timerLocation;
-            Log.i(TAG, "onTimerLocationReceived: timer Speed, AvgSpeed, Distance, totalTime: " + timerGeoSpeed + ", " + timerGeoAvgSpeed + ", " + timerGeoDistance + ", " + timerTotalTimeGeo);
+            ////Log.i(TAG, "onTimerLocationReceived: timer Speed, AvgSpeed, Distance, totalTime: " + timerGeoSpeed + ", " + timerGeoAvgSpeed + ", " + timerGeoDistance + ", " + timerTotalTimeGeo);
         }
 
         if (Crit.critBuilderLatLng.size() > 0) {
-            Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+            ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
             evaluateLocation(locationLat, locationLon);
             //stringForSetMessage.add(".");
         }
 
 //        if (isCritBuilderIDActive) {
-//            Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
+//            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
 //            mapboxEvaluateLocationsCritID(locationLat, locationLon);
 //            return;
 //        }
 //        if (isCritBuilderActive) {
-//            Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
+//            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
 //            mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
 //        } else {
-//            Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
+//            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
 //            mapboxEvaluateLocations(locationLat, locationLon);
 //        }
 
@@ -229,7 +229,7 @@ public final class Timer {
 
 
     private static void evaluateLocation(final double gpsLa, final double gpsLo) {
-        Log.i(TAG, "EVALUATE LOCATION");
+        ////Log.i(TAG, "EVALUATE LOCATION");
         stringForSetMessage.add(".");
 
         switch (checkSettingsSport) {
@@ -255,11 +255,11 @@ public final class Timer {
         //TEST FOR START
         String postStart1 = "";
         String postStart2 = "";
-        Log.i(TAG, "evaluateLocation");
+        ////Log.i(TAG, "evaluateLocation");
         if (currentWaypointCB == 0 && !isRaceStarted) {
             //NOT YET AT START
             double disBetw = timerDistanceBetween(gpsLa, gpsLo, startLa, startLo);
-            Log.i(TAG, "TEST FOR START: " + disBetw);
+            ////Log.i(TAG, "TEST FOR START: " + disBetw);
             metersTogo = String.valueOf((int) disBetw) + " MTG";
 
             if (disBetw < 100000) {
@@ -267,7 +267,7 @@ public final class Timer {
             }
 
             if (disBetw < checkDistanceValue) {  //WITHIN xx METERS OF TARGET
-                Log.i(TAG, "STARTRACE!");
+                ////Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
                 isRaceStarted = true;
 
@@ -298,7 +298,7 @@ public final class Timer {
                 stringForSetMessage.add(raceName + ":  ARRIVED AT START");
                 stringForTimeline.add(postStart1 + postStart2);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
-                Log.i(TAG, "stringForTimeline " + stringForTimeline);
+                ////Log.i(TAG, "stringForTimeline " + stringForTimeline);
 
                 currentWaypointCB += 1;
             }
@@ -309,7 +309,7 @@ public final class Timer {
         //TEST FOR FINISH
         if (currentWaypointCB == maxWaypointCB && isRaceStarted) {
             double disBetwMax = timerDistanceBetween(gpsLa, gpsLo, finishLa, finishLo);
-            Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
+            ////Log.i(TAG, "TEST FOR FINISH: " + disBetwMax);
             metersTogo = String.valueOf((int) disBetwMax) + " MTG";
 
             if (disBetwMax < 1000) {
@@ -317,20 +317,20 @@ public final class Timer {
             }
 
             if (disBetwMax < checkDistanceValue) {
-                Log.i(TAG, "RACE FINISHED!");
+                ////Log.i(TAG, "RACE FINISHED!");
                 isRaceStarted = false;
                 currentWaypointCB = 0;
                 raceFinishTime = System.currentTimeMillis();
 
                 //raceTime is the duration of the race
                 long raceTime = raceFinishTime - raceStartTime;
-                Log.i(TAG, "CB raceTime: " + raceTime);
+                ////Log.i(TAG, "CB raceTime: " + raceTime);
 
                 raceTimesTim.add(raceTime);
                 waypointTimesTim.add(raceTime);
                 waypointTimesTimString += String.valueOf(raceTime);
 
-                Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
+                ////Log.i(TAG, "waypointTimesTimString:  " + waypointTimesTimString);
 
                 publishMe = new Race(Crit.getRacerName(), Crit.getRaceName(), raceTime, Crit.getRaceDate(), waypointTimesTimString, Timer.getWaypointPointsString(), Timer.getWaypointNamesString());
                 isTimeToPostRaceData = true;
@@ -356,7 +356,7 @@ public final class Timer {
                 }
 
                 if ( ((int) bestRaceTime - (int) raceTime) > (60*60*1000) ) {
-                    Log.i(TAG, "evaluateLocation: greater than an hour, don't show");
+                    ////Log.i(TAG, "evaluateLocation: greater than an hour, don't show");
                     s = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplay((int) bestRaceTime) + " BY " + bestRacerName;
                     ss = "THE FASTEST TIME IS " + Timer.getTimeStringFromMilliSecondsToDisplayToSpeak((int) bestRaceTime) + " BY " + bestRacerName;
                 }
@@ -374,7 +374,7 @@ public final class Timer {
 
 
 
-                Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s + ", " + xText);
+                ////Log.i(TAG, "RACE FINISHED  : " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + ".  " + s + ", " + xText);
 //                stringForSpeak.add("RACE COMPLETE. " + ss + ".  " + lm);
                 stringForSpeak.add("RACE COMPLETE. " + getTimeStringFromMilliSecondsToDisplay((int) raceTime) + xSpeak);
                 stringForPostRaceProcessing = raceName;
@@ -385,7 +385,7 @@ public final class Timer {
                 //MAYBE CALL A ONETIME READ...
 
                 //RESET
-                Log.i(TAG, "RESET RACE: ");
+                ////Log.i(TAG, "RESET RACE: ");
                 currentWaypointCB = 0;
                 raceStartTime = 0;
                 isRaceStarted = false;
@@ -397,7 +397,7 @@ public final class Timer {
 
         //NOT START OR FINISH
         if (isRaceStarted && currentWaypointCB > 0 && currentWaypointCB < maxWaypointCB) {
-            Log.i(TAG, "NOT START OR FINISH, START WAYPOINT TEST: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
+            ////Log.i(TAG, "NOT START OR FINISH, START WAYPOINT TEST: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
             waypointTest(gpsLa, gpsLo);
         }
 
@@ -410,19 +410,19 @@ public final class Timer {
 
     //START WAYPOINTTEST
     private static void waypointTest(double gpsLa, double gpsLo) {
-        Log.i(TAG, "waypointTest, current, max: " + currentWaypointCB + ", " + maxWaypointCB);
+        ////Log.i(TAG, "waypointTest, current, max: " + currentWaypointCB + ", " + maxWaypointCB);
 
         if (!isRaceStarted) {
-            Log.i(TAG, "waypointTest, race not started, return");
+            ////Log.i(TAG, "waypointTest, race not started, return");
             return;
         }
         if (currentWaypointCB >= maxWaypointCB) {
-            Log.i(TAG, "waypointTest, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
+            ////Log.i(TAG, "waypointTest, currentWaypointCB > maxCB, SHOULDN'T HAPPEN, RETURN");
             return;
         }
 
         final double disBetw = timerDistanceBetween(gpsLa, gpsLo, Crit.critBuilderLatLng.get(currentWaypointCB).getLatitude(), Crit.critBuilderLatLng.get(currentWaypointCB).getLongitude());
-        Log.i(TAG, "WAYPOINT TEST, WAIT FOR MATCH: " + disBetw);
+        ////Log.i(TAG, "WAYPOINT TEST, WAIT FOR MATCH: " + disBetw);
         metersTogo = String.valueOf((int) disBetw) + " MTG";
 
         //WAYPOINT MATCH
@@ -432,22 +432,22 @@ public final class Timer {
 
 
         if (disBetw < checkDistanceValue) {
-            Log.i(TAG, "WAYPOINT MATCH! " + (currentWaypointCB) + " OF " + (maxWaypointCB));
-            Log.i(TAG, "WAYPOINT MATCH NAME: " + Crit.critBuilderLatLngNames.get(currentWaypointCB));
+            ////Log.i(TAG, "WAYPOINT MATCH! " + (currentWaypointCB) + " OF " + (maxWaypointCB));
+            ////Log.i(TAG, "WAYPOINT MATCH NAME: " + Crit.critBuilderLatLngNames.get(currentWaypointCB));
             final int next = currentWaypointCB + 1;
 
-            Log.i(TAG, "NEW CURRENT WAYPOINTCB : " + currentWaypointCB);
+            ////Log.i(TAG, "NEW CURRENT WAYPOINTCB : " + currentWaypointCB);
 
 
 
             if ((currentWaypointCB) < maxWaypointCB) {
-                Log.i(TAG, "waypointTest: currentWaypointCB < maxWaypointCB..." + (currentWaypointCB) + "  maxWaypointCB  " + maxWaypointCB);
+                ////Log.i(TAG, "waypointTest: currentWaypointCB < maxWaypointCB..." + (currentWaypointCB) + "  maxWaypointCB  " + maxWaypointCB);
                 locationForNextMarker = Crit.critBuilderLatLng.get(next);
-                Log.i(TAG, "waypointTest: WAYPOINT MATCH, NEXT NAME: " + Crit.critBuilderLatLngNames.get(next));
+                ////Log.i(TAG, "waypointTest: WAYPOINT MATCH, NEXT NAME: " + Crit.critBuilderLatLngNames.get(next));
             }
 
             stringForSetMessage.add("RACE CHECKPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB));
-            Log.i(TAG, "waypointTest, raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
+            ////Log.i(TAG, "waypointTest, raceTime at WP: " + (System.currentTimeMillis() - raceStartTime));
             //EACH TIME IS ADDED
             waypointTimesTim.add(System.currentTimeMillis() - raceStartTime);
             waypointTimesTimString += String.valueOf(System.currentTimeMillis() - raceStartTime);
@@ -456,16 +456,16 @@ public final class Timer {
             String s1 = "";
             String s2 = "";
             if (waypointTimesBest.isEmpty()) {
-                Log.i(TAG, "waypointTimesBest is empty");
+                ////Log.i(TAG, "waypointTimesBest is empty");
             } else {
                 if (currentWaypointCB > 0) {
 
-                    Log.i(TAG, "waypointTestCB: waypointTimesBest, " + waypointTimesBest);
-                    Log.i(TAG, "waypointTestCB: waypointTimesTim, " + waypointTimesTim);
+                    ////Log.i(TAG, "waypointTestCB: waypointTimesBest, " + waypointTimesBest);
+                    ////Log.i(TAG, "waypointTestCB: waypointTimesTim, " + waypointTimesTim);
 
                     if ((waypointTimesBest.get(currentWaypointCB-1) > waypointTimesTim.get(currentWaypointCB-1))) {
                         long l = waypointTimesBest.get(currentWaypointCB-1) - waypointTimesTim.get(currentWaypointCB-1);
-                        Log.i(TAG, "waypointTest: long l " + l);
+                        ////Log.i(TAG, "waypointTest: long l " + l);
                         int i = (int) l;
                         if (i < 2000) {
                             s1 = "EVEN WITH THE LEADER " + bestRacerName;
@@ -491,13 +491,13 @@ public final class Timer {
                         }
 
                     }
-                    Log.i(TAG, "waypointTest: s1:  " + s1);
+                    ////Log.i(TAG, "waypointTest: s1:  " + s1);
                 }
             }
 
             if (currentWaypointCB == (maxWaypointCB-1)) {
-                Log.i(TAG, "waypointTest: NEXT WAYPOINT IS FINISH " + Crit.critBuilderLatLngNames.get(next));
-                Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB + " of " + maxWaypointCB);
+                ////Log.i(TAG, "waypointTest: NEXT WAYPOINT IS FINISH " + Crit.critBuilderLatLngNames.get(next));
+                ////Log.i(TAG, "waypointTest: next stop is finish, currentWaypointCB " + currentWaypointCB + " of " + maxWaypointCB);
                 locationForNextMarker = Crit.critBuilderLatLng.get(currentWaypointCB);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForTimeline.add("WAYPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB) + "\n" + Crit.critBuilderLatLngNames.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO FINISH");
@@ -505,13 +505,13 @@ public final class Timer {
 
             } else {
 
-                Log.i(TAG, "waypointTest: NEXT WAYPOINT IS NOT FINISH, currentwaypoint: " + currentWaypointCB);
+                ////Log.i(TAG, "waypointTest: NEXT WAYPOINT IS NOT FINISH, currentwaypoint: " + currentWaypointCB);
                 stringForTimelineTime.add(Timer.getCurrentTimeStamp());
                 stringForTimeline.add("WAYPOINT " + (currentWaypointCB) + " OF " + (maxWaypointCB) + "\n" + Crit.critBuilderLatLngNames.get(currentWaypointCB) + "\n" + s1 + "\nHEAD TO " + Crit.critBuilderLatLngNames.get(next));
                 stringForSpeak.add("WAYPOINT " + Crit.critBuilderLatLngNames.get(currentWaypointCB) + ".  NUMBER " + (currentWaypointCB) + " OF " + (maxWaypointCB) + ".  " + s2 + ".  HEAD TO " + Crit.critBuilderLatLngNames.get(next));
 
             }
-            Log.i(TAG, "waypointTestCB, END OF MATCH PROCESSING " + currentWaypointCB);
+            ////Log.i(TAG, "waypointTestCB, END OF MATCH PROCESSING " + currentWaypointCB);
 
             currentWaypointCB += 1;
 

@@ -126,7 +126,7 @@ public class LocationUpdatesService extends Service {
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 onNewLocation(locationResult.getLastLocation());
-                Log.i(TAG, "onLocationResult: NEW LOCATION");
+                //Log.i(TAG, "onLocationResult: NEW LOCATION");
             }
         };
 
@@ -152,7 +152,7 @@ public class LocationUpdatesService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Service started");
+        //Log.i(TAG, "Service started");
         boolean startedFromNotification = intent.getBooleanExtra(EXTRA_STARTED_FROM_NOTIFICATION,
                 false);
 
@@ -176,7 +176,7 @@ public class LocationUpdatesService extends Service {
         // Called when a client (MainActivity in case of this sample) comes to the foreground
         // and binds with this service. The service should cease to be a foreground service
         // when that happens.
-        Log.i(TAG, "in onBind()");
+        //Log.i(TAG, "in onBind()");
         stopForeground(true);
         mChangingConfiguration = false;
         return mBinder;
@@ -187,7 +187,7 @@ public class LocationUpdatesService extends Service {
         // Called when a client (MainActivity in case of this sample) returns to the foreground
         // and binds once again with this service. The service should cease to be a foreground
         // service when that happens.
-        Log.i(TAG, "in onRebind()");
+        //Log.i(TAG, "in onRebind()");
         stopForeground(true);
         mChangingConfiguration = false;
         super.onRebind(intent);
@@ -195,13 +195,13 @@ public class LocationUpdatesService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Log.i(TAG, "Last client unbound from service");
+        //Log.i(TAG, "Last client unbound from service");
 
         // Called when the last client (MainActivity in case of this sample) unbinds from this
         // service. If this method is called due to a configuration change in MainActivity, we
         // do nothing. Otherwise, we make this service a foreground service.
         if (!mChangingConfiguration && Utils.requestingLocationUpdates(this)) {
-            Log.i(TAG, "Starting foreground service");
+            //Log.i(TAG, "Starting foreground service");
             /*
             // TODO(developer). If targeting O, use the following code.
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
@@ -226,7 +226,7 @@ public class LocationUpdatesService extends Service {
      * {@link SecurityException}.
      */
     public void requestLocationUpdates() {
-        Log.i(TAG, "Requesting location updates");
+        //Log.i(TAG, "Requesting location updates");
         Utils.setRequestingLocationUpdates(this, true);
         startService(new Intent(getApplicationContext(), LocationUpdatesService.class));
         try {
@@ -243,7 +243,7 @@ public class LocationUpdatesService extends Service {
      * {@link SecurityException}.
      */
     public void removeLocationUpdates() {
-        Log.i(TAG, "Removing location updates");
+        //Log.i(TAG, "Removing location updates");
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             Utils.setRequestingLocationUpdates(this, false);
@@ -313,7 +313,7 @@ public class LocationUpdatesService extends Service {
     }
 
     private void onNewLocation(Location location) {
-        Log.i(TAG, "New location: " + location);
+        //Log.i(TAG, "New location: " + location);
 
         mLocation = location;
 
@@ -322,7 +322,7 @@ public class LocationUpdatesService extends Service {
         intent.putExtra(EXTRA_LOCATION, location);
 
         //SEND LOCATION TO TIMER.SETTIMERLOCATION
-        Log.i(TAG, "onNewLocation: Timer.setLocation");
+        //Log.i(TAG, "onNewLocation: Timer.setLocation");
         Timer.setTimerLocation(location);
 
         //BROADCAST TO MAIN ACTIVITY
@@ -338,7 +338,7 @@ public class LocationUpdatesService extends Service {
      * Sets the location request parameters.
      */
     private void createLocationRequest() {
-        Log.i(TAG, "createLocationRequest: ");
+        //Log.i(TAG, "createLocationRequest: ");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);

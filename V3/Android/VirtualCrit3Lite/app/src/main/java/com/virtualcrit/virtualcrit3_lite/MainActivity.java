@@ -136,11 +136,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private Button mRemoveLocationUpdatesButton;
 
     public void clickGpsStart(View view) {
-        Log.i(TAG, "clickGpsStart: ");
+        ////Log.i(TAG, "clickGpsStart: ");
     }
 
     public void clickGpsStop(View view) {
-        Log.i(TAG, "clickGpsStop: ");
+        ////Log.i(TAG, "clickGpsStop: ");
     }
 
     // Monitors the state of the connection to the service.
@@ -164,13 +164,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
      * Returns the current state of the permissions needed.
      */
     private boolean checkPermissions() {
-        Log.i(TAG, "checkPermissions: ");
+        ////Log.i(TAG, "checkPermissions: ");
         return  PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     private void requestPermissions() {
-        Log.i(TAG, "requestPermissions: ");
+        ////Log.i(TAG, "requestPermissions: ");
 
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return;
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         // Provide an additional rationale to the user. This would happen if the user denied the
         // request previously, but didn't check the "Don't ask again" checkbox.
         if (shouldProvideRationale) {
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+            ////Log.i(TAG, "Displaying permission rationale to provide additional context.");
             Snackbar.make(
                     findViewById(R.id.activity_main),
                     R.string.permission_rationale,
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     })
                     .show();
         } else {
-            Log.i(TAG, "Requesting permission");
+            ////Log.i(TAG, "Requesting permission");
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     public void onclickLeaderMessage(View view) {
-        Log.i(TAG, "onclickLeaderMessage: ");
+        ////Log.i(TAG, "onclickLeaderMessage: ");
         inputFinishMessage();
     }
 
@@ -233,14 +233,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
 //                                           @NonNull int[] grantResults) {
-//        Log.i(TAG, "onRequestPermissionResult");
+//        //Log.i(TAG, "onRequestPermissionResult");
 //        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
 //
 //        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
 //            if (grantResults.length <= 0) {
 //                // If user interaction was interrupted, the permission request is cancelled and you
 //                // receive empty arrays.
-//                Log.i(TAG, "User interaction was cancelled.");
+//                //Log.i(TAG, "User interaction was cancelled.");
 //            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                // Permission was granted.
 //                mService.requestLocationUpdates();
@@ -274,20 +274,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.i(TAG, "onRequestPermissionResult " + requestCode + " " + Arrays.toString(permissions) + " " + Arrays.toString(grantResults));
+        //Log.i(TAG, "onRequestPermissionResult " + requestCode + " " + Arrays.toString(permissions) + " " + Arrays.toString(grantResults));
         //permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
-                Log.i(TAG, "User interaction was cancelled.");
+                //Log.i(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted.
                 mService.requestLocationUpdates();
             } else {
                 // Permission denied.
-                Log.i(TAG, "onRequestPermissionsResult: permission denied");
+                //Log.i(TAG, "onRequestPermissionsResult: permission denied");
 //                setButtonsState(false);
 //                Snackbar.make(
 //                        findViewById(R.id.activity_main),
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                Toast.makeText(MainActivity.this, Utils.getLocationText(location), Toast.LENGTH_SHORT).show();
 
                 //PROCESS ONLOCATION....
-                Log.i(TAG, "onReceive: MainActivityLocation, calling LocationReceived: " + location.getProvider() + ":  " + location.getLatitude() + "," + location.getLongitude());
+                //Log.i(TAG, "onReceive: MainActivityLocation, calling LocationReceived: " + location.getProvider() + ":  " + location.getLatitude() + "," + location.getLongitude());
                 //onMapboxLocationReceived(location);
                 onTimerLocationReceived();
 
@@ -507,7 +507,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
     private void getSharedPrefs() {
-        Log.i(TAG, "getSharedPrefs: ");
+        //Log.i(TAG, "getSharedPrefs: ");
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         settingsName = sharedpreferences.getString(Name, settingsName);
@@ -516,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         settingsLeaderMessage = sharedpreferences.getString(LeaderMsg, settingsLeaderMessage);
         Timer.checkSettingsSport = settingsSport;
 
-        Log.i(TAG, "getSharedPrefs: " + settingsName + settingsMaxHeartrate + settingsSport);
+        //Log.i(TAG, "getSharedPrefs: " + settingsName + settingsMaxHeartrate + settingsSport);
 
         displayName(settingsName);
         Crit.setRacerName(settingsName);
@@ -537,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void setSharedPrefs() {
-        Log.i(TAG, "setSharedPrefs: ");
+        //Log.i(TAG, "setSharedPrefs: ");
         SharedPreferences.Editor editor = sharedpreferences.edit();
 
         editor.putString(Name, settingsName);
@@ -562,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     //GPX
     public void startGPX() {
-        Log.i(TAG, "startGPX");
+        //Log.i(TAG, "startGPX");
         resetRace();
 
         isCritBuilderActive = false;
@@ -598,9 +598,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         ArrayList<Trk> trks = gpx.getTrks();
         trkpts = trks.get(0).getTrkseg();
         trkName = trks.get(0).getName().toUpperCase();
-        Log.i(TAG, "startGPX: trkName  " + trkName);
+        //Log.i(TAG, "startGPX: trkName  " + trkName);
         maxTrackpoint = trkpts.size();
-        Log.i(TAG, "trkpts size: " + maxTrackpoint);
+        //Log.i(TAG, "trkpts size: " + maxTrackpoint);
 
 
 
@@ -615,8 +615,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         llp += trkpts.get(0).getLat() + "," + trkpts.get(0).getLon() + ":";
         //add waypoints/names
         for (Wpt w : wpts) {
-            Log.i("Name of waypoint ", w.getName());
-            //Log.i("Coordinates ", String.valueOf(w.getLatLon()));
+            //Log.i("Name of waypoint ", w.getName());
+            ////Log.i("Coordinates ", String.valueOf(w.getLatLon()));
             critPointLocationLats.add(w.getLat());
             critPointLocationLons.add(w.getLon());
             critPointLocationNames.add(w.getName());
@@ -652,13 +652,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Crit.setRaceName(critPointLocationNames.get(0));
             createTimeline("CRIT GPX PROCESSED: " + critPointLocationNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
             //requestRaceData(critPointLocationNames.get(0));
-//            Log.i(TAG, "startGPX, GENERATE CRITID");
+//            //Log.i(TAG, "startGPX, GENERATE CRITID");
 //            postRaceProcessing(0);
 
             Integer rd = Integer.valueOf(fbCurrentDate);
             long longTime = 0;
             Race postR = new Race("NEW", trkName.toUpperCase(),longTime, rd, waypointTimesTimString, llp, lln);
-            Log.i(TAG, "after startGPX: postRaceProcessing " + postR.toString());
+            //Log.i(TAG, "after startGPX: postRaceProcessing " + postR.toString());
             postRaceProcessing(postR);
 
 
@@ -684,7 +684,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     //RACE FCTNS
     private void resetRace() {
-        Log.i(TAG, "resetRace: ");
+        //Log.i(TAG, "resetRace: ");
         int currentTrackpoint = 0;
         lastCheckpointTime = 0;
         raceStartTime = 0;
@@ -699,7 +699,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
     private void postRaceProcessing(final Race r) {
-        Log.i(TAG, "postRaceProcessing, Race r");
+        //Log.i(TAG, "postRaceProcessing, Race r");
 
         //Integer raceDate = Integer.valueOf(fbCurrentDate);
 //        String raceName = trkName;
@@ -707,10 +707,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         final String raceName = r.raceName;
 
         //Race r = new Race(settingsName, raceName, rt, raceDate, waypointTimesTimString, llp, lln);
-        Log.i(TAG, "postRaceProcessing: r");
+        //Log.i(TAG, "postRaceProcessing: r");
 
         //WRITE RACE DATA
-        Log.i(TAG, "fbWrite Race Data: ");
+        //Log.i(TAG, "fbWrite Race Data: ");
         String raceURL = "race/" + r.raceName;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
         // Creating new user node, which returns the unique key value
@@ -724,10 +724,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Write was successful!
-                        Log.i(TAG, "onSuccess: write RACE was successful");
+                        //Log.i(TAG, "onSuccess: write RACE was successful");
 
                         if (isCritGPXActive) {
-                            Log.i(TAG, "onSuccess: critGPXActive == true, requestRaceData for " + raceName);
+                            //Log.i(TAG, "onSuccess: critGPXActive == true, requestRaceData for " + raceName);
                             requestRaceData(raceName);
                             isCritGPXActive = false;
                         }
@@ -738,7 +738,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Write failed
-                        Log.i(TAG, "onFailure: write RACE failed");
+                        //Log.i(TAG, "onFailure: write RACE failed");
                     }
                 });
     }
@@ -756,20 +756,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             public void onDataChange(DataSnapshot oneTimeDS) {
 
                 for (DataSnapshot oneDS : oneTimeDS.getChildren()) {
-                    //Log.i(TAG, "onDataChange: have oneTime snapshot");
+                    ////Log.i(TAG, "onDataChange: have oneTime snapshot");
                     final String oT = oneDS.toString();
                     final String otKey = Objects.requireNonNull(oneDS.getKey()).toUpperCase();
-                    //Log.i(TAG, "onDataChange: otKey " + otKey);
+                    ////Log.i(TAG, "onDataChange: otKey " + otKey);
                     listOfCrits.add(otKey);
                 }
 
-                Log.i(TAG, "onDataChange: allCrits " + listOfCrits.toString());
+                //Log.i(TAG, "onDataChange: allCrits " + listOfCrits.toString());
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.i(TAG, "onCancelled: db error getting list");
+                //Log.i(TAG, "onCancelled: db error getting list");
             }
         });
     }
@@ -782,17 +782,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private void requestRaceData(String raceDataName) {
 
 
-        Log.i(TAG, "fb request race data for " + raceDataName);
+        //Log.i(TAG, "fb request race data for " + raceDataName);
         String raceURL = "race/" + raceDataName;
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(raceURL);
 
         //remove all listners
         if (valueEventListener != null) {
-            Log.i(TAG, "requestRaceData: remove old listner first");
+            //Log.i(TAG, "requestRaceData: remove old listner first");
             mDatabase.removeEventListener(valueEventListener);            
         }
         if (oldRaceDataName != null) {
-            Log.i(TAG, "requestRaceData: remove old listner for: " + oldRaceDataName);
+            //Log.i(TAG, "requestRaceData: remove old listner for: " + oldRaceDataName);
             String raceURLremove = "race/" + oldRaceDataName;
             DatabaseReference mDatabaseRemove = FirebaseDatabase.getInstance().getReference(raceURLremove);
             mDatabaseRemove.removeEventListener(valueEventListener);
@@ -805,10 +805,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         valueEventListener = mDatabase.limitToFirst(1).orderByChild("raceTimeToComplete").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange: READ RACE DATA");
+                //Log.i(TAG, "onDataChange: READ RACE DATA");
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.i(TAG, "onDataChange: have race data snapshot");
+                    //Log.i(TAG, "onDataChange: have race data snapshot");
                     final String raceName = ds.child("raceName").getValue(String.class);
                     String riderName = ds.child("riderName").getValue(String.class);
                     String raceWaypointTimes = ds.child("waypointTimes").getValue(String.class);
@@ -818,7 +818,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     String lm = ds.child("leaderMessage").getValue(String.class);
                     if (lm != null) {
-                        Log.i(TAG, "onDataChange: leadermessage: " + lm);
+                        //Log.i(TAG, "onDataChange: leadermessage: " + lm);
                         Timer.setBestRacerLeaderMessage(lm);
                     } else {
                         lm = "";
@@ -826,10 +826,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
                     if (raceName == null) {
-                        Log.i(TAG, "onDataChange: raceName is null");
+                        //Log.i(TAG, "onDataChange: raceName is null");
                         return;
                     }
-                    Log.i(TAG, "onDataChange: raceName " + raceName);
+                    //Log.i(TAG, "onDataChange: raceName " + raceName);
 
                     String post1 = "";
                     String post2 = "";
@@ -837,7 +837,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
                     if (Objects.equals(Crit.getRaceName(), raceName)) {
-                        Log.i(TAG, "onDataChange: same race name");
+                        //Log.i(TAG, "onDataChange: same race name");
                         //post1 = raceName.toUpperCase() + "  IS LOADED, PROCEED TO START.\n";
                     } else {
                         Crit.setRaceName(raceName);
@@ -846,9 +846,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
                     if (raceTimeToComplete == null || raceTimeToComplete == 2147483646) {
-                        Log.i(TAG, "onDataChange: no racetime, first racer");
+                        //Log.i(TAG, "onDataChange: no racetime, first racer");
                     } else {
-                        Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
+                        //Log.i(TAG, "onDataChange: RACE, LEADER, TIME: " + raceName + ",  " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".");
 //                        post2 = "ACTIVE CRIT UPDATE FOR \n" + raceName.toUpperCase() + ".\nCRIT LEADER IS: " + riderName + ",  " + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".";
                         post2 = "UPDATE:  THE CRIT LEADER IS " + riderName + ".\n" + getTimeStringFromMilliSecondsToDisplay(raceTimeToComplete) + ".\n\n" + lm;
                         //speakText("CRIT LEADER IS " + riderName + ".  FOR " + raceName);
@@ -856,7 +856,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         //createTimeline(post, Timer.getCurrentTimeStamp());
                     }
 
-                    Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
+                    //Log.i(TAG, "onDataChange: WAYPOINT Times: " + raceWaypointTimes);
 
                     String post3 = post1 + post2;
                     speakText(post3);
@@ -868,11 +868,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     String dwnloadNames = ds.child("llNames").getValue(String.class);
 
 
-                    Log.i(TAG, "onDataChange: dwnloadPoints " + dwnloadPoints);
-                    Log.i(TAG, "onDataChange: dwnloadNames " + dwnloadNames);
+                    //Log.i(TAG, "onDataChange: dwnloadPoints " + dwnloadPoints);
+                    //Log.i(TAG, "onDataChange: dwnloadNames " + dwnloadNames);
 
                     if (dwnloadPoints != null && dwnloadNames != null) {
-                        Log.i(TAG, "onDataChange: calling convertPointNamesToCrit, to call startFrom Id");
+                        //Log.i(TAG, "onDataChange: calling convertPointNamesToCrit, to call startFrom Id");
                         convertPointsNamesToCrit(dwnloadPoints, dwnloadNames);
                         Timer.setWaypointNamesString(dwnloadNames);
                         Timer.setWaypointPointsString(dwnloadPoints);
@@ -908,7 +908,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                             l = Long.valueOf(s);
                             longs.add(l);
                         }
-                        Log.i(TAG, "trackpointTest: longs: " + longs.toString());
+                        //Log.i(TAG, "trackpointTest: longs: " + longs.toString());
 
                         bestRaceTime = raceTimeToComplete;
                         waypointTimesBest = longs;
@@ -919,7 +919,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         Timer.setWaypointTimesBest(longs);
                         Timer.setBestRacerLeaderMessage(lm);
 
-                        Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
+                        //Log.i(TAG, "onDataChange: waypointTimesBest: " + waypointTimesBest.toString());
                     } else {
                         waypointTimesBest = new ArrayList<>();
                         Timer.setWaypointTimesBest(new ArrayList<Long>());
@@ -934,7 +934,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.i(TAG, "Failed to read value - RACE", databaseError.toException());
+                //Log.i(TAG, "Failed to read value - RACE", databaseError.toException());
             }
         });
     }
@@ -980,14 +980,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @SuppressLint("DefaultLocale")
     private void roundEndCalculate() {
-        Log.i(TAG, "roundEndCalculate: removed...");
+        //Log.i(TAG, "roundEndCalculate: removed...");
 //        double newDistance = geoDistance;
 //        double roundDistance = newDistance - oldDistance; //MILES
 //        double roundSpeed = roundDistance / ((double) settingsSecondsPerRound / 60.0 / 60.0);
 //        double pastRoundHeartrate = roundHeartrate;
 //
-//        Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
-//        Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
+//        //Log.i(TAG, "roundEndCalculate: roundHeartrate:  " + String.format("%.1f BPM", roundHeartrate));
+//        //Log.i(TAG, "roundEndCalculate: roundSpeed:  " + String.format("%.2f MPH", roundSpeed));
 //
 //        if (roundSpeed > bestRoundSpeed) {
 //            //vibrator600();
@@ -995,20 +995,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //            //createTimeline("MY FASTEST SPEED" + "\n[" + String.format("%.2f MPH", bestRoundSpeed) + "]", "");
 //        } else {
 //            //vibrator300();
-//            Log.i(TAG, "roundEndCalculate: not the best");
+//            //Log.i(TAG, "roundEndCalculate: not the best");
 //        }
 //        if (returnScoreFromHeartrate(roundHeartrate) > bestRoundScore) {
 //            bestRoundScore = returnScoreFromHeartrate(roundHeartrate);
 ////            createTimeline("HIGHEST SCORE" + "  [" + String.format("%.2f", bestRoundScore) + "]", "");
 //        } else {
-//            Log.i(TAG, "roundEndCalculate: not the best");
+//            //Log.i(TAG, "roundEndCalculate: not the best");
 //        }
 //        if (roundHeartrate > bestRoundHeartrate) {
 //            bestRoundHeartrate = roundHeartrate;
 ////            createTimeline("MY HIGHEST HR" + "  [" + String.format("%.1f BPM", bestRoundHeartrate) + "]", "");
 //            //createTimeline("MY HIGHEST SCORE" + "\n[" + String.format("%.2f %%MAX", returnScoreFromHeartrate(bestRoundHeartrate)) + "]", "");
 //        } else {
-//            Log.i(TAG, "roundEndCalculate: not the best");
+//            //Log.i(TAG, "roundEndCalculate: not the best");
 //        }
 //        String s1 = "COMPLETED ROUND: " + (currentRound - 1);
 //        String s2 = "\nSPEED: " + String.format("%.2f MPH", roundSpeed);
@@ -1025,7 +1025,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 ////            createTimeline(s1 + s2 + s2x, Timer.getCurrentTimeStamp());
 ////        }
 ////        setMessageText("R" + (currentRound - 1) + ": SPEED: " + String.format("%.1f MPH", roundSpeed) + ",  HR:  " + String.format("%.0f BPM", roundHeartrate));
-//        Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
+//        //Log.i(TAG, "roundEndCalculate: \n" + s1 + s2 + s2x + s3 + s3x);
 //
 //        if (roundHeartrateCount == 0) {
 //            showHR = false;
@@ -1041,7 +1041,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         //ROUNDS
         //WRITE END OF ROUND DATA
-//        Log.i(TAG, "fbWriteNewRound: ");
+//        //Log.i(TAG, "fbWriteNewRound: ");
 //        String roundURL = "rounds/" + fbCurrentDate;
 //        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(roundURL);
 //        // Creating new user node, which returns the unique key value
@@ -1055,7 +1055,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                    @Override
 //                    public void onSuccess(Void aVoid) {
 //                        // Write was successful!
-//                        Log.i(TAG, "onSuccess: write ROUNDS was successful");
+//                        //Log.i(TAG, "onSuccess: write ROUNDS was successful");
 //                        //fbWriteNewTotal();
 //                    }
 //                })
@@ -1063,12 +1063,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                    @Override
 //                    public void onFailure(@NonNull Exception e) {
 //                        // Write failed
-//                        Log.i(TAG, "onFailure: write ROUNDS failed");
+//                        //Log.i(TAG, "onFailure: write ROUNDS failed");
 //                    }
 //                });
 
         //TOTALS
-//        Log.i(TAG, "fbWriteNewTotal: ");
+//        //Log.i(TAG, "fbWriteNewTotal: ");
 //        //WRITE UPDATE TOTAL DATA
 //        String totalsURL = "totals/" + fbCurrentDate + "/" + settingsName;
 //        DatabaseReference mDatabaseTotals = FirebaseDatabase.getInstance().getReference(totalsURL);
@@ -1079,14 +1079,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                    @Override
 //                    public void onSuccess(Void aVoid) {
 //                        // Write was successful!
-//                        Log.i(TAG, "onSuccess: write TOTALS was successful");
+//                        //Log.i(TAG, "onSuccess: write TOTALS was successful");
 //                    }
 //                })
 //                .addOnFailureListener(new OnFailureListener() {
 //                    @Override
 //                    public void onFailure(@NonNull Exception e) {
 //                        // Write failed
-//                        Log.i(TAG, "onFailure: write TOTALS failed");
+//                        //Log.i(TAG, "onFailure: write TOTALS failed");
 //                    }
 //                });
 //
@@ -1097,12 +1097,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //            mDatabase.limitToLast(1).orderByChild("fb_SPD").addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.i(TAG, "onDataChange: ROUNDS");
+//                    //Log.i(TAG, "onDataChange: ROUNDS");
 //
 //                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
 //                        String name = ds.child("fb_timName").getValue(String.class);
 //                        Double speed = ds.child("fb_SPD").getValue(Double.class);
-//                        Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+//                        //Log.i(TAG, "onDataChange: ROUND LEADER: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 //                        if (speed > 3) {
 //                            //createTimeline("FASTEST \n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
 //                            //speakText("Fastest is now " + String.format(Locale.US, "%.1f ", speed) + " MPH.  " + "Recorded by " + name);
@@ -1115,7 +1115,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                @Override
 //                public void onCancelled(DatabaseError databaseError) {
 //                    // Failed to read value
-//                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
+//                    //Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
 //                }
 //            });
 //            //END READ ROUNDS FOR SPEED LEADER
@@ -1127,12 +1127,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_speedTotal").addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.i(TAG, "onDataChange: TOTAL SPEED");
+//                    //Log.i(TAG, "onDataChange: TOTAL SPEED");
 //
 //                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
 //                        String name = ds.child("fb_timName").getValue(String.class);
 //                        Double speed = ds.child("a_speedTotal").getValue(Double.class);
-//                        Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
+//                        //Log.i(TAG, "onDataChange: TOTAL LEADER SPEED:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f MPH", speed), name)));
 //                        //createTimeline("DAILY SPEED LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f MPH", speed), name)), "");
 //                    }  //COMPLETED - READING EACH SNAP
 //                }
@@ -1140,7 +1140,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                @Override
 //                public void onCancelled(DatabaseError databaseError) {
 //                    // Failed to read value
-//                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
+//                    //Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
 //                }
 //            });
 //            //END READ TOTALS FOR SPEED LEADER
@@ -1149,15 +1149,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //            mDatabase.limitToLast(1).orderByChild("fb_RND").addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.i(TAG, "onDataChange: ROUND SCORES");
+//                    //Log.i(TAG, "onDataChange: ROUND SCORES");
 //
 //                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
 //                        String name = ds.child("fb_timName").getValue(String.class);
 //                        Double score = ds.child("fb_RND").getValue(Double.class);
-//                        Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+//                        //Log.i(TAG, "onDataChange: ROUND LEADER SCORES: " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
 //
 ////                        if (score < 10) {
-////                            Log.i(TAG, "onDataChange: score too low to publish");
+////                            //Log.i(TAG, "onDataChange: score too low to publish");
 ////                            return;
 ////                        } else {
 ////                            createTimeline("BEST CRIT SCORE\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
@@ -1170,7 +1170,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                @Override
 //                public void onCancelled(DatabaseError databaseError) {
 //                    // Failed to read value
-//                    Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
+//                    //Log.i(TAG, "Failed to read value - ROUNDS", databaseError.toException());
 //                }
 //            });
 //            //END READ ROUNDS FOR SCORE LEADER
@@ -1179,18 +1179,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //            mDatabaseTotalsListener.limitToLast(1).orderByChild("a_scoreHRTotal").addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.i(TAG, "onDataChange: TOTAL SCORE");
+//                    //Log.i(TAG, "onDataChange: TOTAL SCORE");
 //
 //                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
 //                        String name = ds.child("fb_timName").getValue(String.class);
 //                        Double score = ds.child("a_scoreHRTotal").getValue(Double.class);
 //
 //                        if (score < 10) {
-//                            Log.i(TAG, "onDataChange: score too low to publish");
+//                            //Log.i(TAG, "onDataChange: score too low to publish");
 //                            return;
 //                        }
 //
-//                        Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
+//                        //Log.i(TAG, "onDataChange: TOTAL LEADER SCORE:  " + (String.format("%s.  %s", String.format(Locale.US, "%.2f %%MAX", score), name)));
 //                        //createTimeline("DAILY SCORE LEADER\n" + (String.format("%s  %s", String.format(Locale.US, "%.2f %%MAX", score), name)), "");
 //                    }  //COMPLETED - READING EACH SNAP
 //                }
@@ -1198,7 +1198,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //                @Override
 //                public void onCancelled(DatabaseError databaseError) {
 //                    // Failed to read value
-//                    Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
+//                    //Log.i(TAG, "Failed to read value - TOTALS", databaseError.toException());
 //                }
 //            });
 //            //END REQUEST TOTAL SCORE LEADER
@@ -1235,7 +1235,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             if (totalMillis > (currentRound * settingsSecondsPerRound * 1000)) {
                 currentRound += 1;
-                Log.i(TAG, "round " + (currentRound - 1) + " complete");
+                //Log.i(TAG, "round " + (currentRound - 1) + " complete");
                 //setMessageText("ROUND " + (currentRound));
                 //roundEndCalculate();
                 //PROCESS NEW ROUND
@@ -1247,25 +1247,25 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             //TRY TO START AFTER UPDATING PERMISSIONS
             //TRY TO AUTO START LOC TRACKER AFTER LOC SERVICE...
             if ((int) totalMillis / 1000 == 3) {
-                Log.i(TAG, "at 3 sec: auto request permissions, need map style before calling request");
+                //Log.i(TAG, "at 3 sec: auto request permissions, need map style before calling request");
                 //checkAndSetPermissions();
                 if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Log.i(TAG, "onCreate: permission granted, request location updates here onCreate");
+                    //Log.i(TAG, "onCreate: permission granted, request location updates here onCreate");
                     mService.requestLocationUpdates();
                 } else {
-                    Log.i(TAG, "run: requestPermissions");
+                    //Log.i(TAG, "run: requestPermissions");
                     requestPermissions();
                 }
                 
             }
 
             if ((int) totalMillis / 1000 % 3 == 0) {
-                //Log.i(TAG, "run: 3 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
+                ////Log.i(TAG, "run: 3 SECOND UPDATE ATTEMPT ENABLE MAPBOX LOCATIONS");
                 if (!isFistTimeLocationComponentEnabled) {
-                    Log.i(TAG, "run: still false, try again, will enable location component after we have locations...");
+                    //Log.i(TAG, "run: still false, try again, will enable location component after we have locations...");
                     if (Timer.timerAllLocations.size() > 0) {
                         //TRY TO ENABLE MAPBOX LOCATIONS
-                        Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
+                        //Log.i(TAG, "WE HAVE LOCATIONS, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT");
 
                         if (isStyleLoaded) {
                             attemptToEnableMapboxLocationComponent();
@@ -1277,19 +1277,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
 //
 //            if ((int) totalMillis / 1000 == 5) {
-//                Log.i(TAG, "at 5 sec: auto request updates, should try this at a callback following setting...");
+//                //Log.i(TAG, "at 5 sec: auto request updates, should try this at a callback following setting...");
 //                mService.requestLocationUpdates();
 //            }
             //LOC UPDATES REQUEST STOP
 
 //TOAST CAUSES A PROBLEM?
 //            if ((int) totalMillis / 1000 == 5) {
-//                Log.i(TAG, "at 5 sec: long toast");
+//                //Log.i(TAG, "at 5 sec: long toast");
 //                setMessageText("STARTING LOCATION TRACKER");
 //                showToast("STARTING LOCATION TRACKER");
 //            }
 //            if ((int) totalMillis / 1000 == 3) {
-//                Log.i(TAG, "at 3 sec: auto request updates");
+//                //Log.i(TAG, "at 3 sec: auto request updates");
 //                setMessageText("LOADING MAP");
 //                makeToastLong("LOADING MAP");
 //            }
@@ -1299,11 +1299,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             if ((int) totalMillis / 1000 > 12) {
                 //EVERY 12 SECONDS
                 //REALLY ONLY NEED TO DO THINGS WHILE PAUSED?
-//                Log.i(TAG, "run: 12 SECOND UPDATE");
+//                //Log.i(TAG, "run: 12 SECOND UPDATE");
 
 //                if ((int) totalMillis / 1000 % 12 == 0) {
 //                    //EVERY 12, UPDATE MAP
-//                    Log.i(TAG, "run: 12 SECOND UPDATE MAP");
+//                    //Log.i(TAG, "run: 12 SECOND UPDATE MAP");
 //                    if (Timer.trackerCoords.size() > 2) {
 //                        if (!isPaused) {
 //                            setMapboxStreets();
@@ -1314,10 +1314,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 if ((int) totalMillis / 1000 % 3 == 0) {
                     //EVERY 3, PUBLISH TO FB IF NEEDED
-                    //Log.i(TAG, "run: 3 SECOND UPDATE FB PUBLISH");
+                    ////Log.i(TAG, "run: 3 SECOND UPDATE FB PUBLISH");
                     if (Timer.isTimeToPostRaceData) {
-                        Log.i(TAG, "run: TIME TO PUBLISH DATA");
-                        Log.i(TAG, "run: is RaceStarted, publish");
+                        //Log.i(TAG, "run: TIME TO PUBLISH DATA");
+                        //Log.i(TAG, "run: is RaceStarted, publish");
                         final Race r = Timer.publishMe;
                         postRaceProcessing(r);
                         Timer.isTimeToPostRaceData = false;
@@ -1326,21 +1326,21 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 if ((int) totalMillis / 1000 % 5 == 0) {
                     //EVERY 5, TIMELINE AND SET MESSAGE
-                    //Log.i(TAG, "run: 5 SECOND UPDATE PUBLISH");
-                    //Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
+                    ////Log.i(TAG, "run: 5 SECOND UPDATE PUBLISH");
+                    ////Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
                     if (Timer.getStringForSetMessage().size() > 0) {
                         final ArrayList<String> s = Timer.getStringForSetMessage();
                         setMessageText(s.get(s.size()-1));
                         Timer.setStringForSetMessage(new ArrayList<String>());
                     } else {
-                        //Log.i(TAG, "run: NO MESAGE TO SET");
+                        ////Log.i(TAG, "run: NO MESAGE TO SET");
                         setMessageText(".");
                     }
 
-                    //Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
+                    ////Log.i(TAG, "size of Timer.getStringForTimeline + " + Timer.getStringForTimeline().size());
                     if (Timer.getStringForTimeline().size() > 0) {
-                        //Log.i(TAG, "run: PUBLISH TIMELINE");
+                        ////Log.i(TAG, "run: PUBLISH TIMELINE");
                         final ArrayList<String> s2 = Timer.getStringForTimeline();
                         final ArrayList<String> s3 = Timer.getStringForTimelineTime();
                         Timer.setStringForTimeline(new ArrayList<String>());
@@ -1359,7 +1359,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
                     } else {
-                        //Log.i(TAG, "run: NO TIMELINE TO CREATE");
+                        ////Log.i(TAG, "run: NO TIMELINE TO CREATE");
                     }
 
 
@@ -1369,10 +1369,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 //ASSUME TTS QUEUE WILL WORK
                 if ((int) totalMillis / 1000 % 5 == 0) {
-                    //Log.i(TAG, "run: 5 SECOND UPDATE REFRESH FOR SPEAKER");
+                    ////Log.i(TAG, "run: 5 SECOND UPDATE REFRESH FOR SPEAKER");
                     //FOR SPEAKER
                     if (Timer.getStringForSpeak().size() > 0) {
-                        Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
+                        //Log.i(TAG, "run: stringForSpeak " + Timer.getStringForSpeak().toString());
                         final ArrayList<String> s1 = Timer.getStringForSpeak();
                         Timer.setStringForSpeak(new ArrayList<String>());
                         //StringBuilder ns = new StringBuilder();
@@ -1389,10 +1389,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
 //                if ((int) totalMillis / 1000 > 60 && (int) totalMillis / 1000 % 100 == 0)  {
-//                    Log.i(TAG, "run: IF TRACKING IS BROKE, TRY TO ENABLE ENABLE MAPBOX LOCATIONS");
+//                    //Log.i(TAG, "run: IF TRACKING IS BROKE, TRY TO ENABLE ENABLE MAPBOX LOCATIONS");
 //                    if (isTrackingDisabled) {
 //                        //TRY TO ENABLE MAPBOX LOCATIONS
-//                        Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+//                        //Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
 //                        attemptToEnableMapboxLocationComponent();
 //                    }
 //                }
@@ -1429,7 +1429,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     sv.setVisibility(View.GONE);
 
                     if (isTrackingDisabled) {
-                        Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                        //Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
                         attemptToEnableMapboxLocationComponent();
                     }
 
@@ -1460,10 +1460,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
     private void checkAndSetPermissions() {
-        Log.i(TAG, "checkAndSetPermissions: ");
+        //Log.i(TAG, "checkAndSetPermissions: ");
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
+            //Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
 //            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //            builder.setTitle("This app needs location access");
 //            builder.setMessage("Please grant location access so this app can detect peripherals and use GPS to calculate speed and distance.");
@@ -1484,7 +1484,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             //requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
 
         } else {
-            Log.i(TAG, "LOCATION IS ALREADY ENABLED");
+            //Log.i(TAG, "LOCATION IS ALREADY ENABLED");
         }
         
         
@@ -1502,7 +1502,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_main);
 
-        //Log.i(TAG, "onCreate: checkAndSetPermissions");
+        ////Log.i(TAG, "onCreate: checkAndSetPermissions");
 
 
         myReceiver = new MyReceiver();
@@ -1547,12 +1547,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
-                        Log.i(TAG, "onStyleLoaded: ");
+                        //Log.i(TAG, "onStyleLoaded: ");
                         isStyleLoaded = true;
                         mapboxMap.addOnMapClickListener(new OnMapClickListener() {
                             @Override
                             public boolean onMapClick(@NonNull LatLng point) {
-                                Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
+                                //Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
                                 //String string = String.format(Locale.US, "User clicked at: %s", point.toString());
                                 //Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
 
@@ -1572,7 +1572,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         });
 
 
-        Log.i(TAG, "onCreate: callingTimerStart2");
+        //Log.i(TAG, "onCreate: callingTimerStart2");
         timerStart2();
 
         createTimeline("LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
@@ -1593,9 +1593,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private boolean haveAttemptedToLoadMapboxLocationComponent = true;
     //START attemptToEnableMapboxLocationComponent
     private void attemptToEnableMapboxLocationComponent() {
-        Log.i(TAG, "attemptToEnableMapboxLocationComponent");
+        //Log.i(TAG, "attemptToEnableMapboxLocationComponent");
         if (!haveAttemptedToLoadMapboxLocationComponent) {
-            Log.i(TAG, "attemptToEnableMapboxLocationComponent: DON'T TRY AGAIN, OR MABYE TRY NEXT MINUTE...");
+            //Log.i(TAG, "attemptToEnableMapboxLocationComponent: DON'T TRY AGAIN, OR MABYE TRY NEXT MINUTE...");
         }
 
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -1628,7 +1628,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 locationComponent.addOnCameraTrackingChangedListener(new OnCameraTrackingChangedListener() {
                     @Override
                     public void onCameraTrackingDismissed() {
-                        Log.i(TAG, "onCameraTrackingDismissed: ");
+                        //Log.i(TAG, "onCameraTrackingDismissed: ");
                         // Tracking has been dismissed
                         // Set the component's camera mode
                         isTrackingDisabled = true;
@@ -1636,7 +1636,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     @Override
                     public void onCameraTrackingChanged(int currentMode) {
-                        Log.i(TAG, "onCameraTrackingChanged: ");
+                        //Log.i(TAG, "onCameraTrackingChanged: ");
                         // CameraMode has been updated
                     }
                 });
@@ -1654,7 +1654,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     //start add line
     private void addMapboxLine() {
-        Log.i(TAG, "addMapboxLine: ");
+        //Log.i(TAG, "addMapboxLine: ");
         mbLineId += 1;
 
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -1709,7 +1709,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private void addAllMarkers() {
 
         raceNumber += 1;
-        Log.i(TAG, "addAllMarkers: ");
+        //Log.i(TAG, "addAllMarkers: ");
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -1732,7 +1732,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Style style = mapboxMap.getStyle();
 
                 if (raceNumber > 10) {
-                    Log.i(TAG, "onMapReady: remove source and layer");
+                    //Log.i(TAG, "onMapReady: remove source and layer");
                     style.removeSource("source-id2" + String.valueOf(raceNumber-1));
                     style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
 
@@ -1762,7 +1762,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
         raceNumber += 1;
-        Log.i(TAG, "addAnotherMarkerCB: ");
+        //Log.i(TAG, "addAnotherMarkerCB: ");
 
 
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -1782,7 +1782,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Style style = mapboxMap.getStyle();
 
                 if (raceNumber > 10) {
-                    Log.i(TAG, "onMapReady: remove source and layer");
+                    //Log.i(TAG, "onMapReady: remove source and layer");
                     style.removeSource("source-id2" + String.valueOf(raceNumber-1));
                     style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
 
@@ -1808,7 +1808,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private void addAnotherMarker(final double markerLat, final double markerLon) {
 
-        Log.i(TAG, "addAnotherMarker: ");
+        //Log.i(TAG, "addAnotherMarker: ");
         raceNumber += 1;
 
 
@@ -1829,7 +1829,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Style style = mapboxMap.getStyle();
 
                 if (raceNumber > 10) {
-                    Log.i(TAG, "onMapReady: remove source and layer");
+                    //Log.i(TAG, "onMapReady: remove source and layer");
                     style.removeSource("source-id2" + String.valueOf(raceNumber-1));
                     style.removeLayer("layer-id2" + String.valueOf(raceNumber-1));
 
@@ -1860,17 +1860,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         trkID += 1;
 
         if (!doSetUserTrackingLine) {
-            Log.i(TAG, "setMapboxStreets: doSetUserTrackingLine is false");
+            //Log.i(TAG, "setMapboxStreets: doSetUserTrackingLine is false");
             return;
         }
 
         if (Timer.trackerCoords.size() < 10) {
-            Log.i(TAG, "setMapboxStreets: NOT ENOUGH CORDS");
+            //Log.i(TAG, "setMapboxStreets: NOT ENOUGH CORDS");
             return;
         }
 
-        Log.i(TAG, "setMapboxStreets: ");
-        Log.i(TAG, "addMapboxLine for user tracking: ");
+        //Log.i(TAG, "setMapboxStreets: ");
+        //Log.i(TAG, "addMapboxLine for user tracking: ");
         //albumID += 1;
 
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -1963,7 +1963,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mapboxMap.addOnMapClickListener(new OnMapClickListener() {
             @Override
             public boolean onMapClick(@NonNull LatLng point) {
-                Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
+                //Log.i(TAG, "onMapClick: " + point.getLatitude() + ", " + point.getLongitude());
                 //String string = String.format(Locale.US, "User clicked at: %s", point.toString());
                 //Toast.makeText(MainActivity.this, string, Toast.LENGTH_LONG).show();
 
@@ -2022,7 +2022,7 @@ private Boolean collectCritPoints = false;
 
 
     private void toggleMapVisibility() {
-        Log.i(TAG, "toggleMapVisibility: ");
+        //Log.i(TAG, "toggleMapVisibility: ");
         ScrollView sv = (ScrollView) findViewById(R.id.svSettings);
 
         if (sv.getVisibility() == View.GONE) {
@@ -2072,14 +2072,14 @@ private Boolean collectCritPoints = false;
                 Context.BIND_AUTO_CREATE);
 
 
-        Log.i(TAG, "onStart: try to auto requestLocationUpdates, not using the timer");
+        //Log.i(TAG, "onStart: try to auto requestLocationUpdates, not using the timer");
 
     }
 
 
     @Override
     public void onStop() {
-        Log.i(TAG, "onStop: ");
+        //Log.i(TAG, "onStop: ");
         if (mBound) {
             // Unbind from the service. This signals to the service that this activity is no longer
             // in the foreground, and the service can respond by promoting itself to a foreground
@@ -2116,7 +2116,7 @@ private Boolean collectCritPoints = false;
 
         //Close the Text to Speech Library
         if(engine !=null){
-            Log.i(TAG, "onDestroy: shutdown tts");
+            //Log.i(TAG, "onDestroy: shutdown tts");
             engine.stop();
             engine.shutdown();
         }
@@ -2140,7 +2140,7 @@ private Boolean collectCritPoints = false;
         super.onResume();
         mapView.onResume();
 
-        Log.i(TAG, "onResume: ");
+        //Log.i(TAG, "onResume: ");
         loadSelectedGPX();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
@@ -2159,16 +2159,16 @@ private Boolean collectCritPoints = false;
         super.onPause();
         mapView.onPause();
 
-        Log.i(TAG, "onPause: ");
+        //Log.i(TAG, "onPause: ");
     }
 
     public void clickName(View view) {
-        Log.i(TAG, "clickName: ");
+        //Log.i(TAG, "clickName: ");
         inputName();
     }
 
     public void clickEditSport(View view) {
-        Log.i(TAG, "clickEditSport: " + settingsSport);
+        //Log.i(TAG, "clickEditSport: " + settingsSport);
         switch (settingsSport) {
             case "BIKE":
                 //b1.setText("RUN");
@@ -2200,7 +2200,7 @@ private Boolean collectCritPoints = false;
     }
 
     public void clickEditMaxHR(View view) {
-        Log.i(TAG, "clickEditMaxHR: ");
+        //Log.i(TAG, "clickEditMaxHR: ");
         switch (settingsMaxHeartrate) {
             case 185:
                 settingsMaxHeartrate = 190;
@@ -2406,10 +2406,10 @@ private Boolean collectCritPoints = false;
                     isCritBuilderActive = true;
                     isCritBuilderIDActive = false;
                     lln += "FINISH";
-                    Log.i(TAG, "collectCritPointName: FINISHED, POINTS:  " + critBuilderLatLngNames + critBuilderLatLng);
+                    //Log.i(TAG, "collectCritPointName: FINISHED, POINTS:  " + critBuilderLatLngNames + critBuilderLatLng);
 
                     //CREATE LINE
-                    Log.i(TAG, "onClick: create line from builder");
+                    //Log.i(TAG, "onClick: create line from builder");
                     addMapboxLine();
                     
                     resetCritPointLocationArrays();
@@ -2442,7 +2442,7 @@ private Boolean collectCritPoints = false;
                     //have to make this 0
                     long longTime = 0;
                     Race postR = new Race("NEW", trkName.toUpperCase(),longTime, rd, waypointTimesTimString, llp, lln);
-                    Log.i(TAG, "afterStartGPXFromCritBuilder: postRaceProcessing ");
+                    //Log.i(TAG, "afterStartGPXFromCritBuilder: postRaceProcessing ");
                     postRaceProcessing(postR);
                     dialog.cancel();
                 }
@@ -2460,7 +2460,7 @@ private Boolean collectCritPoints = false;
     private Boolean isCritBuilderIDActive = false;
 
     public void startGpxFromCritBuilder() {
-        Log.i(TAG, "startGpxFromCritBuilder: ");
+        //Log.i(TAG, "startGpxFromCritBuilder: ");
         isCritBuilderActive = true;
         isCritBuilderIDActive = false;
         maxWaypointCB = critBuilderLatLng.size();
@@ -2486,13 +2486,13 @@ private Boolean collectCritPoints = false;
         //addAnotherMarker(critBuilderLatLng.get(0).getLatitude(), critBuilderLatLng.get(0).getLongitude());
         //createTimeline("CRIT LOADED: " + critBuilderLatLngNames.get(0).toUpperCase(), Timer.getCurrentTimeStamp());
         requestRaceData(critBuilderLatLngNames.get(0).toUpperCase());
-        Log.i(TAG, "startGpxFromCritBuilder: critPointLocation arrays... " + critPointLocationNames + critPointLocationLons + critPointLocationLats);
+        //Log.i(TAG, "startGpxFromCritBuilder: critPointLocation arrays... " + critPointLocationNames + critPointLocationLons + critPointLocationLats);
 
     }
 
 
     public void startGpxFromCritID() {
-        Log.i(TAG, "startGpxFromCritID: ");
+        //Log.i(TAG, "startGpxFromCritID: ");
         isCritBuilderIDActive = true;
         isCritBuilderActive = false;
         maxWaypointCB = namesTemp.size();
@@ -2521,7 +2521,7 @@ private Boolean collectCritPoints = false;
 
     //FROM latTemp, lonTemp
     public void createRouteCoords() {
-        Log.i(TAG, "createRouteCoords: ADD TO critBuilderLatLng");
+        //Log.i(TAG, "createRouteCoords: ADD TO critBuilderLatLng");
 
         if (namesTemp.size() < 3) {return;}
 
@@ -2539,7 +2539,7 @@ private Boolean collectCritPoints = false;
         Crit.critBuilderLatLng = new ArrayList<>();
         Crit.critBuilderLatLng = critBuilderLatLng;
 
-        Log.i(TAG, "createRouteCoords: critBuilderLatLng\n" + critBuilderLatLng.toString());
+        //Log.i(TAG, "createRouteCoords: critBuilderLatLng\n" + critBuilderLatLng.toString());
         addMapboxLine();
 
     }
@@ -2560,7 +2560,7 @@ private Boolean collectCritPoints = false;
 
 
     public void clickAudio(View view) {
-        Log.i(TAG, "clickAudio  " + settingsAudio);
+        //Log.i(TAG, "clickAudio  " + settingsAudio);
 
         //listOnlineCrits();
 
@@ -2571,26 +2571,26 @@ private Boolean collectCritPoints = false;
                 if (!settingsAudio) {
                     b.setText("AUDIO:  ON");
                     settingsAudio = true;
-                    Log.i(TAG, "AUDIO: ON " + settingsAudio);
+                    //Log.i(TAG, "AUDIO: ON " + settingsAudio);
                     speakText("AUDIO ENABLED");
                 } else {
                     b.setText("AUDIO: OFF");
                     settingsAudio = false;
-                    Log.i(TAG, "AUDIO: OFF" + settingsAudio);
+                    //Log.i(TAG, "AUDIO: OFF" + settingsAudio);
                 }
             }
         });
     }
 
     public void clickGPS(View view) {
-        Log.i(TAG, "clickGPS: ");
+        //Log.i(TAG, "clickGPS: ");
     }
 
     private Boolean isTimerStarted = false;
     public void timerStart2() {
         if (!isTimerStarted) {
             isTimerStarted = true;
-            Log.i(TAG, "Start Timer - First Time");
+            //Log.i(TAG, "Start Timer - First Time");
             //mValueTimer.setText("00:00:00");
             startTime = System.currentTimeMillis();
             timerHandler.postDelayed(timerRunnable, 0);
@@ -2599,10 +2599,10 @@ private Boolean collectCritPoints = false;
     }
 
     public void timerStart(View view) {
-        Log.i(TAG, "timerStart: ");
+        //Log.i(TAG, "timerStart: ");
 
         if (Timer.getStatus() == 99) {
-            Log.i(TAG, "Start Timer - First Time");
+            //Log.i(TAG, "Start Timer - First Time");
             //mValueTimer.setText("00:00:00");
             startTime = System.currentTimeMillis();
             timerHandler.postDelayed(timerRunnable, 0);
@@ -2611,13 +2611,13 @@ private Boolean collectCritPoints = false;
         }
 
         if (Timer.getStatus() == 1) {
-            Log.i(TAG, "Resume Timer");
+            //Log.i(TAG, "Resume Timer");
             timerHandler.postDelayed(timerRunnable, 0);
             manageTimer(0);
         }
 
         if (Timer.getStatus() == 2) {
-            Log.i(TAG, "ReStart Timer");
+            //Log.i(TAG, "ReStart Timer");
             startTime = System.currentTimeMillis();
             timerHandler.postDelayed(timerRunnable, 0);
             manageTimer(0);
@@ -2627,37 +2627,37 @@ private Boolean collectCritPoints = false;
     }
 
     public void clickPause(View view) {
-        Log.i(TAG, "clickPause: ");
+        //Log.i(TAG, "clickPause: ");
         manageTimer(1);
     }
 
     public void clickEnd(View view) {
-        Log.i(TAG, "clickEnd: ");
+        //Log.i(TAG, "clickEnd: ");
         timerHandler.removeCallbacks(timerRunnable);
         manageTimer(2);
         //close();
     }
 
     private void manageTimer(int i) {
-        Log.i(TAG, "manageTimer: " + i);
+        //Log.i(TAG, "manageTimer: " + i);
 
         switch (i) {
             case 0:
-                Log.i(TAG, "manageTimer: Start");
+                //Log.i(TAG, "manageTimer: Start");
                 Timer.setStatus(0);
 //                Toast.makeText(getApplicationContext(),
 //                        "STARTING", Toast.LENGTH_SHORT)
 //                        .show();
                 return;
             case 1:
-                Log.i(TAG, "manageTimer: Pause");
+                //Log.i(TAG, "manageTimer: Pause");
                 Timer.setStatus(1);
                 Toast.makeText(getApplicationContext(),
                         "PAUSE", Toast.LENGTH_SHORT)
                         .show();
                 return;
             case 2:
-                Log.i(TAG, "manageTimer: End");
+                //Log.i(TAG, "manageTimer: End");
                 Timer.setStatus(2);
                 Toast.makeText(getApplicationContext(),
                         "COMPLETE", Toast.LENGTH_SHORT)
@@ -2671,20 +2671,20 @@ private Boolean collectCritPoints = false;
     //BLUETOOTH
 
     public void clickBLE(View view) {
-        Log.i(TAG, "clickBLE: SCAN FOR BLE DEVICES");
+        //Log.i(TAG, "clickBLE: SCAN FOR BLE DEVICES");
         onScanStart();
 
     }
 
     //    private int mapState = 1;
     public void clickMessageBar(View view) {
-        Log.i(TAG, "clickMessageBar: ");
+        //Log.i(TAG, "clickMessageBar: ");
         //toggleMapVisibility();
     }
 
 
     public void onScanStart() {
-        Log.i(TAG, "SCANNING HR");
+        //Log.i(TAG, "SCANNING HR");
         //deviceDiscovered = null;
         //setMessageText("SCANNING HR");
 
@@ -2696,7 +2696,7 @@ private Boolean collectCritPoints = false;
 
         // Make sure we have access coarse location enabled, if not, prompt the user to enable it
         if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
+            //Log.i(TAG, "PROMPT FOR LOCATION ENABLED");
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("This app needs location access");
             builder.setMessage("Please grant location access so this app can detect peripherals and use GPS to calculate speed and distance.");
@@ -2710,7 +2710,7 @@ private Boolean collectCritPoints = false;
             builder.show();
         }
 
-        Log.i(TAG, "CHECK FOR BT ENABLED");
+        //Log.i(TAG, "CHECK FOR BT ENABLED");
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             //BLE
@@ -2733,14 +2733,14 @@ private Boolean collectCritPoints = false;
                     .show();
 
             //START SCAN
-            Log.i(TAG, "START SCANNING HR");
+            //Log.i(TAG, "START SCANNING HR");
             mLEScanner.startScan(filters, settings, mScanCallback);
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mLEScanner.stopScan(mScanCallback);
-                    Log.i(TAG, "run: STOP SCANNING");
+                    //Log.i(TAG, "run: STOP SCANNING");
                     //setMessageText("-");
                     //deviceDiscovered = null;
                     postScanPopup();
@@ -2760,39 +2760,39 @@ private Boolean collectCritPoints = false;
             BluetoothDevice deviceDiscovered = result.getDevice();
 
             if (deviceDiscovered.getName() == null) {
-                Log.i(TAG, "onScanResult: isNull return");
+                //Log.i(TAG, "onScanResult: isNull return");
                 return;
             }
 
             if (devicesDiscoveredHR.contains(deviceDiscovered)) {
-                //Log.i(TAG, "onScanResult: Already in HR Device Array List, return");
+                ////Log.i(TAG, "onScanResult: Already in HR Device Array List, return");
                 return;
             }
 
-            //Log.i(TAG, "onScanResult: New HR device");
+            ////Log.i(TAG, "onScanResult: New HR device");
             devicesDiscoveredHR.add(deviceDiscovered);
-            Log.i(TAG, "onScanResult added HR: " + deviceDiscovered.getName());
+            //Log.i(TAG, "onScanResult added HR: " + deviceDiscovered.getName());
             setMessageText("FOUND:  " + deviceDiscovered.getName());
-            //Log.i(TAG, "onScanResult: getSizeOfDevicesDiscoveredHR:  " + devicesDiscoveredHR.size());
+            ////Log.i(TAG, "onScanResult: getSizeOfDevicesDiscoveredHR:  " + devicesDiscoveredHR.size());
         }
 
         @Override
         public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
-            Log.i(TAG, "onBatchScanResults: " + results.toString());
+            //Log.i(TAG, "onBatchScanResults: " + results.toString());
         }
 
         @Override
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
-            Log.i(TAG, "onScanFailed: " + errorCode);
+            //Log.i(TAG, "onScanFailed: " + errorCode);
         }
     };
     //END SCAN CB HR
 
     private void postScanPopup() {
 
-        //Log.i(TAG, "postScanPopup");
+        ////Log.i(TAG, "postScanPopup");
         if (devicesDiscoveredHR.size() == 0) {
             //setMessageText("NO DEVICES FOUND");
             Toast.makeText(getApplicationContext(),
@@ -2802,9 +2802,9 @@ private Boolean collectCritPoints = false;
         }
 
         for (final BluetoothDevice d : devicesDiscoveredHR) {
-            Log.i(TAG, "postScanPopup: attempt connect to " + d.getName());
+            //Log.i(TAG, "postScanPopup: attempt connect to " + d.getName());
             if (devicesConnectedHR.contains(d)) {
-                Log.i(TAG, "postScanPopup: already connected to " + d.getName());
+                //Log.i(TAG, "postScanPopup: already connected to " + d.getName());
                 return;
             }
 
@@ -2814,7 +2814,7 @@ private Boolean collectCritPoints = false;
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Log.i(TAG, "onClick: YES, connect to device " + d.getName());
+                            //Log.i(TAG, "onClick: YES, connect to device " + d.getName());
                             //send connection request
                             devicesConnectedHR.add(d);
                             setBluetoothDeviceNames(d.getName().toUpperCase());
@@ -2828,7 +2828,7 @@ private Boolean collectCritPoints = false;
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Log.i(TAG, "onClick: Don't Connect");
+                            //Log.i(TAG, "onClick: Don't Connect");
                         }
                     }).show();
         }
@@ -2836,7 +2836,7 @@ private Boolean collectCritPoints = false;
 
 
     private void setBluetoothDeviceNames(final String x) {
-        Log.i(TAG, "setBluetoothDeviceNames: " + x);
+        //Log.i(TAG, "setBluetoothDeviceNames: " + x);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -2844,7 +2844,7 @@ private Boolean collectCritPoints = false;
 //                TextView tv2 = MainActivity.this.findViewById(R.id.valueBluetoothDevice2);
 //                TextView tv3 = MainActivity.this.findViewById(R.id.valueBluetoothDevice3);
                 if (tv1.getText().equals("")) {
-                    Log.i(TAG, "setBluetoothDeviceNames: tv1");
+                    //Log.i(TAG, "setBluetoothDeviceNames: tv1");
                     tv1.setText(x);
                     return;
                 }
@@ -2856,7 +2856,7 @@ private Boolean collectCritPoints = false;
 //                if (tv3.getText().equals("")) {
 //                    tv3.setText(x);
 //                }
-                Log.i(TAG, "setBluetoothDeviceNames: all name slots taken");
+                //Log.i(TAG, "setBluetoothDeviceNames: all name slots taken");
 
             }
         });
@@ -2896,14 +2896,14 @@ private Boolean collectCritPoints = false;
 
 
     private void connectHR(BluetoothDevice d) {
-        Log.i(TAG, "connectHR " + d.getName());
+        //Log.i(TAG, "connectHR " + d.getName());
         mBluetoothGatt = d.connectGatt(this, false, mGattCallback);
     }
 
 
     private void setReconnectRequest(BluetoothGatt g) {
 
-        Log.i(TAG, "setReconnectRequest: attempt reconnect");
+        //Log.i(TAG, "setReconnectRequest: attempt reconnect");
         deviceHR.connectGatt(this, true, mGattCallback);
         reconnect = false;
     }
@@ -2924,15 +2924,15 @@ private Boolean collectCritPoints = false;
 //                        broadcastUpdate(intentAction);
                         setMessageText(gatt.getDevice().getName() + "  CONNECTED");
                         createTimeline(gatt.getDevice().getName() + "  CONNECTED", Timer.getCurrentTimeStamp());
-                        Log.i(TAG, "Connected to GATT server. " + gatt.getDevice().getName());
+                        gatt.discoverServices();
+                        //Log.i(TAG, "Connected to GATT server. " + gatt.getDevice().getName());
 
-                        Log.i(TAG, "Attempting to start service discovery: " +
-                                gatt.discoverServices());
+                        //Log.i(TAG, "Attempting to start service discovery: " + gatt.discoverServices());
 
                     } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                         //intentAction = ACTION_GATT_DISCONNECTED;
                         mConnectionState = STATE_DISCONNECTED;
-                        Log.i(TAG, "Disconnected from GATT server. " + gatt.getDevice().getName());
+                        //Log.i(TAG, "Disconnected from GATT server. " + gatt.getDevice().getName());
                         setMessageText(gatt.getDevice().getName() + "  DISCONNECTED");
                         createTimeline(gatt.getDevice().getName() + "  DISCONNECTED", Timer.getCurrentTimeStamp());
                         //broadcastUpdate(intentAction);
@@ -2947,31 +2947,32 @@ private Boolean collectCritPoints = false;
                 public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 
                     if (!reconnect) {
-                        Log.i(TAG, "onServicesDiscovered: notify already set, disable first");
+                        //Log.i(TAG, "onServicesDiscovered: notify already set, disable first");
                         BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
                         boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, false);
-                        Log.i(TAG, "de-registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+                        //Log.i(TAG, "de-registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
                     }
 
                     if (status == BluetoothGatt.GATT_SUCCESS) {
 //                        broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
-                        Log.i(TAG, "onServicesDiscovered: " + gatt.getDevice().getName());
+                        //Log.i(TAG, "onServicesDiscovered: " + gatt.getDevice().getName());
                         setMessageText(gatt.getDevice().getName() + "  SERVICES DISCOVERED");
 
                         //set notifications
-                        Log.i(TAG, "onServicesDiscovered: setting notify");
+                        //Log.i(TAG, "onServicesDiscovered: setting notify");
                         BluetoothGattCharacteristic valueCharacteristic = gatt.getService(HR_SERVICE_UUID).getCharacteristic(HR_CHARACTERISTIC_UUID);
                         boolean notificationSet = gatt.setCharacteristicNotification(valueCharacteristic, true);
-                        Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
+                        //Log.i(TAG, "registered for HR updates " + (notificationSet ? "successfully" : "unsuccessfully"));
                         BluetoothGattDescriptor descriptor = valueCharacteristic.getDescriptor(BTLE_NOTIFICATION_DESCRIPTOR_UUID);
                         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                         boolean writeDescriptorSuccess = gatt.writeDescriptor(descriptor);
-                        Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
+                        //Log.i(TAG, "wrote Descriptor for HR updates " + (writeDescriptorSuccess ? "successfully" : "unsuccessfully"));
                         if (writeDescriptorSuccess) {
                             setMessageText(gatt.getDevice().getName() + "  READY FOR HR UPDATES");
                         }
                     } else {
-                        Log.i(TAG, "onServicesDiscovered received: " + status);
+                        //Log.i(TAG, "onServicesDiscovered received: " + status);
+                        setMessageText("On BLE Services Discovered");
                     }
                 }
 
@@ -2982,7 +2983,8 @@ private Boolean collectCritPoints = false;
                                                  int status) {
                     if (status == BluetoothGatt.GATT_SUCCESS) {
                         //broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                        Log.i(TAG, "onCharacteristicRead: " + gatt.getDevice().getName());
+                        //Log.i(TAG, "onCharacteristicRead: " + gatt.getDevice().getName());
+                        setMessageText("SUCCESS");
                     }
                 }
 
@@ -2993,7 +2995,7 @@ private Boolean collectCritPoints = false;
                 public void onCharacteristicChanged(BluetoothGatt gatt,
                                                     BluetoothGattCharacteristic characteristic) {
                     //broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-                    //Log.i(TAG, "onCharacteristicChanged: HR");
+                    ////Log.i(TAG, "onCharacteristicChanged: HR");
 
                     // This is special handling for the Heart Rate Measurement profile. Data
                     // parsing is carried out as per profile specifications.
@@ -3008,12 +3010,12 @@ private Boolean collectCritPoints = false;
                             //Log.d(TAG, "Heart rate format UINT8.");
                         }
                         final int heartRate = characteristic.getIntValue(format, 1);
-                        //Log.i(TAG, String.format("%d BPM", heartRate));
+                        ////Log.i(TAG, String.format("%d BPM", heartRate));
                         //intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
                         onNewHeartrate(heartRate);
                     } else {
                         // For all other profiles, writes the data formatted in HEX.
-                        Log.i(TAG, "onCharacteristicChanged: strangeval");
+                        //Log.i(TAG, "onCharacteristicChanged: strangeval");
                     }
                 }
 
@@ -3023,7 +3025,7 @@ private Boolean collectCritPoints = false;
 
     @SuppressLint("DefaultLocale")
     private void onNewHeartrate(final int h) {
-        //Log.i(TAG, "onNewHeartrate: " + h);
+        ////Log.i(TAG, "onNewHeartrate: " + h);
 
         calcAvgHR(h);
         if (h > 50 && h < 220) {
@@ -3056,7 +3058,7 @@ private Boolean collectCritPoints = false;
             ortTview2.setVisibility(View.GONE);
 
             if (isTrackingDisabled) {
-                Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                //Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
                 attemptToEnableMapboxLocationComponent();
             }
 
@@ -3066,7 +3068,7 @@ private Boolean collectCritPoints = false;
             ortTview2.setVisibility(View.VISIBLE);
 
             if (isTrackingDisabled) {
-                Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
+                //Log.i(TAG, "isTrackingDisabled, ATTEMPT ENABLE MAPBOX LOCATION COMPONENT..AGAIN");
                 attemptToEnableMapboxLocationComponent();
             }
         }
@@ -3074,7 +3076,7 @@ private Boolean collectCritPoints = false;
 
 
     private void vibrator600() {
-        Log.i(TAG, "Vibrator600: ");
+        //Log.i(TAG, "Vibrator600: ");
         // Get instance of Vibrator from current Context
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -3098,7 +3100,7 @@ private Boolean collectCritPoints = false;
     private void createTimeline(String tlTitle, String tlDescription) {
 
         if (tlTitle.length() < 5) {
-            Log.i(TAG, "createTimeline: too small, don't post");
+            //Log.i(TAG, "createTimeline: too small, don't post");
             return;
         }
 
@@ -3170,18 +3172,18 @@ private Boolean collectCritPoints = false;
 
     @Override
     public void onBackPressed() {
-        Log.i(TAG, "onBackPressed: do nothing, might show timeline later...");
+        //Log.i(TAG, "onBackPressed: do nothing, might show timeline later...");
     }
 
 
     public void clickRoundButton(View view) {
-        Log.i(TAG, "clickRoundButton: ");
+        //Log.i(TAG, "clickRoundButton: ");
     }
 
 
     //GPX
     public void clickSelectGPX(View view) {
-        Log.i(TAG, "clickSelectGPX: ");
+        //Log.i(TAG, "clickSelectGPX: ");
 
         Intent intent = new Intent()
                 .setType("*/*")
@@ -3189,7 +3191,7 @@ private Boolean collectCritPoints = false;
 
         startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
         waitToLoadGPX = true;
-        Log.i(TAG, "clickSelectGPX: selected");
+        //Log.i(TAG, "clickSelectGPX: selected");
 
     }
 
@@ -3208,7 +3210,7 @@ private Boolean collectCritPoints = false;
 
     private void loadSelectedGPX() {
         if (waitToLoadGPX) {
-            Log.i(TAG, "loadSelectedGPX: ");
+            //Log.i(TAG, "loadSelectedGPX: ");
             waitToLoadGPX = false;
             //isCritBuilderActive = false;
             startGPX();
@@ -3217,7 +3219,7 @@ private Boolean collectCritPoints = false;
 
 
     public void clickStartCritBuilder(View view) {
-        Log.i(TAG, "clickStartCritBuilder: ");
+        //Log.i(TAG, "clickStartCritBuilder: ");
 
         resetRace();
 
@@ -3249,11 +3251,11 @@ private Boolean collectCritPoints = false;
     }
 
     public void startGpxFromID(View view) {
-        Log.i(TAG, "startGpxFromID: ");
+        //Log.i(TAG, "startGpxFromID: ");
 
 
         //GET ID NAME
-        Log.i(TAG, "GET CRIT ID TO LOAD: ");
+        //Log.i(TAG, "GET CRIT ID TO LOAD: ");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AlertDialog dialog;
         builder.setTitle("CRIT ID TO LOAD");
@@ -3270,7 +3272,7 @@ private Boolean collectCritPoints = false;
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String s = input.getText().toString().toUpperCase();
-                Log.i(TAG, "onClick: CRITID: " + s.toUpperCase());
+                //Log.i(TAG, "onClick: CRITID: " + s.toUpperCase());
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -3287,7 +3289,7 @@ private Boolean collectCritPoints = false;
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i(TAG, "onClick: CRITID, CANCEL");
+                //Log.i(TAG, "onClick: CRITID, CANCEL");
                 dialog.cancel();
             }
         });
@@ -3298,7 +3300,7 @@ private Boolean collectCritPoints = false;
 
 
     private void convertPointsNamesToCrit(String p, String n) {
-        Log.i(TAG, "convertPointsNamesToCrit: n, p: " + n + "\n" + p);
+        //Log.i(TAG, "convertPointsNamesToCrit: n, p: " + n + "\n" + p);
         //"40.66068,-73.97738:40.652033131581746,-73.9708172236974:40.657608465972885,-73.96300766854665:40.671185505128406,-73.96951606153863:40.66331,-73.97495"
         //"Prospect Park, Brooklyn, Single Loop,PARADE GROUND,LAFREAK CENTER,GRAND ARMY PLAZA,FINISH"
         //convert string to ArrayList with splice
@@ -3317,7 +3319,7 @@ private Boolean collectCritPoints = false;
             lonTemp.add(d2);
         }
 
-        Log.i(TAG, "convertPointsNamesToCrit: names, latTemp, lonTemp\n" + namesTemp.toString() + latTemp.toString() + lonTemp.toString());
+        //Log.i(TAG, "convertPointsNamesToCrit: names, latTemp, lonTemp\n" + namesTemp.toString() + latTemp.toString() + lonTemp.toString());
         final String nT = namesTemp.get(0);
         runOnUiThread(new Runnable() {
             @Override
@@ -3326,7 +3328,7 @@ private Boolean collectCritPoints = false;
                 t1.setText(nT);
             }
         });
-        Log.i(TAG, "convertPointsNamesToCrit: calling startGpxFromCritID");
+        //Log.i(TAG, "convertPointsNamesToCrit: calling startGpxFromCritID");
         startGpxFromCritID();
     }
 
@@ -3372,7 +3374,7 @@ private Boolean collectCritPoints = false;
 //
         private void mapBoxDisplaySpeedValues() {
 
-            //Log.i(TAG, "mapBoxDisplaySpeedValues: RUN IN BACKGROUND???");
+            ////Log.i(TAG, "mapBoxDisplaySpeedValues: RUN IN BACKGROUND???");
 
             //UPDATE UI WITH SPEED AND DISTANCE
             mn.runOnUiThread(new Runnable() {
@@ -3441,7 +3443,7 @@ private Boolean collectCritPoints = false;
 
     //FROM BROADCAST RECEIVER
         public void onTimerLocationReceived() {
-            Log.i(TAG, "onTimerLocationReceived: ");
+            //Log.i(TAG, "onTimerLocationReceived: ");
             mapBoxDisplaySpeedValues();
         }
 
