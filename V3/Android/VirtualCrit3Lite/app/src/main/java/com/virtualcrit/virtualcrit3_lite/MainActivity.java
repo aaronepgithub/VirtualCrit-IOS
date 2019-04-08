@@ -317,6 +317,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.virtualcrit.com/tandc.html")));
     }
 
+    public void clickPrivacyPolicy(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.virtualcrit.com/privacy.html")));
+    }
+
+
     /**
      * Receiver for broadcasts sent by {@link LocationUpdatesService}.
      */

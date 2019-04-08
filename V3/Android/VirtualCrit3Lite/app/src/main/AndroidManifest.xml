@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_vc3c"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
         <activity
             android:name="com.virtualcrit.virtualcrit3_lite.MainActivity"
             android:label="@string/app_name"
