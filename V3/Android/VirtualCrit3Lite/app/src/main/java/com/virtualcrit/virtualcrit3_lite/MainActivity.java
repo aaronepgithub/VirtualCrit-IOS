@@ -1504,6 +1504,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         ////Log.i(TAG, "onCreate: checkAndSetPermissions");
 
+        //TODO
+        //Reset Crit.critBuilderLatLng
+        //This SHOULD stop evaluate new locations until new crit is loaded
+        //Crit.critBuilderLatLng = new ArrayList<>();
 
         myReceiver = new MyReceiver();
         // Check that the user hasn't revoked permissions by going to Settings.
