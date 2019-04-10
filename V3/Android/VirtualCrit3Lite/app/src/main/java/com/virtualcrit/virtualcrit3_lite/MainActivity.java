@@ -1366,10 +1366,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     } else {
                         ////Log.i(TAG, "run: NO TIMELINE TO CREATE");
                     }
+                }
 
-
-
-
+                //TEST FOR SERVICE DISTANCE
+                if ((int) totalMillis / 1000 % 300 == 0 && (int) totalMillis > 299)  {
+                    createTimeline(String.format("%.1f MILES", Timer.serviceDistance), "Service Distance");
+                    Log.i(TAG, "Main Activity Service Distance 30 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
                 }
 
                 //ASSUME TTS QUEUE WILL WORK

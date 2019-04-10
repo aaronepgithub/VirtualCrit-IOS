@@ -20,6 +20,8 @@ public final class Timer {
     public static int checkDistanceValue = 150;
     public static String checkSettingsSport = "BIKE";
 
+    public static double serviceDistance = 0.0;
+
     private static Location timerLocation;
     private static Location timerOldLocation;
     private static double timerGeoDistance = 0.0;
@@ -64,7 +66,7 @@ public final class Timer {
 
     public static String metersTogo = "";
 
-    static void setTimerLocation(Location timerLocation) {
+    public static void setTimerLocation(Location timerLocation) {
         ////Log.i(TAG, "Location from Service: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
         Timer.timerLocation = timerLocation;
         calculateValues();

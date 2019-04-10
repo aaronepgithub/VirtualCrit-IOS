@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 /**
  * A bound and started service that is promoted to a foreground service when location updates have
@@ -312,18 +313,36 @@ public class LocationUpdatesService extends Service {
         }
     }
 
+    private Location mOldLocation;
+    private double mDistance;
+
     private void onNewLocation(Location location) {
         //Log.i(TAG, "New location: " + location);
 
         mLocation = location;
 
+        LatLng e = new LatLng();
+        e.setLatitude(mLocation.getLatitude());
+        e.setLongitude(mLocation.getLongitude());
+        Timer.trackerCoords.add(e);
+
+        //SEND LOCATION TO TIMER.SETTIMERLOCATION
+        //Log.i(TAG, "onNewLocation: Timer.setLocation");
+        Timer.setTimerLocation(mLocation);
+
+        if (mOldLocation != null) {
+            mDistance += (mLocation.distanceTo(mOldLocation) * 0.000621371);
+            Log.i(TAG, "onNewLocation: DISTANCE FROM SERVICE:  " + mDistance);
+            Timer.serviceDistance = mDistance;
+        }
+
+        mOldLocation = mLocation;
+
         // Notify anyone listening for broadcasts about the new location.
         Intent intent = new Intent(ACTION_BROADCAST);
         intent.putExtra(EXTRA_LOCATION, location);
 
-        //SEND LOCATION TO TIMER.SETTIMERLOCATION
-        //Log.i(TAG, "onNewLocation: Timer.setLocation");
-        Timer.setTimerLocation(location);
+
 
         //BROADCAST TO MAIN ACTIVITY
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
