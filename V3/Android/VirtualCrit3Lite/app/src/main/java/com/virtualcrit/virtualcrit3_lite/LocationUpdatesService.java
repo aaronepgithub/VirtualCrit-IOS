@@ -314,13 +314,17 @@ public class LocationUpdatesService extends Service {
     }
 
     private Location mOldLocation;
-    private double mDistance;
+    private double mDistance = 0.0;
+    private double mDistanceReading = 0.0;
+    private double mDistanceActual = 0.0;
+
 
     private void onNewLocation(Location location) {
         //Log.i(TAG, "New location: " + location);
 
         mLocation = location;
 
+        Timer.timerAllLocations.add(mLocation);
         LatLng e = new LatLng();
         e.setLatitude(mLocation.getLatitude());
         e.setLongitude(mLocation.getLongitude());
@@ -328,15 +332,79 @@ public class LocationUpdatesService extends Service {
 
         //SEND LOCATION TO TIMER.SETTIMERLOCATION
         //Log.i(TAG, "onNewLocation: Timer.setLocation");
-        Timer.setTimerLocation(mLocation);
+
+        //COMPLETELY PROCESSED IN SERVICE
+        //Timer.setTimerLocation(mLocation);
 
         if (mOldLocation != null) {
+
+            mDistanceReading = serviceDistanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), mOldLocation.getLatitude(), mOldLocation.getLongitude());  //METERS
+
+            //NO LONGER RUNNING IN TIMER CLASS...TRY THIS
+            if (Crit.critBuilderLatLng.size() > 0) {
+                Timer.evaluateLocation(mLocation.getLatitude(), mLocation.getLongitude());
+            }
+
+
+            double tempDistance = Timer.timerGeoDistance;
+            //FILTERS
+
+            //TOO MUCH TIME PASSED, RESET
+            if (mLocation.getTime() - mOldLocation.getTime() > 10000 || mDistanceReading > 150) {
+                //DON'T CHANGE DISTANCE
+                mOldLocation = mLocation;
+                return;
+            }
+
+            //TOO FREQUENT, IGNORE, BUT DON'T RESET
+            if (mDistanceReading  < 1 || (mLocation.getTime() - mOldLocation.getTime()) < 2001) {
+                return;
+            }
+
+
             mDistance += (mLocation.distanceTo(mOldLocation) * 0.000621371);
-            Log.i(TAG, "onNewLocation: DISTANCE FROM SERVICE:  " + mDistance);
+            mDistanceActual += (serviceDistanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), mOldLocation.getLatitude(), mOldLocation.getLongitude()) * 0.000621371);
+//            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES Q", mDistance)));
+//            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES A", mDistanceActual)));
+            //ONLY USED FOR LOGS.
             Timer.serviceDistance = mDistance;
+            Timer.serviceDistanceActual = mDistanceActual;
+
+            Timer.timerGeoDistance = mDistanceActual;
+
+
+
+            double os = Timer.timerGeoSpeed;
+            if (mLocation.getAccuracy() < 20) {
+                Timer.timerGeoSpeed = (double) mLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
+                if (Timer.timerGeoSpeed < 0) {
+                    Timer.timerGeoSpeed = 0;
+                }
+                if (Timer.timerGeoSpeed > 40) {
+                    Timer.timerGeoSpeed = 40;
+                }
+                if (Timer.timerGeoSpeed == 0) {
+                    Timer.timerGeoSpeed = os;
+                }
+            }
+
+
+            Timer.timerTotalTimeGeo += (mLocation.getTime() - mOldLocation.getTime());  //MILLI
+            double ttg = (double) Timer.timerTotalTimeGeo;  //IN MILLI
+            Timer.timerGeoAvgSpeed = Timer.timerGeoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+            mOldLocation = mLocation;
+
+
+
+
+            //TRY SETTING SPEED VALUES FROM HERE...
+
+
+        } else {
+            mOldLocation = mLocation;
         }
 
-        mOldLocation = mLocation;
+
 
         // Notify anyone listening for broadcasts about the new location.
         Intent intent = new Intent(ACTION_BROADCAST);
@@ -351,6 +419,22 @@ public class LocationUpdatesService extends Service {
         if (serviceIsRunningInForeground(this)) {
             mNotificationManager.notify(NOTIFICATION_ID, getNotification());
         }
+    }
+
+
+    private static double serviceDistanceBetween(Double lat1, Double lon1, Double lat2, Double lon2) {
+        double R = 6371; // km
+        double dLat = (lat2 - lat1) * Math.PI / 180;
+        double dLon = (lon2 - lon1) * Math.PI / 180;
+        lat1 = lat1 * Math.PI / 180;
+        lat2 = lat2 * Math.PI / 180;
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c * 1000;
+
+        return d;
     }
 
     /**

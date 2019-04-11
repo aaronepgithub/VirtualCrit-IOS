@@ -1334,6 +1334,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     ////Log.i(TAG, "run: 5 SECOND UPDATE PUBLISH");
                     ////Log.i(TAG, "size of Timer.getStringForSetMessage + " + Timer.getStringForSetMessage().size());
 
+                    if (Timer.timerGeoDistance > Timer.timerNextMile) {
+                        Timer.timerNextMile += 1.0;
+                        createTimeline(String.format("%.1f MILES COMPLETE", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
+                    }
+
                     if (Timer.getStringForSetMessage().size() > 0) {
                         final ArrayList<String> s = Timer.getStringForSetMessage();
                         setMessageText(s.get(s.size()-1));
@@ -1370,8 +1375,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 //TEST FOR SERVICE DISTANCE
                 if ((int) totalMillis / 1000 % 300 == 0 && (int) totalMillis > 299)  {
-                    createTimeline(String.format("%.1f MILES", Timer.serviceDistance), "Service Distance");
-                    Log.i(TAG, "Main Activity Service Distance 30 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
+                    //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
+                    Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
                 }
 
                 //ASSUME TTS QUEUE WILL WORK
@@ -1586,7 +1591,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //Log.i(TAG, "onCreate: callingTimerStart2");
         timerStart2();
 
-        createTimeline("LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
+        createTimeline("VIRTUAL CRIT 3.2, LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
         setRandomUsernameOnStart();
         getSharedPrefs();
 
@@ -3454,7 +3459,7 @@ private Boolean collectCritPoints = false;
 
     //FROM BROADCAST RECEIVER
         public void onTimerLocationReceived() {
-            //Log.i(TAG, "onTimerLocationReceived: ");
+            //Log.i(TAG, "onTimerLocationReceived at MainActivity, used for DisplaySpeedValues");
             mapBoxDisplaySpeedValues();
         }
 

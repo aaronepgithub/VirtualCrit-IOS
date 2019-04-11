@@ -21,13 +21,17 @@ public final class Timer {
     public static String checkSettingsSport = "BIKE";
 
     public static double serviceDistance = 0.0;
+    public static double serviceDistanceActual = 0.0;
 
     private static Location timerLocation;
     private static Location timerOldLocation;
-    private static double timerGeoDistance = 0.0;
-    private static double timerGeoSpeed = 0.0;
-    private static double timerGeoAvgSpeed;
-    private static double timerTotalTimeGeo = 0.0;
+
+    public static double timerGeoDistance = 0.0;
+    public static double timerGeoSpeed = 0.0;
+    public static double timerGeoAvgSpeed;
+    public static double timerTotalTimeGeo = 0.0;
+    public static double timerNextMile = 1.0;
+
     public static ArrayList<Location> timerAllLocations = new ArrayList<>();
     public static ArrayList<LatLng> trackerCoords = new ArrayList<>();
 
@@ -67,140 +71,150 @@ public final class Timer {
     public static String metersTogo = "";
 
     public static void setTimerLocation(Location timerLocation) {
-        ////Log.i(TAG, "Location from Service: " + timerLocation.getProvider() + ", " + timerLocation.getLatitude() + ", " + timerLocation.getLongitude());
+        Log.i(TAG, "setTimerLocation: " + timerLocation.getProvider());
         Timer.timerLocation = timerLocation;
-        calculateValues();
+        //calculateValues();
     }
 
-    private static void calculateValues() {
-        ////Log.i(TAG, "calculateValues: timerLocation " + timerLocation.getProvider());
+    private static double timerDistanceLog = 0.0;
 
-        Timer.timerAllLocations.add(timerLocation);
-
-        LatLng e = new LatLng();
-        e.setLatitude(timerLocation.getLatitude());
-        e.setLongitude(timerLocation.getLongitude());
-        Timer.trackerCoords.add(e);
-
-
-        double locationLat = timerLocation.getLatitude();
-        double locationLon = timerLocation.getLongitude();
-        long locationTime = timerLocation.getTime();
-
-        double oldLocationLat;
-        double oldLocationLon;
-        long oldLocationTime;
-
-
-        if (timerOldLocation == null) {
-            ////Log.i(TAG, "timerOldLocation: is null ");
-            timerOldLocation = timerLocation;
-
-        } else {
-            oldLocationLat = timerOldLocation.getLatitude();
-            oldLocationLon = timerOldLocation.getLongitude();
-            oldLocationTime = timerOldLocation.getTime();
-
-
-            //MORE ACCURATE DISTANCE CALC
-            double result = timerDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
-
-
-            //////Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
-            //////Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
-            if (result  < 1 || (locationTime - oldLocationTime) < 2001) {
-                ////Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
-                //evaluateLocation(locationLat, locationLon);
-//                return;
-                ////Log.i(TAG, "calculateValues: Crit.critBuilderLatLng.size() " + Crit.critBuilderLatLng.size());
-                if (Crit.critBuilderLatLng.size() > 0) {
-                    ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
-                    evaluateLocation(locationLat, locationLon);
-                    //stringForSetMessage.add(".");
-                }
-                return;
-            }
-
-            if (locationTime - oldLocationTime > 10000 || result > 150) { //10 SECONDS or 150 meters
-                ////Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
-                timerOldLocation = timerLocation;
-//                evaluateLocation(locationLat, locationLon);
-                if (Crit.critBuilderLatLng.size() > 0) {
-                    ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
-                    evaluateLocation(locationLat, locationLon);
-                    //stringForSetMessage.add(".");
-                }
-                return;
-//                return;
-            }
-
-
-
-            ////Log.i(TAG, "calculateValues: checks cleared, calc values");
-            double gd = result * 0.000621371;
-            timerGeoDistance += gd;
-
-            //MORE ACCURACE BUT NOT NECESSARY
-            long gt = (timerLocation.getTime() - timerOldLocation.getTime());  //MILLI
-
-//            if ((gd / ((double) gt / 1000 / 60 / 60)) < 0) {
-//                ////Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
-//                timerOldLocation = timerLocation;
-//                timerGeoDistance = timerGeoDistance - gd;
+//    private static void calculateValues() {
+//        Log.i(TAG, "calculateValues: timerLocation " + timerLocation.getProvider());
+//
+//        //PROCESSED IN SERVICE
+///*        Timer.timerAllLocations.add(timerLocation);
+//        LatLng e = new LatLng();
+//        e.setLatitude(timerLocation.getLatitude());
+//        e.setLongitude(timerLocation.getLongitude());
+//        Timer.trackerCoords.add(e);*/
+//
+//
+//        double locationLat = timerLocation.getLatitude();
+//        double locationLon = timerLocation.getLongitude();
+//        long locationTime = timerLocation.getTime();
+//
+//        double oldLocationLat;
+//        double oldLocationLon;
+//        long oldLocationTime;
+//
+//
+//        if (timerOldLocation == null) {
+//            ////Log.i(TAG, "timerOldLocation: is null ");
+//            timerOldLocation = timerLocation;
+//
+//        } else {
+//            oldLocationLat = timerOldLocation.getLatitude();
+//            oldLocationLon = timerOldLocation.getLongitude();
+//            oldLocationTime = timerOldLocation.getTime();
+//
+//
+//            //MORE ACCURATE DISTANCE CALC
+//            double result = timerDistanceBetween(oldLocationLat, oldLocationLon, locationLat, locationLon);
+//
+//            timerDistanceLog += (result * 0.000621371);
+//            Log.i(TAG, "TIMER RAW RESULT DISTANCE, PRE-FILTER: " + (String.format("%.3f MILES", timerDistanceLog)));
+//
+//
+//            //////Log.i(TAG, "onTimerLocationReceived: result/time bet old and new: " + result + ", " + (locationTime - oldLocationTime));
+//            //////Log.i(TAG, "onMapboxLocationReceived: time bet old and new: " + (locationTime - oldLocationTime));
+//            if (result  < 1 || (locationTime - oldLocationTime) < 2001) {
+//                ////Log.i(TAG, "onTimerLocationReceived: too quick, too short, just wait");
+//                //evaluateLocation(locationLat, locationLon);
+////                return;
+//                ////Log.i(TAG, "calculateValues: Crit.critBuilderLatLng.size() " + Crit.critBuilderLatLng.size());
+//                if (Crit.critBuilderLatLng.size() > 0) {
+//                    ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+//                    evaluateLocation(locationLat, locationLon);
+//                    //stringForSetMessage.add(".");
+//                }
 //                return;
 //            }
-
-            //timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
-            //USING QUICK METHOD FOR DISPLAY PURPOSES
-            double os = timerGeoSpeed;
-
-            if (timerLocation.getAccuracy() < 20) {
-                timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
-                if (timerGeoSpeed < 0) {
-                    timerGeoSpeed = 0;
-                }
-                if (timerGeoSpeed > 40) {
-                    timerGeoSpeed = 40;
-                }
-                if (timerGeoSpeed == 0) {
-                    timerGeoSpeed = os;
-                }
-            }
-
-
-
-
-            //USING QUICK METHOD FOR DISPLAY PURPOSES
-            //timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
-
-            timerTotalTimeGeo += (locationTime - oldLocationTime);  //MILLI
-            double ttg = (double) timerTotalTimeGeo;  //IN MILLI
-            timerGeoAvgSpeed = timerGeoDistance / (ttg / 1000.0 / 60.0 / 60.0);
-            timerOldLocation = timerLocation;
-            ////Log.i(TAG, "onTimerLocationReceived: timer Speed, AvgSpeed, Distance, totalTime: " + timerGeoSpeed + ", " + timerGeoAvgSpeed + ", " + timerGeoDistance + ", " + timerTotalTimeGeo);
-        }
-
-        if (Crit.critBuilderLatLng.size() > 0) {
-            ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
-            evaluateLocation(locationLat, locationLon);
-            //stringForSetMessage.add(".");
-        }
-
-//        if (isCritBuilderIDActive) {
-//            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
-//            mapboxEvaluateLocationsCritID(locationLat, locationLon);
-//            return;
+//
+//            if (locationTime - oldLocationTime > 10000 || result > 150) { //10 SECONDS or 150 meters
+//                ////Log.i(TAG, "onLocationReceived: too much time has passed, set new *old* location and wait");
+//                timerOldLocation = timerLocation;
+////                evaluateLocation(locationLat, locationLon);
+//                if (Crit.critBuilderLatLng.size() > 0) {
+//                    ////Log.i(TAG, "calculateValues: EVALUATE LOCATION");
+//                    evaluateLocation(locationLat, locationLon);
+//                    //stringForSetMessage.add(".");
+//                }
+//                return;
+////                return;
+//            }
+//
+//
+//
+//            ////Log.i(TAG, "calculateValues: checks cleared, calc values");
+//
+//
+//            //PROCESSED IN SERVICE
+////            double gd = result * 0.000621371;
+////            timerGeoDistance += gd;
+////            //MORE ACCURACE BUT NOT NECESSARY
+////            long gt = (timerLocation.getTime() - timerOldLocation.getTime());  //MILLI
+//
+////            if ((gd / ((double) gt / 1000 / 60 / 60)) < 0) {
+////                ////Log.i(TAG, "calculateValues: too small - neg number, don't count, ");
+////                timerOldLocation = timerLocation;
+////                timerGeoDistance = timerGeoDistance - gd;
+////                return;
+////            }
+//
+//            //timerGeoSpeed = gd / ((double) gt / 1000 / 60 / 60);
+//            //USING QUICK METHOD FOR DISPLAY PURPOSES
+//
+//
+//            //PROCESSED IN SERVICE
+////            double os = timerGeoSpeed;
+////            if (timerLocation.getAccuracy() < 20) {
+////                timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
+////                if (timerGeoSpeed < 0) {
+////                    timerGeoSpeed = 0;
+////                }
+////                if (timerGeoSpeed > 40) {
+////                    timerGeoSpeed = 40;
+////                }
+////                if (timerGeoSpeed == 0) {
+////                    timerGeoSpeed = os;
+////                }
+////            }
+//
+//
+//
+//
+//            //USING QUICK METHOD FOR DISPLAY PURPOSES
+//            //timerGeoSpeed = (double) timerLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
+//
+//
+//            //DONE IN SERVICE
+////            timerTotalTimeGeo += (locationTime - oldLocationTime);  //MILLI
+////            double ttg = (double) timerTotalTimeGeo;  //IN MILLI
+////            timerGeoAvgSpeed = timerGeoDistance / (ttg / 1000.0 / 60.0 / 60.0);
+////            timerOldLocation = timerLocation;
+//            ////Log.i(TAG, "onTimerLocationReceived: timer Speed, AvgSpeed, Distance, totalTime: " + timerGeoSpeed + ", " + timerGeoAvgSpeed + ", " + timerGeoDistance + ", " + timerTotalTimeGeo);
 //        }
-//        if (isCritBuilderActive) {
-//            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
-//            mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
-//        } else {
-//            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
-//            mapboxEvaluateLocations(locationLat, locationLon);
-//        }
-
-
-    }
+//
+//        //TRY TO CALL THIS FROM SERVICE DIRECTLY...
+////        if (Crit.critBuilderLatLng.size() > 0) {
+////            evaluateLocation(locationLat, locationLon);
+////        }
+//
+////        if (isCritBuilderIDActive) {
+////            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderIDActive");
+////            mapboxEvaluateLocationsCritID(locationLat, locationLon);
+////            return;
+////        }
+////        if (isCritBuilderActive) {
+////            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocationsCritBuilder");
+////            mapboxEvaluateLocationsCritBuilder(locationLat, locationLon);
+////        } else {
+////            ////Log.i(TAG, "onMapboxLocationReceived: isCritBuilderActive: " + isCritBuilderActive + " mapboxEvaluateLocations");
+////            mapboxEvaluateLocations(locationLat, locationLon);
+////        }
+//
+//
+//    }
 
     public static int currentWaypointCB = 0;
     public static Boolean isRaceStarted = false;
@@ -230,8 +244,8 @@ public final class Timer {
 
 
 
-    private static void evaluateLocation(final double gpsLa, final double gpsLo) {
-        ////Log.i(TAG, "EVALUATE LOCATION");
+    public static void evaluateLocation(final double gpsLa, final double gpsLo) {
+        Log.i(TAG, "EVALUATE LOCATION");
         stringForSetMessage.add(".");
 
         switch (checkSettingsSport) {
@@ -269,7 +283,7 @@ public final class Timer {
             }
 
             if (disBetw < checkDistanceValue) {  //WITHIN xx METERS OF TARGET
-                ////Log.i(TAG, "STARTRACE!");
+                Log.i(TAG, "STARTRACE!");
                 raceStartTime = System.currentTimeMillis();
                 isRaceStarted = true;
 
@@ -319,7 +333,7 @@ public final class Timer {
             }
 
             if (disBetwMax < checkDistanceValue) {
-                ////Log.i(TAG, "RACE FINISHED!");
+                Log.i(TAG, "RACE FINISHED!");
                 isRaceStarted = false;
                 currentWaypointCB = 0;
                 raceFinishTime = System.currentTimeMillis();
@@ -399,7 +413,7 @@ public final class Timer {
 
         //NOT START OR FINISH
         if (isRaceStarted && currentWaypointCB > 0 && currentWaypointCB < maxWaypointCB) {
-            ////Log.i(TAG, "NOT START OR FINISH, START WAYPOINT TEST: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
+            Log.i(TAG, "NOT START OR FINISH, START WAYPOINT TEST: currentWaypointCB, maxWaypointCB " + currentWaypointCB +", "+ maxWaypointCB);
             waypointTest(gpsLa, gpsLo);
         }
 
