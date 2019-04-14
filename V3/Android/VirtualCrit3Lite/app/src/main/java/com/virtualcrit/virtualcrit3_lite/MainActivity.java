@@ -1380,13 +1380,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         Log.i(TAG, "run: distance didn't change, try and restart location");
                         createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 5 MIN, RESTARTING", Timer.getCurrentTimeStamp());
                         mService.requestLocationUpdates();
-                        lastReadingGeoDistance = Timer.timerGeoDistance;
-                    } else {
-                        Log.i(TAG, "run: distance has changed, no need to restart location");
-                        createTimeline("DISTANCE DID CHANGE IN THE PAST 5 MIN, NOT RESTARTING", Timer.getCurrentTimeStamp());
-                        lastReadingGeoDistance = Timer.timerGeoDistance;
                     }
-
+                    lastReadingGeoDistance = Timer.timerGeoDistance;
                     Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
                 }
 
