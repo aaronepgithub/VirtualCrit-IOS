@@ -1357,12 +1357,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
 
                 //TEST FOR SERVICE DISTANCE
-                if ((int) totalMillis / 1000 % 300 == 0)  {
+                if ((int) totalMillis / 1000 % 120 == 0)  {
                     final double testDistance1 = Timer.getTimerGeoDistance();
                     final double testDistance2 = lastReadingGeoDistance;
                     lastReadingGeoDistance = Timer.timerGeoDistance;
 
-                    Log.i(TAG, "5 Min Test - testDistance, lastReadingGeoDistance: " + testDistance1 + ", " + testDistance2);
+                    Log.i(TAG, "2 Min Test - testDistance, lastReadingGeoDistance: " + testDistance1 + ", " + testDistance2);
                     //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
                     if (testDistance1 == testDistance2) {
                         Log.i(TAG, "Distance didn't change, try and restart location");
