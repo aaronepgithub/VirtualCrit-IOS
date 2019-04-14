@@ -1376,6 +1376,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 //TEST FOR SERVICE DISTANCE
                 if ((int) totalMillis / 1000 % 300 == 0 && (int) totalMillis > 299)  {
                     //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
+                    if (lastReadingGeoDistance == Timer.timerGeoDistance) {
+                        Log.i(TAG, "run: distance didn't change, try and restart location");
+                        createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 5 MIN, RESTARTING", Timer.getCurrentTimeStamp());
+                        mService.requestLocationUpdates();
+                    }
+                    lastReadingGeoDistance = Timer.timerGeoDistance;
                     Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
                 }
 
@@ -1418,6 +1424,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             timerHandler.postDelayed(this, 1000);
         }
     };
+
+    private double lastReadingGeoDistance = 0.0;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

@@ -164,6 +164,7 @@ public class LocationUpdatesService extends Service {
         }
         // Tells the system to not try to recreate the service after it has been killed.
         return START_NOT_STICKY;
+
     }
 
     @Override
@@ -227,7 +228,7 @@ public class LocationUpdatesService extends Service {
      * {@link SecurityException}.
      */
     public void requestLocationUpdates() {
-        //Log.i(TAG, "Requesting location updates");
+        Log.i(TAG, "Requesting location updates");
         Utils.setRequestingLocationUpdates(this, true);
         startService(new Intent(getApplicationContext(), LocationUpdatesService.class));
         try {
