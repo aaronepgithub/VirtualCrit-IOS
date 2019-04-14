@@ -1210,6 +1210,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 //        } //ADD VALUE EVENT ONCE
     }  //END - ROUND END CALCULATE
 
+    private double lastReadingGeoDistance = 0.0;
 
     //TIMER
     Handler timerHandler = new Handler();
@@ -1261,7 +1262,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     //Log.i(TAG, "run: requestPermissions");
                     requestPermissions();
                 }
-                
+
             }
 
             if ((int) totalMillis / 1000 % 3 == 0) {
@@ -1301,21 +1302,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
 
-            if ((int) totalMillis / 1000 > 12) {
-                //EVERY 12 SECONDS
+            if ((int) totalMillis / 1000 > 14) {
+                //AFTER INITIAL 15 SECONDS
                 //REALLY ONLY NEED TO DO THINGS WHILE PAUSED?
-//                //Log.i(TAG, "run: 12 SECOND UPDATE");
 
-//                if ((int) totalMillis / 1000 % 12 == 0) {
-//                    //EVERY 12, UPDATE MAP
-//                    //Log.i(TAG, "run: 12 SECOND UPDATE MAP");
-//                    if (Timer.trackerCoords.size() > 2) {
-//                        if (!isPaused) {
-//                            setMapboxStreets();
-//                        }
-//
-//                    }
-//                }
 
                 if ((int) totalMillis / 1000 % 3 == 0) {
                     //EVERY 3, PUBLISH TO FB IF NEEDED
@@ -1361,24 +1351,19 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                             //sxx.append(str2);
                             createTimeline(str2, s3.get(0));
                         }
-
-//                        if (Objects.equals(s2.get(0), "")) {
-//                            return;
-//                        }
-//                        createTimeline(sxx.toString(), s3.get(0));
-
-
                     } else {
                         ////Log.i(TAG, "run: NO TIMELINE TO CREATE");
                     }
                 }
 
                 //TEST FOR SERVICE DISTANCE
-                if ((int) totalMillis / 1000 % 300 == 0 && (int) totalMillis > 299)  {
+                if ((int) totalMillis / 1000 % 300 == 0)  {
+                    final double testDistance = Timer.getTimerGeoDistance();
+                    Log.i(TAG, "5 Min Test - testDistance, lastReadingGeoDistance: " + testDistance + ", " + lastReadingGeoDistance);
                     //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
-                    if (lastReadingGeoDistance == Timer.timerGeoDistance) {
-                        Log.i(TAG, "run: distance didn't change, try and restart location");
-                        createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 5 MIN, RESTARTING", Timer.getCurrentTimeStamp());
+                    if (lastReadingGeoDistance == testDistance) {
+                        Log.i(TAG, "Distance didn't change, try and restart location");
+                        createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 5 MIN, RESTARTING LOCATION", Timer.getCurrentTimeStamp());
                         mService.requestLocationUpdates();
                     }
                     lastReadingGeoDistance = Timer.timerGeoDistance;
@@ -1425,7 +1410,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     };
 
-    private double lastReadingGeoDistance = 0.0;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
