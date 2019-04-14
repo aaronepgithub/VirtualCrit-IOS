@@ -1358,16 +1358,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 //TEST FOR SERVICE DISTANCE
                 if ((int) totalMillis / 1000 % 300 == 0)  {
-                    final double testDistance = Timer.getTimerGeoDistance();
-                    Log.i(TAG, "5 Min Test - testDistance, lastReadingGeoDistance: " + testDistance + ", " + lastReadingGeoDistance);
+                    final double testDistance1 = Timer.getTimerGeoDistance();
+                    final double testDistance2 = lastReadingGeoDistance;
+                    lastReadingGeoDistance = Timer.timerGeoDistance;
+
+                    Log.i(TAG, "5 Min Test - testDistance, lastReadingGeoDistance: " + testDistance1 + ", " + testDistance2);
                     //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
-                    if (lastReadingGeoDistance == testDistance) {
+                    if (testDistance1 == testDistance2) {
                         Log.i(TAG, "Distance didn't change, try and restart location");
                         createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 5 MIN, RESTARTING LOCATION", Timer.getCurrentTimeStamp());
                         mService.requestLocationUpdates();
                     }
-                    lastReadingGeoDistance = Timer.timerGeoDistance;
-                    Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
+                    //Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
                 }
 
                 //ASSUME TTS QUEUE WILL WORK
@@ -1409,8 +1411,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             timerHandler.postDelayed(this, 1000);
         }
     };
-
-
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -2213,6 +2213,8 @@ private Boolean collectCritPoints = false;
         switch (settingsMaxHeartrate) {
             case 185:
                 settingsMaxHeartrate = 190;
+                Log.i(TAG, "clickEditMaxHR: requestlocationUpdates");
+                mService.requestLocationUpdates();
                 break;
             case 190:
                 settingsMaxHeartrate = 195;
