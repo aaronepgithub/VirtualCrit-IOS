@@ -70,6 +70,14 @@ public final class Timer {
 
     public static String metersTogo = "";
 
+    public static void resetTimerVars() {
+        timerGeoDistance = 0.0;
+        timerGeoSpeed = 0.0;
+        timerGeoAvgSpeed = 0.0;
+        timerTotalTimeGeo = 0.0;
+        timerNextMile = 1.0;
+    }
+
     public static void setTimerLocation(Location timerLocation) {
         Log.i(TAG, "setTimerLocation: " + timerLocation.getProvider());
         Timer.timerLocation = timerLocation;

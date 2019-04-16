@@ -1326,7 +1326,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                     if (Timer.timerGeoDistance > Timer.timerNextMile) {
                         Timer.timerNextMile += 1.0;
-                        createTimeline(String.format("%.1f MILES COMPLETE", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
+                        //createTimeline(String.format("%.1f MILES COMPLETE", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
+                        vibrator600();
                     }
 
                     if (Timer.getStringForSetMessage().size() > 0) {
@@ -1366,7 +1367,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
                     if (testDistance1 == testDistance2) {
                         Log.i(TAG, "Distance didn't change, try and restart location");
-                        createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 2 MIN, RESTARTING LOCATION", Timer.getCurrentTimeStamp());
+                        //createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 2 MIN, RESTARTING LOCATION", Timer.getCurrentTimeStamp());
                         mService.requestLocationUpdates();
                     }
                     //Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
@@ -1542,7 +1543,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
         Crit.setRaceDate(Integer.valueOf(fbCurrentDate));
 
-
+        Timer.resetTimerVars();
 
 
         mapView = findViewById(R.id.mapView);
