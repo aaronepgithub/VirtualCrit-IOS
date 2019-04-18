@@ -6,8 +6,8 @@ android {
         applicationId "com.virtualcrit.virtualcrit3_lite"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 32
-        versionName "3.2"
+        versionCode 33
+        versionName "3.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
