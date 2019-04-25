@@ -160,6 +160,7 @@ public class LocationUpdatesService extends Service {
         // We got here because the user decided to remove location updates from the notification.
         if (startedFromNotification) {
             removeLocationUpdates();
+
             stopSelf();
         }
         // Tells the system to not try to recreate the service after it has been killed.
@@ -244,10 +245,13 @@ public class LocationUpdatesService extends Service {
      * {@link SecurityException}.
      */
     public void removeLocationUpdates() {
-        //Log.i(TAG, "Removing location updates");
+        Log.i(TAG, "Removing location updates");
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             Utils.setRequestingLocationUpdates(this, false);
+
+            resetVals();
+
             stopSelf();
         } catch (SecurityException unlikely) {
             Utils.setRequestingLocationUpdates(this, true);
@@ -318,6 +322,12 @@ public class LocationUpdatesService extends Service {
     private double mDistanceReading = 0.0;
     private double mDistanceActual = 0.0;
 
+
+    private void resetVals() {
+        mDistance = 0.0;
+        mDistanceActual = 0.0;
+        mOldLocation = null;
+    }
 
     private void onNewLocation(Location location) {
         Log.i(TAG, "New location: " + location.getProvider());

@@ -1705,7 +1705,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         ////Log.i(TAG, "onCreate: checkAndSetPermissions");
 
-        //TODO
+        Timer.resetTimerVars();
+
         //Reset Crit.critBuilderLatLng
         //This SHOULD stop evaluate new locations until new crit is loaded
         //Crit.critBuilderLatLng = new ArrayList<>();
@@ -1745,7 +1746,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         fbCurrentDate = String.format("%02d%02d%02d", yearInt, monthInt + 1, dayInt);
         Crit.setRaceDate(Integer.valueOf(fbCurrentDate));
 
-        Timer.resetTimerVars();
+
 
 
         mapView = findViewById(R.id.mapView);
