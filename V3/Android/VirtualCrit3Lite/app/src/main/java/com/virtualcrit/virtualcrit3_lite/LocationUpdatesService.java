@@ -320,7 +320,7 @@ public class LocationUpdatesService extends Service {
 
 
     private void onNewLocation(Location location) {
-        //Log.i(TAG, "New location: " + location);
+        Log.i(TAG, "New location: " + location.getProvider());
 
         mLocation = location;
 
@@ -365,7 +365,7 @@ public class LocationUpdatesService extends Service {
             mDistance += (mLocation.distanceTo(mOldLocation) * 0.000621371);
             mDistanceActual += (serviceDistanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), mOldLocation.getLatitude(), mOldLocation.getLongitude()) * 0.000621371);
 //            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES Q", mDistance)));
-//            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES A", mDistanceActual)));
+            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES A", mDistanceActual)));
             //ONLY USED FOR LOGS.
             Timer.serviceDistance = mDistance;
             Timer.serviceDistanceActual = mDistanceActual;
@@ -375,7 +375,7 @@ public class LocationUpdatesService extends Service {
 
 
             double os = Timer.timerGeoSpeed;
-            if (mLocation.getAccuracy() < 20) {
+            if (mLocation.getAccuracy() < 200) {
                 Timer.timerGeoSpeed = (double) mLocation.getSpeed() * 2.23694;  //meters/sec to mi/hr
                 if (Timer.timerGeoSpeed < 0) {
                     Timer.timerGeoSpeed = 0;

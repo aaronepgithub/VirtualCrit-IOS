@@ -35,6 +35,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ParcelUuid;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
@@ -49,6 +50,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -116,7 +118,7 @@ import static com.virtualcrit.virtualcrit3_lite.Timer.getTimeStringFromMilliSeco
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, TextToSpeech.OnInitListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
-
+    private PowerManager.WakeLock wakeLock;
 
 
     // Used in checking for runtime permissions.
@@ -1258,6 +1260,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     //Log.i(TAG, "onCreate: permission granted, request location updates here onCreate");
                     mService.requestLocationUpdates();
+                    Log.i(TAG, "run: acquire wakeLock");
+                    wakeLock.acquire();
+                    
                 } else {
                     //Log.i(TAG, "run: requestPermissions");
                     requestPermissions();
@@ -1358,19 +1363,26 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
 
                 //TEST FOR SERVICE DISTANCE
-                if ((int) totalMillis / 1000 % 120 == 0)  {
+                if ((int) totalMillis / 1000 % 900 == 0)  {
                     final double testDistance1 = Timer.getTimerGeoDistance();
                     final double testDistance2 = lastReadingGeoDistance;
                     lastReadingGeoDistance = Timer.timerGeoDistance;
 
-                    Log.i(TAG, "2 Min Test - testDistance, lastReadingGeoDistance: " + testDistance1 + ", " + testDistance2);
-                    //createTimeline(String.format("%.1f MILES", Timer.timerGeoDistance), Timer.getCurrentTimeStamp());
+                    Log.i(TAG, "15 Min Test - testDistance, lastReadingGeoDistance: " + testDistance1 + ", " + testDistance2);
                     if (testDistance1 == testDistance2) {
                         Log.i(TAG, "Distance didn't change, try and restart location");
                         //createTimeline("DISTANCE DIDN'T CHANGE IN THE PAST 2 MIN, RESTARTING LOCATION", Timer.getCurrentTimeStamp());
                         mService.requestLocationUpdates();
                     }
                     //Log.i(TAG, "Main Activity Service Distance 5 Min  " + String.format("%.1f MILES", Timer.serviceDistance));
+                    String s1 = String.format("%.1f", testDistance1);
+                    String s2 = String.format("%.1f", testDistance2);
+                    String t1 = Timer.getTimeStringFromMilliSecondsToDisplay((int) totalMillis);
+                    String t2 = Timer.getCurrentTimeStamp();
+                    String a = s1 + "," + s2 + ", " + t1 + ", " + t2;
+                    speakText(s1 + ", Current Distance");
+                    Log.i(TAG, "15 min: " + a);
+                    createTimeline(a,Timer.getCurrentTimeStamp());
                 }
 
                 //ASSUME TTS QUEUE WILL WORK
@@ -1499,7 +1511,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @SuppressLint("StaticFieldLeak")
     static MainActivity mn;
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "InvalidWakeLockTag"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1514,6 +1526,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //Reset Crit.critBuilderLatLng
         //This SHOULD stop evaluate new locations until new crit is loaded
         //Crit.critBuilderLatLng = new ArrayList<>();
+
+
+        
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyLock");
+
 
         myReceiver = new MyReceiver();
         // Check that the user hasn't revoked permissions by going to Settings.
@@ -2118,7 +2137,9 @@ private Boolean collectCritPoints = false;
     protected void onDestroy() {
         super.onDestroy();
         timerHandler.removeCallbacks(timerRunnable);
-
+        if (wakeLock.isHeld()) {
+            wakeLock.release();
+        }
 
         mService.removeLocationUpdates();
         isDestroyed = true;
@@ -2138,6 +2159,11 @@ private Boolean collectCritPoints = false;
 
         mapView.onDestroy();
     }
+
+    public PowerManager.WakeLock getWakeLock() {
+        return wakeLock;
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -2215,7 +2241,7 @@ private Boolean collectCritPoints = false;
             case 185:
                 settingsMaxHeartrate = 190;
                 Log.i(TAG, "clickEditMaxHR: requestlocationUpdates");
-                mService.requestLocationUpdates();
+                //mService.requestLocationUpdates();
                 break;
             case 190:
                 settingsMaxHeartrate = 195;
