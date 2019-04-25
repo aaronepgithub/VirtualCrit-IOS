@@ -1563,9 +1563,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     String t1 = Timer.getTimeStringFromMilliSecondsToDisplay((int) totalMillis);
                     String t2 = Timer.getCurrentTimeStamp();
                     String a = s1 + "," + s2 + ", " + t1 + ", " + t2;
-                    speakText(s1 + ", Current Distance");
+                    //speakText(s1 + ", Current Distance");
                     Log.i(TAG, "15 min: " + a);
-                    createTimeline(a,Timer.getCurrentTimeStamp());
+                    //createTimeline(a,Timer.getCurrentTimeStamp());
                 }
 
                 //ASSUME TTS QUEUE WILL WORK
