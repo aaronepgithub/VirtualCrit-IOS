@@ -60,6 +60,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc;
+import com.dsi.ant.plugins.antplus.pcc.defines.DeviceState;
+import com.dsi.ant.plugins.antplus.pcc.defines.EventFlag;
+import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult;
+import com.dsi.ant.plugins.antplus.pccbase.AntPluginPcc;
+import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -96,10 +102,12 @@ import org.qap.ctimelineview.TimelineViewAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -119,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private PowerManager.WakeLock wakeLock;
+
+    //HR
+    public AntPlusHeartRatePcc hrPcc_HR = null;
+    public PccReleaseHandle<AntPlusHeartRatePcc> hrReleaseHandle_HR = null;
+
 
 
     // Used in checking for runtime permissions.
@@ -210,6 +223,171 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
+
+    public void subscribeToEvents_HR() {
+        hrPcc_HR.subscribeHeartRateDataEvent(new AntPlusHeartRatePcc.IHeartRateDataReceiver() {
+            @Override
+            public void onNewHeartRateData(final long estTimestamp, EnumSet<EventFlag> eventFlags,
+                                           final int computedHeartRate, final long heartBeatCount,
+                                           final BigDecimal heartBeatEventTime, final AntPlusHeartRatePcc.DataState dataState) {
+                // Mark heart rate with asterisk if zero detected
+                final String textHeartRate = String.valueOf(computedHeartRate)
+                        + ((AntPlusHeartRatePcc.DataState.ZERO_DETECTED.equals(dataState)) ? "*" : "");
+
+                // Mark heart beat count and heart beat event time with asterisk if initial value
+                final String textHeartBeatCount = String.valueOf(heartBeatCount)
+                        + ((AntPlusHeartRatePcc.DataState.INITIAL_VALUE.equals(dataState)) ? "*" : "");
+                final String textHeartBeatEventTime = String.valueOf(heartBeatEventTime)
+                        + ((AntPlusHeartRatePcc.DataState.INITIAL_VALUE.equals(dataState)) ? "*" : "");
+
+                if (totHR < 500) {
+                    Log.i(TAG, "ComputedHR:  " + String.valueOf(computedHeartRate));
+                }
+
+                setValueHR(String.valueOf(computedHeartRate));
+                calcAvgHR(computedHeartRate);
+                showHR = true;
+
+//                runOnUiThread(() -> {
+//                    Log.i(TAG, "ComputedHR:  " + String.valueOf(computedHeartRate));
+//                    btn1.setText("HR: " + String.valueOf(computedHeartRate));
+//                });
+            }
+        });
+    }
+
+
+
+    AntPluginPcc.IDeviceStateChangeReceiver mDeviceStateChangeReceiver_HR = new AntPluginPcc.IDeviceStateChangeReceiver() {
+
+        @Override
+        public void onDeviceStateChange(final DeviceState newDeviceState) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //tv_status.setText(hrPcc.getDeviceName() + ": " + newDeviceState);
+                    Log.i(TAG, "Device Name: " +  hrPcc_HR.getDeviceName());
+                    Log.i(TAG, "Device State: " +  hrPcc_HR.getCurrentDeviceState());
+                    if (newDeviceState == DeviceState.DEAD) {
+                        hrPcc_HR = null;
+                        showHR = false;
+                        createTimeline("ANT+ Device" + "  DISCONNECTED", Timer.getCurrentTimeStamp());
+                        setValueHR("0");
+                        setBluetoothDeviceNames("");
+                    }
+                    
+                    if (newDeviceState == DeviceState.CLOSED) {
+                        Log.i(TAG, "run: deviceState Closed");
+                    }
+                    
+                    
+
+                }
+            });
+        }
+    };
+
+
+
+    AntPluginPcc.IPluginAccessResultReceiver<AntPlusHeartRatePcc> mResultReceiver_HR = new AntPluginPcc.IPluginAccessResultReceiver<AntPlusHeartRatePcc>() {
+        // Handle the result, connecting to events on success or reporting
+        // failure to user.
+
+        @Override
+        public void onResultReceived(AntPlusHeartRatePcc result_HR, RequestAccessResult resultCode_HR, DeviceState initialDeviceState) {
+
+            Log.d("ANT+ HR", "going in onResultReceived");
+            switch (resultCode_HR) {
+                case SUCCESS:
+                    hrPcc_HR = result_HR;
+
+                    Toast.makeText(MainActivity.this, "Connected  " + result_HR.getDeviceName().toUpperCase(), Toast.LENGTH_SHORT).show();
+                    createTimeline("ANT+ " + result_HR.getDeviceName().toUpperCase() + "  CONNECTED", Timer.getCurrentTimeStamp());
+                    setBluetoothDeviceNames(result_HR.getDeviceName().toUpperCase() + " ANT+");
+                    Log.i(TAG, "onResultReceived HR: Device Name:  " + result_HR.getDeviceName());
+                    subscribeToEvents_HR();
+                    break;
+
+                case CHANNEL_NOT_AVAILABLE:
+
+                    Log.i(TAG, "onResultReceived: CHANNEL_NOT_AVAILABLE");
+                    //Toast.makeText(MainActivity.this, "Channel Not Available", Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("Channel not available!");
+                    break;
+
+                case ADAPTER_NOT_DETECTED:
+                    //Toast.makeText(MainActivity.this, "Sensor not found", Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("Sensor not found");
+                    Log.i(TAG, "onResultReceived: ADAPTER_NOT_DETECTED");
+                    break;
+
+                case BAD_PARAMS:
+                    //Toast.makeText(MainActivity.this, "Bad request parameters", Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("Bad request parameters");
+                    break;
+
+                case OTHER_FAILURE:
+                    //Toast.makeText(MainActivity.this, "Unknown failure. check logcat for details.", Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("OTHER FAILURE");
+                    Log.i(TAG, "onResultReceived: OTHER FAILURE");
+                    break;
+
+                case DEPENDENCY_NOT_INSTALLED:
+                    Toast.makeText(MainActivity.this, "ANT+ is not installed, download Radio Service from Google Play", Toast.LENGTH_SHORT).show();
+
+                    //Alert user to install ANT+ app dependencies before using this app
+//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TrackerActivity.this);
+//                    alertDialogBuilder.setTitle("Missing Dependency");
+//                    alertDialogBuilder.setMessage("The required service: \n"
+//                            + AntPlusBikeSpeedDistancePcc.getMissingDependencyName()
+//                            + "\n was not found. You need to install the ANT+ Plugins service or you may need to update your existing version if you already have it. Do you want to launch the Play Store to get it?");
+//                    alertDialogBuilder.setPositiveButton("Go to Store", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Intent startStore = null;
+//                            startStore = new Intent(Intent.ACTION_VIEW, Uri
+//                                    .parse("market://details?id="
+//                                            + AntPlusBikeSpeedDistancePcc
+//                                            .getMissingDependencyPackageName()));
+//                            startStore.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                            TrackerActivity.this.startActivity(startStore);
+//                        }
+//                    });
+//                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    final AlertDialog waitDialog = alertDialogBuilder.create();
+//                    waitDialog.show();
+                    break;
+
+                case USER_CANCELLED:
+                    //Toast.makeText(MainActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("Cancelled");
+                    Log.i(TAG, "onResultReceived: USER_CANCELLED");
+                    break;
+
+                case UNRECOGNIZED:
+                    //Toast.makeText(MainActivity.this, "Failed: UNRECOGNIZED. PluginLib Upgrade Required?", Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("Unrecognized, update may be required");
+                    break;
+
+                default:
+                    //Toast.makeText(MainActivity.this, "Unrecognized result: " + resultCode_HR, Toast.LENGTH_SHORT).show();
+                    //tv_status.setText("Error code: " + resultCode);
+                    break;
+            }
+        }
+    };
+
+
+    public void searchForAntHR() {
+        Log.i(TAG, "clickBLE: search for ANT+");
+        PccReleaseHandle<AntPlusHeartRatePcc> hrReleaseHandle_HR = AntPlusHeartRatePcc.requestAccess(this, this, mResultReceiver_HR, mDeviceStateChangeReceiver_HR);
+    }
 
 
     public void onClickShowUserTrackline(View view) {
@@ -321,6 +499,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     public void clickPrivacyPolicy(View view) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.virtualcrit.com/privacy.html")));
+    }
+
+    public void clickANT(View view) {
+        Log.i(TAG, "clickANT");
+        searchForAntHR();
     }
 
 
@@ -1604,7 +1787,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //Log.i(TAG, "onCreate: callingTimerStart2");
         timerStart2();
 
-        createTimeline("VIRTUAL CRIT 3.2, LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
+        createTimeline("VIRTUAL CRIT 3.3, LET'S GET STARTED, LOAD A CRIT AND GO.", Timer.getCurrentTimeStamp());
         setRandomUsernameOnStart();
         getSharedPrefs();
 
@@ -2141,6 +2324,12 @@ private Boolean collectCritPoints = false;
             wakeLock.release();
         }
 
+        if (hrReleaseHandle_HR != null) {
+            hrReleaseHandle_HR.close();
+        }
+
+
+
         mService.removeLocationUpdates();
         isDestroyed = true;
 
@@ -2173,6 +2362,7 @@ private Boolean collectCritPoints = false;
 
     @Override
     protected void onResume() {
+        Log.i(TAG, "onResume: ");
         super.onResume();
         mapView.onResume();
 
@@ -2183,6 +2373,8 @@ private Boolean collectCritPoints = false;
                 new IntentFilter(LocationUpdatesService.ACTION_BROADCAST));
 
         isPaused = false;
+
+        mapBoxDisplaySpeedValues();
 
 
 
@@ -2709,7 +2901,8 @@ private Boolean collectCritPoints = false;
     //BLUETOOTH
 
     public void clickBLE(View view) {
-        //Log.i(TAG, "clickBLE: SCAN FOR BLE DEVICES");
+
+        Log.i(TAG, "clickBLE: search for BLE");
         onScanStart();
 
     }
@@ -2855,7 +3048,7 @@ private Boolean collectCritPoints = false;
                             //Log.i(TAG, "onClick: YES, connect to device " + d.getName());
                             //send connection request
                             devicesConnectedHR.add(d);
-                            setBluetoothDeviceNames(d.getName().toUpperCase());
+                            setBluetoothDeviceNames(d.getName().toUpperCase() + " BLE");
                             //initManagerHR(d);
                             //START CONNECTION...
                             deviceHR = d;
@@ -2881,11 +3074,15 @@ private Boolean collectCritPoints = false;
                 TextView tv1 = MainActivity.this.findViewById(R.id.valueBluetoothDevice1);
 //                TextView tv2 = MainActivity.this.findViewById(R.id.valueBluetoothDevice2);
 //                TextView tv3 = MainActivity.this.findViewById(R.id.valueBluetoothDevice3);
-                if (tv1.getText().equals("")) {
-                    //Log.i(TAG, "setBluetoothDeviceNames: tv1");
-                    tv1.setText(x);
-                    return;
-                }
+
+                tv1.setText(x);
+
+
+//                if (tv1.getText().equals("")) {
+//                    //Log.i(TAG, "setBluetoothDeviceNames: tv1");
+//                    tv1.setText(x);
+//                    return;
+//                }
 //                if (tv2.getText().equals("")) {
 //
 //                    tv2.setText(x);
@@ -2960,8 +3157,9 @@ private Boolean collectCritPoints = false;
                         mBluetoothGatt = gatt;
                         String mBluetoothDeviceAddress = gatt.getDevice().getAddress();
 //                        broadcastUpdate(intentAction);
-                        setMessageText(gatt.getDevice().getName() + "  CONNECTED");
-                        createTimeline(gatt.getDevice().getName() + "  CONNECTED", Timer.getCurrentTimeStamp());
+                        setMessageText(gatt.getDevice().getName() + " CONNECTED");
+                        createTimeline(gatt.getDevice().getName() + " CONNECTED", Timer.getCurrentTimeStamp());
+                        setBluetoothDeviceNames(gatt.getDevice().getName() + " BLE");
                         gatt.discoverServices();
                         //Log.i(TAG, "Connected to GATT server. " + gatt.getDevice().getName());
 
@@ -2971,8 +3169,9 @@ private Boolean collectCritPoints = false;
                         //intentAction = ACTION_GATT_DISCONNECTED;
                         mConnectionState = STATE_DISCONNECTED;
                         //Log.i(TAG, "Disconnected from GATT server. " + gatt.getDevice().getName());
-                        setMessageText(gatt.getDevice().getName() + "  DISCONNECTED");
-                        createTimeline(gatt.getDevice().getName() + "  DISCONNECTED", Timer.getCurrentTimeStamp());
+                        setMessageText(gatt.getDevice().getName() + " DISCONNECTED");
+                        createTimeline(gatt.getDevice().getName() + " DISCONNECTED", Timer.getCurrentTimeStamp());
+                        setBluetoothDeviceNames("");
                         //broadcastUpdate(intentAction);
                         setValueHR("0");
                         close();
