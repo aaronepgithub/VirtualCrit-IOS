@@ -375,7 +375,7 @@ public class LocationUpdatesService extends Service {
             mDistance += (mLocation.distanceTo(mOldLocation) * 0.000621371);
             mDistanceActual += (serviceDistanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), mOldLocation.getLatitude(), mOldLocation.getLongitude()) * 0.000621371);
 //            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES Q", mDistance)));
-            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES A", mDistanceActual)));
+//            Log.i(TAG, "onNewLocation: RAW DISTANCE FROM SERVICE:  " + (String.format("%.3f MILES A", mDistanceActual)));
             //ONLY USED FOR LOGS.
             Timer.serviceDistance = mDistance;
             Timer.serviceDistanceActual = mDistanceActual;
